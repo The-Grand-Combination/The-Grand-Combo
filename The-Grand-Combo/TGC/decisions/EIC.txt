@@ -1,0 +1,69 @@
+political_decisions = {
+	
+	government_of_india_act = {
+		picture = map_india
+		potential = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			exists = yes
+			is_our_vassal = EIC
+			has_global_flag = sepoy_rebellion
+			has_global_flag = eic_spawned
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			prestige = 25
+			EIC = {
+				country_event = 9990002
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	mughal_declaration_eic = {
+		picture = last_mughal
+		potential = {
+			tag = MUG
+			vassal_of = ENG
+			NOT = { has_country_flag = mughal_independence }
+			NOT = { has_country_flag = mughal_reborn }
+			has_global_flag = eic_spawned
+		}
+		
+		allow = {
+			vassal_of = ENG
+			any_neighbor_country = { has_country_flag = sepoy_rebellion }
+			1236 = { any_neighbor_province = { owned_by = EIC average_militancy = 7 } }
+		}
+		
+		effect = {	
+			set_country_flag = mughal_independence
+			any_pop = { limit = { has_pop_religion = sunni } militancy = -9 }
+			any_pop = { limit = { has_pop_religion = sikh } consciousness = 3 }
+			PNJ = { all_core = { any_pop = { limit = { has_pop_religion = sikh } militancy = -3 } } }
+
+			define_general = {
+				name = "Bakht Khan"
+				personality = audacious
+				background = school_of_the_bayonet
+			}
+			leave_alliance = ENG
+			ENG = {
+				release_vassal = MUG 
+				diplomatic_influence = { who = THIS value = -400 }
+				country_event = 9990012
+			}
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+}
