@@ -1,6 +1,5 @@
-Thank you for for downloading this mod.
-
-This mod is only possible due to developers and mod such as:
+Thank you for for downloading TGC.
+TGC was made possible by the below developers and mods:
 
 u/Hammonia-HFM mapmod
 arkhometha-HPM
@@ -12,7 +11,7 @@ u/GetoBoi-Dynamic Infamy
 vic1984-Victoria Universalis
 u/YLEK111 or kstar234 - Hearts of Ideologies
 
-makers of TGC:
+TGC Developers:
 JmanThunder
 vjwua
 martoeuropa
