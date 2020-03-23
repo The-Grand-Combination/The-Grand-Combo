@@ -1,0 +1,1233 @@
+country_event = {
+	id = 999440
+	title = "Time of Decision - German National Assembly"
+	desc = "The springtime of nations is at a crucial point. Delegates - coming under pressure from the latest street riots in all German States - have gathered in Frankfurt to discuss the very matter of a Pan-German Unification."													
+	major = yes
+	fire_only_once = yes
+	
+	trigger = {
+	           OR = { 
+	                 has_country_modifier = springtime_of_nations
+					 has_country_flag = had_liberal_revolution
+			   }
+			   exists = yes
+			   OR = {
+			         AND = { 
+					         tag = FRM 
+							 PRU = { ai = yes } 
+							 BAV = { ai = yes } 
+							 AUS = { ai = yes }					 
+					 }
+			         AND = { 
+					         tag = PRU
+					         ai = no				 
+					 }
+			         AND = { 
+					         tag = BAV
+					         ai = no				 
+					 }
+			         AND = { 
+					         tag = AUS
+					         ai = no				 
+					 }
+			   }
+	}
+	
+	mean_time_to_happen = {
+		months = 5
+		modifier = {
+			factor = 0.01
+			year = 1849
+		}
+	}
+	
+	option = {
+		name = "The assembly is now in session!"
+		country_event = 99943
+	}
+}
+
+country_event = {
+	id = 999430
+	title = "Germany United! Who Shall Rule?"
+	desc = "Germany shall become a modern state with a modern constitution, but we have to choose carefully. Should it be a constitutional monarchy, or shall we abandon our old ways altogether and form something new... a republic, with an elected head of state?"													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "Prussia's glorious ruler shall become 'Kaiser der Deutschen'!"
+		PRU = { country_event = 99942 }
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = {
+		name = "Magnificent Habsburg, as it was in the glory days of the HRE!"
+		AUS = { country_event = 99941 }
+		ai_chance = {
+			factor = 30
+		}
+	}
+	option = {
+		name = "Nor Prussia nor Austria! Let house of Wittelsbach balance it!"
+		BAV = { country_event = 99942 }
+		ai_chance = {
+			factor = 15
+		}	
+	}
+	option = {
+		name = "Long live the New, long live the German Republic!"
+		PRU = { country_event = 99940 }
+		ai_chance = {
+			factor = 5
+		}
+	}
+}
+
+country_event = {
+	id = 999420
+	title = "German National Assembly - Proposal" #For Prussia and Bavaria
+	desc = "Your highness, the National Assembly has finally 'voted' for a unified German nation. Her representatives are proposing that you shall become 'Kaiser der Deutschen', the head of state of Germany. How shall we respond?"													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "We accept, for the glory of our house...of Germany!"
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+	   country_event = 99939
+	   badboy = 20	
+	   ai_chance = {
+			factor = 10
+		}
+	}
+	option = {
+		name = "A crown from the gutter? Certainly not!"
+		ai_chance = {
+			factor = 90
+		}
+	}
+}
+
+country_event = {
+	id = 999390
+	title = "A Unified Germany, A Greater Germany?"
+	desc = "The National Assembly finally voted for a unified German nation. However, some foreign representatives, the Austrians among them, remained absent. Having been a part of the old HRE should we declare them to be a part of Germany as well?"													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "'Grossdeutschland'! All Germans shall become a part of Germany!"
+		badboy = 10
+		397	= { add_core = GER }
+		398	= { add_core = GER }
+        AUS = { country_event = 99938 }
+		AUS = { all_core = { add_core = GER } }
+		ai_chance = {
+			factor = 30
+		}
+	}
+	option = {
+		name = "'Kleindeutsche Loesung', we'll do without Austria and the rest."
+		ai_chance = {
+			factor = 70
+		}
+	}
+}
+
+country_event = {
+	id = 999380
+	title = "'Grossdeutschland' - Austrian Destiny"
+	desc = "Meanwhile, the recently formed National Assembly of Germany has sent the Austrian government an enquiry regarding their future status as a part of the German nation...or not. What shall the response of Austria be?"													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "We are united again! Cheer, brothers!"
+		set_country_flag = austrian_destiny
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+				location = { is_core = GER }
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { is_culture_group = germanic }
+				NOT = { tag = HUN }
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31512
+		}
+		any_country = {
+			limit = {
+				tag = HUN
+				any_core = {
+					owned_by = THIS
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31512
+		}
+		GER = { country_event = 99936 }
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				GER = { 
+				       NOT = {
+                              OR = {					   
+				                    OR = { government = hms_government government = hms_government2 government = hms_government3 }
+				                    OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 government = prussian_constitutionalism3 }
+							        OR = { government = absolute_monarchy government = absolute_monarchy2 government = absolute_monarchy3 }
+							  }
+				       }						
+				}
+				AUS = {
+                       OR = {				
+				             OR = { government = hms_government government = hms_government2 government = hms_government3 }
+				             OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 government = prussian_constitutionalism3 }
+				             OR = { government = absolute_monarchy government = absolute_monarchy2 government = absolute_monarchy3 }
+                       }					   
+				}
+			}
+		}
+	}
+	option = {
+		name = "Give up the Austrian Empire for Greater Germany? Never!"
+		GER = { country_event = 99937 }
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+
+country_event = {
+	id = 999370
+	title = "'Grossdeutschland' - Austria Declines German Enquiry"
+	desc = "Your highness, the Austrian government has refused to take up our gracious proposal to integrate Austria into our glorious Germany! However...with our newly formed armies there are other means at our disposal...if you get my meaning."													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "Oh, just wait and see, you 'Ostmark' remnants!"
+		any_pop = {
+			limit = { 
+				OR = { 
+					has_pop_culture = north_german  
+					has_pop_culture = south_german 
+				}
+				NOT = { is_core = HUN }
+				NOT = { is_core = SWI } 
+			}
+			dominant_issue = {
+				factor = 0.10
+				value = jingoism
+			}
+		}
+		set_country_flag = pangerman_jingoism
+    }
+}
+
+country_event = {
+	id = 999360
+	title = "'Grossdeutschland' - Austria Accepts German Enquiry"
+	desc = "Your highness, the Austrian government has accepted our gracious proposal to integrate Austria into our glorious Germany! All German provinces of the former Austrian Empire shall be integrated into Greater Germany!"													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "It is the will of history!"
+		GER = { inherit = AUS }
+		GER = { inherit = LIE }
+		add_core = 3253
+		3253 = { add_core = AUS }
+		3282 = { add_core = AUS  }
+		623 = { add_core = AUS  }
+		624 = { add_core = AUS  }
+		3286 = { add_core = AUS }
+		3282 = { remove_core = HUN }
+		623 = { remove_core = HUN }
+		624 = { remove_core = HUN }
+		3286 = { remove_core = HUN }
+        778 = { remove_core = AUS }		
+		AUS = { all_core = { add_core = GER } }
+		set_global_flag = 1848_anschluss
+    }
+}
+
+country_event = {
+	id = 999410
+	title = "German National Assembly - Proposal to Austria" #For Austria
+	desc = "Your highness, the German National Assembly has finally voted for a unified German nation. Her representatives are proposing that you shall become 'Kaiser der Deutschen', the head of state of Germany. How shall we respond?"													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "We accept, but will give up no lands of our own empire. NONE!"
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		government = hms_government2
+		political_reform = universal_voting
+		political_reform = state_equal_weight
+		political_reform = yes_meeting
+		political_reform = free_press
+		political_reform = non_socialist
+		political_reform = secret_ballots
+		set_country_flag = austrian_destiny
+		set_country_flag = austrian_greater_germany
+		set_global_flag = 1848_anschluss
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		badboy = 60
+		all_core = {
+			limit = {
+				NOT = { is_core = HUN }
+			}
+			add_core = GER
+		}
+		any_owned = {
+			limit = {
+				OR = {
+					is_core = HUN
+					is_core = POL
+					is_core = ROM
+					is_core = CRO
+					is_core = VEN
+					is_core = LOM
+					is_core = SER
+				}
+			}
+			add_province_modifier = {
+				name = nationalist_agitation
+				duration = 1095
+			}
+		}
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+			}
+			leave_alliance = THIS
+			relation = { who = THIS value = -100 }
+			casus_belli = {
+				target = THIS
+				type = free_peoples
+				months = 60
+			}
+			casus_belli = {
+				target = SGF
+				type = free_peoples
+				months = 60
+			}
+			casus_belli = {
+				target = GER
+				type = free_peoples
+				months = 60
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+	option = {
+		name = "We accept, and shall give limited autonomy to our non-German crown lands."
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		government = hms_government2
+		political_reform = universal_voting
+		political_reform = state_equal_weight
+		political_reform = yes_meeting
+		political_reform = free_press
+		political_reform = non_socialist
+		political_reform = secret_ballots
+		set_country_flag = austrian_destiny
+		set_country_flag = austrian_greater_germany
+		set_global_flag = 1848_anschluss
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		badboy = 40
+		all_core = {
+			limit = {
+				NOT = { is_core = HUN }
+			}
+			add_core = GER
+		}
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+				location = { is_core = GER }
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { is_culture_group = germanic }
+				NOT = { tag = HUN }
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31511
+		}
+		any_country = {
+			limit = {
+				tag = HUN
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31511
+		}
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+			}
+			relation = { who = THIS value = -50 }
+			casus_belli = {
+				target = THIS
+				type = release_puppet
+				months = 60
+			}
+			casus_belli = {
+				target = SGF
+				type = release_puppet
+				months = 60
+			}
+			casus_belli = {
+				target = GER
+				type = release_puppet
+				months = 60
+			}
+		}
+		ai_chance = {
+			factor = 3
+		}
+	}
+	
+	option = {
+		name = "We accept, and shall give independence to our non-German crown lands."
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		government = hms_government2
+		political_reform = universal_voting
+		political_reform = state_equal_weight
+		political_reform = yes_meeting
+		political_reform = free_press
+		political_reform = non_socialist
+		political_reform = secret_ballots
+		set_country_flag = austrian_destiny
+		set_country_flag = austrian_greater_germany
+		set_global_flag = 1848_anschluss
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		badboy = 20
+		all_core = {
+			limit = {
+				NOT = { is_core = HUN }
+			}
+			add_core = GER
+		}
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+				location = { is_core = GER }
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { is_culture_group = germanic }
+				NOT = { tag = HUN }
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31512
+		}
+		any_country = {
+			limit = {
+				tag = HUN
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31512
+		}
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+			}
+			relation = { who = THIS value = -50 }
+		}
+		ai_chance = {
+			factor = 7
+		}
+	}
+	
+	option = {
+		name = "The Empire has no interest in becoming a part of 'Greater' Germany!" #$COUNTRY$??
+		any_pop = {
+			limit = { is_culture_group = germanic }
+			scaled_militancy = {
+				issue = jingoism
+				factor = 8
+			}
+			scaled_militancy = {
+				issue = pacifism
+				factor = -4
+			}
+		}
+		ai_chance = {
+			factor = 90
+		}
+	}
+}
+
+country_event = {
+	id = 999350
+	title = "'Grossdeutschland' - Decision by Iron and Blood"
+	desc = "The refusal of Austria to become a part of Germany has boiled up jingoist elements who demand a final decision, not made by speeches and votes but by iron and blood. They're demanding nothing less than total and unconditional unification!"													
+	major = yes
+	fire_only_once = yes
+	
+    trigger = {
+	 tag = GER
+	 exists = yes
+	 has_country_flag = pangerman_jingoism
+	}
+	mean_time_to_happen = {
+		months = 1
+	}
+	
+	option = {
+		name = "Now you shall see, 'Ostmark' remnants!"
+		war = {
+				target = AUS
+				attacker_goal = {
+					casus_belli = cut_down_to_size
+				}
+				defender_goal = {
+					casus_belli = cut_down_to_size
+				}
+	   }
+       set_global_flag = 1848_aus_ger_war	   
+    }
+}
+
+country_event = {
+	id = 999340
+	title = "'Grossdeutschland' - Iron and Blood - Unification"
+	desc = "The recent war against Austria - or what was left of its former glory - has been victorious. Now all the people of this 'Remnant Empire' disintegrate into various nations and states, a pity...Nonetheless, Austria has fallen!"													
+	major = yes
+	fire_only_once = yes
+	
+    trigger = {
+	 tag = GER
+	 exists = yes
+	 NOT = { war_with = AUS }
+	 AUS = { has_recently_lost_war = yes }
+	 has_recently_lost_war = no
+	 has_global_flag = 1848_aus_ger_war
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "At last we are together as one!"  
+        AUS = { country_event = 99933 }
+	}
+}
+
+country_event = {
+	id = 999330
+	title = "'Grossoesterreich' - Dissolution"
+	desc = "The recent war against Germany has meant utter defeat for Austria. Now all the people of the 'Remnant Empire' disintegrate into various nations and states, a pity."													
+	major = yes
+	is_triggered_only = yes
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "'Es war sehr schoen, es hat uns sehr gefreut.' - Austrian emperor"  
+		       any_owned = {
+				limit = { is_core = GER }
+				secede_province = GER
+		      }
+		        any_country = {
+		      	limit = { vassal_of = THIS }
+		      	leave_alliance = THIS
+		      	country_event = 31523
+		      }
+		      any_country = {
+		      	limit = {
+		      		neighbour = THIS
+		      		exists = yes
+		      		any_core = { owned_by = THIS }
+		      	}
+		      	country_event = 31522
+		      }
+		      any_country = {
+		      	limit = {
+		      		any_core = { owned_by = THIS }
+		      		exists = no
+		      		is_cultural_union = no
+		      	}
+		      	country_event = 31526
+		      }
+    }
+}
+
+country_event = {
+	id = 999320
+	title = "'Grossdeutschland' - Iron and Blood - Defeat"
+	desc = "The recent war against 'those people' has meant utter defeat for Germany. Now that the German Confederation with its ill advised leaders has fallen it is Austria's turn to write the history of Greater Germany!"													
+	major = yes
+	fire_only_once = yes
+	
+    trigger = {
+	 tag = AUS
+	 exists = yes
+	 NOT = { war_with = GER }
+	 GER = { has_recently_lost_war = yes }
+	 has_recently_lost_war = no
+	 has_global_flag = 1848_aus_ger_war
+	}
+	
+	option = {
+		name = "We shall give up no lands of our own empire. NONE!"
+		inherit = GER
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		government = prussian_constitutionalism3
+		set_country_flag = austrian_destiny
+		set_country_flag = austrian_greater_germany
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		badboy = 60
+		all_core = {
+			limit = {
+				NOT = { is_core = HUN }
+			}
+			add_core = GER
+		}
+		any_owned = {
+			limit = {
+				OR = {
+					is_core = HUN
+					is_core = POL
+					is_core = ROM
+					is_core = CRO
+					is_core = VEN
+					is_core = LOM
+					is_core = SER
+				}
+			}
+			add_province_modifier = {
+				name = nationalist_agitation
+				duration = 1095
+			}
+		}
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+			}
+			leave_alliance = THIS
+			relation = { who = THIS value = -100 }
+			casus_belli = {
+				target = THIS
+				type = free_peoples
+				months = 60
+			}
+			casus_belli = {
+				target = SGF
+				type = free_peoples
+				months = 60
+			}
+			casus_belli = {
+				target = GER
+				type = free_peoples
+				months = 60
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+	option = {
+		name = "We shall give limited autonomy to our non-German crown lands."
+		inherit = GER
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		government = prussian_constitutionalism3
+		set_country_flag = austrian_destiny
+		set_country_flag = austrian_greater_germany
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		badboy = 40
+		all_core = {
+			limit = {
+				NOT = { is_core = HUN }
+			}
+			add_core = GER
+		}
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+				location = { is_core = GER }
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { is_culture_group = germanic }
+				NOT = { tag = HUN }
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31511
+		}
+		any_country = {
+			limit = {
+				tag = HUN
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31511
+		}
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+			}
+			relation = { who = THIS value = -50 }
+			casus_belli = {
+				target = THIS
+				type = release_puppet
+				months = 60
+			}
+			casus_belli = {
+				target = SGF
+				type = release_puppet
+				months = 60
+			}
+			casus_belli = {
+				target = GER
+				type = release_puppet
+				months = 60
+			}
+		}
+		ai_chance = {
+			factor = 20
+		}
+	}
+	
+	option = {
+		name = "We shall give independence to our non-German crown lands."
+		inherit = GER
+		change_tag = GER
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		government = prussian_constitutionalism3
+		set_country_flag = austrian_destiny
+		set_country_flag = austrian_greater_germany
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		badboy = 20
+		all_core = {
+			limit = {
+				NOT = { is_core = HUN }
+			}
+			add_core = GER
+		}
+		any_pop = {
+			limit = {
+				is_primary_culture = no
+				is_accepted_culture = no
+				location = { is_core = GER }
+			}
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = separatist
+				factor = 0.4
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { is_culture_group = germanic }
+				NOT = { tag = HUN }
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31512
+		}
+		any_country = {
+			limit = {
+				tag = HUN
+				any_core = {
+					owned_by = THIS
+					NOT = { is_core = GER }
+					is_colonial = no
+				}
+				exists = no
+				is_cultural_union = no
+			}
+			country_event = 31512
+		}
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+			}
+			relation = { who = THIS value = -50 }
+		}
+		ai_chance = {
+			factor = 10
+		}
+	}
+	
+	option = {
+		name = "Lets dismantle Germany instead and return to the old system."
+        GER = { country_event = 99931 }
+		ai_chance = {
+			factor = 70
+		}
+	}
+}
+
+country_event = {
+	id = 999310
+	title = "'Grossdeutschland' - Dissolution"
+	desc = "The recent war has meant utter defeat for Germany. Now all the people of the 'German Nation' disintegrate into various nations and states... as always."													
+	major = yes
+	is_triggered_only = yes
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "'Macht euern Dreck alleene!' - German emperor"  
+		        any_country = {
+		      	limit = { vassal_of = THIS }
+		      	leave_alliance = THIS
+		      	country_event = 31523
+		      }
+		      any_country = {
+		      	limit = {
+		      		neighbour = THIS
+		      		exists = yes
+		      		any_core = { owned_by = THIS }
+		      	}
+		      	country_event = 31522
+		      }
+		      any_country = {
+		      	limit = {
+		      		any_core = { owned_by = THIS }
+		      		exists = no
+		      		is_cultural_union = no
+		      	}
+		      	country_event = 31526
+		      }
+    }
+}
+
+country_event = {
+	id = 999400
+	title = "German National Assembly - New Republic" #Republic
+	desc = "The German National Assembly has finally voted for a unified and 'democratic' German nation. However they're indecisive if the nation will either become a German federation with moderate government or a radical republic."													
+	major = yes
+	
+    is_triggered_only = yes
+	
+	option = {
+		name = "Long live Germany...a moderate federation!"
+		change_tag = GER
+		inherit = FRM
+		capital = 564
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		religion = catholic
+		government = democracy3
+		ruling_party_ideology = liberal
+		political_reform = universal_voting
+		political_reform = state_equal_weight
+		political_reform = yes_meeting
+		political_reform = free_press
+		political_reform = non_socialist
+		political_reform = secret_ballots
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = { 
+					    tag = PRU
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		any_pop = {
+			limit = {
+				NOT = { type = aristocrats }
+			}
+			consciousness = 2
+			ideology = {
+				value = liberal
+				factor = 0.3
+			}
+			ideology = {
+				value = anarcho_liberal
+				factor = 0.1
+			}
+		}
+		any_pop = {
+			limit = {
+				type = aristocrats
+			}
+			consciousness = 1
+			ideology = {
+				value = reactionary
+				factor = 0.2
+			}
+		}
+       PRU_701 = { remove_core = GER }
+	   PRU_695 = { remove_core = GER }
+	   PRU_690 = { remove_core = GER }
+	   country_event = 99939
+	   country_event = 99924
+	   badboy = 25	
+	   ai_chance = {
+			factor = 70
+		}
+	}
+	option = {
+		name = "Long live Germany...a radical republic!"
+		change_tag = GER
+		inherit = FRM
+		capital = 564
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		religion = catholic
+		government = democracy2
+		ruling_party_ideology = anarcho_liberal
+		political_reform = universal_voting
+		political_reform = population_equal_weight
+		political_reform = yes_meeting
+		political_reform = free_press
+		political_reform = non_socialist
+		political_reform = secret_ballots
+		any_country = {
+				limit = {
+					OR = {
+						is_culture_group = germanic
+						tag = SCH
+						tag = EFR
+					}
+					NOT = {
+                        tag = PRU					
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101
+	   }
+		any_pop = {
+			limit = {
+				NOT = { type = aristocrats }
+			}
+			consciousness = 3
+			ideology = {
+				value = liberal
+				factor = 0.2
+			}
+			ideology = {
+				value = anarcho_liberal
+				factor = 0.2
+			}
+		}
+		any_pop = {
+			limit = {
+				type = aristocrats
+			}
+			consciousness = 1
+			ideology = {
+				value = reactionary
+				factor = 0.3
+			}
+		}
+       PRU_701 = { remove_core = GER }
+	   PRU_695 = { remove_core = GER }
+	   PRU_690 = { remove_core = GER }
+	   country_event = 99939
+	   country_event = 99924
+	   country_event = 99923
+	   badboy = 30	
+	   ai_chance = {
+			factor = 30
+	   }
+	}
+}
