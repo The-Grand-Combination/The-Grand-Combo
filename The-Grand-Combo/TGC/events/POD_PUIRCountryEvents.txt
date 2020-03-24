@@ -1,0 +1,383 @@
+#Joining Confederation
+country_event = {
+	id = 44325
+	title = "EVTNAME44325"
+	desc = "EVTDESC44325"
+	picture = "confederation"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "Of course they are welcome."
+		prestige = 5
+		FROM = {
+			all_core = { add_core = CAN }
+		}
+		random_country = {
+			limit = {
+				tag = FROM
+			}
+		}
+		inherit = FROM
+		ai_chance = {
+			factor = 100
+		}
+	}
+	
+	option = {
+		name = "We have no interest in this."
+		prestige = -10
+		relation = { who = FROM value = -50 }
+		any_pop = {
+			militancy = 1
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 36960
+	title = "EVTNAME36960" #The Gold Coast Treaty
+	desc = "EVTDESC36960"
+	picture = "deliberation"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "We will sign the treaty."
+		treasury = 20000
+		relation = { who = FROM value = 100 }
+		FROM = { country_event = 36961 }
+		ai_chance = {
+			factor = 75
+			modifier = {
+				factor = 0.5
+				NOT = {
+					relation = { who = FROM value = 50 }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "We refuse. Sekondi is ours."
+		relation = { who = FROM value = -50 }
+		FROM = { country_event = 36962 }
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 2
+				NOT = {
+					relation = { who = FROM value = 50 }
+				}
+			}
+			modifier = {
+				factor = 2
+				part_of_sphere = yes
+				NOT = { in_sphere = FROM }
+			}
+			modifier = {
+				factor = 0.5
+				relation = { who = FROM value = 150 }
+			}
+			modifier = {
+				factor = 0.5
+				alliance_with = FROM
+			}
+			modifier = {
+				factor = 0
+				in_sphere = FROM
+			}
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 36961
+	title = "The Dutch Have Agreed"
+	desc = "The Dutch government has agreed to sign the Gold Coast Treaty. Sekondi is ours!"
+	news = yes
+	news_title = "EVTNAME36961_NEWS_TITLE"
+	news_desc_long = "EVTDESC36961_NEWS_LONG"
+	news_desc_medium = "EVTDESC36961_NEWS_MEDIUM"
+	news_desc_short = "EVTDESC36961_NEWS_SHORT"
+	picture = "treaty"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "Excellent."
+		random_country = {
+			limit = {
+				tag = FROM
+				is_greater_power = no
+			}
+			THIS = { diplomatic_influence = { who = FROM value = 100 } }
+		}
+		relation = { who = FROM value = 50 }
+		1909 = { secede_province = THIS }
+		random_country = {
+			limit = {
+				tag = ATJ
+				exists = yes
+			}
+			leave_alliance = THIS
+			THIS = { diplomatic_influence = { who = ATJ value = -200 } }
+		}
+		random_country = {
+			limit = {
+				tag = BAL
+				exists = yes
+			}
+			leave_alliance = THIS
+			THIS = { diplomatic_influence = { who = BAL value = -200 } }
+		}
+	}
+}
+
+country_event = {
+	id = 36962
+	title = "The Dutch Have Refused"
+	desc = "The Dutch government has refused to ratify our proposed treaty."
+	picture = "treaty"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "Then we shall leave it at that."
+		prestige = -10
+		treasury = 20000
+	}
+	
+	option = {
+		name = "Then we must consider using force."
+		badboy = 2
+		treasury = 20000
+		diplomatic_influence = { who = FROM value = -100 }
+		relation = { who = FROM value = -50 }
+		leave_alliance = FROM
+		1909 = { add_core = THIS }
+		casus_belli = {
+			target = FROM
+			type = humiliate
+			months = 12
+		}
+	}
+}
+
+# Event to Inherit (Indonesia)
+country_event = {
+	id = 95255
+	title = "EVTNAME95255" #Indonesian Unification
+	desc = "EVTDESC95255"
+	picture = "Celebration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA95255" #We will answer the call!
+		random_country = {
+			limit = {
+				NOT = { is_our_vassal = THIS }
+				is_sphere_leader_of = THIS
+			}
+			relation = {
+				who = FROM
+				value = -25
+			}
+		}
+		random_country = {
+			limit = { is_our_vassal = THIS }
+			casus_belli = {
+				target = FROM
+				type = acquire_state
+				months = 12
+			}
+			casus_belli = {
+				target = FROM
+				type = cut_down_to_size
+				months = 12
+			}
+			relation = {
+				who = FROM
+				value = -50
+			}
+			FROM = { badboy = 1 }
+		}
+		FROM = { inherit = THIS }
+		ai_chance = {
+			factor = 80
+			modifier = {
+				factor = 0.5
+				is_vassal = yes
+			}
+			modifier = {
+				factor = 0.5
+				part_of_sphere = yes
+				NOT = { in_sphere = FROM }
+			}
+			modifier = {
+				factor = 0.5
+				NOT = {
+					relation = {
+						who = FROM
+						value = 100
+					}
+				}
+			}
+			modifier = {
+				factor = 1.2
+				alliance_with = FROM
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB95255" #We will remain independent
+		prestige = 1
+		relation = {
+			who = FROM
+			value = -100
+		}
+		leave_alliance = FROM
+		any_pop = {
+			militancy = 3
+			consciousness = 2
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 2
+				is_vassal = yes
+			}
+			modifier = {
+				factor = 2
+				part_of_sphere = yes
+				NOT = { in_sphere = FROM }
+			}
+			modifier = {
+				factor = 0
+				in_sphere = FROM
+			}
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+}
+
+#Flores Purchase
+country_event = {
+
+	id = 97125
+	title = "EVTNAME97125" #Flores Purchase
+	desc = "EVTDESC97125"
+	picture = "treaty"
+
+	is_triggered_only = yes	
+	
+	option = {
+		name = "EVTOPTA97125" #Accept the offer
+		prestige = 5
+		relation = {
+			who = POR
+			value = 20
+		}
+		money = -50000
+		POR = {
+			money = 50000
+			any_owned = {
+				limit = {
+					OR = {
+						province_id = 1439
+						province_id = 1444
+					}
+				}
+				secede_province = THIS
+			}
+		}
+		ai_chance = {
+			factor = 95
+			modifier = {
+				factor = 0
+				NOT = { money = 50000 }
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB97125" #Reject the offer
+		prestige = -5
+		relation = {
+			who = POR
+			value = -15
+		}
+		ai_chance = {
+			factor = 5
+		}
+	}	
+}
+
+#Province Size adjustment for new extra Nepali POP growth
+province_event = {
+	
+	id = 1234127
+
+	trigger = {
+		year = 1860
+		province_id = 1326				# Kathmandu
+		owned_by = NEP
+		NOT  = { has_province_modifier = nepal_boom }
+	}
+
+	mean_time_to_happen =  {
+		months = 1
+
+	}
+
+	title = "EVTNAME1234127" #Growth of Kathmandu
+	desc = "EVTDESC1234127"
+
+	option = {
+		name = "EVTOPTA1234127"
+		add_province_modifier = {
+			name = nepal_boom
+			duration = -1
+		}
+	}
+}
+
+province_event = {
+	
+	id = 1234128
+
+	trigger = {
+		year = 1860
+		province_id = 1327				# Jumla
+		owned_by = NEP
+		NOT  = { has_province_modifier = nepal_boom }
+	}
+
+	mean_time_to_happen =  {
+		months = 1
+
+	}
+
+	title = "EVTNAME1234128" #Growth of Jumla
+	desc = "EVTDESC1234127"
+
+	option = {
+		name = "EVTOPTA1234127"
+		add_province_modifier = {
+			name = nepal_boom
+			duration = -1
+		}
+	}
+}
