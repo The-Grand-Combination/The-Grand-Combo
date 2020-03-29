@@ -1,90 +1,22 @@
 political_decisions = {
-	port_of_aden = {
-		picture = aden_protectorate
-		potential = {
-			OR = {
-				tag = ENG
-				1412 = {
-					owner = {
-						in_sphere = THIS
-					}
-				}
-			}
-			year = 1839
-			1412 = {
-				owner = {
-					civilized = no
-					government = absolute_monarchy
-				}
-			}
-			NOT = { has_global_flag = asked_for_port_of_aden }
-		}
-		allow = {
-			war = no
-		}
-		effect = {
-			set_global_flag = asked_for_port_of_aden
-			1412 = {
-				owner = {
-					country_event = {
-						id = 209701
-						days = 2
-					}
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	
 	become_yemen = {
 		potential = {
-			tag = YEM
-			NOT = { 
-				has_global_flag = form_yemen_outside
-				has_country_flag = become_yemen
-				has_country_flag = become_yemen_nye
+			OR = {
+				tag = NYE
+				tag = MHR
+				tag = KTH
+				tag = FDL
+				tag = LHJ
 			}
 		}
 		allow = {
 			owns = 1176
 			owns = 1173
 			owns = 1175
-			owns = 1178
-			war = no
-		}
-		effect = {
-			capital = 1178
-			YEM_1412 = {
-				add_core = YEM
-			}
-			YEM_1178 = {
-				add_core = YEM
-			}
-			1174 = {
-				add_core = YEM
-			}
-			add_accepted_culture = mashriqi
-			prestige = 10
-			set_country_flag = become_yemen
-		}
-	} 
-	
-	become_yemen_nye = {
-		picture = become_yemen
-		potential = {
-			tag = NYE
-		}
-		allow = {
-			owns = 1173
-			owns = 1178
-			YEM = { exists = no }
 			war = no
 		}
 		effect = {
 			change_tag = YEM
-			capital = 1178
 			YEM_1412 = {
 				add_core = YEM
 			}
@@ -94,10 +26,15 @@ political_decisions = {
 			1174 = {
 				add_core = YEM
 			}
-			primary_culture = mashriqi
+			any_owned = {
+				remove_core = MHR
+				remove_core = KTH
+				remove_core = FDL
+				remove_core = LHJ
+			}
+			add_accepted_culture = mashriqi
 			add_accepted_culture = bedouin
 			prestige = 10
-			set_country_flag = become_yemen_nye
 		}
 	} 
 	
@@ -105,21 +42,27 @@ political_decisions = {
 		picture = become_yemen
 		potential = {
 			is_greater_power = yes
-			exists = NYE
+			NOT = { exists = YEM }
 			OR = {
 				any_owned_province = {
 					OR = {
-						is_core = YEM
+						is_core = LHJ
+						is_core = FDL
+						is_core = KTH
+						is_core = MHR
 						is_core = NYE
 					}
 				}
-				YEM = { in_sphere = THIS }
+				LHJ = { in_sphere = THIS }
+				FDL = { in_sphere = THIS }
+				KTH = { in_sphere = THIS }
+				MHR = { in_sphere = THIS }
 				NYE = { in_sphere = THIS }
 			}
 		}
 		allow = {
 			war = no
-			YEM = {
+			FDL = {
 				all_core = {
 					OR = {
 						owned_by = THIS
@@ -134,7 +77,22 @@ political_decisions = {
 					}
 				}
 			}
-			NYE = {
+			KTH = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
+			MHR = {
 				all_core = {
 					OR = {
 						owned_by = THIS
@@ -154,7 +112,10 @@ political_decisions = {
 			any_country = {
 				limit = {
 					OR = {
-						tag = YEM
+						tag = LHJ
+						tag = FDL
+						tag = KTH
+						tag = MHR
 						tag = NYE
 						tag = ASR
 					}
@@ -180,11 +141,17 @@ political_decisions = {
 			any_owned = {
 				limit = {
 					OR = {
-						is_core = NYE
+						is_core = LHJ
+						is_core = FDL
+						is_core = KTH
+						is_core = MHR
 						is_core = ASR
 					}
 				}
-				remove_core = NYE
+				remove_core = MHR
+				remove_core = KTH
+				remove_core = FDL
+				remove_core = LHJ
 				remove_core = ASR
 			}
 			release_vassal = YEM
@@ -192,19 +159,9 @@ political_decisions = {
 			diplomatic_influence = {
 				who = YEM
 				value = 400
-			}
-			random_country = {
-				limit = {
-					tag = THIS
-					has_country_flag = port_of_aden
-				}
-				1412 = {
-					secede_province = THIS
-				}
-			}
-			YEM = { capital = 1178 }
+			}			
 			prestige = 10
-			set_global_flag = form_yemen_outside
 		}
-	}
+	} 
+	
 }
