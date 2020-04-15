@@ -1,0 +1,261 @@
+political_decisions = {
+  #from FlavourMod_africa
+  ###Ethopia
+  yohannes_iv = {
+    picture = yohannes_iv
+    potential = {
+      tag = ETH
+      OR = {
+        has_country_flag = battle_of_magdala
+        AND = {
+          year = 1871
+          NOT = { has_country_modifier = tewodros_ii }
+        }
+      }
+      NOT = { has_country_flag = yohannes_iv }
+    }
+
+    allow = {
+      war = no
+      NOT = { war_exhaustion = 1 }
+    }
+
+    effect = {
+      set_country_flag = yohannes_iv
+      random_owned = {
+        limit = { owner = { ai = yes } }
+        owner = {
+          military_reform = yes_foreign_training
+          economic_reform = yes_admin_reform
+          years_of_research = 5
+          plurality = 15
+        }
+      }
+      military_reform = yes_foreign_weapons
+      add_country_modifier = {
+        name = yohannes_iv
+        duration = 6570
+      }
+      any_pop = {
+        limit = { is_primary_culture = yes }
+        consciousness = -2
+      }
+    }
+  }
+	claim_negusa_nagast = {
+		picture = claim_negusa_nagast
+		potential = {
+			civilized = no
+			OR = {
+				primary_culture = amhara
+				primary_culture = tigray
+			}
+			NOT = { tag = ETH }
+			NOT = { exists = ETH }
+			NOT = { has_global_flag = is_negusa_nagast }
+			NOT = { has_country_flag = claimed_negusa_nagast }
+			NOT = { has_country_flag = tewodros_rules }
+			year = 1852
+		}
+		
+		allow = {
+			OR = {
+				year = 1860
+				civilization_progress = 0.5
+				1852 = { owned_by = THIS province_control_days = 1825 }
+			}
+		}
+		
+		effect = {
+			set_country_flag = claimed_negusa_nagast
+			GON = { all_core = { add_core = THIS } }
+			TIG = { all_core = { add_core = THIS } }
+			SHW = { all_core = { add_core = THIS } }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	become_negusa_nagast = {
+		picture = become_negusa_nagast
+		potential = {
+			OR = {
+				tag = GON
+				tag = SHW
+				tag = TIG
+			}
+			ETH = { exists = no }
+			NOT = { has_country_flag = tewodros_rules }
+		}
+		
+		allow = {
+			war = no
+			owns = 1852
+			OR = {
+				GON = { exists = no }
+				tag = GON
+			}
+			OR = {
+				SHW = { exists = no }
+				tag = SHW
+			}
+			OR = {
+				TIG = { exists = no }
+				tag = TIG
+			}
+			ETH = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						empty = yes
+						province_id = 1848
+						province_id = 1849
+						province_id = 1850
+						owner = { NOT = { primary_culture = amhara } }
+					}
+				}
+			}
+		}
+		
+		effect = {
+			clr_country_flag = claimed_negusa_nagast
+			set_global_flag = is_negusa_nagast
+			GON = { all_core = { remove_core = GON } }
+			SHW = { all_core = { remove_core = SHW } }
+			TIG = { all_core = { remove_core = TIG } }
+			ENG_1848 = { add_core = TIG }
+			change_tag = ETH
+			add_country_modifier = { name = disunited_country duration = 3650 }
+			any_country = {
+				limit = {
+					any_owned_province = { is_core = ETH }
+					civilized = no
+					NOT = { tag = EGY }
+					NOT = { tag = THIS }
+				}
+				relation = { who = THIS value = -400 }
+				leave_alliance = THIS
+			}
+			any_pop = { limit = { OR = { is_primary_culture = yes is_accepted_culture = yes } } militancy = -4 }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	conquest_of_the_south = {
+		picture = conquest_of_the_south
+		potential = {
+			tag = ETH
+			exists = yes
+			NOT = { has_country_flag = conquest_of_the_south }
+			1864 = { empty = yes }
+			1866 = { empty = yes }
+			1867 = { empty = yes }
+		}
+		
+		allow = {
+			war = no
+			owns = 1860
+			owns = 1861
+			owns = 1865
+			OR = {
+				land_reform = yes_land_reform
+				admin_reform = yes_admin_reform
+				AND = {
+					foreign_weapons = yes_foreign_weapons
+					foreign_officers = yes_foreign_officers
+				}
+				civilization_progress = 0.4
+				civilized = yes
+				year = 1885
+			}
+		}
+		
+		effect = {
+			set_country_flag = conquest_of_the_south
+			years_of_research = 1
+			1864 = { add_core = ETH secede_province = ETH any_pop = { literacy = -0.99 } life_rating = 21 }
+			1866 = { add_core = ETH secede_province = ETH any_pop = { literacy = -0.99 } life_rating = 21 }
+			1867 = { add_core = ETH secede_province = ETH any_pop = { literacy = -0.99 } life_rating = 21 }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	build_addis_ababa = {
+		picture = addis_ababa_building
+		potential = {
+			tag = ETH
+			owns = 1859
+			NOT = { has_country_flag = addis_ababa_built }
+			year = 1880
+		}
+		
+		allow = {
+			war = no
+			OR = {
+				civilized = yes
+				civilization_progress = 0.5
+				year = 1886
+			}
+			owns = 1859
+		}
+		
+		effect = {
+			set_country_flag = addis_ababa_built
+			prestige = 5
+			years_of_research = 1
+			1859 = {
+				change_province_name = "Addis Ababa"
+				life_rating = 5
+			}
+			capital = 1859
+			GON = { all_core = { remove_core = GON } }
+			SHW = { all_core = { remove_core = SHW } }
+			TIG = { all_core = { remove_core = TIG } }
+			ENG_1848 = { add_core = TIG }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	eth_mission_to_cairo = {
+		potential = {
+			tag = ETH
+			ai = yes
+			EGY = {
+				ai = yes
+				exists = yes
+				neighbour = ETH
+				NOT = {
+					any_owned_province = { is_core = ETH }
+					casus_belli = ETH
+				}
+			}
+			NOT = {
+				has_country_flag = mission_to_cairo
+				any_owned_province = { is_core = EGY }
+				any_owned_province = { is_core = SUD }
+				casus_belli = EGY
+				truce_with = EGY
+			}
+		}
+		
+		allow = {
+			NOT = { war_with = EGY }
+		}
+		
+		effect = {
+			set_country_flag = mission_to_cairo
+			relation = { who = EGY value = 200 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
+}
