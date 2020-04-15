@@ -1,4 +1,546 @@
 political_decisions = {
+#from SouthAmerica.txt
+	fatherland_volunteers = {
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			government = hms_government
+			NOT = {
+				has_country_flag = pedro_said_it_best
+			}
+		}
+		allow = {
+			army_decision_making = 1
+			war = yes
+		}
+		effect = {
+			war_exhaustion = -1
+			prestige = 10
+			set_country_flag = pedro_said_it_best
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	
+	golden_law = {
+		picture = golden_law
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			NOT = { has_country_flag = golden_law_passed }
+			OR = {
+				government = hms_government
+				government = prussian_constitutionalism
+				government = absolute_monarchy
+			}
+			NOT = { slavery = no_slavery }
+		}
+		
+		allow = {
+			NOT = { month = 5 }
+			invention = national_fraternity
+			realism = 1
+			OR = {
+				upper_house = { ideology = liberal value = 0.2 }
+				upper_house = { ideology = socialist value = 0.2 }
+			}
+		}
+		
+		effect = {
+			set_country_flag = golden_law_passed
+			badboy = -1
+			add_accepted_culture = afro_brazilian
+			political_reform = no_slavery
+			any_pop = { limit = { type = slaves } consciousness = -5 militancy = -6 }
+			any_pop = { limit = { type = aristocrats } militancy = 3 consciousness = 5 }
+		}
+	}
+	
+	
+	integrating_bahia = {
+		picture = fatherland_volunteers
+		potential = {
+			OR = {
+				is_sphere_leader_of = BAH
+				is_sphere_leader_of = BRZ
+			}
+			exists = BAH
+			exists = BRZ
+			NOT = { tag = BAH }
+			BAH = { ai = yes }
+		}
+		allow = {
+			war = no
+			is_sphere_leader_of = BAH
+			is_sphere_leader_of = BRZ
+			BAH = { war = no OR = { is_vassal = no vassal_of = THIS } }
+			BRZ = { war = no OR = { is_vassal = no vassal_of = THIS } }
+		}
+		
+		effect = {
+			BRZ = { inherit = BAH }
+			relation = { who = BRZ value = 50 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	integrating_pernambuco = {
+		picture = fatherland_volunteers
+		potential = {
+			OR = {
+				is_sphere_leader_of = PNB
+				is_sphere_leader_of = BRZ
+			}
+			exists = PNB
+			exists = BRZ
+			NOT = { tag = PNB }
+			PNB = { ai = yes }
+		}
+		allow = {
+			war = no
+			PNB = { war = no OR = { is_vassal = no vassal_of = THIS } }
+			BRZ = { war = no OR = { is_vassal = no vassal_of = THIS } }
+			is_sphere_leader_of = PNB
+			is_sphere_leader_of = BRZ
+		}
+		
+		effect = {
+			BRZ = { inherit = PNB }
+			relation = { who = BRZ value = 50 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+	integrating_rgs = {
+		picture = fatherland_volunteers
+		potential = {
+			OR = {
+				is_sphere_leader_of = RGS
+				is_sphere_leader_of = BRZ
+			}
+			exists = RGS
+			exists = BRZ
+			NOT = { tag = RGS }
+			RGS = { ai = yes }
+		}
+		allow = {
+			war = no
+			RGS = { war = no OR = { is_vassal = no vassal_of = THIS } }
+			BRZ = { war = no OR = { is_vassal = no vassal_of = THIS } }
+			is_sphere_leader_of = RGS
+			is_sphere_leader_of = BRZ
+		}
+		
+		effect = {
+			BRZ = { inherit = RGS }
+			relation = { who = BRZ value = 50 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	#Mulatto-African tension
+	mulatto_african_tension = {
+		picture = coloured_troops
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			slavery = yes_slavery
+			NOT = {
+				has_country_flag = mulatto_tensions_flag
+			}
+		}
+		allow = {
+			war = no
+			year = 1836
+		}
+		effect = {
+			add_country_modifier = {
+				name = mulatto_modifier
+				duration = 18000
+			}
+			set_country_flag = mulatto_tensions_flag
+			any_state = {
+				limit = {
+					is_slave = yes
+				}
+				any_pop = {
+					limit = {
+						OR = {
+							type = slaves
+							type = slaves_factory
+						}
+					}
+					militancy = -5
+				}
+			}
+		}
+	}
+
+	
+	
+	treaty_of_bogota = {
+		picture = colombia_map
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			NOT = { has_country_flag = treaty_of_bogota }
+			OR = {
+				is_vassal = no
+				overlord = { NOT = { primary_culture = north_andean } }
+			}
+			NOT = { owns = 2401 }
+			owns = 2403
+			owns = 2407
+		}
+		
+		allow = {
+			war = no
+			2401 = { owner = { NOT = { truce_with = THIS } } }
+			OR = {
+				year = 1908
+				mass_politics = 1
+			}
+		}
+		
+		effect = {
+			set_country_flag = treaty_of_bogota
+			2401 = { owner = { country_event = 46610100 } }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+	treaty_of_petropolis = {
+		picture = treaty_of_petropolis_stamp
+		potential = {
+			OR = {
+				primary_culture = south_andean
+				primary_culture = brazilian
+				primary_culture = portuguese
+			}
+			2549 = { is_core = THIS }
+			owns = 2549
+			NOT = { has_country_flag = treaty_of_petropolis }
+			NOT = { has_country_flag = signed_treaty_of_petropolis }
+		}
+		
+		allow = {
+			war = no
+			OR = {
+				money = 2000000
+				AND = {
+					ai = yes
+					money = 100000
+				}
+			}
+			OR = {
+				year = 1903
+				mass_politics = 1
+			}
+		}
+		
+		effect = {
+			set_country_flag = treaty_of_petropolis
+			random_owned = { limit = { owner = { ai = yes } } owner = { treasury = -100000 } }
+			random_owned = { limit = { owner = { ai = no } } owner = { treasury = -2000000 } }
+			any_country = { limit = { is_core = 2549 } country_event = 46610101 }
+		}
+		
+		ai_will_do = {
+			factor = 1 
+			modifier = { factor = 0 NOT = { tag = BRZ year = 1910 } }
+		}
+	}
+	
+#from new_south_america_dcs.txt
+	treaty_of_bogota2 = {
+		picture = colombia_map
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			NOT = { has_country_flag = treaty_of_bogota2 }
+			OR = {
+				is_vassal = no
+				overlord = { NOT = { primary_culture = north_andean } }
+			}
+			NOT = { owns = 3295 }
+			owns = 2403
+			owns = 2407
+		}
+		
+		allow = {
+			war = no
+			3295 = { owner = { NOT = { truce_with = THIS } } }
+			OR = {
+				year = 1908
+				mass_politics = 1
+			}
+		}
+		
+		effect = {
+			set_country_flag = treaty_of_bogota2
+			3295 = { owner = { country_event = 34628 } }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+#from Irridentism.txt
+
+	claim_santa_catarina = {
+	picture = claim_santa_catarina
+		potential = {
+			tag = RGS
+			NOT = { has_country_flag = claim_santa_catarina }
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			prestige = 45
+		}
+
+		effect = {
+			set_country_flag = claim_santa_catarina
+			badboy = 5
+			2461 = { #Desterro
+				add_core = RGS
+			}
+			2462 = { #Sao Miguel
+				add_core = RGS
+			}
+			2459 = { #Lajes
+				add_core = RGS
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}		
+
+	provincia_cisplatina = {
+		picture = banda_oriental
+		potential = {
+			tag = BRZ
+			NOT = { has_country_flag = cisplatina_is_ours }
+			OR = {
+				government = absolute_monarchy
+				government = fascist_dictatorship
+			}
+		}
+		
+		allow = {
+			war = no
+			nationalism_n_imperialism = 1
+			romanticism = 1
+			is_greater_power = yes
+			OR = {
+				government = fascist_dictatorship
+				AND = {
+					government = absolute_monarchy
+					war_policy = jingoism
+				}
+			}
+		}
+		
+		effect = {
+			set_country_flag = cisplatina_is_ours #Uruguay provinces
+			badboy = 10
+			2344 = {
+				add_core = BRZ
+			}
+			2345 = {
+				add_core = BRZ
+			}
+			2346 = {
+				add_core = BRZ
+			}
+			2347 = {
+				add_core = BRZ
+			}
+
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	rio_da_prata = {
+		picture = rhodesia_charter
+		potential = {
+			tag = BRZ
+			NOT = { has_country_flag = prata_is_ours }
+			government = fascist_dictatorship
+		}
+		
+		allow = {
+			has_country_flag = cisplatina_is_ours
+			nationalism_n_imperialism = 1
+			is_greater_power = yes
+		}
+		
+		effect = {
+			set_country_flag = prata_is_ours 
+			badboy = 10
+			2554 = { #posadas
+				add_core = BRZ
+			}
+			2358= { #santo tomas
+				add_core = BRZ
+			}
+			2357 = { #curuzu
+				add_core = BRZ
+			}
+			2356 = { #corrientes
+				add_core = BRZ
+			}
+			2359 = { #colon
+				add_core = BRZ
+			}
+			2360 = { #parana
+				add_core = BRZ
+			}
+
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	total_war_in_rio_grande_sul = {
+		alert = yes
+		picture = begin_line_of_advantage
+		potential = {
+			NOT = { has_country_modifier = small_country_draft }
+			NOT = { has_country_flag = rgs_draft_happened }
+			tag = RGS
+		}
+		
+		allow = {
+			war_with = BRZ
+		}
+		
+		effect = {
+			iron = 10
+			wool = 10
+			timber = 25
+			small_arms = 10
+			leadership = 20
+			add_country_modifier = {
+				name = small_country_draft
+				duration = 30
+			}
+			set_country_flag = rgs_draft_happened 
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+#from FlavourMod_Brazil.txt
+	minas_gerais = {
+		picture = "minas_gerais"
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			year = 1900
+			NOT = {
+				has_country_flag = minas_gerais_ordered
+			}
+			relation = { who = ENG value = 100 }
+			any_greater_power = {
+				invention = dreadnoughts
+			}
+		}
+		
+		allow = {
+			NOT = { average_militancy = 3 }
+			money = 15000
+		}
+		
+		effect = {
+			2447 = {
+				sub_unit = {
+					type = dreadnought
+					value = current
+				}
+				sub_unit = {
+					type = dreadnought
+					value = current
+				}
+			}
+			prestige = 15
+			treasury = -15000
+			any_neighbor_country = {
+				limit = { 
+					capital_scope = { continent = south_america }
+				}
+				
+				relation = {
+					who = THIS
+					value = -50
+				}
+			}
+			set_country_flag = minas_gerais_ordered
+		}
+	}
+#from Setup.txt	
+	BRZ_1836_setup = {
+		picture = constantinople
+		potential = {
+			tag = BRZ
+			always = no
+		}
+		
+		allow = {
+			tag = BRZ
+		}
+		
+		effect = {
+			any_pop = { limit = { has_pop_culture = french } literacy = 0.4 }
+			2435 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.11 } }
+			BRZ_2462 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } }
+			2457 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.02 } }
+			BRZ_2408 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.02 } }
+			2410 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.06 } }
+			2448 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.02 } }
+			2447 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } }
+			2463 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.01 } }
+			2424 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.02 } }
+			2450 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.03 } }
+			2459 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.01 } }
+			2462 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.01 } }
+			BRZ_2421 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
+			BRZ_2446 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
+			2434 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
+			BRZ_2401 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
+			2449 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.04 } }
+			2428 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.05 } }
+			2429 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.05 } }
+			2430 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.07 } }
+			
+			any_pop = {
+				limit = {
+					is_primary_culture = yes 
+					location = { 
+						OR = {
+							province_id = 2419
+							province_id = 2436
+							province_id = 2439
+							province_id = 2426
+						}
+					}
+				}
+				literacy = 0.01
+			}
+			add_country_modifier = {
+				name = america_new_world
+				duration = 10950
+			}
+			add_country_modifier = {
+				name = global_baby_boom
+				duration = 2190
+			}
+		}
+	}
 #from ARG_hist.txt
 	conquest_of_the_desert = {
 		picture = conquest_of_the_desert
