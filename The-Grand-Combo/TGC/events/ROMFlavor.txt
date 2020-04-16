@@ -1,0 +1,1896 @@
+#The Wallachian Revolution
+	country_event = {
+		id = 97530
+		picture = "wallachian_revolution"
+		title = "EVTNAME97530"
+		desc = "EVTDESC97530"
+			
+		trigger = {
+			tag = WAL
+			vassal_of = TUR
+			has_global_flag = liberal_revolutions_should_now_fire
+			OR = {
+				average_militancy = 4
+				any_owned_province = {
+					is_capital = yes
+					controlled_by = REB
+				}
+				revolt_percentage = 0.50
+				year = 1848
+			}
+			NOT = { has_global_flag = wallachian_revolution }
+		}
+		
+		fire_only_once = yes
+
+		mean_time_to_happen =  {
+			months = 6
+			modifier = {
+				factor = 0.01
+				capital_scope = { controlled_by = REB }
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 7
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 8
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 9
+			}
+			modifier = {
+				factor = 0.6
+				revolt_percentage = 0.60
+			}
+			modifier = {
+				factor = 0.6
+				revolt_percentage = 0.70
+			}
+			modifier = {
+				factor = 0.6
+				revolt_percentage = 0.80
+			}
+		}
+		
+		option = {
+			name = "EVTOPTA97530"
+			set_global_flag = wallachian_revolution
+			prestige = -5
+			government = prussian_constitutionalism
+			ruling_party_ideology = liberal
+			random_country = {
+				limit = { tag = RUS }
+				leave_alliance = THIS
+				relation = {
+					who = THIS
+					value = -200
+				}
+				diplomatic_influence = {
+					who = THIS
+					value = -400
+				}
+			}
+			relation = {
+				who = TUR
+				value = -200
+			}
+			add_country_modifier = {
+				name = power_vacuum
+				duration = 365
+			}
+			TUR = { country_event = 97531 }
+			upper_house = {
+				ideology = liberal
+				value = 0.4
+			}
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				militancy = -3
+				consciousness = -3
+			}
+			ai_chance = { factor = 1 }
+		}
+	}
+	
+#Wallachian Revolution - Turkish Response
+	country_event = {
+		id = 97531
+		picture = "wallachian_revolution"
+		title = "EVTNAME97531"
+		desc = "EVTDESC97531"
+		
+		is_triggered_only = yes
+	
+		option = {
+			name = "EVTOPTA97531"
+			diplomatic_influence = { who = WAL value = -400 }		
+			release_vassal = WAL
+			leave_alliance = WAL
+			casus_belli = {
+				target = WAL
+				type = make_puppet
+				months = 24
+			}
+			war = {
+				target = WAL
+				attacker_goal = {
+					casus_belli = make_puppet
+				}
+				defender_goal = {
+					casus_belli = humiliate
+				}
+			}
+			ai_chance = { factor = 100 }
+		}
+
+		option = {
+			name = "EVTOPTB97531"
+			prestige = -25
+			war_exhaustion = -10
+			scaled_militancy = {
+				ideology = conservative
+				factor = 5
+			}
+			ai_chance = { factor = 0 }
+		}
+	}
+	
+#Wallachian Revolution Fails
+	country_event = {
+		id = 97533
+		picture = "wallachian_revolution"
+		title = "EVTNAME97533"
+		desc = "EVTDESC97533"
+		major = yes
+			
+		trigger = {
+			tag = WAL
+			has_global_flag = wallachian_revolution
+			truce_with = TUR
+			vassal_of = TUR
+			NOT = { has_country_flag = convention_of_balta_liman }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+		
+		fire_only_once = yes
+		
+		option = {
+			name = "EVTOPTA97533"
+			set_country_flag = convention_of_balta_liman
+			government = colonial_company
+			political_reform = landed_voting
+			political_reform = state_press
+			political_reform = no_draft
+			political_reform = underground_parties
+			prestige = -10
+			war_exhaustion = 5
+			random_country = {
+				limit = {
+					tag = RUS
+					is_greater_power = yes
+				}
+				diplomatic_influence = {
+					who = THIS
+					value = 400
+				}
+				relation = {
+					who = THIS
+					value = 100
+				}
+				create_alliance = THIS
+				
+				diplomatic_influence = {
+					who = MOL
+					value = 400
+				}
+				relation = {
+					who = MOL
+					value = 100
+				}
+				create_alliance = MOL
+			}
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				militancy = 2
+				consciousness = 2
+			}
+		}
+	}
+
+#Moldavia Revolution
+	country_event = {
+		id = 97532
+		picture = "wallachian_revolution"
+		title = "EVTNAME97532"
+		desc = "EVTDESC97532"
+			
+		trigger = {
+			tag = MOL
+			has_global_flag = wallachian_revolution
+			WAL = { war_with = TUR } 
+			exists = WAL
+			NOT = { has_country_flag = moldavia_revolution }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+		
+		fire_only_once = yes
+		
+		option = {
+			name = "EVTOPTA97532"
+			set_country_flag = moldavia_revolution
+			scaled_militancy = {
+				ideology = liberal
+				factor = 3
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = 3
+			}
+		}
+	}
+
+#Bucharest Fire
+	country_event = {
+		id = 97537
+		title = "EVTNAME97537"
+		desc = "EVTDESC97537"
+		picture = "bucharest_fire"
+		
+		trigger = {
+			year = 1845
+			owns = 664
+		}
+		
+		mean_time_to_happen = {
+			months = 24
+			
+			modifier = {
+				factor = 0.5
+				year = 1847
+			}
+		}
+		
+		fire_only_once = yes
+		
+		option = {
+			name = "EVTOPTA21520"
+			664 = { infrastructure = -1 }
+			random_list = {
+				33 = { 664 = { any_pop = { reduce_pop = 0.999 } } }
+				33 = { 664 = { any_pop = { reduce_pop = 0.998 } } }
+				33 = { 664 = { any_pop = { reduce_pop = 0.997 } } }
+			}
+			treasury = -15000
+			random_country = {
+				limit = {
+					money = 1000
+					exists = yes
+					NOT = { war_with = THIS }
+					OR = {
+						tag = FRA
+						tag = BOR
+						tag = RUS
+						tag = MOL
+						tag = AUS
+						tag = KUK
+					}
+				}
+				country_event = 97538
+			}
+		}
+	}
+
+#Foreign Contribution to Bucharest Rebuilding
+	country_event = {
+		id = 97538
+		title = "EVTNAME97537"
+		desc = "EVTDESC97537"
+		picture = "bucharest_fire"
+		
+		is_triggered_only = yes 
+		
+		option = {
+			name = "EVTOPTA34611"
+			prestige = 5
+			treasury = -5000
+			FROM = { treasury = 5000 }
+			random_list = {
+				33 = {
+					664 = { 
+						add_province_modifier = { 
+							name = rebuilding_city 
+							duration = 90 
+						} 
+					} 
+				}
+				33 = { 
+					664 = { 
+						add_province_modifier = { 
+							name = rebuilding_city
+							duration = 60
+						} 
+					} 
+				}
+				33 = { 
+					664 = { 
+						add_province_modifier = { 
+							name = rebuilding_city 
+							duration = 45 
+						} 
+					} 
+				}
+			}
+			diplomatic_influence = {
+				who = FROM
+				value = 50
+			}
+			relation = {
+				who = FROM
+				value = 100
+			}
+			ai_chance = {
+				factor = 100
+				modifier = {
+					factor = 0
+					NOT = { money = 5100 }
+					}
+				}
+			}
+		
+		option = {
+			name = "EVTOPTB34611"
+			prestige = 2
+			treasury = -1000
+			FROM = { treasury = 1000 }
+			random_list = {
+				33 = { 664 = { 
+					add_province_modifier = { 
+						name = rebuilding_city 
+						duration = 60 
+							} 
+						} 
+					}
+				33 = { 664 = { 
+					add_province_modifier = { 
+						name = rebuilding_city 
+						duration = 45 
+							} 
+						} 
+					}
+				33 = { 664 = { 
+					add_province_modifier = { 
+						name = rebuilding_city 
+						duration = 30 
+							} 
+						} 
+					}
+				}
+			diplomatic_influence = {
+				who = FROM
+				value = 25
+			}
+			relation = {
+				who = FROM
+				value = 50
+			}
+			
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0
+					NOT = { money = 1100 }
+					}
+			}
+		}
+			
+		option = {
+			name = "EVTOPTC34611"
+			diplomatic_influence = {
+				who = FROM
+				value = -50
+				}
+			relation = {
+				who = FROM
+				value = -75
+				}
+			ai_chance = {
+				factor = 0
+				modifier = {
+					factor = 100
+					NOT = { money = 900 }
+				}
+			}
+		}
+	}
+	
+country_event = { ####Start####
+	id = 71429732
+	title = "Transylvania Treaty"
+	desc = EVTDESC71429732
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "A ceremonial friendship treaty."
+		badboy = -5
+		HUN = {
+			relation  = {
+				who = ROM
+				value = 100
+			}
+		}
+		ROM = {
+			relation  = {
+				who = HUN
+				value = 100
+			}
+		}
+		relation  = {
+			who = ROM
+			value = 100
+		}
+		relation  = {
+			who = HUN
+			value = 100
+		}
+		ai_chance = {
+			factor = 50
+		}
+	}
+
+	option = {
+		name = "Attempt to create a substantive border treaty."
+		prestige = 5
+		country_event = {
+			id = 71429733
+			days = 3
+		}
+		HUN = { country_event = 71429734 }
+		ROM = { country_event = 71429734 }
+		ai_chance = {
+			factor = 50
+		}
+	}
+	
+}
+
+
+country_event = { ####Options####
+	id = 71429733
+	title = "Transylvania Treaty"
+	desc = EVTDESC71429733
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Transylvania belongs to Hungary"
+		set_country_flag = transvan_treaty_hungarian
+		relation  = {
+			who = HUN
+			value = 100
+		}
+		HUN = { country_event = 71429735 }
+		ROM = { country_event = 71429736 }
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.75
+				relation = {
+					who = HUN
+					value = 150
+				}
+			}
+			modifier = {
+				factor = 1
+				HUN = { vassal_of = THIS }
+				ROM = { NOT = { vassal_of = THIS } }
+			}
+		}
+	}
+	
+	option = {
+		name = "Transylvania is Romanian land."
+		set_country_flag = transvan_treaty_romanian
+		relation  = {
+			who = ROM
+			value = 100
+		}
+		HUN = { country_event = 71429737 }
+		ROM = { country_event = 71429738 }
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.75
+				relation = {
+					who = ROM
+					value = 150
+				}
+			}
+			modifier = {
+				factor = 1
+				ROM = { vassal_of = THIS }
+				HUN = { NOT = { vassal_of = THIS } }
+			}
+		}
+	}
+	
+	option = {
+		name = "Propose a partitioning of Transylvania."
+		set_country_flag = transvan_treaty_partion
+		HUN = { country_event = 71429739 }
+		ROM = { country_event = 71429739 }
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 1
+				ROM = { vassal_of = THIS }
+				HUN = { vassal_of = THIS }
+			}
+		}
+	}
+	
+}
+
+country_event = { ####Notify countries####
+	id = 71429734
+	title = "The $FROMCOUNTRY_ADJ$ Government Proposes a Treaty on Transylvania"
+	desc = EVTDESC71429734
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Here's hoping things go in our favor."
+	}
+}
+
+country_event = { ####Hungary hears support for Hungary####
+	id = 71429735
+	title = "$FROMCOUNTRY_ADJ$ Government Supports Hungarian Claims."
+	desc = EVTDESC71429735
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Perfect!"
+		prestige = 5
+		relation  = {
+			who = FROM
+			value = 100
+		}
+	}
+	
+}
+
+country_event = { ####Romania hears support for Hungary####
+	id = 71429736
+	title = "$FROMCOUNTRY_ADJ$ Government Supports Hungarian Claims."
+	desc = EVTDESC71429736
+	is_triggered_only = yes
+	picture = translyvania
+
+	
+	option = {
+		name = "Outrageous! Withdraw from the negotiations."
+		FROM = {
+			country_event = {
+				id = 71429741
+				days = 1
+			}
+			diplomatic_influence = {
+				who = THIS
+				value = -200
+			}
+		}
+		HUN = { 
+			country_event = {
+				id = 71429742
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.75
+				is_secondary_power = yes
+			}
+			modifier = {
+				factor = 1.5
+				AUS_652 = {
+					owned_by = ROM
+				}
+				AUS_654 = {
+					owned_by = ROM
+				}
+				AUS_657 = {
+					owned_by = ROM
+				}
+			}			
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+	
+	option = {
+		name = "Demand monetary compensation before agreeing."
+		FROM = {
+			country_event = {
+				id = 71429743
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 0.75
+				is_secondary_power = no
+			}
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+	
+	option = {
+		name = "Agree to the treaty."
+		prestige = -5
+		badboy = -4
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = 6
+			consciousness = 6
+		}
+		FROM = {
+			country_event = {
+				id = 71429745
+				days = 1
+			}
+		}
+		HUN = { 
+			country_event = {
+				id = 71429746
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.75
+				truce_with = FROM
+			}
+			modifier = {
+				factor = 1
+				is_disarmed = yes
+			}
+			modifier = {
+				factor = 1
+				vassal_of = FROM
+			}
+		}
+	}
+}
+
+country_event = { ####Romania's rebuttal####
+	id = 71429741
+	title = "Romania Withdraws From Negotiations."
+	desc = EVTDESC71429741
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Abandon the treaty and salvage relations."
+		prestige = -10
+		diplomatic_influence = {
+			who = ROM
+			value = 100
+		}
+		relation = {
+			who = HUN
+			value = -50
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				factor = 1
+				OR = {
+					war_policy = anti_military
+					war_policy = pacifism
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "The treaty will be enforced!"
+		set_country_flag = transvana_treaty_war
+		badboy = 3
+		leave_alliance = ROM
+		diplomatic_influence = {
+			who = ROM
+			value = -400
+		}
+		relation = {
+			who = ROM
+			value = -300
+		}
+		ROM = {
+			add_casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 24
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+		}
+	}
+}
+
+country_event = { ####Hungary hears of Romanian rebuttal####
+	id = 71429742
+	title = "Romania Withdraws From Negotiations."
+	desc = EVTDESC71429742
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "To be honest, the news is not too surprising."
+		relation = {
+			who = ROM
+			value = -100
+		}
+	}
+}
+
+country_event = { ####Romania's request for money####
+	id = 71429743
+	title = "Romania Demands Monetary Compensation Before Agreeing to Treaty."
+	desc = EVTDESC71429743
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "A fair enough demand."
+		money = -100000	
+		ROM = {
+			country_event =	{
+				id = 71429747
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 1
+				money = 100001	
+			}
+		}
+	}
+	
+	option = {
+		name = "No deal."
+		ROM = {
+			country_event =	{
+				id = 71429748
+				days = 1
+			}
+		}
+			
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 1
+				NOT = { money = 100001 }
+			}
+		}
+	}
+}
+
+country_event = { ####Romania hears request for money refused####
+	id = 71429748
+	title = "$FROMCOUNTRY_ADJ$ Government Refuses Our Demands."
+	desc = EVTDESC71429748
+	is_triggered_only = yes
+	picture = translyvania	
+	
+	option = {
+		name = "Then we withdraw from the negotiations."
+		FROM = {
+			country_event = {
+				id = 71429741
+				days = 1
+			}
+			diplomatic_influence = {
+				who = THIS
+				value = -200
+			}
+		}
+		HUN = { 
+			country_event = {
+				id = 71429742
+				days = 1
+			}
+		}
+	}
+}
+
+country_event = { ####Romania hears request for money approved####
+	id = 71429747
+	title = "$FROMCOUNTRY_ADJ$ Government Agrees to Compensation."
+	desc = EVTDESC71429747
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Sign the Treaty."
+		money = 100000	
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = 6
+			consciousness = 6
+		}
+		badboy = -2
+		FROM = {
+			country_event = {
+				id = 71429745
+				days = 1
+			}
+		}
+		HUN = { 
+			country_event = {
+				id = 71429746
+				days = 1
+			}
+		}
+	}
+}
+
+country_event = { ####Hungary favored treaty of Transvana signed###
+	id = 71429745
+	title = "Treaty of Transylvania Signed"
+	desc = EVTDESC71429745
+	is_triggered_only = yes
+	major = yes
+	
+	option = {
+		name = "$COUNTRY_ADJ$ diplomacy at its finest."
+		prestige = 25
+		AUS_652 = {
+			add_core = HUN
+			remove_core = ROM
+		}
+		AUS_654 = {
+			add_core = HUN
+			remove_core = ROM
+		}
+		AUS_657 = {
+			add_core = HUN
+			remove_core = ROM
+		}
+		ROM = {
+			country_event = 714297394
+		}
+	}
+}
+
+country_event = { ####Hungary favored treaty of Transvana signed###
+	id = 71429746
+	title = "Treaty of Transylvania Signed"
+	desc = EVTDESC71429746
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "A well deserved victory."
+		prestige = 5
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = -5
+			consciousness = -5
+		}
+	}
+}
+
+country_event = { #Hungary hears support for Romania
+	id = 71429737
+	title = "$FROMCOUNTRY_ADJ$ Government Supports Romanian Claims."
+	desc = EVTDESC71429737
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Outrageous! Withdraw from the negotiations."
+		FROM = {
+			country_event = {
+				id = 714297411
+				days = 1
+			}
+			diplomatic_influence = {
+				who = THIS
+				value = -200
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297421
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.75
+				is_secondary_power = yes
+			}
+
+			modifier = {
+				factor = 1.5
+				AUS_652 = {
+					owned_by = HUN
+				}
+				AUS_654 = {
+					owned_by = HUN
+				}
+				AUS_657 = {
+					owned_by = HUN
+				}
+			}			
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+	
+	option = {
+		name = "Demand monetary compensation before agreeing."
+		FROM = {
+			country_event = {
+				id = 714297431
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 0.75
+				is_secondary_power = no
+			}
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+	
+	option = {
+		name = "Agree to the treaty."
+		prestige = -5
+		badboy = -4
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = 6
+			consciousness = 6
+		}
+		FROM = {
+			country_event = {
+				id = 714297451
+				days = 1
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297461
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.75
+				truce_with = FROM
+			}
+			modifier = {
+				factor = 1
+				is_disarmed = yes
+			}
+			modifier = {
+				factor = 1
+				vassal_of = FROM
+			}
+		}
+	}
+}
+
+country_event = { #Romania hears support for Romania
+	id = 71429738
+	title = "$FROMCOUNTRY_ADJ$ Government Supports Romanian Claims."
+	desc = EVTDESC71429738
+	is_triggered_only = yes
+	picture = translyvania
+
+	option = {
+		name = "Perfect!"
+		prestige = 5
+		relation  = {
+			who = FROM
+			value = 100
+		}
+	}
+}
+
+country_event = { ####Hungary's rebuttal####
+	id = 714297411
+	title = "Hungary Withdraws From Negotiations."
+	desc = EVTDESC714297411
+	is_triggered_only = yes
+	picture = translyvania
+
+	option = {
+		name = "Abandon the treaty and salvage relations."
+		prestige = -10
+		diplomatic_influence = {
+			who = HUN
+			value = 100
+		}
+		relation = {
+			who = ROM
+			value = -50
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				factor = 1
+				OR = {
+					war_policy = anti_military
+					war_policy = pacifism
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "The treaty will be enforced!"
+		set_country_flag = transvana_treaty_war
+		badboy = 3
+		leave_alliance = HUN
+		diplomatic_influence = {
+			who = HUN
+			value = -400
+		}
+		relation = {
+			who = HUN
+			value = -300
+		}
+		HUN = {
+			add_casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 24
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+		}
+	}
+}
+
+country_event = { ####Romania hears of Hungarian rebuttal####
+	id = 714297421
+	title = "Hungary Withdraws From Negotiations."
+	desc = EVTDESC714297421
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "To be honest, the news is not too surprising."
+		relation = {
+			who = HUN
+			value = -100
+		}
+	}
+}
+
+country_event = { ####Hungary's request for money####
+	id = 714297431
+	title = "Hungary Demands Monetary Compensation Before Agreeing to Treaty."
+	desc = EVTDESC714297431
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "A fair enough demand."
+		money = -100000	
+		HUN = {
+			country_event =	{
+				id = 714297471
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 1
+				money = 100001	
+			}
+		}
+	}
+	
+	option = {
+		name = "No deal."
+		HUN = {
+			country_event =	{
+				id = 714297481
+				days = 1
+			}
+		}
+			
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 1
+				NOT = { money = 100001 }
+			}
+		}
+	}
+}
+
+country_event = { ####Hungary hears request for money refused####
+	id = 714297481
+	title = "$FROMCOUNTRY_ADJ$ Government Refuses Our Demands."
+	desc = EVTDESC714297481
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Then we withdraw from the negotiations."
+		FROM = {
+			country_event = {
+				id = 714297411
+				days = 1
+			}
+			diplomatic_influence = {
+				who = THIS
+				value = -200
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297421
+				days = 1
+			}
+		}
+	}
+}
+
+country_event = { ####Hungary hears request for money approved####
+	id = 714297471
+	title = "$FROMCOUNTRY_ADJ$ Government Agrees to Compensation."
+	desc = EVTDESC714297471
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Sign the Treaty."
+		money = 100000	
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = 6
+			consciousness = 6
+		}
+		badboy = -2
+		FROM = {
+			country_event = {
+				id = 714297451
+				days = 1
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297461
+				days = 1
+			}
+		}
+	}
+}
+
+country_event = { ####Romania favored treaty of Transvana signed###
+	id = 714297451
+	title = "Treaty of Transylvania Signed"
+	desc = EVTDESC714297451
+	is_triggered_only = yes
+	major = yes
+	
+	
+	option = {
+		name = "$COUNTRY_ADJ$ diplomacy at its finest."
+		prestige = 25
+		AUS_652 = {
+			add_core = ROM
+			remove_core = HUN
+		}
+		AUS_654 = {
+			add_core = ROM
+			remove_core = HUN
+		}
+		AUS_657 = {
+			add_core = ROM
+			remove_core = HUN
+		}
+		HUN = {
+			country_event = 714297395
+		}
+	}
+}
+
+country_event = { ####Romania favored treaty of Transvana signed###
+	id = 714297461
+	title = "Treaty of Transylvania Signed"
+	desc = EVTDESC714297461
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "A well deserved victory."
+		prestige = 5
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = -5
+			consciousness = -5
+		}
+	}
+}
+
+country_event = { ####countries hear of Partition####
+	id = 71429739
+	title = "$FROMCOUNTRY_ADJ$ Government Suggests a Partition"
+	desc = EVTDESC71429739
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "For the sake of peace, we agree."
+		set_country_flag = yes_transvana
+		badboy = -2
+		prestige = -5
+		any_pop = {
+			limit = {
+				issue = jingoism
+			}
+			militancy = 3
+			consciousness = 3
+		}
+		ai_chance = {
+			factor = 60
+			modifier = {
+				factor = 0.75
+				truce_with = FROM
+			}
+			modifier = {
+				factor = 1
+				is_disarmed = yes
+			}
+			modifier = {
+				factor = 1
+				vassal_of = FROM
+			}
+		}
+	}
+	
+	option = {
+		name = "For the pride of the nation, we refuse!"
+		prestige = 5
+		set_country_flag = no_transvana
+		FROM = {
+			diplomatic_influence = {
+				who = THIS
+				value = -200
+			}
+		}
+		ai_chance = {
+			factor = 40
+			modifier = {
+				factor = 0.5
+				AUS_652 = {
+					owned_by = THIS
+				}
+				AUS_654 = {
+					owned_by = THIS
+				}
+				AUS_657 = {
+					owned_by = THIS
+				}
+			}
+			modifier = {
+				factor = 0
+				vassal_of = FROM
+			}
+		}
+	}
+	
+	
+}
+
+country_event = { ####result of HUN no/Rom yes
+	id = 714297391
+	title = "Treaty Fails Due to Hungarian Dissent"
+	desc = EVTDESC714297391
+	fire_only_once = yes
+	picture = translyvania
+	
+	trigger = {
+		has_country_flag = transvan_treaty_partion
+		ROM = { has_country_flag = yes_transvana}
+		HUN = { has_country_flag = no_transvana }
+	}
+	
+	option = {
+		name = "Abandon the treaty and salvage relations."
+		prestige = -10
+		diplomatic_influence = {
+			who = HUN
+			value = 100
+		}
+		relation = {
+			who = ROM
+			value = -50
+		}
+		ROM = { 
+			country_event = {
+				id = 714297421
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				factor = 1
+				OR = {
+					war_policy = anti_military
+					war_policy = pacifism
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "The treaty will be enforced!"
+		set_country_flag = transvana_treaty_war
+		badboy = 3
+		leave_alliance = HUN
+		diplomatic_influence = {
+			who = HUN
+			value = -400
+		}
+		relation = {
+			who = HUN
+			value = -300
+		}
+		HUN = {
+			add_casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 24
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297421
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+		}
+	}
+}
+
+country_event = { ####result of ROM no/Hun yes
+	id = 7142973971
+	title = "Treaty Fails Due to Romanian Dissent"
+	desc = EVTDESC7142973971
+	fire_only_once = yes
+	picture = translyvania
+	
+	trigger = {
+		has_country_flag = transvan_treaty_partion
+		HUN = { has_country_flag = yes_transvana}
+		ROM = { has_country_flag = no_transvana }
+	}
+	
+	option = {
+		name = "Abandon the treaty and salvage relations."
+		prestige = -10
+		diplomatic_influence = {
+			who = ROM
+			value = 100
+		}
+		relation = {
+			who = HUN
+			value = -50
+		}
+		HUN = { 
+			country_event = {
+				id = 71429742
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				factor = 1
+				OR = {
+					war_policy = anti_military
+					war_policy = pacifism
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "The treaty will be enforced!"
+		set_country_flag = transvana_treaty_war
+		badboy = 3
+		leave_alliance = ROM
+		diplomatic_influence = {
+			who = ROM
+			value = -400
+		}
+		relation = {
+			who = ROM
+			value = -300
+		}
+		ROM = {
+			add_casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 24
+			}
+		}
+		HUN = { 
+			country_event = {
+				id = 71429742
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+		}
+	}
+}
+
+country_event = { ####result of ROM no/Hun no
+	id = 714297399
+	title = "Treaty Fails Due to Romanian and Hungarian Dissent"
+	desc = EVTDESC714297399
+	fire_only_once = yes
+	picture = translyvania
+
+	trigger = {
+		has_country_flag = transvan_treaty_partion
+		HUN = { has_country_flag = no_transvana}
+		ROM = { has_country_flag = no_transvana }
+	}
+	
+	option = {
+		name = "Abandon the treaty and salvage relations."
+		prestige = -10
+		diplomatic_influence = {
+			who = ROM
+			value = 100
+		}
+		diplomatic_influence = {
+			who = HUN
+			value = 100
+		}
+		HUN = { 
+			country_event = {
+				id = 714297393
+				days = 1
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297393
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				factor = 1
+				OR = {
+					war_policy = anti_military
+					war_policy = pacifism
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "They will accept our help!"
+		set_country_flag = transvana_treaty_war
+		badboy = 3
+		leave_alliance = ROM
+		leave_alliance = HUN
+		diplomatic_influence = {
+			who = ROM
+			value = -400
+		}
+		relation = {
+			who = ROM
+			value = -300
+		}
+		diplomatic_influence = {
+			who = HUN
+			value = -400
+		}
+		relation = {
+			who = HUN
+			value = -300
+		}
+		ROM = {
+			add_casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 24
+			}
+		}
+		HUN = {
+			add_casus_belli = {
+				target = THIS
+				type = add_to_sphere
+				months = 24
+			}
+		}
+		HUN = { 
+			country_event = {
+				id = 714297393
+				days = 1
+			}
+		}
+		ROM = { 
+			country_event = {
+				id = 714297393
+				days = 1
+			}
+		}
+		ai_chance = {
+			factor = 25
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+		}
+	}
+}
+
+country_event = { ####HUN and ROM hear treaty failed
+	id = 714297393
+	title = "Treaty Fails Due to Romanian and Hungarian Dissent"
+	desc = EVTDESC714297393
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Great power countries cannot solve everything."
+	}
+}
+
+country_event = { ####Treaty partition success
+	id = 714297392
+	title = "Translyvania Treaty Successful"
+	desc = EVTDESC714297392
+	fire_only_once = yes
+	major = yes
+	
+	trigger = {
+		has_country_flag = transvan_treaty_partion
+		HUN = { has_country_flag = yes_transvana}
+		ROM = { has_country_flag = yes_transvana }
+	}
+	
+	option = {
+		name = "$COUNTRY_ADJ$ diplomacy at its finest."
+		prestige = 25
+		AUS_652 = {
+			remove_core = ROM
+		}
+		AUS_654 = {
+			remove_core = ROM
+		}
+		AUS_657 = {
+			remove_core = ROM
+		}
+		653 = {
+			remove_core = HUN
+			add_core = ROM
+		}
+		656 = {
+			remove_core = HUN
+			add_core = ROM
+		}
+		655 = {
+			remove_core = HUN
+			add_core = ROM
+		}
+		654 = {
+			remove_core = HUN
+			add_core = ROM
+		}
+		657 = {
+			remove_core = HUN
+			add_core = ROM
+		}
+		659 = {
+			remove_core = HUN
+			add_core = ROM
+		}
+		ROM = {
+			country_event = 714297397
+		}
+		HUN = {
+			country_event = 714297396
+		}
+	}
+}
+
+country_event = { ####Romania gives hungary all translyvania
+	id = 714297394
+	title = "Honoring the Treaty of Transylvania"
+	desc = EVTDESC714297394
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "For the possibility of peace."
+		any_owned = {
+			limit = {
+				is_core = HUN
+			}
+			secede_province = HUN
+		}
+	}
+}
+
+country_event = { ####Hungary gives Romania all translyvania
+	id = 714297395
+	title = "Honoring the Treaty of Transylvania"
+	desc = EVTDESC714297395
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "For the possibility of peace."
+		any_owned = {
+			limit = {
+				is_core = ROM
+			}
+			secede_province = ROM
+		}
+	}
+}
+
+country_event = { ####Hungary partition give
+	id = 714297396
+	title = "Honoring the Treaty of Transylvania"
+	desc = EVTDESC714297396
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "For the possibility of peace."
+		any_owned = {
+			limit = {
+				is_core = ROM
+			}
+			secede_province = ROM
+		}
+	}
+}	
+
+country_event = { ####Romania partition give
+	id = 714297397
+	title = "Honoring the Treaty of Transylvania"
+	desc = EVTDESC714297397
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "For the possibility of peace."
+		any_owned = {
+			limit = {
+				is_core = HUN
+			}
+			secede_province = HUN
+		}
+	}
+}	
+
+country_event = { ####Romania notify of pro-Rom treaty
+	id = 97552451
+	title = "$FROMCOUNTRY_ADJ$ Government Enforces Translyvania Treaty"
+	desc = EVTDESC97552451
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Translyvania is Romanian!"
+		prestige = 4
+		any_pop = {
+			limit = {
+				is_primary_culture = yes
+			}
+			militancy = -3
+			consciousness = -3
+		}
+	}
+}
+
+country_event = { ####Hungary notify of pro-Rom treaty
+	id = 97552461
+	title = "$FROMCOUNTRY_ADJ$ Government Enforces Translyvania Treaty"
+	desc = EVTDESC97552461
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "A tragedy!"
+		prestige = -5
+		any_pop = {
+			limit = {
+				is_primary_culture = yes
+			}
+			militancy = 3
+			consciousness = 3
+		}
+		any_owned = {
+			limit = {
+				is_core = ROM
+			}
+			secede_province = ROM
+		}
+	}
+}
+
+country_event = { ####Romania notify of pro-HUN treaty
+	id = 97552471
+	title = "$FROMCOUNTRY_ADJ$ Government Enforces Translyvania Treaty"
+	desc = EVTDESC97552471
+	is_triggered_only = yes
+	picture = translyvania
+
+	option = {
+		name = "A tragedy!"
+		prestige = -5
+		any_pop = {
+			limit = {
+				is_primary_culture = yes
+			}
+			militancy = 3
+			consciousness = 3
+		}
+		any_owned = {
+			limit = {
+				is_core = HUN
+			}
+			secede_province = HUN
+		}
+	}
+}
+
+country_event = { ####Hungary notify of pro-Hun treaty
+	id = 97552481
+	title = "$FROMCOUNTRY_ADJ$ Government Enforces Translyvania Treaty"
+	desc = EVTDESC97552481
+	is_triggered_only = yes
+	picture = translyvania
+	
+	option = {
+		name = "Translyvania is Hungarian!"
+		prestige = 4
+		any_pop = {
+			limit = {
+				is_primary_culture = yes
+			}
+			militancy = -3
+			consciousness = -3
+		}
+	}
+}
+
+country_event = { ####Romania notify of partition
+	id = 97552491
+	title = "$FROMCOUNTRY_ADJ$ Government Enforces Translyvania Treaty"
+	desc = EVTDESC97552491
+	is_triggered_only = yes
+	picture = translyvania
+
+	option = {
+		name = "A tragedy!"
+		prestige = -5
+		any_pop = {
+			limit = {
+				is_primary_culture = yes
+			}
+			militancy = 3
+			consciousness = 3
+		}
+		any_owned = {
+			limit = {
+				is_core = HUN
+			}
+			secede_province = HUN
+		}
+	}
+}
+
+country_event = { ####Hungary notify of partition
+	id = 97552410
+	title = "$FROMCOUNTRY_ADJ$ Government Enforces Translyvania Treaty"
+	desc = EVTDESC97552410
+	is_triggered_only = yes
+	picture = translyvania
+
+	option = {
+		name = "A tragedy!"
+		prestige = -5
+		any_pop = {
+			limit = {
+				is_primary_culture = yes
+			}
+			militancy = 3
+			consciousness = 3
+		}
+		any_owned = {
+			limit = {
+				is_core = ROM
+			}
+			secede_province = ROM
+		}
+	}
+}
+	
