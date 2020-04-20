@@ -3526,7 +3526,7 @@ political_decisions = {
 					# clr_global_flag = dutch_rename_arlon
 					# clr_global_flag = german_rename_arlon
 				# }
-			}
+			# }
 			random_owned = {
 				limit = { province_id = 395 }
 				395 = { change_province_name = "Liège" }
@@ -3571,8 +3571,8 @@ political_decisions = {
 					clr_global_flag = dutch_rename_charleroi
 				}
 			}
-		}
 		ai_will_do = { factor = 1 }
+		}
 	}	
 	
 	german_rename_rhine = {
@@ -5199,7 +5199,7 @@ political_decisions = {
 ## Vladivostok ##
 	russian_vladivostok = {
 		potential = {
-			tag = RUS
+			is_culture_group = east_slavic
 			owns = 1085
 			owns = 1084
 			owns = 2617
@@ -5239,7 +5239,7 @@ political_decisions = {
 				remove_core = QNG
 			}
 			1084 = {
-				change_province_name = "Nikolayevsk-na-amure"
+				change_province_name = "Nikolayevsk-na-Amure"
 				add_core = RUS
 				add_core = KAM
 				remove_core = CHI
@@ -5270,14 +5270,55 @@ political_decisions = {
 				remove_core = MCK
 				remove_core = QNG
 			}
-			1082 = { state_scope = { change_region_name = "Primorye" } }
-			1080 = { state_scope = { change_region_name = "Amur" } }
+			1082 = { state_scope = { change_region_name = "Priamurye" } }
+			1080 = { state_scope = { change_region_name = "Amur Krai" } }
 			prestige = 5
 			set_global_flag = russian_vladivostok
 			clr_global_flag = japanese_enkaishu
 			clr_global_flag = binhai_bianjiangqu
 		}
 	}
+
+## St. Petersburg ##	
+	petrograd_renaming_act = {
+		picture = petrograd_city
+		potential = {
+			primary_culture = russian
+			NOT = { has_country_flag = peters_city_renamed }
+			NOT = { has_country_flag = names_of_the_revolution }
+			owns = 994
+			any_greater_power = {
+				war_with = THIS
+				OR = {
+					primary_culture = north_german
+					primary_culture = south_german
+				}
+			}
+		}
+		
+		allow = {
+			mass_politics = 1
+		}
+		
+		effect = {
+			set_country_flag = peters_city_renamed
+			994 = { change_province_name = "Petrograd" }
+			war_exhaustion = -5
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				dominant_issue = { factor = 0.1 value = jingoism }
+				militancy = -1
+			}
+		}
+
+		ai_will_do = {
+			factor = 1 
+				modifier = {
+					factor = 0
+					NOT = { war_exhaustion = 20 }
+				}
+			}
+		}		
 	
 ## Soviet Names ##
 	names_of_the_revolution = {
@@ -5429,44 +5470,4 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
-	petrograd_renaming_act = {
-		picture = petrograd_city
-		potential = {
-			primary_culture = russian
-			NOT = { has_country_flag = peters_city_renamed }
-			NOT = { has_country_flag = names_of_the_revolution }
-			owns = 994
-			any_greater_power = {
-				war_with = THIS
-				OR = {
-					primary_culture = north_german
-					primary_culture = south_german
-				}
-			}
-		}
-		
-		allow = {
-			mass_politics = 1
-		}
-		
-		effect = {
-			set_country_flag = peters_city_renamed
-			994 = { change_province_name = "Petrograd" }
-			war_exhaustion = -5
-			any_pop = {
-				limit = { is_primary_culture = yes }
-				dominant_issue = { factor = 0.1 value = jingoism }
-				militancy = -1
-			}
-		}
-
-		ai_will_do = {
-			factor = 1 
-				modifier = {
-					factor = 0
-					NOT = { war_exhaustion = 20 }
-				}
-			}
-		}	
 }
