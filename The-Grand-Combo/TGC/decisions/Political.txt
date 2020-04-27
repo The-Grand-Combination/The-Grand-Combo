@@ -1,4 +1,6 @@
 political_decisions = {
+
+
 	enact_liquor_prohibition = {
 		picture = enact_liquor_prohibition
 		potential = {
@@ -248,6 +250,669 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 	
+	renaming_act_lushun = {
+		picture = port_arthur
+			
+		potential = {
+			owns = 1481
+			OR = {
+				AND = {
+					NOT = { has_global_flag = lushun }
+					OR = {
+						is_culture_group = east_asian
+						primary_culture = korean
+						primary_culture = ainu
+					}
+					OR = {
+						has_global_flag = renamed_port_arthur
+						has_global_flag = renamed_ryojun
+					}
+				}
+				AND = {
+					primary_culture = japanese
+					NOT = { has_global_flag = renamed_ryojun }
+				}
+				AND = {
+					NOT = { is_culture_group = east_asian }
+					NOT = { primary_culture = korean }
+					NOT = { primary_culture = ainu }
+					NOT = { primary_culture = japanese }
+					NOT = { has_global_flag = renamed_port_arthur }
+				}
+			}
+		}
+		
+		allow = { war = no }
+		
+		effect = {
+			prestige = 2
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = { is_culture_group = east_asian }
+						NOT = { primary_culture = korean }
+						NOT = { primary_culture = ainu }
+						NOT = { primary_culture = japanese }
+					}
+				}
+				owner = {
+					1481 = { change_province_name = "Port Arthur" }
+					set_global_flag = renamed_port_arthur
+					clr_global_flag = lushun
+					clr_global_flag = renamed_ryojun 
+				}
+			}
+			
+			random_owned = {
+				limit = { owner = { primary_culture = japanese } }
+				owner = {
+					1481 = { change_province_name = "Ryojun" }
+					clr_global_flag = renamed_port_arthur
+					clr_global_flag = lushun
+					set_global_flag = renamed_ryojun
+				}
+			}
+			
+			random_owned = {
+				limit = { 
+					owner = {
+						OR = {
+							is_culture_group = east_asian
+							primary_culture = korean
+							primary_culture = ainu
+						}
+						OR = {
+							has_global_flag = renamed_ryojun
+							has_global_flag = renamed_port_arthur
+						}
+					}
+				}
+				owner = {
+					1481 = { change_province_name = "Lüshun" }
+					set_global_flag = lushun
+					clr_global_flag = renamed_port_arthur
+					clr_global_flag = renamed_ryojun
+				}
+			}
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	genocide_minorities = {
+		picture = genocide_minorities
+		potential = {
+			NOT = { has_country_flag = preparations_to_kill }
+			OR = {
+				government = absolute_monarchy
+				government = theocracy
+				government = fascist_dictatorship
+				government = presidential_dictatorship
+				government = proletarian_dictatorship
+			}
+			revolution_n_counterrevolution = 1
+		}
+		
+		allow = {
+			war = no
+			NOT = { any_owned_province = { has_province_modifier = genocide } }
+			invention = rhetoric_of_hate
+			money = 100000
+			OR = {
+				government = absolute_monarchy
+				government = theocracy
+				government = fascist_dictatorship
+				government = presidential_dictatorship
+				government = proletarian_dictatorship
+			}
+			OR = {
+				ruling_party_ideology = reactionary
+				ruling_party_ideology = fascist
+				ruling_party_ideology = communist
+			}
+		}
+		
+		effect = {
+			add_tax_relative_income = -0.1
+			plurality = -50
+			set_country_flag = preparations_to_kill
+			random_owned = { limit = { owner = { has_country_modifier = signed_the_geneva_convention  } } owner = { badboy = 3 } }
+			any_owned = { limit = { has_province_modifier = national_assimilation } owner = { country_event = 2611 } }
+			random_list = {
+				33 = { add_country_modifier = { name = preparations_to_kill duration = 365 } }
+				33 = { add_country_modifier = { name = preparations_to_kill duration = 548 } }
+				33 = { add_country_modifier = { name = preparations_to_kill duration = 730 } }
+			}
+			any_owned = {
+				remove_province_modifier = core_integration
+				remove_province_modifier = national_assimilation
+				remove_province_modifier = national_assimilation_acceptance
+			}
+			clr_country_flag = everywhere_genocide_only
+			clr_country_flag = non_colonial_genocide_only
+			clr_country_flag = colonial_genocide_only
+			
+			any_pop = {
+				scaled_militancy = { ideology = socialist factor = 7 }
+				scaled_militancy = { ideology = liberal factor = 7 }
+				scaled_militancy = { ideology = anarcho_liberal factor = 7 }
+				scaled_militancy = { ideology = conservative factor = 7 }
+			}
+			
+			any_pop = {
+				limit = { is_primary_culture = no is_accepted_culture = no }
+				militancy = 3
+				consciousness = 5
+			}
+			
+			any_pop = {
+				limit = { agree_with_ruling_party = 0.70 }
+				militancy = -7
+			}
+			
+			random_owned = {
+				limit = { owner = { ruling_party_ideology = fascist } }
+				owner = {
+					any_pop = {
+						scaled_militancy = { ideology = communist factor = 7 }
+						scaled_militancy = { ideology = reactionary factor = 5 }
+					}
+				}
+			}
+			
+			random_owned = {
+				limit = { owner = { ruling_party_ideology = communist } }
+				owner = {
+					any_pop = {
+						scaled_militancy = { ideology = fascist factor = 7 }
+						scaled_militancy = { ideology = reactionary factor = 7 }
+					}
+				}
+			}
+			
+			random_owned = {
+				limit = { owner = { ruling_party_ideology = reactionary } }
+				owner = {
+					any_pop = {
+						scaled_militancy = { ideology = communist factor = 7 }
+						scaled_militancy = { ideology = fascist factor = 7 }
+					}
+				}
+			}
+			
+			random_owned = {
+				limit = { owner = { ruling_party_ideology = fascist } }
+				owner = {
+					any_pop = {
+						limit = { 
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						scaled_militancy = { ideology = fascist factor = -5 }
+					}
+				}
+			}
+			
+			random_owned = {
+				limit = { owner = { ruling_party_ideology = communist } }
+				owner = {
+					any_pop = {
+						limit = { 
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						scaled_militancy = { ideology = communist factor = -5 }
+					}
+				}
+			}
+			
+			random_owned = {
+				limit = { owner = { ruling_party_ideology = reactionary } }
+				owner = {
+					any_pop = {
+						limit = { 
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						scaled_militancy = { ideology = reactionary factor = -2.5 }
+					}
+				}
+			}
+		}
+		
+		ai_will_do = { factor = 0 }
+	}
+	
+	enslave_the_serfs = {
+		alert = no
+		picture = enslave_the_serfs_image
+		potential = {
+			OR = {
+				government = absolute_monarchy
+				government = prussian_constitutionalism
+			}
+			debt_law = serfdom
+		}
+		
+		allow = {
+			war = no
+			ruling_party_ideology = reactionary
+			slavery = yes_slavery
+			state_n_government = 1
+		}
+		
+		effect = {
+			badboy = 5
+			country_event = 443035
+			any_pop = {
+				limit = {
+					OR = { 
+						pop_majority_ideology = liberal
+						pop_majority_ideology = socialist
+						pop_majority_ideology = communist	
+					}
+				}
+				militancy = 5
+				consciousness = 7
+			}
+			any_country = {
+				limit = { civilized = yes slavery = no_slavery is_greater_power = yes }
+				relation = { who = THIS value = -100 }
+			}
+			any_neighbor_country = {
+				limit = { is_greater_power = no civilized = yes slavery = no_slavery NOT = { vassal_of = THIS } NOT = { in_sphere = THIS } }
+				relation = { who = THIS value = -50 }
+			}
+		}
+		
+		
+		ai_will_do = {
+			factor = 1
+			 modifier = {
+				factor = 0
+				badboy = 0.25
+			}
+			modifier = {
+				factor = 0
+				tag = QNG
+			}
+		}
+	}
+	
+	the_red_terror = {
+		picture = the_red_terror
+		potential = {
+			government = proletarian_dictatorship
+			NOT = { has_country_modifier = the_terror }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			invention = secret_police
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = the_terror
+				duration = -1
+			}
+			any_pop = { ideology = { factor = 0.1 value = communist } }
+			any_pop = { 
+				limit = { 
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_ideology = liberal
+						pop_majority_ideology = socialist
+						}
+					}
+				random_list = { 50 = { reduce_pop = 0.99 } 50 = { reduce_pop = 0.98 } }
+			}
+			any_pop = { 
+				limit = { OR = { social_movement = yes political_movement = yes } } 
+				militancy = -7
+				random_list = { 50 = { reduce_pop = 0.9 } 50 = { reduce_pop = 0.85 } }
+			}
+			any_pop = {
+				limit = {
+					OR = { type = soldiers type = officers }
+					NOT = { pop_majority_ideology = communist }
+					}
+					militancy = -9 ideology = { factor = 0.35 value = communist }
+					random_list = { 50 = { reduce_pop = 0.9 } 50 = { reduce_pop = 0.85 } }
+				}
+			any_pop = { limit = { pop_majority_ideology = communist } reduce_pop = 0.99 }
+			any_pop = { limit = { pop_majority_ideology = socialist } ideology = { factor = 0.5 value = communist } }
+			
+			any_pop = { limit = { pop_majority_ideology = fascist } random_list = { 50 = { reduce_pop = 0.8 } 50 = { reduce_pop = 0.75 } } }
+			any_pop = { limit = { pop_majority_ideology = anarcho_liberal } reduce_pop = 0.2 }
+			any_pop = { limit = { pop_majority_ideology = reactionary } random_list = { 50 = { reduce_pop = 0.8 } 50 = { reduce_pop = 0.85 } } }
+			
+			any_pop = {
+				scaled_consciousness = {
+					factor = 9
+					ideology = fascist
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = fascist
+				}
+				
+				scaled_consciousness = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = reactionary
+				}
+				
+				scaled_consciousness = {
+					factor = 8
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 4
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = 4
+					ideology = conservative
+				}
+				
+				scaled_consciousness = {
+					factor = 4
+					ideology = socialist
+				}
+				scaled_militancy = {
+					factor = 4
+					ideology = socialist
+				}
+				
+				scaled_consciousness = {
+					factor = -9
+					ideology = communist
+				}
+				scaled_militancy = {
+					factor = -9
+					ideology = communist
+				}
+			}
+			
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1216
+			}
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	the_fascist_terror = {
+		picture = the_red_terror
+		potential = {
+			government = fascist_dictatorship
+			NOT = { has_country_modifier = the_terror }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			invention = secret_police
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = the_terror
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1095
+			}
+			any_pop = { limit = { pop_majority_ideology = communist } random_list = { 50 = { reduce_pop = 0.95 } 50 = { reduce_pop = 0.9 } } }
+			any_pop = { limit = { pop_majority_ideology = anarcho_liberal } reduce_pop = 0.98 }
+			any_pop = { limit = { pop_majority_ideology = socialist } reduce_pop = 0.98 }
+			any_pop = { 
+				limit = {
+					OR = {
+						social_movement = yes
+						political_movement = yes
+						}
+					} 
+				militancy = -7
+				random_list = { 50 = { reduce_pop = 0.99 } 50 = { reduce_pop = 0.98 } }
+			}
+			
+			any_pop = { limit = { type = officers } reduce_pop = 0.99 }
+			
+			any_pop = {
+				limit = {
+					OR = { type = soldiers type = officers }
+					NOT = { pop_majority_ideology = fascist }
+					}
+					militancy = -9 ideology = { factor = 0.35 value = fascist }
+				}
+			any_pop = { ideology = { factor = 0.01 value = fascist } }
+			any_pop = {
+				scaled_consciousness = {
+					factor = -9
+					ideology = fascist
+				}
+				scaled_militancy = {
+					factor = -9
+					ideology = fascist
+				}
+				
+				scaled_consciousness = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 4
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = 4
+					ideology = liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 3
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = 3
+					ideology = conservative
+				}
+				
+				scaled_consciousness = {
+					factor = 7
+					ideology = socialist
+				}
+				scaled_militancy = {
+					factor = 7
+					ideology = socialist
+				}
+				
+				scaled_consciousness = {
+					factor = 9
+					ideology = communist
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = communist
+				}
+			}
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	the_cult_of_personality = {
+		picture = switch_to_autocracy
+		potential = {
+			OR = {
+				government = fascist_dictatorship
+				government = proletarian_dictatorship
+			}
+			NOT = { has_country_modifier = cult_of_personality }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = cult_of_personality
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1216
+			}
+			any_pop = { limit = { agree_with_ruling_party = 0.40 } militancy = -3 consciousness = -6 }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	ideological_indoctrination_communist = {
+		picture = indoctrinal_education_communist
+		potential = {
+			government = proletarian_dictatorship
+			NOT = { has_country_modifier = political_education }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+			NOT = { school_reforms = no_schools }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = political_education
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1216
+			}
+			any_pop = { ideology = { factor = 0.1 value = communist } }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	ideological_indoctrination_fascist = {
+		picture = indoctrinal_education
+		potential = {
+			government = fascist_dictatorship
+			NOT = { has_country_modifier = political_education }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+			NOT = { school_reforms = no_schools }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = political_education
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1095
+			}
+			any_pop = { ideology = { factor = 0.1 value = fascist } }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	the_totalitarian_regime = {
+		picture = mussolini_hq
+		potential = {
+			OR = {
+				government = fascist_dictatorship
+				government = proletarian_dictatorship
+			}
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			has_country_modifier = political_education
+			has_country_modifier = cult_of_personality
+			has_country_modifier = the_terror
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			political_reform = totalitarianism
+			add_country_modifier = {
+				name = totalitarian_system
+				duration = -1
+			}
+			remove_country_modifier = political_education
+			remove_country_modifier = cult_of_personality
+			remove_country_modifier = the_terror
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
 	
 	
 	abolish_slavery = {
@@ -1354,1020 +2019,4 @@ political_decisions = {
 		
 		ai_will_do = { factor = 1 }
 	}
-
-#from Government_flavor.txt
-	dissolve_the_upper_house = {
-		picture = dissolve_the_parliament
-		potential = {
-			NOT = { has_country_modifier = interment_camps }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-			government = absolute_monarchy
-			upper_house_composition = appointed
-			NOT = { has_country_flag = dissolving_parliament }
-		}
-		
-		allow = {
-			war = no
-			prestige = 5
-			NOT = { has_country_modifier = national_confusion }
-		}
-		
-		effect = {
-			plurality = -10
-			prestige = -5
-			country_event = 11001
-			add_country_modifier = { name = national_confusion duration = 1095 }
-			set_country_flag = dissolving_parliament
-			random = {
-				chance = 25
-				badboy = 0.5
-			}
-			any_pop = {
-				limit = {
-					strata = rich
-					OR = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
-				}
-				militancy = 3
-				consciousness = 6
-				dominant_issue = {
-					value = landed_voting
-					factor = 0.25
-				}
-			}
-		}
-		ai_will_do = { factor = 0 }
-	}
-	
-	start_propaganda = {
-		picture = british_propaganda
-		potential = {
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-			OR = {
-				government = fascist_dictatorship
-				government = proletarian_dictatorship
-				government = bourgeois_dictatorship
-				invention = mass_advertising
-				associationism = 1
-			}
-			NOT = { has_country_flag = propaganda_program }
-		}
-		
-		allow = {
-			plurality = 8
-			literacy = 0.3
-			NOT = { has_country_modifier = government_propaganda }
-			NOT = { has_country_modifier = war_propaganda }
-			OR = {
-				vote_franschise = none_voting
-				war = yes
-			}
-			OR = {
-				AND = {
-					not = { total_pops = 1000000 }
-					money = 30000
-				}
-				AND = {
-					total_pops = 1000000
-					not = { total_pops = 2000000 }
-					money = 50000
-				}
-				AND = {
-					total_pops = 2000000
-					not = { total_pops = 3000000 }
-					money = 100000
-				}
-				AND = {
-					total_pops = 3000000
-					not = { total_pops = 4000000 }
-					money = 150000
-				}
-				AND = {
-					total_pops = 4000000
-					not = { total_pops = 5000000 }
-					money = 200000
-				}
-				AND = {
-					total_pops = 5000000
-					money = 250000
-				}
-				AND = {
-					total_pops = 10000000
-					money = 500000
-				}
-			}
-		}
-		
-		effect = {
-			plurality = -8
-			random_owned = {
-				limit = {
-					owner = {
-						not = { total_pops = 1000000 }
-					}
-				}
-				owner = { treasury = -30000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 1000000
-						not = { total_pops = 2000000 }
-					}
-				}
-				owner = { treasury = -50000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 2000000
-						not = { total_pops = 3000000 }
-					}
-				}
-				owner = { treasury = -100000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 3000000
-						not = { total_pops = 4000000 }
-					}
-				}
-				owner = { treasury = -150000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 4000000
-						not = { total_pops = 5000000 }
-					}
-				}
-				owner = { treasury = -200000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 5000000
-						NOT = { total_pops = 10000000 }
-					}
-				}
-				owner = { treasury = -250000 }
-			}
-			random_owned = {
-				limit = {
-					owner = { total_pops = 10000000 }
-				}
-				owner = { treasury = 500000 }
-			}
-			country_event = 11002
-			set_country_flag = propaganda_program
-		}
-		
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				NOT = { war_countries = { is_greater_power = yes } }
-			}
-			modifier = {
-				factor = 0
-				badboy = 0.7
-			}
-			modifier = {
-				factor = 0
-				NOT = { war_exhaustion = 20 }
-			}
-		}
-	}
-	
-	send_pleasantries_to_great_power = {
-		picture = royal_gift
-		alert = no
-		potential = {
-			NOT = { is_greater_power = yes }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-		
-		allow = {
-			prestige = 25
-			money = 25000
-			NOT = { has_country_modifier = law_changed_by_force }
-			is_vassal = no
-		}
-		
-		effect = {
-			prestige = -25
-			treasury = -25000
-			add_country_modifier = { name = law_changed_by_force duration = 3650 }
-			random_owned = {
-				limit = {
-					owner = { part_of_sphere = yes }
-				}
-				owner = {
-					sphere_owner = {
-						relation = { who = THIS value = 50 }
-						diplomatic_influence = { who = THIS value = 50 }
-					}
-				}
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						part_of_sphere = no
-						any_greater_power = { neighbour = THIS }
-					}
-				}
-				owner = {
-					random_country = {
-						limit = {
-							neighbour = THIS
-							is_greater_power = yes
-						}
-						relation = { who = THIS value = 50 }
-						diplomatic_influence = { who = THIS value = 50 }
-					}
-				}
-			}
-			
-			random_owned = {
-				limit = {
-					owner = {
-						part_of_sphere = no
-						NOT = { any_greater_power = { neighbour = THIS } }
-					}
-				}
-				owner = {
-					random_country = {
-						limit = { is_greater_power = yes }
-						relation = { who = THIS value = 50 }
-						diplomatic_influence = { who = THIS value = 50 }
-					}
-				}
-			}
-		}
-		
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				NOT = {
-					has_country_modifier = benefactor_ai
-					has_country_modifier = coward_ai
-				}
-			}
-			
-			modifier = {
-				factor = 0
-				num_of_cities = 30
-			}
-			
-			modifier = {
-				factor = 0
-				total_pops = 4000000
-			}
-		}
-	}
-#from MiniMod-General.txt	
-	encourage_war = {
-		picture = leave_soi
-		alert = no
-		potential = {
-			ideological_thought = 1
-			NOT = {
-				has_country_modifier = war_encouraged
-			}
-			war = yes
-		}
-		allow = {
-			military_score = 150
-		}
-		effect = {
-			prestige = -15
-			any_pop = {
-				scaled_militancy = {
-					ideology = fascist
-					factor = -4
-				}
-				scaled_militancy = {
-					ideology = reactionary
-					factor = -2
-				}
-				scaled_militancy = {
-					issue = pro_military
-					factor = 2
-				}
-				scaled_militancy = {
-					issue = anti_military
-					factor = 4
-				}
-				scaled_militancy = {
-					issue = pacifism
-					factor = 6
-				}
-				consciousness = 3
-			}
-			any_pop = {
-				limit = {
-					OR = {
-						is_accepted_culture = yes
-						is_primary_culture = yes
-					}
-				}
-				dominant_issue = {
-					value = anti_military
-					factor = 0.05
-				}
-				dominant_issue = {
-					value = pro_military
-					factor = 0.10
-				}
-				dominant_issue = {
-					value = jingoism
-					factor = 0.15
-				}
-			}
-			any_pop = {
-				limit = {
-					NOT = {
-						is_accepted_culture = yes
-						is_primary_culture = yes
-					}
-				}
-				dominant_issue = {
-					value = jingoism
-					factor = 0.05
-				}
-				dominant_issue = {
-					value = pro_military
-					factor = 0.10
-				}
-				dominant_issue = {
-					value = anti_military
-					factor = 0.15
-				}
-				dominant_issue = {
-					value = pacifism
-					factor = 0.20
-				}
-			}
-			upper_house = {
-				ideology = reactionary
-				value = 0.25
-			}
-			upper_house = {
-				ideology = conservative
-				value = 0.10
-			}  			
-			add_country_modifier = {
-				name = war_encouraged
-				duration = 5400
-			}
-		}
-		ai_will_do = {
-			factor = 0
-		}	
-	}	
-#from Pop Growth for Infamy Decision		
-		# infamy_for_growth_selector = {
-				# picture = conduct_census
-				# potential = {
-				# ai = no
-					# AND = { 
-						# NOT = { has_country_modifier = birthrate_push_low  }
-						# NOT = { has_country_modifier = birthrate_push_medium }
-						# NOT = { has_country_modifier = birthrate_push_high  }
-						# NOT = { has_country_flag = pop_growth_for_infamy_chooser }
-					# }
-				# }
-				
-				# allow = {
-					# ai = no
-				# }
-				
-				# effect = {
-					# country_event = {
-						# id = 1998001
-					# }
-				# }
-		# }
-		
-		# infamy_for_growth_modifier_removal = {
-				# picture = conduct_census
-				# potential = {
-					# AND = {	
-						# ai = no
-						# OR = { 
-							# has_country_modifier = birthrate_push_low 
-							# has_country_modifier = birthrate_push_medium
-							# has_country_modifier = birthrate_push_high 
-						# }
-					# }
-				# }
-				
-				# allow = {
-					# NOT = { has_country_modifier = recently_selected_birthrate }
-				# }
-				
-				# effect = {
-					# remove_country_modifier = birthrate_push_low 
-					# remove_country_modifier = birthrate_push_medium
-					# remove_country_modifier = birthrate_push_high 
-				# }
-		# }
-		#from Law Changes.txt
-	increase_conscription = {
-		picture = marching_soldiers
-		alert = no
-		potential = {
-			civilized = yes
-			war = yes
-			OR = {
-				AND = {
-					conscription = no_draft
-					NOT = { has_country_flag = in_great_war }
-				}
-				AND = {
-					conscription = one_year_draft
-					NOT = { has_country_flag = in_great_war }
-				}
-				AND = {
-					conscription = two_year_draft
-					NOT = { has_country_flag = in_great_war }
-				}
-				AND = {
-					NOT = { conscription = mandatory_service }
-					OR = {
-						conscription = four_year_draft
-						government = fascist_dictatorship
-						government = proletarian_dictatorship
-						has_country_flag = in_great_war
-					}
-				}
-			}
-		}
-			
-		allow = {
-			NOT = { has_country_modifier = law_changed_by_force }
-			any_neighbor_country = { war_with = THIS civilized = yes }
-			OR = {
-				has_country_flag = in_great_war
-				AND = {
-					NOT = { war_policy = pacifism }
-					conscription = no_draft
-				}
-				AND = {
-					NOT = { OR = { war_policy = pacifism war_policy = anti_military } }
-					OR = {
-						conscription = one_year_draft
-						conscription = two_year_draft
-					}
-				}
-				AND = {
-					conscription = four_year_draft
-					OR = {
-						war_policy = jingoism
-						government = fascist_dictatorship
-						government = proletarian_dictatorship
-						government = bourgeois_dictatorship
-						has_country_flag = in_great_war
-					}
-				}
-			}
-		}
-			
-		effect = {
-			add_country_modifier = { name = law_changed_by_force duration = 3650 }
-			random_owned = {
-				limit = {
-					owner = {
-						NOT = { conscription = mandatory_service }
-						OR = {
-							government = fascist_dictatorship
-							government = proletarian_dictatorship
-							government = bourgeois_dictatorship
-							has_country_flag = in_great_war
-						}
-					}
-				}
-				owner = { political_reform = mandatory_service }
-			}
-			random_owned = { limit = { owner = { conscription = four_year_draft } } owner = { political_reform = mandatory_service } }
-			random_owned = { limit = { owner = { conscription = two_year_draft } } owner = { political_reform = four_year_draft } }
-			random_owned = { limit = { owner = { conscription = one_year_draft } } owner = { political_reform = two_year_draft } }
-			random_owned = { limit = { owner = { conscription = no_draft } } owner = { political_reform = one_year_draft } }
-		}
-		
-		ai_will_do = {
-			factor = 0
-			modifier = { factor = 100 conscription = no_draft }
-			modifier = {
-				factor = 100 
-				conscription = one_year_draft
-				OR = {
-					war_policy = jingoism
-					war_policy = pro_military
-					ruling_party_ideology = fascist
-					ruling_party_ideology = reactionary
-					any_greater_power = { war_with = THIS }
-					any_neighbor_country = {
-						civilized = yes
-						OR = {
-							brigades_compare = 1.1
-							conscription = two_year_draft
-						}
-					}
-				}
-			}
-			modifier = {
-				factor = 100 
-				conscription = two_year_draft
-				OR = {
-					war_policy = jingoism
-					ruling_party_ideology = fascist
-					ruling_party_ideology = reactionary
-					any_greater_power = { war_with = THIS }
-					any_neighbor_country = {
-						civilized = yes
-						OR = {
-							brigades_compare = 1.2
-							conscription = four_year_draft
-						}
-					}
-				}
-			}	
-			modifier = {
-				factor = 100
-				conscription = four_year_draft
-				OR = {
-					any_neighbor_country = { conscription = mandatory_service }
-					has_country_flag = in_great_war
-					any_greater_power = { war_with = THIS }
-					any_neighbor_country = { brigades_compare = 1.3 }
-					lost_national = 0.2
-					war_policy = jingoism
-					ruling_party_ideology = fascist
-					ruling_party_ideology = reactionary
-				}
-			}
-		}
-	}
-	
-	reform_the_local_government = {
-		picture = kaitakushi
-		alert = no
-		potential = {
-			civilized = yes
-			any_owned_province = {
-				any_core = {
-					exists = no
-					capital_scope = { owned_by = THIS }
-					OR = {
-						AND =  {
-							NOT = { political_parties = underground_parties }
-							THIS = { political_parties = underground_parties }
-						}
-						AND =  {
-							NOT = { political_parties = harassment }
-							THIS = { political_parties = harassment }
-						}
-						AND =  {
-							NOT = { political_parties = gerrymandering }
-							THIS = { political_parties = gerrymandering }
-						}
-						AND =  {
-							NOT = { political_parties = non_secret_ballots }
-							THIS = { political_parties = non_secret_ballots }
-						}
-						AND =  {
-							NOT = { political_parties = secret_ballots }
-							THIS = { political_parties = secret_ballots }
-						}
-					}
-				}
-			}
-		}
-			
-		allow = { war = no }
-		
-		effect = {
-
-			random_owned = {
-				limit = { owner = { slavery = no_slavery } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = no_slavery
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { public_meetings = no_meeting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = no_meeting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { public_meetings = yes_meeting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = yes_meeting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { debt_law = peonage } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = peonage
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { OR = { debt_law = debtors_prisons debt_law = bankruptcy } } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = debtors_prisons
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { press_rights = state_press } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = state_press
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { press_rights = censored_press } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = censored_press
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { press_rights = free_press } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = free_press
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { voting_system = first_past_the_post } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = first_past_the_post
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { voting_system = jefferson_method } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = jefferson_method
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { voting_system = proportional_representation } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = proportional_representation
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { vote_franschise = none_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = none_voting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { vote_franschise = landed_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = landed_voting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { vote_franschise = wealth_weighted_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = wealth_weighted_voting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { vote_franschise = wealth_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = wealth_voting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { vote_franschise = universal_weighted_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = universal_weighted_voting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { vote_franschise = universal_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = universal_voting
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { political_parties = underground_parties } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = underground_parties
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { political_parties = harassment } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = harassment
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { political_parties = gerrymandering } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = gerrymandering
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { political_parties = non_secret_ballots } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = non_secret_ballots
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { political_parties = secret_ballots } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = secret_ballots
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { upper_house_composition = party_appointed } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = party_appointed
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { upper_house_composition = appointed } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = appointed
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { upper_house_composition = state_equal_weight } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = state_equal_weight
-				}
-			}
-			
-			random_owned = {
-				limit = { owner = { upper_house_composition = population_equal_weight } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = population_equal_weight
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				NOT = { month = 1 }
-			}
-		}
-	}
-	
-	#from Grants
-		will_receive = {
-		picture = grant
-		alert = no
-		potential = {
-			ai = no
-			NOT = { has_country_flag = will_receive_grants }
-			}
-		
-		allow = { 
-			NOT = { has_country_flag = will_receive_grants } 
-			ai = no
-			}
-		effect = {
-			country_event = {id = 100000 days = 0}
-
-		}
-
-	}
-
-#	will_not_receive = {
-#		alert = no
-#		potential = {
-#			ai = no
-#			has_country_flag = will_receive_grants
-#			}
-#		
-#		allow = { 
-#			has_country_flag = will_receive_grants
-#			}
-#		effect = {
-#			clr_country_flag = will_receive_grants 
-#
-#		}
-#
-#	}
-
-	will_give = {
-		alert = no
-		potential = {
-			ai = no
-			NOT = { has_country_flag = will_give_grants }
-			}
-
-		allow = { NOT = { has_country_flag = will_give_grants } }
-		effect = {
-			set_country_flag = will_give_grants
-		}
-	}
-
-
-	will_not_give = {
-		alert = no
-		potential = {
-			ai = no
-			has_country_flag = will_give_grants
-		}
-		
-		allow = { 
-			ai = no
-			has_country_flag = will_give_grants }
-		effect = {
-			clr_country_flag = will_give_grants 
-			}
-	}
-#from Direct Immigration.txt
-	immigrantoptions = {
-		picture = marching_soldiers
-		potential = {
-			ai = no
-			has_country_flag = direct_immigration
-		}
-		allow = {
-			ai = no
-		}
-		effect = {
-			country_event = 980000
-		}
-		ai_will_do = {
-			factor = 0
-		}
-	}
-	activateimmigration = {
-		picture = marching_soldiers
-		potential = {
-			ai = no
-			NOT = { has_country_flag = direct_immigration }
-		}
-		allow = {
-			ai = no
-		}
-		effect = {
-			set_country_flag = direct_immigration
-			activate_technology = organized_factories
-			any_country = {
-				limit = { ai = yes has_country_flag = new_world_nation }
-				any_owned = {
-					limit = { is_capital = yes }
-					immigrator = 1
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 0
-		}
-	}
-	sign_the_geneva_convention = {
-		alert = no
-		potential = {
-			civilized = yes
-			has_global_flag = geneva_convention_held
-			NOT = { has_country_modifier = signed_the_geneva_convention }
-		}
-		
-		allow = {
-			NOT = {
-				badboy = 1
-				has_country_modifier = withdrew_from_geneva_convention
-			}
-			OR = {
-				NOT = {has_country_modifier = law_changed_by_force }
-				ai = no
-			}
-		}
-		
-		effect = {
-			remove_country_modifier = educational_reform
-			remove_country_modifier = military_reform
-			remove_country_modifier = western_influences
-			remove_country_modifier = uncivilized_isolationism
-			remove_country_modifier = trade_restrictions
-			remove_country_modifier = sayings_of_the_dutch
-			remove_country_modifier = rangaku
-			remove_country_modifier = western_presence
-			remove_country_modifier = isolationist_foreign_naval_officers
-			remove_country_modifier = isolationist_foreign_naval_schools
-			remove_country_modifier = isolationist_foreign_officers
-			remove_country_modifier = isolationist_foreign_training
-			any_owned = {
-				remove_province_modifier = western_presence
-				remove_province_modifier = foreign_smugglers
-				remove_province_modifier = foreign_trading_post
-				remove_province_modifier = local_opium_habit
-				remove_province_modifier = european_military_mission
-				remove_province_modifier = legation_quarter
-				remove_province_modifier = kettler_denkmal
-				remove_province_modifier = extraterritoriality_granted
-				remove_province_modifier = boxer_presence
-				remove_province_modifier = boxer_agitation
-			}
-			add_country_modifier = {
-				name = signed_the_geneva_convention
-				duration = -1
-			}
-			badboy = -1
-		}
-	}
-	
-	withdraw_signature_geneva_convetion = {
-		alert = no
-		picture = sign_the_geneva_convention
-		
-		potential = {
-			has_global_flag = geneva_convention_held
-			has_country_modifier = signed_the_geneva_convention
-			OR = {
-				ruling_party_ideology = reactionary
-				ruling_party_ideology = fascist
-				ruling_party_ideology = communist
-				}
-			OR = {
-				government = absolute_monarchy
-				government = fascist_dictatorship
-				government = presidential_dictatorship
-				government = proletarian_dictatorship
-			}
-		}
-		allow = {
-			has_country_modifier = signed_the_geneva_convention
-		}
-		effect = {
-			badboy = 5
-			add_country_modifier = {
-				name = withdrew_from_geneva_convention
-				duration = 1825
-			}
-			remove_country_modifier = signed_the_geneva_convention
-		}
-		ai_will_do = { factor = 0 }
-	}
-	
 }

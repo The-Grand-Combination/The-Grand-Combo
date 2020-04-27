@@ -19,5 +19,4 @@ martoeuropa
 DrFaustie
 rderekp
 Hammonia
-Tenno Momonga
 bop

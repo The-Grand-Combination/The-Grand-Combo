@@ -1,5 +1,4 @@
 political_decisions = {
-#from DEN.txt
 	danmarks_riges_grundlov = {
 		picture = danmarks_riges_grundlov
 		potential = {
@@ -165,100 +164,75 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 	
-#from Setup.txt
 	
-	1836_denmark_setup = {
-		picture = constantinople
+	selling_danish_virgin_islands = {
+	picture = map_caribbean
+	alert = no
 		potential = {
-			tag = DEN
-			always = no
+			OR = {
+				tag = USA
+				AND = {
+					owns = 1723
+					is_canal_enabled = 3
+					OR = {
+						capital_scope = { continent = europe }
+						capital_scope = { continent = north_america }
+						capital_scope = { continent = south_america }
+					}
+				}
+			}
+			is_vassal = no
+			NOT = { owns = 2223 }
+			2223 = { owner = { is_greater_power = no } }
+			NOT = { has_global_flag = sold_virgin_islands }
+			year = 1890
+			is_greater_power = yes
 		}
 		
 		allow = {
-			tag = DEN
+			OR = {
+				is_canal_enabled = 3
+				great_wars_enabled = yes
+			}
+			money = 200100
+			war = no
+			2223 = { owner = { war = no is_greater_power = no NOT = { truce_with = THIS } relation = { who = THIS value = 0 } } }
+			2223 = {
+				owner = {
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { money = 500000 }
+					NOT = { war_policy = jingoism }
+					OR = {
+						AND = {
+							ruling_party_ideology = liberal
+							upper_house = { ideology = liberal value = 0.4 }
+						}
+						AND = {
+							in_sphere = THIS
+							economic_policy = laissez_faire
+							upper_house = { ideology = liberal value = 0.2 }
+							relation = { who = THIS value = 150 }
+						}
+						vassal_of = THIS
+						is_disarmed = yes
+						has_country_modifier = in_bankrupcy
+						has_country_modifier = generalised_debt_default
+						has_country_modifier = emergency_tax_measures1
+						has_country_modifier = emergency_tax_measures2
+						NOT = { money = 10000 }
+					}
+				}
+			}
 		}
 		
 		effect = {
-			any_pop = { limit = { OR = { has_pop_culture = ashkenazi has_pop_culture = north_german } } literacy = 0.58 }
-			add_country_modifier = {
-				name = global_baby_boom
-				duration = 3650
-			}
-			any_owned = {
-				limit = {
-					is_core = DEN
-					is_overseas = no
-				}
-				add_province_modifier = {
-					name = baby_boom
-					duration = 1825
-				}
-			}
-			any_pop = {
-				limit = {
-					OR = {
-						type = slaves
-						is_culture_group = west_african
-						is_culture_group = central_african
-						is_culture_group = east_african
-						is_culture_group = southern_african
-						has_pop_culture = afro_american
-						has_pop_culture = dakota
-						has_pop_culture = cherokee
-						has_pop_culture = native_american_minor 
-						has_pop_culture = maghrebi
-						has_pop_culture = berber
-						has_pop_religion = theravada
-						has_pop_religion = hindu
-						has_pop_religion = sunni
-						has_pop_religion = shiite
-						has_pop_religion = mahayana
-						has_pop_religion = animist
-						has_pop_culture = malay
-						has_pop_culture = afro_caribeno
-						has_pop_culture = nanfaren
-						has_pop_culture = asian_minor
-					}
-				}
-			literacy = -0.99
-			}
-			NOR = {
-				add_country_modifier = {
-					name = global_baby_boom
-					duration = 1825
-				}
-				all_core = {
-					add_province_modifier = {
-						name = baby_boom
-						duration = 1095
-					}
-				}
-			}
-			BEL = {
-				add_country_modifier = {
-					name = global_baby_boom
-					duration = 1825
-				}
-			}
-			NEJ = {
-				add_country_modifier = {
-					name = global_baby_boom
-					duration = 1825
-				}
-			}
-			HAL = {
-				add_country_modifier = {
-					name = global_baby_boom
-					duration = 1825
-				}
-			}
-			HDJ = {
-				add_country_modifier = {
-					name = global_baby_boom
-					duration = 1825
-				}
-			}
+			set_global_flag = sold_virgin_islands
+			2223 = { owner = { country_event = 36225 } }
 		}
-	}	
-
+		
+		ai_will_do = { factor = 1 }
+	}
 }

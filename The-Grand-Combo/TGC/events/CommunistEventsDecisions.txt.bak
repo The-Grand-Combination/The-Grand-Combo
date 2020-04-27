@@ -1,0 +1,1096 @@
+country_event = {
+	id = 900000
+	title = "Collectivization is working!"
+	desc = "Collectivisation is boosting the returns of our peasants on mass, fueling the revolution!"
+
+	picture = "Revolution"
+	
+	trigger = {
+		has_country_modifier = agrarian_reform_beginning
+		NOT = {
+			has_country_flag = agrar_dec
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 9
+
+		modifier = {
+			factor = 0.5
+			industrial_score = 200
+		}
+	}
+
+	option = {
+		name = "The proccess must go faster!"
+		treasury = -10000
+		any_pop = {
+			reduce_pop = 0.85
+		}
+		remove_country_modifier = agrarian_reform_beginning
+		add_country_modifier = {
+			name = agrarian_reform
+			duration = -1
+		}
+		set_country_flag = agrar_dec
+	}
+	
+	option = {
+		name = "Allow it to continue at present rates"
+		any_pop = {
+			reduce_pop = 0.9
+		}
+		set_country_flag = agrar_dec
+	}
+
+	option = {
+		name = "End this silly proccess!"
+		remove_country_modifier = agrarian_reform_beginning
+		any_pop = {
+			limit = {
+				strata = poor
+			}
+			reduce_pop = 0.95
+			militancy = 3
+		}
+		set_country_flag = agrar_dec
+	}
+}
+
+country_event = {
+	id = 910000
+	title = "The Revolution has begun!"
+	desc = "From the mouthes of guns, the flames of the proletariat shall scorch onto this Earth their fiery proposal!"
+	
+	picture = "Revolution"
+
+	trigger = {
+		NOT = {
+			has_country_flag = Rev_Spread
+			government = proletarian_dictatorship
+		}
+		OR = {
+			pop_majority_ideology = communist
+			pop_majority_ideology = socialist
+			any_neighbor_country = {
+				government = proletarian_dictatorship
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 3
+	}
+	
+	option = {
+		name = "We cannot step backwards."
+		any_pop = {
+			ideology = {
+				value = communist
+				factor = 0.03
+			}
+			militancy = 3
+		}
+		add_country_modifier = {
+			name = commies_have_succeeded_o
+			duration = 499
+		}
+		set_country_flag = Rev_Spread
+	}
+	option = {
+		name = "Over our dead bodies!"
+		any_pop = {
+			limit = {
+				strata = poor
+			}
+			militancy = 5
+			consciousness = 6
+		}
+		any_pop = {
+			limit = {
+				strata = rich
+			}
+			consciousness = -6
+			militancy = -3
+		}
+		add_country_modifier = {
+			name = commies_have_succeeded_o
+			duration = 499
+		}
+	set_country_flag = Rev_Spread
+	}			
+}
+country_event = {
+	id = 910010
+	title = "The revolution has spread to us!"
+	desc = "It was inevitable; the poor have risen!"
+	
+	trigger = {
+		NOT = {
+			has_country_flag = Rev_Spread2
+		}
+
+		has_country_flag = Rev_Spread
+	}
+	
+	mean_time_to_happen = {
+		months = 3
+	}
+	
+	picture = "Revolution"
+	
+	option = {
+		name = "We must fight this!"
+		any_pop = {
+			ideology = {
+				value = communist
+				factor = 0.05
+			}
+			scaled_militancy = {
+				ideology = communist
+				factor = 10
+			}
+			scaled_militancy = {
+				ideology = socialist
+				factor = 8
+			}
+			scaled_consciousness = {
+				ideology = liberal
+				factor = 9
+			}
+			scaled_militancy = {
+				ideology = reactionary
+				factor = 6
+			}
+		}
+		set_country_flag = Rev_Spread2
+		ai_chance = {
+			factor = 92
+			modifier = {
+				factor = 1
+				NOT = {
+					average_militancy = 7
+				}
+			}
+		}
+	}
+	option = {
+		name = "We must ride this tide into the future"
+		consciousness = 3
+		any_neighbor_country = {
+			limit = {
+				NOT = {
+					government = proletarian_dictatorship
+				}
+			}
+			any_pop = {
+				consciousness = 10
+				scaled_militancy = {
+					ideology = communist
+					factor = 10
+				}
+				scaled_militancy = {
+					ideology = socialist
+					factor = 2
+				}
+			}
+		}
+		country_event = 60000
+		ai_chance = {
+			factor = 8
+			modifier = {
+				factor = 0.60
+				average_militancy = 8
+			}
+		}
+		set_country_flag = Rev_Spread2
+	}
+}
+country_event = {
+	id = 910020
+	title = "The Negotiation of the Internationale"
+	desc = "The Revolution has begun here, but in the rest of the world it is only through unity that it shall succeed."
+	
+	trigger = {
+		government = proletarian_dictatorship
+		any_neighbor_country = {
+			government = proletarian_dictatorship
+		}
+		NOT = {
+			has_country_flag = negotiate_international
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 2
+	}
+	
+	picture = "Deliberations"
+
+	option = {
+		name = "We fully agreed at the congress meeting."
+		set_country_flag = negotiate_international
+		set_country_flag = agree_international
+		any_neighbor_country = {
+			limit = {
+					government = proletarian_dictatorship
+				}
+			create_alliance = THIS
+		}
+		any_neighbor_country = {
+			limit = {
+					government = proletarian_dictatorship
+					is_country_greater_power = yes
+				}
+			diplomatic_influence = {
+					who = FROM
+					value = 300
+				}
+		}
+
+		ai_chance = {
+			factor = 0.65
+			modifier = {
+				factor = 0.75
+				has_country_tag = 4th_Int
+			}
+		}
+	}
+	
+	option = {
+		name = "There were some disagreements..."
+		set_country_flag = negotiate_international
+		set_country_flag = disagree_international
+		random_country = {
+			limit = {
+				government = proletarian_dictatorship
+			}
+			relation = {
+				who = THIS
+				value = -50
+			}
+		}
+		ai_chance = {
+			factor = 0.35
+		}
+	}
+}
+
+country_event = {
+	id = 910030
+	title = "Reconvene the International"
+	desc = "Since the last International, the world, and the inhabitants of it, have changed. The far left needs to reconvene to continue the struggle."
+
+	trigger = {
+		government = proletarian_dictatorship
+		any_neighbor_country = {
+			government = proletarian_dictatorship
+		}
+		has_country_flag = negotiate_international
+	}
+
+	mean_time_to_happen = {
+		months = 36
+	}
+	
+	option = {
+		name = "Let it begin!"
+		clr_country_flag = negotiate_international
+	}
+}
+
+country_event = {
+	id = 920010
+	title = "The Party is Split!"
+	desc = "It is becoming ever more obvious that the revolutionaries had separate views as they took to the streets, and as the galvinizing fight moves behind them, old wounds reopen."
+
+	trigger = {
+		government = proletarian_dictatorship
+		election = yes
+		has_country_flag = Stalinborn
+		has_country_flag = Maoborn
+	}
+	
+	mean_time_to_happen = {
+		months = 4
+	}
+	
+	option = {
+		name = "We side with the Interantionalist Left; with them we form a united Interantional!"
+		ruling_party_ideology = socialist
+		upper_house = {
+			ideology = socialist
+			value = 0.75
+		}
+		set_country_flag = 4th_Int
+		clr_country_flag = 3rd_Int
+		clr_country_flag = Maoist
+		remove_country_modifier = Maoist
+		remove_country_modifier = 3rd_International
+		any_neighbor_country = {
+			limit = {
+				government = proletarian_dictatorship
+			}
+			create_alliance = THIS
+			create_vassal = FROM
+		}
+	}
+	option = {
+		name = "We must focus on building our state. The world shall see the power of the revolution through us and join."
+		ruling_party_ideology = communist
+		upper_house = {
+			ideology = communist
+			value = 0.5
+		}
+		add_country_modifier = {
+			name = 3rd_International
+			duration = -1
+		}
+		
+		set_country_flag = 3rd_Int
+		clr_country_flag = 4th_Int
+		clr_country_flag = Maoist
+		remove_country_modifier = Maoist
+	}
+	option = {
+		name = "For our state, raped by Imperialism, we must forge a path of Unity, Democracy, and Socialism."
+		ruling_party_ideology = communist
+		upper_house = {
+			ideology = communist
+			value = 0.5
+		}
+		add_country_modifier = {
+			name = Maoist
+			duration = -1
+		}
+		set_country_flag = Maoist
+		clr_country_flag = 4th_Int
+		clr_country_flag = 3rd_Int
+		remove_country_modifier = 3rd_International
+	}
+}
+
+country_event = {
+	id = 920020
+	title = "The Revolution Succeeds!"
+	desc = "We have seen the victory of Socialism in our state. Great states of the bourgeois fall to the power of the people."
+
+	trigger = {
+		government = proletarian_dictatorship
+		NOT = {
+			has_country_flag = revolution_succeeds
+		}
+	}
+
+	option = {
+		name = "A victory for all mankind."
+		any_country = {
+			limit = {
+				government = proletarian_dictatorship
+			}
+			prestige = 15
+		}
+		set_country_flag = revolution_succeeds
+	}
+}
+
+country_event = {
+	id = 920030	
+	title = "The Communist Movement finds a country to stand behind"
+	desc = "As the revolution spreads, its image is clear--the banner of the Red Revolution flies high!"
+
+	trigger = {
+		is_greater_power = no
+		part_of_sphere = no
+		any_greater_power = {
+			government = proletarian_dictatorship
+			NOT = {
+				has_country_modifier = banner_of_the_red
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = "With them we stand"
+		random_country = {
+			limit = {
+				is_greater_power = yes
+				government = proletarian_dictatorship
+				NOT = {
+					has_country_modifier = banner_of_the_red
+				}
+			}
+			any_country = {
+				limit = {
+					has_country_modifier = banner_of_the_red
+				}
+				create_vassal = FROM
+			}
+			diplomatic_influence = 	{
+				who = FROM
+				value = 500
+			}
+			add_country_modifier = {
+				name = banner_of_the_red
+				duration = -1
+			}
+		}
+	}
+	option = {
+		name = "We move forward without their influence"
+		random_country = {
+			limit = {
+				is_greater_power = yes
+				government = proletarian_dictatorship
+				NOT = {
+					has_country_modifier = banner_of_the_red
+				}
+			}
+			relation = {
+				who = FROM
+				value = -100
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 920040
+	title = "Socialism has become a developed ideology!"
+	desc = "With the growth of socialist thought and ideas, the concept of socialism as a fundamentally separate political ideology has begun."
+
+	trigger = {
+		OR = {
+			invention = hegelian_idealism
+			posivitism = 1
+			collectivist_theory = 1
+			invention = populism_vs._establishment
+		}
+		NOT = {
+			is_ideology_enabled = socialist
+		}
+	}
+	
+	option = {
+		name = "And then they began."
+		country_event = 1000
+	}
+}
+country_event = {
+	id = 920050
+	title = "Fascist ideology has first sprouted!"
+	desc = "Fascists, preaching the nation and her power, have come to form a manifesto of their plan."
+
+	trigger = {
+		invention = social_darwinism
+		invention = existentialism
+		NOT = {
+			is_ideology_enabled = fascist
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 3
+	}
+	
+	option = {
+		name = "And thus it was born."
+		prestige = 12
+		country_event = 1003
+	}
+}
+country_event = {
+	id = 920060
+	title = "The Communist Manifesto!"
+	desc = "Out of Scientific Socialism, the advent of communism spread through the world the message of action, determination, diligence, and the struggle for equality."
+	
+	trigger = {
+		invention = collectivism
+		invention = hegelian_idealism
+		nationalism_n_imperialism = 1
+			OR = {
+				invention = karl_marx
+				invention = friedrich_engels
+			}
+			NOT = {
+				is_ideology_enabled = communist
+			}
+	}
+	
+	mean_time_to_happen = {
+		months = 5
+	}
+	
+	option = {
+		name = "And the struggle continued."
+		prestige = 14
+		country_event = 1001
+	}
+}
+country_event = {
+	id = 930000
+	title = "The Counter Revolution aligns against you!"
+	desc = "With the encroaching forces of counter-revolution, you find yourself increasingly isolated."
+
+	trigger = {
+		government = proletarian_dictatorship
+		any_neighbor_country = {
+			OR = {
+				government = absolute_monarchy
+				government = fascist_dictatorship
+			}
+		}
+		NOT = {
+			has_country_flag = target_of_counterrev
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 4
+	}
+
+	option = {
+		name = "Then we shall make our stand alone."
+		any_neighbor_country = {
+			limit = {
+				OR = {
+					government = absolute_monarchy
+					government = fascist_dictatorship
+				}
+			}
+			relation = {
+				who = from
+				value = -200
+			}
+			casus_belli = {
+				who = FROM
+				type = uninstall_communist_gov_cb
+				months = 48
+			}
+		}
+		set_country_flag = target_of_counterrev
+	}
+}
+country_event = {
+	id = 940000
+	title = "The far right joins into a Counter-Revolutionary Bund!"
+	desc = "With the success of the proletariat, every body of the propertied classes moves in mass action against us."
+	
+	trigger = {
+		government = proletarian_dictatorship
+		NOT = {
+			has_country_flag = committee_salv_1
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+	
+	option = {
+		name = "We must drive them underground."
+		any_pop = {
+			limit = {
+				OR = {
+					pop_majority_ideology = reactionary
+					pop_majority_ideology = fascist
+				}
+			}
+			reduce_pop = 0.7
+		}
+		any_pop = {
+			scaled_militancy = {
+				factor = 10
+				ideology = reactionary
+			}
+			scaled_militancy = {
+				factor = 10
+				ideology = fascist
+			}
+			any_pop = {
+				limit = {
+					strata = rich
+				}
+				militancy = 8
+			}
+			any_pop = {
+				limit = {
+					strata = middle
+				}
+				militancy = 5
+			}
+		}
+		set_country_flag = committee_salv_1
+	}
+}
+country_event = {
+	id = 940010
+	title = "The enemies are upon us!"
+	desc = "The many nations of the propertied classes have allied with our own to forge our internal enemy."
+
+	trigger = {
+		any_neighbor_country = {
+			OR = {
+				government = absolute_monarchy
+				government = fascist_dictatorship
+				ruling_party_ideology = fascist
+				ruling_party_ideology = reactionary
+				ruling_party_ideology = conservative
+				ruling_party_ideology = liberal
+			}
+		}
+		has_country_flag = committee_salv_1
+		NOT = {
+			has_country_flag = committee_salv_2
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+	
+	option = {
+		name = "This is affront to sovreignity and liberation!"
+		any_pop = {
+			limit = {
+				OR = {
+					pop_majority_ideology = fascist
+					pop_majority_ideology = reactionary
+				}
+			}
+			pop_reduce = 1.1
+			militancy = 10
+			money = 100
+		}
+		any_pop = {
+			limit = {
+				strata = rich
+			}
+			militancy = 10
+			consciousness = 10
+			money = 1000
+			ideology = {
+				value = reactionary
+				factor = 0.4
+			}
+		}
+		set_country_flag = committee_salv_2
+	}
+}
+country_event = {
+	id = 950000
+	title = "'Socialism in One State' has taken a new found presidence!"
+	desc = "With the growing isolation of our country, the concept that a thorough buildup of here to spread to the world is gaining traction."
+	
+	trigger = {
+		government = proletarian_dictatorship
+		is_greater_power = yes
+		has_country_flag = target_of_counterrev
+		NOT = {
+			any_greater_power = {
+				alliance_with = FROM
+			}
+			has_country_flag = Stalinborn
+		}
+	}
+	
+	fire_only_once = yes
+	
+	mean_time_to_happen = {
+		months = 56
+	}
+	
+	option = {
+		name = "And with this we shall see Socialism in our time..."
+		set_country_flag = Stalinborn
+		add_country_modifier = {
+			name = 3rd_International
+			duration = -1
+		}
+	}
+}
+
+country_event = {
+	id = 950010
+	title = "Socialism in One State!"
+	desc = "New ideas of Socialism have been spreading, placing Industrialization a top priority."
+	
+	trigger = {
+		any_neighbor_country = {
+			has_country_flag = Stalinborn
+		}
+		NOT = {
+			has_country_flag = Stalinborn
+		}
+	}
+	
+	option = {
+		name = "Interesting..."
+		set_country_flag = Stalinborn
+	}
+}
+
+country_event = {
+	id = 950020
+	title = "Socialism for the Peasants--the Anti-Imperialist cause marches on!"
+	desc = "With the state of our country being as it is, it has become necessary to reevaluate our state dialectically, and we came up with this."
+	
+	trigger = {
+		government = proletarian_dictatorship
+		NOT = {
+			is_greater_power = yes
+			industrial_score = 100
+			has_country_flag = Maoborn
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 12
+	}
+	
+	option = {
+		name = "And our cause gathers strength."
+		set_country_flag = Maoborn
+		remove_country_modifier = 3rd_International
+		add_country_modifier = {
+			name = Maoist
+			duration = -1
+		}
+	}
+}
+country_event = {
+	id = 950030
+	title = "Anti-Imperialism!"
+	desc = "It is spreading."
+	
+	trigger = {
+		any_neighbor_country = {
+			has_country_flag = Maoborn
+		}
+		NOT = {
+			has_country_flag = Maoborn
+		}
+	}
+	
+	option = {
+		name = "Interesting."
+		set_country_flag = Maoborn
+	}
+}
+country_event = {
+	id = 960000
+	title = "We chart our own course"
+	desc = "Unsatisfied with our options for an ideology for our state, we endevoured to create one."
+	
+	trigger = {
+		has_country_flag = chart_own_course
+		NOT = {
+			has_country_flag = making_the_commie_choice
+		}
+	}
+	
+	option = {
+		name = "So be it."
+		set_country_flag = making_the_commie_choice
+		country_event = 960010
+		country_event = 960020
+	}
+}
+country_event = {
+	id = 960010
+	title = "First part of our new policies: Foreign"
+	desc = "With our advances into the realm of Socialism, we find that we could understand the path of Foreign policy in many ways."
+	
+	trigger = {
+		has_country_flag = making_the_commie_choice
+		NOT = {
+			has_country_flag = foreign_policy_chosen
+		}
+	}
+	
+	option = {
+		name = "A Permanent Revolution"
+		any_country = {
+			limit = {
+				rank = 10
+				NOT = {
+					government = proletarian_dictatorship
+				}
+			}
+			casus_belli = {
+				target = THIS
+				type = uninstall_communist_gov_cb
+				months = 200
+			}
+		}
+		any_neighbor_country = {
+			limit = {
+				NOT = {
+					government = proletarian_dictatorship
+				}
+			}
+			add_casus_belli = {
+				target = THIS
+				type = install_communist_gov_cb
+				months = 400
+			}
+		}
+		set_country_flag = foreign_policy_chosen
+	}
+	option = {
+		name = "Socialism in One Country"
+		add_country_modifier = {
+			name = socialism_in_1
+			duration = -1
+		}
+		set_country_flag = foreign_policy_chosen
+	}
+	option = {
+		name = "Firm International Brotherhood"
+		plurality = 100
+		any_neighbor_country = {
+			any_pop = {
+				ideology = {
+					factor = 0.02
+					value = communist
+				}
+				scaled_militancy = {
+					ideology = communist
+					factor = 5
+				}
+			}
+			any_pop = {
+				limit = {
+					pop_majority_ideology = communist
+				}
+				money = 1000
+			}
+			relation = {
+				who = THIS
+				value = 100
+			}
+		}
+		set_country_flag = foreign_policy_chosen
+	}
+	option = {
+		name = "Anti-Imperialism"
+		any_neighbor_country = {
+			limit = {
+				NOT = {
+					government = proletarian_dictatorship
+					is_greater_power = yes
+				}
+			}
+			any_pop = {
+				limit = {
+					type = craftsmen
+				}
+				ideology = {
+					value = communist
+					factor = 0.3
+				}
+			}
+			country_event = 910010
+		}
+		set_country_flag = foreign_policy_chosen
+	}
+}
+country_event = {
+	id = 960020
+	title = "Economic Policy"
+	desc = "Our country looks to you for their development."
+	
+	trigger = {
+		has_country_flag = making_the_commie_choice
+		NOT = {
+			has_country_flag = economic_chosen
+		}
+	}
+	
+	option = {
+		name = "A New Economic Policy"
+		any_pop = {
+			limit = {
+				type = post_revolt_bureau
+			}
+			reduce_pop = 1.2
+			money = 1000
+		}
+		set_country_flag = economic_chosen
+	}
+	option = {
+		name = "Five Year Plans"
+		set_country_flag = five_year_plans_choose
+		set_country_flag = economic_chosen
+		country_event = 970000
+	}
+	option = {
+		name = "Agrarian Reform, for the Peasants"
+		add_country_modifier = {
+			name = agrarian_reform_beginning
+			duration = -1
+		}
+		set_country_flag = economic_chosen
+	}
+}
+country_event = {
+	id = 980000
+	title = "We demand: PEACE, BREAD, LAND!"
+	desc = "The war has been dragging on for a long time now, and the Communists are rallying around it!"
+	
+	trigger = {
+		war = yes
+		war_exhaustion = 25
+		is_ideology_enabled = communist
+		NOT = {
+			government = proletarian_dictatorship
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 6
+	}
+	
+	option = {
+		name = "Damn those who oppose us!"
+		any_pop = {
+			limit = {
+				NOT = {
+					strata = rich
+				}
+			}
+			militancy = 10
+			consciousness = 10
+			ideology = {
+				value = communist
+				factor = 0.1
+			}
+		}
+		add_country_modifier = {
+			name = peacebreadland
+			duration = 181
+		}
+	}
+}
+country_event = {
+	id = 980010
+	title = "PEACE~BREAD~LAND!"
+	desc = "At war, exhausted, the people rose to remove the old habits and break from the war destroying our country. We must defeat those who oppose this abroad. Declare immediate, democratic peace."
+	
+	trigger = {
+		government = proletarian_dictatorship
+		war = yes
+		war_exhaustion = 30
+		has_country_modifier = peacebreadland
+	}
+	
+	option = {
+		name = "We will do as the people demand!"
+		any_country = {
+			limit = {
+				war_with = FROM
+				NOT = {
+					proletarian_dictatorship
+				}
+			}
+			country_event = 980020
+			any_pop = {
+				limit = {
+					NOT = {
+						strata = rich
+					}
+				}
+				militancy = 10
+				consciousness = 10
+				ideology = {
+					value = communist
+					factor = 0.1
+				}
+			}
+			war_exhaustion = 20
+		}
+		any_pop = {
+			limit = {
+				NOT = {
+					strata = rich
+				}
+			}
+			militancy = -4
+			consciousness = -3
+		}
+		remove_country_modifier = peacebreadland
+	}
+}
+country_event = {
+	id = 980020
+	title = "Our Enemies Demand Peace!"
+	desc = "They have demanded democratic peace! How do we respond?"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "We do not accept!"
+		any_pop = {
+			limit = {
+				OR = {
+					strata = rich
+					pop_majority_ideology = conservative
+					pop_majority_ideology = liberal
+				}
+			}
+			ideology = {
+				value = reactionary
+				factor = 0.2
+			}
+			militancy = -3
+			scaled_militancy = {
+				ideology = fascist
+				factor = -8
+			}
+		}
+		any_pop = {
+			limit = {
+				OR = {
+					pop_majority_ideology = socialist
+					pop_majority_ideology = communist
+					type = soldiers
+			}
+			militancy = 10
+			consciousness = 10
+		}
+		war_exhaustion = 10
+	}
+	option = {
+		name = "Perhaps this is for the best."
+		any_pop = {
+			limit = {
+				NOT = {
+					strata = rich
+				}
+			}
+			militancy = -3
+			consciousness = -3
+		}
+		any_pop = {
+			limit = {
+				strata = rich
+			}
+			militancy = 10
+			consciousness = 10
+			ideology = {
+				value = reactionary
+				factor = 0.3
+			}
+		}
+		any_country = {
+			limit = {
+				war_with = FROM
+			}
+			end_war = FROM
+		}
+	}
+}

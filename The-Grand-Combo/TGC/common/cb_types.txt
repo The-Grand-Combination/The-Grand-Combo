@@ -110,13 +110,12 @@ establish_protectorate_BC_casus_belli
 establish_protectorate_NI_casus_belli
 establish_protectorate_casus_belli
 status_quo
-# dismantle_factories -- no valid targets, please fix
+dismantle_factories
 take_puppet
 # acquire_vassal_core_region
-liberate_puppet
-take_capital
+liberate_puppetake_capital
 conquest_low
-negotiated_transfer
+negotiated_transfert
 }
 
 # Great War CB's
@@ -3187,9 +3186,9 @@ great_game_cb = {
 			AND = {
 				tag = AFG
 				THIS = { tag = RUS }
-				KOK = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } } 
-				KHI = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } } 
-				BUK = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } } 
+				KOK = { OR = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } } }
+				KHI = { OR = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } } }
+				BUK = { OR = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } } }
 				OR = { 
 					BDK = { OR = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } vassal_of = THIS } }
 					1208 = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } }
@@ -3866,11 +3865,13 @@ china_acquire_state = {
 				}
 				THIS = { ai = no }
 			}
-			any_owned_province = {
+			AND = {
+				any_owned_province = {
 					NOT = {	is_core = THIS }
 					is_core = CHI
 					owner = { civilized = no }
 				}
+			}
 			any_owned_province = {
 				owner = { is_culture_group = east_asian }
 				NOT = { is_core = CHI }
@@ -4451,12 +4452,13 @@ demand_concession_BC_casus_belli = {
 					region = ENG_1848
 					NOT = { is_core = ETH }
 				}
- 
-				NOT = {
-					region = ETH_1865
-					region = ETH_1859
-					region = ETH_1852
-					region = ETH_1853
+				OR = { 
+					NOT = {
+						region = ETH_1865
+						region = ETH_1859
+						region = ETH_1852
+						region = ETH_1853
+					}
 				}
 			}
 			THIS = { ai = no }
@@ -6994,108 +6996,108 @@ war_reparations = {
 		}
 	}
 }
-# Dismantle factories -- no valid targets.
-# dismantle_factories = {
-	# sprite_index = 19
-	# is_triggered_only = yes
-	# months = 12
+# Dismantle factories
+dismantle_factories = {
+	sprite_index = 19
+	is_triggered_only = yes
+	months = 12
 	
-	# construction_speed = 0.75
+	construction_speed = 0.75
 
-	# badboy_factor = 1.2
-	# prestige_factor = 2.5
-	# peace_cost_factor = 1
-	# penalty_factor = 1
+	badboy_factor = 1.2
+	prestige_factor = 2.5
+	peace_cost_factor = 1
+	penalty_factor = 1
 
-	# break_truce_prestige_factor = 1
-	# break_truce_infamy_factor = 1
-	# break_truce_militancy_factor = 1
-	# truce_months = 0
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 0
 	
-	# good_relation_prestige_factor = 1
-	# good_relation_infamy_factor = 1
-	# good_relation_militancy_factor = 1
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
 	
 	
-	# can_use = {
-		# NOT = {
-			# is_our_vassal = THIS
-			# has_country_modifier = neutrality
-		# }
-		# is_vassal = no
-		# number_of_states = 2
-		# THIS = {
-			# civilized = yes
-			# NOT = { has_country_modifier = neutrality }
-		# }
-		# OR = {
-			# war_with = THIS
-			# THIS = { NOT = { has_country_modifier = no_more_war } }
-		# }
-		# OR = {
-			# THIS = { government = fascist_dictatorship }
-			# THIS = { government = proletarian_dictatorship }
-			# THIS = { civilized = no }
-			# war_with = THIS
-			# NOT = { relation = { who = THIS value = 0 } }
-			# THIS = { ai = no }
-		# }
-	# }
+	can_use = {
+		NOT = {
+			is_our_vassal = THIS
+			has_country_modifier = neutrality
+		}
+		is_vassal = no
+		number_of_states = 2
+		THIS = {
+			civilized = yes
+			NOT = { has_country_modifier = neutrality }
+		}
+		OR = {
+			war_with = THIS
+			THIS = { NOT = { has_country_modifier = no_more_war } }
+		}
+		OR = {
+			THIS = { government = fascist_dictatorship }
+			THIS = { government = proletarian_dictatorship }
+			THIS = { civilized = no }
+			war_with = THIS
+			NOT = { relation = { who = THIS value = 0 } }
+			THIS = { ai = no }
+		}
+	}
 
-	# # THIS - us
-	# # FROM - country scope is possible match?
-	# # war target country of goal is scope
-	# allowed_countries = {
-		# FROM = { tag = CIV }
-	# }
+	# THIS - us
+	# FROM - country scope is possible match?
+	# war target country of goal is scope
+	allowed_countries = {
+		FROM = { tag = CIV }
+	}
 
-	# # THIS - us
-	# # FROM - country scope is possible match?
-	# # war target country of goal's state
-	# allowed_states = {
-		# has_building = factory
-		# NOT = {
-			# any_owned_province = { is_capital = yes }
-		# }
-		# OR = {
-			# THIS = { ai = no }
-			# any_owned_province = {
-				# any_neighbor_province = { owned_by = THIS }
-			# }
-			# THIS = { is_greater_power = yes }
-		# }
-	# }
+	# THIS - us
+	# FROM - country scope is possible match?
+	# war target country of goal's state
+	allowed_states = {
+		has_building = factory
+		NOT = {
+			any_owned_province = { is_capital = yes }
+		}
+		OR = {
+			THIS = { ai = no }
+			any_owned_province = {
+				any_neighbor_province = { owned_by = THIS }
+			}
+			THIS = { is_greater_power = yes }
+		}
+	}
 
-	# po_transfer_provinces = yes
+	po_transfer_provinces = yes
 
-	# war_name = WAR_NAME
+	war_name = WAR_NAME
 	
-	# on_add = {
-		# any_country = {
-			# limit = {
-				# exists = no
-				# has_country_flag = existing_country
-			# }
-			# clr_country_flag = existing_country
-		# }
-		# any_country = {
-			# limit = {
-				# exists = no
-				# has_country_flag = vassal_nation_cb
-			# }
-			# clr_country_flag = vassal_nation_cb
-		# }
-		# move_issue_percentage = { 
-			# from = jingoism 
-			# to = pro_military
-			# value = 0.25
-		# }
-	# }
+	on_add = {
+		any_country = {
+			limit = {
+				exists = no
+				has_country_flag = existing_country
+			}
+			clr_country_flag = existing_country
+		}
+		any_country = {
+			limit = {
+				exists = no
+				has_country_flag = vassal_nation_cb
+			}
+			clr_country_flag = vassal_nation_cb
+		}
+		move_issue_percentage = { 
+			from = jingoism 
+			to = pro_military
+			value = 0.25
+		}
+	}
 	
-	# on_po_accepted = {
-		# country_event =	2652	# Territorial Loss event
-	# }
-# }
+	on_po_accepted = {
+		country_event =	2652	# Territorial Loss event
+	}
+}
 
 take_puppet = {
 	sprite_index = 10
@@ -7444,9 +7446,15 @@ negotiated_transfer = {
 	}
 	
 	allowed_states = {
-		empty = no
+		OR = {
+			is_colonial = yes
+			is_colonial = no
+		}
 		any_owned_province = {
-            empty = no
+                     OR = {
+			is_colonial = yes
+			is_colonial = no
+                     }
 		}
 		not = { any_owned_province = { is_capital = yes } }
 	}

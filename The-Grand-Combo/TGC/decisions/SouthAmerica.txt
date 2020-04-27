@@ -1,5 +1,4 @@
 political_decisions = {
-#from SouthAmerica.txt
 	fatherland_volunteers = {
 		potential = {
 			OR = { tag = BRZ tag = KPB }
@@ -56,6 +55,68 @@ political_decisions = {
 		}
 	}
 	
+	
+	build_teresina = {
+		picture = build_teresina
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			year = 1852
+			NOT = { has_country_flag = teresina_built }
+		}
+		allow = {
+			money = 5000
+		}
+		effect = {	
+			set_country_flag = teresina_built
+			treasury = -5000
+			2426 = { change_province_name = "Teresina" }
+			2426 = {
+				add_province_modifier = { name = recently_built_city duration = 365 }
+			}
+		}
+	}
+	
+	build_belo_horizonte = {
+		picture = build_belo_horizonte
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			year = 1870
+			NOT = { has_country_flag = bh_built }
+		}
+		allow = {
+			money = 5000
+		}
+		effect = {
+			set_country_flag = bh_built
+			treasury = -5000
+			2442 = { change_province_name = "Belo Horizonte" }
+			2442 = {
+				life_rating = 4
+				trade_goods = iron
+				add_province_modifier = { name = recently_built_city duration = 365 }
+			}
+		}
+	}
+	
+	law_1420_of_general_common_education = {
+		potential = {
+			OR = {
+				tag = ARG
+				tag = ARC
+			}
+			NOT = { has_country_flag = 1420_passed }
+			NOT = { school_reforms = low_schools }
+		}
+		allow = {
+			phenomenology_n_hermeneutic = 1
+			ruling_party_ideology = conservative
+			NOT = { school_reforms = low_schools }
+		}
+		effect = {
+			social_reform = low_schools
+			set_country_flag = 1420_passed
+		}
+	}
 	
 	integrating_bahia = {
 		picture = fatherland_volunteers
@@ -139,41 +200,264 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 	
-	#Mulatto-African tension
-	mulatto_african_tension = {
-		picture = coloured_troops
+	new_life_in_the_new_world = {
+		picture = new_life
 		potential = {
-			OR = { tag = BRZ tag = KPB }
-			slavery = yes_slavery
-			NOT = {
-				has_country_flag = mulatto_tensions_flag
+			OR = {
+				is_culture_group = latin_american_cultures
+				is_culture_group = american_cultures
+				is_culture_group = african_diaspora_cultures
+				is_culture_group = native_american
+				primary_culture = australian
+				primary_culture = anglo_canadian
+				primary_culture = french_canadian
 			}
+			OR = {
+				continent = north_america
+				continent = south_america
+				primary_culture = australian
+			}
+			is_greater_power = no
+			NOT = { has_country_flag = come_to_the_new_world }
+			number_of_states = 2
+			num_of_ports = 1
 		}
+		
 		allow = {
 			war = no
-			year = 1836
-		}
-		effect = {
-			add_country_modifier = {
-				name = mulatto_modifier
-				duration = 18000
+			is_vassal = no
+			is_greater_power = no
+			state_n_government = 1
+			slavery = no_slavery
+			public_meetings = yes_meeting
+			press_rights = free_press
+			citizens_rights = all_voting_pops
+			NOT = { citizenship_policy = residency }
+			NOT = { religious_policy = moralism }
+			OR = {
+				government = democracy
+				government = hms_government
 			}
-			set_country_flag = mulatto_tensions_flag
-			any_state = {
+			money = 60000
+		}
+		
+		effect = {
+			set_country_flag = come_to_the_new_world
+			treasury = -50000
+			add_country_modifier = { name = small_immigration_boom duration = 730 }
+		}
+		
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				factor = 100
+				OR  = { tag = BRZ tag = CHL }
+			}
+		}
+	}
+	
+	brazilian_rubber_boom = {
+		picture = rubber_cycle
+		potential = {
+			OR = { tag = BRZ tag = KPB }
+			owns = 2550
+			owns = 2419
+			owns = 2532
+			owns = 2410
+			owns = 2402
+			year = 1880
+			NOT = { has_country_flag = brazilian_rubber_boom }
+		}
+	
+		allow = {
+			war = no
+			owns = 2550
+			owns = 2419
+			owns = 2532
+			owns = 2410
+			owns = 2402
+			state_n_government = 1
+			2550 = { trade_goods = rubber }
+		}
+		
+		effect = {
+			set_country_flag = brazilian_rubber_boom
+			2410 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
+			2402 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
+			2419 = { change_province_name = "Campo Grande" trade_goods = cattle }
+			2550 = { change_province_name = "Porto Velho" add_province_modifier = { name = recently_built_city duration = 150 } }
+			2532 = { change_province_name = "Boa Vista" add_province_modifier = { name = recently_built_city duration = 150 } }	
+			random_owned = { limit = { province_id = 2549 }
+				change_province_name = "Rio Branco" add_province_modifier = { name = recently_built_city duration = 100 } 
+			}
+		}
+	}
+	
+	
+	remove_central_american_cores = {
+		picture = map_central_america
+		potential = {
+			OR = {
+				tag = MEX
+				tag = UCA
+				tag = GUA
+			}
+			OR = {
+				any_owned_province = { is_core = YUC }
+				any_owned_province = { is_core = CHP }
+				any_owned_province = { is_core = LOS }
+			}
+			OR = {
+				YUC = { all_core = { owned_by = THIS is_core = THIS } }
+				CHP = { all_core = { owned_by = THIS is_core = THIS } }
+				AND = { tag = MEX 2181 = { owned_by = THIS is_core = LOS } 2182 = { owned_by = THIS is_core = LOS } }
+				AND = { OR = { tag = UCA tag = GUA } 2187 = { owned_by = THIS is_core = LOS } }
+			}
+			year = 1860
+		}
+		
+		allow = {
+			war = no
+			is_vassal = no
+			invention = manifest_destiny
+			NOT = { rebel_power_fraction = 50 }
+			NOT = { num_of_revolts = 1 }
+			NOT = { any_owned_province = { country_units_in_province = REB } }
+			OR = {
+				money = 10000
+				ai = yes
+			}
+		}
+		
+		effect = {
+			random_owned = { limit = { owner = { ai = no } } owner = { treasury = -10000 } }
+			
+			random_owned = {
+				limit = { YUC = { all_core = { owned_by = THIS is_core = THIS } } }
+				owner = { YUC = { all_core = { any_pop = { consciousness = 4 militancy = 1 } remove_core = YUC } } }
+			}
+			random_owned = {
+				limit = { CHP = { all_core = { owned_by = THIS is_core = THIS } } }
+				owner = { CHP = { all_core = { any_pop = { consciousness = 4 militancy = 1 } remove_core = CHP } } }
+			}
+			random_owned = {
 				limit = {
-					is_slave = yes
-				}
-				any_pop = {
-					limit = {
-						type = slaves
+					owner = { 
+						tag = MEX
+						OR = {
+							2181 = { owned_by = THIS is_core = THIS is_core = LOS }
+							2182 = { owned_by = THIS is_core = THIS is_core = LOS }
 						}
-					militancy = -5
+					}
+				}
+				owner = {
+					any_owned = {
+						limit = { OR = { province_id = 2181 province_id = 2182 } }
+						any_pop = { consciousness = 4 militancy = 1 } remove_core = LOS
 					}
 				}
 			}
+			random_owned = {
+				limit = { owner = { OR = { tag = UCA tag = GUA } 2187 = { owned_by = THIS is_core = LOS } } }
+				owner = { 2187 = { remove_core = LOS any_pop = { consciousness = 4 militancy = 1 } } }
+			}
+			
+			random_owned = {
+				limit = { 
+					owner = { 
+						NOT = { primary_culture = central_american } owns = 2182 2182 = { is_core = GUA is_core = THIS } GUA = { ai = yes } 
+					}
+				}
+				2182 = { remove_core = GUA }
+			}
 		}
-
-
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+	commodity_boom_colombia = {
+		picture = coffee_in_colombia
+		potential = {
+			OR = {
+				owns = 2247
+				owns = 2279
+				owns = 2295
+			}
+			NOT = { has_global_flag = rgo_change_sa }
+		}
+		
+		allow = {
+			war = no
+			OR = {
+				year = 1890
+				modern_central_bank_system = 1
+			}
+		}
+		
+		effect = {
+			set_global_flag = rgo_change_sa
+			#Colombia
+			2253 = { trade_goods = coffee }
+			2254 = { trade_goods = coffee }
+			2256 = { trade_goods = coffee }
+			2248 = { trade_goods = coffee }
+			2250 = { trade_goods = coffee }
+			2247 = { trade_goods = coffee }
+			2260 = { trade_goods = cattle }
+			2261 = { trade_goods = cattle }
+			2257 = { trade_goods = tobacco }
+			2258 = { trade_goods = tobacco }
+			2255 = { trade_goods = tobacco }
+			#Peru
+			2302 = { trade_goods = coffee }
+			2292 = { trade_goods = coffee }
+			2297 = { trade_goods = coffee }
+			#Ecuador
+			2279 = { trade_goods = coffee }
+			2280 = { trade_goods = coffee }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+	commodity_boom_central_america = {
+		picture = coffee_in_colombia
+		potential = {
+			OR = {
+				owns = 2201
+				owns = 2193
+				owns = 2186
+				owns = 2172
+			}
+			NOT = { has_global_flag = rgo_change_central_america }
+		}
+		
+		allow = {
+			war = no
+			OR = {
+				year = 1890
+				modern_central_bank_system = 1
+			}
+		}
+		
+		effect = {
+			set_global_flag = rgo_change_central_america
+			#FRCA
+			2201 = { trade_goods = coffee }
+			2193 = { trade_goods = coffee }
+			2194 = { trade_goods = coffee }
+			2188 = { trade_goods = coffee }
+			#Mexico
+			2172 = { trade_goods = coffee }
+			2180 = { trade_goods = coffee }
+			2168 = { trade_goods = coffee }
+			2169 = { trade_goods = coffee }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
 	
 	
 	treaty_of_bogota = {
@@ -250,1380 +534,158 @@ political_decisions = {
 		}
 	}
 	
-#from new_south_america_dcs.txt
-	treaty_of_bogota2 = {
-		picture = colombia_map
+	spu_applies_for_statehood = {
 		potential = {
-			OR = { tag = BRZ tag = KPB }
-			NOT = { has_country_flag = treaty_of_bogota2 }
+			tag = SPU
+			neighbour = PEU
+			exists = yes
+			ai = yes
+		}
+		
+		allow = {
+			war = no
 			OR = {
+				vassal_of = PEU
 				is_vassal = no
-				overlord = { NOT = { primary_culture = north_andean } }
 			}
-			NOT = { owns = 3295 }
-			owns = 2403
-			owns = 2407
-		}
-		
-		allow = {
-			war = no
-			3295 = { owner = { NOT = { truce_with = THIS } } }
-			OR = {
-				year = 1908
-				mass_politics = 1
-			}
+			PEU = { war = no }
 		}
 		
 		effect = {
-			set_country_flag = treaty_of_bogota2
-			3295 = { owner = { country_event = 34628 } }
+			annex_to = PEU
 		}
 		
 		ai_will_do = { factor = 1 }
 	}
-#from Irridentism.txt
-
-	claim_santa_catarina = {
-	picture = claim_santa_catarina
+	
+	
+	chile_treaty_of_peace_and_friendship = {
+		picture = chile_bolivia_peru_borders
 		potential = {
-			tag = RGS
-			NOT = { has_country_flag = claim_santa_catarina }
-		}
-
-		allow = {
-			war = no
-			is_vassal = no
-			prestige = 45
-		}
-
-		effect = {
-			set_country_flag = claim_santa_catarina
-			badboy = 5
-			2461 = { #Desterro
-				add_core = RGS
-			}
-			2462 = { #Sao Miguel
-				add_core = RGS
-			}
-			2459 = { #Lajes
-				add_core = RGS
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-		}
-	}		
-
-	provincia_cisplatina = {
-		picture = banda_oriental
-		potential = {
-			tag = BRZ
-			NOT = { has_country_flag = cisplatina_is_ours }
 			OR = {
-				government = absolute_monarchy
-				government = fascist_dictatorship
+				tag = CHL
+				tag = SPU
+				tag = PBC
+				tag = BOL
 			}
-		}
-		
-		allow = {
-			war = no
-			nationalism_n_imperialism = 1
-			romanticism = 1
-			is_greater_power = yes
+			owns = 2308
+			owns = 2307
+			owns = 2309
+			owns = 2305
+			NOT = { has_country_flag = tacna_arica_compromise }
 			OR = {
-				government = fascist_dictatorship
 				AND = {
-					government = absolute_monarchy
-					war_policy = jingoism
-				}
-			}
-		}
-		
-		effect = {
-			set_country_flag = cisplatina_is_ours #Uruguay provinces
-			badboy = 10
-			2344 = {
-				add_core = BRZ
-			}
-			2345 = {
-				add_core = BRZ
-			}
-			2346 = {
-				add_core = BRZ
-			}
-			2347 = {
-				add_core = BRZ
-			}
-
-		}
-
-		ai_will_do = {
-			factor = 0
-		}
-	}
-
-	rio_da_prata = {
-		picture = rhodesia_charter
-		potential = {
-			tag = BRZ
-			NOT = { has_country_flag = prata_is_ours }
-			government = fascist_dictatorship
-		}
-		
-		allow = {
-			has_country_flag = cisplatina_is_ours
-			nationalism_n_imperialism = 1
-			is_greater_power = yes
-		}
-		
-		effect = {
-			set_country_flag = prata_is_ours 
-			badboy = 10
-			2554 = { #posadas
-				add_core = BRZ
-			}
-			2358= { #santo tomas
-				add_core = BRZ
-			}
-			2357 = { #curuzu
-				add_core = BRZ
-			}
-			2356 = { #corrientes
-				add_core = BRZ
-			}
-			2359 = { #colon
-				add_core = BRZ
-			}
-			2360 = { #parana
-				add_core = BRZ
-			}
-
-		}
-
-		ai_will_do = {
-			factor = 0
-		}
-	}
-	
-	total_war_in_rio_grande_sul = {
-		alert = yes
-		picture = begin_line_of_advantage
-		potential = {
-			NOT = { has_country_modifier = small_country_draft }
-			NOT = { has_country_flag = rgs_draft_happened }
-			tag = RGS
-		}
-		
-		allow = {
-			war_with = BRZ
-		}
-		
-		effect = {
-			iron = 10
-			wool = 10
-			timber = 25
-			small_arms = 10
-			leadership = 20
-			add_country_modifier = {
-				name = small_country_draft
-				duration = 30
-			}
-			set_country_flag = rgs_draft_happened 
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-#from FlavourMod_Brazil.txt
-	minas_gerais = {
-		picture = "minas_gerais"
-		potential = {
-			OR = { tag = BRZ tag = KPB }
-			year = 1900
-			NOT = {
-				has_country_flag = minas_gerais_ordered
-			}
-			relation = { who = ENG value = 100 }
-			any_greater_power = {
-				invention = dreadnoughts
-			}
-		}
-		
-		allow = {
-			NOT = { average_militancy = 3 }
-			money = 15000
-		}
-		
-		effect = {
-			2447 = {
-				sub_unit = {
-					type = dreadnought
-					value = current
-				}
-				sub_unit = {
-					type = dreadnought
-					value = current
-				}
-			}
-			prestige = 15
-			treasury = -15000
-			any_neighbor_country = {
-				limit = { 
-					capital_scope = { continent = south_america }
-				}
-				
-				relation = {
-					who = THIS
-					value = -50
-				}
-			}
-			set_country_flag = minas_gerais_ordered
-		}
-	}
-#from Setup.txt	
-	BRZ_1836_setup = {
-		picture = constantinople
-		potential = {
-			tag = BRZ
-			always = no
-		}
-		
-		allow = {
-			tag = BRZ
-		}
-		
-		effect = {
-			any_pop = { limit = { has_pop_culture = french } literacy = 0.4 }
-			2435 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.11 } }
-			BRZ_2462 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } }
-			2457 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.02 } }
-			BRZ_2408 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.02 } }
-			2410 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.06 } }
-			2448 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.02 } }
-			2447 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } }
-			2463 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.01 } }
-			2424 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.02 } }
-			2450 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.03 } }
-			2459 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.01 } }
-			2462 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.01 } }
-			BRZ_2421 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
-			BRZ_2446 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
-			2434 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
-			BRZ_2401 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.03 } }
-			2449 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.04 } }
-			2428 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.05 } }
-			2429 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.05 } }
-			2430 = { any_pop = { limit = { is_primary_culture = yes } literacy = -0.07 } }
-			
-			any_pop = {
-				limit = {
-					is_primary_culture = yes 
-					location = { 
+					tag = CHL
+					any_neighbor_country = {
 						OR = {
-							province_id = 2419
-							province_id = 2436
-							province_id = 2439
-							province_id = 2426
+							tag = BOL
+							tag = PEU
+							tag = PBC
 						}
 					}
 				}
-				literacy = 0.01
-			}
-			add_country_modifier = {
-				name = america_new_world
-				duration = 10950
-			}
-			add_country_modifier = {
-				name = global_baby_boom
-				duration = 2190
-			}
-		}
-	}
-#from ARG_hist.txt
-	conquest_of_the_desert = {
-		picture = conquest_of_the_desert
-		potential = {
-			OR = {
-				tag = ARG
-				tag = ARC
-				tag = LPL
-				tag = CHL
-				tag = VLP
-				tag = CGC
 				AND = {
-					tag = SBA
-					is_vassal = no
-					is_greater_power = yes
+					tag = PEU
+					any_neighbor_country = {
+						OR = {
+							tag = BOL
+							tag = CHL
+							tag = PBC
+						}
+					}
 				}
-			}
-			
-			OR = {
-				2391 = { empty = yes }
-				2392 = { empty = yes }
-				2394 = { empty = yes }
-				2353 = { empty = yes }
-				2393 = { empty = yes }
-				2395 = { empty = yes }
-				}
-		OR = {
-			owns = 2350 #azul
-			owns = 2381 #rio cuarto
-			}
-			NOT = { has_country_flag = conquest_of_the_desert }
-		}
-		allow = {
-			war = no
-			OR = {
-				is_greater_power = yes
-				nationalism_n_imperialism = 1
-				year = 1863
-			}
-		}
-		effect = {
-			set_country_flag = conquest_of_the_desert
-			prestige = 2
-			random_owned = {
-				limit = {
-					2390 = { empty = yes }
-					2389 = { empty = no }
-					2383 = { empty = no }
-				}
-				2390 = {
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-			
-			random_owned = {
-				limit = {
-					2384 = { empty = yes }
-					2381 = { empty = no }
-					2363 = { empty = no }
-				}
-				2384 = {
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-			
-			random_owned = {
-				limit = {
-					2382 = { empty = yes }
-					2381 = { empty = no }
-					2383 = { empty = no }
-				}
-				2382 = { 
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-			
-			random_owned = {
-				limit = {
-					2353 = { empty = yes }
-					2354 = { empty = no }
-					2350 = { empty = no }
-				}
-				2353 = { secede_province = THIS add_core = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					2393 = { empty = yes }
-					2353 = { empty = no }
-					2354 = { empty = no }
-				}
-				2393 = { secede_province = THIS add_core = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					2395 = { empty = yes }
-					2393 = { empty = no }
-				}
-				2395 = { secede_province = THIS add_core = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					2394 = { empty = yes }
-					2392 = { empty = no }
-					2391 = { empty = no }
-				}
-				2394 = { secede_province = THIS add_core = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					2392 = { empty = yes }
-					2391 = { empty = no }
-				}
-				2392 = { secede_province = THIS add_core = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					2391 = { empty = yes }
-				}
-				2391 = { secede_province = THIS add_core = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	conquest_of_the_chaco = {
-		picture = conquest_of_the_chaco
-		potential = {
-			OR = {
-				tag = ARG
-				tag = ARC
-				tag = LPL
-				tag = PRG
-				tag = CHL
-				tag = CGC
-				tag = VLP
-			}
-			OR = {
-				2362 = { empty = yes }
-				2364 = { empty = yes }
-				2365 = { empty = yes }
-				2372 = { empty = yes }
-				2377 = { empty = yes }
-			}
-			OR = {
-				owns = 2356 #Corrientes
-				owns = 2361	#Sancti Spiritu
-			}
-			NOT = { has_country_flag = conquest_of_the_chaco }
-		}
-		allow = {
-			war = no
-			OR = {
-				is_greater_power = yes
-				nationalism_n_imperialism = 1
-				year = 1865
-			}
-		}
-		effect = {
-			set_country_flag = conquest_of_the_chaco
-			prestige = 3
-			random_owned = {
-				limit = {
-					2362 = { empty = yes }
-					2361 = { empty = no }
-					2356 = { empty = no }
-				}
-				2362 = { 
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-			random_owned = {
-				limit = {
-					2364 = { empty = yes }
-					2362 = { empty = no }
-					2356 = { empty = no }
-				}
-				2364 = { 
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-				
-			random_owned = {
-				limit = {
-					2365 = { empty = yes }
-					2362 = { empty = no }
-					2364 = { empty = no }
-				}
-				2365 = { 
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-				
-			random_owned = {
-				limit = {
-					2377 = { empty = yes }
-					2362 = { empty = no }
-					2365 = { empty = no }
-				}
-				2377 = { 
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-				
-			random_owned = {
-				limit = {
-					2372 = { empty = yes }
-					2377 = { empty = no }
-					2365 = { empty = no }
-				}
-				2372 = { 
-					secede_province = THIS
-					add_core = THIS
-					life_rating = 20
-					any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
-				}
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-
-	argentina_chile_border_treaty = {
-		picture = argentina_chile_border_treaty
-		potential = {
-			OR = {
-				tag = ARG
-				tag = ARC
-				tag = LPL
-			}
-			has_country_flag = conquest_of_the_desert
-			CHL = {
-				exists = yes
-				has_country_flag = occupation_of_araucania
-			}
-			any_owned_province = {
-				OR = {
-					region = ARG_2391
-					region = ARG_2398
-				}
-			}
-			NOT = { has_country_flag = argentina_chile_border_treaty }
-			2332 = { empty = no }
-			2333 = { empty = no }
-			2334 = { empty = no }
-			2335 = { empty = no }
-			2391 = { empty = no }
-			2392 = { empty = no }
-			2394 = { empty = no }
-			2396 = { empty = no }
-			2397 = { empty = no }
-			2398 = { empty = no }
-			2399 = { empty = no }
-			2400 = { empty = no }
-		}
-		
-		allow = {
-			war = no
-			CHL = {
-				war = no
-				NOT = { truce_with = THIS }
-			}
-		}
-		
-		effect = {
-			set_country_flag = argentina_chile_border_treaty
-			ARG_2391 = { add_core = THIS }
-			ARG_2398 = { add_core = THIS }
-			CHL = { country_event = 97090 }
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	
-	entre_rios_independent = {
-		picture = entre_rios_independent
-		potential = {
-			tag = ENT
-			exists = yes
-			has_global_flag = entre_rios_rebellion
-			NOT = { has_country_flag = called_for_recruits }
-		}
-		
-		allow = {
-			OR = {
-				war_with = ARG
-				war_with = ARC
-				}
-			NOT = { has_country_modifier = small_country_draft }
-		}
-		
-		effect = {
-			set_country_flag = called_for_recruits
-			money = 50000
-			add_country_modifier = {
-				name = small_country_draft
-				duration = 365
-			}
-			
-			ARC = {
-				any_pop = {
-					scaled_militancy = {
-						ideology = liberal
-						factor = 6
+				AND = {
+					tag = BOL
+					any_neighbor_country = {
+						OR = {
+							tag = CHL
+							tag = PEU
+							tag = PBC
+						}
 					}
 				}
 			}
-					
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	
-	make_buenos_aires_capital = {
-		picture = buenos_aires_capital
-		potential = {
-			OR = {
-				tag = ARC
-				tag = ARG
-				tag = VLP
-			}
-			owns = 2348
-			2348 = { is_capital = no }
-			year = 1860
-			ENT = { exists = no }
-			CRT = { exists = no }
-			SBA = { exists = no }
 		}
 		
 		allow = {
 			war = no
-			owns = 2348
-			2348 = { is_capital = no }
-		}
-		
-		effect = {
-			all_core = { remove_core = ENT }
-			all_core = { remove_core = CRT }
-			all_core = { remove_core = SBA }
-			capital = 2348
-			2348 = { rich_strata = { militancy = -4 } middle_strata = { militancy = -2 } poor_strata = { militancy = -1 } }
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-	create_argentina = {
-		picture = argentina_chile_border_treaty
-		potential = {
-			is_greater_power = yes
-			NOT = {
-				primary_culture = platinean
-				OR = {
-					tag = ARC
-					tag = ARG
-					tag = LPL
+			all_core = { owned_by = THIS }
+			OR = {
+				mass_politics = 1
+				sphere_owner = { mass_politics = 1 }
+				year = 1925
+			}
+			OR = {
+				2308 = {
+					owned_by = THIS
+					any_core = { NOT = { tag = THIS } }
+				}
+				2307 = {
+					owned_by = THIS
+					any_core = { NOT = { tag = THIS } }
+				}
+				2309 = {
+					owned_by = THIS
+					any_core = { NOT = { tag = THIS } }
+				}
+				2305 = {
+					owned_by = THIS
+					any_core = { NOT = { tag = THIS } }
 				}
 			}
-			OR = {
-				ENT = { exists = yes is_vassal = no ai = yes in_sphere = THIS }
-				CRT = { exists = yes is_vassal = no ai = yes in_sphere = THIS }
-				SBA = { exists = yes is_vassal = no ai = yes in_sphere = THIS }
-			}
 		}
 		
-		allow = {
-			war = no
-			is_greater_power = yes
-			nationalism_n_imperialism = 1
-			OR = {
-				ENT = { exists = yes is_vassal = no ai = yes in_sphere = THIS war = no }
-				CRT = { exists = yes is_vassal = no ai = yes in_sphere = THIS war = no }
-				SBA = { exists = yes is_vassal = no ai = yes in_sphere = THIS war = no }
-			}
-			OR = {
-				ARC = { exists = yes in_sphere = THIS }
-				ARG = { exists = yes in_sphere = THIS }
-				LPL = { exists = yes in_sphere = THIS }
-			}
-		}
-
 		effect = {
-			prestige = 2
+			set_country_flag = tacna_arica_compromise
 			any_country = {
 				limit = {
 					exists = yes
+					NOT = { tag = THIS }
+					OR = { 
+						tag = BOL
+						tag = PBC
+						tag = CHL
+					}
 					OR = {
-						tag = CRT
-						tag = ENT
-						tag = SBA
+						2309 = { is_core = THIS }
+						2305 = { is_core = THIS }
 					}
-					ai = yes
-					in_sphere = THIS
 				}
-				annex_to = THIS
+				set_country_flag = treaty_of_peace_and_friendship_bolivia
+				country_event = 46610102
 			}
 			
-			random_country = {
+			any_country = {
 				limit = {
 					exists = yes
+					NOT = { tag = THIS }
 					OR = {
-						tag = ARC
-						tag = ARG
-						tag = LPL
+						tag = CHL
+						tag = PEU
+						tag = PBC
 					}
-					ai = yes
-					in_sphere = THIS
-				}
-				country_event = 97091
-			}
-			
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-	claim_argentina_chaco = {
-		picture = conquest_of_the_chaco
-		potential = {
-			OR = {
-				tag = ARC
-				tag = ARG
-				tag = LPL
-			}
-			NOT = { has_country_flag = claimed_argentinian_chaco }
-			2362 = { empty = no }
-			2377 = { empty = no }
-			2364 = { empty = no }
-			2365 = { empty = no }
-			2372 = { empty = no }
-			2366 = { empty = no }
-			2367 = { empty = no }
-		}
-		
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_country_flag = claimed_argentinian_chaco
-			2362 = { add_core = THIS }
-			2377 = { add_core = THIS }
-			2364 = { add_core = THIS }
-			2365 = { add_core = THIS }
-			2372 = { add_core = THIS }
-			2366 = { add_core = THIS }
-			2367 = { add_core = THIS }
-			2554 = { add_core = THIS }
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-	found_la_plata = {
-		picture = la_plata_foundation
-		potential = {
-			primary_culture = platinean
-			NOT = { has_global_flag = la_plata_founded }
-			owns = 2351
-			capital = 2348
-			realism = 1
-		}
-		
-		allow = {
-			war = no
-			money = 5000
-			analytic_philosophy = 1
-		}
-
-		effect = {
-			set_global_flag = la_plata_founded
-			treasury = -5000
-			2351 = { change_province_name = "La Plata" }
-			2351 = {
-				add_province_modifier = {
-					name = recently_built_city
-					duration = 365
-				}
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-	take_corrients = {
-		picture = la_plata_foundation
-		potential = {
-			tag = ENT
-			NOT = { has_country_flag = corrientes_conquered }
-			NOT = { exists = CRT }
-			OR = {
-				ARC = { owns = 2356 }
-				ENT = { owns = 2356 }
-			}
-		}
-		
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_country_flag = corrientes_conquered
-			ARC = {
-				any_owned = {
-					limit = { is_core = CRT }
-					secede_province = ENT
-					add_core = ENT
-				} 
-			}
-			CRT = { all_core = { remove_core = CRT } }
-		}
-		ai_will_do = { factor = 1 }
-	}
-#from SouthAmerica.txt
-
-	law_1420_of_general_common_education = {
-		potential = {
-			OR = {
-				tag = ARG
-				tag = ARC
-			}
-			NOT = { has_country_flag = 1420_passed }
-			NOT = { school_reforms = low_schools }
-		}
-		allow = {
-			phenomenology_n_hermeneutic = 1
-			ruling_party_ideology = conservative
-			NOT = { school_reforms = low_schools }
-		}
-		effect = {
-			social_reform = low_schools
-			set_country_flag = 1420_passed
-		}
-	}
-#from Patagonia.txt
-	# conquest_of_the_desert = {
-		# picture = conquest_of_the_desert
-		# potential = {
-			# OR = {
-				# tag = ARG
-				# tag = LPL
-			# }
-			# OR = {
-				# 2391 = { empty = yes }
-				# 2392 = { empty = yes }
-				# 2394 = { empty = yes }
-			# }
-			# owns = 2395
-			# NOT = { has_country_flag = conquest_of_the_desert }
-		# }
-		# allow = {
-			# war = no
-			# OR = {
-				# is_greater_power = yes
-				# nationalism_n_imperialism = 1
-				# year = 1870
-			# }
-		# }
-		# effect = {
-			# set_country_flag = conquest_of_the_desert
-			# prestige = 5
-			# random_owned = {
-				# limit = {
-					# 2394 = { empty = yes }
-					# 2392 = { empty = no }
-					# 2391 = { empty = no }
-				# }
-				# 2394 = { secede_province = THIS }
-			# }
-			# random_owned = {
-				# limit = {
-					# 2392 = { empty = yes }
-					# 2391 = { empty = no }
-				# }
-				# 2392 = { secede_province = THIS }
-			# }
-			# random_owned = {
-				# limit = {
-					# 2391 = { empty = yes }
-				# }
-				# 2391 = { secede_province = THIS }
-			# }
-		# }
-		# ai_will_do = {
-			# factor = 1
-		# }
-	# }
-
-	# argentina_chile_border_treaty = {
-		# picture = argentina_chile_border_treaty
-		# potential = {
-			# OR = {
-				# tag = ARG
-				# tag = LPL
-			# }
-			# has_country_flag = conquest_of_the_desert
-			# any_neighbor_country = {
-				# exists = yes
-				# has_country_flag = occupation_of_araucania
-			# }
-			# any_owned_province = {
-				# OR = {
-					# region = ARG_2391
-					# region = ARG_2398
-				# }
-			# }
-			# NOT = { has_country_flag = argentina_chile_border_treaty }
-			# 2332 = { empty = no }
-			# 2333 = { empty = no }
-			# 2334 = { empty = no }
-			# 2335 = { empty = no }
-			# 2391 = { empty = no }
-			# 2392 = { empty = no }
-			# 2394 = { empty = no }
-			# 2396 = { empty = no }
-			# 2397 = { empty = no }
-			# 2398 = { empty = no }
-			# 2399 = { empty = no }
-			# 2400 = { empty = no }
-		# }
-		
-		# allow = {
-			# war = no
-			# any_neighbor_country = {
-				# exists = yes
-				# has_country_flag = occupation_of_araucania
-				# war = no
-				# NOT = { truce_with = THIS }
-			# }
-		# }
-		
-		# effect = {
-			# set_country_flag = argentina_chile_border_treaty
-			# ARG_2391 = { add_core = THIS }
-			# ARG_2398 = { add_core = THIS }
-			# random_country = {
-				# limit = {
-					# exists = yes
-					# has_country_flag = occupation_of_araucania
-				# }
-				# country_event = 97090
-			# }
-		# }
-		
-		# ai_will_do = {
-			# factor = 1
-		# }
-	# }
-	
-	# entre_rios_independent = {
-		# potential = {
-			# tag = ENT
-			# exists = yes
-			# has_global_flag = entre_rios_rebellion
-			# NOT = { has_country_flag = called_for_recruits }
-		# }
-		
-		# allow = {
-			# war_with = ARG
-			# NOT = { has_country_modifier = small_country_draft }
-		# }
-		
-		# effect = {
-			# set_country_flag = called_for_recruits
-			# money = 50000
-			# add_country_modifier = {
-				# name = small_country_draft
-				# duration = 365
-			# }
-			# define_general = {
-				# name = "Justo José de Urquiza"
-				# personality = intelligent
-				# background = school_of_the_bayonet
-			# }
-			# ARG = {
-				# any_pop = {
-					# scaled_militancy = {
-						# ideology = liberal
-						# factor = 6
-					# }
-				# }
-			# }
-					
-		# }
-		
-		# ai_will_do = {
-			# factor = 1
-		# }
-	# }
-	
-	annex_buenos_aires = {
-		picture = buenos_aires
-		potential = {
-			tag = ARG
-			SBA = {
-				vassal_of = THIS
-				ai = yes
-			}
-			has_country_flag = entre_rios_has_happened
-			NOT = {
-				has_country_flag = buenos_aires_rebellion
-				has_country_flag = buenos_aires_has_happened
-			}
-		}
-		
-		allow = {
-			war = no
-			SBA = { war = no }
-			relation = {
-				who = SBA
-				value = 200
-			}
-		}
-		
-		effect = {
-			set_country_flag = buenos_aires_has_happened
-			prestige = 5
-			inherit = SBA
-			capital = 2348
-			SBA = {
-				all_core = { remove_core = SBA }
-			}
-			nationalvalue = nv_liberty
-			add_country_modifier = {
-				name = national_confusion
-				duration = 3650
-			}
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}	
-	
-#from La Plata.txt
-	banda_oriental = {
-	picture = banda_oriental
-		potential = {
-			tag = ARG
-			NOT = {
-				has_country_flag = banda_oriental_is_ours
-			}
-		}
-		
-		allow = {
-			romanticism = 1
-			is_greater_power = yes
-		}
-		
-		effect = {
-			badboy = 10
-			set_country_flag = banda_oriental_is_ours #Uruguay provinces
-			2344 = {
-				add_core = ARG
-			}
-			2345 = {
-				add_core = ARG
-			}
-			2346 = {
-				add_core = ARG
-			}
-			2347 = {
-				add_core = ARG
-			}
-
-		}
-
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	our_brothers_the_gauchos = {
-	picture = our_brothers_the_gauchos
-		potential = {
-			OR = {
-				tag = ARG
-				tag = LPL
-			}
-			NOT = { has_country_flag = rio_grande_del_sur_is_ours }
-			has_country_flag = banda_oriental_is_ours
-		}
-		
-		allow = { 
-			nationalism_n_imperialism = 1
-			is_greater_power = yes
-		}
-		
-		effect = {
-			set_country_flag = rio_grande_del_sur_is_ours
-			badboy = 5
-			2463 = { 
-				add_core = THIS
-			}
-			2464 = { 
-				add_core = THIS
-			}
-			2465 = { 
-				add_core = THIS
-			}
-			2466 = { 
-				add_core = THIS
-			}
-			2467 = { 
-				add_core = THIS
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-		}
-	}
-#from Setup.txt
-	ARC_1836_setup = {
-		picture = constantinople
-		potential = {
-			tag = ARC
-			always = no
-		}
-		
-		allow = {
-			tag = ARC
-		}
-		
-		effect = {
-			add_country_modifier = {
-				name = america_new_world
-				duration = 3650
-			}
-			PBC = {
-				add_country_modifier = {
-					name = america_new_world
-					duration = 1095
-				}
-			}
-			MEX = {
-				add_country_modifier = {
-					name = america_new_world
-					duration = 5475
-				}
-			}
-			CHL = {
-				add_country_modifier = {
-					name = america_new_world
-					duration = 5475
-				}
-			}
-			TEX = {
-				add_country_modifier = {
-					name = america_new_world
-					duration = 5475
-				}
-			}
-		}
-	}
-	unite_la_plata = {
-		picture = unite_la_plata
-		potential = {
-			primary_culture = platinean
-			NOT = { exists = LPL }
-		}
-		
-		allow = {
-			war = no
-			prestige = 50
-			nationalism_n_imperialism = 1
-		PRG = {
-				OR = {
-					in_sphere = THIS
-					vassal_of = THIS
-					all_core = {
-						OR = {
-							owned_by = THIS
-							owner = { in_sphere = THIS }
-							province_id = 2420
-						}
-					}
-				}
-			}
-			URU = {
-				OR = {
-					in_sphere = THIS
-					vassal_of = THIS
-					all_core = {
-						OR = {
-							owned_by = THIS
-							owner = { in_sphere = THIS }
-						}
-					}
-				}
-			}	
-			
-		OR = {
-			ARG = {
-			exists = yes
-				OR = {
-					in_sphere = THIS
-					vassal_of = THIS
-					all_core = {
-						OR = {
-							owned_by = THIS
-							owner = { in_sphere = THIS }
-							province_id = 2131
-						}
-					}
-				}
-			}
-			
-			ARC = {
-			exists = yes
-				OR = {
-					in_sphere = THIS
-					vassal_of = THIS
-					all_core = {
-						OR = {
-							owned_by = THIS
-							owner = { in_sphere = THIS }
-							province_id = 2131
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		effect = {
-			prestige = 30
-			badboy = 10
-			random_country = {
-				limit = {
-					exists = yes
 					OR = {
-						tag = ARG
-						tag = ARC
-						}
+						2308 = { is_core = THIS }
+						2307 = { is_core = THIS }
 					}
-					all_core = { add_core = LPL }
-			}
-			PRG = { all_core = { add_core = LPL } }
-			URU = { all_core = { add_core = LPL } }
-			BOL = { all_core = { add_core = LPL } }
-			change_tag = LPL
-			random_country = {
-				limit = {
-					tag = ARG
-					exists = yes
-					ai = yes
 				}
-				THIS = { inherit = ARG }
-			}
-			random_country = {
-				limit = {
-					tag = ARG
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
+				set_country_flag = treaty_of_lima_1929
+				country_event = 46610102
 			}
 			
-			random_country = {
+			random_owned = {
 				limit = {
-					tag = ARC
-					exists = yes
-					ai = yes
+					owner = {
+						tag = CHL
+						owns = 2578
+						neighbour = PEU
+					} 
 				}
-				THIS = { inherit = ARC }
-			}
-			random_country = {
-				limit = {
-					tag = ARC
-					exists = yes
-					ai = no
+				random_country = { 
+					limit = { is_greater_power = yes has_country_flag = new_world_nation NOT = { tag = THIS } }
+					country_event = 46610103
 				}
-				country_event = 98650
 			}
-			
-			random_country = {
-				limit = {
-					tag = ENT
-					exists = yes
-					ai = yes
-				}
-				THIS = { inherit = ENT }
-			}
-			random_country = {
-				limit = {
-					tag = ENT
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
-			}
-			
-			random_country = {
-				limit = {
-					tag = CRT
-					exists = yes
-					ai = yes
-				}
-				THIS = { inherit = CRT }
-			}
-			random_country = {
-				limit = {
-					tag = CRT
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
-			}
-			
-			random_country = {
-				limit = {
-					tag = SBA
-					exists = yes
-					ai = yes
-				}
-				THIS = { inherit = SBA }
-			}
-			random_country = {
-				limit = {
-					tag = SBA
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
-			}
-			
-			
-			random_country = {
-				limit = {
-					tag = PRG
-					exists = yes
-					ai = yes
-				}
-				THIS = { inherit = PRG }
-			}
-			random_country = {
-				limit = {
-					tag = PRG
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
-			}
-			random_country = {
-				limit = {
-					tag = URU
-					exists = yes
-					ai = yes
-				}
-				THIS = { inherit = URU }
-			}
-			random_country = {
-				limit = {
-					tag = URU
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
-			}
-			916 = { remove_core = LPL }
-			2305 = { remove_core = LPL }
-			2309 = { remove_core = LPL }
-			2420 = { remove_core = LPL }
 		}
 		
 		ai_will_do = { factor = 1 }
