@@ -1,0 +1,616 @@
+political_decisions = {
+#from CommunistDecisions.txt
+	agrarian_reform_communist = {
+		potential = {
+				government = proletarian_dictatorship
+				has_country_modifier = maoist
+				
+			NOT = {
+
+				has_country_modifier = agrarian_reform_beginning
+				has_country_modifier = agrarian_reform
+			}
+		}
+		
+		allow = {
+		}
+
+		effect = {
+			add_country_modifier = {
+				name = agrarian_reform_beginning
+				duration = -1
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	industrialization_communist = {
+		potential = {
+				has_country_modifier = 3rd_international
+				government = proletarian_dictatorship
+
+			NOT = {
+				
+				has_country_modifier = industrial_reform
+			}
+		}
+	
+		allow = {
+		}
+		
+		effect = {
+
+			add_country_modifier = {
+				name = industrial_reform
+				duration = -1
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	remove_fifth_pillar = {
+		potential = {
+			government = proletarian_dictatorship
+			has_country_modifier = 3rd_international
+			
+			NOT = {
+				has_country_flag = removed_fifth_pillar
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			any_pop = {
+				limit = {
+					OR = {
+						strata = rich
+						pop_majority_ideology = reactionary
+						pop_majority_ideology = fascist
+					}
+				}
+				reduce_pop = 0.45
+				militancy = 15
+			}
+			badboy = 10
+
+			set_country_flag = removed_fifth_pillar
+			
+			duration = -1
+		}
+	}
+	communist_propaganda = {
+		potential = {
+			government = proletarian_dictatorship
+			NOT = {
+				has_country_flag = communist_propaganda
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = communist_propaganda
+			any_pop = {
+				ideology = {
+					value = communist
+					factor = 0.1
+				}
+				scaled_militancy = {
+					ideology = fascist
+					factor = 2
+				}
+				scaled_militancy = {
+					ideology = reactionary
+					factor = 5
+				}
+				scaled_militancy = {
+					ideology = communist
+					factor = -3
+				}
+				scaled_consciousness = {
+					ideology = communist
+					factor = 2
+				}	
+			}
+		}
+
+	}
+	mass_line = {
+		potential = {
+			government = proletarian_dictatorship
+			has_country_modifier = maoist
+			invention = mass_line
+
+			NOT = {
+				has_country_modifier = mass_line
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			add_country_modifier = {
+				name = mass_line
+				duration = -1
+			}
+		}
+	}
+	chart_our_own_course = {
+		potential = {
+			government = proletarian_dictatorship
+			ai = no
+			NOT = {
+				has_country_flag = chart_own_course
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = chart_own_course
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	remove_landlords = {
+		potential = {
+			government = proletarian_dictatorship
+			NOT = {
+				has_country_flag = killlandlords
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			any_pop = {
+				limit = {
+					type = aristocrats
+				}
+				reduce_pop = 0.01
+			}
+			add_country_modifier = {
+				name = killlandlords
+				duration = 2000
+			}
+			set_country_flag = killlandlords
+		}
+		
+		ai_will_do = {
+			factor = 0.5
+			modifier = {
+				factor = 100
+				has_country_modifier = maoist
+			}
+		}
+	}
+	#from Collectivisation.txt
+	collectivise_farms = {
+		picture = "farming"
+		potential = {
+			ruling_party_ideology = communist
+			NOT = { has_country_flag = collectivise_farms }
+		}
+
+		allow = {
+			war = no
+			government = proletarian_dictatorship
+		}
+
+		effect = {
+			add_country_modifier = { name = global_liberal_agitation duration = 1825 }
+			set_country_flag = collectivise_farms
+					}
+
+		ai_will_do = { 
+			factor = 1 
+		}
+	}
+
+	privatise_farms = {
+		picture = "farming"
+		potential = {
+			NOT = { ruling_party_ideology = communist }
+			NOT = { government = proletarian_dictatorship }
+			has_country_flag = collectivise_farms
+
+					}
+
+		allow = {
+			war = no
+					}
+
+		effect = {
+			clr_country_flag = collectivise_farms
+			add_tax_relative_income = 25
+			any_owned = { limit = { has_province_modifier = collectivisation } remove_province_modifier = collectivisation }
+					}
+
+		ai_will_do = { 
+			factor = 1 
+		}
+	}
+#from Political.txt
+	the_red_terror = {
+		picture = the_red_terror
+		potential = {
+			government = proletarian_dictatorship
+			NOT = { has_country_modifier = the_terror }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			invention = secret_police
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = the_terror
+				duration = -1
+			}
+			any_pop = { ideology = { factor = 0.1 value = communist } }
+			any_pop = { 
+				limit = { 
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_ideology = liberal
+						pop_majority_ideology = socialist
+						}
+					}
+				random_list = { 50 = { reduce_pop = 0.99 } 50 = { reduce_pop = 0.98 } }
+			}
+			any_pop = { 
+				limit = { OR = { social_movement = yes political_movement = yes } } 
+				militancy = -7
+				random_list = { 50 = { reduce_pop = 0.9 } 50 = { reduce_pop = 0.85 } }
+			}
+			any_pop = {
+				limit = {
+					OR = { type = soldiers type = officers }
+					NOT = { pop_majority_ideology = communist }
+					}
+					militancy = -9 ideology = { factor = 0.35 value = communist }
+					random_list = { 50 = { reduce_pop = 0.9 } 50 = { reduce_pop = 0.85 } }
+				}
+			any_pop = { limit = { pop_majority_ideology = communist } reduce_pop = 0.99 }
+			any_pop = { limit = { pop_majority_ideology = socialist } ideology = { factor = 0.5 value = communist } }
+			
+			any_pop = { limit = { pop_majority_ideology = fascist } random_list = { 50 = { reduce_pop = 0.8 } 50 = { reduce_pop = 0.75 } } }
+			any_pop = { limit = { pop_majority_ideology = anarcho_liberal } reduce_pop = 0.2 }
+			any_pop = { limit = { pop_majority_ideology = reactionary } random_list = { 50 = { reduce_pop = 0.8 } 50 = { reduce_pop = 0.85 } } }
+			
+			any_pop = {
+				scaled_consciousness = {
+					factor = 9
+					ideology = fascist
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = fascist
+				}
+				
+				scaled_consciousness = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = reactionary
+				}
+				
+				scaled_consciousness = {
+					factor = 8
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 4
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = 4
+					ideology = conservative
+				}
+				
+				scaled_consciousness = {
+					factor = 4
+					ideology = socialist
+				}
+				scaled_militancy = {
+					factor = 4
+					ideology = socialist
+				}
+				
+				scaled_consciousness = {
+					factor = -9
+					ideology = communist
+				}
+				scaled_militancy = {
+					factor = -9
+					ideology = communist
+				}
+			}
+			
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1216
+			}
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	the_fascist_terror = {
+		picture = the_red_terror
+		potential = {
+			government = fascist_dictatorship
+			NOT = { has_country_modifier = the_terror }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			invention = secret_police
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = the_terror
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1095
+			}
+			any_pop = { limit = { pop_majority_ideology = communist } random_list = { 50 = { reduce_pop = 0.95 } 50 = { reduce_pop = 0.9 } } }
+			any_pop = { limit = { pop_majority_ideology = anarcho_liberal } reduce_pop = 0.98 }
+			any_pop = { limit = { pop_majority_ideology = socialist } reduce_pop = 0.98 }
+			any_pop = { 
+				limit = {
+					OR = {
+						social_movement = yes
+						political_movement = yes
+						}
+					} 
+				militancy = -7
+				random_list = { 50 = { reduce_pop = 0.99 } 50 = { reduce_pop = 0.98 } }
+			}
+			
+			any_pop = { limit = { type = officers } reduce_pop = 0.99 }
+			
+			any_pop = {
+				limit = {
+					OR = { type = soldiers type = officers }
+					NOT = { pop_majority_ideology = fascist }
+					}
+					militancy = -9 ideology = { factor = 0.35 value = fascist }
+				}
+			any_pop = { ideology = { factor = 0.01 value = fascist } }
+			any_pop = {
+				scaled_consciousness = {
+					factor = -9
+					ideology = fascist
+				}
+				scaled_militancy = {
+					factor = -9
+					ideology = fascist
+				}
+				
+				scaled_consciousness = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = anarcho_liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 4
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = 4
+					ideology = liberal
+				}
+				
+				scaled_consciousness = {
+					factor = 3
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = 3
+					ideology = conservative
+				}
+				
+				scaled_consciousness = {
+					factor = 7
+					ideology = socialist
+				}
+				scaled_militancy = {
+					factor = 7
+					ideology = socialist
+				}
+				
+				scaled_consciousness = {
+					factor = 9
+					ideology = communist
+				}
+				scaled_militancy = {
+					factor = 9
+					ideology = communist
+				}
+			}
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	the_cult_of_personality = {
+		picture = switch_to_autocracy
+		potential = {
+			OR = {
+				government = fascist_dictatorship
+				government = proletarian_dictatorship
+			}
+			NOT = { has_country_modifier = cult_of_personality }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = cult_of_personality
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1216
+			}
+			any_pop = { limit = { agree_with_ruling_party = 0.40 } militancy = -3 consciousness = -6 }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	ideological_indoctrination_communist = {
+		picture = indoctrinal_education_communist
+		potential = {
+			government = proletarian_dictatorship
+			NOT = { has_country_modifier = political_education }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+			NOT = { school_reforms = no_schools }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = political_education
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1216
+			}
+			any_pop = { ideology = { factor = 0.1 value = communist } }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	ideological_indoctrination_fascist = {
+		picture = indoctrinal_education
+		potential = {
+			government = fascist_dictatorship
+			NOT = { has_country_modifier = political_education }
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			mass_politics = 1
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+			NOT = { school_reforms = no_schools }
+		}
+		
+		effect = {
+			plurality = -25
+			add_country_modifier = {
+				name = political_education
+				duration = -1
+			}
+			add_country_modifier = {
+				name = law_changed_by_force
+				duration = 1095
+			}
+			any_pop = { ideology = { factor = 0.1 value = fascist } }
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	the_totalitarian_regime = {
+		picture = mussolini_hq
+		potential = {
+			OR = {
+				government = fascist_dictatorship
+				government = proletarian_dictatorship
+			}
+			NOT = { has_country_modifier = totalitarian_system }
+		}
+		
+		allow = {
+			war = no
+			has_country_modifier = political_education
+			has_country_modifier = cult_of_personality
+			has_country_modifier = the_terror
+			NOT = { num_of_revolts = 1 }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+		
+		effect = {
+			plurality = -25
+			political_reform = totalitarianism
+			add_country_modifier = {
+				name = totalitarian_system
+				duration = -1
+			}
+			remove_country_modifier = political_education
+			remove_country_modifier = cult_of_personality
+			remove_country_modifier = the_terror
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+
+
+}
