@@ -1,0 +1,260 @@
+political_decisions = {
+#from AUS.txt
+	begin_hungarian_revolution = {
+		picture = gtfo
+		potential = {
+			tag = HUN
+			has_global_flag = hungarian_revolution_occurred
+			NOT = { has_country_flag = hungarian_revolution_began }
+		}
+		
+		allow = {
+			war = no
+			NOT = { has_country_modifier = no_more_war }
+		}
+		
+		effect = {
+			set_country_flag = hungarian_revolution_began
+			small_arms = 100
+			regular_clothes = 100
+			leadership = 40
+			define_general = {
+				name = "Józef Bem"
+				personality = intelligent
+				background = natural_born_leader
+			}
+			add_country_modifier = {
+				name = begin_revolution
+				duration = 365
+			}
+			any_pop = {
+				limit = { has_pop_culture = hungarian }
+				militancy = -8
+			}
+			any_owned = {
+				limit = { is_core = ROM }
+				any_pop = {
+					limit = { has_pop_culture = romanian }
+					militancy = 6
+				}
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+			}
+			any_owned = {
+				limit = { is_core = SER }
+				any_pop = {
+					limit = { has_pop_culture = serb }
+					militancy = 6
+				}
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+			}
+			random_owned = {
+			limit = {
+				owner = {
+					OR = {
+						national_provinces_occupied = .25
+						any_greater_power = { war_with = THIS }
+					}
+				}
+			}
+			owner = {
+				prestige = -10
+				war = {
+					target = HUN
+					attacker_goal = {
+						casus_belli = annex_core_country
+					}
+					call_ally = yes
+				}
+			}
+		}
+		AUS = {
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = {
+							national_provinces_occupied = .25
+							any_greater_power = { war_with = THIS }
+						}
+					}
+				}
+				owner = {
+					prestige = 20
+					war = {
+						target = HUN
+						attacker_goal = {
+							casus_belli = annex_core_country
+						}
+					}
+				}
+			}
+		}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	end_of_hungarian_revolution = {
+		potential = {
+			tag = HUN
+			has_global_flag = hungarian_revolution_occurred
+			AUS = {
+				NOT = { has_country_flag = austria_let_hungary_go }
+			}
+			NOT = { year = 1860 }
+			ai = yes
+		}
+
+		allow = {
+			war_with = AUS
+			OR = {
+				AND = {
+					capital_scope = { controlled_by = THIS }
+					national_provinces_occupied = .75
+				}
+				AND = {
+					capital_scope = { NOT = { controlled_by = THIS } }
+					national_provinces_occupied = .50
+				}
+			}
+		}
+
+		effect = {
+			clr_global_flag = hungarian_revolution_occurred
+			AUS = {
+				prestige = 25
+				inherit = HUN
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = -4
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	
+#from Irredentism.txt	
+	reclaim_croatia = {
+	picture = reclaim_croatia
+		potential = {
+			tag = HUN
+			771 = {
+				NOT = { is_core = HUN }
+			}
+			NOT = { has_country_flag = reclaimed_croatia }
+		}
+		allow = {
+			is_vassal = no
+			war_policy = jingoism
+			government = fascist_dictatorship
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+		}
+		effect = {
+			set_country_flag = reclaimed_croatia
+			prestige = 5
+			AUS_771 = { add_core = HUN }
+			AUS_774 = { add_core = HUN }
+			any_country = {
+				limit = {
+					any_owned_province = { region = AUS_771 }
+					NOT = { tag = THIS }
+				}
+				relation = { who = THIS value = -50 }
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#from MiniMod-HUN.txt
+	accepting_the_slovaks = {
+		picture = league_of_three_emperors
+		potential = {
+			tag = HUN
+			AUS_633 = {
+				owned_by = THIS
+			}
+			NOT = { has_country_flag = accepting_the_slovaks }
+		}
+		
+		allow = {
+			invention = national_fraternity	
+			NOT = {
+				government = fascist_dictatorship
+				government = presidential_dictatorship
+				government = absolute_monarchy
+			}	
+		}
+		
+		effect = {
+			badboy = -4
+			prestige = -10
+			add_accepted_culture = slovak
+			set_country_flag = accepting_the_slovaks 
+			AUS_633 = {
+				add_core = HUN
+			}
+		}	
+		
+	}
+
+	stop_accepting_the_slovaks = {
+		picture = league_of_three_emperors
+		potential = {
+			tag = HUN
+			635 = {
+				owned_by = THIS
+			}
+			NOT = { has_country_flag = stop_accepting_the_slovaks }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			prestige = -10
+			remove_accepted_culture = slovak
+			set_country_flag = stop_accepting_the_slovaks 
+		}	
+		
+	} 
+	claim_fiume = {
+		picture = fiume_port
+		potential = {
+			tag = HUN
+			owns = 773
+			778 = { NOT = { is_core = HUN } }
+			773 = { is_core = HUN }
+		}
+		
+		allow = {
+			war = no
+			nationalism_n_imperialism = 1
+		}
+		
+		effect = {
+			778 = { add_core = HUN }
+			badboy = 1
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+
+}
+	
