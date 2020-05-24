@@ -4093,6 +4093,9 @@ political_decisions = {
 				alliance_with = CPL
 			}
 			alliance_with = UKR
+			ai = no
+			NOT = { has_global_flag = disable_GEF }
+			NOT = { has_global_flag = create_reichspakt }
 		}
 		
 		allow = {
@@ -4120,7 +4123,7 @@ political_decisions = {
 			}
 			money = -35000		
 		}
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0.1 }
 	}
 
 	eastern_grain = {
@@ -4135,6 +4138,8 @@ political_decisions = {
 				alliance_with = POL
 				alliance_with = CPL
 			}
+			ai = no
+			NOT = { has_global_flag = disable_GEF }
 			alliance_with = UKR
 		}
 		
@@ -4163,13 +4168,14 @@ political_decisions = {
 			}
 			money = -35000		
 		}
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0.1 }
 	}
 
 	germanize_the_netherlands = {
 		picture = german_tyrol
 		potential = {
 			is_culture_group = germanic
+			ai = no
 			is_greater_power = yes
 			owns = 385
 			owns = 383
@@ -4182,15 +4188,22 @@ political_decisions = {
 			owns = 388
 			owns = 397
 			375 = { province_control_days = 365 }
+			NOT = { has_global_flag = disable_GEF }
 			NOT = { has_country_flag = germanize_the_netherlands }
 		}
 		
 		allow = {
 			war = no
-			377 = { pop_majority_culture = north_german }
-			375 = { pop_majority_culture= north_german }
-			376 = { pop_majority_culture = north_german }
-			387 = { pop_majority_culture = north_german }
+			385 = { province_control_days = 5475 }
+			383 = { province_control_days = 5475 }
+			382 = { province_control_days = 5475 }
+			375 = { province_control_days = 5475 }
+			379 = { province_control_days = 5475 }
+			378 = { province_control_days = 5475 }
+			390 = { province_control_days = 5475 }
+			387 = { province_control_days = 5475 }
+			388 = { province_control_days = 5475 }
+			397 = { province_control_days = 5475 }
 		}
 		
 		effect = {
@@ -4199,51 +4212,71 @@ political_decisions = {
 			NET_379 = { add_core = GER }
 			NET_385 = { add_core = GER }
 			BEL_387 = { add_core = GER }
-			NET_375 = { remove_core = NET }
-			NET_379 = { remove_core = NET }
-			NET_385 = { remove_core = NET }
-			BEL_387 = { remove_core = NET }
-			BEL_394 = { remove_core = NET }
-			BEL_387 = { remove_core = FLA }
 			400 = { add_core = GER }
-			400 = { remove_core = FLA }
 		}
 		
 		ai_will_do = { factor = 1 }
 	}
 	
-	# south-german-assimilation = {
-		# picture = german_tyrol
-		# potential = {
-			# is_greater_power = yes
-			# tag = GER
-			# NOT = { has_country_flag = south-german-assimilation }
-			# has_country_flag = south-german-assimilation
-		# }
+	standard_german = {
+		picture = german_tyrol
+		potential = {
+			is_greater_power = yes
+			ai = no
+			tag = GER
+			NOT = { has_global_flag = disable_GEF }
+			NOT = { has_country_flag = South-German-Assimilation }
+		}
 		
-		# allow = {
-			# war = no
-		# }
+		allow = {
+			war = no
+		}
 		
-		# effect = {
-			# set_country_flag = south-german-assimilation
-			# remove_accepted_culture = south_german
-			# remove_accepted_culture = ashkenazi
-			# any_owned = {
-				# add_province_modifier = {
-					# name = south-german-assimilation
-					# duration = 3660
-				# }
-			# }
-		# }
+		effect = {
+			country_event = {
+				id = 9212121
+			}
+		}
 		
-		# ai_will_do = { factor = 0 }
-	# }
+		ai_will_do = { factor = 0.05 }
+	}
+	
+	host_german_royal_family = {
+		picture = german_east_africa
+		potential = {
+			tag = NMB
+			primary_culture = north_german
+			NOT = { has_global_flag = disable_GEF }
+			NOT = { has_global_flag = host_german_royal_family }
+		}
+		
+		allow = {
+			GER = {
+				OR = {
+					government = fascist_dictatorship
+					government = proletarian_dictatorship
+					government = bourgeois_dictatorship
+				}
+			}
+		}
+		
+		effect = {
+			GER = { release = NMB }
+			set_global_flag = host_german_royal_family
+			add_country_modifier = {
+				name = The-German-Royal-Family
+				duration = -1
+			}
+		}
+		ai_will_do = { factor = 0.2 }
+	}
 
 	greatest_germany = {
 		picture = black_stain
 		potential = {
 			tag = GER
+			ai = no
+			NOT = { has_global_flag = disable_GEF }
 			NOT = { has_global_flag = greatest_germany }
 		}
 		
@@ -4253,32 +4286,23 @@ political_decisions = {
 		}
 		
 		effect = {
-			set_global_flag = greatest_germany
-			war = {
-			target = NET
-			attacker_goal = { casus_belli = humiliate }
-			defender_goal = { casus_belli = status_quo }
-			call_ally = no
+			country_event = {
+				id = 9111111
 			}
-			war = {
-			target = BEL
-			attacker_goal = { casus_belli = humiliate }
-			defender_goal = { casus_belli = status_quo }
-			call_ally = no
-			}		
-			badboy = 10
 		}
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0.05 }
 	}
 
 	establish_greatest_germany = {
 		picture = greatest_germany
 		potential = {
 			tag = GER
-			KUK = { exists = no }
-			AUS = { exists = no }
-			BEL = { exists = no }
+			ai = no
+			KUK = { exist = no }
+			AUS = { exist = no }
+			BEL = { exist = no }
 			has_global_flag = greatest_germany
+			NOT = { has_global_flag = disable_GEF }
 			NOT = { has_global_flag = establish_greatest_germany }
 		}
 		
@@ -4299,15 +4323,156 @@ political_decisions = {
 			252 = {	secede_province = ENG }
 			251 = {	secede_province = USA }
 			2636 = {	secede_province = USA }
-			SWI_2568 = { add_core = ITA }
-			SWI_607 = { limit = { has_global_flag = treaty_of_nancy } add_core = FRA }
-			2568 = { secede_province = ITA }
-			607 = { secede_province = FRA }
-			608 = { secede_province = FRA }
-			609 = { secede_province = FRA }
-			3250 = { secede_province = FRA }
-			3271 = { secede_province = FRA }
-			3332 = { secede_province = FRA }	
+			random_country = {
+				limit = { 
+					exists = BOR
+				}
+				607 = { secede_province = BOR }
+				608 = { secede_province = BOR }
+				609 = { secede_province = BOR }
+				3250 = { secede_province = BOR }
+				3271 = { secede_province = BOR }
+				3332 = { secede_province = BOR }
+				SWI_607 = { add_core = BOR }
+			}
+			random_country = {
+				limit = { 
+					exists = FRA
+				}
+				607 = { secede_province = FRA }
+				608 = { secede_province = FRA }
+				609 = { secede_province = FRA }
+				3250 = { secede_province = FRA }
+				3271 = { secede_province = FRA }
+				3332 = { secede_province = FRA }
+				SWI_607 = { add_core = FRA }
+			}
+			random_country = {
+				limit = { 
+					exists = SAR
+				}
+				2568 = { secede_province = SAR }
+				SWI_2568 = { add_core = SAR }
+			}
+			random_country = {
+				limit = { 
+					exists = ITA
+				}
+				2568 = { secede_province = ITA }
+				SWI_2568 = { add_core = ITA }
+			}
+			random_country = {
+				limit = { 
+					exists = ITS
+				}
+				2568 = { secede_province = ITS }
+				SWI_2568 = { add_core = ITS }
+			}
+			political_reform = federalism
+			badboy = 10
+		}
+		ai_will_do = { factor = 0.5 }
+	}
+	
+	annex_holstein = {
+		picture = golden_law
+		potential = {
+			tag = GER
+			has_global_flag = demand_holstein
+			NOT = { has_global_flag = disable_GEF }
+			NOT = { has_global_flag = resolved_schleswigholstein }
+		}
+		
+		allow = {
+			OR = {
+				AND = {
+					controls = 367
+					controls = 366
+					controls = 368
+					controls = 2557
+				}
+				controls = 372
+				DEN = { war_exhaustion = 50 }
+			}
+		}
+		
+		effect = {
+		    set_global_flag = resolved_schleswigholstein
+			end_war = DEN
+			DEN = { inherit = SWH }
+			529 = { secede_province = GER }
+			369 = { secede_province = GER }
+		}
+		ai_will_do = { factor = 0 }
+	}
+	
+	annex_holsteinandflensburg = {
+		picture = golden_law
+		potential = {
+			tag = GER
+			has_global_flag = demand_holstein_flensburg
+			NOT = { has_global_flag = disable_GEF }
+			NOT = { has_global_flag = resolved_schleswigholstein }
+		}
+		
+		allow = {
+			OR = {
+				AND = {
+					controls = 367
+					controls = 366
+					controls = 368
+					controls = 2557
+				}
+				controls = 372
+				DEN = { war_exhaustion = 50 }
+			}
+		}
+		
+		effect = {
+			371 = { change_province_name = "Aabenraa" }
+		    set_global_flag = resolved_schleswigholstein
+			DEN = { inherit = SWH }
+			529 = { secede_province = GER }
+			369 = { secede_province = GER }
+			370 = { secede_province = GER }
+			370 = { remove_core = DEN }
+		}
+		ai_will_do = { factor = 0 }
+	}
+	
+	annex_scbleswigholstein = {
+		picture = golden_law
+		potential = {
+			tag = GER
+			has_global_flag = demand_schlewsigholstein
+			NOT = { has_global_flag = disable_GEF }
+			NOT = { has_global_flag = resolved_schleswigholstein }
+		}
+		
+		allow = {
+			OR = {
+				AND = {
+					controls = 367
+					controls = 366
+					controls = 368
+					controls = 2557
+				}
+				controls = 372
+				DEN = { war_exhaustion = 50 }
+			}
+		}
+		
+		effect = {
+		    set_global_flag = resolved_schleswigholstein
+			DEN = { inherit = SWH }
+			529 = { secede_province = GER }
+			369 = { secede_province = GER }
+			370 = { secede_province = GER }
+			371 = { secede_province = GER }
+			3333 = { secede_province = GER }
+			370 = { remove_core = DEN }
+			371 = { remove_core = DEN }
+			3333 = { remove_core = DEN }
 		}
 		ai_will_do = { factor = 0 }
 	}

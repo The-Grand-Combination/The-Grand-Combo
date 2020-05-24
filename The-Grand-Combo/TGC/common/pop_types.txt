@@ -496,7 +496,7 @@ migration_chance = {
 		}
 	}
 	
-	#migration for accepted pops
+	#internal migration for accepted pops
 	modifier = {
 		factor = 1.0
 		location = { has_building = province_selector }
@@ -506,8 +506,8 @@ migration_chance = {
 		country = { education_spending = 0.99 }
 		is_accepted_culture = yes
 	}
-	
-	#migration for non accepted pops
+
+	#internal migration for non accepted pops
 	modifier = {
 		factor = 1.0
 		location = { has_building = province_selector }
@@ -517,7 +517,7 @@ migration_chance = {
 		NOT = { country = { education_spending = 0.99 } }
 		is_accepted_culture = no
 	}
-	
+
 	#no internal migration for non accepted cultures
 	modifier = {
 		factor = -3
@@ -528,7 +528,7 @@ migration_chance = {
 		NOT = { country = { administration_spending = 0.99 } }
 		country = { education_spending = 0.99 }
 	}
-	
+
 	#no internal migration for accepted cultures 
 	modifier = {
 		factor = -3
@@ -539,7 +539,7 @@ migration_chance = {
 		NOT = { country = { administration_spending = 0.99 } }
 		NOT = { country = { education_spending = 0.99 } }
 	}
-	
+
 	#no migration if set up to force colonial migration
 	modifier = {
 		factor = -5
@@ -838,8 +838,8 @@ colonialmigration_chance = {
 			not = { consciousness = 6 } 
 		}
 	}
-	
-	#migration for acepted culture
+
+	#colonial migration for acepted cultures
 	modifier = {
 		factor = 1.5
 		location = { has_building = province_selector }
@@ -849,8 +849,8 @@ colonialmigration_chance = {
 		country = { administration_spending = 0.99 }
 		country = { education_spending = 0.99 }
 	}
-	
-	#migration for non accepted culture
+
+	#colonial migration for non accepted culture
 	modifier = {
 		factor = 1.5
 		location = { has_building = province_selector }
@@ -860,7 +860,7 @@ colonialmigration_chance = {
 		country = { administration_spending = 0.99 }
 		NOT = { country = { education_spending = 0.99 } }
 	}
-	
+
 	#no colonial migration for non accepted cultures
 	modifier = {
 		factor = -3
@@ -871,7 +871,7 @@ colonialmigration_chance = {
 		country = { administration_spending = 0.99 }
 		country = { education_spending = 0.99 }
 	}
-	
+
 	#no colonial migration for accepted cultures 
 	modifier = {
 		factor = -3
@@ -882,8 +882,8 @@ colonialmigration_chance = {
 		country = { administration_spending = 0.99 }
 		NOT = { country = { education_spending = 0.99 } }
 	}
-	
-	# no colonial migration for any culture if migration set for internal state migration
+
+	#no colonial migration for any culture if migration set for internal state migration
 	modifier = {
 		factor = -5
 		location = { has_building = province_selector }
@@ -891,8 +891,8 @@ colonialmigration_chance = {
 		country = { ai = no }
 		country = { has_country_flag = direct_immigration }
 	}
-	
-	#no migration if the no province selector
+
+	#no migration if no province selector present
 	modifier = {
 		factor = -1000
 		NOT = { location = { has_building = province_selector } }
@@ -1062,6 +1062,18 @@ emigration_chance = {
 		state_scope = { any_owned_province = { has_building = province_selector } }
 	}
 	
+	modifier = {
+		factor = 1
+		sphere_owner = THIS
+	}
+	modifier = {
+		factor = 5
+		overlord = THIS
+	}
+	modifier = {
+		factor = -0.5
+		any_neighbor_province = has_recent_imigration
+	}
 	modifier = {
 		factor = -1
 		unemployment = 1
@@ -1849,6 +1861,7 @@ assimilation_chance = {
 	}
 	modifier = {
 		factor = 20.0
+		is_core = RHI
 		is_culture_group = germanic
 		country = { primary_culture = rhinelander }
 	}
@@ -1902,6 +1915,15 @@ assimilation_chance = {
 		is_culture_group = arab
 		country = { is_culture_group = arab }
 	}
+	modifier = {
+		factor = 5
+		culture = mullato
+		is_culture_group = french
+	}
+	modifier= {
+		factor = 1
+		is_culture_group = THIS
+	}
 	#This is and the next one are a way to represent Y Wladfa without doing anything :p
 	modifier = {
 		factor = -30.0
@@ -1927,11 +1949,120 @@ assimilation_chance = {
 		has_pop_culture = noculture 
 	}
 	modifier = {
-		factor = -30.0
+		factor = -15.0
 		province_id = 419
 		has_pop_culture = french
 		country = { primary_culture = british }
 	}
+	
+####GEF Additions####
+	modifier = {
+		factor = 32
+		has_pop_culture = flemish
+		country = { primary_culture = dutch }
+		has_culture_core = yes
+		country = { has_country_flag = assimilate_the_flemish }
+	}
+	
+	modifier = {
+		factor = 12
+		has_pop_culture = flemish
+		country = { primary_culture = dutch }
+		has_culture_core = no
+		country = { has_country_flag = assimilate_the_flemish }
+	}
+	
+	modifier = {
+		factor = 69
+		OR = {
+			AND = {
+				OR = {
+					has_pop_culture = dutch
+					has_pop_culture = flemish
+				}
+				has_global_flag = german_rename_holland	
+			}
+			AND = {
+				has_pop_culture = danish
+				has_country_flag = germanize_the_danish
+			}
+	    }
+		country = { is_culture_group = germanic }
+		has_culture_core = yes
+	}
+	
+	modifier = {
+		factor = 3.2
+		OR = {
+			AND = {
+				OR = {
+					has_pop_culture = dutch
+					has_pop_culture = flemish
+				}
+				country = { has_country_flag = germanize_the_netherlands }
+			}
+			AND = {
+				has_pop_culture = danish
+				country = { has_global_flag = germanize_the_danish }
+			}
+	    }
+		country = { is_culture_group = germanic }
+		has_culture_core = no
+	}
+	
+	modifier = {
+		factor = 800
+		OR = {
+			has_pop_culture = south_german
+			has_pop_culture = volga_german
+			has_pop_culture = siebenburger
+	    }
+		NOT = { has_global_flag = disable_GEF }
+		country = { primary_culture = north_german }
+		country = { has_country_flag = South-German-Assimilation }
+	}
+	
+	modifier = {
+		factor = -80
+		NOT = { has_global_flag = disable_GEF }
+		OR = {
+			has_pop_culture = south_german
+			has_pop_culture = north_german
+		}
+		OR = {
+			AND = {
+				OR = {
+					location = { continent = south_america }
+					location = { continent = australia_new_zealand }
+					location = { continent = north_america }
+				}
+				OR = {
+					country = { NOT = { war_with = GER } }
+					country = { NOT = { war_with = GCF } }
+				}
+			}
+			country = { primary_culture = hungarian }
+			country = { primary_culture = romanian }
+			country = { primary_culture = slovene }
+			country = { primary_culture = slovakian }
+			country = { primary_culture = russian }
+			country = { primary_culture = ukrainian }
+			AND = {
+				country = { primary_culture = dutch }
+				NOT = { has_country_flag = Thicc-Niederlands }
+			}
+			AND = {
+				country = { primary_culture = czech }
+				NOT = { has_country_flag = Thicc-Bohemia }
+			}						
+		}
+		OR = {
+			NOT = { country = { primary_culture = south_german } }
+			NOT = { country = { primary_culture = north_german } }
+		}
+	}
+	
+###End of GEF Additions####
 }
 
 #general conversion mtth, same for all pops
@@ -2108,5 +2239,10 @@ conversion_chance = {
 		factor = 0.15
 		not = { culture = this }
 	}
+	modifier = {
+		factor = 1
+		not = { pop_majority_religion = THIS }
+	}	
+
 
 }
