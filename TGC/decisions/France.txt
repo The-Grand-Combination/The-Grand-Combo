@@ -355,6 +355,7 @@ political_decisions = {
 			465 = { add_core = THIS }
 			466 = { add_core = THIS }
 			472 = { add_core = THIS }
+			3362 = { add_core = THIS }
 			random_country = {
 				limit = { owns = 465 }
 				leave_alliance = THIS
@@ -657,8 +658,8 @@ devil_island = {
 		add_country_modifier = { name = penal_colonies duration = -1 }
 	}
 }
-#from Crimean War.txt
 
+#from Crimean War.txt
 	france_protector_of_eastern_christians = {
 		picture = protect_eastern_christians
 		potential = {
@@ -741,6 +742,7 @@ devil_island = {
 			}
 		}
 	}
+	
 	treaty_of_paris_1856 = {
 		picture = treaty_signing
 		potential = {
@@ -764,17 +766,6 @@ devil_island = {
 		effect = {
 			prestige = 20
 			set_global_flag = treaty_of_paris_1856
-			random_country = {
-				limit = {
-					tag = TUR
-					URP = {
-						exists = yes
-						ai = yes
-						is_vassal = no
-					}
-				}
-				create_vassal = URP
-			}
 			random_country = {
 				limit = {
 					tag = WAL
@@ -811,6 +802,17 @@ devil_island = {
 				795 = { remove_core = SIE }
 				capital = 664
 			}
+			random_country = {
+				limit = {
+					tag = TUR
+					URP = {
+						exists = yes
+						ai = yes
+						is_vassal = no
+					}
+				}
+				create_vassal = URP
+			}
 			diplomatic_influence = { who = TUR value = -100 }
 			leave_alliance = TUR
 			random_country = {
@@ -825,6 +827,7 @@ devil_island = {
 				limit = {
 					tag = RUS
 					owns = 678
+					owns = 673
 					URP = {
 						exists = yes
 						OR = {
@@ -835,11 +838,17 @@ devil_island = {
 				}
 				country_event = 97510
 			}
-			URP = { government = prussian_constitutionalism any_owned = { limit = { is_core = ROM } remove_core = WAL remove_core = MOL add_core = ROM add_core = URP } }
-			TUR = {
-				release_vassal = URP
-				leave_alliance = URP
-				prestige = -35
+			URP = { government = prussian_constitutionalism }
+			random_owned = {
+				limit = {
+					OR = {
+						is_core = WAL
+						is_core = MOL
+					}
+				}
+				remove_core = WAL
+				remove_core = MOL
+				add_core = URP
 			}
 			any_country = {
 				limit = {
@@ -899,10 +908,10 @@ create_cambodian_protectorate = {
 	create_laos_protectorate = {
 		picture = unequal_treaty
 		potential = {
+			owns = 1369
 			is_greater_power = yes
 			capital_scope = { continent = europe }
 			NOT = { tag = TUR }
-			owns = 1369
 			OR = {
 				LUA = {
 					NOT = { has_country_flag = annexed_to_FRA }
@@ -1217,79 +1226,6 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 	
-	# form_laos = {
-		# picture = form_laos
-		# potential = {
-			# primary_culture = lao
-			# OR = {
-				# owns = 1356
-				# owns = 1357
-			# }
-			# NOT = { exists = LXA }
-			# NOT = { has_country_flag = laos_formed }
-			# NOT = { has_country_flag = post_colonial_country }
-		# }
-		
-		# allow = {
-			# war = no
-			# is_vassal = no
-			# prestige = 30
-			# num_of_cities = 4
-			# OR = {
-				# nationalism_n_imperialism = 1
-				# AND = {
-					# owns = 1356
-					# owns = 1357
-					# owns = 1361
-					# owns = 1362
-					# owns = 1363
-				# }
-				# is_greater_power = yes
-				# is_secondary_power = yes
-				# AND = {
-					# military_score = 40
-					# prestige = 150
-				# }
-			# }
-		# }
-		
-		# effect = {
-			# set_country_flag = laos_formed
-			# any_owned = {
-				# limit = { OR = { is_core = LUA is_core = CHK is_core = WIA } }
-				# remove_core = LUA
-				# remove_core = CHK
-				# remove_core = WIA
-			# }
-			# LUA_1356 = { add_core = LXA }
-			# random_owned = { limit = { owner = { ai = no } } owner = { 1358 = { add_core = LXA } 1359 = { add_core = LXA } } }
-			# prestige = 10
-			# change_tag = LXA
-			# any_country = {
-				# limit = {
-					# is_greater_power = no
-					# is_vassal = no
-					# relation = {
-						# who = THIS
-						# value = 5
-					# }
-					# NOT = { 
-						# tag = THIS
-						# truce_with = THIS
-					# }
-					# primary_culture = lao
-				# }
-				# country_event = 97120
-			# }
-		# }
-		# ai_will_do = {
-			# factor = 1
-			# modifier = {
-				# factor = 0
-				# badboy = 0.8
-			# }
-		# }
-	# }
 #from MiniMod-General.txt
 	form_laos = {
 		picture = unequal_treaty
@@ -1299,6 +1235,7 @@ create_cambodian_protectorate = {
 				tag = WIA
 				tag = CHK
 			}
+			NOT = { exists = LXA }
 		}
 		
 		allow = {
@@ -1414,9 +1351,63 @@ create_cambodian_protectorate = {
 		}
 		ai_will_do = { factor = 1 }
 	}
-	
+
+
+##French Africa##
+	the_1854_plan = {
+		picture = faidherbe
+		potential = {
+			primary_culture = french
+			capital = 425
+			owns = 1784
+			year = 1845
+			NOT = { has_country_flag = faidherbe_ambitions }
+			WOL = { exists = yes ai = yes owns = 2573 } 
+			NOT = { has_global_flag = colonial_railroading_disabled }
+		}
+		
+		allow = {
+			total_pops = 2000000
+			colonial_nation = yes
+			NOT = { any_greater_power = { war_with = THIS } }
+			is_disarmed = no
+			nationalism_n_imperialism = 1
+			NOT = { war_policy = pacifism }
+			NOT = { war_exhaustion = 5 }
+			slavery = no_slavery
+		}
+		
+		effect = {
+			FRA = { set_country_flag = faidherbe_ambitions }
+			BOR = { set_country_flag = faidherbe_ambitions }
+			2573 = {
+				secede_province = THIS
+				owner = { relation = { who = THIS value = -25 } }
+			}
+			random_country = {
+				limit = {
+					tag = TRZ
+					exists = yes
+					NOT = { in_sphere = THIS }
+				}
+				leave_alliance = THIS
+				add_casus_belli = {
+					target = THIS
+					type = add_to_sphere
+					months = 36
+				}
+				war = {
+					target = THIS
+					attacker_goal = { casus_belli = acquire_state state_province_id = 1784 }
+					defender_goal = { casus_belli = add_to_sphere }
+					call_ally = no
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
 #from FlavourMod_Africa
-	###French Africa###
 	brazzas_expedition = {
 		picture = brazzas_expedition
 		potential = {
@@ -1923,59 +1914,6 @@ create_cambodian_protectorate = {
 				badboy = 0.95
 			}
 		}
-	}
-	
-	the_1854_plan = {
-		picture = faidherbe
-		potential = {
-			primary_culture = french
-			capital = 425
-			owns = 1784
-			year = 1845
-			NOT = { has_country_flag = faidherbe_ambitions }
-			WOL = { exists = yes ai = yes owns = 2573 } 
-			NOT = { has_global_flag = colonial_railroading_disabled }
-		}
-		
-		allow = {
-			total_pops = 2000000
-			colonial_nation = yes
-			NOT = { any_greater_power = { war_with = THIS } }
-			is_disarmed = no
-			nationalism_n_imperialism = 1
-			NOT = { war_policy = pacifism }
-			NOT = { war_exhaustion = 5 }
-			slavery = no_slavery
-		}
-		
-		effect = {
-			FRA = { set_country_flag = faidherbe_ambitions }
-			BOR = { set_country_flag = faidherbe_ambitions }
-			2573 = {
-				secede_province = THIS
-				owner = { relation = { who = THIS value = -25 } }
-			}
-			random_country = {
-				limit = {
-					tag = TRZ
-					exists = yes
-					NOT = { in_sphere = THIS }
-				}
-				leave_alliance = THIS
-				add_casus_belli = {
-					target = THIS
-					type = add_to_sphere
-					months = 36
-				}
-				war = {
-					target = THIS
-					attacker_goal = { casus_belli = acquire_state state_province_id = 1784 }
-					defender_goal = { casus_belli = add_to_sphere }
-					call_ally = no
-				}
-			}
-		}
-		ai_will_do = { factor = 1 }
 	}
 	
 	ivory_coast_conquest = {
