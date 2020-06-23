@@ -195,7 +195,7 @@ political_decisions = {
 	}
 
 	SCA_customs_union = {
-	picture = SCA_customs_union
+		picture = SCA_customs_union
 		potential = {
 			NOT = { exists = SCA }
 			has_global_flag = kalmar_reformed
@@ -258,7 +258,7 @@ political_decisions = {
 	}
 
 	SCA_political_union = {
-	picture = SCA_political_union
+		picture = SCA_political_union
 		potential = {
 			NOT = { exists = SCA }
 			has_global_flag = scandinavian_customs_union
@@ -453,5 +453,61 @@ political_decisions = {
 				diplomatic_influence = { who = THIS value = 100 }
 			}
 		}
-	}	
+	}
+
+	take_orkney_and_shetland = {
+		picture = treaty_signing
+		potential = {
+			OR = {
+				1724 = { owner = { war_with = THIS } }
+				1724 = { owner = { truce_with = THIS } }
+			}
+			NOT = { owns = 1724 }
+			OR = {
+				tag = SCA
+				tag = GER
+			}
+			is_greater_power = yes
+		}
+
+		allow = {
+			war = no
+			NOT = { is_disarmed = yes }
+			NOT = { has_recently_lost_war = yes }
+			total_amount_of_ships = 40
+			total_num_of_ports = 4
+			war_policy = jingoism
+			331 = {
+				owner = {
+					OR = {
+						tag = SCA
+						tag = SWE
+					}
+					is_disarmed = yes
+					truce_with = THIS
+					war = no
+					is_greater_power = yes
+					NOT = { military_score = THIS }
+				}
+			}
+		}
+
+		effect = {
+			badboy = 4
+			331 = {
+				secede_province = THIS
+				owner = {
+					relation = {
+						who = THIS
+						value = -100
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 0 badboy = 0.8 }
+		}
+	}
 }
