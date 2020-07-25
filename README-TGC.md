@@ -1,3 +1,4 @@
+# The-Grand-Combo
 Thank you for for downloading TGC.
 TGC was made possible by the below developers and mods:
 
@@ -22,3 +23,6 @@ rderekp
 Hammonia
 Tenno Momonga
 bop
+anzu-3278
+Kspeher
+LouisTheFly
