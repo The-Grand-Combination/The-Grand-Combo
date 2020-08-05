@@ -1,0 +1,1534 @@
+political_decisions = {
+
+#############################################################
+# Only place decisions relating to Italian unification here #
+#############################################################
+
+## Sardinian path to unification ##
+
+    #Description: Proposes the Pact of Plombieres to the French if Napoleon III is in charge.
+    plombieres = {
+		picture = cavours_diplomacy
+		potential = {
+			is_culture_group = italian
+            capital = 720
+            is_vassal = no
+			NOT = {
+				exists = ITA
+				exists = ITS
+			}
+            has_country_flag = camillo_cavour_appointed
+			NOT = { has_country_flag = plombieres }
+            owns = 720
+			owns = 465
+			owns = 466
+			owns = 472
+			619 = {
+				owner = {
+					capital = 619
+					OR = {
+						owns = 726
+						owns = 729
+					}
+				}
+			}
+			FRA = {
+                exists = yes
+                has_country_modifier = louis_napoleon_iii
+                is_greater_power = yes
+                is_disarmed = no
+			}
+		}
+
+		allow = {
+			war = no
+            FRA = {
+                war = no
+                NOT = { war_exhaustion = 1 }
+				NOT = { num_of_revolts = 1 }
+            }
+			OR = {
+				nationalism_n_imperialism = 1
+				year = 1855
+			}
+			OR = {
+				in_sphere = FRA
+				AND = {
+					alliance_with = FRA
+					relation = { who = FRA value = 150 }
+				}
+			}
+            619 = {
+                owner = {
+					NOT = { truce_with = THIS }
+					NOT = { truce_with = FRA }
+				}
+            }
+		}
+
+		effect = {
+			set_country_flag = plombieres
+			set_global_flag = plombieres
+			AUS_726 = { add_core = THIS }
+			any_country = {
+				limit = {
+                    is_culture_group = germanic
+                    capital = 619
+                    owns = 619
+				    is_greater_power = yes
+				}
+				relation = {
+					who = THIS
+					value = -100
+				}
+			}
+			FRA = { country_event = 90038 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				war_exhaustion = 1
+			}
+		}
+	}
+
+    #Description: Give Savoia to France and annex the North Italian minors to realize the Pact of Plombieres after obtaining Lombardy from the Habsburgs.
+    cavours_diplomacy = {
+		potential = {
+			OR = {
+				AND = {
+					OR = {
+						tag = ITA
+						tag = ITS
+					}
+					NOT = {
+                        exists = SAR
+                        exists = SVY
+                    }
+				}
+				AND = {
+                    OR = {
+                        tag = SAR
+                        tag = SVY
+                    }
+					NOT = {
+						exists = ITA
+						exists = ITS
+					}
+				}
+			}
+			has_country_flag = plombieres
+			NOT = { has_country_flag = plombieres_implemented }
+			NOT = { has_global_flag = plombieres_refused }
+			owns = 465
+			owns = 466
+			owns = 472
+			owns = 726
+			owns = 727
+			owns = 728
+			exists = FRA
+		}
+
+		allow = {
+			relation = {
+				who = FRA
+				value = 1
+			}
+		}
+
+		effect = {
+			set_country_flag = plombieres_implemented
+			leave_alliance = FRA
+			prestige = 50
+			badboy = -10
+			SAR_466 = {
+                limit = {
+                    NOT = { is_core = MNC }
+                }
+				remove_core = ITA
+				remove_core = ITS
+				remove_core = THIS
+                add_core = FRA
+                secede_province = FRA
+			}
+			AUS_726 = {
+                remove_core = AUS
+                remove_core = KUK
+                remove_core = DNB
+                remove_core = GCF
+            }
+			TUS_744 = { add_core = THIS }
+			#MOD_739 = { add_core = THIS }
+			any_country = {
+				limit = {
+					OR = {
+						AND = {
+							any_owned_province = { region = PAP_741 }
+							is_culture_group = italian
+						}
+						is_sphere_leader_of = TUS
+						is_sphere_leader_of = MOD
+						is_sphere_leader_of = LUC
+						is_sphere_leader_of = PAR
+					}
+					NOT = { tag = FRA }
+				}
+				relation = { who = THIS value = -100 }
+				casus_belli = {
+					target = THIS
+					type = humiliate
+					months = 12
+				}
+				casus_belli = {
+					target = THIS
+					type = free_peoples
+					months = 12
+				}
+			}
+			random_country = {
+				limit = {
+					owns = 741
+					is_culture_group = italian
+				}
+				741 = { secede_province = THIS add_core = THIS }
+			}
+			random_country = {
+				limit = {
+					owns = 742
+					is_culture_group = italian
+				}
+				742 = { secede_province = THIS add_core = THIS }
+			}
+			random_country = {
+				limit = {
+					owns = 743
+					is_culture_group = italian
+				}
+				743 = { secede_province = THIS add_core = THIS }
+			}
+			any_country = {
+				limit = {
+					OR = {
+                        tag = PAR
+                        tag = LUC
+                        tag = MOD
+                        tag = TUS
+                    }
+					ai = yes
+				}
+				annex_to = THIS
+			}
+			any_country = {
+				limit = {
+					OR = {
+                        tag = PAR
+                        tag = LUC
+                        tag = MOD
+                        tag = TUS
+                    }
+					ai = no
+				}
+				country_event = 60130
+			}
+			FRA = {
+				diplomatic_influence = { who = PAP value = -200 }
+				diplomatic_influence = { who = SIC value = -200 }
+			}
+			SIC = { prestige = -20 }
+		}
+	}
+
+    #Description: Allows Savoy/Sardinia/Italy to call for redshirt rebels in other Italian countries and grants them CBs against the Papal States and Two Sicilies.
+    garibaldi_redshirts = {
+		picture = garibaldi_redshirts
+		potential = {
+			OR = {
+                tag = SVY
+				tag = SAR
+				tag = ITA
+			}
+            owns = 720 #Torino
+			owns = 726 #Milano
+			owns = 727 #Bergamo
+			owns = 728 #Brescia
+			owns = 744 #Florence
+            SIC = {
+                exists = yes
+                owns = 754 #Naples
+                owns = 762 #Palermo
+            }
+			NOT = {
+				has_global_flag = garibaldi_redshirts
+				has_global_flag = italian_call_to_union
+			}
+		}
+
+		allow = {
+			war = no
+			state_n_government = 1
+		}
+
+		effect = {
+			set_global_flag = garibaldi_redshirts
+			prestige = 20
+			badboy = 6
+			any_country = {
+				limit = {
+					is_culture_group = THIS
+					NOT = { tag = THIS }
+					NOT = { has_country_flag = post_colonial_country }
+				}
+				any_owned = {
+					add_province_modifier = {
+						name = nationalist_agitation
+						duration = 100
+					}
+				}
+				any_pop = {
+					limit = { is_culture_group = italian }
+					consciousness = 5
+					militancy = 10
+				}
+				relation = {
+					who = THIS
+					value = -50
+				}
+				add_country_modifier = {
+					name = red_shirts
+					duration = 830
+				}
+				prestige = -5
+			}
+			casus_belli = { target = PAP type = acquire_state months = 24 }
+			casus_belli = { target = PAP type = conquest months = 24 }
+			casus_belli = { target = SIC type = acquire_state months = 24 }
+			casus_belli = { target = SIC type = conquest months = 24 }
+		}
+
+		ai_will_do = {
+            factor = 1
+            modifier = { factor = 0 badboy = 0.7 }
+        }
+	}
+
+    #Description: If Milan is owned by the Habsburgs, but they aren't a great or secondary power or they have significant revolts, Sardinia/Savoy can declare war on them for Lombardy and call in all Italian minors not in their sphere.
+    war_italian_independence = {
+		potential = {
+			OR = {
+				tag = SAR
+				tag = SVY
+			}
+			NOT = {
+				exists = ITA
+				exists = ITS
+				has_country_flag = war_italian_independence
+			}
+            619 = {
+				owner = {
+					owns = 726
+					owns = 727
+					owns = 728
+					capital = 619
+					NOT = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		allow = {
+			war = no
+            619 = {
+                owner = {
+					NOT = { truce_with = THIS }
+					OR = {
+						AND = {
+							is_greater_power = no
+							is_secondary_power = no
+							NOT = { brigades_compare = 2 }
+						}
+						national_provinces_occupied = 0.20
+						num_of_revolts = 10
+					}
+				}
+            }
+		}
+
+		effect = {
+			set_country_flag = war_italian_independence
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				militancy = -2
+			}
+			any_country = {
+				limit = {
+					is_culture_group = italian
+					NOT = {
+                        sphere_owner = {
+                            is_culture_group = germanic
+                            owns = 619
+                        }
+                    }
+					ai = yes
+				}
+				relation = {
+					who = THIS
+					value = 100
+				}
+				create_alliance = THIS
+			}
+			add_country_modifier = {
+				name = small_country_draft
+				duration = 365
+			}
+			any_country = {
+				limit = {
+					OR = {
+                        tag = FRA
+                        tag = BOR
+                    }
+					alliance_with = THIS
+					THIS = { is_greater_power = no }
+				}
+				set_country_flag = restore_alliance
+				leave_alliance = THIS
+			}
+            #Devnote: See if there's a more generic way to do this so as to not duplicate code.
+			random_country = {
+				limit = {
+					tag = AUS
+					owns = 726
+                    owns = 619
+				}
+				THIS = {
+					war = {
+						target = AUS
+						attacker_goal = {
+							casus_belli = unification_casus_belli
+							state_province_id = 726
+						}
+						defender_goal = {
+							casus_belli = status_quo
+						}
+						call_ally = yes
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					tag = KUK
+					owns = 726
+                    owns = 619
+				}
+				THIS = {
+					war = {
+						target = KUK
+						attacker_goal = {
+							casus_belli = unification_casus_belli
+							state_province_id = 726
+						}
+						defender_goal = {
+							casus_belli = humiliate
+						}
+						call_ally = yes
+					}
+				}
+			}
+            random_country = {
+				limit = {
+					tag = DNB
+					owns = 726
+                    owns = 619
+				}
+				THIS = {
+					war = {
+						target = DNB
+						attacker_goal = {
+							casus_belli = unification_casus_belli
+							state_province_id = 726
+						}
+						defender_goal = {
+							casus_belli = humiliate
+						}
+						call_ally = yes
+					}
+				}
+			}
+            random_country = {
+				limit = {
+					tag = GCF
+					owns = 726
+                    owns = 619
+				}
+				THIS = {
+					war = {
+						target = GCF
+						attacker_goal = {
+							casus_belli = unification_casus_belli
+							state_province_id = 726
+						}
+						defender_goal = {
+							casus_belli = humiliate
+						}
+						call_ally = yes
+					}
+				}
+			}
+			any_country = {
+				limit = {
+                    OR = {
+                        tag = FRA
+                        tag = BOR
+                    }
+					has_country_flag = restore_alliance
+				}
+				clr_country_flag = restore_alliance
+				create_alliance = THIS
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Generic unification ##
+
+    #Description: Any independent Italian state that is not considered part of Italy can proclaim their intention to join in Italian unification by adding Italian cores to all their cores.
+    we_are_italian = {
+		picture = form_italy
+		potential = {
+			is_culture_group = italian
+            is_vassal = no
+			any_core = {
+				NOT = { is_core = ITA }
+			}
+		}
+
+		allow = {
+			war = no
+            nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			all_core = { add_core = ITA }
+			any_pop = {
+				limit = { is_culture_group = italian }
+				militancy = -4
+			}
+			random_country = {
+				limit = {
+					is_culture_group = italian
+					is_greater_power = yes
+					THIS = {
+						NOT = { sphere_owner = { is_culture_group = italian } }
+					}
+				}
+				diplomatic_influence = {
+					who = THIS
+					value = 100
+				}
+			}
+			any_country = {
+				limit = { is_culture_group = italian }
+				relation = {
+					who = THIS
+					value = 100
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: Any Italian country can make the call to Italian unification if they become a great power, or a secondary power if they aren't in a sphere, or if Austria is not a great or secondary power.
+    italian_call_to_union = {
+		picture = form_italy
+		potential = {
+			is_culture_group = italian
+			NOT = {
+				exists = ITA
+				exists = ITS
+                exists = ITP
+				has_global_flag = italian_call_to_union
+				has_global_flag = garibaldi_redshirts
+			}
+		}
+
+		allow = {
+			war = no
+            is_vassal = no
+			nationalism_n_imperialism = 1
+			OR = {
+                619 = {
+					owner = {
+						is_culture_group = germanic
+                        capital = 619
+						is_greater_power = no
+						is_secondary_power = no
+					}
+                }
+                is_greater_power = yes
+				AND = {
+					is_secondary_power = yes
+					NOT = { any_greater_power = { is_culture_group = italian } }
+                    part_of_sphere = no
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = italian_call_to_union
+			set_country_flag = made_the_call_to_union
+			prestige = 20
+			badboy = 3
+			any_country = {
+				limit = {
+					is_culture_group = THIS
+					NOT = { tag = THIS }
+					NOT = { has_country_flag = post_colonial_country }
+				}
+				any_pop = {
+					limit = {
+						OR = {
+							has_pop_culture = north_italian
+							has_pop_culture = south_italian
+						}
+					}
+					consciousness = 2
+					militancy = 10
+				}
+				relation = {
+					who = THIS
+					value = -50
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: Once Italy is united and a great power, the Papal States will have the option to join if they become a democracy (Roman Republic).
+    roman_republic_joins = {
+		picture = italia_irredenta
+		potential = {
+			tag = PAP
+			government = democracy
+			NOT = { has_country_flag = roman_republic_joins }
+            OR = {
+                AND = {
+                    ITA = { exists = yes }
+                    ITS = { exists = no }
+                }
+                AND = {
+                    ITS = { exists = yes }
+                    ITA = { exists = no }
+                }
+            }
+		}
+
+		allow = {
+            any_owned_province = {
+                limit = {
+					ITS = { exists = no }
+					ITA = {
+						exists = yes
+						is_greater_power = yes
+						OR = {
+							government = democracy
+							government = hms_government
+							government = prussian_constitutionalism
+						}
+					}
+                }
+				owner = THIS
+            }
+			any_owned_province = {
+                limit = {
+					ITA = { exists = no }
+					ITS = {
+						exists = yes
+						is_greater_power = yes
+						OR = {
+							government = democracy
+							government = hms_government
+							government = prussian_constitutionalism
+						}
+					}
+                }
+				owner = THIS
+            }
+		}
+
+		effect = {
+			any_pop = {	militancy = -1 }
+            any_country = {
+                limit = {
+                    OR = {
+                        tag = ITA
+                        tag = ITS
+                    }
+					exists = yes
+                }
+				inherit = PAP
+            }
+			set_country_flag = roman_republic_joins
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: Once Italy is united, unless it's Papal Italy, move the capital to Rome but let the Popes keep the Vatican if they stay neutral.
+    law_of_guarantees = {
+		picture = law_of_guarantees
+		potential = {
+			OR = {
+				tag = ITA
+				tag = ITS
+			}
+            NOT = {
+                exists = PAP
+                exists = ITP
+            }
+			NOT = { has_country_flag = law_of_guarantees }
+		}
+
+		allow = {
+			owns = 749
+		}
+
+		effect = {
+			set_country_flag = law_of_guarantees
+			capital = 749
+			prestige = 5
+			badboy = -2
+			PAP = {
+                all_core = { remove_core = PAP }
+                3374 = {
+                    add_core = PAP
+                    remove_core = THIS
+                    secede_province = PAP
+                }
+                add_country_modifier = {
+                    name = neutrality
+                    duration = -1
+                }
+            }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: Removes cores of Italian minors once Italy is formed.
+    abolish_italian_minors = {
+		picture = law_of_guarantees
+		potential = {
+			OR = {
+				tag = ITA
+				tag = ITS
+                tag = ITP
+			}
+			capital = 749
+			any_owned_province = {
+				any_core = {
+                    is_culture_group = italian
+                    NOT = { tag = THIS }
+                }
+			}
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			any_owned = {
+				limit = {
+                    NOT = { is_core = THIS }
+					any_core = {
+                        is_culture_group = italian
+                        NOT = { tag = THIS }
+                    }
+				}
+				add_core = THIS
+				remove_core = SAR
+				remove_core = SVY
+				remove_core = SRD
+				remove_core = SIC
+				remove_core = MOD
+				remove_core = TUS
+				remove_core = LUC
+				remove_core = PAR
+                remove_core = GEN
+				remove_core = PAP
+				remove_core = VEN
+				remove_core = LOM
+				remove_core = RMG
+				remove_core = SYC
+                remove_core = SMR
+                remove_core = CRS
+			}
+            any_country = {
+                limit = {
+                    tag = THIS
+                    NOT = { has_country_flag = already_abolished_italian_minors }
+                }
+                badboy = 2
+            }
+            set_country_flag = already_abolished_italian_minors
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.9
+			}
+		}
+	}
+
+    #Description: Generic Form Italy.
+    form_italy = {
+		news = yes
+		news_desc_long = "form_italy_NEWS_LONG"
+		news_desc_medium = "form_italy_NEWS_MEDIUM"
+		news_desc_short = "form_italy_NEWS_SHORT"
+		potential = {
+			is_culture_group = italian
+			capital_scope = { continent = europe }
+			NOT = {
+				has_country_flag = post_colonial_country
+				exists = ITA
+				exists = ITS
+			}
+		}
+
+		allow = {
+			prestige = 45
+			nationalism_n_imperialism = 1
+			is_greater_power = yes
+			war = no
+			ITA = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						AND = {
+							is_core = VEN
+							owner = {
+								NOT = { is_culture_group = italian }
+							}
+						}
+						AND = {
+							is_core = LOM
+							owner = {
+								NOT = { is_culture_group = italian }
+							}
+						}
+						owner = {
+							in_sphere = THIS
+							OR = {
+								is_vassal = no
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 20
+			all_core = { remove_core = THIS }
+			change_tag = ITA
+			capital = 749
+			add_accepted_culture = north_italian
+			add_accepted_culture = south_italian
+			random_owned = { limit = { owner = { accepted_culture = french } } owner = { remove_accepted_culture = french } }
+			random_owned = { limit = { owner = { accepted_culture = south_german } } owner = { remove_accepted_culture = south_german } }
+			random_owned = { limit = { owner = { accepted_culture = british } } owner = { remove_accepted_culture = british } }
+			any_owned = { limit = { is_core = SYC } remove_core = SYC }
+			any_owned = { limit = { is_core = SRD } remove_core = SRD }
+			any_owned = { limit = { is_core = RMG } remove_core = RMG }
+			any_country = {
+				limit = {
+					is_culture_group = italian
+					in_sphere = THIS
+					NOT = { has_country_flag = post_colonial_country }
+					NOT = { tag = SMR }
+				}
+				country_event = 11101
+			}
+			any_country = {
+				limit = {
+					NOT = { is_culture_group = italian }
+					exists = yes
+					OR = {
+						has_country_flag = objects_to_italy
+						tag = BOR
+						tag = FRA
+						tag = AUS
+						tag = KUK
+						AND = {
+							neighbour = ITA
+							is_greater_power = yes
+						}
+					}
+				}
+				country_event = { id = 96165 days = 20 }
+			}
+			add_country_modifier = {
+				name = global_baby_boom
+				duration = 1095
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: If Italy has formed, they will get an event about whether to annex San Marino.
+    san_marino_question = {
+		picture = san_marino
+		potential = {
+            tag = SMR
+			OR = {
+				ITA = { exists = yes is_vassal = no }
+				ITS = { exists = yes is_vassal = no }
+                ITP = { exists = yes is_vassal = no }
+			}
+			NOT = { has_country_flag = san_marino_question }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			set_country_flag = san_marino_question
+			random_country = {
+				limit = {
+					OR = {
+						tag = ITA
+						tag = ITS
+                        tag = ITP
+					}
+				}
+				country_event = 330403
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Unite Italy as puppet ##
+
+    italy_unite_without = {
+		picture = form_italy
+		potential = {
+			NOT = {
+				is_culture_group = italian
+				exists = ITA
+				exists = ITS
+				exists = ITP
+			}
+			NOT = {
+                has_country_flag = austrian_outside_italy
+                has_country_flag = french_outside_italy
+            }
+			is_greater_power = yes
+			ITA = {
+				any_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							is_culture_group = italian
+							in_sphere = THIS
+						}
+					}
+				}
+			}
+		}
+
+		allow = {
+			war = no
+            nationalism_n_imperialism = 1
+			ITA = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 25
+            badboy = 4
+			any_country = {
+				limit = {
+					is_culture_group = italian
+                    capital_scope = { continent = europe }
+			        NOT = {	has_country_flag = post_colonial_country }
+					in_sphere = THIS
+				}
+				annex_to = THIS
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					is_culture_group = germanic
+					capital = 619
+				}
+				AUS_729 = {	add_core = THIS	}
+				badboy = 6
+			}
+            any_country = {
+				limit = {
+					tag = THIS
+					is_culture_group = french
+					capital = 425
+				}
+				SAR_720 = {	add_core = THIS	}
+				721 = {	add_core = THIS	}
+				3363 = { add_core = THIS }
+				badboy = 6
+			}
+			any_owned = {
+				limit = {
+					is_core = THIS
+					is_core = ITA
+				}
+				remove_core = ITA
+			}
+			country_event = {
+				id = 5329627
+				days = 0
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Plombieres Italy ##
+
+    # Description: Puppet Italian states as France.
+    french_outside_italy = {
+		picture = italian_islands
+		potential = {
+			tag = FRA
+            has_country_modifier = louis_napoleon_iii
+			is_greater_power = yes
+			has_global_flag = plombieres
+            #NOT = { has_global_flag = plombieres_refused }
+			NOT = {
+				exists = ITA
+				exists = ITP
+				exists = ITS
+                has_country_flag = austrian_outside_italy
+                has_country_flag = french_outside_italy
+			}
+			ITA = {
+				any_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							AND = {
+								primary_culture = north_italian
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+
+		allow = {
+			war = no
+            nationalism_n_imperialism = 1
+			ITA = {
+				all_core = {
+					OR = {
+						OR = {
+							owned_by = THIS
+							owner = {
+                                in_sphere = THIS
+                                OR = {
+                                    is_vassal = no
+                                    vassal_of = THIS
+                                }
+                            }
+						}
+						NOT = {
+							OR = {
+								culture = north_italian
+								culture = south_italian
+							}
+						}
+					}
+				}
+			}
+			VEN = {
+				all_core = {
+					OR = {
+						OR = {
+							owned_by = THIS
+							owner = {
+                                in_sphere = THIS
+                                OR = {
+                                    is_vassal = no
+                                    vassal_of = THIS
+                                }
+                            }
+						}
+						NOT = {
+							OR = {
+								culture = north_italian
+								culture = south_italian
+							}
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			badboy = 10
+			any_country = {
+				limit = {
+					OR = {
+						primary_culture = north_italian
+						primary_culture = south_italian
+					}
+                    NOT = {
+                        tag = SMR
+                        tag = MNC
+                    }
+					in_sphere = THIS
+				}
+				annex_to = THIS
+			}
+            any_owned = {
+                limit = {
+                    OR = {
+                        province_id = 3363
+                        province_id = 721
+                        region = SAR_466
+                    }
+                }
+                add_core = THIS
+                remove_core = SAR
+                remove_core = SVY
+                remove_core = ITA
+            }
+			PAR = { all_core = { add_core = SAR } }
+			SAR = { all_core = { add_core = SAR } }
+			MOD = { all_core = { add_core = SAR } }
+			RMG = { all_core = { add_core = SAR } }
+            VEN = { all_core = { add_core = SAR } }
+			TUS_744 = { add_core = TUS remove_core = SAR }
+			751 = { add_core = TUS }
+			752 = { add_core = TUS }
+			750 = { add_core = TUS }
+			PAP = { all_core = { remove_core = PAP } }
+			749 = { add_core = PAP }
+            3374 = { add_core = PAP }
+			3375 = { add_core = PAP }
+			release_vassal = PAP
+			release_vassal = SIC
+			release_vassal = TUS
+			release_vassal = SAR
+			PAP = {	government = theocracy }
+			TUS = { add_accepted_culture = south_italian }
+			create_alliance = PAP
+			create_alliance = SIC
+			create_alliance = TUS
+			create_alliance = SAR
+			diplomatic_influence = {
+				who = PAP
+				value = 300
+			}
+			diplomatic_influence = {
+				who = SIC
+				value = 300
+			}
+			diplomatic_influence = {
+				who = TUS
+				value = 300
+			}
+			diplomatic_influence = {
+				who = SAR
+				value = 300
+			}
+			set_country_flag = french_outside_italy
+			any_country = {
+				limit = {
+                    OR = {
+                        tag = AUS
+                        tag = KUK
+                        tag = DNB
+                        tag = GCF
+                    }
+                    owns = 770
+				}
+				country_event = {
+					id = 72759
+					days = 30
+				}
+			}
+            any_country = {
+				limit = {
+                    OR = {
+                        tag = AUS
+                        tag = KUK
+                        tag = DNB
+                        tag = GCF
+                    }
+                    is_greater_power = yes
+				}
+				prestige = -10
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Austria rebukes France's accidental claim to Istria after forming Plombieres Italy.
+	rebuke_sardinian_istria = {
+		picture = italian_islands
+		potential = {
+			is_culture_group = germanic
+			owns = 770
+			770 = { is_core = SAR }
+			NOT = { exists = ITA }
+		}
+
+		allow = {
+			war = no
+			truce_with = SAR
+			has_recently_lost_war = no
+		}
+
+		effect = {
+			prestige = 12
+			770 = {
+				remove_core = SAR
+				remove_core = ITA
+			}
+			SAR = {	prestige = -15 }
+			any_country = {
+				limit = {
+					exists = yes
+					owns = 425
+					capital = 425
+					is_culture_group = french
+				}
+				country_event = {
+					id = 72764
+					days = 0
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: If San Marino wasn't included included in the French puppeting of Italy now they will get an ultimatum.
+    french_outside_italy_sm = {
+		picture = san_marino
+		potential = {
+			tag = FRA
+            has_country_modifier = louis_napoleon_iii
+			is_greater_power = yes
+			has_country_flag = french_outside_italy
+			NOT = { has_global_flag = france_san_marino_ultimatum_sent }
+            SMR = {
+                any_core = {
+                    NOT = { is_core = SAR }
+                }
+            }
+		}
+
+		allow = {
+			war = no
+			SMR = {	in_sphere = THIS }
+			SAR = {
+				in_sphere = THIS
+				vassal_of = THIS
+                owns = 743
+			}
+		}
+
+		effect = {
+            badboy = 1
+			SMR = {
+                all_core = { add_core = SAR }
+                country_event = {
+                    id = 330405
+                    days = 2
+                }
+            }
+			set_global_flag = france_san_marino_ultimatum_sent
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Metternich's Italy ##
+
+    # Description: Puppet Italian states as Austria.
+    austrian_outside_italy = {
+		picture = italian_islands
+		potential = {
+			OR = {
+				tag = AUS
+				tag = KUK
+				tag = DNB
+                tag = GCF
+			}
+			is_greater_power = yes
+			NOT = {
+				exists = ITA
+				exists = ITP
+				exists = ITS
+                has_country_flag = austrian_outside_italy
+                has_country_flag = french_outside_italy
+			}
+			ITA = {
+				any_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							AND = {
+								primary_culture = north_italian
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+
+		allow = {
+			war = no
+            nationalism_n_imperialism = 1
+			ITA = {
+				all_core = {
+					OR = {
+						OR = {
+							owned_by = THIS
+							owner = {
+                                in_sphere = THIS
+                                OR = {
+                                    is_vassal = no
+                                    vassal_of = THIS
+                                }
+                            }
+						}
+						NOT = {
+							OR = {
+								culture = north_italian
+								culture = south_italian
+							}
+						}
+					}
+				}
+			}
+			VEN = {
+				all_core = {
+					OR = {
+						OR = {
+							owned_by = THIS
+							owner = {
+                                in_sphere = THIS
+                                OR = {
+                                    is_vassal = no
+                                    vassal_of = THIS
+                                }
+                            }
+						}
+						NOT = {
+							OR = {
+								culture = north_italian
+								culture = south_italian
+							}
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			badboy = 10
+			any_country = {
+				limit = {
+					OR = {
+						primary_culture = north_italian
+						primary_culture = south_italian
+					}
+                    NOT = {
+                        tag = SMR
+                        tag = MNC
+                    }
+					in_sphere = THIS
+				}
+				annex_to = THIS
+			}
+			VEN = { all_core = { add_core = THIS } }
+			VEN = { all_core = { remove_core = LOM } }
+			SRD = { all_core = { remove_core = SAR } }
+            GEN = { all_core = { add_core = LOM } }
+			PAR = { all_core = { add_core = LOM } }
+			SAR = { all_core = { add_core = LOM } }
+			LUC = { all_core = { add_core = LOM } }
+			MOD = { all_core = { add_core = LOM } }
+			TUS = { all_core = { add_core = LOM } }
+			RMG = { all_core = { add_core = LOM } }
+			751 = { add_core = SIC }
+			752 = { add_core = SIC }
+			PAP = { all_core = { remove_core = PAP } }
+			750 = { add_core = PAP }
+			749 = { add_core = PAP }
+            3374 = { add_core = PAP }
+			release_vassal = LOM
+			release_vassal = SIC
+			release_vassal = SRD
+			release_vassal = PAP
+			PAP = {	government = theocracy }
+			create_alliance = LOM
+			create_alliance = SIC
+			create_alliance = SRD
+			create_alliance = PAP
+			diplomatic_influence = {
+				who = SIC
+				value = 300
+			}
+			diplomatic_influence = {
+				who = LOM
+				value = 300
+			}
+			diplomatic_influence = {
+				who = PAP
+				value = 300
+			}
+			diplomatic_influence = {
+				who = SRD
+				value = 300
+			}
+			set_country_flag = austrian_outside_italy
+			any_country = {
+				limit = {
+                    is_culture_group = french
+					owns = 473
+				}
+				country_event = {
+					id = 72758
+					days = 30
+				}
+			}
+            any_country = {
+				limit = {
+                    is_culture_group = french
+					owns = 473
+                    has_country_modifier = louis_napoleon_iii
+                    is_greater_power = yes
+				}
+				prestige = -10
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: France rebukes Austria's accidental claim to Corsica after forming Metternich's Italy.
+	rebuke_sardinian_corsica = {
+		picture = italian_islands
+		potential = {
+			is_culture_group = french
+			owns = 473
+			has_country_modifier = louis_napoleon_iii
+			473 = { is_core = SRD }
+			NOT = { exists = ITA }
+		}
+
+		allow = {
+			war = no
+			truce_with = SRD
+			has_recently_lost_war = no
+		}
+
+		effect = {
+			prestige = 12
+			473 = {
+				remove_core = SRD
+				remove_core = ITA
+			}
+			SRD = {	prestige = -15 }
+			any_country = {
+				limit = {
+					exists = yes
+					owns = 619
+					capital = 619
+					is_culture_group = germanic
+				}
+				country_event = {
+					id = 72753
+					days = 0
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: If San Marino wasn't included included in the Austrian puppeting of Italy now they will get an ultimatum.
+    austrian_outside_italy_sm = {
+		picture = san_marino
+		potential = {
+			OR = {
+				tag = AUS
+				tag = KUK
+				tag = DNB
+                tag = GCF
+			}
+			is_greater_power = yes
+			has_country_flag = austrian_outside_italy
+			NOT = { has_global_flag = austria_san_marino_ultimatum_sent }
+            SMR = {
+                any_core = {
+                    NOT = { is_core = LOM }
+                }
+            }
+		}
+
+		allow = {
+			war = no
+			SMR = {	in_sphere = THIS }
+			LOM = {
+				in_sphere = THIS
+				vassal_of = THIS
+                owns = 743
+			}
+		}
+
+		effect = {
+            badboy = 1
+			SMR = {
+                all_core = { add_core = LOM }
+                country_event = {
+                    id = 330404
+                    days = 2
+                }
+            }
+			set_global_flag = austria_san_marino_ultimatum_sent
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+}
