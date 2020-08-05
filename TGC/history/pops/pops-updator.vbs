@@ -1,22 +1,16 @@
 Option Explicit
-
 Const FileEncoding = 0 ' 0 = ASCII, -1 = Unicode, -2 = System Default
 Const FractDigits = 6 ' number of fractional digits
-
 Dim objList, strPath
-
 If WScript.Arguments.Count = 0 then
     CreateObject("WScript.Shell").PopUp "Drop folder(s) and / or file(s) to the script to process", 3, , 48
     WScript.Quit
 End If
-
 Set objList = ReadContent(WScript.Arguments)
-
 If objList.Count = 0 Then
     CreateObject("WScript.Shell").PopUp "No files found", 3, , 48
     WScript.Quit
 End If
-
 With CreateObject("VBScript.RegExp")
     .Global = True
     .MultiLine = True
@@ -27,7 +21,6 @@ With CreateObject("VBScript.RegExp")
     Next
 End With
 CreateObject("WScript.Shell").PopUp "Completed", 1, , 64
-
 Function FnReplace(strMatch, strSubMatch1, strSubMatch2, lngPos, strSource)
     Dim strResult
     On Error Resume Next
@@ -39,7 +32,6 @@ Function FnReplace(strMatch, strSubMatch1, strSubMatch2, lngPos, strSource)
         FnReplace = strSubMatch1 & """" & strResult & """"
     End If
 End Function
-
 Function ReadContent(arrList)
     Dim objList, strPath
     Set objList = CreateObject("Scripting.Dictionary")
@@ -48,7 +40,6 @@ Function ReadContent(arrList)
     Next
     Set ReadContent = objList
 End Function
-
 Sub AddContent(strPath, objList)
     Dim objItem
     With CreateObject("Scripting.FileSystemObject")
@@ -65,7 +56,6 @@ Sub AddContent(strPath, objList)
         End If
     End With
 End Sub
-
 Function ReadFromFile(strPath, intFormat)
     With CreateObject("Scripting.FileSystemObject").OpenTextFile(strPath, 1, False, intFormat)
         ReadFromFile = ""
@@ -73,7 +63,6 @@ Function ReadFromFile(strPath, intFormat)
         .Close
     End With
 End Function
-
 Sub WriteToFile(strCont, strPath, intFormat)
     With CreateObject("Scripting.FileSystemObject").OpenTextFile(strPath, 2, True, intFormat)
         .Write(strCont)

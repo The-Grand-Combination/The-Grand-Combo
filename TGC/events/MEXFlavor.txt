@@ -143,7 +143,7 @@ country_event = {
 				militancy = 8
 			}
 		}
-		set_country_flag = MaderoRevolt
+		set_country_flag = Maderorevolt
 	}
 }
 
@@ -158,7 +158,7 @@ country_event = {
 	trigger = {
 		tag = MEX
 		year = 1911
-		has_country_flag = MaderoRevolt
+		has_country_flag = Maderorevolt
 		NOT = {
 			year = 1915
 			government = democracy
@@ -204,7 +204,7 @@ country_event = {
 
 	trigger = {
 		tag = MEX
-		has_country_flag = MaderoRevolt
+		has_country_flag = Maderorevolt
 		year = 1911
 		NOT = {
 			government = democracy
@@ -1044,93 +1044,6 @@ country_event = {
 	}
 }
 
-# krepost ross purchase 1/3
-country_event = {
-	id = 1904191420
-	title = "EVTNAME1904191420"
-	desc = "EVTDESC1904191420"
-	picture = "administration"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA32550"
-		money = 9000
-		3366 = { remove_core = THIS }
-		FROM = { country_event = 1904191421 }
-		ai_chance = {
-			factor = 60 
-				modifier = {
-					factor = 0.8
-					is_greater_power = no
-				}
-				modifier = {
-					factor = 0.7
-					alliance_with = FROM
-				}
-				modifier = {
-					factor = 0.7
-					relation = { who = FROM value = 50 }
-				}
-			}
-	}
-
-	option = {
-		name = "EVTOPTB32550"
-		FROM = { country_event = 32552 }
-		ai_chance = {
-			factor = 40 
-				modifier = {
-					factor = 0.2
-					is_greater_power = no
-				}
-				
-				modifier = {
-					factor = 0.6
-					FROM = { is_greater_power = no }
-				}
-				modifier = {
-					factor = 0.1
-					NOT = { relation = { who = FROM value = 0 } }
-				}
-			}
-	}
-}
-
-# krepost ross purchase 2/3
-country_event = {
-	id = 1904191421
-	title = "EVTNAME32551"
-	desc = "EVTDESC1904191421"
-	picture = "administration"
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA32551"
-		prestige = 5
-		money = -9000
-		3366 = { secede_province = THIS }
-		relation = { who = FROM value = 25 }
-		any_pop = { consciousness = -1 }
-	}
-}
-
-# krepost ross purchase 3/3
-country_event = {
-	id = 32552
-	title = "EVTNAME32552"
-	desc = "EVTDESC32552"
-	picture = "administration"
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA32552"
-		relation = { who = FROM value = -75 }
-	}
-}
-
 #############################################################
 #															#
 #         		War of Texan Independence Events			#
@@ -1708,5 +1621,208 @@ country_event = {
 				war_policy = pro_military
 			}
 		}
+	}
+}
+
+country_event = {
+	id = 1904191422
+	title = "EVTNAME1904191422" #The British crown demand sovereignty over belize!
+	desc = "EVTDESC1904191422"
+	picture = "treaty"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA44126"
+		set_country_flag = mexico_refused_eng_once
+		ENG = { country_event = 1904191423 }
+		any_pop = { militancy = -1 }
+		ai_chance = {
+			factor = 10
+		}
+	}
+
+	option = {
+		name = "EVTOPTB44126"
+		set_country_flag = spencer_treaty
+		all_core = {
+			limit = {
+				OR = {
+					province_id = 2187
+				}
+			}
+			remove_core = MEX
+		}
+		any_owned = {
+			limit = {
+				OR = {
+					is_core = ENG
+					province_id = 2187
+				}
+			}
+			secede_province = ENG
+		}
+		MEX = { research_points = 1000 }
+		
+		ai_chance = {
+			factor = 90
+			modifier = {
+				factor = 0
+				is_greater_power = yes
+			}
+			modifier = {
+				factor = 0
+				NOT = { in_sphere = ENG }
+				part_of_sphere = yes
+			}
+			modifier = {
+				factor = 2
+				ENG = { brigades_compare = 2 }
+			}
+			modifier = {
+				factor = 0.5
+				NOT = {
+					ENG = { brigades_compare = 1 }
+				}
+			}
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+		}
+	}
+}
+
+
+country_event = {
+	id = 1904191423
+	title = "EVTNAME1904191423" #Mexico Has Refused!
+	desc = "EVTDESC44127"
+	picture = "treaty"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA44127"
+		set_global_flag = British_Mexican_war
+		war_exhaustion = -10
+		relation = { who = MEX value = -100 }
+		diplomatic_influence = { who = MEX value = -200 }
+		leave_alliance = MEX
+		war = {
+			target = MEX
+			attacker_goal = {
+				casus_belli = acquire_state
+                                state_province_id = 2183
+				country = ENG
+			}
+		}
+		any_pop = {
+			limit = { has_pop_culture = mexican }
+			militancy = 5
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+
+	option = {
+		name = "EVTOPTB44127"
+		set_global_flag = no_british_mexican_war
+		prestige_factor = -0.2
+		any_pop = {
+			consciousness = 1
+			militancy = 1
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+# krepost ross purchase 1/3
+country_event = {
+	id = 1904191420
+	title = "EVTNAME1904191420"
+	desc = "EVTDESC1904191420"
+	picture = "administration"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA32550"
+		money = 9000
+		3366 = { remove_core = THIS }
+		FROM = { country_event = 1904191421 }
+		ai_chance = {
+			factor = 60 
+				modifier = {
+					factor = 0.8
+					is_greater_power = no
+				}
+				modifier = {
+					factor = 0.7
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 0.7
+					relation = { who = FROM value = 50 }
+				}
+			}
+	}
+
+	option = {
+		name = "EVTOPTB32550"
+		FROM = { country_event = 32552 }
+		ai_chance = {
+			factor = 40 
+				modifier = {
+					factor = 0.2
+					is_greater_power = no
+				}
+				
+				modifier = {
+					factor = 0.6
+					FROM = { is_greater_power = no }
+				}
+				modifier = {
+					factor = 0.1
+					NOT = { relation = { who = FROM value = 0 } }
+				}
+			}
+	}
+}
+
+# krepost ross purchase 2/3
+country_event = {
+	id = 1904191421
+	title = "EVTNAME32551"
+	desc = "EVTDESC1904191421"
+	picture = "administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA32551"
+		prestige = 5
+		money = -9000
+		3366 = { secede_province = THIS }
+		relation = { who = FROM value = 25 }
+		any_pop = { consciousness = -1 }
+	}
+}
+
+# krepost ross purchase 3/3
+country_event = {
+	id = 1904191422
+	title = "EVTNAME32552"
+	desc = "EVTDESC32552"
+	picture = "administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA32552"
+		relation = { who = FROM value = -75 }
 	}
 }
