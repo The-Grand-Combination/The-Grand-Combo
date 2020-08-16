@@ -1,1087 +1,1799 @@
 political_decisions = {
-  ### Hejaz ###
-  hedjaz_independent = {
-    picture = form_the_ikhwan
-    potential = {
-      tag = HDJ
-      vassal_of = EGY
-    }
 
-    allow = {
-      war = no
-      NOT = {
-        neighbour = EGY
-      }
-    }
+## Hedjaz (Hashemites) ##
 
-    effect = {
-      add_casus_belli = {
-        target = TUR
-        type = establish_protectorate_casus_belli
-        months = 120
-      }
-      leave_alliance = EGY
-      EGY = {
-        release_vassal = THIS
-        country_event = 800055
-      }
-    }
+	#Description: Hedjaz will declare independece from Egypt if they are no longer neighbors with Egypt (most likely as a consequence of the Ottomans winning the Oriental Crisis)
+	hedjaz_independent = {
+		picture = form_the_ikhwan
+		potential = {
+			tag = HDJ
+			vassal_of = EGY
+		}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+		allow = {
+			war = no
+			NOT = { neighbour = EGY	}
+		}
 
-  the_holy_city = {
-    picture = the_holy_city
-    potential = {
-      1151 = {
-        NOT = {
-          has_province_modifier = holy_city
-        }
-      }
-      OR = {
-        is_culture_group = arab
-        is_culture_group = turko_semitic
-      }
-    }
+		effect = {
+			add_casus_belli = {
+				target = TUR
+				type = establish_protectorate_casus_belli
+				months = 120
+			}
+			leave_alliance = EGY
+			EGY = {
+				release_vassal = THIS
+				country_event = 800055
+			}
+		}
 
-    allow = {
-      owns = 1151
-    }
+		ai_will_do = { factor = 1 }
+	}
 
-    effect = {
-      1151 = {
-        add_province_modifier = {
-          name = holy_city
-          duration = -1
-        }
-      }
-    }
-    ai_will_do = {
-      factor = 1
-    }
-  }
+	#Description: Province modifier for Mecca.
+	the_holy_city = {
+		picture = the_holy_city
+		potential = {
+			1151 = { owned_by = THIS NOT = { has_province_modifier = holy_city } }
+			OR = {
+				is_culture_group = arab
+				is_culture_group = turko_semitic
+			}
+		}
 
-  ### Nejd ###
-  ibn_saud = {
-    potential = {
-      has_global_flag = arab_revolt_has_begun
-      NOT = {
-        has_country_flag = ibn_saud
-      }
-      tag = NEJ
-    }
+		allow = {
+		}
 
-    allow = {
-      government = absolute_monarchy
-    }
+		effect = {
+			1151 = {
+				add_province_modifier = {
+					name = holy_city
+					duration = -1
+				}
+			}
+		}
 
-    effect = {
-      set_country_flag = ibn_saud
-      define_general = {
-        name = "Ibn Saud"
-        personality = brilliant
-        background = eccentric_genius
-      }
-    }
-    ai_will_do = {
-      factor = 1
-    }
-  }
+		ai_will_do = { factor = 1 }
+	}
 
-  form_the_ikhwan = {
-    potential = {
-      OR = {
-        AND = {
-          tag = NEJ
-          has_country_flag = ibn_saud
-        }
-        AND = {
-          tag = HAL
-          OR = {
-            has_global_flag = house_of_saud_returned
-            year = 1920
-          }
-          NOT = {
-            exists = NEJ
-          }
-        }
-      }
-      NOT = {
-        has_country_flag = the_ikhwan_formed
-      }
-    }
+	#Description: The Hashemites can claim the rest of Arabia if the Rashidis or the Saudis claimed Hedjaz and are at war with them.
+	claim_arabia_HDJ = {
+		picture = map_arabia
+		potential = {
+			tag = HDJ
+			NOT = {
+				exists = ARA
+				1157 = { is_core = HDJ } #Riyadh
+			}
+		}
 
-    allow = {
-      government = absolute_monarchy
-    }
+		allow = {
+			NOT = {	owns = 1157	}
+			is_vassal = no
+			OR = {
+				1157 = {
+					owner = {
+						NOT = { primary_culture = bedouin }
+						NOT = {	is_sphere_leader_of = THIS }
+						sphere_owner = { NOT = { is_sphere_leader_of = THIS } }
+					}
+				}
+				AND = {
+					war_with = NEJ
+					1151 = { is_core = NEJ }
+				}
+				AND = {
+					war_with = HAL
+					1151 = { is_core = HAL }
+				}
+			}
+		}
 
-    effect = {
-      set_country_flag = the_ikhwan_formed
-      add_country_modifier = {
-        name = the_ikhwan
-        duration = 3650
-      }
-      random_pop = {
-        limit = {
-          pop_type = farmers
-          has_pop_culture = bedouin
-        }
-        pop_type = soldiers
-      }
-      any_pop = {
-        limit = {
-          has_pop_culture = bedouin
-        }
-        ideology = {
-          value = reactionary
-          factor = 0.2
-        }
-        dominant_issue = {
-          factor = 0.20
-          value = jingoism
-        }
-        militancy = -4
-      }
-    }
+		effect = {
+			prestige = 5
+			NEJ_1157 = { add_core = HDJ	}	#Nejd
+			NEJ_1156 = { add_core = HDJ }	#Ha'il
+			1155 = { add_core = HDJ }		#Abha
+			random_country = {
+				limit = {
+					owns = 1157
+					civilized = no
+					NOT = { tag = THIS }
+				}
+				leave_alliance = THIS
+				relation = {
+					who = THIS
+					value = -50
+				}
+			}
+		}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: A Great Power which is at war with Turkey can incite the Arab Revolt, releasing Hedjaz and forming an alliance with them.
+	encourage_arab_nationalism = {
+		picture = form_the_ikhwan
+		potential = {
+			is_greater_power = yes
+			NOT = { has_global_flag = arab_nationalism_encouraged }
+			NOT = { tag = TUR }
+			TUR = {
+				NOT = { has_country_flag = arab_revolt }
+				any_owned_province = {
+					any_core = {
+						OR = {
+							primary_culture = mashriqi
+							primary_culture = bedouin
+							primary_culture = misri
+							primary_culture = maghrebi
+						}
+						exists = no
+					}
+				}
+			}
+			OR = {
+				year = 1900
+				AND = {	tag = ENG has_global_flag = sykes_picot }
+			}
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			war_with = TUR
+		}
+
+		effect = {
+			set_global_flag = arab_nationalism_encouraged
+			set_country_flag = friend_of_the_arabs
+			TUR = { country_event = 96100 }
+			TUR = { release = HDJ }
+			any_country = {
+				limit = {
+					tag = HDJ
+					exists = yes
+					is_vassal = no
+				}
+				create_alliance = THIS
+				military_access = THIS
+				relation = {
+					who = THIS
+					value = 200
+				}
+				diplomatic_influence = {
+					who = THIS
+					value = 400
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Ha'il (Rashidis) ##
+
+	#Description: If the Hashemites or the Rashidis conquer all Nedj cores, they can exile the house of Saud.
+	exile_house_of_saud = {
+		picture = ibn_saud
+		potential = {
+			OR = {
+				tag = HAL
+				tag = HDJ
+			}
+			any_owned_province = { is_core = NEJ }
+			NOT = { has_global_flag = house_of_saud_exiled }
+		}
+
+		allow = {
+			NEJ = {
+				exists = no
+				all_core = {
+					OR = {
+						owned_by = THIS
+						empty = yes
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = house_of_saud_exiled
+			prestige = 5
+			NEJ = {	all_core = { remove_core = NEJ } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Rashidis can claim Nedj if it has been conquered.
+	claim_nejd = {
+		picture = map_arabia
+		potential = {
+			tag = HAL
+			NOT = {
+				has_country_flag = claimed_nejd
+				1157 = { is_core = HAL } #Riyadh
+			}
+		}
+
+		allow = {
+			NEJ = {	exists = no	}
+		}
+
+		effect = {
+			set_country_flag = claimed_nejd
+			NEJ_1157 = { add_core = HAL	}
+			NEJ_1156 = { add_core = HAL }
+			any_country = {
+				limit = {
+					civilized = no
+					any_owned_province = {
+						OR = {
+							region = NEJ_1157
+							region = NEJ_1156
+						}
+					}
+					NOT = { tag = THIS }
+				}
+				leave_alliance = THIS
+				relation = {
+					who = THIS
+					value = -100
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Rashidis and the Saudis can claim Hedjaz if they own the capital of the other or Mecca.
+	claim_hedjaz = {
+		picture = map_arabia
+		potential = {
+			OR = {
+				tag = NEJ
+				tag = HAL
+			}
+			NOT = {
+				exists = ARA
+				1151 = { is_core = THIS }
+			}
+		}
+
+		allow = {
+			OR = {
+				AND = {
+					owns = 1160 #Ha'il
+					owns = 1157 #Riyadh
+				}
+				owns = 1151 #Mecca
+			}
+		}
+
+		effect = {
+			prestige = 5
+			HDJ_1151 = { add_core = THIS }
+			random_country = {
+				limit = {
+					owns = 1151
+					civilized = no
+					NOT = { tag = THIS }
+				}
+				leave_alliance = THIS
+				relation = {
+					who = THIS
+					value = -200
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Nejd (Saudis) ##
+
+	#Description: If the Hashemites or the Saudis conquer all Nedj cores, they can exile the house of Rashid.
+	exile_house_of_rashid = {
+		picture = exile_house_of_rashid
+		potential = {
+			OR = {
+				tag = NEJ
+				tag = HDJ
+			}
+			any_owned_province = { is_core = HAL }
+			NOT = { has_global_flag = house_of_rashid_exiled }
+		}
+
+		allow = {
+			HAL = {
+				exists = no
+				all_core = {
+					OR = {
+						owned_by = THIS
+						empty = yes
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = house_of_rashid_exiled
+			prestige = 5
+			HAL = {	all_core = { remove_core = HAL } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Saudis can claim Ha'il if it has been conquered.
+	claim_hail = {
+		picture = map_arabia
+		potential = {
+			tag = NEJ
+			NOT = {
+				has_country_flag = claimed_hail
+				1160 = { is_core = NEJ } #Ha'il
+			}
+		}
+
+		allow = {
+			HAL = { exists = no }
+		}
+
+		effect = {
+			set_country_flag = claimed_hail
+			NEJ_1156 = { add_core = NEJ }
+			any_country = {
+				limit = {
+					civilized = no
+					any_owned_province = { region = NEJ_1156 }
+					NOT = { tag = THIS }
+				}
+				leave_alliance = THIS
+				relation = {
+					who = THIS
+					value = -100
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If the Arab revolt has begun, Ibn Saud will will become available to Nejd as a general.
+	ibn_saud = {
+		potential = {
+			has_global_flag = arab_revolt_has_begun
+			NOT = { has_country_flag = ibn_saud }
+			tag = NEJ
+		}
+
+		allow = {
+			government = absolute_monarchy
+		}
+
+		effect = {
+			set_country_flag = ibn_saud
+			define_general = {
+				name = "Ibn Saud"
+				personality = brilliant
+				background = eccentric_genius
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Form an alliance with the Wahabbi order, turning farmer pops into soldiers.
+	form_the_ikhwan = {
+		potential = {
+			OR = {
+				AND = {
+					tag = NEJ
+					has_country_flag = ibn_saud
+				}
+				AND = {
+					tag = HAL
+					OR = {
+						has_global_flag = house_of_saud_returned
+						year = 1920
+					}
+					NOT = { exists = NEJ }
+				}
+			}
+			NOT = { has_country_flag = the_ikhwan_formed }
+		}
+
+		allow = {
+			government = absolute_monarchy
+		}
+
+		effect = {
+			set_country_flag = the_ikhwan_formed
+			add_country_modifier = {
+				name = the_ikhwan
+				duration = 3650
+			}
+			random_pop = {
+				limit = {
+					pop_type = farmers
+					has_pop_culture = bedouin
+				}
+				pop_type = soldiers
+			}
+			any_pop = {
+				limit = {
+					has_pop_culture = bedouin
+				}
+				ideology = {
+					value = reactionary
+					factor = 0.2
+				}
+				dominant_issue = {
+					factor = 0.20
+					value = jingoism
+				}
+				militancy = -4
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Arabia ##
+
+	#Description: If Arabia is civilized and independent, they can claim the rest of the Arabian peninsula.
+	claim_arabian_peninsula = {
+		picture = map_arabia
+		potential = {
+			tag = ARA
+			NOT = { has_country_flag = claim_arabian_peninsula }
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			civilized = yes
+			prestige = 20
+			nationalism_n_imperialism = 1
+			war_policy = jingoism
+		}
+
+		effect = {
+			set_country_flag = claim_arabian_peninsula
+			AZH = { all_core = { add_core = ARA } }
+			JOR = { all_core = { add_core = ARA } }
+			ABU_1162 = { add_core = ARA }
+			OMA_1166 = { add_core = ARA }
+			YEM_1412 = { add_core = ARA }
+			YEM_1178 = { add_core = ARA }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Occupation of the uncolonizable provinces in Arabia if you own the neighboring provinces.
+	occupation_of_the_arabian_desert = {
+		picture = form_the_ikhwan
+		potential = {
+			OR = {
+				AND = { # Trucial States
+					owns = 1167				# Abu Dhabi
+					12 = { empty = yes }	# Liwa
+				}
+				AND = { # North Yemen
+					owns = 1178				# Sana'a
+					1180 = { empty = yes }	# Taizz
+				}
+				AND = { # South Ha'il
+					owns = 1159				# Halaban
+					1161 = { empty = yes }	# Sharurah
+				}
+				AND = { # Yemen
+					OR = {
+						owns = 1175			# Ghayda
+						owns = 1173			# Mukalla
+						owns = 1176			# Bayda
+					}
+					3273 = { empty = yes }	# Seiyun
+				}
+				AND = { # Oman
+					owns = 1170				# Nizwa
+					1172 = { empty = yes }	# Duqm
+				}
+				AND = { # South Arabia
+					owns = 1157				# Riyadh
+					2586 = { empty = yes }	# Rub'al Khali
+				}
+				AND = { # North Arabia and Iraq Desert
+					owns = 1160				# Ha'il
+					1158 = { empty = yes }	# Al-Nefud
+					3292 = { empty = yes }	# Al Salman
+				}
+			}
+		}
+
+		allow = {
+			OR = {
+				year = 1920
+				AND = {
+					OR = {
+						capital_scope = { continent = europe }
+						is_greater_power = yes
+					}
+					mass_politics = 1
+				}
+				AND = {
+					NOT = {
+						capital_scope = { continent = europe }
+						is_greater_power = yes
+					}
+					state_n_government = 1
+				}
+			}
+		}
+
+		effect = {
+			random_owned = { # Trucial States
+				limit = {
+					owner = { owns = 1167 }
+					12 = { empty = yes }
+				}
+				12 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 5
+				}
+				owner = { prestige = 1 }
+			}
+			random_owned = { # North Yemen
+				limit = {
+					owner = { owns = 1178 }
+					1180 = { empty = yes }
+				}
+				1180 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 30
+				}
+				owner = { prestige = 1 }
+			}
+			random_owned = { # South Ha'il
+				limit = {
+					owner = { owns = 1159 }
+					1161 = { empty = yes }
+				}
+				1161 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 5
+				}
+				owner = { prestige = 1 }
+			}
+			random_owned = { # Yemen
+				limit = {
+					owner = {
+						OR = {
+							owns = 1178
+							owns = 1173
+							owns = 1176
+						}
+					}
+					3273 = { empty = yes }
+				}
+				3273 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 5
+				}
+				owner = { prestige = 1 }
+			}
+			random_owned = { # Oman
+				limit = {
+					owner = { owns = 1166 }
+					1172 = { empty = yes }
+				}
+				1172 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 15
+				}
+				owner = { prestige = 1 }
+			}
+			random_owned = { # South Arabia
+				limit = {
+					owner = { owns = 1157 }
+					2586 = { empty = yes }
+				}
+				2586 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 5
+				}
+				owner = { prestige = 1 }
+			}
+			random_owned = { # North Arabia and Iraq Desert
+				limit = {
+					owner = { owns = 1160 }
+					1158 = { empty = yes }
+					3292 = { empty = yes }
+				}
+				1158 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 5
+				}
+				3292 = {
+					secede_province = THIS
+					any_pop = { literacy = -0.99 }
+					life_rating = 5
+				}
+				owner = { prestige = 1 }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Any of the three warring tribes can, when they unite the whole region, form Arabia.
+	become_arabia = {
+		picture = become_saudi_arabia
+		potential = {
+			OR = {
+				tag = NEJ
+				tag = HDJ
+				tag = HAL
+			}
+			NOT = { exists = ARA }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				has_global_flag = house_of_rashid_exiled
+				is_sphere_leader_of = HAL
+				HAL = {
+					all_core = {
+						OR =
+							owned_by = THIS
+							empty = yes
+						}
+					}
+				}
+			}
+			OR = {
+				has_global_flag = house_of_saud_exiled
+				is_sphere_leader_of = NEJ
+				NEJ = {
+					all_core = {
+						OR =
+							owned_by = THIS
+							empty = yes
+						}
+					}
+				}
+			}
+			OR = {
+				is_sphere_leader_of = HDJ
+				HDJ = {
+					all_core = {
+						OR =
+							owned_by = THIS
+							empty = yes
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			add_accepted_culture = bedouin
+			add_accepted_culture = mashriqi
+			NEJ = { all_core = { add_core = ARA } }
+			HDJ = { all_core = { add_core = ARA } }
+			HAL = { all_core = { add_core = ARA } }
+			any_country = {
+				limit = {
+					OR = {
+						tag = NEJ
+						tag = HAL
+						tag = HDJ
+					}
+					exists = yes
+					ai = yes
+				}
+				annex_to = THIS
+			}
+			any_country = {
+				limit = {
+					OR = {
+						tag = NEJ
+						tag = HAL
+						tag = HDJ
+					}
+					exists = yes
+					ai = no
+				}
+				country_event = 11101
+			}
+			any_owned = {
+				remove_core = NEJ
+				remove_core = HDJ
+				remove_core = HAL
+			}
+			change_tag = ARA
+
+			1163 = { remove_core = TUR }
+			1164 = { remove_core = TUR }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Any Great Power that spheres all the Arabia minors can form Arabia as a puppet.
+	form_arabia = {
+		picture = become_saudi_arabia
+		potential = {
+			is_greater_power = yes
+			NOT = {
+				tag = NEJ
+				tag = HDJ
+				tag = HAL
+				tag = TUR
+				tag = ARU
+				tag = ISR
+			}
+			NOT = { exists = ARA }
+			OR = {
+				is_sphere_leader_of = NEJ
+				is_sphere_leader_of = HDJ
+				is_sphere_leader_of = HAL
+				any_owned_province = {
+					OR = {
+						is_core = NEJ
+						is_core = HDJ
+						is_core = HAL
+					}
+				}
+			}
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			OR = {
+				has_global_flag = house_of_rashid_exiled
+				AND = { is_sphere_leader_of = HAL ai = yes }
+				HAL = {
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								ai = yes
+								in_sphere = THIS
+							}
+							empty = yes
+						}
+					}
+				}
+			}
+			OR = {
+				has_global_flag = house_of_saud_exiled
+				AND = { is_sphere_leader_of = NEJ ai = yes }
+				NEJ = {
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								ai = yes
+								in_sphere = THIS
+							}
+							empty = yes
+						}
+					}
+				}
+			}
+			OR = {
+				AND = { is_sphere_leader_of = HDJ ai = yes }
+				HDJ = {
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								ai = yes
+								in_sphere = THIS
+							}
+							empty = yes
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			NEJ = { all_core = { add_core = ARA } }
+			HDJ = { all_core = { add_core = ARA } }
+			HAL = { all_core = { add_core = ARA } }
+			#any_owned = {
+				#limit = {
+					#OR = {
+						#is_core = OMA
+						#is_core = ABU
+						#is_core = NYE
+						#is_core = LHJ
+						#is_core = FDL
+						#is_core = KTH
+						#is_core = MHR
+						#is_core = YEM
+						#is_core = BHR
+						#is_core = QAT
+					#}
+					#NOT = { is_core = ZAN }
+				#}
+				#add_core = ARA
+			#}
+			any_country = {
+				limit = {
+					OR = {
+						tag = NEJ
+						tag = HAL
+						tag = HDJ
+					}
+					exists = yes
+					ai = yes
+				}
+				annex_to = THIS
+			}
+			any_country = {
+				limit = {
+					OR = {
+						tag = NEJ
+						tag = HAL
+						tag = HDJ
+					}
+					exists = yes
+					ai = no
+				}
+				country_event = 11101
+			}
+			random_owned = {
+				owner = { limit = { owns = 1412 owns = 1176 }  YEM_1178 = { add_core = ARA } }
+			}
+			any_owned = {
+				remove_core = NEJ
+				remove_core = HDJ
+				remove_core = HAL
+			}
+			any_owned = {
+				limit = {
+					is_core = ARA
+					is_core = THIS
+				}
+				remove_core = ARA
+			}
+
+			any_country = {
+				limit = { in_sphere = THIS }
+				any_owned = {
+					limit = { is_core = ARA }
+					secede_province = THIS
+				}
+			}
+
+			release_vassal = ARA
+			relation = { who = ARA value = 50 }
+			diplomatic_influence = { who = ARA value = 200 }
+			ARA = { tech_school = unciv_tech_school }
+
+			1163 = { remove_core = TUR }
+			1164 = { remove_core = TUR }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Arab Union ##
+
+	#Description: Any Arab country that becomes a Great or Secondary power can declare the call to Arab unity.
+	form_arab_union = {
+		picture = form_arab_union
+		potential = {
+			NOT = {
+				exists = ARU
+				has_global_flag = arab_call_to_union
+				has_country_flag = post_colonial_country
+			}
+			OR = {
+				primary_culture = mashriqi
+				primary_culture = bedouin
+				primary_culture = misri
+			}
+			OR = {
+				has_country_flag = sunni_country
+				has_country_flag = shiite_country
+				has_country_flag = ibadi_country
+			}
+			civilized = yes
+		}
+
+		allow = {
+			war = no
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			nationalism_n_imperialism = 1
+			all_core = {
+				owned_by = THIS
+				empty = yes
+			}
+			OR = {
+				any_neighbor_country = {
+					OR = {
+						primary_culture = mashriqi
+						primary_culture = bedouin
+						primary_culture = misri
+					}
+					in_sphere = THIS
+					ai = yes
+				}
+				any_owned_province = {
+					OR = {
+						culture = mashriqi
+						culture = misri
+						culture = bedouin
+					}
+					is_colonial = no
+					NOT = { is_core = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = arab_call_to_union
+			prestige = 20
+			add_accepted_culture = mashriqi
+			add_accepted_culture = misri
+			add_accepted_culture = bedouin
+			all_core = {
+				remove_core = THIS
+				add_core = ARU
+			}
+			change_tag = ARU
+			country_event = 98725
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Arab Union can expand to claim the Maghreb as well.
+	arab_union_claims = {
+		picture = form_arab_union
+		potential = {
+			tag = ARU
+			NOT = { has_country_flag = arab_union_claims }
+		}
+
+		allow = {
+			civilized = yes
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			NOT = { government = democracy }
+			nationalism_n_imperialism = 1
+		}
 
 
-  
-  #############################
-  ### Unification of Arabia ###
-  ### Between Nejd (Saudis), Ha'il (Rashidis), and Hejaz (Hashemites) ###
-  exile_house_of_saud = {
-    picture = ibn_saud
-    potential = {
-      OR = {
-        tag = HAL
-        tag = HDJ
-      }
-      any_owned_province = {
-        is_core = NEJ
-      }
-      NOT = {
-        has_global_flag = house_of_saud_exiled
-      }
-    }
+		effect = {
+			set_country_flag = arab_union_claims
+			badboy = 6
+			prestige = 10
 
-    allow = {
-      NEJ = {
-        exists = no
-        all_core = {
-          owned_by = THIS
-        }
-      }
-    }
+			add_accepted_culture = maghrebi
+			add_accepted_culture = berber
+			add_accepted_culture = libyan
+			country_event = 98726
+		}
 
-    effect = {
-      set_global_flag = house_of_saud_exiled
-      prestige = 5
-      NEJ = {
-        all_core = {
-          remove_core = NEJ
-        }
-      }
-    }
+		ai_will_do = { factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.7
+			}
+		}
+	}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+### Yemen and Oman ###
 
-  claim_nejd = {
-    picture = map_arabia
-    potential = {
-      tag = HAL
-      NOT = {
-        has_country_flag = claimed_nejd
-      }
-      NEJ = {
-        exists = no
-      }
-    }
+	#Description: Any of the Yemen minors can form Yemen.
+	become_yemen = {
+		picture = map_arabia
+		potential = {
+			OR = {
+				tag = NYE
+				tag = KTH
+				tag = LHJ
+				tag = FDL
+				tag = MHR
+			}
+			NOT = { has_global_flag = created_aden_protectorate }
+		}
 
-    allow = {
-      NOT = {
-        1157 = {
-          is_core = HAL
-        }
-      }
-    }
+		allow = {
+			war = no
+			FDL = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+			KTH = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+			MHR = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+			LHJ = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+		}
 
-    effect = {
-      set_country_flag = claimed_nejd
-      NEJ_1157 = {
-        add_core = HAL
-      }
-      NEJ_1156 = {
-        add_core = HAL
-      }
-      any_country = {
-        limit = {
-          civilized = no
-          any_owned_province = {
-            OR = {
-              region = NEJ_1157
-              region = NEJ_1156
-            }
-          }
-          NOT = {
-            tag = THIS
-          }
-        }
-        leave_alliance = THIS
-        relation = {
-          who = THIS
-          value = -100
-        }
-      }
-    }
+		effect = {
+			set_global_flag = created_aden_protectorate
+			prestige = 10
+			any_country = {
+				limit = {
+					exists = yes
+					OR = {
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						tag = KTH
+						tag = LHJ
+						tag = FDL
+						tag = MHR
+					}
+					ai = yes
+				}
+				annex_to = THIS
+			}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+			LHJ = {	all_core = { add_core = YEM remove_core = LHJ } }
+			FDL = { all_core = { add_core = YEM remove_core = FDL } }
+			KTH = { all_core = { add_core = YEM remove_core = KTH } }
+			MHR = { all_core = { add_core = YEM remove_core = MHR } }
 
-  exile_house_of_rashid = {
-    picture = exile_house_of_rashid
-    potential = {
-      OR = {
-        tag = NEJ
-        tag = HDJ
-      }
-      any_owned_province = {
-        is_core = HAL
-      }
-      NOT = {
-        has_global_flag = house_of_rashid_exiled
-      }
-    }
+			change_tag = YEM
+			# add_accepted_culture = mashriqi
+			# add_accepted_culture = bedouin
+		}
+	}
 
-    allow = {
-      HAL = {
-        exists = no
-        all_core = {
-          owned_by = THIS
-        }
-      }
-    }
+	#Description: Any Great Power that spheres all the South Yemen minors can form the Aden protectorate, turning them into one puppet and keeping Aden for themselves.
+	aden_protectorate = {
+		picture = aden_protectorate
+		potential = {
+			is_greater_power = yes
+			NOT = { is_culture_group = arab }
+			NOT = { exists = YEM }
+			OR = {
+				any_owned_province = {
+					OR = {
+						is_core = LHJ
+						is_core = FDL
+						is_core = KTH
+						is_core = MHR
+					}
+				}
+				LHJ = { in_sphere = THIS }
+				FDL = { in_sphere = THIS }
+				KTH = { in_sphere = THIS }
+				MHR = { in_sphere = THIS }
+				NYE = { in_sphere = THIS }
+			}
+			NOT = { has_global_flag = created_aden_protectorate }
+		}
 
-    effect = {
-      set_global_flag = house_of_rashid_exiled
-      prestige = 5
-      HAL = {
-        all_core = {
-          remove_core = HAL
-        }
-      }
-    }
+		allow = {
+			war = no
+			nationalism_n_imperialism = 1
+			FDL = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+			KTH = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+			MHR = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+			LHJ = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							OR = {
+								in_sphere = THIS
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+						empty = yes
+					}
+				}
+			}
+		}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+		effect = {
+			set_global_flag = created_aden_protectorate
+			prestige = 10
+			any_country = {
+				limit = {
+					OR = {
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					exists = yes
+					OR = {
+						tag = KTH
+						tag = LHJ
+						tag = FDL
+						tag = MHR
+					}
+					ai = yes
+				}
+				annex_to = THIS
+			}
+			LHJ = { all_core = { add_core = YEM remove_core = LHJ } }
+			FDL = { all_core = { add_core = YEM remove_core = FDL } }
+			KTH = { all_core = { add_core = YEM remove_core = KTH } }
+			MHR = { all_core = { add_core = YEM remove_core = MHR } }
 
-  claim_hail = {
-    picture = map_arabia
-    potential = {
-      tag = NEJ
-      NOT = {
-        has_country_flag = claimed_hail
-      }
-      HAL = {
-        exists = no
-      }
-    }
+			1412 = { remove_core = NYE secede_province = THIS } # Aden
+			any_owned = { limit = { is_core = THIS is_core = YEM } remove_core = YEM }
 
-    allow = {
-      NOT = {
-        1160 = {
-          is_core = NEJ
-        }
-      }
-    }
+			release_vassal = YEM
+			create_alliance = YEM
+			diplomatic_influence = { who = YEM value = 400 }
+			relation = { who = YEM value = 400 }
 
-    effect = {
-      set_country_flag = claimed_hail
-      NEJ_1156 = {
-        add_core = NEJ
-      }
-      any_country = {
-        limit = {
-          civilized = no
-          any_owned_province = {
-            region = NEJ_1156
-          }
-          NOT = {
-            tag = THIS
-          }
-        }
-        leave_alliance = THIS
-        relation = {
-          who = THIS
-          value = -100
-        }
-      }
-    }
+			YEM = {
+				capital = 1176
+				money = 10000
+				research_points = 6000
+				government = absolute_monarchy
+				tech_school = unciv_tech_school
+			}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+			random_owned = {
+				limit = { owner = { primary_culture = british } }
+				YEM = {
+					government = colonial_company
+					military_reform = yes_foreign_weapons
+					military_reform = yes_foreign_officers
+					military_reform = yes_foreign_naval_officers
+					military_reform = yes_foreign_artillery
+				}
+			}
 
-  claim_hedjaz_NEJ = {
-    picture = map_arabia
-    potential = {
-      tag = NEJ
-      NOT = {
-        exists = ARA
-      }
-      NOT = {
-        1151 = {
-          is_core = NEJ
-        }
-      }
-    }
+			random_owned = { limit = { exists = NEJ } owner = { diplomatic_influence = { who = NEJ value = 25 } } }
+			random_owned = { limit = { exists = HAL } owner = { diplomatic_influence = { who = HAL value = 25 } } }
+			random_owned = { limit = { exists = BHR } owner = { diplomatic_influence = { who = BHR value = 25 } } }
+			random_owned = { limit = { exists = QAT } owner = { diplomatic_influence = { who = QAT value = 25 } } }
+			random_owned = { limit = { exists = ABU } owner = { diplomatic_influence = { who = ABU value = 25 } } }
+			random_owned = { limit = { exists = KWT } owner = { diplomatic_influence = { who = KWT value = 25 } } }
+			random_owned = { limit = { exists = OMA } owner = { diplomatic_influence = { who = OMA value = 25 } } }
+		}
 
-    allow = {
-      OR = {
-        owns = 1160
-        owns = 1151
-      }
-    }
+		ai_will_do = { factor = 1 }
+	}
 
-    effect = {
-      prestige = 5
-      HDJ_1151 = {
-        add_core = NEJ
-      }
-      random_country = {
-        limit = {
-          owns = 1151
-          civilized = no
-        }
-        leave_alliance = THIS
-        relation = {
-          who = THIS
-          value = -200
-        }
-      }
-    }
+	#Description: Any civilized nation with influence in the region can choose to conquer the Yemeni minors.
+	yemeni_sultanates_conquest = {
+		picture = map_arabia
+		alert = no
+		potential = {
+			NOT = { has_global_flag = claimed_yemen }
+			civilized = yes
+			OR = {
+				any_neighbor_country = {
+					OR = {
+						tag = LHJ
+						tag = FDL
+						tag = KTH
+						tag = MHR
+					}
+				}
+				is_sphere_leader_of = LHJ
+				is_sphere_leader_of = FDL
+				is_sphere_leader_of = KTH
+				is_sphere_leader_of = MHR
+			}
+		}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+		allow = {
+			civilized = yes
+			nationalism_n_imperialism = 1
+		}
 
-  claim_hedjaz_HAL = {
-    picture = map_arabia
-    potential = {
-      tag = HAL
-      NOT = {
-        exists = ARA
-      }
-      NOT = {
-        1151 = {
-          is_core = HAL
-        }
-      }
-    }
+		effect = {
+			badboy = 2
+			set_country_flag = claimed_yemen
+			set_global_flag = claimed_yemen
 
-    allow = {
-      OR = {
-        owns = 1157
-        owns = 1151
-      }
-    }
+			diplomatic_influence = { who = LHJ value = -400 }
+			diplomatic_influence = { who = FDL value = -400 }
+			diplomatic_influence = { who = KTH value = -400 }
+			diplomatic_influence = { who = MHR value = -400 }
+			diplomatic_influence = { who = YEM value = -400 }
+			diplomatic_influence = { who = NYE value = -400 }
 
-    effect = {
-      prestige = 5
-      HDJ_1151 = {
-        add_core = HAL
-      } # Hedjaz
-      random_country = {
-        limit = {
-          owns = 1151
-          civilized = no
-        }
-        leave_alliance = THIS
-        relation = {
-          who = THIS
-          value = -200
-        }
-      }
-    }
+			any_country = {
+				limit = {
+					exists = yes
+					OR = {
+						tag = LHJ
+						tag = FDL
+						tag = KTH
+						tag = MHR
+						tag = YEM
+					}
+				}
+				relation = { who = THIS value = -400 }
+				leave_alliance = THIS
+				end_military_access = THIS
+				add_casus_belli = {
+					target = THIS
+					type = establish_protectorate_NI_casus_belli
+					months = 120
+				}
+				add_casus_belli = {
+					target = THIS
+					type = establish_protectorate_BC_casus_belli
+					months = 120
+				}
+			}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+			random_owned = { limit = { exists = NEJ } owner = { diplomatic_influence = { who = NEJ value = 25 } } }
+			random_owned = { limit = { exists = HAL } owner = { diplomatic_influence = { who = HAL value = 25 } } }
+			random_owned = { limit = { exists = BHR } owner = { diplomatic_influence = { who = BHR value = 25 } } }
+			random_owned = { limit = { exists = QAT } owner = { diplomatic_influence = { who = QAT value = 25 } } }
+			random_owned = { limit = { exists = ABU } owner = { diplomatic_influence = { who = ABU value = 25 } } }
+			random_owned = { limit = { exists = KWT } owner = { diplomatic_influence = { who = KWT value = 25 } } }
+		}
 
-  claim_arabia_HDJ = {
-    picture = map_arabia
-    potential = {
-      tag = HDJ
-      exists = yes
-      NOT = {
-        exists = ARA
-      }
-      NOT = {
-        1157 = {
-          is_core = HDJ
-        }
-      }
-    }
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 0 badboy = 0.8 }
+		}
+	}
 
-    allow = {
-      NOT = {
-        owns = 1157
-      }
-      is_vassal = no
-      OR = {
-        1157 = {
-          owner = {
-            NOT = {
-              primary_culture = bedouin
-            }
-            NOT = {
-              is_sphere_leader_of = THIS
-            }
-            sphere_owner = {
-              NOT = {
-                is_sphere_leader_of = THIS
-              }
-            }
-          }
-        }
-        AND = {
-          war_with = NEJ
-          1151 = {
-            is_core = NEJ
-          }
-        }
-        AND = {
-          war_with = HAL
-          1151 = {
-            is_core = HAL
-          }
-        }
-      }
-    }
+	#Description: South Yemen or their overlord can unite them with North Yemen if sphered or a vassal.
+	unite_north_yemen_existing = {
+		picture = aden_protectorate
+		potential = {
+			OR = {
+				NOT = { 1178 = { is_core = YEM } }
+				NOT = { 1179 = { is_core = YEM } }
+				NOT = { 1180 = { is_core = YEM } }
+			}
+			NOT = { tag = NYE }
+			NYE = { exists = yes }
+			OR = {
+				tag = YEM
+				YEM = {
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						in_sphere = THIS
+					}
+				}
+			}
+		}
 
-    effect = {
-      prestige = 5
-      NEJ_1157 = {
-        add_core = HDJ
-      }
-      NEJ_1156 = {
-        add_core = HDJ
-      }
-      1155 = {
-        add_core = HDJ
-      }
-      random_country = {
-        limit = {
-          owns = 1157
-          civilized = no
-        }
-        leave_alliance = THIS
-        relation = {
-          who = THIS
-          value = -50
+		allow = {
+			nationalism_n_imperialism = 1
+			war = no
+			NYE = {
+				war = no
+				OR = {
+					vassal_of = THIS
+					in_sphere = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = { in_sphere = THIS }
+							owner = { vassal_of = THIS }
+						}
+					}
+				}
+			}
+		}
 
-        }
-      }
-    }
+		effect = {
+			prestige = 5
+			NYE = {
+				tech_school = unciv_tech_school
+				all_core = { add_core = YEM }
+			}
+			YEM = {
+				inherit = NYE
+				capital = 1178
+			}
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+			random_owned = { limit = { exists = NEJ } owner = { diplomatic_influence = { who = NEJ value = 25 } } }
+			random_owned = { limit = { exists = HAL } owner = { diplomatic_influence = { who = HAL value = 25 } } }
+			random_owned = { limit = { exists = BHR } owner = { diplomatic_influence = { who = BHR value = 25 } } }
+			random_owned = { limit = { exists = QAT } owner = { diplomatic_influence = { who = QAT value = 25 } } }
+			random_owned = { limit = { exists = ABU } owner = { diplomatic_influence = { who = ABU value = 25 } } }
+			random_owned = { limit = { exists = KWT } owner = { diplomatic_influence = { who = KWT value = 25 } } }
+			random_owned = { limit = { exists = OMA } owner = { diplomatic_influence = { who = OMA value = 25 } } }
+		}
 
-  ### Arabia ###
-  claim_arabian_peninsula = {
-    picture = map_arabia
-    potential = {
+		ai_will_do = { factor = 1 }
+	}
 
-      tag = ARA
-      NOT = {
-        has_country_flag = claim_arabian_peninsula
-      }
-    }
+	#Description: If you own Aden (directly or through a vassal) you can cede it to Yemen.
+	cede_aden = {
+		picture = aden_protectorate
+		alert = no
+		potential = {
+			has_global_flag = created_aden_protectorate
+			1412 = {
+				owner = {
+					OR = {
+						tag = THIS
+						vassal_of = THIS
+						AND = {
+							in_sphere = THIS
+							is_vassal = no
+						}
+					}
+					NOT = { tag = YEM }
+				}
+			}
+			YEM = { exists = yes }
+			OR = {
+				YEM = { OR = { is_vassal = no vassal_of = THIS } }
+				ai = yes
+			}
+			NOT = { tag = YEM }
+			NOT = { tag = NYE }
+		}
 
-    allow = {
-      war = no
-      is_vassal = no
-      civilized = yes
-      prestige = 20
-      nationalism_n_imperialism = 1
-      war_policy = jingoism
-    }
+		allow = {
+			war = no
+			1412 = { any_neighbor_province = { owned_by = YEM } }
+		}
 
-    effect = {
-      set_country_flag = claim_arabian_peninsula
-      ABU_1162 = {
-        add_core = ARA
-      }
-      OMA_1166 = {
-        add_core = ARA
-      }
-      YEM_1412 = {
-        add_core = ARA
-      }
-      YEM_1178 = {
-        add_core = ARA
-      }
-    }
+		effect = {
+			badboy = -2
+			1412 = { remove_core = THIS }
 
-    ai_will_do = {
-      factor = 1
-    }
-  }
+			random_country = { limit = { owns = 1412 num_of_cities = 2 }
+				1412 = { secede_province = THIS }
+			}
+			random_owned = { limit = { province_id = 1412 }
+				1412 = { secede_province = YEM add_core = YEM remove_core = THIS remove_core = LHJ }
+			}
+			random_country = { limit = { owns = 1412 NOT = { num_of_cities = 2 } }
+				1412 = { add_core = YEM remove_core = THIS remove_core = LHJ }
+				annex_to = YEM
+			}
 
-  occupation_of_the_arabian_desert = {
-    picture = form_the_ikhwan
-    potential = {
-      OR = {
-        AND = { # Trucial States
-          owns = 1167
-          12 = {
-            empty = yes
-          }
-        }
-        AND = { # North Yemen
-          owns = 1178
-          1180 = {
-            empty = yes
-          }
-          1161 = {
-            empty = yes
-          }
-        }
-        AND = { # Yemen
-          OR = {
-            owns = 1178
-            owns = 1173
-            owns = 1176
-          }
-          3273 = {
-            empty = yes
-          }
-        }
-        AND = { # Oman
-          owns = 1166
-          1172 = {
-            empty = yes
-          }
-        }
-        AND = { # Arabia
-          owns = 1157
-          owns = 1160
-          2586 = {
-            empty = yes
-          }
-          1158 = {
-            empty = yes
-          }
-        }
-        AND = { # Iraq Desert
-          owns = 1157
-          owns = 1160
-          3292 = {
-            empty = yes
-          }
-        }
-      }
-    }
+			random_country = { limit = { tag = YEM NOT = { capital = 1178 } } capital = 1412 }
 
-    allow = {
-      OR = {
-        AND = { # Trucial States
-          owns = 1167
-          12 = {
-            empty = yes
-          }
-          OR = {
-            year = 1920
-            state_n_government = 1
-          }
-        }
-        AND = { # North Yemen
-          owns = 1178
-          1180 = {
-            empty = yes
-          }
-          1161 = {
-            empty = yes
-          }
-          OR = {
-            year = 1920
-            AND = {
-              state_n_government = 1
-              NOT = {
-                capital_scope = {
-                  continent = europe
-                }
-              }
-            }
-            has_country_flag = ottoman_zaydi_war
-          }
-        }
-        AND = { # Yemen
-          OR = {
-            owns = 1178
-            owns = 1173
-            owns = 1176
-          }
-          3273 = {
-            empty = yes
-          }
-          OR = {
-            year = 1920
-            AND = {
-              state_n_government = 1
-              NOT = {
-                capital_scope = {
-                  continent = europe
-                }
-              }
-            }
-          }
-        }
-        AND = { # Oman
-          owns = 1166
-          1172 = {
-            empty = yes
-          }
-          OR = {
-            year = 1920
-            AND = {
-              state_n_government = 1
-              NOT = {
-                capital_scope = {
-                  continent = europe
-                }
-              }
-            }
-          }
-        }
-        AND = { # Arabia
-          owns = 1157
-          owns = 1160
-          2586 = {
-            empty = yes
-          }
-          1158 = {
-            empty = yes
-          }
-          OR = {
-            year = 1920
-            AND = {
-              state_n_government = 1
-              NOT = {
-                capital_scope = {
-                  continent = europe
-                }
-              }
-            }
-          }
-        }
-        AND = { # Iraq Desert
-          owns = 1157
-          owns = 1160
-          3292 = {
-            empty = yes
-          }
-          OR = {
-            year = 1920
-            AND = {
-              state_n_government = 1
-              NOT = {
-                capital_scope = {
-                  continent = europe
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+			relation = { who = YEM value = 100 }
+			random_owned = { limit = { owner = { is_greater_power = yes } } owner = { diplomatic_influence = { who = YEM value = 100 } } }
 
-    effect = { 
-      random_owned = {
-        limit = {
-          owner = {
-            owns = 1167 # Abu Dhabi
-            12 = {
-              empty = yes
-            }
-          }
-        }
-        12 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 5
-        }
-        owner = {
-          prestige = 1
-        }
-      } 
-      random_owned = {
-        limit = {
-          owner = {
-            owns = 1178
-            1180 = {
-              empty = yes
-            }
-            1161 = {
-              empty = yes
-            }
-          }
-        }
-        1180 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 30
-        }
-        1161 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 5
-        }
-        owner = {
-          prestige = 1
-        }
-      }
-      random_owned = {
-        limit = {
-          owner = {
-            OR = {
-              owns = 1178
-              owns = 1173
-              owns = 1176
-            }
-            3273 = {
-              empty = yes
-            }
-          }
-        }
-        3273 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 5
-        }
-        owner = {
-          prestige = 1
-        }
-      }
-      random_owned = {
-        limit = {
-          owner = {
-            owns = 1166
-            1172 = {
-              empty = yes
-            }
-          }
-        }
-        1172 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 15
-        }
-        owner = {
-          prestige = 1
-        }
-      }
-      random_owned = {
-        limit = {
-          owner = {
-            owns = 1157
-            owns = 1160
-            2586 = {
-              empty = yes
-            }
-            1158 = {
-              empty = yes
-            }
-          }
-        }
-        2586 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 5
-        }
-        1158 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 5
-        }
-        owner = {
-          prestige = 1
-        }
-      }
-      random_owned = {
-        limit = {
-          owner = {
-            owns = 1157
-            owns = 1160
-            3292 = {
-              empty = yes
-            }
-          }
-        }
-        3292 = {
-          secede_province = THIS any_pop = {
-            literacy = -0.99
-          }
-          life_rating = 5
-        }
-        owner = {
-          prestige = 1
-        }
-      }
-    }
-    ai_will_do = {
-      factor = 1
-    }
-  }
+		}
 
-  ### Morocco ###
-  cleanup_morocco = {
-    potential = {
-      capital_scope = {
-        continent = europe
-      }
-      is_greater_power = yes
-      has_global_flag = tangier_protocol_succeeded
-      NOT = {
-        primary_culture = french
-      }
-      NOT = {
-        tag = SPA
-      }
-      NOT = {
-        tag = IBR
-      }
-      NOT = {
-        tag = SPC
-      }
-      ai = yes
-      OR = {
-        owns = 1683# Taza
-        owns = 1680# Fez
-        owns = 1690# Marrakesh
-        owns = 1694# Agadir
-      }
-      NOT = {
-        has_global_flag = cleanup_morocco
-      }
-    }
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				1412 = { any_neighbor_province = { owned_by = THIS } }
+			}
+			modifier = {
+				factor = 0
+				owns = 1412
+			}
+		}
+	}
 
-    allow = {
-      OR = {
-        SPA = {
-          OR = {
-            owns = 1683# Taza
-            owns = 1680# Fez
-            owns = 1690# Marrakesh
-            owns = 1694# Agadir
-          }#
-          money = 75000
-        }
-        SPC = {
-          OR = {
-            owns = 1683# Taza
-            owns = 1680# Fez
-            owns = 1690# Marrakesh
-            owns = 1694# Agadir
-          }#
-          money = 75000
-        }
-        FRA = {
-          exists = yes
-          OR = {
-            owns = 1683# Taza
-            owns = 1680# Fez
-            owns = 1690# Marrakesh
-            owns = 1694# Agadir
-          }#
-          money = 75000
-        }
-        BOR = {
-          exists = yes
-          OR = {
-            owns = 1683# Taza
-            owns = 1680# Fez
-            owns = 1690# Marrakesh
-            owns = 1694# Agadir
-          }#
-          money = 75000
-        }
-      }
-    }
+	#Description: Any Great Power that owns Aden (directly or through a vassal) can later vassalize Oman.
+	oman_protectorate = {
+		picture = map_arabia
+		potential = {
+			is_greater_power = yes
+			1412 = { # Aden
+				owner = {
+					tag = THIS
+					vassal_of = THIS
+				}
+			}
+			OMA = {
+				in_sphere = THIS
+				is_vassal = no
+				government = absolute_monarchy
+			}
+			nationalism_n_imperialism = 1
+			NOT = { has_global_flag = created_oman_protectorate }
+		}
 
-    effect = {
-      any_owned = {
-        limit = {
-          is_core = MOR
-        }
-        secede_province = UTI
-      }
+		allow = {
+			war = no
+			OMA = {	war = no }
+			invention = the_dark_continent
+			invention = colonial_negotiations
+		}
 
-      random_country = {
-        limit = {
-          OR = {
-            AND = {
-              tag = FRA exists = yes
-            }
-            AND = {
-              tag = BOR exists = yes
-            }
-            tag = SPA
-            tag = SPC
-          }
-          OR = {
-            owns = 1683# Taza
-            owns = 1680# Fez
-            owns = 1690# Marrakesh
-            owns = 1694# Agadir
-          }
-        }
-        inherit = UTI# treasury = -75000
-      }#
-      treasury = 75000
-    }
-  }
-  
-  ### Yemen ###
-  become_yemen = {
-    picture = map_arabia
-    potential = {
-      OR = {
-		tag = NYE
-        tag = KTH
-        tag = LHJ
-        tag = FDL
-        tag = MHR
-      }
-      NOT = {
-        has_global_flag = created_aden_protectorate
-      }
-    }
+		effect = {
+			set_global_flag = created_oman_protectorate
+			prestige = 5
+			create_vassal = OMA
+			relation = { who = OMA value = 200 }
 
-    allow = {
-      1173 = {
-        OR = {
-          owned_by = THIS
-          owner = {
-            in_sphere = THIS ai = yes
-          }
-          owner = {
-            vassal_of = THIS
-          }
-        }
-      }
-      1175 = {
-        OR = {
-          owned_by = THIS
-          owner = {
-            in_sphere = THIS ai = yes
-          }
-          owner = {
-            vassal_of = THIS
-          }
-        }
-      }
-      1176 = {
-        OR = {
-          owned_by = THIS
-          owner = {
-            in_sphere = THIS ai = yes
-          }
-          owner = {
-            vassal_of = THIS
-          }
-        }
-      }
-      1177 = {
-        OR = {
-          owned_by = THIS
-          owner = {
-            in_sphere = THIS ai = yes
-          }
-          owner = {
-            vassal_of = THIS
-          }
-        }
-      }
-    }
+			random_owned = { limit = { exists = NEJ } owner = { diplomatic_influence = { who = NEJ value = 25 } } }
+			random_owned = { limit = { exists = HAL } owner = { diplomatic_influence = { who = HAL value = 25 } } }
+			random_owned = { limit = { exists = BHR } owner = { diplomatic_influence = { who = BHR value = 25 } } }
+			random_owned = { limit = { exists = QAT } owner = { diplomatic_influence = { who = QAT value = 25 } } }
+			random_owned = { limit = { exists = ABU } owner = { diplomatic_influence = { who = ABU value = 25 } } }
+			random_owned = { limit = { exists = KWT } owner = { diplomatic_influence = { who = KWT value = 25 } } }
+		}
+	}
 
-    effect = {
-      set_global_flag = created_aden_protectorate
-      prestige = 10
-      any_country = {
-        limit = {
-          exists = yes
-          OR = {
-            in_sphere = THIS
-            vassal_of = THIS
-          }
-          OR = {
-            tag = KTH
-            tag = LHJ
-            tag = FDL
-            tag = MHR
-          }
-          ai = yes
-        }
-        annex_to = THIS
-      }
+## Trucial States ##
 
-      LHJ = {
-        all_core = {
-          add_core = YEM
-        }
-      }
-      FDL = {
-        all_core = {
-          add_core = YEM
-        }
-      }
-      KTH = {
-        all_core = {
-          add_core = YEM
-        }
-      }
-      MHR = {
-        all_core = {
-          add_core = YEM
-        }
-      }
-      any_owned = {
-        remove_core = LHJ
-        remove_core = FDL
-        remove_core = KTH
-        remove_core = MHR
-      }
+	#Description: A Great Power who has the Trucial States and Bahrain in their sphere can integrate Bahrain into the Trucial States.
+	integrate_bahrain_trucial_states = {
+		picture = bahrain_trade
+		potential = {
+			is_greater_power = yes
+			is_sphere_leader_of = ABU
+			ABU = {
+				exists = yes
+				NOT = { owns = 1162 }
+			}
+			BHR = {	exists = yes ai = yes }
+			NOT = {	has_country_flag = trucial_states_integration_bahrain }
+		}
 
-      change_tag = YEM
-      # add_accepted_culture = mashriqi
-      # add_accepted_culture = bedouin
-    }
-  }
+		allow = {
+			war = no
+			1162 = {
+				owner = {
+					war = no
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+					}
+				}
+			}
+		}
 
+		effect = {
+			set_country_flag = trucial_states_integration_bahrain
+			ABU = {	inherit = BHR }
+			relation = { who = ABU value = 25 }
+			diplomatic_influence = { who = ABU value = 25 }
+			any_country = {
+				limit = {
+					exists = no
+					civilized = no
+					OR = {
+						tag = BHR
+						tag = QAT
+					}
+				}
+				tech_school = unciv_tech_school
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: A Great Power who has the Trucial States and Qatar in their sphere can integrate Qatar into the Trucial States.
+	integrate_qatar_trucial_states = {
+		picture = doha_city
+		potential = {
+			is_greater_power = yes
+			is_sphere_leader_of = ABU
+			ABU = {
+				exists = yes
+				NOT = { owns = 1165 }
+			}
+			QAT = {	exists = yes ai = yes }
+			NOT = { has_country_flag = trucial_states_integration_qatar }
+		}
+
+		allow = {
+			war = no
+			1165 = {
+				owner = {
+					war = no
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = trucial_states_integration_qatar
+			ABU = { inherit = QAT }
+			relation = { who = ABU value = 25 }
+			diplomatic_influence = { who = ABU value = 25 }
+			any_country = {
+				limit = {
+					exists = no
+					civilized = no
+					OR = {
+						tag = BHR
+						tag = QAT
+					}
+				}
+				tech_school = unciv_tech_school
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Puppet the Trucial States.
+	vassalize_trucial_states = {
+		picture = dubai_city
+		potential = {
+			ABU = {
+				in_sphere = THIS
+				is_vassal = no
+			}
+			revolution_n_counterrevolution = 1
+			NOT = { has_global_flag = vassalized_trucials }
+		}
+
+		allow = {
+			war = no
+			ABU = {
+				war = no
+				relation = { who = THIS value = 150 }
+			}
+			mass_politics = 1
+		}
+
+		effect = {
+			set_global_flag = vassalized_trucials
+			prestige = 5
+			create_vassal = ABU
+			create_alliance = ABU
+			ABU = {
+				political_reform = no_slavery
+				research_points = 3000
+			}
+
+			random_owned = { limit = { exists = NEJ } owner = { diplomatic_influence = { who = NEJ value = 25 } } }
+			random_owned = { limit = { exists = HAL } owner = { diplomatic_influence = { who = HAL value = 25 } } }
+			random_owned = { limit = { exists = BHR } owner = { diplomatic_influence = { who = BHR value = 25 } } }
+			random_owned = { limit = { exists = QAT } owner = { diplomatic_influence = { who = QAT value = 25 } } }
+			random_owned = { limit = { exists = ABU } owner = { diplomatic_influence = { who = ABU value = 25 } } }
+			random_owned = { limit = { exists = KWT } owner = { diplomatic_influence = { who = KWT value = 25 } } }
+			random_owned = { limit = { exists = OMA } owner = { diplomatic_influence = { who = OMA value = 25 } } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Pearl Hunting - AI Only ##
+
+	#Description: Start the Pearl season, producing precious goods for a certain time of the year.
+	start_pearl_hunting = {
+		picture = bahrain_trade
+		potential = {
+			ai = yes
+			OR = {
+				1162 = {
+					NOT = { trade_goods = precious_goods }
+					NOT = { has_province_modifier = pearl_season }
+				}
+				1165 = {
+					NOT = { trade_goods = precious_goods }
+					NOT = { has_province_modifier = pearl_season }
+				}
+				1167 = {
+					NOT = { trade_goods = precious_goods }
+					NOT = { has_province_modifier = pearl_season }
+				}
+				2664 = {
+					NOT = { trade_goods = precious_goods }
+					NOT = { has_province_modifier = pearl_season }
+				}
+			}
+		}
+
+		allow = {
+			month = 4
+			NOT = { month = 6 }
+		}
+
+
+		effect = {
+			1162 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+			1165 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+			1167 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+			2664 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: End the Pearl season, producing precious goods for a certain time of the year.
+	end_pearl_hunting = {
+		picture = bahrain_trade
+		potential = {
+			ai = yes
+			OR = {
+				1162 = {
+					trade_goods = precious_goods
+					NOT = { has_province_modifier = pearl_season }
+				}
+				1165 = {
+					trade_goods = precious_goods
+					NOT = { has_province_modifier = pearl_season }
+				}
+				1167 = {
+					trade_goods = precious_goods
+					NOT = { has_province_modifier = pearl_season }
+				}
+				2664 = {
+					trade_goods = precious_goods
+					NOT = { has_province_modifier = pearl_season }
+				}
+			}
+		}
+
+		allow = {
+		}
+
+
+		effect = {
+			any_country = {
+				limit = { owns = 1162 1162 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				1162 = { trade_goods = fruit }
+			}
+			any_country = {
+				limit = { owns = 1165 1165 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				1165 = { trade_goods = fish }
+			}
+			any_country = {
+				limit = { owns = 1167 1167 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				1167 = { trade_goods = fish }
+			}
+			any_country = {
+				limit = { owns = 2664 2664 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				2664 = { trade_goods = fish }
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
 }
