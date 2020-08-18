@@ -1,0 +1,226 @@
+political_decisions = {
+
+## Unification ##
+
+	#Description: Rumelia will unite with Bulgaria.
+	rumelia_unite_with_bulgaria = {
+		picture = gtfo
+		potential = {
+			tag = RUM
+			exists = BUL
+			NOT = { has_country_flag = rumelia_unite_with_bulgaria }
+		}
+
+		allow = {
+			OR = {
+				war = no
+				war_with = TUR
+			}
+			OR = {
+				AND = {
+					is_vassal = no
+					BUL = { is_vassal = no }
+				}
+				AND = {
+					is_vassal = yes
+					overlord = {
+						is_our_vassal = BUL
+						NOT = { tag = TUR }
+					}
+				}
+				AND = {
+					BUL = { war_with = TUR }
+					TUR = {
+						ai = yes
+						is_greater_power = no
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = rumelia_unite_with_bulgaria
+			all_core = { remove_core = RUM }
+			random_country = {
+				limit = {
+					tag = BUL
+					THIS = { ai = yes }
+				}
+				inherit = THIS
+			}
+			random_country = {
+				limit = {
+					tag = BUL
+					ai = yes
+					THIS = { ai = no }
+				}
+				THIS = {
+					inherit = BUL
+					random_owned = {
+						limit = { province_id = 771 }
+						owner = { capital = 771 }
+					}
+					change_tag = BUL
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				government = fascist_dictatorship
+				BUL = {	NOT = { government = fascist_dictatorship } }
+			}
+			modifier = {
+				factor = 0
+				NOT = { government = fascist_dictatorship }
+				BUL = { government = fascist_dictatorship }
+			}
+			modifier = {
+				factor = 0
+				government = proletarian_dictatorship
+				BUL = { NOT = { government = proletarian_dictatorship } }
+			}
+			modifier = {
+				factor = 0
+				NOT = { government = proletarian_dictatorship }
+				BUL = { government = proletarian_dictatorship }
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					government = democracy
+					government = hms_government
+				}
+				BUL = {
+					NOT = {
+						government = democracy
+						government = hms_government
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				BUL = {
+					OR = {
+						government = democracy
+						government = hms_government
+					}
+				}
+				NOT = {
+					government = democracy
+					government = hms_government
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					government = presidential_dictatorship
+					government = bourgeois_dictatorship
+				}
+			}
+		}
+	}
+
+## Expansion ##
+
+	#Description: Greater Bulgaria includes southwestern Serbia, northern Dobrudja, Northern Greece and Eastern Thrace (except Constantinopole)
+	greater_bulgaria = {
+		picture = greater_bulgaria
+		potential = {
+			tag = BUL
+			NOT = { has_country_flag = greater_bulgaria_claimed }
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			is_disarmed = no
+			war_policy = jingoism
+			has_unclaimed_cores = no
+			invention = manifest_destiny
+			invention = nostalgic_romanticism
+		}
+
+		effect = {
+			badboy = 10
+			set_country_flag = greater_bulgaria_claimed
+			798 = { add_core = BUL } #Nis
+			799 = { add_core = BUL } #Pirot
+			675 = { add_core = BUL } #Tulcea
+			829 = { add_core = BUL } #Xanthi
+			TUR_805 = { add_core = BUL } #Southern Macedonia
+			TUR_860 = { add_core = BUL } #Thrace
+			860 = { remove_core = BUL } #Constantinopole
+			random_owned = {
+				limit = { owner = { OR = { has_country_flag = bulgaria_exchange has_country_flag = eastern_rumelia_exchange } } }
+				badboy = 5
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				OR = { has_country_flag = bulgaria_exchange has_country_flag = eastern_rumelia_exchange }
+				badboy = 0.4
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_country_flag = bulgaria_exchange has_country_flag = eastern_rumelia_exchange }
+				badboy = 0.6
+			}
+		}
+	}
+
+## Flavor ##
+
+    #Description: Buglarian economic boom.
+    bulgarian_miracle = {
+		picture = bulgarian_miracle
+		potential = {
+			tag = BUL
+			owns = 809
+			owns = 816
+			NOT = { has_country_flag = the_bulgarian_miracle }
+		}
+
+		allow = {
+			war = no
+			invention = manifest_destiny
+			OR = {
+				private_bank_money_bill_printing = 1
+				stock_exchange = 1
+				nationalism_n_imperialism = 1
+			}
+			809 = { has_building = railroad }
+			money = 10001
+		}
+
+		effect = {
+			treasury = -10000
+			set_country_flag = the_bulgarian_miracle
+			add_country_modifier = { name = total_reform duration = 3650 }
+			any_owned = { limit = { region = TUR_809 NOT = { province_id = 809 } } add_province_modifier = { name = small_baby_boom duration = 1825 } }
+			TUR_810 = { add_province_modifier = { name = small_baby_boom duration = 1825 } }
+			809 = {
+				life_rating = 5
+				add_province_modifier = { name = recently_built_city duration = 1825 }
+			}
+			random_owned = {
+				limit = { owner = { ai = yes } }
+				owner = {
+					activate_technology = muzzle_loaded_rifles
+					activate_technology = military_staff_system
+					activate_technology = iron_muzzle_loaded_artillery
+					activate_technology = army_professionalism
+					activate_technology = military_plans
+					activate_technology = breech_loaded_rifles
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+}
