@@ -1,37 +1,124 @@
 political_decisions = {
-#from FIN.txt
-	FIN_1836_setup_actual = {
-		picture = constantinople
+
+## Unification ##
+
+	#Description: Karelia will unite with Finland
+	karelia_unite_with_finland = {
+		picture = gtfo
 		potential = {
-			tag = FIN
-			always = no
+			tag = KRL
+			exists = FIN
+			NOT = { has_country_flag = karelia_unite_with_finland }
 		}
-		
+
 		allow = {
-			tag = FIN
+			war = no
+			is_vassal = no
+			FIN = {
+				war = no
+				neighbour = THIS
+				is_vassal = no
+			}
+			OR = {
+				AND = {
+					part_of_sphere = no
+					FIN = { part_of_sphere = no }
+				}
+				sphere_owner = {
+					is_sphere_leader_of = FIN
+					NOT = { is_culture_group = east_slavic }
+				}
+			}
 		}
-		
+
 		effect = {
-			any_pop = { limit = { has_pop_culture = swedish } literacy = 0.25 }
-			any_pop = { limit = { has_pop_culture = sami } literacy = -0.3 }
-			
-			any_pop = {
+			set_country_flag = karelia_unite_with_finland
+			all_core = { add_core = FIN }
+			random_country = {
 				limit = {
-					has_pop_religion = orthodox
-					OR = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+					tag = FIN
+					THIS = { ai = yes }
+				}
+				inherit = THIS
+			}
+			random_country = {
+				limit = {
+					tag = FIN
+					ai = yes
+					THIS = { ai = no }
+				}
+				THIS = {
+					inherit = FIN
+					random_owned = {
+						limit = { province_id = 343 }
+						owner = { capital = 343 }
+					}
+					change_tag = FIN
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				government = fascist_dictatorship
+				FIN = { NOT = { government = fascist_dictatorship } }
+			}
+			modifier = {
+				factor = 0
+				NOT = { government = fascist_dictatorship }
+				FIN = { government = fascist_dictatorship }
+			}
+			modifier = {
+				factor = 0
+				government = proletarian_dictatorship
+				FIN = { NOT = { government = proletarian_dictatorship } }
+			}
+			modifier = {
+				factor = 0
+				NOT = { government = proletarian_dictatorship }
+				FIN = { government = proletarian_dictatorship }
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					government = democracy
+					government = hms_government
+				}
+				FIN = {
+					NOT = {
+						government = democracy
+						government = hms_government
 					}
 				}
-				literacy = -0.08
 			}
-			
-			any_owned = {
-				add_province_modifier = { name = baby_boom duration = 3650 }
+			modifier = {
+				factor = 0
+				FIN = {
+					OR = {
+						government = democracy
+						government = hms_government
+					}
+				}
+				NOT = {
+					government = democracy
+					government = hms_government
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					government = presidential_dictatorship
+					government = bourgeois_dictatorship
+				}
 			}
 		}
 	}
 
+## Relations with Russia ##
+
+	#Description: Russia will gain cores on all of Finland, and Finland will get a choice of whether to submit, be assimilated, or refuse and go to war.
 	russification_of_finland = {
 		picture = suomineito
 		potential = {
@@ -43,13 +130,12 @@ political_decisions = {
 			NOT = { has_country_flag = Conceded_Finland }
 			NOT = { has_country_flag = finland_is_recognized }
 		}
-		
+
 		allow = {
 			war = no
 			mass_politics = 1
-			is_our_vassal = FIN
 		}
-		
+
 		effect = {
 			set_country_flag = finland_russification
 			badboy = 1
@@ -65,18 +151,20 @@ political_decisions = {
 			}
 		}
 	}
+
+	#Description: When Finland becomes independent, they can start negotiations on their border with Russia.
 	treaty_of_tartu = {
 		picture = treaty_signing
 		potential = {
 			tag = FIN
-			RUS = { owns = 982 } #Petsamo
-			owns = 339 #Viipuri
+			is_vassal = no
+			owns = 339 				# Viipuri
+			RUS = { owns = 982 } 	# Petsamo
 			NOT = { has_country_flag = treaty_of_tartu }
 		}
-		
+
 		allow = {
 			war = no
-			is_vassal = no
 			RUS = {
 				OR = {
 					NOT = { truce_with = THIS }
@@ -85,21 +173,23 @@ political_decisions = {
 				war = no
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = treaty_of_tartu
 			RUS = { country_event = 32515 }
 		}
-		
+
 		ai_will_do = { factor = 1 }
 	}
+
+	#Description: Finland can break the Treaty of Tartu and attempt to reclaim Viipuri and Petsamo.
 	break_the_treaty_of_tartu = {
 		picture = treaty_signing
 		potential = {
 			has_country_flag = treaty_of_tartu
 			NOT = { has_country_flag = tartu_treaty_broke }
 		}
-		
+
 		allow = {
 			NOT = { is_disarmed = yes }
 			NOT = { has_recently_lost_war = yes }
@@ -121,7 +211,7 @@ political_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = tartu_treaty_broke
 			random_country = { limit = { exists = yes neighbour = THIS tag = FIN } THIS = { badboy = 5 } }
@@ -134,17 +224,19 @@ political_decisions = {
 			modifier = { factor = 0 badboy = 0.7 }
 		}
 	}
-#from Setup.txt
-	
+
+## Expansion ##
+
+	#Description: Greater Finland includes Karelia, Ingria, Estonia, Novaya Ladoga and Hammerfest.
 	greater_finland = {
 		picture = greater_finland
 		potential = {
 			tag = FIN
 			prestige = 15
 			NOT = { 994 = { is_core = FIN } }
-			NOT = { has_country_flag = greater_finland }			
+			NOT = { has_country_flag = greater_finland }
 		}
-				
+
 		allow = {
 			war = no
 			is_vassal = no
@@ -161,12 +253,15 @@ political_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
-			RUS_994 = { add_core = FIN }
-			RUS_339 = { add_core = FIN }
-			RUS_349 = { add_core = FIN }
+			RUS_994 = { add_core = FIN } # Ingria
+			RUS_339 = { add_core = FIN } # Karelia
+			RUS_349 = { add_core = FIN } # Estonia
+			2580 = { add_core = FIN } # Novaya Ladoga
+			307 = { add_core = FIN } # Hammerfest
 			add_accepted_culture = ugrian
+			add_accepted_culture = estonian
 			prestige = 10
 			badboy = 10
 			set_country_flag = greater_finland
@@ -178,7 +273,7 @@ political_decisions = {
 						who = FIN
 						value = 5
 					}
-					NOT = { 
+					NOT = {
 						tag = FIN
 						truce_with = FIN
 						war_with = FIN
@@ -190,9 +285,10 @@ political_decisions = {
 						primary_culture = estonian
 					}
 				}
-				country_event = 11109 
+				country_event = 11109 # Unification event to inherit or refuse
 			}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -218,7 +314,41 @@ political_decisions = {
 			}
 			modifier = {
 				factor = 0
-				badboy = 0.8
+				badboy = 0.6
+			}
+		}
+	}
+
+## Other ##
+
+	FIN_1836_setup_actual = {
+		picture = constantinople
+		potential = {
+			tag = FIN
+			always = no
+		}
+
+		allow = {
+			tag = FIN
+		}
+
+		effect = {
+			any_pop = { limit = { has_pop_culture = swedish } literacy = 0.25 }
+			any_pop = { limit = { has_pop_culture = sami } literacy = -0.3 }
+
+			any_pop = {
+				limit = {
+					has_pop_religion = orthodox
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				literacy = -0.08
+			}
+
+			any_owned = {
+				add_province_modifier = { name = baby_boom duration = 3650 }
 			}
 		}
 	}
