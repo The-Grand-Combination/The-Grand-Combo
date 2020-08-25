@@ -274,6 +274,101 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Become Naples if Sicily is lost
+	become_naples = {
+		potential = {
+			tag = SIC
+			NOT = {
+				exists = NPL
+				owns = 762 #Palermo
+			}
+		}
+
+		allow = {
+			war = no
+			owns = 754 #Naples
+			NOT = { any_owned = 
+					limit = {
+							is_core = SYC
+							}
+		}
+
+		effect = {
+			SIC = {
+				all_core = {
+					add_core = NPL
+					remove_core = SIC
+				}
+			}
+			change_tag = NPL
+			any_pop = {
+				limit = { has_pop_culture = south_italian }
+				militancy = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	#Description: Change tag to Two Sicilies if Naples owns Sicily
+	become_two_sicilies = {
+		picture = become_naples
+		potential = {
+			tag = NPL
+			NOT = { exists = SIC }
+			SYC = {
+				OR = {
+					exists = no
+					ai = yes
+				}
+			}
+		}
+
+		allow = {
+			war = no
+			owns = 754
+			OR = {
+				owns = 762
+				SYC = {
+					war = no
+					exists = yes
+					NOT = { truce_with = THIS }
+					is_vassal = no
+					relation = { who = THIS value = 150 }
+					OR = {
+						NOT = { part_of_sphere = yes }
+						in_sphere = THIS
+						sphere_owner = { is_sphere_leader_of = THIS }
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			NPL = {
+				all_core = {
+					add_core = SIC
+					remove_core = NPL
+				}
+			}
+			random_country = {
+				limit = {
+					tag = SYC
+					exists = yes
+				}
+				annex_to = THIS
+			}
+			change_tag = SIC
+			any_pop = {
+				limit = { is_culture_group = italian }
+				militancy = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: If a Catholic country has PAP as a vassal but they are not a theocracy, they can restore the Pope.
 	PAP_restore = {
 		picture = the_first_vatican_council
