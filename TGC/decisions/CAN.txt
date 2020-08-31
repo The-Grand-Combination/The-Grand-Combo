@@ -1,51 +1,44 @@
-political_decisions = {	
-#from CAN.txt
+political_decisions = {
+
+	#Description: When Canada is formed, it will get some stockpiles and use Canadian names.
 	canadian_dominion = {
-	picture = canadian_dominion
+		picture = canadian_dominion
 		potential = {
 			tag = CAN
 			exists = yes
 			NOT = { has_country_flag = canadian_dominion }
 		}
+
 		allow = {
 			war = no
-			owns = 57
+			owns = 57 # Bytown/Ottawa
 		}
+
 		effect = {
 			set_country_flag = canadian_dominion
-			any_pop = {
-				militancy = -4
-			}
+			any_pop = { militancy = -4 }
 			small_arms = 50
 			regular_clothes = 50
-			CAN_60 = { add_core = QUE }
+			CAN_60 = { add_core = QUE } # Northern Quebec
 			capital = 57
-			46 = {
-				state_scope = {
-					change_region_name = "Southern Ontario"
-				}
-			}
-			58 = {
-				state_scope = {
-					change_region_name = "Southern Quebec"
-				}
-			}
+			46 = { state_scope = { change_region_name = "Southern Ontario" } }
+			58 = { state_scope = { change_region_name = "Southern Quebec" } }
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Canadian minors can choose to join Canada.
 	join_confederation = {
 		picture = treaty_signing
 		potential = {
 			OR = {
-				tag = MRU
-				tag = NEW
-				tag = QUE
-				tag = COL
-				tag = MTC
-				tag = RPL
+				tag = MRU # Maritime Union
+				tag = NEW # Newfoundland
+				tag = QUE # Quebec
+				tag = COL # Columbia
+				tag = MTC # Metis Confederation
+				tag = RPL # Rupert's Land
 				primary_culture = anglo_canadian
 				AND = {
 					primary_culture = british
@@ -55,6 +48,7 @@ political_decisions = {
 				}
 			}
 			CAN = {
+				exists = yes
 				OR = {
 					government = democracy
 					government = hms_government
@@ -64,25 +58,20 @@ political_decisions = {
 				government = democracy
 				government = hms_government
 			}
-			exists = CAN
-			any_owned_province = {
-				any_neighbor_province = { owned_by = CAN }
-			}
+			any_owned_province = { any_neighbor_province = { owned_by = CAN } }
 			NOT = {
 				has_country_flag = confederation_we_have_applied
 				tag = CAN
 			}
 		}
+
 		allow = {
 			war = no
 			CAN = { war = no }
 			OR = {
 				is_vassal = no
 				overlord = { is_our_vassal = CAN }
-				overlord = {
-					ai = yes
-					is_sphere_leader_of = CAN
-				}
+				overlord = { is_sphere_leader_of = CAN }
 			}
 			OR = {
 				in_sphere = CAN
@@ -93,6 +82,7 @@ political_decisions = {
 				sphere_owner = { is_sphere_leader_of = CAN }
 			}
 		}
+
 		effect = {
 			set_country_flag = confederation_we_have_applied
 			CAN = {
@@ -100,6 +90,7 @@ political_decisions = {
 				war_exhaustion = -20
 			}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -111,28 +102,75 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+	#Description: Form the Royal Canadian Mounted Police - reduced militancy modifier and gain liferating in western territories.
 	form_the_rcmp = {
-	picture = form_the_rcmp
+		picture = form_the_rcmp
 		potential = {
 			tag = CAN
 			NOT = { has_country_modifier = rcmp }
 		}
+
 		allow = {
 			revolution_n_counterrevolution = 1
 			owns = 22
 			owns = 30
 			owns = 36
 		}
+
 		effect = {
 			22 = { life_rating = 11 }
 			add_country_modifier = { name = rcmp duration = -1 }
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Occupy empty provinces in the north.
+	claim_the_north = {
+		picture = whistlestop_tour
+		potential = {
+			owns = 17
+			OR = {
+				tag = ENG
+				tag = CAN
+				primary_culture = anglo_canadian
+				accepted_culture = anglo_canadian
+			}
+			6 = { empty = yes }
+			OR = {
+				2630 = { empty = no }
+				2599 = { empty = no }
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			6 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			random_owned = {
+				limit = {
+					province_id = 6
+					any_neighbor_province = { is_core = CAN }
+				}
+				add_core = CAN
+			}
+			random_owned = {
+				limit = {
+					province_id = 6
+					any_neighbor_province = { is_core = RPL }
+				}
+				add_core = RPL
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Canada National Railway ##
+
+	#Description: Start building the Canada National Railway.
 	build_the_cnr = {
 		picture = whistlestop_tour
 		potential = {
@@ -141,6 +179,7 @@ political_decisions = {
 			NOT = { has_country_flag = build_the_cnr }
 			NOT = { has_country_flag = build_the_cnr3 }
 		}
+
 		allow = {
 			war = no
 			money = 3000
@@ -151,6 +190,7 @@ political_decisions = {
 			owns = 26
 			owns = 13
 		}
+
 		effect = {
 			add_country_modifier = { name = monument_under_construction duration = 730 }
 			set_country_flag = build_the_cnr
@@ -164,10 +204,11 @@ political_decisions = {
 			}
 			13 = { change_province_name = "Vancouver" }
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
-	
+
+	#Description: Continue building the railway.
 	build_the_cnr1 = {
 		news = yes
 		news_title = "EVTNAME44355_NEWS_TITLE"
@@ -182,7 +223,7 @@ political_decisions = {
 			NOT = { has_country_flag = build_the_cnr1 }
 			NOT = { has_country_flag = build_the_cnr3 }
 		}
-		
+
 		allow = {
 			war = no
 			money = 10000
@@ -195,7 +236,7 @@ political_decisions = {
 				has_country_modifier = monument_under_construction
 			}
 		}
-		
+
 		effect = {
 			add_country_modifier = { name = monument_under_construction duration = 730 }
 			set_country_flag = build_the_cnr1
@@ -230,10 +271,11 @@ political_decisions = {
 			}
 			36 = { add_province_modifier = { name = gateway_to_harbor duration = 365 } }
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
-	
+
+	#Description: Continue building the railway, gain liferating.
 	build_the_cnr2 = {
 		picture = whistlestop_tour
 		potential = {
@@ -244,7 +286,7 @@ political_decisions = {
 			NOT = { has_country_flag = build_the_cnr2 }
 			NOT = { has_country_flag = build_the_cnr3 }
 		}
-		
+
 		allow = {
 			war = no
 			money = 15000
@@ -257,7 +299,7 @@ political_decisions = {
 				has_country_modifier = monument_under_construction
 			}
 		}
-		
+
 		effect = {
 			add_country_modifier = { name = monument_under_construction duration = 730 }
 			set_country_flag = build_the_cnr2
@@ -297,19 +339,19 @@ political_decisions = {
 				}
 				infrastructure = 1 owner = { treasury = -2000 }
 			}
-			25 = { 
+			25 = {
 				change_province_name = "Calgary"
 				life_rating = 15
 				add_province_modifier = { name = gateway_to_america duration = 720 }
 				any_pop = { limit = { location = { province_id = 26 } is_culture_group = pan_british } reduce_pop = 3 }
 				any_pop = { limit = { location = { province_id = 26 } is_culture_group = neo_european_cultures } reduce_pop = 3 }
-				
+
 			}
 			27 = {
 				life_rating = 10
 				add_province_modifier = { name = gateway_to_america duration = 720 }
 				any_pop = { limit = { location = { province_id = 27 } is_culture_group = pan_british } reduce_pop = 3 }
-				any_pop = { limit = { location = { province_id = 27 } is_culture_group = neo_european_cultures } reduce_pop = 3 }			
+				any_pop = { limit = { location = { province_id = 27 } is_culture_group = neo_european_cultures } reduce_pop = 3 }
 			}
 			69 = { change_province_name = "Edmundston" }
 			41 = { change_province_name = "Brandon" }
@@ -320,9 +362,11 @@ political_decisions = {
 			26 = { change_province_name = "Red Deer" }
 			24 = { change_province_name = "Medicine Hat" }
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Finish building the railway, gain liferating.
 	build_the_cnr3 = {
 		picture = whistlestop_tour
 		potential = {
@@ -333,7 +377,7 @@ political_decisions = {
 			has_country_flag = build_the_cnr2
 			NOT = { has_country_flag = build_the_cnr3 }
 		}
-		
+
 		allow = {
 			war = no
 			money = 15000
@@ -346,7 +390,7 @@ political_decisions = {
 				has_country_modifier = monument_under_construction
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = build_the_cnr3
 			clr_country_flag = build_the_cnr
@@ -382,7 +426,7 @@ political_decisions = {
 				}
 				infrastructure = 1 owner = { treasury = -2000 }
 			}
-			13 = { 
+			13 = {
 				add_province_modifier = { name = gateway_to_america duration = 365 }
 				life_rating = 3
 			}
@@ -391,47 +435,7 @@ political_decisions = {
 			2594 = { change_province_name = "Osnaburgh" }
 			6 = { change_province_name = "Whitehorse" }
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
-	claim_the_north = {
-		picture = whistlestop_tour
-		potential = {
-			owns = 17
-			OR = {
-				tag = ENG
-				tag = CAN
-				primary_culture = anglo_canadian
-			}
-			6 = { empty = yes }
-			OR = {
-				2630 = { empty = no }
-				2599 = { empty = no }
-			}
-		}
-		
-		allow = {
-		}
-		
-		effect = {
-			6 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-			random_owned = {
-				limit = {
-					province_id = 6
-					any_neighbor_province = { is_core = CAN }
-				}
-			add_core = CAN
-			}
-			random_owned = {
-				limit = {
-					province_id = 6
-					any_neighbor_province = { is_core = RPL }
-				}
-			add_core = RPL
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-	
 }

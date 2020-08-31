@@ -10,7 +10,7 @@ political_decisions = {
 				tag = ENL
 			}
 		}
-		
+
 		allow = {
 			war = no
 			revolution_n_counterrevolution = 1
@@ -23,7 +23,7 @@ political_decisions = {
 			all_core = {
 			owned_by = THIS
 				}
-			}	
+			}
 		}
 		effect = {
 			any_country = {
@@ -66,18 +66,21 @@ political_decisions = {
 			change_tag = DUA
 			add_accepted_culture = british
 			add_accepted_culture = french
-			add_accepted_culture = mullato					
+			add_accepted_culture = mullato
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 ### United States of South America ###
+
+	#Description: Any South American Great Power can propose the unification of the United States of South America.
 	call_for_south_american_union = {
 		picture = switch_to_fraternity
 		potential = {
+			is_greater_power = yes
 			OR = {
 				primary_culture = colombian
 				primary_culture = ecuadorian
@@ -96,44 +99,38 @@ political_decisions = {
 				tag = KPB
 			}
 		}
-		
+
 		allow = {
+			war = no
 			prestige = 50
 			nationalism_n_imperialism = 1
-			is_greater_power = yes
-			war = no
 		}
-		
+
 		effect = {
 			set_global_flag = the_call_for_south_american_union
-			prestige = 10	
+			prestige = 10
 			any_country = {
-				limit = {
-					any_owned_province = {
-						continent = south_america
-					}
-				}
+				limit = { any_owned_province = { continent = south_america } }
 				country_event = 555100
 			}
 			any_country = {
 				limit = {
 					NOT = { tag = THIS }
-					capital_scope = {
-						continent = south_america
-					}
+					capital_scope = { continent = south_america }
 				}
 				all_core = { add_core = USS }
 			}
 			all_core = { add_core = USS }
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the call to South American union has been made, and a South American Great Power owns or spheres USSA cores not owned by a non South American power, they can form the USSA.
 	form_USSA = {
 		picture = switch_to_freedom
 		potential = {
+			is_greater_power = yes
 			OR = {
 				primary_culture = colombian
 				primary_culture = ecuadorian
@@ -152,44 +149,37 @@ political_decisions = {
 				exists = USS
 			}
 		}
-		
+
 		allow = {
+			war = no
 			prestige = 100
 			revolution_n_counterrevolution = 1
-			is_greater_power = yes
-			war = no
 			USS = {
 				all_core = {
 					OR = {
 						empty = yes
 						owned_by = THIS
 						owner = {
-							capital_scope = {
-								continent = south_america 
-							}
+							war = no
+							is_greater_power = no
+							capital_scope = { continent = south_america }
 							in_sphere = THIS
 							OR = {
 								is_vassal = no
 								vassal_of = THIS
 							}
-							war = no
-							is_greater_power = no
 						}
-						owner = {
-							capital_scope = {
-								NOT = { continent = south_america }
-							}
-						}
+						owner = { capital_scope = { NOT = { continent = south_america } } }
 					}
 				}
 			}
 		}
-		
+
 		effect = {
 			prestige = 20
 			set_country_flag = formed_USS
 			change_tag = USS
-			CLM_1723 = { add_core = USS }
+			CLM_1723 = { add_core = USS } # Panama
 			CLM_1723 = { add_core = CLM }
 			ARC = { all_core = { add_core = ARG } }
 			ARC = { all_core = { remove_core = ARC } }
@@ -223,15 +213,13 @@ political_decisions = {
 						vassal_of = THIS
 					}
 				}
-				country_event = 555101
+				country_event = 555101 # Inherit
 			}
 			any_country = {
 				limit = {
-					any_owned_province = {
-						is_core = USS
-					}
+					any_owned_province = { is_core = USS }
 					NOT = {
-						OR ={
+						OR = {
 							primary_culture = colombian
 							primary_culture = ecuadorian
 							primary_culture = venezuelan
@@ -242,69 +230,63 @@ political_decisions = {
 							primary_culture = paraguayan
 							primary_culture = uruguayan
 							primary_culture = brazilian
-							}
 						}
+					}
 					OR = {
 						in_sphere = THIS
 						vassal_of = THIS
 					}
 				}
 				any_owned = {
-					limit = {
-						is_core = USS
-					}
+					limit = { is_core = USS }
 					secede_province = USS
 				}
-			}	
+			}
 		}
-		
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
-	
-	
-	
+
+
 	USS_form_UCA = {
 		picture = map_central_america
 		potential = {
 			tag = USS
+			is_greater_power = yes
 			USS = {
 				all_core = {
 					OR = {
 						owned_by = THIS
-						owner = {
-							vassal_of = THIS
-						}
+						owner = { vassal_of = THIS }
 						empty = yes
 					}
 				}
 			}
-			FCA = {
-				OR = {
-					exists = no
-					NOT = { vassal_of = THIS }
-				}
-			}
 			OR = {
-				COS = { in_sphere = THIS }
-				ELS	= { in_sphere = THIS }
-				GUA = { in_sphere = THIS }
-				HON = { in_sphere = THIS }
-				NIC = { in_sphere = THIS }
+				is_sphere_leader_of = GUA
+				is_sphere_leader_of = NIC
+				is_sphere_leader_of = ELS
+				is_sphere_leader_of = COS
+				is_sphere_leader_of = HON
+				any_owned_province = { is_core = GUA }
+				any_owned_province = { is_core = NIC }
+				any_owned_province = { is_core = ELS }
+				any_owned_province = { is_core = COS }
+				any_owned_province = { is_core = HON }
 			}
 			NOT = { has_country_flag = USS_form_UCA }
 		}
+
 		allow = {
 			war = no
-			is_greater_power = yes
 			prestige = 50
-			COS = {
+			COS = { # Costa Rica
 				all_core = {
 					OR = {
 						owned_by = THIS
 						owner = {
 							in_sphere = THIS
+							is_vassal = no
 							war = no
 						}
 						owner = {
@@ -314,27 +296,13 @@ political_decisions = {
 					}
 				}
 			}
-			ELS = {
+			ELS = { # El Salvador
 				all_core = {
 					OR = {
 						owned_by = THIS
 						owner = {
 							in_sphere = THIS
-							war = no
-						}
-						owner = {
-							vassal_of = THIS
-							war = no
-						}
-					}
-				}	
-			}
-			GUA = {
-				all_core = {
-					OR = {
-						owned_by = THIS
-						owner = {
-							in_sphere = THIS
+							is_vassal = no
 							war = no
 						}
 						owner = {
@@ -344,12 +312,13 @@ political_decisions = {
 					}
 				}
 			}
-			HON = {
+			GUA = {# Guatemala
 				all_core = {
 					OR = {
 						owned_by = THIS
 						owner = {
 							in_sphere = THIS
+							is_vassal = no
 							war = no
 						}
 						owner = {
@@ -359,12 +328,29 @@ political_decisions = {
 					}
 				}
 			}
-			NIC = {
+			HON = { # Honduras
 				all_core = {
 					OR = {
 						owned_by = THIS
 						owner = {
 							in_sphere = THIS
+							is_vassal = no
+							war = no
+						}
+						owner = {
+							vassal_of = THIS
+							war = no
+						}
+					}
+				}
+			}
+			NIC = { # Nicaragua
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							is_vassal = no
 							war = no
 						}
 						owner = {
@@ -375,6 +361,7 @@ political_decisions = {
 				}
 			}
 		}
+
 		effect = {
 			prestige = 20
 			badboy = 3
@@ -390,13 +377,17 @@ political_decisions = {
 						tag = COS
 						tag = ELS
 						tag = HON
-						tag = NIC 
+						tag = NIC
 						tag = BLZ
 						tag = GUA
 						tag = MSK
 					}
 					ai = yes
 					in_sphere = THIS
+					OR = {
+						vassal_of = THIS
+						is_vassal = no
+					}
 				}
 				annex_to = THIS
 			}
@@ -415,7 +406,7 @@ political_decisions = {
 			}
 			any_country = {
 				limit = {
-					OR = { 
+					OR = {
 						in_sphere = THIS
 						vassal_of = THIS
 					}
@@ -428,11 +419,10 @@ political_decisions = {
 				}
 			}
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
-	
+
 	USS_annex_CUB = {
 		picture = claim_the_caribbean
 		potential = {
@@ -450,7 +440,7 @@ political_decisions = {
 			}
 			NOT = { has_country_flag = USS_annex_CUB }
 		}
-		allow = {	
+		allow = {
 			prestige = 40
 			war = no
 			CUB = {
@@ -482,10 +472,10 @@ political_decisions = {
 			add_accepted_culture = caribeno
 			any_country = {
 				limit = {
-					OR = { 
+					OR = {
 						in_sphere = THIS
 						vassal_of = THIS
-					}	
+					}
 					any_owned_province = { is_core = CUB }
 				}
 				any_owned = {
@@ -501,7 +491,7 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	USS_annex_DOM = {
 		picture = claim_the_caribbean
 		potential = {
@@ -519,7 +509,7 @@ political_decisions = {
 			}
 			NOT = { has_country_flag = USS_annex_DOM }
 		}
-		allow = {	
+		allow = {
 			prestige = 40
 			war = no
 			DOM = {
@@ -546,10 +536,10 @@ political_decisions = {
 			add_accepted_culture = caribeno
 			any_country = {
 				limit = {
-					OR = { 
+					OR = {
 						in_sphere = THIS
 						vassal_of = THIS
-					}	
+					}
 					any_owned_province = { is_core = DOM }
 				}
 				any_owned = {
@@ -565,7 +555,7 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	USS_annex_PRI = {
 		picture = claim_the_caribbean
 		potential = {
@@ -583,7 +573,7 @@ political_decisions = {
 			}
 			NOT = { has_country_flag = USS_annex_PRI }
 		}
-		allow = {	
+		allow = {
 			prestige = 40
 			war = no
 			PRI = {
@@ -610,10 +600,10 @@ political_decisions = {
 			add_accepted_culture = caribeno
 			any_country = {
 				limit = {
-					OR = { 
+					OR = {
 						in_sphere = THIS
 						vassal_of = THIS
-					}	
+					}
 					any_owned_province = { is_core = PRI }
 				}
 				any_owned = {
@@ -629,7 +619,7 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	USS_puppet_MEX = {
 		picture = MEX_rancho
 		potential = {
@@ -647,7 +637,7 @@ political_decisions = {
 					}
 				}
 			}
-			UCA = { 
+			UCA = {
 				vassal_of = THIS
 			}
 			MEX = {
@@ -666,7 +656,7 @@ political_decisions = {
 			}
 		}
 		effect = {
-			set_country_flag = USS_puppet_MEX 
+			set_country_flag = USS_puppet_MEX
 			badboy = 5
 			MEX = {
 				country_event = 5730318
@@ -676,20 +666,20 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	USS_afro = {
 		picture = ostend_manifesto
 		potential = {
 			tag = USS
-			NOT = { 
+			NOT = {
 				has_country_flag = USS_afro
 			}
 		}
 		allow = {
-			slavery = no_slavery 
+			slavery = no_slavery
 			OR = {
 				ruling_party_ideology = liberal
-				ruling_party_ideology = socialist 
+				ruling_party_ideology = socialist
 				ruling_party_ideology = communist
 			}
 		}
@@ -699,14 +689,14 @@ political_decisions = {
 			random_pop = {
 				limit = {
 					OR = {
-						NOT = { 
+						NOT = {
 							OR = {
 								culture = afro_caribeno
 								culture = afro_brazilian
 							}
 						}
-						ideology = reactionary 
-						ideology = conservative 
+						ideology = reactionary
+						ideology = conservative
 						}
 					}
 				consciousness = 3
@@ -717,7 +707,7 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	USS_miranda = {
 		picture = switch_to_liberty
 		potential = {
@@ -737,14 +727,14 @@ political_decisions = {
 			}
 			is_greater_power = yes
 		}
-		allow = { 
+		allow = {
 			war = no
 		}
 		effect = {
 			badboy = 7
 			prestige = 10
 			any_greater_power = {
-				limit = { 
+				limit = {
 					NOT = { tag = THIS }
 				}
 				relation = {
@@ -755,7 +745,7 @@ political_decisions = {
 			set_country_flag = USS_miranda
 		}
 	}
-	
+
 	USS_dismantle_USA = {
 		picture = switch_to_liberty
 		potential = {
@@ -778,7 +768,7 @@ political_decisions = {
 			}
 			has_global_flag = gran_america
 			NOT = { has_country_flag = USS_dismantle_USA }
-			has_country_flag = USS_annex_CUB 
+			has_country_flag = USS_annex_CUB
 			has_country_flag = USS_annex_DOM
 			has_country_flag = USS_annex_PRI
 			MEX = {
@@ -811,7 +801,7 @@ political_decisions = {
 					country = USS
 				}
 				defender_goal = {
-					casus_belli = cut_down_to_size 
+					casus_belli = cut_down_to_size
 					country = USA
 				}
 				call_ally = yes
@@ -821,20 +811,20 @@ political_decisions = {
 			factor = 1
 		}
 	}
-	
+
+	#Description:
 	USS_USA_win = {
 		picture = restore_mexican_empire
 		potential = {
 			tag = USS
-			has_country_flag = USS_dismantle_USA 
+			has_country_flag = USS_dismantle_USA
 			NOT = {
-					OR = {
-						has_global_flag = USS_USA_win
-						has_global_flag = USS_USA_lose
-					}
+				has_global_flag = USS_USA_win
+				has_global_flag = USS_USA_lose
 			}
 		}
-		allow = { 
+
+		allow = {
 			has_recently_lost_war = no
 			truce_with = USA
 			is_greater_power = yes
@@ -846,13 +836,13 @@ political_decisions = {
 		effect = {
 			set_global_flag = USS_USA_win
 			prestige = 20
-			country_event = 3755286 
+			country_event = 3755286
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	USS_colonies = {
 		potential = {
 			tag = USS
@@ -894,7 +884,7 @@ political_decisions = {
 			}
 		}
 	}
-	
+
 	USS_caliport = {
 		picture = russian_naval_crimea
 		potential = {
@@ -917,7 +907,7 @@ political_decisions = {
 		}
 		effect = {
 			money = -75000
-			MEX = { 
+			MEX = {
 				84 = { secede_province = THIS }
 				money = 75000
 			}
@@ -927,5 +917,5 @@ political_decisions = {
 				naval_base = 1
 			}
 		}
-	}	
+	}
 }

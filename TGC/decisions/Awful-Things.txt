@@ -1,4 +1,7 @@
 political_decisions = {
+
+## Slavery ##
+
 	enslave_the_free = {
 		picture = slaves_cotton
 		alert = no
@@ -123,6 +126,320 @@ political_decisions = {
 			}
 		}
 	}
+
+	enslave_the_serfs = {
+		alert = no
+		picture = enslave_the_serfs_image
+		potential = {
+			OR = {
+				government = absolute_monarchy
+				government = prussian_constitutionalism
+			}
+			debt_law = serfdom
+		}
+
+		allow = {
+			war = no
+			ruling_party_ideology = reactionary
+			slavery = yes_slavery
+			state_n_government = 1
+		}
+
+		effect = {
+			badboy = 5
+			country_event = 443035
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_ideology = socialist
+						pop_majority_ideology = communist
+					}
+				}
+				militancy = 5
+				consciousness = 7
+			}
+			any_country = {
+				limit = { civilized = yes slavery = no_slavery is_greater_power = yes }
+				relation = { who = THIS value = -100 }
+			}
+			any_neighbor_country = {
+				limit = { is_greater_power = no civilized = yes slavery = no_slavery NOT = { vassal_of = THIS } NOT = { in_sphere = THIS } }
+				relation = { who = THIS value = -50 }
+			}
+		}
+
+
+		ai_will_do = {
+			factor = 1
+			 modifier = {
+				factor = 0
+				badboy = 0.25
+			}
+			modifier = {
+				factor = 0
+				tag = QNG
+			}
+		}
+	}
+
+	pro_slavery_propaganda = {
+		picture = slavery_propaganda
+		alert = no
+		potential = {
+			OR = {
+				is_greater_power = yes
+				is_secondary_power = yes
+			}
+			OR = {
+				NOT = { tag = USA }
+				year = 1860
+			}
+			slavery = yes_slavery
+			civilized = yes
+			NOT = { has_country_modifier = slavery_propaganda }
+		}
+
+		allow = {
+			prestige = 100
+			war = no
+			money = 25000
+		}
+
+		effect = {
+			any_pop = {
+				militancy = -1
+				consciousness = -2
+				dominant_issue = {
+					value = yes_slavery
+					factor = 0.1
+				}
+			}
+			add_country_modifier = {
+				name = slavery_propaganda
+				duration = 5475
+			}
+			prestige = -15
+			badboy = 2
+			plurality = -5
+			treasury = -25000
+		}
+
+		ai_will_do = {
+			factor = 0.5
+			modifier = {
+				factor = 0
+				OR = {
+					war = yes
+					tag = USA
+					capital_scope = {
+						continent = europe
+					}
+				}
+			}
+		}
+	}
+
+	join_slave_trade = {
+		picture = slave_ship
+		potential = {
+			slavery = yes_slavery
+			has_global_flag = slave_trade_reinstated
+			NOT = { has_country_flag = slave_trade_leader }
+			NOT = { tag = USA }
+			NOT = { tag = EGY }
+			NOT = { has_country_flag = slave_trader }
+			capital_scope = {
+				OR = {
+					continent = north_america
+					continent = south_america
+					continent = africa
+				}
+			}
+		}
+
+		allow = {
+			slavery = yes_slavery
+			total_num_of_ports = 1
+			war = no
+			NOT = { has_country_modifier = national_confusion }
+		}
+
+		effect = {
+			badboy = 5
+			remove_country_modifier = the_slavery_debate
+			set_country_flag = the_slavery_debate
+			add_country_modifier = { name = atlantic_slave_trade duration = -1 }
+			set_country_flag = slave_trader
+			add_country_modifier = { name = national_confusion duration = 365 }
+			any_greater_power = {
+				limit = { slavery = no_slavery }
+				relation = {
+					who = THIS
+					value = -50
+				}
+			}
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = slave_trade_leader
+						has_country_flag = slave_trader
+					}
+				}
+				relation = {
+					who = THIS
+					value = 80
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				war = yes
+			}
+			modifier = {
+				factor = 0
+				has_global_flag = berlin_conference
+			}
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						ruling_party_ideology = reactionary
+						ruling_party_ideology = conservative
+						ruling_party_ideology = fascist
+					}
+				}
+			}
+		}
+	}
+
+	leave_slave_trade = {
+		picture = slaves_freed
+		alert = no
+		potential = {
+			has_country_flag = slave_trader
+		}
+
+		allow = {
+			war = no
+			NOT = { has_country_modifier = national_confusion }
+			upper_house = {
+				ideology = liberal
+				value = 0.38
+			}
+		}
+
+		effect = {
+			remove_country_modifier = the_slavery_debate
+			clr_country_flag = the_slavery_debate
+			remove_country_modifier = atlantic_slave_trade
+			add_country_modifier = { name = national_confusion duration = 365 }
+			clr_country_flag = slave_trader
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = slave_trader
+						has_country_flag = slave_trade_leader
+					}
+					relation = {
+						who = THIS
+						value = -60
+					}
+				}
+			}
+			any_pop = {
+				militancy = -3
+				consciousness = 1
+			}
+			badboy = -4
+		}
+
+		ai_will_do = {
+			factor = 0.4
+			modifier = {
+				factor = 0
+				OR = {
+					is_greater_power = yes
+					is_secondary_power = yes
+					ruling_party_ideology = reactionary
+					NOT = {
+						OR = {
+							government = democracy
+							government = hms_government
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = 10
+				OR = {
+					ruling_party_ideology = liberal
+					ruling_party_ideology = anarcho_liberal
+				}
+			}
+			modifier = { # When the Scramble for Africa begins and European powers move in, the Slave Trade should naturally fall apart
+				factor = 100
+				has_global_flag = berlin_conference
+			}
+		}
+	}
+
+	end_slave_trade = {
+		picture = slaves_freed
+		alert = no
+		potential = {
+			has_country_flag = slave_trade_leader
+		}
+
+		allow = {
+			war = no
+			NOT = { has_country_modifier = national_confusion }
+			upper_house = {
+				ideology = liberal
+				value = 0.51
+			}
+		}
+
+		effect = {
+			clr_global_flag = slave_trade_reinstated
+			clr_country_flag = slave_trade_leader
+			clr_country_flag = the_slavery_debate
+			remove_country_modifier = the_slavery_debate
+			remove_country_modifier = atlantic_slave_trade
+			add_country_modifier = { name = national_confusion duration = 365 }
+			any_country = {
+				limit = { has_country_flag = slave_trader }
+				set_country_flag = slave_trade_ended
+			}
+			badboy = -7
+			prestige = 10
+			any_pop = { militancy = -4 }
+			any_greater_power = {
+				limit = { NOT = { tag = THIS } }
+				relation = {
+					who = THIS
+					value = 50
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				is_greater_power = yes
+			}
+			modifier = {
+				factor = 100
+				is_greater_power = no
+				is_secondary_power = no
+			}
+		}
+	}
+
 #from MiniMod-General.txt
 	remove_kebab = {
 	picture = remove_undesireables
@@ -2316,62 +2633,6 @@ political_decisions = {
 		}
 
 		ai_will_do = { factor = 0 }
-	}
-
-	enslave_the_serfs = {
-		alert = no
-		picture = enslave_the_serfs_image
-		potential = {
-			OR = {
-				government = absolute_monarchy
-				government = prussian_constitutionalism
-			}
-			debt_law = serfdom
-		}
-
-		allow = {
-			war = no
-			ruling_party_ideology = reactionary
-			slavery = yes_slavery
-			state_n_government = 1
-		}
-
-		effect = {
-			badboy = 5
-			country_event = 443035
-			any_pop = {
-				limit = {
-					OR = {
-						pop_majority_ideology = liberal
-						pop_majority_ideology = socialist
-						pop_majority_ideology = communist
-					}
-				}
-				militancy = 5
-				consciousness = 7
-			}
-			any_country = {
-				limit = { civilized = yes slavery = no_slavery is_greater_power = yes }
-				relation = { who = THIS value = -100 }
-			}
-			any_neighbor_country = {
-				limit = { is_greater_power = no civilized = yes slavery = no_slavery NOT = { vassal_of = THIS } NOT = { in_sphere = THIS } }
-				relation = { who = THIS value = -50 }
-			}
-		}
-
-
-		ai_will_do = {
-			factor = 1
-			 modifier = {
-				factor = 0
-				badboy = 0.25
-			}
-			modifier = {
-				factor = 0
-				tag = QNG
-			}
-		}
 	}
 
 #from Communism.txt
