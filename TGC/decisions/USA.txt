@@ -1819,6 +1819,83 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: The USA can send an emmissary to Haiti to ask them to cede the port of Mole Saint Nicolas.
+	st_nicolas_affair = {
+		picture = st_nicolas_affair
+		potential = {
+			is_culture_group = american_cultures
+			is_greater_power = yes
+			HAI = {
+				war = no
+				in_sphere = THIS
+				owns = 3284 # Mole Saint Nicolas
+			}
+			NOT = { has_global_flag = st_nicolas_affair }
+		}
+
+		allow = {
+			war = no
+			is_disarmed = no
+			nationalism_n_imperialism = 1
+			steel_steamers = 1
+			total_amount_of_ships = 75
+			NOT = {
+				war_policy = pacifism
+				war_policy = anti_military
+			}
+			HAI = {
+				OR = {
+					vassal_of = THIS
+					is_vassal = no
+				}
+				NOT = { truce_with = THIS }
+			}
+		}
+
+		effect = {
+			HAI = { country_event = 530010 }
+			set_global_flag = st_nicolas_affair
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If Haiti refused to cede the port and it went to war, the USA can force them to cede the port if they win.
+	st_nicolas_affair_claims = {
+		picture = st_nicolas_affair
+		potential = {
+			is_culture_group = american_cultures
+			is_greater_power = yes
+			HAI = {
+				war = no
+				exists = yes
+				in_sphere = THIS
+				OR = {
+					vassal_of = THIS
+					is_vassal = no
+				}
+				truce_with = THIS
+			}
+			3284 = { owned_by = HAI }
+			has_global_flag = st_nicolas_affair
+			NOT = { has_global_flag = st_nicolas_affair_claims }
+		}
+
+		allow = {
+			war = no
+			truce_with = HAI
+		}
+
+		effect = {
+			3284 = { secede_province = THIS add_core = THIS naval_base = 1 }
+			money = -25000
+			HAI = { money = 20000 }
+			set_global_flag = st_nicolas_affair_claims
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 ## Crusade for Canada ##
 
 	#Description: After the Oregon Treaty, the USA can claim the entirety of Canada and go to war with the UK for it.
@@ -3124,7 +3201,7 @@ political_decisions = {
 	}
 
 
-
+	#Description: After the civil war, the USA can reintegrate the south.
 	enact_radical_reconstruction = {
 		potential = {
 			tag = USA
@@ -3191,31 +3268,6 @@ political_decisions = {
 				remove_province_modifier = king_cotton
 			}
 			set_country_flag = has_used_radical_reconstruction
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	pass_the_fifteenth_amendment = {
-		picture = first_vote_usa
-		potential = {
-			tag = USA
-			NOT = { has_country_flag = fifteenth_amendment_enacted }
-			NOT = { citizens_rights = all_voting_pops }
-			government = democracy
-			has_global_flag = american_civil_war_has_happened
-			has_country_flag = has_used_radical_reconstruction
-		}
-
-		allow = {
-			war = no
-			average_militancy = 1
-		}
-
-		effect = {
-			set_country_flag = fifteenth_amendment_enacted
-			political_reform = all_voting_pops
-			any_pop = { limit = { is_primary_culture = no is_accepted_culture = no } militancy = -1 }
 		}
 
 		ai_will_do = { factor = 1 }
@@ -3492,25 +3544,23 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-#from USS_d.txt
+	#Description: If the USSA attempted to dismantle the USA and failed,
 	USS_USA_lose = {
 		potential = {
 			tag = USA
+			is_greater_power = yes
 			has_country_flag = USS_dismantle_USA
 			NOT = {
-				OR = {
-					has_global_flag = USS_USA_win
-					has_global_flag = USS_USA_lose
-				}
+				has_global_flag = USS_USA_win
+				has_global_flag = USS_USA_lose
 			}
 		}
 
 		allow = {
-			has_recently_lost_war = no
 			truce_with = USS
-			is_greater_power = yes
+			has_recently_lost_war = no
 			USS = {
-				truce_with = USA
+				has_recently_lost_war = yes
 				is_disarmed = yes
 			}
 		}
@@ -3522,6 +3572,7 @@ political_decisions = {
 		}
 	}
 
+	#Description: If the USA beats the USSA and their puppet USCA ends up independent, the USA can dismantle it.
 	USA_UCA_dismantle = {
 		potential = {
 			tag = USA
@@ -3554,6 +3605,8 @@ political_decisions = {
 	}
 
 #from more decisions.txt
+
+	#Description: If the CSA has fled to Cuba, but the USA won the war, they can remove CSA cores.
 	USA_restore_CUB = {
 		picture = guantanamo_bay
 		potential = {
@@ -3612,84 +3665,6 @@ political_decisions = {
 				add_core = FSA
 			}
 			change_tag = FSA
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-## St. Nicholas Affair ##
-
-	st_nicolas_affair = {
-		picture = st_nicolas_affair
-		potential = {
-			is_culture_group = american_cultures
-			is_greater_power = yes
-			HAI = {
-				war = no
-				in_sphere = THIS
-				owns = 3284 # Mole Saint Nicolas
-			}
-			NOT = { has_global_flag = st_nicolas_affair }
-		}
-
-		allow = {
-			war = no
-			is_disarmed = no
-			nationalism_n_imperialism = 1
-			steel_steamers = 1
-			total_amount_of_ships = 75
-			NOT = {
-				war_policy = pacifism
-				war_policy = anti_military
-			}
-			HAI = {
-				OR = {
-					vassal_of = THIS
-					is_vassal = no
-				}
-				NOT = { truce_with = THIS }
-			}
-		}
-
-		effect = {
-			HAI = { country_event = 530010 }
-			set_global_flag = st_nicolas_affair
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If Haiti refused to cede the port and it went to war, the USA can force them to cede the port if they win.
-	st_nicolas_affair_claims = {
-		picture = st_nicolas_affair
-		potential = {
-			is_culture_group = american_cultures
-			is_greater_power = yes
-			HAI = {
-				war = no
-				exists = yes
-				in_sphere = THIS
-				OR = {
-					vassal_of = THIS
-					is_vassal = no
-				}
-				truce_with = THIS
-			}
-			3284 = { owned_by = HAI }
-			has_global_flag = st_nicolas_affair
-			NOT = { has_global_flag = st_nicolas_affair_claims }
-		}
-
-		allow = {
-			war = no
-			truce_with = HAI
-		}
-
-		effect = {
-			3284 = { secede_province = THIS add_core = THIS naval_base = 1 }
-			money = -25000
-			HAI = { money = 20000 }
-			set_global_flag = st_nicolas_affair_claims
 		}
 
 		ai_will_do = { factor = 1 }
@@ -4055,6 +4030,32 @@ political_decisions = {
 			232 = { trade_goods = iron } # New York City
 			235 = { trade_goods = iron } # Binghamton
 			98 = { trade_goods = iron } # Barbones
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: After the civil war and reconstruction, the USA can get the All cultures can vote reform.
+	pass_the_fifteenth_amendment = {
+		picture = first_vote_usa
+		potential = {
+			tag = USA
+			NOT = { has_country_flag = fifteenth_amendment_enacted }
+			NOT = { citizens_rights = all_voting_pops }
+			government = democracy
+			has_global_flag = american_civil_war_has_happened
+			has_country_flag = has_used_radical_reconstruction
+		}
+
+		allow = {
+			war = no
+			average_militancy = 1
+		}
+
+		effect = {
+			set_country_flag = fifteenth_amendment_enacted
+			political_reform = all_voting_pops
+			any_pop = { limit = { is_primary_culture = no is_accepted_culture = no } militancy = -1 }
 		}
 
 		ai_will_do = { factor = 1 }
