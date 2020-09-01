@@ -1146,7 +1146,7 @@ country_event = {
 		}
 			
 		82 = {
-			change_province_name = "Klamath Falls"
+			change_province_name = "Lakeview"
 			life_rating = 15
 			secede_province = THIS
 			random_list = {
@@ -1156,7 +1156,7 @@ country_event = {
 			}
 		}
 		83 = {
-			change_province_name = "Eugene"
+			change_province_name = "Pendelton"
 			life_rating = 15
 			secede_province = THIS
 			random_list = {
@@ -1238,9 +1238,10 @@ country_event = {
 	option = {
 		name = "EVTOPTA441255" 
 		prestige = 2
-		78 = { change_province_name = "Seattle" }
-		79 = { change_province_name = "Olympia" }
-		ai_chance = { factor = 100 }
+		78 = { 
+			change_province_name = "Seattle"
+			state_scope = { change_region_name = "Washington" }
+		}
 		78 = {
 			any_pop = {
 				limit = {
@@ -1249,6 +1250,10 @@ country_event = {
 				reduce_pop = 0.3
 			}
 		}
+		79 = { change_province_name = "Olympia" }
+		80 = { change_province_name = "Spokane" }
+#		81 = { state_scope = { change_region_name = "Oregon" } }
+		ai_chance = { factor = 100 }
 	}
 	
 	option = {
@@ -3828,7 +3833,7 @@ country_event = {
 					province_id = 218 #Wheeling
 					province_id = 217 #Green Bank
 					#Ohio
-					province_id = 178 #ClEVTeland
+					province_id = 178 #Cleveland
 					#Georgia
 					province_id = 201 #Atlanta
 					#Dakotas
@@ -6003,7 +6008,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	option = {
-		name = "Democracy PrEVTails Once More."
+		name = "Democracy Prevails Once More."
 		diplomatic_influence = {
 			who = BRZ
 			value = 400
@@ -7052,7 +7057,100 @@ country_event = {
 # }
 	
 
+# Tratado Hay-Herbert EVENT Dos Opciones
+country_event = {
+	id = 1904191424
+	title = "EVTNAME1904191424"
+	desc = "EVTDESC1904191424"
+	picture = "administration"
 
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA1904191424"
+		2 = { remove_core = THIS }
+		FROM = { country_event = 1904191425 }
+		ai_chance = {
+			factor = 40 
+				modifier = {
+					factor = 0.8
+					is_greater_power = no
+				}
+				modifier = {
+					factor = 0.7
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 0.6
+					relation = { who = FROM value = 50 }
+				}
+			}
+	}
+
+	option = {
+		name = "EVTOPTB1904191424"
+		FROM = { country_event = 1904191426 }
+		ai_chance = {
+			factor = 60 
+				modifier = {
+					factor = 0.2
+					is_greater_power = no
+				}
+				
+				modifier = {
+					factor = 0.6
+					FROM = { is_greater_power = no }
+				}
+				modifier = {
+					factor = 0.1
+					NOT = { relation = { who = FROM value = 0 } }
+				}
+			}
+	}
+}
+
+# Tratado Hay-Herbert EVENT Option-A in favor of who claims an outlet to the sea by the Alaska region (It can be Canada or the British or another country)
+country_event = {
+	id = 1904191425
+	title = "EVTNAME1904191425"
+	desc = "EVTDESC1904191425"
+	picture = "administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA1904191425"
+		prestige = 5
+		2 = { secede_province = THIS }
+                2 = { add_core = THIS }
+		relation = { who = FROM value = -100 }
+		war_exhaustion = -10
+		any_pop = { consciousness = -0.5 }
+	}
+}
+
+# Tratado Hay-Herbert EVENT Option B- in favor of who controls Alaska (It can be Russia or the United States or another country)
+country_event = {
+	id = 1904191426
+	title = "EVTNAME1904191426"
+	desc = "EVTDESC1904191426"
+	picture = "administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA1904191426"
+		any_country = {
+			limit = {
+				alliance_with = FROM
+			}
+		}
+                17 = { OR = { owned_by = THIS is_core = THIS any_pop = { militancy = 3 }}}
+		prestige = 10
+		relation = { who = FROM value = 100 }
+		war_exhaustion = { who = FROM value = -5 }
+	}
+}	     
 		
 		
 

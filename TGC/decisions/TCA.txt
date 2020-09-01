@@ -1,5 +1,8 @@
 political_decisions = {
 
+## Formation ##
+
+	#Description: Georgia, Armenia or Azerbaijan can form Transcaucasia if they sphere the other two or have good relations and are independent.
 	form_transcaucasia = {
 		potential = {
 			OR = {
@@ -13,7 +16,23 @@ political_decisions = {
 
 		allow = {
 			war = no
-			owns = 1090
+			1090 = {
+				OR = {
+					owned_by = THIS
+					owner = { in_sphere = THIS }
+					owner = { has_country_flag = newly_released_nation }
+					owner = {
+						primary_culture = georgian
+						war = no
+						civilized = yes
+						relation = { who = THIS value = 150 }
+						OR = {
+							is_vassal = no
+							vassal_of = THIS
+						}
+					}
+				}
+			}
 			1102 = {
 				OR = {
 					owned_by = THIS
@@ -97,7 +116,8 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+	#Description: Any great power that owns the inner territories of Gerogia, Armenia or Azerbaijan can form Transcaucasia.
 	create_transcaucasia = {
 		picture = form_transcaucasia
 		potential = {
@@ -211,13 +231,17 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+## Expansion ##
+
+	#Description: If Transcaucasia becomes a secondary power they can claim the Northern Caucasus as well.
 	claim_north_caucasus = {
 		picture = form_transcaucasia
 		potential = {
 			tag = TCA
 			NOT = { has_country_flag = claimed_north_caucasus }
 		}
+
 		allow = {
 			war = no
 			is_vassal = no
@@ -231,6 +255,7 @@ political_decisions = {
 			DAG = { exists = no }
 			CIR = { exists = no }
 		}
+
 		effect = {
 			set_country_flag = claimed_north_caucasus
 			badboy = 5
@@ -258,11 +283,13 @@ political_decisions = {
 				leave_alliance = TCA
 			}
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
-	
+
+## Dissolution ##
+
+	#Description: If Transcaucasia is only left with Georgian cores, it will turn into Georgia and all Transcaucasia cores will be removed.
 	end_of_transcaucasia_GEO = {
 		picture = form_transcaucasia
 		potential = {
@@ -277,17 +304,12 @@ political_decisions = {
 
 		allow = {
 			war = no
-			NOT = {
-				any_owned_province = {
-					NOT = { is_core = GEO }
-				}
-			}
 		}
 
 		effect = {
 			random_owned = {
-				limit = { province_id = 1095 }
-				owner = { capital = 1095 }
+				limit = { province_id = 1090 }
+				owner = { capital = 1090 }
 			}
 			prestige = 5
 			primary_culture = georgian
@@ -301,7 +323,8 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+	#Description: If Transcaucasia is only left with Azeri cores, it will turn into Azerbaijan and all Transcaucasia cores will be removed.
 	end_of_transcaucasia_AZB = {
 		picture = form_transcaucasia
 		potential = {
@@ -316,11 +339,6 @@ political_decisions = {
 
 		allow = {
 			war = no
-			NOT = {
-				any_owned_province = {
-					NOT = { is_core = AZB }
-				}
-			}
 		}
 
 		effect = {
@@ -340,7 +358,8 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+	#Description: If Transcaucasia is only left with Armenian cores, it will turn into Armenian and all Transcaucasia cores will be removed.
 	end_of_transcaucasia_ARM = {
 		picture = form_transcaucasia
 		potential = {
@@ -355,17 +374,12 @@ political_decisions = {
 
 		allow = {
 			war = no
-			NOT = {
-				any_owned_province = {
-					NOT = { is_core = ARM }
-				}
-			}
 		}
 
 		effect = {
 			random_owned = {
-				limit = { province_id = 1102 }
-				owner = { capital = 1102 }
+				limit = { province_id = 1098 }
+				owner = { capital = 1098 }
 			}
 			prestige = 5
 			primary_culture = armenian
@@ -379,29 +393,33 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+## Religious organization ##
+
+	#Description: Any Sunni country can organize Transcaucasia to be a Sunni country dominated by Azeri culture.
 	make_transcaucasia_sunni = {
 		picture = form_transcaucasia
 		potential = {
 			TCA = {
-				NOT = { has_country_flag = sunni_country } 
+				NOT = { has_country_flag = sunni_country }
 				owns = 1102
-				exists = yes 
+				exists = yes
+				vassal_of = THIS
 			}
-				is_our_vassal = TCA
-				OR = {
-					has_country_flag = sunni_country
-					has_country_flag = ibadi_country
-				}
+			OR = {
+				has_country_flag = sunni_country
+				has_country_flag = ibadi_country
 			}
+		}
 
 		allow = {
 			war = no
+			TCA = { war = no }
 		}
 
 		effect = {
 			TCA = {
-				capital = 1102 
+				capital = 1102
 				set_country_flag = sunni_country
 				clr_country_flag = shiite_country
 				clr_country_flag = orthodox_country
@@ -415,28 +433,31 @@ political_decisions = {
 				}
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Any Shiite country can organize Transcaucasia to be a Shiite country dominated by Azeri culture.
 	make_transcaucasia_shiite = {
 		picture = form_transcaucasia
 		potential = {
 			TCA = {
-				NOT = { has_country_flag = shiite_country } 
+				NOT = { has_country_flag = shiite_country }
 				owns = 1102
 				exists = yes
+				vassal_of = THIS
 			}
-			is_our_vassal = TCA
 			has_country_flag = shiite_country
 		}
 
 		allow = {
 			war = no
+			TCA = { war = no }
 		}
 
 		effect = {
 			TCA = {
-				capital = 1102 
+				capital = 1102
 				set_country_flag = shiite_country
 				clr_country_flag = sunni_country
 				clr_country_flag = orthodox_country
@@ -450,18 +471,20 @@ political_decisions = {
 				}
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Any Christian country can organize Transcaucasia to be an Orthodox country dominated by Georgian and Armenian culture.
 	make_transcaucasia_orthodox = {
 		picture = form_transcaucasia
 		potential = {
 			TCA = {
-				NOT = { has_country_flag = orthodox_country } 
+				NOT = { has_country_flag = orthodox_country }
 				owns = 1090
 				exists = yes
+				vassal_of = THIS
 			}
-			is_our_vassal = TCA
 			OR = {
 				has_country_flag = catholic_country
 				has_country_flag = protestant_country
@@ -473,11 +496,12 @@ political_decisions = {
 
 		allow = {
 			war = no
+			TCA = { war = no }
 		}
 
 		effect = {
 			TCA = {
-				capital = 1090 
+				capital = 1090
 				set_country_flag = orthodox_country
 				clr_country_flag = sunni_country
 				clr_country_flag = shiite_country
@@ -491,19 +515,21 @@ political_decisions = {
 				}
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Any Christian country can organize Abkhazia to be an Orthodox country.
 	make_abkhazia_orthodox = {
 		picture = form_transcaucasia
 		potential = {
-			ABK = { 
+			ABK = {
 				NOT = { has_country_flag = orthodox_country }
 				exists = yes
-			}
-			OR = {
-				is_our_vassal = ABK
-				ABK = { in_sphere = THIS }
+				OR = {
+					in_sphere = THIS
+					vassal_of = THIS
+				}
 			}
 			OR = {
 				has_country_flag = catholic_country
@@ -516,6 +542,7 @@ political_decisions = {
 
 		allow = {
 			war = no
+			ABK = { war = no }
 		}
 
 		effect = {
@@ -529,25 +556,28 @@ political_decisions = {
 				}
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Any Sunni country can organize Abkhazia to be a Sunni country.
 	make_abkhazia_sunni = {
 		picture = form_transcaucasia
 		potential = {
 			ABK = {
 				NOT = { has_country_flag = sunni_country }
 				exists = yes
-			}
-			OR = {
-				is_our_vassal = TCA
-				ABK = { in_sphere = THIS }
+				OR = {
+					in_sphere = THIS
+					vassal_of = THIS
+				}
 			}
 			has_country_flag = sunni_country
 		}
 
 		allow = {
 			war = no
+			ABK = { war = no }
 		}
 
 		effect = {
@@ -561,9 +591,13 @@ political_decisions = {
 				}
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
-		
+
+## International Recognition ##
+
+	#Description: Any country other than Russia can recognize Circassia for influence and relation, hurting their relations with Russia.
 	recognize_circassia = {
 		picture = circassia_flag
 		potential = {
@@ -576,9 +610,11 @@ political_decisions = {
 				CIR = { part_of_sphere = yes civilized = no }
 			}
 		}
-		allow = { 
+
+		allow = {
 			nationalism_n_imperialism = 1
 		}
+
 		effect = {
 			prestige = 1
 			set_country_flag = recognize_circassia
@@ -597,6 +633,7 @@ political_decisions = {
 				value = -100
 			}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -609,7 +646,8 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+	#Description: Any country other than Russia can recognize Chechenya for influence and relation, hurting their relations with Russia.
 	recognize_chechenya = {
 		picture = chechenya_flag
 		potential = {
@@ -622,9 +660,11 @@ political_decisions = {
 				CHY = { part_of_sphere = yes civilized = no }
 			}
 		}
+
 		allow = {
 			nationalism_n_imperialism = 1
 		}
+
 		effect = {
 			prestige = 1
 			set_country_flag = recognize_chechenya
@@ -643,6 +683,7 @@ political_decisions = {
 				value = -100
 			}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -655,7 +696,8 @@ political_decisions = {
 			}
 		}
 	}
-	
+
+	#Description: Any country other than Russia can recognize Dagestan for influence and relation, hurting their relations with Russia.
 	recognize_dagestan = {
 		picture = dagestan_flag
 		potential = {
@@ -668,9 +710,11 @@ political_decisions = {
 				DAG = { part_of_sphere = yes civilized = no }
 			}
 		}
+
 		allow = {
 			nationalism_n_imperialism = 1
 		}
+
 		effect = {
 			prestige = 1
 			set_country_flag = recognize_dagestan
@@ -689,6 +733,7 @@ political_decisions = {
 				value = -100
 			}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -701,6 +746,7 @@ political_decisions = {
 			}
 		}
 	}
+
 #from Setup.txt
 	caucasus_muslims_1836_setup = {
 		picture = constantinople
@@ -711,14 +757,14 @@ political_decisions = {
 			}
 			always = no
 		}
-		
+
 		allow = {
 			OR = {
 				tag = DAG
 				tag = CIR
 			}
 		}
-		
+
 		effect = {
 			small_arms = 20
 			ammunition = 20
@@ -731,40 +777,39 @@ political_decisions = {
 			any_pop = { limit = { has_pop_culture = sephardic } literacy = 0.25 }
 		}
 	}
-	
+
 	transcaucasia_1836_setup = {
 		picture = constantinople
 		potential = {
 			tag = TCA
 			always = no
 		}
-		
+
 		allow = {
 			tag = TCA
 		}
-		
+
 		effect = {
 			any_pop = { limit = { has_pop_culture = greek } literacy = 0.05 }
 			any_pop = { limit = { has_pop_culture = kurdish } literacy = -0.01 }
 			any_pop = { limit = { has_pop_culture = sephardic } literacy = 0.26 }
 		}
 	}
-	
+
 	abkhazia_1836_setup = {
 		picture = constantinople
 		potential = {
 			tag = ABK
 			always = no
 		}
-		
+
 		allow = {
 			tag = ABK
 		}
-		
+
 		effect = {
 			any_pop = { limit = { has_pop_religion = sunni OR = { is_primary_culture = yes is_accepted_culture = yes } } literacy = -0.02 }
 			any_pop = { limit = { OR = { has_pop_culture = georgian has_pop_culture = russian } } literacy = 0.02 }
 		}
 	}
-	
 }
