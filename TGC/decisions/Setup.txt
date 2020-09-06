@@ -1,6 +1,6 @@
-##All decisions relate to the startup options - All start 'option_'
 political_decisions = {
-
+	##Decisions relate to the startup options - All start 'option_'
+	
 	#Shows Options
 	option_enable_options = {
 		alert = no
@@ -105,7 +105,6 @@ political_decisions = {
 			set_global_flag = uk_isolation_disabled
 		}
 	}
-	###Event text for decision at 6016815
 	
 	#Disables Bankruptcy Events
 	option_disable_bankruptcy_events = {
@@ -243,7 +242,6 @@ political_decisions = {
 			set_global_flag = lucky_nations_on
 		}
 	}
-	###Event text for decision at 66689
 
 	#Sets Up Game For Spectating
 	option_enable_spectator_mode = {
@@ -263,7 +261,317 @@ political_decisions = {
 		}
 	}
 
+	##Decisions relate to the utility decisions
+	
+	#Shows Utilities
+	utility_enable_utility = {
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_singleplayer
+				has_country_flag = show_options_multiplayer_host
+				has_country_flag = show_options_multiplayer_standard
+			}
+			ai = no
+			NOT = { has_country_flag = looking_through_utilities }
+			NOT = { year = 1837 }
+		}
 
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = looking_through_utilities
+		}
+	}
+	
+	#Hides Utilities
+	utility_disable_utility = {
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_utilities
+			NOT = { year = 1837 }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			clr_country_flag = looking_through_utilities
+		}
+	}
+	
+	#Allows Recieving Money
+	utility_will_receive = {
+		picture = grant
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_multiplayer_host
+				has_country_flag = show_options_multiplayer_standard
+			}
+			ai = no
+			has_country_flag = looking_through_utilities
+			NOT = { has_country_flag = will_receive_grants }
+		}
+
+		allow = {
+		}
+		
+		effect = {
+			country_event = {id = 100000 days = 0}
+		}
+	}
+	
+	#Prevents Recieving Money
+	utility_will_not_receive = {
+		picture = grant
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_multiplayer_host
+				has_country_flag = show_options_multiplayer_standard
+			}
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = will_receive_grants
+		}
+
+		allow = {
+		}
+		
+		effect = {
+			clr_country_flag = will_receive_grants
+		}
+	}
+	
+	#Allows Giving Money
+	utility_will_give = {
+		picture = grant
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_multiplayer_host
+				has_country_flag = show_options_multiplayer_standard
+			}
+			ai = no
+			has_country_flag = looking_through_utilities
+			NOT = { has_country_flag = will_give_grants }
+		}
+
+		allow = { 
+		}
+		
+		effect = {
+			set_country_flag = will_give_grants
+		}
+	}
+	
+	#Prevents Giving Money
+	utility_will_not_give = {
+		picture = grant
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_multiplayer_host
+				has_country_flag = show_options_multiplayer_standard
+			}
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = will_give_grants
+		}
+
+		allow = {
+		}
+		
+		effect = {
+			clr_country_flag = will_give_grants
+		}
+	}
+	
+	#Shows Returning Cores of Vassals and Spherelings
+	utility_return_core_on = {
+		picture = return_cores_img
+		alert = no 
+		potential = {
+			ai = no
+			has_country_flag = looking_through_utilities
+			OR = {
+				num_of_vassals_no_substates = 1
+				is_greater_power = yes
+			}
+			NOT = {
+				has_country_flag = return_cores_decision
+				has_country_flag = return_core_disabled 
+			}
+			any_owned_province = { NOT = { is_core = THIS } any_core = { OR = { in_sphere = THIS vassal_of = THIS } } } 
+		}
+		
+		allow = { 
+		}
+		
+		effect = {
+			set_country_flag = return_cores_decision 
+		} 
+	}
+	
+	#Hides Returning Cores of Vassals and Spherelings
+	utility_return_core_off = { 
+		picture = return_cores_img
+		alert = no 
+		potential = {
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = return_cores_decision 
+			NOT = { has_country_flag = return_core_disabled } 
+		}
+		
+		allow = {
+		}
+		
+		effect = { 
+			clr_country_flag = return_cores_decision 
+		} 
+	}
+	
+	#Permanently Hides Returning Cores of Vassals and Spherelings 
+	utility_return_core_disabled = {
+		picture = return_cores_img
+		alert = no
+		potential = { 
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = return_cores_decision 
+			NOT = { has_country_flag = return_core_disabled }
+		}
+		
+		allow = {
+		}
+		
+		effect = { 
+			clr_country_flag = return_cores_decision 
+			set_country_flag = return_core_disabled 
+		} 
+	}
+
+	#Shows Releasing Vassal Decisions
+	utility_release_vassal_show = { 
+		picture = gtfo 
+		alert = no 
+		potential = { 
+			ai = no
+			has_country_flag = looking_through_utilities
+			num_of_vassals_no_substates  = 1 
+			is_vassal = no 
+			NOT = { 
+				has_country_flag = gtfo 
+				has_country_flag = gtfo_disabled 
+			}
+		} 
+		
+		allow = { 
+		} 
+		
+		effect = { 
+			set_country_flag = gtfo 
+		} 
+	}
+	
+	#Hides Releasing Vassal Decisions
+	utility_release_vassal_disabled = { 
+		picture = gtfo 
+		alert = no 
+		potential = { 
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = gtfo 
+			NOT = { has_country_flag = gtfo_disabled } 
+		} 
+		
+		allow = { 
+		} 
+		
+		effect = { 
+			clr_country_flag = gtfo 
+		} 
+	}
+	
+	#Permanently Hides Releasing Vassal Decisions
+	utility_release_vassal_disabled = { 
+		picture = gtfo 
+		alert = no 
+		potential = { 
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = gtfo 
+			NOT = { has_country_flag = gtfo_disabled } 
+		} 
+		
+		allow = { 
+		} 
+		
+		effect = { 
+			clr_country_flag = gtfo 
+			set_country_flag = gtfo_disabled 
+		}
+	}
+	
+	#Prevents Vassals Paying Monthly Income
+	utility_turn_off_vassal_payments = {
+		picture = vassal_payment
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_utilities
+			any_neighbor_country = {
+				vassal_of = THIS
+				NOT = { has_country_flag = exempt_from_vassal_contribution }
+			}
+			NOT = { has_country_flag = vassals_dont_need_to_pay }
+			num_of_vassals_no_substates = 1
+		}
+		
+		allow = {
+			war = no
+		}
+		
+		effect = {
+			set_country_flag = vassals_dont_need_to_pay
+			any_country = {
+				limit = { vassal_of = THIS NOT = { is_substate = yes } }
+				set_country_flag = exempt_from_vassal_contribution
+				relation = { who = THIS value = 100 }
+			}
+		}
+	}
+	
+	#Allows Vassals Paying Monthly Income
+	utility_turn_on_vassal_payments = {
+		picture = vassal_payment
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_utilities
+			has_country_flag = vassals_dont_need_to_pay
+			num_of_vassals_no_substates = 1
+		}
+		
+		allow = {
+			war = no
+		}
+		
+		effect = {
+			clr_country_flag = vassals_dont_need_to_pay
+			any_country = {
+				limit = { vassal_of = THIS NOT = { is_substate = yes } }
+				clr_country_flag = exempt_from_vassal_contribution 
+				relation = { who = THIS value = -100 }
+			}
+		}
+	}
+	
+	
 ###World Setup Decisions
 
 	1836_initial_setup = {
