@@ -272,8 +272,31 @@ political_decisions = {
 			set_country_flag = spectator
 		}
 	}
+	
+	#Shows Override Decisions Folder
+	option_enable_overrides = {
+		picture = cogs_red
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_singleplayer
+				has_country_flag = show_options_multiplayer_host
+			}
+			ai = no
+			has_country_flag = looking_through_options
+			NOT = { year = 1837 }
+			NOT = { has_global_flag = enable_overrides }
+		}
 
-	##Decisions relate to the utility decisions
+		allow = {
+		}
+
+		effect = {
+			set_global_flag = enable_overrides
+		}
+	}
+
+	##Decisions relate to the utility decisions - All start utility_
 	
 	#Shows Utilities
 	utility_enable_utility = {
@@ -287,7 +310,6 @@ political_decisions = {
 			}
 			ai = no
 			NOT = { has_country_flag = looking_through_utilities }
-			NOT = { year = 1837 }
 		}
 
 		allow = {
@@ -305,7 +327,6 @@ political_decisions = {
 		potential = {
 			ai = no
 			has_country_flag = looking_through_utilities
-			NOT = { year = 1837 }
 		}
 
 		allow = {
@@ -608,7 +629,300 @@ political_decisions = {
 		}
 	}
 	
+	##Decisions relate to the override decisions - All start override_
 	
+	#Shows Overrides
+	override_enable_override = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			OR = {
+				has_country_flag = show_options_singleplayer
+				has_country_flag = show_options_multiplayer_host
+				has_country_flag = show_options_multiplayer_standard
+			}
+			ai = no
+			NOT = { has_country_flag = looking_through_overrides }
+			has_global_flag = enable_overrides
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = looking_through_overrides
+		}
+	}
+	
+	#Hides Overrides
+	override_disable_override = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_overrides
+			has_global_flag = enable_overrides
+		}
+
+		allow = {
+		}
+
+		effect = {
+			clr_country_flag = looking_through_overrides
+		}
+	}
+	
+	#Allows Randomised Mining RGO Change
+	override_rgo_change_mining = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_overrides
+			NOT = { has_country_flag = rgo_change_active }
+			NOT = { has_country_modifier = rgo_changed_timer }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			country_event = {
+				id = 199936
+				#Event found in Goods.txt
+			}
+		}
+	}
+	
+	#Allows Randomised Farming RGO Change
+	override_rgo_change_farming = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_overrides
+			NOT = { has_country_flag = rgo_change_active }
+			NOT = { has_country_modifier = rgo_changed_timer }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			country_event = {
+				id = 199937
+				#Event found in Goods.txt
+			}
+		}
+	}
+	
+	#Allows Use of Province Immigrators
+	override_activate_immigration = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_overrides
+			NOT = { has_country_flag = direct_immigration }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = direct_immigration
+			activate_technology = organized_factories
+			any_country = {
+				limit = { ai = yes has_country_flag = new_world_nation }
+				any_owned = {
+					limit = { is_capital = yes }
+					immigrator = 1
+				}
+			}
+		}
+	}
+	
+	#Sets Options for Immigrators
+	override_immigrant_options = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			ai = no
+			has_country_flag = looking_through_overrides
+			has_country_flag = direct_immigration
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			country_event = 980000
+		}
+	}
+	
+	#Shows Border Change Options
+	override_change_border_policy = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			has_country_flag = looking_through_overrides
+			civilized = yes
+			NOT = { has_country_flag = change_border_policy }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = change_border_policy
+		}
+		
+		ai_will_do = { factor = 1 }
+	}
+
+	#Hides Border Change Options
+	override_close_change_border_policy = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			has_country_flag = looking_through_overrides
+			has_country_flag = change_border_policy
+		}
+
+		allow = {
+		}
+
+		effect = {
+			clr_country_flag = change_border_policy
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+	
+	#Sets Border Policy to Closed
+	override_policy_closed_border = {
+		picture = closed_border
+		alert = no
+		potential = {
+			has_country_flag = looking_through_overrides
+			has_country_flag = change_border_policy
+			NOT = { border_policy = closed_borders }
+		}
+
+		allow = {
+			state_n_government = 1
+			vote_franschise = none_voting
+			NOT = { press_rights = free_press }
+			NOT = { has_country_modifier = law_changed_by_force }
+			NOT = { ruling_party_ideology = liberal }
+			NOT = { ruling_party_ideology = conservative }
+			NOT = { ruling_party_ideology = socialist }
+
+			OR = {
+				citizenship_policy = residency
+				government = proletarian_dictatorship
+				government = fascist_dictatorship
+			}
+
+			OR = {
+				government = absolute_monarchy
+				government = presidential_dictatorship
+				government = bourgeois_dictatorship
+				government = proletarian_dictatorship
+				government = fascist_dictatorship
+				government = theocracy
+			}
+		}
+
+		effect = {
+			clr_country_flag = change_border_policy
+			add_country_modifier = { name = law_changed_by_force duration = 3650 }
+			political_reform = closed_borders
+			any_pop = { consciousness = 4 militancy = 2 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 0 NOT = { has_country_modifier = totalitarian_system } }
+		}
+	}
+
+	#Sets Border Policy to Quota
+	override_policy_immigration_quota = {
+		picture = immigration_quotas
+		alert = no
+		potential = {
+			has_country_flag = looking_through_overrides
+			has_country_flag = change_border_policy
+			NOT = { border_policy = quota_immigration }
+			OR = {
+				is_culture_group = latin_american_cultures
+				is_culture_group = american_cultures
+				is_culture_group = african_diaspora_cultures
+				is_culture_group = native_american
+				primary_culture = australian
+				primary_culture = anglo_canadian
+				primary_culture = french_canadian
+			}
+			OR = {
+				continent = north_america
+				continent = south_america
+				primary_culture = australian
+			}
+		}
+
+		allow = {
+			state_n_government = 1
+		}
+
+		effect = {
+			clr_country_flag = change_border_policy
+			add_country_modifier = { name = law_changed_by_force duration = 3650 }
+			political_reform = quota_immigration
+			any_pop = { consciousness = 1 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { tag = USA }
+				NOT = { tag = AST }
+				NOT = { tag = NZL }
+				NOT = { tag = CAN }
+			}
+			modifier = { factor = 0 tag = USA NOT = { total_pops = 26500000 year = 1910 } }
+			modifier = { factor = 0 tag = AST NOT = { total_pops = 1000000 } }
+			modifier = { factor = 0 tag = NZL NOT = { total_pops = 353000 } }
+			modifier = { factor = 0 tag = CAN NOT = { total_pops = 2250000 } }
+		}
+	}
+
+	#Sets Border Policy to Open
+	override_policy_open_borders = {
+		picture = immigrants_arriving
+		alert = no
+		potential = {
+			has_country_flag = looking_through_overrides
+			has_country_flag = change_border_policy
+			NOT = { border_policy = open_borders }
+		}
+
+		allow = {
+			state_n_government = 1
+		}
+
+		effect = {
+			clr_country_flag = change_border_policy
+			add_country_modifier = { name = law_changed_by_force duration = 3650 }
+			political_reform = open_borders
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
 ###World Setup Decisions
 
 	1836_initial_setup = {
