@@ -1,47 +1,6 @@
 political_decisions = {
-	claim_the_caribbean = {
-		picture = claim_the_caribbean
-		potential = {
-			tag = ATC
-			NOT = { has_country_flag = claimed_the_caribbean }
-			is_vassal = no
-		}
 
-		allow = {
-			war = no
-			war_policy = jingoism
-			is_greater_power = yes
-		}
-
-		effect = {
-			set_country_flag = claimed_the_caribbean
-			badboy = 5
-			HAI_2213 = { add_core = ATC }
-			ENG_203 = { add_core = ATC }
-			ENG_2224 = { add_core = ATC }
-			ENG_2228 = { add_core = ATC }
-			any_country = {
-				limit = {
-					any_owned_province = {
-						OR = {
-							region = HAI_2213
-							region = ENG_203
-							region = ENG_2224
-							region = ENG_2228
-						}
-					}
-				}
-				relation = { who = ATC value = -400 }
-				diplomatic_influence = { who = ATC value = -400 }
-				leave_alliance = ATC
-				end_military_access = ATC
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-#from FlavourMod_ENG.txt
+	#Description: Jamaica can accept Afro Caribbean and Kreol minorities if they have the appropriate reform and enough militancy.
 	jamaican_accept_miniorities = {
 		picture = embrace_minority
 		potential = {
@@ -75,14 +34,13 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-#from NationalUnification.txt
-
+	#Description: A Caribeno nation that owns all of Cuba, Santo Domingo and Puerto Rico can form the Antillean Confederation.
 	form_antillean_confederation = {
 		picture = form_antillean_confederation
 		potential = {
 			primary_culture = caribeno
 			ATC = { exists = no }
-			2222 = { NOT = { is_core = ATC } }
+			2222 = { NOT = { is_core = ATC } } # Puerto Rico
 		}
 
 		allow = {
@@ -122,6 +80,54 @@ political_decisions = {
 			CUB = { all_core = { add_core = ATC } }
 			DOM = { all_core = { add_core = ATC } }
 			change_tag = ATC
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Antillean Confederatin Great Power can claim the rest of the Caribbean.
+	claim_the_caribbean = {
+		picture = claim_the_caribbean
+		potential = {
+			tag = ATC
+			NOT = { has_country_flag = claimed_the_caribbean }
+			is_vassal = no
+		}
+
+		allow = {
+			war = no
+			OR = {
+				is_greater_power = yes
+				AND = {
+					war_policy = jingoism
+					is_secondary_power = yes
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = claimed_the_caribbean
+			badboy = 5
+			HAI_2213 = { add_core = ATC } # Hispaniola
+			ENG_203 = { add_core = ATC } # Lucayan Islands
+			ENG_2224 = { add_core = ATC } # Leeward Islands
+			ENG_2228 = { add_core = ATC } # Windward Islands
+			any_country = {
+				limit = {
+					any_owned_province = {
+						OR = {
+							region = HAI_2213
+							region = ENG_203
+							region = ENG_2224
+							region = ENG_2228
+						}
+					}
+				}
+				relation = { who = ATC value = -400 }
+				diplomatic_influence = { who = ATC value = -400 }
+				leave_alliance = ATC
+				end_military_access = ATC
+			}
 		}
 
 		ai_will_do = { factor = 1 }

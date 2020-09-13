@@ -1,4 +1,3 @@
-## From USA_shield
 political_decisions = {
 
 ## Slavery Debate ##
@@ -1072,6 +1071,60 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the USA occupies Mexico City, they can propose peace to the Mexicans (the treaty of Guadalupe Hidalgo).
+	treaty_of_guadalupe_hidalgo = {
+		picture = treaty_of_guadalupe_hidalgo
+		potential = {
+			tag = USA
+			has_country_flag = hasmanifestdestiny
+			NOT = { has_country_flag = treaty_of_guadalupe_hidalgo }
+			MEX = {
+				is_greater_power = no
+				NOT = { has_country_flag = manifest_destiny_refuted }
+			}
+		}
+
+		allow = {
+			OR = {
+				money = 100000
+				ai = yes
+			}
+			OR = {
+				2172 = { controlled_by = USA }
+				MEX = {
+					all_core = {
+						OR = {
+							owned_by = USA
+							controlled_by = USA
+							NOT = { is_core = USA }
+						}
+					}
+				}
+				AND = {
+					MEX = {
+						ai = yes
+						war_exhaustion = 0.65
+					}
+					ai = yes
+					war = no
+					truce_with = MEX
+					has_recently_lost_war = no
+				}
+			}
+			NOT = {
+				any_owned_province = { controlled_by = MEX }
+				any_owned_province = { controller = { alliance_with = MEX } }
+			}
+		}
+
+		effect = {
+			set_country_flag = treaty_of_guadalupe_hidalgo
+			MEX = { country_event = 44825 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: If the Mexicans refuse the treaty of Guadalupe Hidalgo, the USA can claim northern Mexico as well.
 	mexican_american_war_alternate_treaty = {
 		picture = "manifest_destiny"
@@ -1079,7 +1132,10 @@ political_decisions = {
 			tag = USA
 			is_greater_power = yes
 			has_country_flag = hasmanifestdestiny
-			has_country_flag = mexico_refused_treaty
+			OR = {
+				war_policy = jingoism
+				has_country_flag = mexico_refused_treaty
+			}
 			NOT = { has_country_flag = mexican_american_war_alternate_treaty }
 		}
 
@@ -1093,10 +1149,12 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = mexican_american_war_alternate_treaty
-			badboy = 1.5
+			badboy = 5
 			RGR = { all_core = { add_core = USA } }
+			2156 = { add_core = SON } # Sinaloa
+			2157 = { add_core = SON }
 			SON = { all_core = { add_core = USA } }
-			2662 = { add_core = USA }
+			2662 = { add_core = USA } # Gadsden purchase territories
 			102 = { add_core = USA }
 			relation = { who = MEX value = -200 }
 			diplomatic_influence = { who = MEX value = -200 }
@@ -3661,7 +3719,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: If the USSA attempted to dismantle the USA and failed,
+	#Description: If the USSA attempted to dismantle the USA and failed, they get dismantled instead.
 	USS_USA_lose = {
 		potential = {
 			tag = USA
@@ -3721,8 +3779,6 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-#from more decisions.txt
-
 	#Description: If the CSA has fled to Cuba, but the USA won the war, they can remove CSA cores.
 	USA_restore_CUB = {
 		picture = guantanamo_bay
@@ -3754,20 +3810,20 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-#from FlavourMod_FRA_Colonial.txt
+	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA.
 	become_the_fsa_french_lousiana = {
 		potential = {
 			tag = USA
 			ai = yes
 			NOT = { owns = 139 }
 			has_global_flag = treaty_of_new_york
+			war = no
 			exists = CSA
 			NOT = { has_country_modifier = no_more_war }
 			has_global_flag = american_civil_war_has_happened
 		}
 
 		allow = {
-			war = no
 		}
 
 		effect = {
@@ -3789,6 +3845,7 @@ political_decisions = {
 
 ## Japan ##
 
+	#Description: Sent Commodore Perry's expedition to demand the Japanese end their isolation. Get influence if successful.
 	commodore_perry_expedition = {
 		picture = commodore_perry_expedition
         potential = {
@@ -3837,6 +3894,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the Japanese reject Commodore Perry and war breaks out, we can demand the same if the war goes well.
 	kanagawa_treaty = {
 		picture = unequal_treaty
 		potential = {
@@ -4172,7 +4230,13 @@ political_decisions = {
 		effect = {
 			set_country_flag = fifteenth_amendment_enacted
 			political_reform = all_voting_pops
-			any_pop = { limit = { is_primary_culture = no is_accepted_culture = no } militancy = -1 }
+			any_pop = {
+				limit = {
+					is_primary_culture = no
+					is_accepted_culture = no
+				}
+				militancy = -1
+			}
 		}
 
 		ai_will_do = { factor = 1 }
