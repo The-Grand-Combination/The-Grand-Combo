@@ -509,128 +509,6 @@ political_decisions = {
 		}
 	}
 
-## Civil War ##
-
-	#Description: If the USA blockades most of the CSA's ports, they can enact the Anaconda plan, increasing their war exhaustion until peace or they secure their ports.
-	enact_anaconda_plan = {
-		potential = {
-			tag = USA
-			war_with = CSA
-			NOT = { has_global_flag = anaconda_plan_active }
-		}
-
-		allow = {
-			CSA = { blockade = 0.8 }
-		}
-
-		effect = {
-			CSA = { add_country_modifier = { name = anaconda_plan duration = -1 } }
-			set_global_flag = anaconda_plan_active
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Terrorize the Confederate population of the south, reducing their population and giving them war exhaustion.
-	shermans_march_to_the_sea = {
-		potential = {
-			tag = USA
-			war_with = CSA
-			NOT = { has_country_flag = sherman_marched_to_the_sea }
-			CSA = {
-				owns = 201 # Atlanta
-				owns = 2555 # Augusta
-				owns = 204 # Savannah
-			}
-		}
-
-		allow = {
-			controls = 201
-			controls = 2555
-			controls = 204
-		}
-
-		effect = {
-			set_country_flag = sherman_marched_to_the_sea
-			badboy = 2
-			201 = { any_pop = { reduce_pop = 0.70 } }
-			2555 = { any_pop = { reduce_pop = 0.90 } }
-			204 = { any_pop = { reduce_pop = 0.90 } }
-			CSA = { war_exhaustion = 4 }
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If the CSA is defeated or close to defeat, the USA can free the slaves.
-	emancipation_proclamation = {
-		picture = emancipation_proclamation
-		potential = {
-			tag = USA
-			NOT = {
-				has_country_flag = emancipation
-				has_country_flag = the_slavery_debate
-			}
-			OR = {
-				war_with = CSA
-				AND = {
-					NOT = { exists = CSA }
-					has_global_flag = american_civil_war_has_happened
-				}
-			}
-		}
-
-		allow = {
-			prestige = 35
-			CSA = {
-				OR = {
-					exists = no
-					national_provinces_occupied = 0.40
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = emancipation
-			prestige = 5
-			political_reform = no_slavery
-			any_pop = {
-				limit = { has_pop_culture = yankee }
-				consciousness = -5
-				militancy = -5
-			}
-			any_greater_power = {
-				relation = {
-					who = USA
-					value = 30
-				}
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Reduce war exhaustion.
-	bixby_letter = {
-		picture = bixby_letter
-		potential = {
-			tag = USA
-			war_with = CSA
-			not = { has_country_flag = bixby_letter_sent }
-		}
-
-		allow = {
-			war_exhaustion = 6
-		}
-
-		effect = {
-			set_country_flag = bixby_letter_sent
-			war_exhaustion = -2
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
 ## Westward Expansion ##
 
 	#Description: If France is in a bad state, the USA can break the Treaty of New York and reclaim the lands lost.
@@ -3375,288 +3253,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-
-	#Description: After the civil war, the USA can reintegrate the south.
-	enact_radical_reconstruction = {
-		potential = {
-			tag = USA
-			war = no
-			has_global_flag = american_civil_war_has_happened
-			owns = 211
-			owns = 195
-			owns = 139
-			NOT = {
-				exists = CSA
-				has_global_flag = alt_american_civil_war_has_happened
-				has_country_flag = has_used_radical_reconstruction
-			}
-		}
-
-		allow = {
-			state_n_government = 1
-		}
-
-		effect = {
-			war_exhaustion = -10
-			add_country_modifier = {
-				name = global_baby_boom
-				duration = 365
-			}
-			any_pop = { militancy = -3 }
-			remove_country_modifier = the_slavery_debate
-			remove_accepted_culture = dixie
-			remove_accepted_culture = texan
-			any_owned = {
-				limit = { is_core = CSA }
-				add_province_modifier = { name = reconstruction duration = 2555 }
-			}
-			any_pop = {
-				limit = { has_pop_culture = dixie }
-				consciousness = -3
-				militancy = -3
-			}
-			any_pop = {
-				limit = {
-					has_pop_culture = dixie
-					type = soldiers
-				}
-				reduce_pop = 0.7
-				pop_type = farmers
-			}
-			any_country = {
-				limit = {
-					tag = TEX
-					has_country_flag = fra_loui_texas_join_csa
-					is_vassal = no
-					exists = yes
-					ai = yes
-				}
-				create_vassal = USA
-				create_alliance = USA
-			}
-			diplomatic_influence = {
-				who = TEX
-				value = 400
-			}
-			any_owned = {
-				limit = { produces = cotton }
-				remove_province_modifier = king_cotton
-			}
-			set_country_flag = has_used_radical_reconstruction
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-
-
-	fsa_enact_anaconda_plan = {
-		picture = enact_anaconda_plan
-		potential = {
-			tag = USA
-			FSA = {
-				any_owned_province = { has_building = naval_base }
-				war_with = THIS
-			}
-			NOT = { has_global_flag = anaconda_plan_active }
-		}
-
-		allow = {
-			FSA = { blockade = 0.8 }
-		}
-
-		effect = {
-			FSA = { add_country_modifier = { name = anaconda_plan duration = -1 } }
-			set_global_flag = anaconda_plan_active
-		}
-	}
-
-	fsa_shermans_march_to_the_sea = {
-		picture = shermans_march_to_the_sea
-		potential = {
-			tag = FSA
-			war_with = CSA
-			NOT = { has_country_flag = sherman_marched_to_the_sea }
-		}
-
-		allow = {
-			controls = 201
-			controls = 2555
-			controls = 204
-		}
-
-		effect = {
-			set_country_flag = sherman_marched_to_the_sea
-			badboy = 2
-			201 = { any_pop = { reduce_pop = 0.70 } }
-			2555 = { any_pop = { reduce_pop = 0.90 } }
-			204 = { any_pop = { reduce_pop = 0.90 } }
-			CSA = { war_exhaustion = 4 }
-		}
-	}
-
-	fsa_enact_radical_reconstruction = {
-		picture = enact_radical_reconstruction
-		potential = {
-			tag = USA
-			war = no
-			has_global_flag = alt_american_civil_war_has_happened
-			owns = 232
-			owns = 243
-			owns = 223
-			NOT = {
-				exists = FSA
-				has_country_flag = has_used_radical_reconstruction
-			}
-		}
-
-		allow = {
-			NOT = { average_militancy = 4 }
-		}
-		effect = {
-			war_exhaustion = -3
-			any_pop = {
-				limit = { has_pop_culture = yankee }
-				consciousness = -5
-				militancy = -5
-			}
-			any_state = {
-				limit = { is_slave = no }
-				is_slave = yes
-			}
-			clr_global_flag = alt_american_civil_war_has_happened
-			set_country_flag = has_used_radical_reconstruction
-		}
-	}
-
-	restore_washington_capital = {
-		potential = {
-			tag = USA
-			owns = 2146
-			NOT = {
-				capital = 2146
-				has_global_flag = alt_american_civil_war_has_happened
-			}
-		}
-
-		allow = {
-			controls = 2146
-			NOT = { capital = 2146 }
-		}
-
-		effect = {
-			capital = 2146
-			prestige = 5
-		}
-	}
-
-	right_to_secede = {
-		picture = reform_csa
-		potential = {
-			tag = USA
-			exists = CSA
-			has_global_flag = american_civil_war_has_happened
-			NOT = { has_global_flag = right_to_secede }
-		}
-
-		allow = {
-			war = no
-			nationalism_n_imperialism = 1
-			OR = {
-				CSA = { military_score = THIS }
-				war_exhaustion = 60
-				is_greater_power = no
-			}
-		}
-
-		effect = {
-			prestige = -25
-			war_exhaustion = -10
-			set_global_flag = right_to_secede
-			CSA = {
-				prestige = 20
-				any_owned = {
-					limit = {
-						is_core = CSA
-						is_core = USA
-					}
-					remove_core = USA
-				}
-			}
-			relation = {
-				who = CSA
-				value = 200
-			}
-			any_country = {
-				limit = {
-					is_greater_power = yes
-					NOT = { tag = CSA }
-				}
-				relation = {
-					who = THIS
-					value = 50
-				}
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	FSA_right_to_secede = {
-		picture = form_fsa
-		potential = {
-			exists = FSA
-			tag = USA
-			has_global_flag = alt_american_civil_war_has_happened
-			NOT = {
-				has_global_flag = fsa_right_to_secede
-			}
-		}
-
-		allow = {
-			war = no
-			nationalism_n_imperialism = 1
-			OR = {
-				FSA = { military_score = THIS }
-				war_exhaustion = 60
-				is_greater_power = no
-			}
-		}
-
-		effect = {
-			prestige = -25
-			war_exhaustion = -10
-			set_global_flag = fsa_right_to_secede
-			FSA = {
-				prestige = 20
-				any_owned = {
-					limit = {
-						is_core = FSA
-						is_core = USA
-					}
-					remove_core = USA
-				}
-			}
-			relation = {
-				who = FSA
-				value = 200
-			}
-			any_country = {
-				limit = {
-					is_greater_power = yes
-					NOT = { tag = FSA }
-				}
-				relation = {
-					who = THIS
-					value = 50
-				}
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-#from FlavourMod_USA
+## Conflicts ##
 
 	#Description: If the USA has its western territories secured, they can force the French to leave and restore all their lands.
 	treaty_of_dc = {
@@ -3719,6 +3316,39 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA.
+	become_the_fsa_french_lousiana = {
+		potential = {
+			tag = USA
+			ai = yes
+			NOT = { owns = 139 }
+			has_global_flag = treaty_of_new_york
+			war = no
+			exists = CSA
+			NOT = { has_country_modifier = no_more_war }
+			has_global_flag = american_civil_war_has_happened
+		}
+
+		allow = {
+		}
+
+		effect = {
+			release_vassal = CAL
+			release_vassal = DES
+			release_vassal = TEX
+			any_owned = {
+				limit = {
+					owned_by = USA
+					is_core = USA
+				}
+				add_core = FSA
+			}
+			change_tag = FSA
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: If the USSA attempted to dismantle the USA and failed, they get dismantled instead.
 	USS_USA_lose = {
 		potential = {
@@ -3774,70 +3404,6 @@ political_decisions = {
 			release_vassal = NIC
 			release_vassal = ELS
 			release_vassal = COS
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If the CSA has fled to Cuba, but the USA won the war, they can remove CSA cores.
-	USA_restore_CUB = {
-		picture = guantanamo_bay
-		potential = {
-			tag = USA
-			CUB = { all_core = { is_core = CSA } }
-			CUB = { all_core = { is_core = USA } }
-			CSA = { has_country_flag = csa_flee_cub }
-		}
-
-		allow = {
-			CUB = { all_core = { owned_by = USA } }
-			war = no
-		}
-
-		effect = {
-			prestige = 5
-			CUB = { all_core = { remove_core = CSA } }
-			CSA = {
-				capital = 60
-				remove_accepted_culture = caribeno
-			}
-			country_event = {
-				id = 56277
-				days = 0
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA.
-	become_the_fsa_french_lousiana = {
-		potential = {
-			tag = USA
-			ai = yes
-			NOT = { owns = 139 }
-			has_global_flag = treaty_of_new_york
-			war = no
-			exists = CSA
-			NOT = { has_country_modifier = no_more_war }
-			has_global_flag = american_civil_war_has_happened
-		}
-
-		allow = {
-		}
-
-		effect = {
-			release_vassal = CAL
-			release_vassal = DES
-			release_vassal = TEX
-			any_owned = {
-				limit = {
-					owned_by = USA
-					is_core = USA
-				}
-				add_core = FSA
-			}
-			change_tag = FSA
 		}
 
 		ai_will_do = { factor = 1 }
