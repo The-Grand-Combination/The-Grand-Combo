@@ -1,184 +1,280 @@
-# The H. L. Hunley
-country_event = {
-	id = 110056
-	title = "EVTNAME110056"
-	desc = "EVTDESC110056"
-	picture = "CSA_hunley"
+## Submarine ##
 
+	#Description: The H. L. Hunley - the CSA submarine - choose how much money to give
+	country_event = {
+		id = 110056
+		title = "EVTNAME110056"
+		desc = "EVTDESC110056"
+		picture = "CSA_hunley"
+
+		trigger = {
+			tag = CSA
+			has_global_flag = american_civil_war_has_happened
+			war = yes
+		}
+
+		mean_time_to_happen = {
+			months = 36
+		}
+
+		fire_only_once = yes
+
+		# Give them more than they estimated.
+		option = {
+			name = "EVTOPTA110056"
+
+			treasury = -15000
+			random_list = {
+				70 = { CSA = { country_event = 110057 } }
+				20 = { CSA = { country_event = 110058 } }
+				10 = { CSA = { country_event = 110059 } }
+			}
+
+			ai_chance = {
+				factor = 25
+				modifier = { factor = 0 NOT = { money = 15100 } }
+				modifier = { factor = 100 money = 15000 }
+			}
+		}
+
+		# Give them the amount estimated.
+		option = {
+			name = "EVTOPTB110056"
+
+			treasury = -10000
+			random_list = {
+				35 = { CSA = { country_event = 110057 } }
+				45 = { CSA = { country_event = 110058 } }
+				20 = { CSA = { country_event = 110059 } }
+			}
+
+			ai_chance = {
+				factor = 25
+				modifier = { factor = 0 NOT = { money = 10100 } }
+				modifier = { factor = 100 NOT = { money = 15100 } money = 10100 }
+			}
+		}
+
+		# Give them less than they estimated.
+		option = {
+			name = "EVTOPTC110056"
+
+			treasury = -5000
+			random_list = {
+				20 = { CSA = { country_event = 110057 } }
+				35 = { CSA = { country_event = 110058 } }
+				45 = { CSA = { country_event = 110059 } }
+			}
+
+			ai_chance = {
+				factor = 25
+				modifier = { factor = 0 NOT = { money = 5100 } }
+				modifier = { factor = 100 NOT = { money = 10100 } money = 5100 }
+			}
+		}
+
+		# We have more urgent affairs.
+		option = {
+			name = "EVTOPTD110056"
+
+			prestige = -5
+
+			ai_chance = {
+				factor = 25
+				modifier = { factor = 100 NOT = { money = 5100 } }
+			}
+		}
+	}
+
+	#Description: H. L. Hunley - Success
+	country_event = {
+
+		id = 110057
+		title = "EVTNAME110057"
+		desc = "EVTDESC110057"
+		picture = "CSA_hunley_success"
+
+		is_triggered_only = yes
+
+		# Nothing can stop the Dixie spirit!
+		option = {
+			name = "EVTOPTA110057"
+
+			prestige = 15
+			add_country_modifier = { name = submarine_warfare duration = 730 }
+		}
+	}
+
+	#Description: H. L. Hunley - Mixed Results
+	country_event = {
+
+		id = 110058
+		title = "EVTNAME110058"
+		desc = "EVTDESC110058"
+		picture = "CSA_hunley_mixed"
+
+		is_triggered_only = yes
+
+		# Progress is built on failure.
+		option = {
+			name = "EVTOPTA110058"
+
+			prestige = 5
+		}
+	}
+
+	#Description: H. L. Hunley - Failure
+	country_event = {
+
+		id = 110059
+		title = "EVTNAME110059"
+		desc = "EVTDESC110059"
+		picture = "CSA_hunley_failure"
+
+		is_triggered_only = yes
+
+		# I knew it! Do not trust looney aventurers!
+		option = {
+			name = "EVTOPTA110059"
+			prestige = -15
+		}
+	}
+
+## Cuba ##
+
+	#Description: Triggered for the USA if Cuba joins the CSA.
+	country_event = {
+		id = 72881
+		title = EVTNAME72881
+		desc = EVTDESC72881
+		picture = chile_peru_bolivia_treaty
+		is_triggered_only = yes
+
+		option = {
+			name = EVTOPTA72881
+
+			USA = {
+				any_owned = {
+					limit = { is_core = CUB }
+					secede_province = CSA
+				}
+			}
+			CUB = { all_core = { add_core = USA } }
+
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	#Description: Triggered for the USA if the Confederates flee to Cuba.
+	country_event = {
+		id = 56278
+		title = EVTNAME56278
+		desc = EVTDESC56278
+		picture = chile_peru_bolivia_treaty
+		is_triggered_only = yes
+
+		option = {
+			name = EVTOPTA56278
+
+			prestige = 5
+			war_exhaustion = 10
+
+			ai_chance = { factor = 40 }
+		}
+
+		option = {
+			name = EVTOPTB56278
+
+			war_exhaustion = -10
+			end_war = CSA
+			remove_accepted_culture = dixie
+			remove_accepted_culture = texan
+			CSA = {
+				any_owned = {
+					limit = { NOT = { is_core = CUB } }
+					secede_province = USA
+				}
+			}
+
+			ai_chance = { factor = 60 }
+		}
+	}
+
+#Description: Illegal Slave Importation
+country_event = {
+	id = 8629614
+	title = EVTNAME8629614
+	desc = EVTDESC8629614
+	fire_only_once = yes
+	picture = anti_slavery_society
 	trigger = {
 		tag = CSA
+		war = no
+		OR = {
+			slavery = yes_slavery
+			slavery = freedom_of_womb
+		}
 		has_global_flag = american_civil_war_has_happened
-		war = yes
+		is_independant = yes
 	}
 
 	mean_time_to_happen = {
-		months = 36
-	}
-
-	fire_only_once = yes
-
-	option = {
-		name = "EVTOPTA110056" #Give them more than they estimated.
-		treasury = -15000
-		random_list = {
-			70 = {	CSA = { country_event = 110057 }	}
-			20 = { 	CSA = { country_event = 110058 }	}
-			10 = { 	CSA = { country_event = 110059 }	}
-		}
-		ai_chance = {
-			factor = 25
-			modifier = { factor = 0 NOT = { money = 15100 } }
-			modifier = { factor = 100 money = 15000 }
+		months = 200
+		modifier = {
+			factor = 0.85
+			ruling_party_ideology = reactionary
 		}
 	}
 
+	# Stop the illegal importation
 	option = {
-		name = "EVTOPTB110056" #Give them the amount estimated.
-		treasury = -10000
-		random_list = {
-			35 = {	CSA = { country_event = 110057 }	}
-			45 = { 	CSA = { country_event = 110058 }	}
-			20 = { 	CSA = { country_event = 110059 }	}
+		name = EVTOPTA8629614
+
+		any_pop = {
+			limit = { type = capitalists }
+			militancy = 3
+			consciousness = 3
 		}
-		ai_chance = {
-			factor = 25
-			modifier = { factor = 0 NOT = { money = 10100 } }
-			modifier = { factor = 100 NOT = { money = 15100 } money = 10100 }
+		any_pop = {
+			limit = { type = aristocrats }
+			militancy = 3
+			consciousness = 3
 		}
+
+		ai_chance = { factor = 50 }
 	}
 
-
+	# Let it continue
 	option = {
-		name = "EVTOPTC110056" #Give them less than they estimated.
-		treasury = -5000
-		random_list = {
-			20 = {	CSA = { country_event = 110057 }	}
-			35 = { 	CSA = { country_event = 110058 }	}
-			45 = { 	CSA = { country_event = 110059 }	}
-		}
-		ai_chance = {
-			factor = 25
-			modifier = { factor = 0 NOT = { money = 5100 } }
-			modifier = { factor = 100 NOT = { money = 10100 } money = 5100 }
-		}
-	}
+		name = EVTOPTB8629614
 
+		badboy = 2
 
-	option = {
-		name = "EVTOPTD110056" #We have more urgent affairs.
-		prestige = -5
-		ai_chance = {
-			factor = 25
-			modifier = { factor = 100 NOT = { money = 5100 } }
-		}
+		ai_chance = { factor = 50 }
 	}
 }
 
-# H. L. Hunley - Success
+#Description: Victory over the North # TODO localization
 country_event = {
 
-	id = 110057
-	title = "EVTNAME110057"
-	desc = "EVTDESC110057"
-	picture = "CSA_hunley_success"
+	id = 999886
+	title = "Victory over the North"
+	desc = "Now that we have emerged as the victor in the civil war, we've inherited some of the USAs international prestige and harmed their own greatly."
 
-	is_triggered_only = yes
+	trigger = {
+		tag = CSA
+		war = no
+		NOT = {	has_country_flag = csaprestigebuff }
+	}
+
+	mean_time_to_happen = {
+		days = 20
+	}
 
 	option = {
-		name = "EVTOPTA110057" #Nothing can stop the Dixie spirit!
-		prestige = 15
-		add_country_modifier = { name = submarine_warfare duration = 730 }
+		name = "Victory has never been so sweet."
+		prestige = 50
+		USA = { prestige = -50 }
+		set_country_flag = csaprestigebuff
 	}
 }
-
-# H. L. Hunley - Mixed Results
-country_event = {
-
-	id = 110058
-	title = "EVTNAME110058"
-	desc = "EVTDESC110058"
-	picture = "CSA_hunley_mixed"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA110058" #Progress is built on failure.
-		prestige = 5
-	}
-}
-
-# H. L. Hunley - Failure
-country_event = {
-
-	id = 110059
-	title = "EVTNAME110059"
-	desc = "EVTDESC110059"
-	picture = "CSA_hunley_failure"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA110059" #I knew it! Do not trust looney aventurers!
-		prestige = -15
-	}
-}
-
-country_event = {
-	id = 72881
-	title = "Cuba Joins the Confederacy"
-	desc = "The plantation elite of Cuba have joined the Confederate cause."
-	picture = chile_peru_bolivia_treaty
-	is_triggered_only = yes
-
-	option = {
-		name = "We will subdue them as well."
-
-		USA = {
-			any_owned = {
-				limit = { is_core = CUB }
-				secede_province = CSA
-			}
-		}
-		CUB = { all_core = { add_core = USA } }
-
-		ai_chance = { factor = 100 }
-	}
-}
-
-
-
-
-country_event = {
-	id = 56278
-	title = "The Confederate Cowards Flee to Cuba!"
-	desc = EVTDESC56278
-	picture = chile_peru_bolivia_treaty
-	is_triggered_only = yes
-
-	option = {
-		name = "They shall find no safe havens in Havana!"
-
-		prestige = 5
-		war_exhaustion = 10
-
-		ai_chance = { factor = 40 }
-	}
-
-	option = {
-		name = "Let them lick their wounds so that we might heal ours."
-
-		war_exhaustion = -10
-		end_war = CSA
-		remove_accepted_culture = dixie
-		remove_accepted_culture = texan
-		CSA = {
-			any_owned = {
-				limit = { NOT = { is_core = CUB } }
-				secede_province = USA
-			}
-		}
-
-		ai_chance = { factor = 60 }
-	}
-}
-

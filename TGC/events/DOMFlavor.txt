@@ -1,3 +1,4 @@
+#Description: President Heureaux Assassinated - pops gain consciousness
 country_event = {
 
 	id = 45006
@@ -9,28 +10,22 @@ country_event = {
 		OR = {
 			government = democracy
 			government = presidential_dictatorship
-		}	
-		NOT = {
-			year = 1902
 		}
+		NOT = { year = 1902 }
 	}
-	
+
 	fire_only_once = yes
- 
+
 	mean_time_to_happen =  {
 		months = 8
-
 		modifier = {
 			factor = 0.75 #increase likelihood to happen
 			year = 1899
 		}
-
-
 		modifier = {
 			factor = 0.95 #increase likelihood to happen
 			year = 1900
 		}
-
 		modifier = {
 			factor = 0.95 #increase likelihood to happen
 			year = 1901
@@ -42,9 +37,120 @@ country_event = {
 	picture = "Bankruptcy"
 
 	option = {
-		name = "EVTOPTA45006" 
-		any_pop = {
-			consciousness = 2
+		name = "EVTOPTA45006"
+
+		any_pop = { consciousness = 2 }
+	}
+}
+
+#Description: The Dominican Independence - If DOM asserts their independence, Haiti Loses their cores
+country_event = {
+
+	id = 45103
+
+	title = "EVTNAME45103"
+	desc = "EVTDESC45103"
+	picture = "dominican_revolution"
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = DOM
+		exists = yes
+		2214 = { is_core = HAI owned_by = THIS } # Saint-Domingue
+		2216 = { is_core = HAI owned_by = THIS } # Saint-Jacques des Chevaliers
+		war = no
+		NOT = { truce_with = HAI }
+	}
+
+	mean_time_to_happen = { months = 60 }
+
+	option = {
+		name = "EVTOPTA45103"
+
+		remove_accepted_culture = afro_caribeno
+		add_casus_belli = {
+			target = HAI
+			type = conquest
+			months = 24
+		}
+		relation = {
+			who = HAI
+			value = -25
+		}
+		any_owned = {
+			limit = { is_core = DOM }
+			remove_core = HAI
+			remove_province_modifier = nationalist_agitation
+			any_pop = {
+				militancy = -9
+				consciousness = -9
+			}
+		}
+	}
+}
+
+#Description: Triggered for Santo Domingo when the USA wants to annex
+country_event = {
+
+	id = 45105
+
+	title = "EVTNAME45105"
+	desc = "EVTDESC45105"
+	picture = "annexation_santo_domingo"
+
+	is_triggered_only = yes
+
+	immediate = {
+		civilized = no
+	}
+
+	# Accept annexation
+	option = {
+		name = "EVTOPTA45105"
+
+		FROM = {
+			random = {
+				chance = 60
+				badboy = 1
+				any_owned = {
+					any_pop = {
+						scaled_militancy = { factor = 1 ideology = conservative }
+						scaled_militancy = { factor = 3 ideology = liberal }
+						scaled_militancy = { factor = 3 ideology = socialist }
+						scaled_militancy = { factor = 2 issue = pacifism }
+						scaled_consciousness = { factor = 4 issue = pacifism }
+					}
+				}
+				any_country = {
+					limit = { is_greater_power = yes }
+					relation = { who = USA value = -100 }
+				}
+			}
+			treasury = -100000
+		}
+		badboy = 2
+		FROM = { inherit = THIS }
+		civilized = yes
+
+		ai_chance = {
+			factor = 0.3
+			modifier = { factor = 100 vassal_of = FROM }
+			modifier = { factor = 1.2 NOT = { literacy = 0.1 } }
+		}
+	}
+
+	# Refuse annexation
+	option = {
+		name = "EVTOPTB45105"
+
+		FROM = { diplomatic_influence = { who = THIS value = -100 } }
+		relation = { who = FROM value = -50 }
+
+		ai_chance = {
+			factor = 0.7
+			modifier = { factor = 0 vassal_of = FROM }
+			modifier = { factor = 1.5 literacy = 0.3 }
 		}
 	}
 }
