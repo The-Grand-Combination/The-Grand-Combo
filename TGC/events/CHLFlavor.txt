@@ -1,7 +1,7 @@
-#Description: Cape Horn - Immigration debuff # TODO localization missing
+#Description: Cape Horn - Immigration debuff
 country_event = {
 
-	id = 49991001
+	id = 4999100
 
 	trigger = {
 		tag = CHL
@@ -17,15 +17,10 @@ country_event = {
 	desc = "EVTDESC4999100"
 	picture = "Thermopylae"
 
-	immediate = {
-		add_country_modifier = {
-			name = Hazardous_Journey
-			duration = 16000
-		}
-	}
-
 	option = {
 		name = "EVTOPTA4999100"
+
+		add_country_modifier = { name = hazardous_journey duration = 16000 }
 	}
 }
 
@@ -275,232 +270,233 @@ country_event = {
 	}
 }
 
-#Description: The War of the Pacific - 1/2 - Chile gets cores on Atacama
-country_event = {
-	id = 97082
-	title = "EVTNAME97082"
-	desc = "EVTDESC97082"
-	picture = "sinking_of_the_esmeralda"
+## The War of the Pacific ##
 
-	trigger = {
-		tag = CHL
-		is_vassal = no
-		has_recently_lost_war = no
-		is_disarmed = no
-		war = no
-		NOT = { war_exhaustion = 20 }
-		2308 = { # Arica
+	#Description: The War of the Pacific - 1/2 - Chile gets cores on Atacama
+	country_event = {
+		id = 97082
+		title = "EVTNAME97082"
+		desc = "EVTDESC97082"
+		picture = "sinking_of_the_esmeralda"
+
+		trigger = {
+			tag = CHL
+			is_vassal = no
+			has_recently_lost_war = no
+			is_disarmed = no
+			war = no
+			NOT = { war_exhaustion = 20 }
+			2308 = { # Arica
+				OR = {
+					owner = { NOT = { truce_with = THIS } }
+					owned_by = THIS
+				}
+			}
+			2305 = { # Antofagasta
+				OR = {
+					owner = { NOT = { truce_with = THIS } }
+					owned_by = THIS
+				}
+			}
 			OR = {
-				owner = { NOT = { truce_with = THIS } }
-				owned_by = THIS
+				year = 1878
+				AND = {
+					invention = ironclads
+					nationalism_n_imperialism = 1
+				}
 			}
 		}
-		2305 = { # Antofagasta
-			OR = {
-				owner = { NOT = { truce_with = THIS } }
-				owned_by = THIS
-			}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 12
 		}
-		OR = {
-			year = 1878
-			AND = {
-				invention = ironclads
-				nationalism_n_imperialism = 1
-			}
-		}
-	}
 
-	fire_only_once = yes
+		immediate = { set_global_flag = war_of_the_pacific }
 
-	mean_time_to_happen = {
-		months = 12
-	}
+		# Demand the Atacama
+		option = {
+			name = "EVTOPTA97082"
 
-	immediate = { set_global_flag = war_of_the_pacific }
+			badboy = 2
+			2578 = { add_core = CHL } # San Pedro de Tacna
+			BOL_2309 = { add_core = CHL } # Atacama
+			2308 = { trade_goods = sulphur } # Arica
+			2305 = { trade_goods = sulphur } # Antofagasta
 
-	# Demand the Atacama
-	option = {
-		name = "EVTOPTA97082"
-
-		badboy = 2
-		2578 = { add_core = CHL } # San Pedro de Tacna
-		BOL_2309 = { add_core = CHL } # Atacama
-		2308 = { trade_goods = sulphur } # Arica
-		2305 = { trade_goods = sulphur } # Antofagasta
-
-		any_country = {
-			limit = {
-				any_owned_province = {
+			any_country = {
+				limit = {
+					any_owned_province = {
+						OR = {
+							region = BOL_2309 # Atacama
+							province_id = 2578
+						}
+					}
 					OR = {
-						region = BOL_2309 # Atacama
-						province_id = 2578
+						in_sphere = THIS
+						vassal_of = THIS
 					}
 				}
-				OR = {
-					in_sphere = THIS
-					vassal_of = THIS
+				relation = { who = THIS value = -400 }
+				any_owned = {
+					limit = {
+						OR = {
+							region = BOL_2309
+							province_id = 2578
+						}
+					}
+					secede_province = THIS
 				}
 			}
-			relation = { who = THIS value = -400 }
+			any_country = {
+				limit = {
+					any_owned_province = {
+						OR = {
+							region = BOL_2309
+							province_id = 2578
+						}
+					}
+					NOT = {
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+				}
+				relation = { who = THIS value = -400 }
+				leave_alliance = THIS
+				end_military_access = THIS
+				country_event = 97083
+			}
+			add_country_modifier = { name = small_country_draft duration = 730 }
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Bide our time
+		option = {
+			name = "EVTOPTB97082"
+
+			badboy = 2
+			2578 = { add_core = CHL } # San Pedro de Tacna
+			BOL_2309 = { add_core = CHL } # Atacama
+			2308 = { trade_goods = sulphur } # Arica
+			2305 = { trade_goods = sulphur } # Antofagasta
+			relation = { who = BOL value = -400 }
+			relation = { who = PEU value = -400 }
+
+			ai_chance = { factor = 0 }
+		}
+
+		# Give up
+		option = {
+			name = "EVTOPTC97082"
+
+			badboy = -4
+			prestige_factor = -0.1
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: The War of the Pacific - 2/2 - BOL/PEU Declare War
+	country_event = {
+		id = 97083
+		title = "EVTNAME97082"
+		desc = "EVTDESC97083"
+		picture = "sinking_of_the_esmeralda"
+
+		is_triggered_only = yes
+
+		# Go to war
+		option = {
+			name = "EVTOPTA97082"
+
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = war_reparations }
+				defender_goal = { casus_belli = acquire_all_cores country = CHL }
+				call_ally = no
+			}
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Give in to Chilean demands
+		option = {
+			name = "EVTOPTB97082"
+
 			any_owned = {
 				limit = {
 					OR = {
-						region = BOL_2309
+						province_id = 2305
+						province_id = 2309
+						province_id = 2308
+						province_id = 2307
 						province_id = 2578
 					}
 				}
-				secede_province = THIS
+				secede_province = CHL
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = { factor = 3 war = yes }
 			}
 		}
-		any_country = {
-			limit = {
-				any_owned_province = {
-					OR = {
-						region = BOL_2309
-						province_id = 2578
-					}
+	}
+
+	#Description: Tacna/Arica Compromise - A Great Power can arbitrate on whether Tacna belongs to Peru or Chile
+	country_event = {
+		id = 46610103
+		title = "EVTNAME46610103"
+		desc = "EVTDESC46610103"
+		picture = "chile_peru_bolivia_treaty"
+
+		is_triggered_only = yes
+
+		immediate = { CHL = { random_owned = { limit = { province_id = 2578 } secede_province = THIS } } }
+
+		# The territory is Peru's
+		option = {
+			name = "EVTOPTA46610103"
+
+			prestige = 2
+			2578 = { secede_province = PEU remove_core = CHL }
+			relation = { who = CHL value = -25 }
+			relation = { who = PEU value = 50 }
+
+			ai_chance = {
+				factor = 80
+				modifier = {
+					factor = 0.5
+					relation = { who = CHL value = 150 }
 				}
-				NOT = {
-					in_sphere = THIS
-					vassal_of = THIS
-				}
-			}
-			relation = { who = THIS value = -400 }
-			leave_alliance = THIS
-			end_military_access = THIS
-			country_event = 97083
-		}
-		add_country_modifier = { name = small_country_draft duration = 730 }
-
-		ai_chance = { factor = 100 }
-	}
-
-	# Bide our time
-	option = {
-		name = "EVTOPTB97082"
-
-		badboy = 2
-		2578 = { add_core = CHL } # San Pedro de Tacna
-		BOL_2309 = { add_core = CHL } # Atacama
-		2308 = { trade_goods = sulphur } # Arica
-		2305 = { trade_goods = sulphur } # Antofagasta
-		relation = { who = BOL value = -400 }
-		relation = { who = PEU value = -400 }
-
-		ai_chance = { factor = 0 }
-	}
-
-	# Give up
-	option = {
-		name = "EVTOPTC97082"
-
-		badboy = -4
-		prestige_factor = -0.1
-
-		ai_chance = { factor = 0 }
-	}
-}
-
-#Description: The War of the Pacific - 2/2 - BOL/PEU Declare War
-country_event = {
-	id = 97083
-	title = "EVTNAME97082"
-	desc = "EVTDESC97083"
-	picture = "sinking_of_the_esmeralda"
-
-	is_triggered_only = yes
-
-	# Go to war
-	option = {
-		name = "EVTOPTA97082"
-
-		war = {
-			target = FROM
-			attacker_goal = { casus_belli = war_reparations }
-			defender_goal = { casus_belli = acquire_all_cores country = CHL }
-			call_ally = no
-		}
-
-		ai_chance = { factor = 90 }
-	}
-
-	# Give in to Chilean demands
-	option = {
-		name = "EVTOPTB97082"
-
-		any_owned = {
-			limit = {
-				OR = {
-					province_id = 2305
-					province_id = 2309
-					province_id = 2308
-					province_id = 2307
-					province_id = 2578
+				modifier = {
+					factor = 0.5
+					PEU = { NOT = { in_sphere = THIS } }
 				}
 			}
-			secede_province = CHL
 		}
 
-		ai_chance = {
-			factor = 10
-			modifier = { factor = 3 war = yes }
-		}
-	}
-}
+		# The territory is Chile's
+		option = {
+			name = "EVTOPTB46610103"
 
-#Description: Tacna/Arica Compromise - A Great Power can arbitrate on whether Tacna belongs to Peru or Chile
-country_event = {
-	id = 46610103
-	title = "EVTNAME46610103"
-	desc = "EVTDESC46610103"
-	picture = "chile_peru_bolivia_treaty"
+			prestige = 2
+			2578 = { secede_province = CHL remove_core = PEU }
+			relation = { who = PEU value = -25 }
+			relation = { who = CHL value = 50 }
 
-	is_triggered_only = yes
-
-	immediate = { CHL = { random_owned = { limit = { province_id = 2578 } secede_province = THIS } } }
-
-	# The territory is Peru's
-	option = {
-		name = "EVTOPTA46610103"
-
-		prestige = 2
-		2578 = { secede_province = PEU remove_core = CHL }
-		relation = { who = CHL value = -25 }
-		relation = { who = PEU value = 50 }
-
-		ai_chance = {
-			factor = 80
-			modifier = {
-				factor = 0.5
-				relation = { who = CHL value = 150 }
-			}
-			modifier = {
-				factor = 0.5
-				PEU = { NOT = { in_sphere = THIS } }
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.5
+					relation = { who = PEU value = 150 }
+				}
+				modifier = {
+					factor = 0.5
+					PEU = { NOT = { in_sphere = THIS } }
+				}
 			}
 		}
 	}
-
-	# The territory is Chile's
-	option = {
-		name = "EVTOPTB46610103"
-
-		prestige = 2
-		2578 = { secede_province = CHL remove_core = PEU }
-		relation = { who = PEU value = -25 }
-		relation = { who = CHL value = 50 }
-
-		ai_chance = {
-			factor = 20
-			modifier = {
-				factor = 0.5
-				relation = { who = PEU value = 150 }
-			}
-			modifier = {
-				factor = 0.5
-				PEU = { NOT = { in_sphere = THIS } }
-			}
-		}
-	}
-}
-

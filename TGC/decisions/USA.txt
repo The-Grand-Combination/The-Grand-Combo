@@ -723,7 +723,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: Once the west is secured, you can rename the provinces and build cities.
+	#Description: Once the west is secured, you can rename the provinces and build cities. # TODO Split into multiple parts
 	the_american_frontier = {
 		picture = cowboy
 		potential = {
@@ -806,7 +806,7 @@ political_decisions = {
 			156 = { change_province_name = "Granite Falls" }
 			157 = { change_province_name = "Moorhead" }
 			106 = { change_province_name = "Denver" add_province_modifier = { name = recently_built_city duration = 180 } }
-			131 = { change_province_name = "Oklahoma City" add_province_modifier = { name = recently_built_city duration = 180 }  }
+			131 = { change_province_name = "Oklahoma City" add_province_modifier = { name = recently_built_city duration = 180 } }
 			113 = { change_province_name = "Helena" add_province_modifier = { name = recently_built_city duration = 180 } }
 			117 = { change_province_name = "Bismarck" add_province_modifier = { name = recently_built_city duration = 180 } }
 			120 = { change_province_name = "Sioux Falls" add_province_modifier = { name = recently_built_city duration = 180 } }
@@ -1008,10 +1008,14 @@ political_decisions = {
 			is_greater_power = yes
 			has_country_flag = hasmanifestdestiny
 			OR = {
-				war_policy = jingoism
+				war_policy = jingoism # TODO find a better way to have this option
 				has_country_flag = mexico_refused_treaty
 			}
-			NOT = { has_country_flag = mexican_american_war_alternate_treaty }
+			NOT = {
+				exists = SON
+				exists = RGR
+				has_country_flag = mexican_american_war_alternate_treaty
+			}
 		}
 
 		allow = {
@@ -1025,10 +1029,15 @@ political_decisions = {
 		effect = {
 			set_country_flag = mexican_american_war_alternate_treaty
 			badboy = 5
-			RGR = { all_core = { add_core = USA } }
-			2156 = { add_core = SON } # Sinaloa
-			2157 = { add_core = SON }
-			SON = { all_core = { add_core = USA } }
+			MEX_2150 = { add_core = USA } # Rio Grande
+			MEX_2149 = { add_core = USA } # Cohauila
+			MEX_2142 = { add_core = USA } # Chihuahua
+			MEX_2151 = { add_core = USA } # Durango
+			set_global_flag = rio_grande_is_a_state
+			MEX_2139 = { add_core = USA } # Baja California
+			MEX_2138 = { add_core = USA } # Sonora
+			MEX_2156 = { add_core = USA } # Sinaloa
+			set_global_flag = sonora_is_a_state
 			2662 = { add_core = USA } # Gadsden purchase territories
 			102 = { add_core = USA }
 			relation = { who = MEX value = -200 }
@@ -1066,7 +1075,7 @@ political_decisions = {
 						is_vassal = no
 					}
 				}
-				country_event = 98650
+				country_event = 98650 # Inherit
 			}
 			any_pop = {
 				dominant_issue = {
@@ -1084,11 +1093,11 @@ political_decisions = {
 	second_alaskan_purchase = {
 		picture = alaskan_purchase
 		potential = {
-			1 = { # Novo-Arkhangelsk
+			1 = { # Novo-Arkhangelsk / Sitka
 				owned_by = THIS
 				is_core = THIS
 			}
-			2599 = { # Redut Svyatogo-Mikhaila
+			2599 = { # Redut Svyatogo-Mikhaila / Nome
 				empty = no
 				is_core = THIS
 				NOT = { owned_by = THIS }
@@ -1119,23 +1128,35 @@ political_decisions = {
 	tratado_hay_herbert = {
 		picture = alaskan_purchase
 		potential = {
-			2 = { # Redut Svyatogo Dionisya / Juneau
-				NOT = { owned_by = THIS }
-				owner = { NOT = { capital_scope = { continent = north_america } } }
-			}
-			17 = {
-				OR = {
-                    empty = no
-					owned_by = THIS
-                    owner = {
-						in_sphere = THIS
-						vassal_of = THIS
-						war = no
-						is_greater_power = no
-                    }
+			OR = {
+				1 = { # Novo-Arkhangelsk / Sitka
+					empty = no
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							vassal_of = THIS
+							war = no
+						}
+					}
+				}
+				17 = { # Teslin Post
+					empty = no
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							vassal_of = THIS
+							war = no
+						}
+					}
 				}
 			}
-			NOT = { has_country_flag = tratado_hay_herbert }
+			2 = { # Redut Svyatogo Dionisya / Juneau
+				empty = no
+				NOT = { owned_by = THIS }
+			}
+			NOT = { has_global_flag = tratado_hay_herbert }
 		}
 
 		allow = {
@@ -1152,7 +1173,7 @@ political_decisions = {
 		}
 
 		effect = {
-			set_country_flag = tratado_hay_herbert
+			set_global_flag = tratado_hay_herbert
 			2 = { owner = { country_event = 1904191424 } }
 		}
 
@@ -1794,7 +1815,7 @@ political_decisions = {
 		}
 	}
 
-	#Description: Occupy Midway and Palmyra Atoll if they are empty # TODO add Navassa Island
+	#Description: Occupy certain Pacific and Caribbean islands if they are not otherwise colonized
 	guano_islands_act = {
 		picture = dreams_of_empire
 		potential = {
@@ -1803,9 +1824,16 @@ political_decisions = {
 				owns = 658	# Sandwich Islands / Hawaii
 			}
 			is_greater_power = yes
-			2623 = { empty = yes } # Midway
-			2526 = { empty = yes } # Palmyra Atoll
-			NOT = { has_global_flag = annexed_midway_island }
+			OR = {
+				2238 = { empty = yes } # Navassa Island
+				2520 = { empty = yes } # Phoenix Island
+				2524 = { empty = yes } # Wake Island
+				2526 = { empty = yes } # Palmyra Atoll
+				2541 = { empty = yes } # Ellice Islands
+				2547 = { empty = yes } # Tokelau
+				2623 = { empty = yes } # Midway
+				3324 = { empty = yes } # Line Islands
+			}
 		}
 
 		allow = {
@@ -1813,16 +1841,44 @@ political_decisions = {
 			money = 30000
 			invention = manifest_destiny
 			blue_and_brown_water_schools = 1
-			tech_school = commerce_tech_school
 			is_vassal = no
 			is_disarmed = no
 		}
 
 		effect = {
-			set_global_flag = annexed_midway_island
 			treasury = -30000
-			2623 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-			2526 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			random_owned = {
+				limit = { 2238 = { empty = yes } }
+				2238 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 2520 = { empty = yes } }
+				2520 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 2524 = { empty = yes } }
+				2524 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 2526 = { empty = yes } }
+				2526 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 2541 = { empty = yes } }
+				2541 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 2547 = { empty = yes } }
+				2547 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 2623 = { empty = yes } }
+				2623 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = { 3324 = { empty = yes } }
+				3324 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
 		}
 
 		ai_will_do = { factor = 100 }
