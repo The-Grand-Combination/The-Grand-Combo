@@ -1,167 +1,169 @@
-#Description: Call for the South American Union - triggered for countries that own territory in South America
-country_event = {
-	id = 555100
-	title = "EVTNAME555100"
-	desc = "EVTDESC555100"
-	picture = "banquet"
+## Unification ##
 
-	is_triggered_only = yes
+	#Description: Call for the South American Union - triggered for countries that own territory in South America
+	country_event = {
+		id = 555100
+		title = EVTNAME555100
+		desc = EVTDESC555100
+		picture = "banquet"
 
-	option = {
-		name = "EVTOPTA555100"
+		is_triggered_only = yes
 
-		any_owned = {
-			limit = { continent = south_america }
-			add_core = USS
-			any_pop = { consciousness = 2 }
+		option = {
+			name = EVTOPTA555100
+
+			any_owned = {
+				limit = { continent = south_america }
+				add_core = USS
+				any_pop = { consciousness = 2 }
+			}
 		}
 	}
-}
 
-#Description: USSA Inheritance - triggered for South American countries when the USSA is formed
-country_event = {
-	id = 555101
-	title = "EVTNAME11101"
-	desc = "EVTDESC11101"
-	picture = "Celebration"
+	#Description: USSA Inheritance - triggered for South American countries when the USSA is formed
+	country_event = {
+		id = 555101
+		title = EVTNAME11101
+		desc = EVTDESC11101
+		picture = "Celebration"
 
-	is_triggered_only = yes
+		is_triggered_only = yes
 
-	# Join the union
-	option = {
-		name = "EVTOPTA11101"
+		# Join the union
+		option = {
+			name = EVTOPTA11101
 
-		any_country = {
-			limit = {
-				OR = {
-					is_sphere_leader_of = THIS
-					is_our_vassal = THIS
+			any_country = {
+				limit = {
+					OR = {
+						is_sphere_leader_of = THIS
+						is_our_vassal = THIS
+					}
+					NOT = { tag = FROM }
 				}
-				NOT = { tag = FROM }
+				relation = {
+					who = FROM
+					value = -25
+				}
+				casus_belli = {
+					target = FROM
+					type = humiliate
+					months = 24
+				}
+				casus_belli = {
+					target = FROM
+					type = free_peoples
+					months = 24
+				}
 			}
+			FROM = { inherit = THIS }
+
+			ai_chance = {
+				factor = 75
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+					NOT = { has_country_flag = wants_to_unify }
+				}
+				modifier = {
+					factor = 2
+					OR = {
+						alliance_with = FROM
+						relation = { who = FROM value = 100 }
+					}
+				}
+				modifier = {
+					factor = 0.1
+					government = fascist_dictatorship
+					FROM = { government = proletarian_dictatorship }
+				}
+				modifier = {
+					factor = 0.1
+					government = proletarian_dictatorship
+					FROM = { government = fascist_dictatorship }
+				}
+			}
+		}
+
+		# Don't join the union
+		option = {
+			name = EVTOPTB11101
+
+			clr_country_flag = wants_to_unify
+			prestige = 1
+			leave_alliance = FROM
 			relation = {
 				who = FROM
-				value = -25
-			}
-			casus_belli = {
-				target = FROM
-				type = humiliate
-				months = 24
-			}
-			casus_belli = {
-				target = FROM
-				type = free_peoples
-				months = 24
-			}
-		}
-		FROM = { inherit = THIS }
-
-		ai_chance = {
-			factor = 75
-			modifier = {
-				factor = 0
-				is_greater_power = yes
-				NOT = { has_country_flag = wants_to_unify }
-			}
-			modifier = {
-				factor = 2
-				OR = {
-					alliance_with = FROM
-					relation = { who = FROM value = 100 }
-				}
-			}
-			modifier = {
-				factor = 0.1
-				government = fascist_dictatorship
-				FROM = { government = proletarian_dictatorship }
-			}
-			modifier = {
-				factor = 0.1
-				government = proletarian_dictatorship
-				FROM = { government = fascist_dictatorship }
-			}
-		}
-	}
-
-	# Don't join the union
-	option = {
-		name = "EVTOPTB11101"
-
-		clr_country_flag = wants_to_unify
-		prestige = 1
-		leave_alliance = FROM
-		relation = {
-			who = FROM
-			value = -200
-		}
-		FROM = {
-			diplomatic_influence = {
-				who = THIS
 				value = -200
 			}
-		}
-		any_pop = {
-			limit = { is_primary_culture = yes }
-			militancy = 3
-			consciousness = 2
-		}
+			FROM = {
+				diplomatic_influence = {
+					who = THIS
+					value = -200
+				}
+			}
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				militancy = 3
+				consciousness = 2
+			}
 
-		ai_chance = {
-			factor = 25
-			modifier = {
-				factor = 0
-				has_country_flag = wants_to_unify
-			}
-			modifier = {
-				factor = 0.75
-				is_secondary_power = no
-			}
-			modifier = {
-				factor = 0.75
-				part_of_sphere = no
-			}
-			modifier = {
-				factor = 1.5
-				truce_with = FROM
-			}
-			modifier = {
-				factor = 1.5
-				NOT = {
-					relation = { who = FROM value = 0 }
+			ai_chance = {
+				factor = 25
+				modifier = {
+					factor = 0
+					has_country_flag = wants_to_unify
 				}
-			}
-			modifier = {
-				factor = 0.25
-				in_sphere = FROM
-			}
-			modifier = {
-				factor = 0.25
-				government = fascist_dictatorship
-				FROM = { government = fascist_dictatorship }
-			}
-			modifier = {
-				factor = 0.25
-				government = proletarian_dictatorship
-				FROM = { government = proletarian_dictatorship }
-			}
-			modifier = {
-				factor = 0.25
-				OR = {
-					government = democracy
-					government = prussian_constitutionalism
-					government = hms_government
+				modifier = {
+					factor = 0.75
+					is_secondary_power = no
 				}
-				FROM = {
+				modifier = {
+					factor = 0.75
+					part_of_sphere = no
+				}
+				modifier = {
+					factor = 1.5
+					truce_with = FROM
+				}
+				modifier = {
+					factor = 1.5
+					NOT = {
+						relation = { who = FROM value = 0 }
+					}
+				}
+				modifier = {
+					factor = 0.25
+					in_sphere = FROM
+				}
+				modifier = {
+					factor = 0.25
+					government = fascist_dictatorship
+					FROM = { government = fascist_dictatorship }
+				}
+				modifier = {
+					factor = 0.25
+					government = proletarian_dictatorship
+					FROM = { government = proletarian_dictatorship }
+				}
+				modifier = {
+					factor = 0.25
 					OR = {
 						government = democracy
 						government = prussian_constitutionalism
 						government = hms_government
 					}
+					FROM = {
+						OR = {
+							government = democracy
+							government = prussian_constitutionalism
+							government = hms_government
+						}
+					}
 				}
 			}
 		}
 	}
-}
 
 #Description: South America Reunites Central America - the USA can choose how to react
 country_event = {
@@ -283,18 +285,20 @@ country_event = {
 	}
 }
 
-## USSA-Mexico ##
+## Mexico ##
 
+	#Description: Triggered for Mexico when the USSA wants to puppet them.
 	country_event = {
 		id = 5730318
-		title = "South American Protection?"
-		desc = "EVTDESC5730318"
+		title = EVTNAME5730318
+		desc = EVTDESC5730318
 		picture = mexico_soldiers
 
 		is_triggered_only = yes
 
+		# Submit
 		option = {
-			name = "We must submit."
+			name = EVTOPTA5730318
 
 			relation = {
 				who = FROM
@@ -314,8 +318,9 @@ country_event = {
 			ai_chance = { factor = 70 }
 		}
 
+		# Refuse
 		option = {
-			name = "We must stand strong."
+			name = EVTOPTB5730318
 
 			prestige = 10
 			any_pop = {
@@ -347,215 +352,232 @@ country_event = {
 		}
 	}
 
-	country_event = {
-		id = 4115722
-		title = "Mexico Accepts Protection"
-		desc = "EVTDESC4115722"
-		picture = mexico_soldiers
+	## Mexico submits ##
 
-		is_triggered_only = yes
+		#Description: Triggered for the USSA if Mexico submits.
+		country_event = {
+			id = 4115722
+			title = EVTNAME4115722
+			desc = EVTDESC4115722
+			picture = mexico_soldiers
 
-		option = {
-			name = "Another Victory!"
+			is_triggered_only = yes
 
-			prestige = 10
-			USA = { country_event = { id = 8787882 days = 3 } }
+			option = {
+				name = EVTOPTA4115722
 
-			ai_chance = { factor = 100 }
-		}
-	}
+				prestige = 10
+				USA = { country_event = { id = 8787882 days = 3 } }
 
-	country_event = {
-		id = 9496491
-		title = "Mexico Refuses Protection"
-		desc = "EVTDESC9496491"
-		picture = mexico_soldiers
-
-		is_triggered_only = yes
-
-		option = {
-			name = "Solidarity Over Sovereignty!"
-
-			casus_belli = {
-				target = FROM
-				type = make_puppet
-				months = 42
-			}
-			relation = {
-				who = FROM
-				value = -200
-			}
-			diplomatic_influence = {
-				who = FROM
-				value = -400
-			}
-			MEX = { set_country_flag = USS_threat }
-
-			ai_chance = { factor = 100 }
-		}
-	}
-
-	country_event = {
-		id = 8787882
-		title = "South America Puppets Mexico"
-		desc = "EVTDESC8787882"
-		picture = mexico_soldiers
-
-		is_triggered_only = yes
-
-		option = {
-			name = "We must defend our backyard."
-
-			relation = {
-				who = FROM
-				value = -100
-			}
-			casus_belli = {
-				target = FROM
-				type = release_puppet
-				months = 42
-			}
-
-			ai_chance = { factor = 80 }
-		}
-
-		option = {
-			name = "Not our concern."
-
-			relation = {
-				who = FROM
-				value = 100
-			}
-
-			ai_chance = { factor = 20 }
-		}
-	}
-
-country_event = {
-	id = 2187159
-	title = "Turn to the United States?"
-	desc = EVTDESC2187159
-	picture = mexico_soldiers
-
-	fire_only_once = yes
-
-	trigger = {
-		has_country_flag = USS_threat
-		exists = USS
-		USA = {
-			NOT = { alliance_with = USS }
-			is_greater_power = yes
-			relation = {
-				who = THIS
-				value = 50
+				ai_chance = { factor = 100 }
 			}
 		}
-		is_greater_power = no
-		is_independant = yes
-		part_of_sphere = no
-	}
 
-	mean_time_to_happen = {
-		days = 10
-		modifier = {
-			factor = 2
-			war_with = USS
-		}
-	}
+		#Description: Triggered for the USA if Mexico submits to the USSA.
+		country_event = {
+			id = 8787882
+			title = EVTNAME8787882
+			desc = EVTDESC8787882
+			picture = mexico_soldiers
 
-	option = {
-		name = "We need their help."
+			is_triggered_only = yes
 
-		prestige = -5
-		USA = {	country_event = 3403075 }
+			# Protect Mexico.
+			option = {
+				name = EVTOPTA8787882
 
-		ai_chance = { factor = 80 }
-	}
+				relation = {
+					who = FROM
+					value = -100
+				}
+				casus_belli = {
+					target = FROM
+					type = release_puppet
+					months = 42
+				}
 
-	option = {
-		name = "We must not sacrifice our dignity."
+				ai_chance = { factor = 80 }
+			}
 
-		prestige = 10
+			# Ignore it.
+			option = {
+				name = EVTOPTB8787882
 
-		ai_chance = { factor = 20 }
-	}
-}
+				relation = {
+					who = FROM
+					value = 100
+				}
 
-country_event = {
-	id = 3403075
-	title = "Mexico Asks for Help Against South America!"
-	desc = EVTDESC3403075
-	picture = mexico_soldiers
-
-	is_triggered_only = yes
-
-	option = {
-		name = "Defend Mexico!"
-
-		relation = {
-			who = FROM
-			value = 200
-		}
-		diplomatic_influence = {
-			who = FROM
-			value = 400
-		}
-		MEX = { clr_country_flag = USS_threat }
-		create_alliance = FROM
-		relation = {
-			who = USS
-			value = -100
+				ai_chance = { factor = 20 }
+			}
 		}
 
-		ai_chance = { factor = 90 }
-	}
+	## Mexico refuses to submit ##
 
-	option = {
-		name = "Not our concern."
+		#Description: Triggered for the USSA if Mexico refuses to submit.
+		country_event = {
+			id = 9496491
+			title = EVTNAME9496491
+			desc = EVTDESC9496491
+			picture = mexico_soldiers
 
-		relation = {
-			who = FROM
-			value = -100
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA9496491
+
+				casus_belli = {
+					target = FROM
+					type = make_puppet
+					months = 42
+				}
+				relation = {
+					who = FROM
+					value = -200
+				}
+				diplomatic_influence = {
+					who = FROM
+					value = -400
+				}
+				MEX = { set_country_flag = USS_threat }
+
+				ai_chance = { factor = 100 }
+			}
 		}
 
-		ai_chance = { factor = 10 }
-	}
-}
+		#Description: Triggered for Mexico if they refused to submit to the USSA - ask the USA for help?
+		country_event = {
+			id = 2187159
+			title = EVTNAME2187159
+			desc = EVTDESC2187159
+			picture = mexico_soldiers
 
-country_event = {
-	id = 8430867
-	title = "Peace in Mexico!"
-	desc = EVTDESC8430867
-	picture = mexico_soldiers
+			fire_only_once = yes
 
-	fire_only_once = yes
+			trigger = {
+				has_country_flag = USS_threat
+				exists = USS
+				USA = {
+					NOT = { alliance_with = USS }
+					is_greater_power = yes
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				is_greater_power = no
+				is_independant = yes
+				part_of_sphere = no
+			}
 
-	trigger = {
-		tag = USS
-		MEX = {
-			has_country_flag = USS_threat
-			vassal_of = THIS
+			mean_time_to_happen = {
+				days = 10
+				modifier = {
+					factor = 2
+					war_with = USS
+				}
+			}
+
+			# Ask the USA for help
+			option = {
+				name = EVTOPTA2187159
+
+				prestige = -5
+				USA = {	country_event = 3403075 }
+
+				ai_chance = { factor = 80 }
+			}
+
+			# Don't ask them for help
+			option = {
+				name = EVTOPTB2187159
+
+				prestige = 10
+
+				ai_chance = { factor = 20 }
+			}
 		}
-		war = no
-	}
 
-	option = {
-		name = "Latin America grows stronger!"
+		#Description: Triggered for the USA if Mexico decides to ask for help.
+		country_event = {
+			id = 3403075
+			title = EVTNAME3403075
+			desc = EVTDESC3403075
+			picture = mexico_soldiers
 
-		prestige = 10
-		MEX = { clr_country_flag = USS_threat }
-		diplomatic_influence = {
-			who = MEX
-			value = 400
+			is_triggered_only = yes
+
+			# Defend Mexico
+			option = {
+				name = EVTOPTA3403075
+
+				relation = {
+					who = FROM
+					value = 200
+				}
+				diplomatic_influence = {
+					who = FROM
+					value = 400
+				}
+				MEX = { clr_country_flag = USS_threat }
+				create_alliance = FROM
+				relation = {
+					who = USS
+					value = -100
+				}
+
+				ai_chance = { factor = 90 }
+			}
+
+			# Ignore them.
+			option = {
+				name = EVTOPTB3403075
+
+				relation = {
+					who = FROM
+					value = -100
+				}
+
+				ai_chance = { factor = 10 }
+			}
 		}
 
-		ai_chance = { factor = 100 }
-	}
-}
+		#Description: Triggered for the USSA when Mexico is defeated after refusing to submit.
+		country_event = {
+			id = 8430867
+			title = EVTNAME8430867
+			desc = EVTDESC8430867
+			picture = mexico_soldiers
 
+			fire_only_once = yes
+
+			trigger = {
+				tag = USS
+				MEX = {
+					has_country_flag = USS_threat
+					vassal_of = THIS
+				}
+				war = no
+			}
+
+			option = {
+				name = EVTOPTA8430867
+
+				prestige = 10
+				MEX = { clr_country_flag = USS_threat }
+				diplomatic_influence = {
+					who = MEX
+					value = 400
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+#Description: If the USSA has all of Latin America owned or puppeted, they can declare Gran America and realize Bolivar's dream.
 country_event = {
 	id = 3591929
-	title = "Bolivar's Dream is a Reality!"
+	title = EVTNAME3591929
 	desc = EVTDESC3591929
 	major = yes
 
@@ -592,7 +614,8 @@ country_event = {
 	}
 
 	option = {
-		name = "Gran America!"
+		name = EVTOPTA3591929
+
 		prestige = 50
 		any_pop = {
 			limit = {
@@ -609,417 +632,421 @@ country_event = {
 
 }
 
-country_event = {
-	id = 8773762
-	title = "The Cusco Congress"
-	desc = EVTDESC8773762
-	picture = pbc_argentina_border_treaty
+## Cusco Congress ##
 
-	fire_only_once = yes
+	country_event = {
+		id = 8773762
+		title = "The Cusco Congress"
+		desc = EVTDESC8773762
+		picture = pbc_argentina_border_treaty
 
-	trigger = {
-		tag = USS
-		primary_culture = brazilian
-		OR = {
-			is_greater_power = no
-			is_disarmed = yes
+		fire_only_once = yes
+
+		trigger = {
+			tag = USS
+			primary_culture = brazilian
+			OR = {
+				is_greater_power = no
+				is_disarmed = yes
+			}
+			average_consciousness = 6
+			average_militancy = 6
+			NOT = {
+				exists = GCO
+				exists = LPL
+				exists = PBC
+			}
 		}
-		average_consciousness = 6
-		average_militancy = 6
-		NOT = {
-			exists = GCO
-			exists = LPL
-			exists = PBC
+
+		mean_time_to_happen = {
+			months = 1
+			modifier = {
+				factor = 0.8
+				average_consciousness = 7
+			}
+			modifier = {
+				factor = 0.8
+				average_consciousness = 9
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 7
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 9
+			}
 		}
+
+
+		immediate = {
+			PNM = { all_core = { add_core = GCO } }
+			CLM = { all_core = { add_core = GCO } }
+			ECU = { all_core = { add_core = GCO } }
+			VNZ = { all_core = { add_core = GCO } }
+			BOL = { all_core = { add_core = PBC } }
+			PEU = { all_core = { add_core = PBC } }
+			CHL = { all_core = { add_core = PBC } }
+			ARC = { all_core = { add_core = LPL } }
+			ARG = { all_core = { add_core = LPL } }
+			PRG = { all_core = { add_core = LPL } }
+			URU = { all_core = { add_core = LPL } }
+			USS = {
+				any_owned = {
+					limit = {
+						is_core = LPL
+						NOT = { is_core = BRZ }
+					}
+					secede_province = LPL
+				}
+				any_owned = {
+					limit = {
+						is_core = GCO
+						NOT = { is_core = BRZ }
+					}
+					secede_province = GCO
+				}
+				any_owned = {
+					limit = {
+						is_core = PBC
+						NOT = { is_core = BRZ }
+					}
+					secede_province = PBC
+				}
+			}
+		}
+
+		option = {
+			name = "Refuse to negotiate."
+
+			diplomatic_influence = {
+				who = LPL
+				value = -400
+			}
+			diplomatic_influence = {
+				who = PBC
+				value = -400
+			}
+			diplomatic_influence = {
+				who = GCO
+				value = -400
+			}
+			relation = {
+				who = PBC
+				value = -100
+			}
+			relation = {
+				who = LPL
+				value = -100
+			}
+			relation = {
+				who = GCO
+				value = -100
+			}
+			war = {
+				target = GCO
+				attacker_goal = { casus_belli = annex_core_country }
+				defender_goal = { casus_belli = humiliate }
+			}
+			war = {
+				target = LPL
+				attacker_goal = { casus_belli = annex_core_country }
+				defender_goal = { casus_belli = humiliate }
+			}
+			war = {
+				target = PBC
+				attacker_goal = { casus_belli = annex_core_country }
+				defender_goal = { casus_belli = humiliate }
+			}
+
+			ai_chance = { factor = 50 }
+		}
+
+		option = {
+			name = "Agree to the demands."
+
+			prestige = -10
+			set_country_flag = sucre_agree
+			diplomatic_influence = {
+				who = LPL
+				value = 400
+			}
+			diplomatic_influence = {
+				who = PBC
+				value = 400
+			}
+			diplomatic_influence = {
+				who = GCO
+				value = 400
+			}
+			relation = {
+				who = PBC
+				value = 100
+			}
+			relation = {
+				who = LPL
+				value = 100
+			}
+			relation = {
+				who = GCO
+				value = 100
+			}
+			LPL = { all_core = { remove_core = USS } }
+			PBC = { all_core = { remove_core = USS } }
+			GCO = { all_core = { remove_core = USS } }
+			create_vassal = LPL
+			create_vassal = PBC
+			create_vassal = GCO
+			LPL = { all_core = { add_core = USS } }
+			PBC = { all_core = { add_core = USS } }
+			GCO = { all_core = { add_core = USS } }
+
+			ai_chance = { factor = 50 }
+		}
+
 	}
 
-	mean_time_to_happen = {
-		months = 1
-		modifier = {
-			factor = 0.8
-			average_consciousness = 7
-		}
-		modifier = {
-			factor = 0.8
-			average_consciousness = 9
-		}
-		modifier = {
-			factor = 0.8
-			average_militancy = 7
-		}
-		modifier = {
-			factor = 0.8
-			average_militancy = 9
-		}
-	}
+	country_event = {
+		id = 1804935
+		title = "Honor the Cusco Congress"
+		desc = EVTDESC1804935
+		picture = pbc_argentina_border_treaty
 
-
-	immediate = {
-		PNM = { all_core = { add_core = GCO } }
-		CLM = { all_core = { add_core = GCO } }
-		ECU = { all_core = { add_core = GCO } }
-		VNZ = { all_core = { add_core = GCO } }
-		BOL = { all_core = { add_core = PBC } }
-		PEU = { all_core = { add_core = PBC } }
-		CHL = { all_core = { add_core = PBC } }
-		ARC = { all_core = { add_core = LPL } }
-		ARG = { all_core = { add_core = LPL } }
-		PRG = { all_core = { add_core = LPL } }
-		URU = { all_core = { add_core = LPL } }
-		USS = {
-			any_owned = {
-				limit = {
-					is_core = LPL
+		trigger = {
+			OR = {
+				tag = GCO
+				tag = LPL
+				tag = PBC
+			}
+			OR = {
+				vassal_of = USS
+				exists = no
+			}
+			USS = {
+				has_country_flag = sucre_agree
+				any_owned_province = {
+					is_core = THIS
 					NOT = { is_core = BRZ }
 				}
-				secede_province = LPL
+				war = no
 			}
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+
+		option = {
+			name = "Demand cores."
+
+			USS = { country_event = 6595090 }
+
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	country_event = {
+		id = 6595090
+		title = "Honor the Cusco Congress"
+		desc = EVTDESC6595090
+		picture = pbc_argentina_border_treaty
+
+		is_triggered_only = yes
+
+		option = {
+			name = "Very well."
+
 			any_owned = {
 				limit = {
-					is_core = GCO
+					is_core = FROM
 					NOT = { is_core = BRZ }
 				}
-				secede_province = GCO
+				secede_province = FROM
 			}
+			create_vassal = FROM
+
+			ai_chance = { factor = 100 }
+		}
+
+	}
+
+## Brazillian Banquet ##
+
+	country_event = {
+		id = 1900885
+		title = "The Brazilian Banquet"
+		desc = EVTDESC1900885
+		picture = pbc_argentina_border_treaty
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = USS
+			OR = {
+				primary_culture = colombian
+				primary_culture = ecuadorian
+				primary_culture = venezuelan
+				primary_culture = bolivian
+				primary_culture = chilean
+				primary_culture = peruvian
+				primary_culture = argentinian
+				primary_culture = paraguayan
+				primary_culture = uruguayan
+			}
+			OR = {
+				is_greater_power = no
+				is_disarmed = yes
+			}
+			BRZ = { all_core = { owned_by = THIS } }
+			average_consciousness = 6
+			average_militancy = 6
+		}
+
+		mean_time_to_happen = {
+			months = 1
+			modifier = {
+				factor = 0.8
+				average_consciousness = 7
+			}
+			modifier = {
+				factor = 0.8
+				average_consciousness = 9
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 7
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 9
+			}
+		}
+
+		immediate = {
+			USS = { release_vassal = BRZ }
+		}
+
+		option = {
+			name = "Refuse to negotiate."
+
+			release_vassal = BRZ
+			diplomatic_influence = {
+				who = BRZ
+				value = -400
+			}
+			relation = {
+				who = BRZ
+				value = -100
+			}
+			war = {
+				target = BRZ
+				attacker_goal = { casus_belli = annex_core_country }
+				defender_goal = { casus_belli = humiliate }
+			}
+
+			ai_chance = { factor = 50 }
+		}
+
+		option = {
+			name = "Agree to the demands."
+
+			prestige = -10
+			set_country_flag = rio_agree_USS
+			diplomatic_influence = {
+				who = BRZ
+				value = 400
+			}
+			relation = {
+				who = BRZ
+				value = 100
+			}
+
+			ai_chance = { factor = 50 }
+		}
+
+	}
+
+	country_event = {
+		id = 8485586
+		title = "Honor the Brazilian Banquet"
+		desc = EVTDESC8485586
+		picture = pbc_argentina_border_treaty
+
+		trigger = {
+			tag = BRZ
+			OR = {
+				vassal_of = USS
+				exists = no
+			}
+			USS = {
+				has_country_flag = rio_agree_USS
+				any_owned_province = { is_core = THIS }
+				war = no
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+
+		option = {
+			name = "Demand cores."
+
+			USS = { country_event = 2101676 }
+
+			ai_chance = { factor = 100 }
+		}
+
+	}
+
+	country_event = {
+		id = 2101676
+		title = "Honor the Brazilian Banquet"
+		desc = EVTDESC2101676
+		picture = pbc_argentina_border_treaty
+
+		is_triggered_only = yes
+
+		option = {
+			name = "Very well."
+
 			any_owned = {
-				limit = {
-					is_core = PBC
-					NOT = { is_core = BRZ }
-				}
-				secede_province = PBC
+				limit = { is_core = FROM }
+				secede_province = FROM
 			}
+			create_vassal = FROM
+
+			ai_chance = { factor = 100 }
 		}
 	}
-
-	option = {
-		name = "Refuse to negotiate."
-
-		diplomatic_influence = {
-			who = LPL
-			value = -400
-		}
-		diplomatic_influence = {
-			who = PBC
-			value = -400
-		}
-		diplomatic_influence = {
-			who = GCO
-			value = -400
-		}
-		relation = {
-			who = PBC
-			value = -100
-		}
-		relation = {
-			who = LPL
-			value = -100
-		}
-		relation = {
-			who = GCO
-			value = -100
-		}
-		war = {
-			target = GCO
-			attacker_goal = { casus_belli = annex_core_country }
-			defender_goal = { casus_belli = humiliate }
-		}
-		war = {
-			target = LPL
-			attacker_goal = { casus_belli = annex_core_country }
-			defender_goal = { casus_belli = humiliate }
-		}
-		war = {
-			target = PBC
-			attacker_goal = { casus_belli = annex_core_country }
-			defender_goal = { casus_belli = humiliate }
-		}
-
-		ai_chance = { factor = 50 }
-	}
-
-	option = {
-		name = "Agree to the demands."
-
-		prestige = -10
-		set_country_flag = sucre_agree
-		diplomatic_influence = {
-			who = LPL
-			value = 400
-		}
-		diplomatic_influence = {
-			who = PBC
-			value = 400
-		}
-		diplomatic_influence = {
-			who = GCO
-			value = 400
-		}
-		relation = {
-			who = PBC
-			value = 100
-		}
-		relation = {
-			who = LPL
-			value = 100
-		}
-		relation = {
-			who = GCO
-			value = 100
-		}
-		LPL = { all_core = { remove_core = USS } }
-		PBC = { all_core = { remove_core = USS } }
-		GCO = { all_core = { remove_core = USS } }
-		create_vassal = LPL
-		create_vassal = PBC
-		create_vassal = GCO
-		LPL = { all_core = { add_core = USS } }
-		PBC = { all_core = { add_core = USS } }
-		GCO = { all_core = { add_core = USS } }
-
-		ai_chance = { factor = 50 }
-	}
-
-}
-
-country_event = {
-	id = 1804935
-	title = "Honor the Cusco Congress"
-	desc = EVTDESC1804935
-	picture = pbc_argentina_border_treaty
-
-	trigger = {
-		OR = {
-			tag = GCO
-			tag = LPL
-			tag = PBC
-		}
-		OR = {
-			vassal_of = USS
-			exists = no
-		}
-		USS = {
-			has_country_flag = sucre_agree
-			any_owned_province = {
-				is_core = THIS
-				NOT = { is_core = BRZ }
-			}
-			war = no
-		}
-	}
-
-	mean_time_to_happen = {
-		days = 5
-	}
-
-	option = {
-		name = "Demand cores."
-
-		USS = { country_event = 6595090 }
-
-		ai_chance = { factor = 100 }
-	}
-}
-
-country_event = {
-	id = 6595090
-	title = "Honor the Cusco Congress"
-	desc = EVTDESC6595090
-	picture = pbc_argentina_border_treaty
-
-	is_triggered_only = yes
-
-	option = {
-		name = "Very well."
-
-		any_owned = {
-			limit = {
-				is_core = FROM
-				NOT = { is_core = BRZ }
-			}
-			secede_province = FROM
-		}
-		create_vassal = FROM
-
-		ai_chance = { factor = 100 }
-	}
-
-}
-
-country_event = {
-	id = 1900885
-	title = "The Brazilian Banquet"
-	desc = EVTDESC1900885
-	picture = pbc_argentina_border_treaty
-
-	fire_only_once = yes
-
-	trigger = {
-		tag = USS
-		OR = {
-			primary_culture = colombian
-			primary_culture = ecuadorian
-			primary_culture = venezuelan
-			primary_culture = bolivian
-			primary_culture = chilean
-			primary_culture = peruvian
-			primary_culture = argentinian
-			primary_culture = paraguayan
-			primary_culture = uruguayan
-		}
-		OR = {
-			is_greater_power = no
-			is_disarmed = yes
-		}
-		BRZ = { all_core = { owned_by = THIS } }
-		average_consciousness = 6
-		average_militancy = 6
-	}
-
-	mean_time_to_happen = {
-		months = 1
-		modifier = {
-			factor = 0.8
-			average_consciousness = 7
-		}
-		modifier = {
-			factor = 0.8
-			average_consciousness = 9
-		}
-		modifier = {
-			factor = 0.8
-			average_militancy = 7
-		}
-		modifier = {
-			factor = 0.8
-			average_militancy = 9
-		}
-	}
-
-	immediate = {
-		USS = { release_vassal = BRZ }
-	}
-
-	option = {
-		name = "Refuse to negotiate."
-
-		release_vassal = BRZ
-		diplomatic_influence = {
-			who = BRZ
-			value = -400
-		}
-		relation = {
-			who = BRZ
-			value = -100
-		}
-		war = {
-			target = BRZ
-			attacker_goal = { casus_belli = annex_core_country }
-			defender_goal = { casus_belli = humiliate }
-		}
-
-		ai_chance = { factor = 50 }
-	}
-
-	option = {
-		name = "Agree to the demands."
-
-		prestige = -10
-		set_country_flag = rio_agree_USS
-		diplomatic_influence = {
-			who = BRZ
-			value = 400
-		}
-		relation = {
-			who = BRZ
-			value = 100
-		}
-
-		ai_chance = { factor = 50 }
-	}
-
-}
-
-country_event = {
-	id = 8485586
-	title = "Honor the Brazilian Banquet"
-	desc = EVTDESC8485586
-	picture = pbc_argentina_border_treaty
-
-	trigger = {
-		tag = BRZ
-		OR = {
-			vassal_of = USS
-			exists = no
-		}
-		USS = {
-			has_country_flag = rio_agree_USS
-			any_owned_province = { is_core = THIS }
-			war = no
-		}
-	}
-
-	mean_time_to_happen = {
-		days = 5
-	}
-
-	option = {
-		name = "Demand cores."
-
-		USS = { country_event = 2101676 }
-
-		ai_chance = { factor = 100 }
-	}
-
-}
-
-country_event = {
-	id = 2101676
-	title = "Honor the Brazilian Banquet"
-	desc = EVTDESC2101676
-	picture = pbc_argentina_border_treaty
-
-	is_triggered_only = yes
-
-	option = {
-		name = "Very well."
-
-		any_owned = {
-			limit = { is_core = FROM }
-			secede_province = FROM
-		}
-		create_vassal = FROM
-
-		ai_chance = { factor = 100 }
-	}
-}
-
-country_event = {
-	id = 8165067
-	title = "The War of the Americas"
-	desc = EVTDESC8165067
-	picture = boer_war
-
-	is_triggered_only = yes
-
-	option = {
-		name = "To arms!"
-
-		set_country_flag = USS_dismantle_USA
-		any_pop = {
-			limit = {
-				is_accepted_culture = yes
-				is_primary_culture = yes
-			}
-			consciousness = -5
-			militancy = -5
-		}
-
-		ai_chance = { factor = 100 }
-	}
-}
 
 
 ## USSA-USA war ##
+
+	country_event = {
+		id = 8165067
+		title = "The War of the Americas"
+		desc = EVTDESC8165067
+		picture = boer_war
+
+		is_triggered_only = yes
+
+		option = {
+			name = "To arms!"
+
+			set_country_flag = USS_dismantle_USA
+			any_pop = {
+				limit = {
+					is_accepted_culture = yes
+					is_primary_culture = yes
+				}
+				consciousness = -5
+				militancy = -5
+			}
+
+			ai_chance = { factor = 100 }
+		}
+	}
 
 	#Description: The dismantling of the USA after the war with the USSA.
 	country_event = {
