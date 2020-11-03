@@ -331,7 +331,7 @@
 		}
 	}
 
-	#Description: Pacification of Patagonia - provinces in Patagonia gain liferating
+	#Description: Pacification of Patagonia - provinces in Patagonia gain liferating # TODO check province ids and regions
 	province_event = {
 		id = 97086
 		title = "EVTNAME97086"
@@ -386,88 +386,132 @@
 		}
 	}
 
-	#Description: The Argentina-Chile Border Treaty - Chile can accept (historical borders) or deny (Chile claims Patagonia Argentina claims Magallanes)
-	country_event = {
-		id = 97090
-		title = "EVTNAME97090"
-		desc = "EVTDESC97090"
-		picture = "argentina_chile_border_treaty"
+	## The Argentina-Chile Border Treaty ##
 
-		is_triggered_only = yes
+		#Description: Chile can accept (historical borders) or deny (Chile claims Patagonia Argentina claims Magallanes)
+		country_event = {
+			id = 97090
+			title = "EVTNAME97090"
+			desc = "EVTDESC97090"
+			picture = "argentina_chile_border_treaty"
 
-		immediate = { CHL_2333 = { add_core = THIS } }
+			is_triggered_only = yes
 
-		# Sign the treaty.
-		option = {
-			name = "EVTOPTA97090"
+			immediate = { CHL_2333 = { add_core = THIS } }
 
-			relation = {
-				who = FROM
-				value = 200
-			}
-			any_owned = {
-				limit = {
-					is_core = FROM
-					is_core = PTG
+			# Sign the treaty.
+			option = {
+				name = EVTOPTA97090
+
+				relation = {
+					who = FROM
+					value = 200
 				}
-				secede_province = FROM
-				remove_core = THIS
-			}
-			FROM = {
 				any_owned = {
 					limit = {
-						is_core = THIS
+						is_core = FROM
 						is_core = PTG
 					}
-					secede_province = THIS
-					remove_core = FROM
+					secede_province = FROM
+					remove_core = THIS
 				}
-			}
+				FROM = { country_event = 97089 }
 
-			ai_chance = {
-				factor = 90
-				modifier = {
-					factor = 0.8
-					war_policy = jingoism
-				}
-				modifier = {
-					factor = 0.8
-					NOT = { relation = { who = FROM value = 0 } }
-				}
-				modifier = {
-					factor = 0.8
-					FROM = {
-						any_owned_province = { is_core = CHL }
+				ai_chance = {
+					factor = 90
+					modifier = {
+						factor = 0.8
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 0.8
+						NOT = { relation = { who = FROM value = 0 } }
+					}
+					modifier = {
+						factor = 0.8
+						FROM = { any_owned_province = { is_core = CHL } }
+					}
+					modifier = {
+						factor = 0.8
+						any_owned_province = { is_core = FROM }
 					}
 				}
-				modifier = {
-					factor = 0.8
-					any_owned_province = { is_core = FROM }
+			}
+
+			# There is no need for such an agreement.
+			option = {
+				name = EVTOPTB97090
+
+				FROM = { country_event = 97088 }
+
+				relation = {
+					who = FROM
+					value = -50
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 2
+						owns = 2399
+					}
+					modifier = {
+						factor = 1.5
+						owns = 2398
+					}
 				}
 			}
 		}
 
-		# There is no need for such an agreement.
-		option = {
-			name = "EVTOPTB97090"
+		#Description: Chile ratified the border treaty.
+		country_event = {
+			id = 97089
+			title = EVTNAME97089
+			desc = EVTDESC97089
+			picture = "argentina_chile_border_treaty"
 
-			ARG_2398 = { add_core = THIS } # Patagonia
+			is_triggered_only = yes
 
-			CHL_2333 = { add_core = FROM } # Magallanes
+			option = {
+				name = EVTOPTA97089
 
-			ARG_2400 = { # Tierra del Fuego
-				add_core = THIS
-				add_core = FROM
+				any_owned = {
+					limit = {
+						is_core = FROM
+						is_core = PTG
+					}
+					secede_province = FROM
+					remove_core = THIS
+				}
 			}
-
-			relation = {
-				who = FROM
-				value = -50
-			}
-
-			ai_chance = { factor = 10 }
 		}
-	}
+
+		#Description: Chile has refused.
+		country_event = {
+			id = 97088
+			title = EVTNAME97088
+			desc = EVTDESC97088
+			picture = "argentina_chile_border_treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA97088
+
+				# TODO
+
+				ARG_2398 = { add_core = FROM } # Patagonia
+
+				CHL_2333 = { add_core = THIS } # Magallanes
+
+				ARG_2400 = { # Tierra del Fuego
+					add_core = THIS
+					add_core = FROM
+				}
+			}
+		}
+
+		# TODO event for Tierra del Fuego split
 
 ### Platine War in Argentina ###
 

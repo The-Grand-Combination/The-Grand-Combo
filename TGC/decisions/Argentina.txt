@@ -1,7 +1,5 @@
 political_decisions = {
 
-## TODO claims on Falklands and South Georgia
-
 ## Occupation of empty provinces ##
 
     #Description: Occupation of the empty provinces in central Argentina.
@@ -220,6 +218,10 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	# TODO add choice for Argentina whether to propose treaty or not.
+	# If both sides agree to the treaty, borders will be set as historical except for Tierra del Fuego (later event)
+	# If either side declines the treaty, owned PTG cores become cores.
+	# If one side declines the treaty, the other can choose to make claims, and then the other in turn.
     #Description: Once all of Patagonia is occupied, Argentina can propose a border treaty to Chile
 	argentina_chile_border_treaty = {
 		picture = argentina_chile_border_treaty
@@ -242,22 +244,24 @@ political_decisions = {
 			}
 			NOT = { has_country_flag = argentina_chile_border_treaty }
 
-			2328 = { empty = no } # Valdivia
-			2334 = { empty = no } # Araucania
+			NOT = { PTG = { any_core = { empty = yes } } }
 
-			2333 = { empty = no } # Archipelago de los Chonos
-			2335 = { empty = no } # Estrecho de Magallanes
+			# 2328 = { empty = no } # Valdivia
+			# 2334 = { empty = no } # Araucania
 
-			2391 = { empty = no } # Lagunas de Epulalquen
-			2392 = { empty = no } # Mercedes de Patagones
-			2394 = { empty = no } # Pais de la Manzanas
+			# 2333 = { empty = no } # Archipelago de los Chonos
+			# 2335 = { empty = no } # Estrecho de Magallanes
 
-			2396 = { empty = no } # Fuerte de San Jose de la Candelaria
-			2398 = { empty = no } # Puerto Deseado
-			2399 = { empty = no } # Rio Gallegos
+			# 2391 = { empty = no } # Lagunas de Epulalquen
+			# 2392 = { empty = no } # Mercedes de Patagones
+			# 2394 = { empty = no } # Pais de la Manzanas
 
-			2397 = { empty = no } # Canp de Jprmps
-			2400 = { empty = no } # Isla Grande de Tierra del Fuego
+			# 2396 = { empty = no } # Fuerte de San Jose de la Candelaria
+			# 2398 = { empty = no } # Puerto Deseado
+			# 2399 = { empty = no } # Rio Gallegos
+
+			# 2397 = { empty = no } # Canp de Jprmps
+			# 2400 = { empty = no } # Isla Grande de Tierra del Fuego
 		}
 
 		allow = {
@@ -280,7 +284,7 @@ political_decisions = {
 
 ## Flavor ##
 
-    #DescriptionL Centralize the country by making Buenos Aires the capital and removing cores of minors.
+    #Description: Centralize the country by making Buenos Aires the capital and removing cores of minors.
 	make_buenos_aires_capital = {
 		picture = buenos_aires_capital
 		potential = {
@@ -807,7 +811,66 @@ political_decisions = {
 		}
 	}
 
-	# TODO claims on Falklands and South Georgia
+	#Description: Argentina/La Plata can claim the Falklands and South Georgia.
+	argentina_claim_falklands = {
+		picture = dreams_of_empire
+		potential = {
+			OR = {
+				tag = ARC
+				tag = ARG
+				tag = LPL
+				tag = USS
+			}
+			# TODO owns the 20 liferating provinces in central coastal Argentina
+			has_global_flag = argentina_claim_falklands
+		}
+
+		allow = {
+			OR = {
+				is_secondary_power = yes
+				nationalism_n_imperialism = 1
+			}
+		}
+
+		effect = {
+			set_global_flag = argentina_claim_falklands
+			badboy = 4
+			2131 = { add_core = THIS } # Falklands
+			2133 = { add_core = THIS } # South Georgia
+			random_owned = {
+				limit = {
+					tag = USS
+					exists = LPL
+				}
+				2131 = { add_core = LPL }
+				2133 = { add_core = LPL }
+			}
+			random_owned = {
+				limit = {
+					tag = USS
+					2348 = { is_core = ARC }
+				}
+				2131 = { add_core = ARC }
+				2133 = { add_core = ARC }
+			}
+			random_owned = {
+				limit = {
+					tag = USS
+					2348 = { is_core = ARG }
+				}
+				2131 = { add_core = ARG }
+				2133 = { add_core = ARG }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.85
+            }
+		}
+	}
 
 ## Other ##
 

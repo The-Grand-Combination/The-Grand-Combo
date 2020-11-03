@@ -1830,6 +1830,20 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 
+	# Pay off the debts and keep the colony
+	option = {
+		name = "EVTOPTB441266"
+
+		treasury = -200000
+		any_owned = {
+			limit = { is_core = LIB }
+			add_province_modifier = { name = nationalist_agitation duration = 1095 }
+			any_pop = { militancy = 5 consciousness = 7 }
+		}
+
+		ai_chance = { factor = 0 }
+	}
+
 	# Play as Liberia
 	option = {
 		name = "EVTOPTC441266"
@@ -1843,20 +1857,6 @@ country_event = {
 			add_country_modifier = { name = unrecognized_country duration = 3650 }
 		}
 		change_tag_no_core_switch = LIB
-
-		ai_chance = { factor = 0 }
-	}
-
-	# Pay off the debts and keep the colony
-	option = {
-		name = "EVTOPTB441266"
-
-		treasury = -200000
-		any_owned = {
-			limit = { is_core = LIB }
-			add_province_modifier = { name = nationalist_agitation duration = 1095 }
-			any_pop = { militancy = 5 consciousness = 7 }
-		}
 
 		ai_chance = { factor = 0 }
 	}
@@ -2655,6 +2655,7 @@ country_event = {
 			option = {
 				name = "EVTOPTA1904191424"
 
+				2 = { remove_core = THIS }
 				FROM = { country_event = 1904191425 }
 
 				ai_chance = {
@@ -2714,7 +2715,6 @@ country_event = {
 				2 = {
 					secede_province = THIS
 					add_core = THIS
-					remove_core = FROM
 				}
 				relation = { who = FROM value = -100 }
 				war_exhaustion = -10
@@ -3674,14 +3674,15 @@ country_event = {
 		#Description: UK Gets Colombia from HBC - in case it comes to war
 		country_event = {
 			id = 44157
-			title = "EVTNAME44157"
-			desc = "EVTDESC44157"
+			title = EVTNAME44157
+			desc = EVTDESC44157
 			picture = "treaty"
 
 			is_triggered_only = yes
 
 			option = {
-				name = "EVTOPTA6044157"
+				name = EVTOPTA44157
+
 				RPL = {
 					any_owned = {
 						limit = { is_core = COL }
@@ -3914,16 +3915,16 @@ country_event = {
 
 	## Crusade For Canada ##
 
-		#Description: Triggered for the UK when the USA claims all of Canada # TODO localization
+		#Description: Triggered for the UK when the USA claims all of Canada
 		country_event = {
 			id = 72749
-			title = "The Americans Claim All of Canada"
+			title = EVTNAME72749
 			desc = EVTDESC72749
 			picture = "boer_war"
 			is_triggered_only = yes
 
 			option = {
-				name = "We should have burnt that colony to the ground when we had the chance!"
+				name = EVTOPTA72749
 
 				any_country = {
 					limit = {
@@ -3971,11 +3972,11 @@ country_event = {
 			}
 		}
 
-		#Description: If the UK denies the Crusade for Canada, they can release New England as a vassal
+		#Description: If the UK denies the Crusade for Canada, they can release New England as a vassal or incorporate it into Canada
 		country_event = {
 			id = 994180
-			title = "Release New England"
-			desc = "New England would serve as a valuable ally in the New World."
+			title = EVTNAME994180
+			desc = EVTDESC994180
 			picture = "boer_war"
 
 			fire_only_once = yes
@@ -3987,9 +3988,10 @@ country_event = {
 				war = no
 			}
 
-
+			# Release New England as a vassal
 			option = {
-				name = "Ok."
+				name = EVTOPTA994180
+
 				release_vassal = NEN
 				badboy = -5
 				NEN = {
@@ -4002,19 +4004,35 @@ country_event = {
 					who = NEN
 					value = 400
 				}
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Incorporate New England into Canada
+			option = {
+				name = EVTOPTB994180
+
+				NEN = { all_core = { add_core = CAN } }
+				random_owned = {
+					limit = { exists = CAN }
+					NEN = { all_core = { secede_province = CAN } }
+				}
+				CAN = { add_accepted_culture = yankee }
+
+				ai_chance = { factor = 0 }
 			}
 		}
 
 		#Description: Fired for the USA if the UK denies them the crusade for Canada.
 		country_event = {
 			id = 72748
-			title = "Treaty of Ottawa"
+			title = EVTNAME72748
 			desc = EVTDESC72748
 			major = yes
 			is_triggered_only = yes
 
 			option = {
-				name = "Will America ever recover from this crushing defeat?"
+				name = EVTOPTA72748
 
 				prestige = -30
 				any_pop = {
@@ -4035,13 +4053,13 @@ country_event = {
 		#Description: Fired for the UK's spherelings and vassals in the Americas if America successfully takes Canada.
 		country_event = {
 			id = 72747
-			title = "Liberation? Or New Overlords?"
-			desc = "The recent war between the United States and our European Overloads has resulted in our so called liberation by American forces."
+			title = EVTNAME72747
+			desc = EVTDESC72747
 			is_triggered_only = yes
 
 			# Alliance, influence with the USA and become a democracy
 			option = {
-				name = "The Americans can't be worse than the Europeans."
+				name = EVTOPTA72747
 
 				FROM = {
 					release_vassal = THIS
@@ -4067,13 +4085,13 @@ country_event = {
 		#Description: Triggered for the UK if the USA wins the Crusade for Canada - not called anywhere
 		country_event = {
 			id = 72740
-			title = "Treaty of Philadelphia"
+			title = EVTNAME72740
 			desc = EVTDESC72740
 			major = yes
 			is_triggered_only = yes
 
 			option = {
-				name = "Damn those colonist! May they freeze in their new territories."
+				name = EVTOPTA72740
 
 				prestige = -30
 
@@ -4084,14 +4102,14 @@ country_event = {
 		#Description: Triggered by decision for the USA if they conquer Canada so they can choose whether to integrate Quebec or give it home rule.
 		country_event = {
 			id = 93744
-			title = "The Quebec Question?"
+			title = EVTNAME93744
 			desc = EVTDESC93744
 			picture = french_canada
 			is_triggered_only = yes
 
 			# Refuse home rule
 			option = {
-				name = "This is one nation indivisible. There will be no home rule."
+				name = EVTOPTA93744
 
 				add_accepted_culture = french_canadian
 				set_country_flag = USA_french
@@ -4106,7 +4124,7 @@ country_event = {
 
 			# Grant home rule
 			option = {
-				name = "Quebec deserves to be the master of its destiny."
+				name = EVTOPTB93744
 
 				badboy = -5
 				set_country_flag = USA_QUE_agree
@@ -4185,7 +4203,7 @@ country_event = {
 					}
 					CAN_60 = { add_core = QUE } # Northern Quebec
 					ENG_75 = { add_core = QUE } # Labrador
-					QUE = { all_core = { remove_core = FROM } }
+					QUE = { all_core = { remove_core = USA } }
 					QUE = { all_core = { add_core = THIS } }
 					FROM = {
 						any_owned = {
@@ -4214,7 +4232,7 @@ country_event = {
 					FROM = { treasury = 50000 }
 					CAN_60 = { add_core = QUE } # Northern Quebec
 					ENG_75 = { add_core = QUE } # Labrador
-					QUE = { all_core = { remove_core = FROM } }
+					QUE = { all_core = { remove_core = USA } }
 					FROM = { set_country_flag = betray_revolution }
 					relation = {
 						who = FROM
@@ -4244,7 +4262,7 @@ country_event = {
 						who = FROM
 						value = -50
 					}
-					FROM = { country_event = { id = 72734 } days = 0 }
+					FROM = { country_event = { id = 72734 days = 0 } }
 
 					ai_chance = { factor = 30 }
 				}
@@ -4367,7 +4385,7 @@ country_event = {
 				is_triggered_only = yes
 
 				option = {
-					name = ""
+					name = EVTOPTA72733
 
 					set_country_flag = USA_french
 					add_accepted_culture = french_canadian
@@ -4447,7 +4465,7 @@ country_event = {
 			}
 		}
 
-		#Description: Triggered upon peace-out with Monroe Doctrine CB (removes non-American cores on American provinces) - TODO implement this in cb_types.txt
+		#Description: Triggered upon peace-out with Monroe Doctrine CB (removes non-American cores on American provinces)
 		country_event = {
 			id = 111979
 			title = EVTNAME111979
@@ -4455,7 +4473,7 @@ country_event = {
 			is_triggered_only = yes
 
 			option = {
-				name = ""
+				name = EVTOPTA111979
 
 				clr_country_flag = NW_overlord
 				THIS = {
@@ -4490,7 +4508,7 @@ country_event = {
 			}
 		}
 
-	#Description: Once New World Hegemony is declared, New Hampshire can be renamed to Independence
+	#Description: Once New World Hegemony is declared, New England can be renamed to Independence # Devnote: USA_247 in TGC refers to New Hampshire.
 	country_event = {
 		id = 1602682
 		title = EVTNAME1602682
@@ -4691,15 +4709,17 @@ country_event = {
 
 	## The Monarchy of Mexico ##
 
+		#Description: If the USA has New World Hegemony and Mexico is a Monarchy, they can decide if they want to topple it.
 		country_event = {
 			id = 7597306
-			title = "The Monarchy of Mexico"
+			title = EVTNAME7597306
 			desc = EVTDESC7597306
 			picture = autocracy
 			is_triggered_only = yes
 
+			# Democracy is nonnegotiable.
 			option = {
-				name = "Democracy is nonnegotiable!"
+				name = EVTOPTA7597306
 
 				MEX = {
 					country_event = {
@@ -4711,8 +4731,9 @@ country_event = {
 				ai_chance = { factor = 60 }
 			}
 
+			# Democracy and tradition may coexist if done properly
 			option = {
-				name = "Democracy and Tradition may coexist if done properly."
+				name = EVTOPTB7597306
 
 				MEX = {
 					country_event = {
@@ -4724,8 +4745,9 @@ country_event = {
 				ai_chance = { factor = 20 }
 			}
 
+			# Foreign monarchs are a greater threat
 			option = {
-				name = "Foreign Monarchs are a greater threat."
+				name = EVTOPTC7597306
 
 				relation = {
 					who = MEX
@@ -4736,102 +4758,17 @@ country_event = {
 			}
 		}
 
-		country_event = {
-			id = 1726880
-			title = "American Demands on Monarchy of Mexico"
-			desc = EVTDESC1726880
-			picture = autocracy
-			is_triggered_only = yes
-
-			option = {
-				name = "Agree to the reforms reforms."
-
-				relation = {
-					who = USA
-					value = 100
-				}
-				government = hms_government
-				political_reform = no_slavery
-				political_reform = universal_voting
-				political_reform = state_equal_weight
-				political_reform = first_past_the_post
-				political_reform = yes_meeting
-				political_reform = free_press
-				political_reform = secret_ballots
-				any_pop = {
-					limit = {
-						OR = {
-							pop_majority_ideology = reactionary
-							pop_majority_ideology = conservative
-						}
-					}
-					consciousness = 5
-					militancy = 5
-				}
-				any_pop = {
-					limit = { pop_majority_ideology = liberal }
-					consciousness = -5
-					militancy = -5
-				}
-
-				ai_chance = {
-					factor = 60
-					modifier = {
-						factor = 0.75
-						government = hms_government
-					}
-				}
-			}
-
-			option = {
-				name = "Never! Viva la Emperor"
-
-				USA = {
-					relation = {
-						who = MEX
-						value = -100
-					}
-					diplomatic_influence = {
-						who = MEX
-						value = -400
-					}
-					country_event = 8981518
-				}
-				any_pop = {
-					limit = {
-						OR = {
-							pop_majority_ideology = reactionary
-							pop_majority_ideology = conservative
-						}
-					}
-					consciousness = -5
-					militancy = -5
-				}
-				any_pop = {
-					limit = { pop_majority_ideology = liberal }
-					consciousness = 5
-					militancy = 5
-				}
-
-				ai_chance = {
-					factor = 40
-					modifier = {
-						factor = 0.8
-						government = absolute_monarchy
-					}
-				}
-			}
-		}
-
+		#Description: Triggered for Mexico if the USA demands they become a democracy.
 		country_event = {
 			id = 2786154
-			title = "American Demands on Monarchy of Mexico"
+			title = EVTNAME2786154
 			desc = EVTDESC2786154
 			picture = autocracy
 			is_triggered_only = yes
 
+			# Keep the monarchy
 			option = {
-				name = "Never! Viva la Emperor"
+				name = EVTOPTA2786154
 
 				USA = {
 					relation = {
@@ -4869,8 +4806,9 @@ country_event = {
 				}
 			}
 
+			# Become a democracy
 			option = {
-				name = "Replace the Emperor with a President."
+				name = EVTOPTB2786154
 
 				USA = { set_country_flag = USA_demcoup }
 				government = democracy
@@ -4905,15 +4843,107 @@ country_event = {
 			}
 		}
 
+		#Description: Triggered for Mexico if the USA demands they reform their monarchy.
+		country_event = {
+			id = 1726880
+			title = EVTNAME1726880
+			desc = EVTDESC1726880
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Keep the monarchy
+			option = {
+				name = EVTOPTA1726880
+
+				USA = {
+					relation = {
+						who = MEX
+						value = -100
+					}
+					diplomatic_influence = {
+						who = MEX
+						value = -400
+					}
+					country_event = 8981518
+				}
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = -5
+					militancy = -5
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = 5
+					militancy = 5
+				}
+
+				ai_chance = {
+					factor = 40
+					modifier = {
+						factor = 0.8
+						government = absolute_monarchy
+					}
+				}
+			}
+
+			# Accept the reforms
+			option = {
+				name = EVTOPTB1726880
+
+				relation = {
+					who = USA
+					value = 100
+				}
+				government = hms_government
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = 5
+					militancy = 5
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = -5
+					militancy = -5
+				}
+
+				ai_chance = {
+					factor = 60
+					modifier = {
+						factor = 0.75
+						government = hms_government
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for the USA if Mexico refuses reforms.
 		country_event = {
 			id = 8981518
-			title = "Mexican Empire Refuses to Reform"
+			title = EVTNAME8981518
 			desc = EVTDESC8981518
 			picture = autocracy
 			is_triggered_only = yes
 
+			# Leave it be
 			option = {
-				name = "Try to salvage relations"
+				name = EVTOPTA8981518
 
 				prestige = -10
 				relation = {
@@ -4928,8 +4958,9 @@ country_event = {
 				ai_chance = { factor = 20 }
 			}
 
+			# Go to war
 			option = {
-				name = "Send the Sons of Democracy down south."
+				name = EVTOPTB8981518
 
 				badboy = 2
 				set_country_flag = USA_demcoup
@@ -4959,10 +4990,10 @@ country_event = {
 
 	## Brazillian Strongman ##
 
-		#Description: Triggered for Brazil if the USA has taken steps to install a democracy in Mexico
+		#Description: Triggered for Brazil if the USA has taken steps to install a democracy in Mexico.
 		country_event = {
 			id = 7391609
-			title = "The American Threat"
+			title = EVTNAME7391609
 			desc = EVTDESC7391609
 			picture = brazil_court
 
@@ -4986,7 +5017,7 @@ country_event = {
 
 			# Stand strong
 			option = {
-				name = "The Monarchy will not flee."
+				name = EVTOPTA7391609
 
 				any_pop = {
 					limit = {
@@ -5004,8 +5035,9 @@ country_event = {
 
 			# The monarchy flees
 			option = {
-				name = "Brazil is no longer safe."
+				name = EVTOPTB7391609
 
+				set_country_flag = brazil_monarchy_fled
 				government = democracy
 				political_reform = no_slavery
 				political_reform = universal_voting
@@ -5014,28 +5046,30 @@ country_event = {
 				political_reform = yes_meeting
 				political_reform = free_press
 				political_reform = secret_ballots
-				any_pop = {
-					limit = { pop_majority_ideology = reactionary }
-					militancy = 5
-					consciousness = 5
+				scaled_consciousness = {
+					factor = 5
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = 5
+					ideology = reactionary
 				}
 				USA = { country_event = 9452276 }
-				country_event = { id = 3886062 days = 180 }
 
 				ai_chance = { factor = 60 }
 			}
 		}
 
-		#Description: Triggered for the USA if the Brazillian monarchy flees
+		#Description: Triggered for the USA if the Brazillian monarchy flees.
 		country_event = {
 			id = 9452276
-			title = "Brazilian revolution"
+			title = EVTNAME9452276
 			desc = EVTDESC9452276
 			picture = brazil_court
 			is_triggered_only = yes
 
 			option = {
-				name = "God Bless the Brazilians"
+				name = EVTOPTA9452276
 
 				diplomatic_influence = { who = BRZ value = 400 }
 				relation = { who = BRZ value = 200 }
@@ -5044,22 +5078,32 @@ country_event = {
 			}
 		}
 
-		#Description: Triggered for Brazil 6 months after the monarchy flees
+		#Description: Triggered for Brazil 6 months after the monarchy flees.
 		country_event = {
 			id = 3886062
-			title = "The State of the New Republic"
+			title = EVTNAME3886062
 			desc = EVTDESC3886062
 			picture = dominican_revolution2
-			is_triggered_only = yes
+
+			trigger = {
+				has_country_flag = brazil_monarchy_fled
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = { months = 12 }
 
 			# Remain a democracy
 			option = {
-				name = "The Republic will Endure"
+				name = EVTOPTA3886062
 
-				any_pop = {
-					limit = { ideology = reactionary }
-					militancy = 8
-					consciousness = 8
+				scaled_consciousness = {
+					factor = 8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = reactionary
 				}
 
 				ai_chance = { factor = 50 }
@@ -5067,7 +5111,7 @@ country_event = {
 
 			# Become presidential dictatorship
 			option = {
-				name = "Strength Guarantees Stability."
+				name = EVTOPTB3886062
 
 				government = presidential_dictatorship
 				ruling_party_ideology = conservative
@@ -5077,20 +5121,29 @@ country_event = {
 				political_reform = state_press
 				political_reform = underground_parties
 				political_reform = no_trade_unions
-				any_pop = {
-					limit = { ideology = liberal }
-					militancy = 8
-					consciousness = 8
+				scaled_consciousness = {
+					factor = 8
+					ideology = liberal
 				}
-				any_pop = {
-					limit = {
-						OR = {
-							ideology = reactionary
-							ideology = conservative
-						}
-					}
-					militancy = -8
-					consciousness = -8
+				scaled_militancy = {
+					factor = 8
+					ideology = liberal
+				}
+				scaled_consciousness = {
+					factor = -8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = -8
+					ideology = reactionary
+				}
+				scaled_consciousness = {
+					factor = -8
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = -8
+					ideology = conservative
 				}
 				USA = { country_event = { id = 2791898 days =  8 } }
 
@@ -5101,14 +5154,14 @@ country_event = {
 		#Description: Triggered for the USA if Brazil becomes a dictatorship
 		country_event = {
 			id = 2791898
-			title = "Strong Man Takes Hold in Rio"
+			title = EVTNAME2791898
 			desc = EVTDESC2791898
 			picture = dominican_revolution2
 			is_triggered_only = yes
 
 			# Accept the new dictator
 			option = {
-				name = "Recognize the new government"
+				name = EVTOPTA2791898
 
 				relation = { who = BRZ value = 100 }
 				any_pop = {
@@ -5121,7 +5174,7 @@ country_event = {
 
 			# Pressure him to step down
 			option = {
-				name = "Pressure him to step down."
+				name = EVTOPTB2791898
 
 				any_pop = {
 					limit = {
@@ -5141,14 +5194,14 @@ country_event = {
 		#Description: Triggered for Brazil if the USA pressures the dictator to step down
 		country_event = {
 			id = 1595471
-			title = "United States Pressures Reforms."
+			title = EVTNAME1595471
 			desc = EVTDESC1595471
 			picture = dominican_revolution2
 			is_triggered_only = yes
 
 			# Resist
 			option = {
-				name = "They have no right to interfere."
+				name = EVTOPTA1595471
 
 				any_pop = {
 					limit = {
@@ -5168,7 +5221,7 @@ country_event = {
 
 			# Comply
 			option = {
-				name = "Let's not be arrogant."
+				name = EVTOPTB1595471
 
 				government = democracy
 				political_reform = no_slavery
@@ -5197,14 +5250,14 @@ country_event = {
 		#Description: Triggered for the USA if the Brazillian dictator refuses to step down.
 		country_event = {
 			id = 2931608
-			title = "Brazilian Strongman Refuses to Step down."
+			title = EVTNAME2931608
 			desc = EVTDESC2931608
 			picture = dominican_revolution2
 			is_triggered_only = yes
 
 			# Go to war
 			option = {
-				name = "Another War for Liberty"
+				name = EVTOPTA2931608
 
 				badboy = 4
 				any_pop = {
@@ -5240,7 +5293,7 @@ country_event = {
 
 			# Let it go
 			option = {
-				name = "The New World cannot be fighting itself."
+				name = EVTOPTB2931608
 
 				relation = { who = BRZ value = 100 }
 				any_pop = {
@@ -5266,13 +5319,13 @@ country_event = {
 		#Description: Triggered for the USA if the Brazillian dictator steps down.
 		country_event = {
 			id = 4949670
-			title = "Brazilian Strongman Steps Down."
-			desc = "The Brazilian government has agreed to reforms and elections are on course to take place. Another victory for American diplomacy."
+			title = EVTNAME4949670
+			desc = EVTDESC4949670
 			picture = dominican_revolution2
 			is_triggered_only = yes
 
 			option = {
-				name = "Democracy Prevails Once More."
+				name = EVTOPTA4949670
 
 				diplomatic_influence = { who = BRZ value = 400 }
 				relation = { who = BRZ value = 200 }
@@ -5286,14 +5339,14 @@ country_event = {
 		#Description: The USA can choose what to do regarding the Brazillian monarchy
 		country_event = {
 			id = 8133696
-			title = "The Monarchy of Brazil"
+			title = EVTNAME8133696
 			desc = EVTDESC8133696
 			picture = autocracy
 			is_triggered_only = yes
 
 			# Demand democracy
 			option = {
-				name = "Democracy is nonnegotiable!"
+				name = EVTOPTA8133696
 
 				BRZ = { country_event = { id = 4640050 days = 15 } }
 
@@ -5302,7 +5355,7 @@ country_event = {
 
 			# Demand reform
 			option = {
-				name = "Democracy and Tradition may coexist if done properly."
+				name = EVTOPTB8133696
 
 				BRZ = { country_event = { id = 5984582 days = 15 } }
 
@@ -5311,7 +5364,7 @@ country_event = {
 
 			# Do nothing
 			option = {
-				name = "Foreign Monarchs are a greater threat."
+				name = EVTOPTC8133696
 
 				relation = { who = BRZ value = 100 }
 
@@ -5322,14 +5375,14 @@ country_event = {
 		#Description: Triggered for Brazil if the USA demands reform
 		country_event = {
 			id = 5984582
-			title = "The Monarchy of Brazil"
+			title = EVTNAME5984582
 			desc = EVTDESC5984582
 			picture = autocracy
 			is_triggered_only = yes
 
 			# Agree
 			option = {
-				name = "Agree to Reforms."
+				name = EVTOPTA5984582
 
 				relation = {
 					who = USA
@@ -5355,7 +5408,7 @@ country_event = {
 
 			# Refuse
 			option = {
-				name = "The Emperor Answers Only to God!"
+				name = EVTOPTB5984582
 
 				USA = {
 					relation = {
@@ -5378,14 +5431,34 @@ country_event = {
 		#Description: Triggered for Brazil if the USA demands democracy
 		country_event = {
 			id = 4640050
-			title = "The Monarchy of Brazil"
+			title = EVTNAME4640050
 			desc = EVTDESC4640050
 			picture = autocracy
 			is_triggered_only = yes
 
+			# Accept
+			option = {
+				name = EVTOPTA4640050
+
+				government = democracy
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				relation = {
+					who = USA
+					value = 100
+				}
+
+				ai_chance = { factor = 40 }
+			}
+
 			# Refuse
 			option = {
-				name = "The Emperor Answers Only to God!"
+				name = EVTOPTB4640050
 
 				USA = {
 					relation = {
@@ -5403,39 +5476,19 @@ country_event = {
 					}
 				}
 			}
-
-			# Accept
-			option = {
-				name = "Replace the Emperor with a President."
-
-				government = democracy
-				political_reform = no_slavery
-				political_reform = universal_voting
-				political_reform = state_equal_weight
-				political_reform = first_past_the_post
-				political_reform = yes_meeting
-				political_reform = free_press
-				political_reform = secret_ballots
-				relation = {
-					who = USA
-					value = 100
-				}
-
-				ai_chance = { factor = 40 }
-			}
 		}
 
 		#Description: Triggered for the USA when Brazil refuses.
 		country_event = {
 			id = 7078003
-			title = "The Monarchy of Brazil"
+			title = EVTNAME7078003
 			desc = EVTDESC7078003
 			picture = autocracy
 			is_triggered_only = yes
 
 			# Let it go
 			option = {
-				name = "Nevermind"
+				name = EVTOPTA7078003
 
 				prestige = -10
 
@@ -5444,7 +5497,7 @@ country_event = {
 
 			# Go to war
 			option = {
-				name = "Bring Brazil Democracy"
+				name = EVTOPTB7078003
 
 				badboy = 2
 				release_vassal = BRZ
@@ -5476,17 +5529,17 @@ country_event = {
 		#Description: Triggered for Chile when the USA asks them to join their Andean puppet
 		country_event = {
 			id = 1225875
-			title = "Join the Andes Republic?"
+			title = EVTNAME1225875
 			desc = EVTDESC1225875
 			picture = Andes2
 			is_triggered_only = yes
 
 			# Accept
 			option = {
-				name = "Accept"
+				name = EVTOPTA1225875
 
-				annex_to = PBC
 				all_core = { add_core = PBC }
+				annex_to = PBC
 
 				ai_chance = {
 					factor = 50
@@ -5499,7 +5552,7 @@ country_event = {
 
 			# Refuse
 			option = {
-				name = "Refuse"
+				name = EVTOPTB1225875
 
 				prestige = 10
 				USA = {
@@ -5515,14 +5568,14 @@ country_event = {
 		#Description: Triggered for the USA if Chile refuses to join the Andean puppet
 		country_event = {
 			id = 7859305
-			title = "Chile Refuses to Join"
+			title = EVTNAME7859305
 			desc = EVTDESC7859305
 			picture = Andes2
 			is_triggered_only = yes
 
 			# Let it be
 			option = {
-				name = "We must accept"
+				name = EVTOPTA7859305
 
 				badboy = -5
 				prestige = -20
@@ -5534,7 +5587,7 @@ country_event = {
 
 			# Go to war
 			option = {
-				name = "It was not an offer to be refused."
+				name = EVTOPTB7859305
 
 				badboy = 5
 				CHL = {
@@ -6064,7 +6117,7 @@ country_event = {
 					consciousness = -5
 				}
 				any_owned = {
-					limit = { has_province_flag = former_cores }
+					limit = { has_province_flag = former_cores } # TODO change to a country specific modifier
 					add_core = THIS
 				}
 
@@ -6123,9 +6176,9 @@ country_event = {
 							}
 							reduce_pop = 1.5
 						}
-						104 = { any_pop = { assimilate = yes } } # San Francisco
-						89 = { any_pop = { assimilate = yes } } # Los Angeles
-						90 = { any_pop = { assimilate = yes } } # San Diego
+						104 = { assimilate = yes } # San Francisco
+						89 = { assimilate = yes } # Los Angeles
+						90 = { assimilate = yes } # San Diego
 					}
 				}
 				random_owned = {
