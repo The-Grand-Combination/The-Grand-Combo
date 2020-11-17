@@ -226,7 +226,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: Form Scandinavia. All countries in the Kalmar Union will get a prompt to join.
+	#Description: Form a political union in Scandinavia. All countries in the Kalmar Union will get a prompt to join (add cores).
 	SCA_political_union = {
 		picture = SCA_political_union
 		potential = {
@@ -285,6 +285,115 @@ political_decisions = {
 			}
 			all_core = { add_core = SCA }
 			set_global_flag = scandinavian_political_union
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Form Scandinavia, become one country with all the countries in the Kalmar Union.
+	form_scandinavia = {
+		news = yes
+		news_desc_long = "form_scandinavia_NEWS_LONG"
+		news_desc_medium = "form_scandinavia_NEWS_MEDIUM"
+		news_desc_short = "form_scandinavia_NEWS_SHORT"
+		potential = {
+			has_country_modifier = leader_of_kalmar
+			NOT = { exists = SCA }
+			has_global_flag = scandinavian_political_union
+			NOT = { has_country_flag = post_colonial_country }
+			capital_scope = { continent = europe }
+			OR = {
+				AND = {
+					NOT = { tag = SWE }
+					SWE = { has_country_modifier = kalmar_union }
+				}
+				AND = {
+					NOT = { tag = NOR }
+					NOR = { has_country_modifier = kalmar_union }
+				}
+				AND = {
+					NOT = { tag = DEN }
+					DEN = { has_country_modifier = kalmar_union }
+				}
+				AND = {
+					NOT = { tag = ICL }
+					ICL = { has_country_modifier = kalmar_union }
+				}
+				AND = {
+					NOT = { tag = SCH }
+					SCH = { has_country_modifier = kalmar_union }
+				}
+			}
+		}
+
+		allow = {
+			NOT = { accepted_culture = finnish }
+			prestige = 300
+			is_greater_power = yes
+			war = no
+			SCA = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							OR = {
+								is_vassal = no
+								vassal_of = THIS
+								AND = {
+									is_vassal = yes
+									NOT = { tag = FIN }
+									is_culture_group = scandinavian
+									overlord = { is_culture_group = scandinavian }
+								}
+							}
+							war = no
+							is_greater_power = no
+						}
+						is_core = FIN
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 20
+			all_core = { add_core = SCA }
+			change_tag = SCA
+			political_reform = federalism
+			remove_country_modifier = kalmar_union
+			remove_country_modifier = leader_of_kalmar
+			remove_country_modifier = customs_union
+			any_country = {
+				limit = {
+					is_culture_group = scandinavian
+					NOT = { primary_culture = finnish }
+					NOT = { has_country_flag = post_colonial_country }
+				}
+				all_core = { add_core = SCA }
+			}
+			any_country = {
+				limit = {
+					exists = yes
+					is_greater_power = no
+					has_country_modifier = kalmar_union
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+						AND = {
+							is_vassal = yes
+							NOT = { tag = FIN }
+							OR = {
+								is_culture_group = scandinavian
+								tag = SCH
+								tag = SWH
+							}
+							overlord = { is_culture_group = scandinavian }
+						}
+					}
+				}
+				country_event = 11101 # Generic inherit
+			}
 		}
 
 		ai_will_do = { factor = 1 }
