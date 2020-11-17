@@ -102,6 +102,7 @@ political_decisions = {
 					OR = {
 						tag = ITA
 						tag = ITS
+						tag = ITP
 					}
 					NOT = {
                         exists = SAR
@@ -116,6 +117,7 @@ political_decisions = {
 					NOT = {
 						exists = ITA
 						exists = ITS
+						exists = ITP
 					}
 				}
 			}
@@ -337,6 +339,7 @@ political_decisions = {
 			NOT = {
 				exists = ITA
 				exists = ITS
+				exists = ITP
 				has_country_flag = war_italian_independence
 			}
             619 = {
@@ -742,10 +745,23 @@ political_decisions = {
 			}
 			capital = 749
 			any_owned_province = {
-				any_core = {
-                    is_culture_group = italian
-                    NOT = { tag = THIS }
-                }
+				is_core = SAR
+				is_core = SVY
+				is_core = SRD
+				is_core = SIC
+				is_core = MOD
+				is_core = TUS
+				is_core = LUC
+				is_core = PAR
+				is_core = GEN
+				is_core = PAP
+				is_core = VEN
+				is_core = LOM
+				is_core = RMG
+				is_core = SYC
+				is_core = SMR
+				is_core = CRS
+				is_core = NPL
 			}
 		}
 
@@ -757,10 +773,23 @@ political_decisions = {
 			any_owned = {
 				limit = {
                     NOT = { is_core = THIS }
-					any_core = {
-                        is_culture_group = italian
-                        NOT = { tag = THIS }
-                    }
+					is_core = SAR
+					is_core = SVY
+					is_core = SRD
+					is_core = SIC
+					is_core = MOD
+					is_core = TUS
+					is_core = LUC
+					is_core = PAR
+					is_core = GEN
+					is_core = PAP
+					is_core = VEN
+					is_core = LOM
+					is_core = RMG
+					is_core = SYC
+					is_core = SMR
+					is_core = CRS
+					is_core = NPL
 				}
 				add_core = THIS
 				remove_core = SAR
@@ -781,7 +810,7 @@ political_decisions = {
                 remove_core = CRS
 				remove_core = NPL
 			}
-            any_country = {
+            random_country = {
                 limit = {
                     tag = THIS
                     NOT = { has_country_flag = already_abolished_italian_minors }
@@ -790,6 +819,7 @@ political_decisions = {
             }
             set_country_flag = already_abolished_italian_minors
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -812,6 +842,7 @@ political_decisions = {
 				has_country_flag = post_colonial_country
 				exists = ITA
 				exists = ITS
+				exists = ITP
 			}
 		}
 
@@ -853,7 +884,26 @@ political_decisions = {
 		effect = {
 			prestige = 20
 			all_core = { remove_core = THIS }
-			change_tag = ITA
+			random_owned = {
+				limit = { owner = { tag = PAP } }
+				ITA = { all_core = { remove_core = ITA add_core = ITP } }
+				change_tag = ITP
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = { tag = PAP }
+						primary_culture = south_italian
+					}
+				}
+				ITA = { all_core = { remove_core = ITA add_core = ITS } }
+				set_global_flag = ITS_form # Not convinced this flag is necessary
+				change_tag = ITS
+			}
+			random_owned = {
+				limit = { owner = { primary_culture = north_italian } }
+				change_tag = ITA
+			}
 			capital = 749
 			add_accepted_culture = north_italian
 			add_accepted_culture = south_italian
@@ -870,7 +920,7 @@ political_decisions = {
 					NOT = { has_country_flag = post_colonial_country }
 					NOT = { tag = SMR }
 				}
-				country_event = 11101
+				country_event = 11101 # Generic inherit
 			}
 			any_country = {
 				limit = {
@@ -895,6 +945,7 @@ political_decisions = {
 				duration = 1095
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 
