@@ -223,7 +223,7 @@
 			name = "EVTOPTA46305"
 
 			BRZ_2408 = {
-				add_province_modifier = { name = nationalist_agitation duration = 1095 }
+				add_province_modifier = { name = nationalist_agitation duration = 1095 } # TODO don't do empty provinces
 				rich_strata = { militancy = 5 consciousness = 8 }
 			}
 			BRZ_2401 = {
@@ -458,7 +458,7 @@
 			}
 			random_owned = {
 				limit = { NOT = { owner = { press_rights = free_press } } }
-				political_reform = free_press
+				owner = { political_reform = free_press }
 			}
 			random_owned = {
 				limit = { owner = { OR = { vote_franschise = landed_voting vote_franschise = none_voting } } }
@@ -742,47 +742,773 @@
 
 ## Borders ##
 
-	# TODO Occupation of the Amazon similar to occupation of Patagonia
-	# BRZ gets:
-	# 2404 if owns 2403
-	# 2532 if owns 2403
-	# 1979 if owns 2532
-	# 2415 if owns 2412
-	# 2408 if owns 2402
-	# ECU gets:
-	# 2283 if owns 2279
-	# 2288 if owns 2283
-	# 2284 if owns 2288
-	# 2289 if owns 2284
-	# 2291 if owns 2289
-	# 2261 if owns 2289
-	# 3295 if owns 2261
-	# 2263 if owns 2291 or 3295
-	# VNZ gets:
-	# 2277 if owns 2274
-	# 3413 if owns 2242
-	# 1979 if owns 3413, 2242
-	# FRA gets:
-	# 2246 if owns 2241
-	# NET gets:
-	# 2245 if owns 2240
-	# ENG gets:
-	# 3414 if owns 2239
-	# CLM gets:
-	# 2260 if owns 2257, 2262
-	# 2401 if owns 2260
-	# 2277 if owns 2278 (to be added to CLM-VNZ border arrangement)
-	# 2291 if owns 2260
-	# 2263 if owns 2401 or 2291
+	#Description: Conquest of the Amazon - occupy empty provinces.
+	country_event = {
+		id = 97087
+		title = "EVTNAME97087"
+		desc = "EVTDESC97087"
+		picture = "conquest_of_the_desert" # TODO change
 
+		trigger = {
+			OR = {
+				## Brazil ##
+					AND = { 2245 = { empty = yes } OR = { owns = 2246 owns = 3414 } owns = 2408 } # Stoelmanseiland
+					AND = { 2246 = { empty = yes } owns = 2415 owns = 2408 } # Wayana
+					AND = { 3414 = { empty = yes } owns = 2408 OR = { owns = 3413 owns = 2245 } } # Cashew Island
+					AND = { 3413 = { empty = yes } owns = 1979 owns = 2532 } # Upper Essequibo River
+					AND = { 1979 = { empty = yes } owns = 2532 } # Upper Takutu River
+					AND = { 2532 = { empty = yes } owns = 2403 owns = 2404 } # Forte de Sao Joaquim do Rio Blanco
+					AND = { 2404 = { empty = yes } owns = 2403 } # Sao Jose do Javari
+					AND = { 2401 = { empty = yes } owns = 2263 owns = 2404 owns = 2403 } # Forte de Sao Gabriel da Cachoeira
+					AND = { 2263 = { empty = yes } owns = 3295 owns = 2404 owns = 2403 } # Sao Paulo dos Cambebas
+					AND = { 3295 = { empty = yes } owns = 2404 } # Sao Francisco Xavier de Tabatinga
+					AND = { 2408 = { empty = yes } owns = 2402 } # Serra de Tumucumaque
+					AND = { 2415 = { empty = yes } owns = 2412 } # Macapa
+				## Ecuador ##
+					AND = { 2263 = { empty = yes } OR = { owns = 2291 owns = 3295 } } # Sao Paulo dos Cambebas
+					AND = { 3295 = { empty = yes } owns = 2261 } # San Francisco Xavier de Tabatinga
+					AND = { 2261 = { empty = yes } owns = 2289 } # Amacayacu
+					AND = { 2291 = { empty = yes } owns = 2298 } # Cahuinari
+					AND = { 2289 = { empty = yes } owns = 2284 } # Rio Putumayo
+					AND = { 2284 = { empty = yes } owns = 2288 } # Rio Napo
+					AND = { 2288 = { empty = yes } owns = 2283 } # San Pablo y San Pedro de Iquitos
+					AND = { 2283 = { empty = yes } owns = 2279 } # Macas
+				## Venezuela ##
+					AND = { 1979 = { empty = yes } owns = 2242 owns = 3413 } # Upper Takutu River
+					AND = { 3413 = { empty = yes } owns = 2242 } # Upper Essequibo River
+					AND = { 2277 = { empty = yes } owns = 2274 } # Piedra del Cocuy
+				## Guyana ##
+					AND = { 2415 = { empty = yes } owns = 2241 owns = 2246 } # Macapa
+					AND = { 2246 = { empty = yes } owns = 2241 } # Wayana
+					AND = { 2245 = { empty = yes } owns = 2240 } # Paramaribo
+					AND = { 3414 = { empty = yes } owns = 2239 } # Cashew Island
+				## Colombia ##
+					AND = { 2263 = { empty = yes } OR = { owns = 2291 owns = 2401 } } # Sao Paulo dos Cambebas
+					AND = { 2291 = { empty = yes } owns = 2260 } # Cahuinari
+					AND = { 2277 = { empty = yes } owns = 2278 } # Piedra del Cocuy
+					AND = { 2401 = { empty = yes } owns = 2260 } # Forte de Sao Gabriel da Cachoeira
+					AND = { 2260 = { empty = yes } OR = { owns = 2262 owns = 2257 } } # Serrania de Chibiquerte
+				## Peru - Bolivia ##
+				# TODO
+			}
+		}
 
-	# TODO 1895 get 2462, 2459 from Argentina (if it comes to war and you own RGS you can claim 2341, 2554)
+		mean_time_to_happen = {
+			months = 1 # TODO change to 18 before committing
+			modifier = {
+				factor = 1.2
+				war = yes
+				capital_scope = { continent = south_america }
+			}
+			modifier = {
+				factor = 0.8
+				year = 1845
+			}
+			modifier = {
+				factor = 0.5
+				year = 1850
+			}
+			modifier = {
+				factor = 0.5
+				state_n_government = 1
+			}
+			modifier = {
+				factor = 0.8
+				is_secondary_power = yes
+			}
+			modifier = {
+				factor = 0.7
+				is_greater_power = yes
+			}
+		}
+
+		option = {
+			name = "EVTOPTA97087"
+
+			prestige = 1
+			## Brazil ##
+				random_owned = {
+					limit = { 2245 = { empty = yes } 2408 = { owned_by = THIS } OR = { 2246 = { owned_by = THIS } 3414 = { owned_by = THIS } } }
+					2245 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2246 = { empty = yes } 2415 = { owned_by = THIS } 2408 = { owned_by = THIS } }
+					2246 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 3414 = { empty = yes } 2408 = { owned_by = THIS } OR = { 2245 = { owned_by = THIS } 3413 = { owned_by = THIS } } }
+					3414 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 3413 = { empty = yes } 2532 = { owned_by = THIS } 1979 = { owned_by = THIS } }
+					3413 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 1979 = { empty = yes } 2532 = { owned_by = THIS } }
+					1979 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2532 = { empty = yes } 2403 = { owned_by = THIS } 2404 = { owned_by = THIS } }
+					2532 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2404 = { empty = yes } 2403 = { owned_by = THIS } }
+					2404 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2401 = { empty = yes } 2263 = { owned_by = THIS } 2404 = { owned_by = THIS } 2403 = { owned_by = THIS } }
+					2401 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2263 = { empty = yes } 3295 = { owned_by = THIS } 2404 = { owned_by = THIS } 2403 = { owned_by = THIS } }
+					2263 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 3295 = { empty = yes } 2404 = { owned_by = THIS } }
+					3295 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2408 = { empty = yes } 2402 = { owned_by = THIS } }
+					2408 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2415 = { empty = yes } 2412 = { owned_by = THIS } }
+					2415 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+			## Ecuador ##
+				random_owned = {
+					limit = { 2263 = { empty = yes } OR = { 2291 = { owned_by = THIS } 3295 = { owned_by = THIS } } }
+					2263 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 3295 = { empty = yes } 2261 = { owned_by = THIS } }
+					3295 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2261 = { empty = yes } 2289 = { owned_by = THIS } }
+					2261 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2291 = { empty = yes } 2289 = { owned_by = THIS } }
+					2291 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2289 = { empty = yes } 2284 = { owned_by = THIS } }
+					2289 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2284 = { empty = yes } 2288 = { owned_by = THIS } }
+					2284 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2288 = { empty = yes } 2283 = { owned_by = THIS } }
+					2288 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2283 = { empty = yes } 2279 = { owned_by = THIS } }
+					2283 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+			## Venezuela ##
+				random_owned = {
+					limit = { 1979 = { empty = yes } 2242 = { owned_by = THIS } 3413 = { owned_by = THIS } }
+					1979 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 3413 = { empty = yes } 2242 = { owned_by = THIS } }
+					3413 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2277 = { empty = yes } 2274 = { owned_by = THIS } }
+					2277 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+			## Guyana ##
+				random_owned = {
+					limit = { 2415 = { empty = yes } 2241 = { owned_by = THIS } 2246 = { owned_by = THIS } }
+					2246 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2246 = { empty = yes } 2241 = { owned_by = THIS } }
+					2246 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2245 = { empty = yes } 2240 = { owned_by = THIS } }
+					2245 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 3414 = { empty = yes } 2239 = { owned_by = THIS } }
+					3414 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+			## Colombia ##
+				random_owned = {
+					limit = { 2263 = { empty = yes } OR = { 2291 = { owned_by = THIS } 2401 = { owned_by = THIS } } }
+					2263 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2291 = { empty = yes } 2260 = { owned_by = THIS } }
+					2291 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2277 = { empty = yes } 2278 = { owned_by = THIS }}
+					2277 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2401 = { empty = yes } 2260 = { owned_by = THIS } }
+					2401 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = { 2260 = { empty = yes } OR = { 2262 = { owned_by = THIS } 2257 = { owned_by = THIS } } }
+					2260 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
+				}
+			## Peru - Bolivia ##
+			# TODO
+		}
+	}
+
+	## Eastern Misioned dispute ##
+
+		#Description: Triggered by decision for the owner(s) of East Misiones
+		country_event = {
+			id = 34629
+			title = "EVTNAME34629"
+			desc = "EVTDESC34629"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			# Accept the situation - lose core
+			option = {
+				name = "EVTOPTA34629"
+
+				2459 = { remove_core = THIS }
+				random_owned = {
+					limit = { CRT = { vassal_of = THIS is_core = 2459 } }
+					2459 = { remove_core = CRT }
+				}
+				2459 = { secede_province = FROM }
+				2462 = { remove_core = THIS }
+				random_owned = {
+					limit = { CRT = { vassal_of = THIS is_core = 2459 } }
+					2462 = { remove_core = CRT }
+				}
+				2462 = { secede_province = FROM }
+				relation = { who = FROM value = 40 }
+
+				FROM = { country_event = 34630 }
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 1.5
+						war_policy = pacifism
+					}
+					modifier = {
+						factor = 1.2
+						government = democracy
+						FROM = { government = democracy }
+					}
+					modifier = {
+						factor = 0.2
+						OR = {
+							war_policy = jingoism
+							war_policy = pro_military
+						}
+					}
+				}
+			}
+
+			# Issue a protest - lose prestige, keep core
+			option = {
+				name = "EVTOPTB34629"
+
+				prestige = -10
+				relation = { who = FROM value = -50 }
+
+				FROM = { country_event = 34631 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 10
+						NOT = { relation = { who = FROM value = 0 } }
+					}
+					modifier = {
+						factor = 0
+						is_vassal = yes
+						FROM = { is_vassal = yes }
+						overlord = { is_our_vassal = FROM } # If they have the same overlord
+					}
+				}
+			}
+
+			# Threaten war - gain infamy
+			option = {
+				name = "EVTOPTC34629"
+
+				badboy = 2
+				relation = { who = FROM value = -200 }
+				random_owned = { limit = { province_id = 2459 } fort = 1 }
+				random_owned = { limit = { province_id = 2462 } fort = 1 }
+
+				FROM = { country_event = 34632 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 10
+						military_score = FROM
+						NOT = { relation = { who = FROM value = -75 } }
+					}
+					modifier = {
+						factor = 0
+						is_vassal = yes
+						FROM = { is_vassal = yes }
+						overlord = { is_our_vassal = FROM } # If they have the same overlord
+					}
+				}
+			}
+
+			# Ask the USA (or another GP if USA is not a GP) to arbitrate the dispute - lose infamy
+			option = {
+				name = "EVTOPTD34629"
+
+				badboy = -1
+				random_country = { # Ask the USA
+					limit = {
+						tag = USA
+						is_greater_power = yes
+						is_disarmed = no
+						NOT = { any_greater_power = { war_with = USA } }
+						NOT = { has_global_flag = eastern_misiones_decided } # To prevent this event firing twice
+						NOT = { owns = 2461 owns = 2341 owns = 2554 } # To make sure that one of the disputees isn't picked if they are a GP
+					}
+					country_event = 34634
+				}
+				random_country = { # If the USA is not a GP ask a GP with who you have good relations
+					limit = {
+						is_greater_power = yes
+						USA = { is_greater_power = no }
+						is_disarmed = no
+						war = no
+						OR = {
+							alliance_with = THIS
+							is_sphere_leader_of = THIS
+							relation = { who = THIS value = 100 }
+						}
+						NOT = { has_global_flag = eastern_misiones_decided } # To prevent this event firing twice
+						NOT = { owns = 2461 owns = 2341 owns = 2554 } # To make sure that one of the disputees isn't picked if they are a GP
+					}
+					country_event = 34634
+				}
+				random_country = { # Else ask any GP who is at peace and not disarmed
+					limit = {
+						is_greater_power = yes
+						USA = { is_greater_power = no }
+						is_disarmed = no
+						war = no
+						NOT = {
+							alliance_with = THIS
+							is_sphere_leader_of = THIS
+							relation = { who = THIS value = 100 }
+						}
+						NOT = { has_global_flag = eastern_misiones_decided } # To prevent this event firing twice
+						NOT = { owns = 2461 owns = 2341 owns = 2554 } # To make sure that one of the disputees isn't picked if they are a GP
+					}
+					country_event = 34634
+				}
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 10
+						NOT = { relation = { who = FROM value = -75 } }
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for Brazil if the territory is returned
+		country_event = {
+			id = 34630
+			title = "EVTNAME34630"
+			desc = "EVTDESC34630"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA34630"
+
+				prestige = 10
+			}
+		}
+
+		#Description: Triggered for Brazil if the owner protests
+		country_event = {
+			id = 34631
+			title = "EVTNAME34631"
+			desc = "EVTDESC34631"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA34631"
+			}
+		}
+
+		#Description: Triggered for Brazil if the owner threatens war
+		country_event = {
+			id = 34632
+			title = "EVTNAME34632"
+			desc = "EVTDESC34632"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			immediate = {
+				random_owned = { limit = { province_id = 2459 } 2459 = { secede_province = FROM } }
+				random_owned = { limit = { province_id = 2462 } 2462 = { secede_province = FROM } }
+			}
+
+			# Back off - lose prestige
+			option = {
+				name = "EVTOPTA34632"
+
+				prestige = -15
+				badboy = -1
+				random_owned = { limit = { owner = { tag = RGS } } 2459 = { remove_core = RGS } }
+				random_owned = { limit = { owner = { tag = BRZ } } 2459 = { remove_core = BRZ } }
+				random_owned = { limit = { owner = { tag = KPB } } 2459 = { remove_core = BRZ remove_core = KPB } }
+				random_owned = { limit = { owner = { tag = RGS } } 2462 = { remove_core = RGS } }
+				random_owned = { limit = { owner = { tag = BRZ } } 2462 = { remove_core = BRZ } }
+				random_owned = { limit = { owner = { tag = KPB } } 2462 = { remove_core = BRZ remove_core = KPB } }
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 10
+						any_greater_power = { alliance_with = FROM }
+						NOT = { any_greater_power = { alliance_with = THIS } }
+					}
+					modifier = {
+						factor = 0
+						OR = {
+							military_score = FROM
+							NOT = { FROM = { brigades_compare = 1 } }
+						}
+					}
+				}
+			}
+
+			# Go to war
+			option = {
+				name = "EVTOPTB34632"
+
+				badboy = 3
+				set_country_flag = eastern_misiones_war
+
+				random_owned = {
+					limit = { 2459 = { owner = { vassal_of = FROM } } }
+					2459 = { secede_province = FROM }
+				}
+				random_owned = {
+					limit = { 2462 = { owner = { vassal_of = FROM } } }
+					2462 = { secede_province = FROM }
+				}
+
+				war = {
+					target = FROM
+					attacker_goal = { casus_belli = acquire_core_state state_province_id = 2461 }
+					defender_goal = { casus_belli = cut_down_to_size }
+					call_ally = no
+				}
+
+				ai_chance = {
+					factor = 40
+					modifier = {
+						factor = 0
+						is_disarmed = yes
+					}
+					modifier = {
+						factor = 2
+						is_greater_power = yes
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for Brazil if during the war for Eastern Misiones they own Rio Grande do Sul and control Misiones - claim all of Misiones or not
+		country_event = {
+			id = 34633
+			title = "EVTNAME34633"
+			desc = "EVTDESC34633"
+			picture = "map_of_colombia" # TODO
+
+			trigger = {
+				has_country_flag = eastern_misiones_war
+				owns = 2466
+				2554 =  { owner = { war_with = THIS } }
+				controls = 2461
+				OR = {
+					controls = 2459
+					controls = 2462
+				}
+				controls = 2554
+			}
+
+			mean_time_to_happen = {
+				months = 2
+			}
+
+			# Claim all of Misiones
+			option = {
+				name = "EVTOPTA34633"
+
+				badboy = 5
+				random_owned = { limit = { owner = { tag = RGS } } 2341 = { add_core = RGS } }
+				random_owned = { limit = { owner = { tag = BRZ } } 2341 = { add_core = BRZ } }
+				random_owned = { limit = { owner = { tag = KPB } } 2341 = { add_core = BRZ add_core = KPB } }
+				random_owned = { limit = { owner = { tag = RGS } } 2554 = { add_core = RGS } }
+				random_owned = { limit = { owner = { tag = BRZ } } 2554 = { add_core = BRZ } }
+				random_owned = { limit = { owner = { tag = KPB } } 2554 = { add_core = BRZ add_core = KPB } }
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 2
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 0
+						badboy = 0.75
+					}
+				}
+			}
+
+			# Do nothing
+			option = {
+				name = "EVTOPTB34633"
+
+				ai_chance = {
+					factor = 80
+					modifier = {
+						factor = 0.25
+						controls = 2348
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for the USA if they are asked to arbitrate the dispute
+		country_event = {
+			id = 34634
+			title = "EVTNAME34634"
+			desc = "EVTDESC34634"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			immediate = { set_global_flag = eastern_misiones_decided }
+
+			# Favor Brazil
+			option = {
+				name = "EVTOPTA34634"
+
+				random_country = { limit = { owns = 2461 } country_event = 34636 }
+				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 34635 }
+				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 34635 }
+				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 34635 }
+				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 34635 } }
+				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 34635 } }
+				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 34635 } }
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.5
+						2461 = { owner = { tag = KPB } }
+					}
+					modifier = {
+						factor = 0.8
+						2461 = {
+							owner = {
+								OR = {
+									government = absolute_monarchy
+									government = prussian_constitutionalism
+									government = hms_government
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 0.7
+						2461 = { owner = { NOT = { government = democracy } } }
+					}
+					modifier = {
+						factor = 0
+						2461 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+					}
+				}
+			}
+
+			# Favor Argentina
+			option = {
+				name = "EVTOPTB34634"
+
+				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 34636 }
+				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 34636 }
+				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 34636 }
+				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 34636 } }
+				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 34636 } }
+				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 34636 } }
+				random_country = { limit = { owns = 2461 } country_event = 34635 }
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.8
+						OR = {
+							2341 = {
+								owner = {
+									OR = {
+										government = absolute_monarchy
+										government = prussian_constitutionalism
+										government = hms_government
+									}
+								}
+							}
+							2554 = {
+								owner = {
+									OR = {
+										government = absolute_monarchy
+										government = prussian_constitutionalism
+										government = hms_government
+									}
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 0.7
+						OR = {
+							2341 = { owner = { NOT = { government = democracy } } }
+							2554 = { owner = { NOT = { government = democracy } } }
+						}
+					}
+					modifier = {
+						factor = 0
+						OR = {
+							2341 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+							2554 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+						}
+					}
+				}
+			}
+
+			# Don't get involved
+			option = {
+				name = "EVTOPTC34634"
+
+				random_country = { limit = { tag = BRZ owns = 2461 } THIS = { diplomatic_influence = { who = BRZ value = -50 } } }
+				random_country = { limit = { tag = KPB owns = 2461 } THIS = { diplomatic_influence = { who = KPB value = -50 } } }
+				random_country = { limit = { tag = RGS owns = 2461 } THIS = { diplomatic_influence = { who = RGS value = -50 } } }
+				diplomatic_influence = { who = FROM value = -50 }
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						OR = {
+							relation = { who = FROM value = 0 }
+							2461 = { owner = { relation = { who = THIS value = 0 } } }
+						}
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for the side whose argument was not favored by the Great Power - remove cores
+		country_event = {
+			id = 34635
+			title = "EVTNAME34635"
+			desc = "EVTDESC34635"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA34635"
+
+				relation = { who = FROM value = -20 }
+
+				random_owned = {
+					limit = { 2459 = { is_core = THIS } }
+					2459 = { remove_core = THIS }
+				}
+				random_owned = {
+					limit = { 2459 = { is_core = CRT } CRT = { vassal_of = THIS } }
+					2459 = { remove_core = CRT }
+				}
+				random_owned = {
+					limit = { 2462 = { is_core = THIS } }
+					2462 = { remove_core = THIS }
+				}
+				random_owned = {
+					limit = { 2462 = { is_core = CRT } CRT = { vassal_of = THIS } }
+					2462 = { remove_core = CRT }
+				}
+			}
+		}
+
+		#Description: Triggered for the side whose argument was favored by the Great Power - gain prestige, provinces
+		country_event = {
+			id = 34636
+			title = "EVTNAME34636"
+			desc = "EVTDESC34636"
+			picture = "map_of_colombia" # TODO
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA34636"
+
+				prestige = 5
+				relation = { who = FROM value = -20 }
+				FROM = { diplomatic_influence = { who = THIS value = 50 } }
+
+				random_owned = {
+					limit = { province_id = 2461 }
+					2459 = { secede_province = THIS }
+					2462 = { secede_province = THIS }
+				}
+				random_owned = {
+					limit = {
+						2341 = {
+							OR = {
+								owned_by = THIS
+								owner = { vassal_of = THIS }
+							}
+						}
+					}
+					2462 = { secede_province = THIS }
+				}
+				random_owned = {
+					limit = {
+						2341 = {
+							OR = {
+								owned_by = THIS
+								owner = { vassal_of = THIS }
+							}
+						}
+					}
+					2459 = { secede_province = THIS }
+				}
+
+				# TODO Clevelandia
+			}
+		}
 
 	# TODO 1904 give 1979 (if owned) to UK once it gets territories from VNZ
-
-	# TOGO 1904 get 3295 (and 2263) from ECU
-
-	# TODO 1907 get 2401 (and 2263) from CLM
 
 	#Description: The Corumba Sale - triggered for Brazil if Bolivia decides to sell Corumba - accept to buy it or refuse
 	country_event = {
@@ -843,48 +1569,7 @@
 		}
 	}
 
-	#Description: García Ortiz-Mangabeira Treaty - Amazon border treaty for Marabitanas
-	country_event = {
-		id = 46610100
-		title = "EVTNAME46610100"
-		desc = "EVTDESC46610100"
-		picture = "map_of_colombia"
-
-		is_triggered_only = yes
-
-		#We agree
-		option = {
-			name = "EVTOPTA46610100"
-
-			badboy = -5
-			2401 = { # Marabitanas
-				add_core = BRZ
-				remove_core = THIS
-				remove_core = CLM
-				secede_province = BRZ
-			}
-			relation = { who = BRZ value = 300 }
-
-			ai_chance = { factor = 90 }
-		}
-
-		# No
-		option = {
-			name = "EVTOPTB46610100"
-			badboy = 1
-			2401 = { add_core = BRZ }
-			relation = { who = BRZ value = -400 }
-
-			ai_chance = {
-				factor = 10
-				modifier = { factor = 1.5 is_greater_power = yes }
-				modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
-				modifier = { factor = 0 badboy = 0.95 }
-			}
-		}
-	}
-
-	#Description: García Ortiz-Mangabeira Treaty 2 - Amazon border treaty for Ambrosio
+	#Description: García Ortiz-Mangabeira Treaty - Amazon border treaty
 	country_event = {
 		id = 34628
 		title = "EVTNAME34628"
@@ -897,36 +1582,55 @@
 		option = {
 			name = "EVTOPTA34628"
 
-			badboy = -5
-			3295 = { # Ambrosio
-				add_core = BRZ
-				remove_core = THIS
-				remove_core = CLM
-				secede_province = BRZ
+			prestige = 5
+			badboy = -1
+			random_owned = {
+				limit = { 3295 = { is_core = THIS } }
+				3295 = { remove_core = THIS }
 			}
-			relation = { who = BRZ value = 300 }
+			random_owned = {
+				limit = { province_id = 3295 }
+				secede_province = FROM
+			}
+			random_owned = {
+				limit = { 2263 = { is_core = THIS } }
+				2263 = { remove_core = THIS }
+			}
+			random_owned = {
+				limit = { province_id = 2263 }
+				secede_province = FROM
+			}
+			random_owned = {
+				limit = { 2401 = { is_core = THIS } }
+				2401 = { remove_core = THIS }
+			}
+			random_owned = {
+				limit = { province_id = 2401 }
+				secede_province = FROM
+			}
 
-			ai_chance = { factor = 100 }
+			relation = { who = FROM value = 300 }
+
+			ai_chance = { factor = 80 }
 		}
 
 		# No
 		option = {
 			name = "EVTOPTB34628"
 
-			badboy = 1
-			3295 = { add_core = BRZ }
+			badboy = 2
 			relation = { who = BRZ value = -400 }
 
 			ai_chance = {
-				factor = 0
-				modifier = { factor = 1.5 is_greater_power = yes }
+				factor = 20
+				modifier = { factor = 0 is_greater_power = no }
 				modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
 				modifier = { factor = 0 badboy = 0.95 }
 			}
 		}
 	}
 
-	#Description: Treaty of Petropolis - triggered for countries with a core in Tarauaca to ask them to remove it
+	#Description: Treaty of Petropolis - triggered for countries with a core in Acre to ask them to remove it
 	country_event = {
 		id = 46610101
 		title = "EVTNAME46610101"
@@ -941,7 +1645,7 @@
 
 			set_country_flag = signed_treaty_of_petropolis
 			badboy = -2
-			2549 = { remove_core = THIS }
+			BRZ_2549 = { remove_core = THIS }
 			relation = { who = FROM value = 300 }
 			treasury = 1000000
 			random_owned = {

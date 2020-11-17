@@ -1,8 +1,6 @@
 political_decisions = {
 
-	# TODO claims on Tierra del Fuego ~1848
-	# split with Argentina after War of the Pacific
-	# split gives Chile Magallanes and Argentina southern Patagonia 2398 2399
+## Occupation of empty provinces ##
 
 	#Description: Occupation of the provinces in southern Chile which are empty at game start.
 	occupation_of_araucania = {
@@ -47,6 +45,47 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Chile can occupy the whole of Tierra del Fuego
+	# split with Argentina after War of the Pacific
+	# split gives Chile Magallanes and Argentina southern Patagonia 2398 2399
+	occupation_of_tierra_del_fuego = {
+		picture = dreams_of_empire
+		potential = {
+			owns = 2332 # Osorno
+			OR = {
+				tag = CHL
+				AND = {
+					tag = PBC
+					CHL = { exists = no }
+				}
+			}
+			OR = {
+				2397 = { empty = yes }
+				2400 = { empty = yes }
+			}
+			year = 1848
+		}
+
+		allow = {
+			steamers = 1
+			is_disarmed = no
+		}
+
+		effect = {
+			prestige = 5
+			random_owned = {
+				limit = { 2397 = { empty = yes } }
+				2397 = { secede_province = THIS }
+			}
+			random_owned = {
+				limit = { 2400 = { empty = yes } }
+				2400 = { secede_province = THIS }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: Occupation of the Easter Island province.
 	annex_easter_island = {
 		picture = annex_easter_island
@@ -71,70 +110,103 @@ political_decisions = {
 		}
 	}
 
-	#Description: Valparaiso gains liferating and immigrant attraction.
-	valparaiso_harbor = {
-		picture = valparaiso_harbor
+	#Description: If Argentina decides not to formalize their claims in Patagonia, Chile can.
+	argentina_chile_border_not_determined = {
+		picture = argentina_chile_border_treaty
 		potential = {
-			owns = 2325 # Valparaiso
-			OR = {
-				tag = CHL
-				tag = PBC
-			}
-			NOT = { is_canal_enabled = 3 }
-			NOT = { has_country_flag = valpariasoharbor_built }
+			has_country_flag = argentina_chile_border_not_determined
 		}
 
 		allow = {
 			war = no
-			battleship_column_doctrine = 1
+			OR = {
+				ARC = {
+					exists = yes
+					war = no
+					NOT = { truce_with = THIS }
+				}
+				ARG = {
+					exists = yes
+					war = no
+					NOT = { truce_with = THIS }
+				}
+				LPL = {
+					exists = yes
+					war = no
+					NOT = { truce_with = THIS }
+				}
+			}
 		}
 
 		effect = {
-			prestige = 5
-			2325 = {
-				life_rating = 7
-				add_province_modifier = { name = gateway_to_harbor duration = 3650 }
-			}
-			add_country_modifier = { name = small_immigration_boom_country duration = 730 }
-			set_country_flag = valpariasoharbor_built
+			country_event = 97099
 		}
 	}
 
-	#Description: If the PBC is at war with Peru and has recently lost a war, Chile can go to war with them to release South Peru.
-	repudiate_the_treaty_of_paucarpata = {
-		picture = peru_bolivia
-		potential = {
+#Description: Valparaiso gains liferating and immigrant attraction.
+valparaiso_harbor = {
+	picture = valparaiso_harbor
+	potential = {
+		owns = 2325 # Valparaiso
+		OR = {
 			tag = CHL
-			truce_with = PBC
-			PBC = {
-				exists = yes
-				war_with = PEU
-				has_recently_lost_war = yes
-			}
-			SPU = { vassal_of = PBC }
-			NOT = { has_country_flag = treaty_of_paucarpata_repudiated }
+			tag = PBC
 		}
+		NOT = { is_canal_enabled = 3 }
+		NOT = { has_country_flag = valpariasoharbor_built }
+	}
 
-		allow = {
-			NOT = {
-				has_recently_lost_war = yes
-				PBC = { military_score = THIS }
-			}
+	allow = {
+		war = no
+		battleship_column_doctrine = 1
+	}
+
+	effect = {
+		prestige = 5
+		2325 = {
+			life_rating = 7
+			add_province_modifier = { name = gateway_to_harbor duration = 3650 }
 		}
+		add_country_modifier = { name = small_immigration_boom_country duration = 730 }
+		set_country_flag = valpariasoharbor_built
+	}
+}
 
-		effect = {
-			casus_belli = {
-				target = PBC
-				type = release_puppet
-				months = 24
-			}
-			war = {
-				target = PBC
-				attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
-			}
-			set_country_flag = treaty_of_paucarpata_repudiated
+#Description: If the PBC is at war with Peru and has recently lost a war, Chile can go to war with them to release South Peru.
+repudiate_the_treaty_of_paucarpata = {
+	picture = peru_bolivia
+	potential = {
+		tag = CHL
+		truce_with = PBC
+		PBC = {
+			exists = yes
+			war_with = PEU
+			has_recently_lost_war = yes
+		}
+		SPU = { vassal_of = PBC }
+		NOT = { has_country_flag = treaty_of_paucarpata_repudiated }
+	}
+
+	allow = {
+		NOT = {
+			has_recently_lost_war = yes
+			PBC = { military_score = THIS }
 		}
 	}
+
+	effect = {
+		casus_belli = {
+			target = PBC
+			type = release_puppet
+			months = 24
+		}
+		war = {
+			target = PBC
+			attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
+		}
+		set_country_flag = treaty_of_paucarpata_repudiated
+	}
+}
 
 ## Other ##
 

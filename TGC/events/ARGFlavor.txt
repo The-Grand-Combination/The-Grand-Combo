@@ -189,7 +189,7 @@
 
 ## Expansion ##
 
-	#Description: Conquest of the Desert - occupy empty provinces. # TODO remove Tierra del Fuego and 2392 and 2394 from this
+	#Description: Conquest of the Desert - occupy empty provinces.
 	country_event = {
 		id = 97085
 		title = "EVTNAME97085"
@@ -209,10 +209,8 @@
 				2392 = { empty = yes }
 				2394 = { empty = yes }
 				2396 = { empty = yes }
-				2397 = { empty = yes }
 				2398 = { empty = yes }
 				2399 = { empty = yes }
-				2400 = { empty = yes }
 			}
 			has_country_flag = conquest_of_the_desert
 		}
@@ -255,30 +253,10 @@
 			}
 			random_owned = {
 				limit = {
-					OR = {
-						2399 = { owned_by = THIS }
-						2397 = { owned_by = THIS }
-					}
+					2399 = { owned_by = THIS }
 					2335 = { empty = yes }
 				}
 				2335 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					OR = {
-						2400 = { owned_by = THIS }
-						2335 = { owned_by = THIS }
-					}
-					2397 = { empty = yes }
-				}
-				2397 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-			}
-			random_owned = {
-				limit = {
-					2399 = { owned_by = THIS }
-					2400 = { empty = yes }
-				}
-				2400 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
 			}
 			random_owned = {
 				limit = {
@@ -331,7 +309,7 @@
 		}
 	}
 
-	#Description: Pacification of Patagonia - provinces in Patagonia gain liferating # TODO check province ids and regions
+	#Description: Pacification of $PROVINCENAME$ - provinces in Patagonia and Chaco gain liferating
 	province_event = {
 		id = 97086
 		title = "EVTNAME97086"
@@ -340,17 +318,25 @@
 
 		trigger = {
 			OR = {
-				region = CHL_2332
-				region = ARG_2398
-				region = ARG_2391
-				province_id = 2362
-				province_id = 2364
-				province_id = 2365
-				province_id = 2372
-				province_id = 2377
-				province_id = 2353
-				province_id = 2393
-				province_id = 2395
+				## Patagonia ##
+					region = CHL_2333 # Magallanes
+					region = ARG_2398 # Patagonia
+					region = ARG_2393 # La Pampa
+					region = ARG_2391 # Rio Negro
+					province_id = 2353 # Fuerte Blanca Grande
+					province_id = 2382 # Concepcion de Rio Cuarto
+					province_id = 2384 # San Luis de Rio Seco
+					province_id = 2390 # Fuerte San Rafael el Diamante
+				## Chaco ##
+					province_id = 2362
+					province_id = 2364
+					province_id = 2365
+					province_id = 2366
+					province_id = 2367
+					province_id = 2369
+					province_id = 2372
+					province_id = 2377
+
 			}
 			OR = {
 				has_country_flag = conquest_of_the_desert
@@ -388,7 +374,105 @@
 
 	## The Argentina-Chile Border Treaty ##
 
-		#Description: Chile can accept (historical borders) or deny (Chile claims Patagonia Argentina claims Magallanes)
+		#Description: Argentina can choose whether to propose a border treaty.
+		country_event = {
+			id = 97092
+
+			title = "EVTNAME97092"
+			desc = "EVTDESC97092"
+			picture = "argentina_chile_border_treaty"
+
+			is_triggered_only = yes
+
+			immediate = { set_country_flag = argentina_chile_border_treaty }
+
+			# No need to negotiate, extend claims
+			option = {
+				name = EVTOPTA97092
+
+				badboy = 5
+				CHL_2333 = { add_core = THIS }
+				ARG_2391 = { add_core = THIS }
+				ARG_2398 = { add_core = THIS }
+				ARG_2400 = { add_core = THIS }
+				relation = {
+					who = CHL
+					value = -200
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 2
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 3
+						NOT = { CHL = { brigades_compare = 0.5 } }
+					}
+					modifier = {
+						factor = 0
+						badboy = 0.8
+					}
+				}
+			}
+
+			# Propose border treaty
+			option = {
+				name = EVTOPTB97092
+
+				badboy = -1
+				relation = { who = CHL value = 20 }
+				CHL = { country_event = 97090 }
+
+				ai_chance = {
+					factor = 80
+					modifier = {
+						factor = 2
+						war_policy = pacifism
+					}
+					modifier = {
+						factor = 3
+						NOT = { CHL = { brigades_compare = 0.5 } }
+					}
+				}
+			}
+
+			# The border is fine as it is
+			option = {
+				name = EVTOPTC97092
+
+				any_owned = {
+					limit = { is_core = PTG }
+					add_core = THIS
+				}
+				CHL = { set_country_flag = argentina_chile_border_not_determined }
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						NOT = { owns = 2398 }
+					}
+					modifier = {
+						factor = 0.5
+						owns = 2398
+						NOT = { owns = 2399 }
+					}
+				}
+			}
+
+			# Decide later
+			option = {
+				name = EVTOPTD97092
+
+				clr_country_flag = argentina_chile_border_treaty
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Triggered for Chile when they receive the border treaty proposal.
 		country_event = {
 			id = 97090
 			title = "EVTNAME97090"
@@ -397,11 +481,46 @@
 
 			is_triggered_only = yes
 
-			immediate = { CHL_2333 = { add_core = THIS } }
+			# Claim all of Patagonia
+			option = {
+				name = EVTOPTA97090
+
+				badboy = 5
+				CHL_2333 = { add_core = THIS }
+				ARG_2391 = { add_core = THIS }
+				ARG_2398 = { add_core = THIS }
+				ARG_2400 = { add_core = THIS }
+				relation = {
+					who = FROM
+					value = -200
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 2
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 3
+						NOT = { FROM = { brigades_compare = 0.5 } }
+					}
+					modifier = {
+						factor = 0
+						badboy = 0.8
+					}
+				}
+			}
 
 			# Sign the treaty.
 			option = {
-				name = EVTOPTA97090
+				name = EVTOPTB97090
+
+				CHL_2333 = { add_core = THIS } # Magallanes
+				2397 = { add_core = THIS }
+				ARG_2391 = { add_core = FROM } # Rio Negro
+				ARG_2398 = { add_core = FROM } # Patagonia
+				2400 = { add_core = FROM }
 
 				relation = {
 					who = FROM
@@ -418,7 +537,34 @@
 				FROM = { country_event = 97089 }
 
 				ai_chance = {
-					factor = 90
+					factor = 60
+					modifier = {
+						factor = 0.8
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 0.8
+						NOT = { relation = { who = FROM value = 0 } }
+					}
+					modifier = {
+						factor = 0.8
+						FROM = { any_owned_province = { is_core = CHL } }
+					}
+					modifier = {
+						factor = 0.8
+						any_owned_province = { is_core = FROM }
+					}
+				}
+			}
+
+			# Divide the mainland but keep Tierra del Fuego
+			option = {
+				name = EVTOPTC97090
+
+				FROM = { country_event = 97093 }
+
+				ai_chance = {
+					factor = 30
 					modifier = {
 						factor = 0.8
 						war_policy = jingoism
@@ -440,14 +586,18 @@
 
 			# There is no need for such an agreement.
 			option = {
-				name = EVTOPTB97090
+				name = EVTOPTD97090
 
-				FROM = { country_event = 97088 }
-
+				any_owned = {
+					limit = { is_core = PTG }
+					add_core = THIS
+				}
 				relation = {
 					who = FROM
 					value = -50
 				}
+
+				FROM = { country_event = 97088 }
 
 				ai_chance = {
 					factor = 10
@@ -459,11 +609,15 @@
 						factor = 1.5
 						owns = 2398
 					}
+					modifier = {
+						factor = 0
+						NOT = { owns = 2335 }
+					}
 				}
 			}
 		}
 
-		#Description: Chile ratified the border treaty.
+		#Description: Triggered for Argentina if Chile ratified the border treaty.
 		country_event = {
 			id = 97089
 			title = EVTNAME97089
@@ -486,32 +640,745 @@
 			}
 		}
 
-		#Description: Chile has refused.
+		## Chile insists on Tierra del Fuego ##
+
+			#Description: Triggered for Argentina if Chile ratified the border treaty but insists on keeping Tierra del Fuego
+			country_event = {
+				id = 97093
+				title = EVTNAME97093
+				desc = EVTDESC97093
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				# Accept their terms
+				option = {
+					name = EVTOPTA97093
+
+					CHL_2333 = { add_core = FROM } # Magallanes
+					ARG_2391 = { add_core = THIS } # Rio Negro
+					ARG_2398 = { add_core = THIS } # Patagonia
+					ARG_2400 = { add_core = FROM remove_core = PTG } # Tierra del Fuego
+
+					any_owned = {
+						limit = {
+							is_core = FROM
+							is_core = PTG
+						}
+						secede_province = FROM
+						remove_core = THIS
+					}
+					relation = {
+						who = FROM
+						value = 100
+					}
+
+					FROM = { country_event = 97096 }
+
+					ai_chance = { factor = 90 }
+				}
+
+				# Insist that they split the island as well
+				option = {
+					name = EVTOPTB97093
+
+					badboy = 1
+
+					FROM = { country_event = 97097 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 0
+							OR = {
+								war_policy = pacifism
+								war_policy = anti_military
+							}
+						}
+						modifier = {
+							factor = 0
+							badboy = 0.95
+						}
+					}
+				}
+			}
+
+			#Description: Argentina has agreed to the Chilean caveat.
+			country_event = {
+				id = 97096
+				title = EVTNAME97096
+				desc = EVTDESC97096
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				option = {
+					name = EVTOPTA97096
+
+					any_owned = {
+						limit = {
+							is_core = FROM
+							is_core = PTG
+						}
+						secede_province = FROM
+						remove_core = THIS
+					}
+				}
+			}
+
+			#Description: Argentina insists on splitting Tierra del Fuego
+			country_event = {
+				id = 97097
+				title = EVTNAME97097
+				desc = EVTDESC97097
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				# Concede
+				option = {
+					name = EVTOPTA97097
+
+					prestige = -5
+					CHL_2333 = { add_core = THIS } # Magallanes
+					2397 = { add_core = THIS } # West Tierra del Fuego
+					ARG_2391 = { add_core = FROM } # Rio Negro
+					ARG_2398 = { add_core = FROM } # Patagonia
+					2400 = { add_core = FROM } # East Tierra del Fuego
+
+					any_owned = {
+						limit = {
+							is_core = FROM
+							is_core = PTG
+						}
+						secede_province = FROM
+						remove_core = THIS
+					}
+
+					FROM = { country_event = 97098 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 2
+							war_policy = pacifism
+						}
+						modifier = {
+							factor = 0
+							is_disarmed = no
+						}
+					}
+				}
+
+				# Claim up to what was agreed in the treaty
+				option = {
+					name = EVTOPTB97097
+
+					badboy = -1
+					CHL_2333 = { add_core = THIS } # Magallanes
+					ARG_2400 = { add_core = THIS } # Tierra del Fuego
+					any_owned = {
+						limit = { is_core = PTG }
+						add_core = THIS
+					}
+					ARG_2391 = { add_core = FROM } # Rio Negro
+					ARG_2398 = { add_core = FROM } # Patagonia
+					2400 = { add_core = FROM } # East Tierra del Fuego
+
+					ai_chance = { factor = 80 }
+				}
+
+				# Claim all of Patagonia
+				option = {
+					name = EVTOPTC97097
+
+					badboy = 4
+					CHL_2333 = { add_core = THIS } # Magallanes
+					ARG_2391 = { add_core = THIS } # Rio Negro
+					ARG_2398 = { add_core = THIS } # Patagonia
+					ARG_2400 = { add_core = THIS } # Tierra del Fuego
+					relation = {
+						who = CHL
+						value = -200
+					}
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 2
+							war_policy = jingoism
+						}
+						modifier = {
+							factor = 0
+							war_policy = pacifism
+						}
+						modifier = {
+							factor = 0
+							badboy = 0.8
+						}
+					}
+				}
+			}
+
+			#Description: Chile has conceded to Argentina's insistence to split the island.
+			country_event = {
+				id = 97098
+				title = EVTNAME97098
+				desc = EVTDESC97098
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				option = {
+					name = EVTOPTA97098
+
+					prestige = 5
+					any_owned = {
+						limit = {
+							is_core = FROM
+							is_core = PTG
+						}
+						secede_province = FROM
+						remove_core = THIS
+					}
+				}
+			}
+
+		## Chile refused treaty ##
+
+			#Description: Triggered for Argentina if Chile has refused the border treaty.
+			country_event = {
+				id = 97088
+				title = EVTNAME97088
+				desc = EVTDESC97088
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				immediate = {
+					any_owned = {
+						limit = { is_core = PTG }
+						add_core = THIS
+					}
+				}
+
+				# Claim all of Patagonia
+				option = {
+					name = EVTOPTA97088
+
+					badboy = 4
+					CHL_2333 = { add_core = THIS } # Magallanes
+					ARG_2391 = { add_core = THIS } # Rio Negro
+					ARG_2398 = { add_core = THIS } # Patagonia
+					ARG_2400 = { add_core = THIS } # Tierra del Fuego
+					relation = {
+						who = CHL
+						value = -200
+					}
+
+					FROM = { country_event = 97094 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 2
+							war_policy = jingoism
+						}
+						modifier = {
+							factor = 0
+							war_policy = pacifism
+						}
+						modifier = {
+							factor = 0
+							badboy = 0.8
+						}
+					}
+				}
+
+				# Claim up to the treaty boundaries
+				option = {
+					name = EVTOPTB97088
+
+					ARG_2391 = { add_core = THIS } # Rio Negro
+					ARG_2398 = { add_core = THIS } # Patagonia
+					2400 = { add_core = THIS } # East Tierra del Fuego
+					relation = {
+						who = CHL
+						value = -200
+					}
+
+					ai_chance = {
+						factor = 80
+						modifier = {
+							factor = 0.1
+							war_policy = pacifism
+						}
+					}
+				}
+
+				# Leave it be
+				option = {
+					name = EVTOPTC97088
+
+					prestige = -5
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 0
+							NOT = { war_policy = pacifism }
+						}
+					}
+				}
+			}
+
+			#Description: Triggered for Chile if Argentina extends their claims
+			country_event = {
+				id = 97094
+				title = EVTNAME97094
+				desc = EVTDESC97094
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				# Extend our claims too
+				option = {
+					name = EVTOPTA97094
+
+					badboy = 3
+					CHL_2333 = { add_core = THIS } # Magallanes
+					ARG_2391 = { add_core = THIS } # Rio Negro
+					ARG_2398 = { add_core = THIS } # Patagonia
+					ARG_2400 = { add_core = THIS } # Tierra del Fuego
+
+					ai_chance = {
+						factor = 20
+						modifier = {
+							factor = 2
+							war_policy = jingoism
+						}
+						modifier = {
+							factor = 0
+							war_policy = pacifism
+						}
+						modifier = {
+							factor = 0
+							badboy = 0.8
+						}
+					}
+				}
+
+				# Prepare for war
+				option = {
+					name = EVTOPTB97094
+
+					treasury = -5000
+					any_owned = {
+						limit = { is_core = PTG }
+						fort = 1
+					}
+					add_country_modifier = { name = small_country_draft duration = 180 }
+
+					ai_chance = {
+						factor = 30
+						modifier = {
+							factor = 0
+							war_policy = pacifism
+						}
+						modifier = {
+							factor = 0
+							any_greater_power = { alliance_with = FROM }
+							NOT = { any_greater_power = { alliance_with = THIS } }
+						}
+					}
+				}
+
+				# Concede to their claims
+				option = {
+					name = EVTOPTC97094
+
+					prestige = -25
+					any_owned = {
+						limit = { is_core = FROM }
+						remove_core = THIS
+						secede_province = FROM
+					}
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 0
+							NOT = { war_policy = pacifism }
+						}
+					}
+				}
+
+				# Ask a GP to arbitrate
+				option = {
+					name = EVTOPTD97094
+
+					set_country_flag = patagonia_border_dispute_declined
+
+					random_country = {
+						limit = {
+							is_greater_power = yes
+							alliance_with = THIS
+							any_greater_power = { alliance_with = THIS }
+							NOT = { has_country_flag = patagonia_border_dispute_declined }
+						}
+						country_event = 97095
+					}
+					random_country = {
+						limit = {
+							is_greater_power = yes
+							relation = { who = THIS value = 100 }
+							NOT = { any_greater_power = { alliance_with = THIS } }
+							any_greater_power = { relation = { who = THIS value = 100 } }
+							NOT = { has_country_flag = patagonia_border_dispute_declined }
+						}
+						country_event = 97095
+					}
+					random_country = {
+						limit = {
+							is_greater_power = yes
+							NOT = { any_greater_power = { alliance_with = THIS } }
+							NOT = { any_greater_power = { relation = { who = THIS value = 100 } } }
+							NOT = { has_country_flag = patagonia_border_dispute_declined }
+						}
+						country_event = 97095
+					}
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 5
+							any_greater_power = { alliance_with = THIS }
+						}
+						modifier = {
+							factor = 2
+							any_greater_power = { relation = { who = THIS value = 100 } }
+						}
+					}
+				}
+			}
+
+			#Description: Triggered for a Great Power to arbitrate the border dispute
+			country_event = {
+				id = 97095
+				title = EVTNAME97095
+				desc = EVTDESC97095
+				picture = "argentina_chile_border_treaty"
+
+				is_triggered_only = yes
+
+				# Favor Argentina
+				option = {
+					name = EVTOPTA97095
+
+					random_owned = {
+						limit = { exists = ARC }
+						CHL_2333 = { add_core = ARC remove_core = CHL secede_province = ARC } # Magallanes
+						ARG_2391 = { add_core = ARC remove_core = CHL secede_province = ARC } # Rio Negro
+						ARG_2398 = { add_core = ARC remove_core = CHL secede_province = ARC } # Patagonia
+						ARG_2400 = { add_core = ARC remove_core = CHL secede_province = ARC } # Tierra del Fuego
+						owner = {
+							relation = { who = ARC value = 100 }
+							diplomatic_influence = { who = ARC value = 100 }
+						}
+					}
+					random_owned = {
+						limit = { exists = ARG }
+						CHL_2333 = { add_core = ARG remove_core = CHL secede_province = ARG } # Magallanes
+						ARG_2391 = { add_core = ARG remove_core = CHL secede_province = ARG } # Rio Negro
+						ARG_2398 = { add_core = ARG remove_core = CHL secede_province = ARG } # Patagonia
+						ARG_2400 = { add_core = ARG remove_core = CHL secede_province = ARG } # Tierra del Fuego
+						owner = {
+							relation = { who = ARG value = 100 }
+							diplomatic_influence = { who = ARG value = 100 }
+						}
+					}
+					random_owned = {
+						limit = { exists = LPL }
+						CHL_2333 = { add_core = LPL remove_core = CHL secede_province = LPL } # Magallanes
+						ARG_2391 = { add_core = LPL remove_core = CHL secede_province = LPL } # Rio Negro
+						ARG_2398 = { add_core = LPL remove_core = CHL secede_province = LPL } # Patagonia
+						ARG_2400 = { add_core = LPL remove_core = CHL secede_province = LPL } # Tierra del Fuego
+						owner = {
+							relation = { who = LPL value = 100 }
+							diplomatic_influence = { who = LPL value = 100 }
+						}
+					}
+
+					relation = { who = CHL value = -100 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 3
+							OR = {
+								ARC = {
+									exists = yes
+									alliance_with = THIS
+								}
+								ARG = {
+									exists = yes
+									alliance_with = THIS
+								}
+								LPL = {
+									exists = yes
+									alliance_with = THIS
+								}
+							}
+						}
+					}
+				}
+
+				# Balance
+				option = {
+					name = EVTOPTB97095
+
+					random_owned = {
+						limit = { exists = ARC }
+						CHL_2333 = { add_core = CHL remove_core = ARC secede_province = CHL } # Magallanes
+						2397 = { add_core = CHL remove_core = ARC secede_province = CHL } # West Tierra del Fuego
+						ARG_2391 = { add_core = ARC remove_core = CHL secede_province = ARC } # Rio Negro
+						ARG_2398 = { add_core = ARC remove_core = CHL secede_province = ARC } # Patagonia
+						2400 = { add_core = ARC remove_core = CHL secede_province = ARC } # East Tierra del Fuego
+						owner = { relation = { who = ARC value = 20 } }
+					}
+					random_owned = {
+						limit = { exists = ARG }
+						CHL_2333 = { add_core = CHL remove_core = ARG secede_province = CHL } # Magallanes
+						2397 = { add_core = CHL remove_core = ARG secede_province = CHL } # West Tierra del Fuego
+						ARG_2391 = { add_core = ARG remove_core = CHL secede_province = ARG } # Rio Negro
+						ARG_2398 = { add_core = ARG remove_core = CHL secede_province = ARG } # Patagonia
+						2400 = { add_core = ARG remove_core = CHL secede_province = ARG } # East Tierra del Fuego
+						owner = { relation = { who = ARG value = 20 } }
+					}
+					random_owned = {
+						limit = { exists = LPL }
+						CHL_2333 = { add_core = CHL remove_core = LPL secede_province = CHL } # Magallanes
+						2397 = { add_core = CHL remove_core = LPL secede_province = CHL } # West Tierra del Fuego
+						ARG_2391 = { add_core = LPL remove_core = CHL secede_province = LPL } # Rio Negro
+						ARG_2398 = { add_core = LPL remove_core = CHL secede_province = LPL } # Patagonia
+						2400 = { add_core = LPL remove_core = CHL secede_province = LPL } # East Tierra del Fuego
+						owner = { relation = { who = LPL value = 20 } }
+					}
+
+					relation = { who = CHL value = 20 }
+
+					ai_chance = { factor = 80 }
+				}
+
+				# Favor Chile
+				option = {
+					name = EVTOPTC97095
+
+					random_owned = {
+						limit = { exists = ARC }
+						CHL_2333 = { add_core = CHL remove_core = ARC secede_province = CHL } # Magallanes
+						ARG_2391 = { add_core = CHL remove_core = ARC secede_province = CHL } # Rio Negro
+						ARG_2398 = { add_core = CHL remove_core = ARC secede_province = CHL } # Patagonia
+						ARG_2400 = { add_core = CHL remove_core = ARC secede_province = CHL } # Tierra del Fuego
+						owner = { relation = { who = ARC value = -100 } }
+					}
+					random_owned = {
+						limit = { exists = ARG }
+						CHL_2333 = { add_core = CHL remove_core = ARG secede_province = CHL } # Magallanes
+						ARG_2391 = { add_core = CHL remove_core = ARG secede_province = CHL } # Rio Negro
+						ARG_2398 = { add_core = CHL remove_core = ARG secede_province = CHL } # Patagonia
+						ARG_2400 = { add_core = CHL remove_core = ARG secede_province = CHL } # Tierra del Fuego
+						owner = { relation = { who = ARG value = -100 } }
+					}
+					random_owned = {
+						limit = { exists = LPL }
+						CHL_2333 = { add_core = CHL remove_core = LPL secede_province = CHL } # Magallanes
+						ARG_2391 = { add_core = CHL remove_core = LPL secede_province = CHL } # Rio Negro
+						ARG_2398 = { add_core = CHL remove_core = LPL secede_province = CHL } # Patagonia
+						ARG_2400 = { add_core = CHL remove_core = LPL secede_province = CHL } # Tierra del Fuego
+						owner = { relation = { who = LPL value = -100 } }
+					}
+
+					relation = { who = CHL value = 100 }
+					diplomatic_influence = { who = CHL value = 100 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 3
+							alliance_with = FROM
+						}
+					}
+				}
+
+				# Refuse to arbitrate
+				option = {
+					name = EVTOPTD97095
+
+					set_country_flag = argentina_chile_border_refused_to_arbitrate
+					relation = { who = CHL value = -10 }
+					random_owned = {
+						limit = { exists = ARC }
+						owner = { relation = { who = ARC value = -10 } }
+					}
+					random_owned = {
+						limit = { exists = ARG }
+						owner = { relation = { who = ARG value = -10 } }
+					}
+					random_owned = {
+						limit = { exists = LPL }
+						owner = { relation = { who = LPL value = -10 } }
+					}
+
+					random_country = {
+						limit = {
+							is_greater_power = yes
+							NOT = { has_country_flag = argentina_chile_border_refused_to_arbitrate }
+						}
+						country_event = 97095
+					}
+
+					ai_chance = {
+						factor = 5
+						modifier = {
+							factor = 3
+							war = yes
+						}
+						modifier = {
+							factor = 5
+							NOT = { relation = { who = CHL value = 0 } }
+							OR = {
+								ARC = {
+									exists = yes
+									NOT = { relation = { who = THIS value = 0 } }
+								}
+								ARG = {
+									exists = yes
+									NOT = { relation = { who = THIS value = 0 } }
+								}
+								LPL = {
+									exists = yes
+									NOT = { relation = { who = THIS value = 0 } }
+								}
+							}
+						}
+					}
+				}
+			}
+
+		#Description: If Argentina doesn't formalize their borders in Patagonia, Chile can.
 		country_event = {
-			id = 97088
-			title = EVTNAME97088
-			desc = EVTDESC97088
+			id = 97099
+
+			title = "EVTNAME97099"
+			desc = "EVTDESC97099"
 			picture = "argentina_chile_border_treaty"
 
 			is_triggered_only = yes
 
+			immediate = {
+				clr_country_flag = argentina_chile_border_not_determined
+			}
+
+			# Claim all of Patagonia
 			option = {
-				name = EVTOPTA97088
+				name = EVTOPTA97099
 
-				# TODO
-
-				ARG_2398 = { add_core = FROM } # Patagonia
-
+				badboy = 5
 				CHL_2333 = { add_core = THIS } # Magallanes
+				ARG_2391 = { add_core = THIS } # Rio Negro
+				ARG_2398 = { add_core = THIS } # Patagonia
+				ARG_2400 = { add_core = THIS } # Tierra del Fuego
 
-				ARG_2400 = { # Tierra del Fuego
-					add_core = THIS
-					add_core = FROM
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 2
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+					modifier = {
+						factor = 0
+						badboy = 0.8
+					}
 				}
 			}
-		}
 
-		# TODO event for Tierra del Fuego split
+			# Accept the current border
+			option = {
+				name = EVTOPTB97099
+
+				any_owned = {
+					limit = { is_core = PTG }
+					add_core = THIS
+				}
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 2
+						war_policy = pacifism
+					}
+				}
+			}
+
+			# Ask a GP to arbitrate the border dispute
+			option = {
+				name = EVTOPTC97099
+
+				random_owned = {
+					limit = { any_greater_power = { alliance_with = THIS } }
+					random_country = {
+						limit = { is_greater_power = yes alliance_with = THIS }
+						country_event = 97095
+					}
+				}
+				random_owned = {
+					limit = {
+						NOT = { any_greater_power = { alliance_with = THIS } }
+						any_greater_power = { relation = { who = THIS value = 100 } }
+					}
+					random_country = {
+						limit = { is_greater_power = yes relation = { who = THIS value = 100 } }
+						country_event = 97095
+					}
+				}
+				random_owned = {
+					limit = {
+						NOT = { any_greater_power = { alliance_with = THIS } }
+						NOT = { any_greater_power = { relation = { who = THIS value = 100 } } }
+					}
+					random_country = {
+						limit = { is_greater_power = yes }
+						country_event = 97095
+					}
+				}
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 5
+						any_greater_power = { alliance_with = THIS }
+					}
+					modifier = {
+						factor = 2
+						any_greater_power = { relation = { who = THIS value = 100 } }
+					}
+				}
+			}
+
+			# Decide later
+			option = {
+				name = EVTOPTD97099
+
+				set_country_flag = argentina_chile_border_not_determined
+
+				ai_chance = { factor = 0 }
+			}
+		}
 
 ### Platine War in Argentina ###
 

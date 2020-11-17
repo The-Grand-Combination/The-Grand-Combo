@@ -4681,6 +4681,7 @@
 				has_country_flag = custers_expedition_sent
 				owns = 122 # Fort Pierre / Rapid City
 				122 = { trade_goods = precious_metal }
+				NOT = { accepted_culture = dakota }
 				NOT = { has_country_flag = sioux_wars }
 			}
 
@@ -4771,6 +4772,7 @@
 				owns = 105	# Santa Fe
 				year = 1840
 				tag = USA
+				NOT = { accepted_culture = apache }
 				NOT = {	has_country_flag = apache_wars }
 			}
 
@@ -4812,7 +4814,7 @@
 			}
 
 			mean_time_to_happen = {
-				months = 200
+				months = 24
 			}
 
 			option = {
@@ -4851,6 +4853,7 @@
 
 			option = {
 				name = "EVTOPTA16450"
+
 				any_pop = {
 					limit = {
 						has_pop_culture = apache
@@ -4861,6 +4864,553 @@
 					reduce_pop = 0.8
 				}
 				set_country_flag = apache_wars_over
+			}
+		}
+
+	## Seminole Wars ##
+
+		#Description: The Second Seminole War
+		country_event = {
+			id = 16460
+			title = "EVTNAME16460"
+			desc = "EVTDESC16460"
+			picture = seminole_wars
+
+			trigger = {
+				owns = 200	# Dade
+				tag = USA
+				NOT = {	has_country_flag = second_seminole_war }
+			}
+
+			mean_time_to_happen = {
+				months = 1
+			}
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA16460"
+
+				USA_200 = {
+					any_pop = {
+						limit = {
+							OR = {
+								has_pop_culture = seminole
+								has_pop_culture = afro_american
+							}
+						}
+						militancy = 8
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								is_culture_group = native_american
+								is_culture_group = african_diaspora_cultures
+							}
+						}
+						reduce_pop = 0.5
+					}
+				}
+				set_country_flag = second_seminole_war
+			}
+		}
+
+		#Description: Seminole Raiders - Seminole pops gain militancy, province gets militancy and pop growth debuff
+		province_event = {
+			id = 16461
+			title = "EVTNAME16461"
+			desc = "EVTDESC16461"
+			picture = seminole_wars
+
+			trigger = {
+				region = USA_200
+				has_pop_culture = seminole
+				OR = {
+					owner = {
+						has_country_flag = second_seminole_war
+						NOT = { has_country_flag = second_seminole_war_over }
+					}
+					owner = {
+						has_country_flag = third_seminole_war
+						NOT = { has_country_flag = third_seminole_war_over }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 24
+			}
+
+			option = {
+				name = "EVTOPTA16461"
+
+				state_scope = {
+					any_pop = {
+						limit = { has_pop_culture = seminole }
+						militancy = 10
+					}
+				}
+				add_province_modifier = {
+					name = seminole_raiders
+					duration = 730
+				}
+			}
+		}
+
+		#Description: The End of the Second Seminole War
+		country_event = {
+			id = 16462
+			title = "EVTNAME16462"
+			desc = "EVTDESC16462"
+			picture = seminole_wars
+			fire_only_once = yes
+
+			trigger = {
+				tag = USA
+				year = 1841
+				has_country_flag = second_seminole_war
+				NOT = {
+					any_owned_province = {
+						region = USA_200
+						controlled_by_rebels = yes
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 120
+			}
+
+			# Peace at last
+			option = {
+				name = "EVTOPTA16462"
+
+				any_pop = {
+					limit = {
+						has_pop_culture = seminole
+						NOT = { location = { state_id = 130 } }
+					}
+					militancy = -10
+					consciousness = -10
+					reduce_pop = 0.8
+				}
+				set_country_flag = second_seminole_war_over
+
+				ai_chance = { factor = 1 }
+			}
+
+			# Drive them out completely
+			option = {
+				name = "EVTOPTA16462"
+
+				badboy = 1
+				any_pop = {
+					limit = {
+						has_pop_culture = seminole
+						NOT = { location = { state_id = 130 } }
+					}
+					militancy = -10
+					consciousness = -10
+					reduce_pop = 0.4
+				}
+				set_country_flag = second_seminole_war_over
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Third Seminole War
+		country_event = {
+			id = 16463
+			title = "EVTNAME16463"
+			desc = "EVTDESC16463"
+			picture = seminole_wars
+
+			trigger = {
+				owns = 200	# Dade
+				200 = { is_colonial = no }
+				tag = USA
+				has_country_flag = second_seminole_war_over
+			}
+
+			mean_time_to_happen = {
+				months = 36
+				modifier = {
+					factor = 0.8
+					has_global_flag = marching_on_the_trail_of_tears
+				}
+			}
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA16463"
+
+				USA_200 = {
+					any_pop = {
+						limit = {
+							OR = {
+								has_pop_culture = seminole
+								has_pop_culture = afro_american
+							}
+						}
+						militancy = 8
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								is_culture_group = native_american
+								is_culture_group = african_diaspora_cultures
+							}
+						}
+						reduce_pop = 0.5
+					}
+				}
+				set_country_flag = third_seminole_war
+			}
+		}
+
+		#Description: The End of the Third Seminole War
+		country_event = {
+			id = 16464
+			title = "EVTNAME16464"
+			desc = "EVTDESC16464"
+			picture = seminole_wars
+			fire_only_once = yes
+
+			trigger = {
+				tag = USA
+				year = 1855
+				has_country_flag = third_seminole_war
+				NOT = {
+					any_owned_province = {
+						region = USA_200
+						controlled_by_rebels = yes
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 120
+			}
+
+			option = {
+				name = "EVTOPTA16464"
+
+				any_pop = {
+					limit = {
+						has_pop_culture = seminole
+						NOT = { location = { state_id = 130 } }
+					}
+					militancy = -10
+					consciousness = -10
+					reduce_pop = 0.8
+				}
+				set_country_flag = third_seminole_war_over
+			}
+		}
+
+		#Description: Seminole nation - triggered for the USA if the Seminole rebels enforce demands
+		country_event = {
+			id = 16465
+			title = "EVTNAME16465"
+			desc = "EVTDESC16465"
+			picture = seminole_wars
+			is_triggered_only = yes
+
+			immediate = {
+				MSC = {
+					all_core = {
+						limit = { region = USA_200 }
+						secede_province = MSC
+					}
+				}
+			}
+
+			# Continue the war
+			option = {
+				name = "EVTOPTA16465"
+
+				badboy = 5
+				war = {
+					target = MSC
+					attacker_goal = { casus_belli = annex_core_country }
+					call_ally = no
+				}
+				MSC = { add_country_modifier = { name = small_country_draft duration = 365 } }
+				random_country = {
+					limit = {
+						OR = {
+							tag = SPA
+							tag = SPC
+							tag = IBR
+						}
+						exists = yes
+					}
+					country_event = 16466
+				}
+				random_country = {
+					limit = {
+						tag = ENG
+						exists = yes
+					}
+					country_event = 16466
+				}
+			}
+
+			# Accept the loss
+			option = {
+				name = "EVTOPTB16465"
+
+				prestige = -25
+				scaled_militancy = {
+					factor = 3
+					issue = pro_military
+				}
+				scaled_militancy = {
+					factor = 5
+					issue = jingoism
+				}
+			}
+		}
+
+		#Description: A new state in Florida - triggered for Spain and the UK if the USA decides to continue the war
+		country_event = {
+			id = 16466
+			title = "EVTNAME16466"
+			desc = "EVTDESC16466"
+			picture = seminole_wars
+			is_triggered_only = yes
+
+			# Intervene
+			option = {
+				name = "EVTOPTA16466"
+
+				create_alliance = MSC
+				diplomatic_influence = { who = MSC value = 50 }
+				relation = { who = MSC value = 50 }
+				add_casus_belli = { target = USA type = humiliate months = 6 }
+				MSC = {
+					money = 1000
+					iron = 10
+					wool = 10
+					timber = 25
+					small_arms = 10
+					leadership = 20
+					add_casus_belli = { target = USA type = war_reparations months = 6 }
+				}
+
+				ai_chance = {
+					factor = 60
+					modifier = {
+						factor = 0
+						alliance_with = USA
+					}
+				}
+			}
+
+			# Send supplies and advisors
+			option = {
+				name = "EVTOPTB16466"
+
+				MSC = {
+					money = 1000
+					iron = 10
+					wool = 10
+					timber = 25
+					small_arms = 10
+					leadership = 20
+				}
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 0.5
+						NOT = { relation = { who = USA value = 0 } }
+					}
+				}
+			}
+
+			# Don't recognize them
+			option = {
+				name = "EVTOPTC16466"
+
+				relation = { who = MSC value = -25 }
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 0.5
+						NOT = { relation = { who = USA value = 0 } }
+					}
+				}
+			}
+		}
+
+		#Description: A new state in Florida - triggered for MSC if they exist at peace
+		country_event = {
+			id = 16467
+			title = "EVTNAME16467"
+			desc = "EVTDESC16467"
+			picture = seminole_wars
+			fire_only_once = yes
+
+			trigger = {
+				tag = MSC
+				exists = yes
+				war = no
+			}
+
+			mean_time_to_happen = {
+				days = 3
+			}
+
+			option = {
+				name = "EVTOPTA16467"
+
+				prestige = 5
+				war_exhaustion = -20
+				any_pop = {
+					limit = { has_pop_culture = seminole }
+					reduce_pop = 1.5
+				}
+				any_owned = { add_province_modifier = { name = baby_boom duration = 365 } }
+				USA = {
+					random_owned = {
+						limit = { owner = { has_country_flag = second_seminole_war } }
+						owner = { set_country_flag = second_seminole_war_over }
+					}
+					random_owned = {
+						limit = { owner = { has_country_flag = third_seminole_war } }
+						owner = { set_country_flag = third_seminole_war_over }
+					}
+				}
+				any_country = {
+					limit = {
+						is_greater_power = yes
+						NOT = { tag = USA }
+					}
+					country_event = { id = 16468 days = 5 }
+				}
+			}
+		}
+
+		#Description: A new state in Florida - triggered for every GP if the Seminoles achieve independence
+		country_event = {
+			id = 16468
+			title = "EVTNAME16468"
+			desc = "EVTDESC16468"
+			picture = seminole_wars
+			is_triggered_only = yes
+
+			# Recognize the new state
+			option = {
+				name = "EVTOPTA16468"
+
+				diplomatic_influence = { who = MSC value = 10 }
+				relation = { who = MSC value = 20 }
+				MSC = { prestige = 5 }
+				USA = { prestige = -5 }
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0
+						alliance_with = USA
+					}
+					modifier = {
+						factor = 2
+						any_owned_province = {
+							OR = {
+								continent = north_america
+								continent = south_america
+							}
+						}
+					}
+				}
+			}
+
+			# Don't recognize them
+			option = {
+				name = "EVTOPTB16468"
+
+				relation = { who = MSC value = -15 }
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.5
+						NOT = { relation = { who = USA value = 0 } }
+					}
+				}
+			}
+		}
+
+		#Description: Osceola raids a province
+		province_event = {
+			id = 16469
+			title = "EVTNAME16469"
+			desc = "EVTDESC16469"
+			picture = seminole_wars
+
+			trigger = {
+				region = USA_200
+				owned_by = USA
+				any_pop = { is_culture_group = american_cultures }
+				has_country_flag = second_seminole_war
+				NOT = { has_country_flag = second_seminole_war_over }
+				NOT = { has_country_flag = osceola_captured }
+			}
+
+			mean_time_to_happen = {
+				months = 10
+			}
+
+			option = {
+				name = "EVTOPTA16469"
+
+				owner = { set_country_flag = osceola_raids }
+				any_pop = {
+					limit = {
+						NOT = {
+							is_culture_group = native_american
+							is_culture_group = african_diaspora_cultures
+						}
+					}
+					reduce_pop = 0.9
+				}
+				add_province_modifier = {
+					name = seminole_raiders
+					duration = 730
+				}
+			}
+		}
+
+		#Description: Osceola Captured
+		country_event = {
+			id = 16470
+			title = "EVTNAME16470"
+			desc = "EVTDESC16470"
+			picture = seminole_wars
+			fire_only_once = yes
+
+			trigger = {
+				has_country_flag = osceola_raids
+				NOT = { has_country_flag = osceola_captured }
+			}
+
+			mean_time_to_happen = {
+				months = 30
+			}
+
+			option = {
+				name = "EVTOPTA16468"
+
+				prestige = -10
+				badboy = 2
+				any_pop = { consciousness = 1 }
+				any_pop = { limit = { is_culture_group = native_american } militancy = 3 }
+				set_global_flag = osceola_captured
 			}
 		}
 
@@ -5797,7 +6347,7 @@
 
 ### Louisiana ###
 
-	#Description: If Louisiana claims all former Louisianan territory and owns it, the western states will declare independence
+	#Description: If Louisiana claims all former Louisianan territory and owns it, the western states will declare independence # TODO this will happen in both ULA_greater and Treaty of New York situations and will do western collapse
 	country_event = {
 		id = 4489019
 		title = EVTNAME4489019
@@ -5900,7 +6450,7 @@
 		}
 	}
 
-	#Description: The Treaty of New York - if the French retake Louisiana, the Pacific states will be released as vassals # TODO unite with above
+	#Description: The Treaty of New York - if the French retake Louisiana, the Pacific states will be released as vassals # TODO this will only happen on Treaty of New York and will move pops and do Ontario State
 	country_event = {
 		id = 99971
 		title = "EVTNAME99971"

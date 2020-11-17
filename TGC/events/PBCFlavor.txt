@@ -5,145 +5,164 @@
 # 2.2. If he accepts, Peru becomes a puppet and Bolivia becomes PBC
 # 3. When Bolivia becomes PBC, enable events to pop which will create South Peru and give them the appropriate territories and give (north) Peru territories accordingly
 
-#Description: The Peru-Bolivian Confederation - Triggered for Chile and Argentina once the PBC is formed
-country_event = {
-	id = 97050
-	title = "EVTNAME97050"
-	desc = "EVTDESC97050"
-	picture = "deliberation"
+## Formation ##
 
-	trigger = {
-		neighbour = PBC
-		OR = {
-			AND = {
-				tag = CHL
-				PBC = { owns = 2305 } # Antofagasta
-			}
-			AND = {
-				OR = {
-					tag = ARG
-					tag = ARC
-					tag = LPL
-				}
-				PBC = {
-					owns = 2370 # San Antonio de Los Cobres
-					owns = 3353 # Los Toldos
-				}
-				OR = {
-					CHL = { has_country_flag = fight_the_PBC }
-					CHL = { has_country_flag = peace_with_the_PBC }
-					CHL = { war_with = PBC }
-				}
-			}
-		}
-		war = no
-		NOT = {
-			num_of_revolts = 1
-			truce_with = PBC
-			has_country_flag = fight_the_PBC
-			has_country_flag = peace_with_the_PBC
-			PBC = { has_country_flag = the_confederation_is_legitime }
-		}
-	}
+	#Description: Triggered for Peru near the start of the game
+	#Option 1: Become puppet of Bolivia, Bolivia gets response
+	#Option 2: Bolivia gets response
 
-	mean_time_to_happen = {
-		months = 12
-		modifier = {
-			factor = 0.5
-			PBC = { war = yes }
-		}
-	}
+	#Description: Triggered for Bolivia if Peru accepts
+	#Option 1: Become PBC, prestige
 
-	# War of the Confederation (historical)
-	option = {
-		name = "EVTOPTA97050"
+	#Description: Triggered for Bolivia if Peru refuses
+	#Option 1: Go to war with make puppet CB, set flag to trigger PBC formation event when war is over
+	#Option 2: Lose prestige, set flag for confederation abandoned
 
-		set_country_flag = fight_the_PBC
-		leave_alliance = PBC
-		2370 = { add_core = ARC } # Cochinoca
-		2315 = { add_core = ARC } # Tarija
-		any_pop = {
-			dominant_issue = {
-				factor = 0.05
-				value = jingoism
-			}
-		}
-		random_owned = {
-			limit = { owner = { tag = CHL } }
-			owner = {
-				casus_belli = {
-					target = PEU
-					type = war_reparations
-					months = 24
+	#Description: Triggered for Bolivia after the war with Peru if they win
+	#Option 1: Become PBC
+
+	#Description: Triggered for Bolivia after the war with Peru if they lose
+	#Option 1: set flag for confederation abandoned
+
+	#Description: The Peru-Bolivian Confederation - Triggered for Chile and Argentina once the PBC is formed
+	country_event = {
+		id = 97050
+		title = "EVTNAME97050"
+		desc = "EVTDESC97050"
+		picture = "deliberation"
+
+		trigger = {
+			neighbour = PBC
+			OR = {
+				AND = {
+					tag = CHL
+					PBC = { owns = 2305 } # Antofagasta
 				}
-				casus_belli = {
-					target = PBC
-					type = cut_down_to_size
-					months = 24
-				}
-				war = {
-					target = PBC
-					attacker_goal = { casus_belli = cut_down_to_size }
-					defender_goal = { casus_belli = war_reparations }
-					#call_ally = yes
-				}
-			}
-		}
-		random_owned = {
-			limit = {
-				owner = {
+				AND = {
 					OR = {
 						tag = ARG
 						tag = ARC
 						tag = LPL
 					}
-				}
-			}
-			owner = {
-				war = {
-					target = PBC
-					attacker_goal = {
-						casus_belli = acquire_core_state
-						state_province_id = 2370
+					PBC = {
+						owns = 2370 # San Antonio de Los Cobres
+						owns = 3353 # Los Toldos
 					}
-					call_ally = yes
+					OR = {
+						CHL = { has_country_flag = fight_the_PBC }
+						CHL = { has_country_flag = peace_with_the_PBC }
+						CHL = { war_with = PBC }
+					}
+				}
+			}
+			war = no
+			NOT = {
+				num_of_revolts = 1
+				truce_with = PBC
+				has_country_flag = fight_the_PBC
+				has_country_flag = peace_with_the_PBC
+				PBC = { has_country_flag = the_confederation_is_legitime }
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 12
+			modifier = {
+				factor = 0.5
+				PBC = { war = yes }
+			}
+		}
+
+		# War of the Confederation (historical)
+		option = {
+			name = "EVTOPTA97050"
+
+			set_country_flag = fight_the_PBC
+			leave_alliance = PBC
+			2370 = { add_core = ARC } # Cochinoca
+			2315 = { add_core = ARC } # Tarija
+			any_pop = {
+				dominant_issue = {
+					factor = 0.05
+					value = jingoism
+				}
+			}
+			random_owned = {
+				limit = { owner = { tag = CHL } }
+				owner = {
+					casus_belli = {
+						target = PEU
+						type = war_reparations
+						months = 24
+					}
+					casus_belli = {
+						target = PBC
+						type = cut_down_to_size
+						months = 24
+					}
+					war = {
+						target = PBC
+						attacker_goal = { casus_belli = cut_down_to_size }
+						defender_goal = { casus_belli = war_reparations }
+						#call_ally = yes
+					}
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						OR = {
+							tag = ARG
+							tag = ARC
+							tag = LPL
+						}
+					}
+				}
+				owner = {
+					war = {
+						target = PBC
+						attacker_goal = {
+							casus_belli = acquire_core_state
+							state_province_id = 2370
+						}
+						call_ally = yes
+					}
+				}
+			}
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Let them be
+		option = {
+			name = "EVTOPTB97050"
+
+			set_country_flag = peace_with_the_PBC
+			prestige = -3
+			relation = {
+				who = PBC
+				value = 100
+			}
+			any_pop = {
+				dominant_issue = {
+					factor = 0.05
+					value = jingoism
+				}
+				scaled_militancy = {
+					issue = jingoism
+					factor = 4
+				}
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.25
+					tag = CHL
 				}
 			}
 		}
-
-		ai_chance = { factor = 90 }
 	}
-
-	# Let them be
-	option = {
-		name = "EVTOPTB97050"
-
-		set_country_flag = peace_with_the_PBC
-		prestige = -3
-		relation = {
-			who = PBC
-			value = 100
-		}
-		any_pop = {
-			dominant_issue = {
-				factor = 0.05
-				value = jingoism
-			}
-			scaled_militancy = {
-				issue = jingoism
-				factor = 4
-			}
-		}
-
-		ai_chance = {
-			factor = 10
-			modifier = {
-				factor = 0.25
-				tag = CHL
-			}
-		}
-	}
-}
 
 ## Breakup ##
 
@@ -596,7 +615,7 @@ country_event = {
 	}
 }
 
-# TODO Argentina gets 2370 and 3353 after War of the Pacific
+# TODO Argentina gets 2370 and 3353 and Tierra del Fuego split after War of the Pacific
 
 #Description: Chile-Bolivia Treaty of Peace and Friendship - The losers of the War of the Pacific lose their cores in Antofagasta
 country_event = {

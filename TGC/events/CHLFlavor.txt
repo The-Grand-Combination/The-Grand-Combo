@@ -20,11 +20,11 @@ country_event = {
 	option = {
 		name = "EVTOPTA4999100"
 
-		add_country_modifier = { name = hazardous_journey duration = 16000 }
+		add_country_modifier = { name = hazardous_journey duration = 10950 }
 	}
 }
 
-#Description: Occupation of Araucania # TODO remove Tierra del Fuego from this
+#Description: Occupation of Araucania
 country_event = {
 	id = 97080
 	title = "EVTNAME97080"
@@ -40,10 +40,8 @@ country_event = {
 			2392 = { empty = yes }
 			2394 = { empty = yes }
 			2396 = { empty = yes }
-			2397 = { empty = yes }
 			2398 = { empty = yes }
 			2399 = { empty = yes }
-			2400 = { empty = yes }
 		}
 		has_country_flag = occupation_of_araucania
 	}
@@ -118,27 +116,10 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				OR = {
-					2400 = { owned_by = THIS }
-					2335 = { owned_by = THIS }
-				}
+				2335 = { owned_by = THIS }
 				2399 = { empty = yes }
 			}
 			2399 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				2397 = { owned_by = THIS }
-				2400 = { empty = yes }
-			}
-			2400 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				2335 = { owned_by = THIS }
-				2397 = { empty = yes }
-			}
-			2397 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } }
 		}
 		random_owned = {
 			limit = {
@@ -196,6 +177,73 @@ country_event = {
 
 		2323 = { trade_goods = iron remove_province_modifier = silver_mine }
 		2322 = { trade_goods = coal remove_province_modifier = silver_mine }
+	}
+}
+
+#Description: The Tierra del Fuego gold rush and the Selk'nam genocide
+country_event = {
+	id = 97084
+	title = "EVTNAME97084"
+	desc = "EVTDESC97084"
+	picture = "chilean_silver_rush"
+
+	trigger = {
+		owns = 2397 # West Tierra del Fuego
+		2397 = { empty = no }
+		year = 1879
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 48
+		modifier = {
+			factor = 0.8
+			year = 1885
+		}
+		modifier = {
+			factor = 0.5
+			year = 1886
+		}
+		modifier = {
+			factor = 0.5
+			year = 1887
+		}
+		modifier = {
+			factor = 0.5
+			year = 1888
+		}
+	}
+
+	option = {
+		name = "EVTOPTA97084"
+
+		random_owned = { # So it doesn't happen again for the other country
+			limit = { province_id = 2397 }
+			add_province_modifier = { name = gold_rush duration = 365 }
+			trade_goods = precious_metal
+			any_pop = {
+				limit = { is_culture_group = native_american }
+				reduce_pop = 0.125
+			}
+		}
+		random_owned = { # If owned by the same country
+			limit = { province_id = 2400 }
+			add_province_modifier = { name = gold_rush duration = 365 }
+			trade_goods = precious_metal
+			any_pop = {
+				limit = { is_culture_group = native_american }
+				reduce_pop = 0.125
+			}
+		}
+		badboy = 1
+		random_country = { # If owned by different countries
+			limit = {
+				owns = 2400
+				NOT = { tag = THIS }
+			}
+			country_event = 97084
+		}
 	}
 }
 
