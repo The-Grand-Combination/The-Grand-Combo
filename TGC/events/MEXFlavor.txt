@@ -827,14 +827,57 @@
 
 			war_exhaustion = -10
 			random_owned = {
-				limit = { any_core = { NOT = { owned_by = THIS } } }
+				limit = { owner = { any_core = { NOT = { owned_by = THIS } } } }
 				owner = {
-					any_core = {
+					all_core = {
 						limit = { NOT = { owned_by = THIS } }
 						remove_core = THIS
 					}
 				}
 			}
+			set_global_flag = texas_independent
+		}
+	}
+
+	#Description: The Battle of the Alamo
+	country_event = {
+		id = 44847
+		title = EVTNAME44847
+		desc = EVTDESC44847
+		picture = fall_of_the_alamo
+
+		trigger = {
+			tag = TEX
+			war_with = MEX
+			# 137 = { # DEVNOTE: This doesn't appear to work, but ideally it would be like this
+				# country_units_in_province = TEX
+				# country_units_in_province = MEX
+			# }
+			NOT = {
+				has_global_flag = texas_independent
+				MEX = { has_country_flag = texas_recaptured }
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 2
+			modifier = {
+				factor = 0.05
+				137 = { country_units_in_province = MEX }
+			}
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = EVTOPTA44847
+
+			war_exhaustion = -5
+			any_pop = {
+				limit = { type = soldiers }
+				reduce_pop = 1.1
+			}
+			add_country_modifier = { name = small_country_draft duration = 90 }
 		}
 	}
 

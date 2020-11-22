@@ -1,9 +1,5 @@
 # TODO borders with Columbia 1895
 
-# TODO borders with UK 1903
-# UK gets 2242, 3413
-# UK gets 1979 (from Brazil or VNZ) in 1904
-
 # TODO Panama becomes independent 1903
 
 #Description: The Rise of the Andinos - become a presidential dictatorship or not?
@@ -131,99 +127,517 @@ country_event = {
 	}
 }
 
-#Description: Gold found in disputed region around 1841
+## Venezuelan Crisis of 1895 ## TODO find appropriate picture for this event chain
 
-#Description: The Venezuelan Crisis
-country_event = {
+	#Description: Gold found in disputed region around 1841 # where did I find this ??
 
-	id = 50010
-	title = "EVTNAME50010"
-	desc = "EVTDESC50010"
-	picture = "ccastro"
+	#Description: The Venezuelan Crisis
+	country_event = {
 
-	trigger = {
-		owns = 2242
-		NOT = { owns = 2243 }
-		OR = {
-			tag = VNZ
-			tag = GCO
+		id = 50010
+		title = "EVTNAME50010"
+		desc = "EVTDESC50010"
+		picture = "ccastro"
+
+		trigger = {
+			owns = 2242
+			NOT = { owns = 2243 }
+			OR = {
+				tag = VNZ
+				tag = GCO
+			}
+			is_greater_power = no
+			year = 1886
+			ENG = {
+				owns = 2243 # Fort Zeelandia
+				NOT = { relation = { who = THIS value = 0 } }
+			}
+			USA = {
+				exists = yes
+				is_greater_power = yes
+				relation = { who = THIS value = 50 }
+				NOT = {
+					has_global_flag = USA_CAN_denied
+					has_global_flag = treaty_of_new_york
+					has_country_flag = western_collapse
+				}
+			}
 		}
-		is_greater_power = no
-		year = 1886
-		ENG = {
-			owns = 2243 # Fort Zeelandia
-			NOT = { relation = { who = THIS value = 0 } }
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 6
 		}
-		USA = {
-			exists = yes
-			is_greater_power = yes
-			relation = { who = THIS value = 50 }
-			NOT = {
-				has_global_flag = USA_CAN_denied
-				has_global_flag = treaty_of_new_york
-				has_country_flag = western_collapse
+
+		# Send Scruggs to lobby for us in Washington
+		option = {
+			name = "EVTOPTA50010"
+
+			treasury = -1000
+			USA = { country_event = 50011 }
+
+			ai_chance = { factor = 60 }
+		}
+
+		# Don't risk it
+		option = {
+			name = "EVTOPTB50010"
+
+			any_pop = {
+				militancy = 3
+				consciousness = 3
+			}
+			scaled_militancy = { factor = 6 issue = jingoism }
+			scaled_consciousness = { factor = 4 ideology = conservative }
+			scaled_consciousness = { factor = 4 ideology = reactionary }
+
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0.5
+					is_secondary_power = yes
+				}
+				modifier = {
+					factor = 0.5
+					in_sphere = USA
+					alliance_with = USA
+				}
 			}
 		}
 	}
 
-	fire_only_once = yes
+	#Description: Triggered for the USA when Scruggs lobbies for Monroe doctrine enforcement
+	country_event = {
 
-	mean_time_to_happen = {
-		months = 6
-	}
+		id = 50011
+		title = "EVTNAME50011"
+		desc = "EVTDESC50011"
+		picture = "ccastro"
 
-	# Send Scruggs to lobby for us in Washington
-	option = {
-		name = "EVTOPTA50010"
+		is_triggered_only = yes
 
-		USA = { country_event = 50011 }
+		# Kick the British out - demand that Guyana be released as a sovereign state, give VNZ cores
+		option = {
+			name = "EVTOPTA50011"
 
-		ai_chance = {
-			factor = 50
+			prestige = 10
+			create_alliance = FROM
+
+			ENG = { country_event = 50012 }
+
+			any_country = {
+				limit = {
+					in_sphere = THIS
+					OR = {
+						capital_scope = { continent = north_america }
+						capital_scope = { continent = south_america }
+					}
+				}
+				relation = { who = THIS value = 25 }
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.1
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.2
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					military_score = ENG
+				}
+				modifier = {
+					factor = 3
+					has_country_flag = shield_NW
+				}
+			}
+		}
+
+		# Form a committee to arbitrate the dispute (historical)
+		option = {
+			name = "EVTOPTB50011"
+
+			ENG = { country_event = 50013 }
+
+			ai_chance = { factor = 85 }
+		}
+
+		# Leave the Venezuelans hanging - lose influence and relations with all spherelings in the Americas
+		option = {
+			name = "EVTOPTC50011"
+
+			any_country = {
+				limit = {
+					NOT = { tag = FROM }
+					in_sphere = THIS
+					OR = {
+						capital_scope = { continent = north_america }
+						capital_scope = { continent = south_america }
+					}
+				}
+				relation = { who = THIS value = 25 }
+			}
+			diplomatic_influence = { who = FROM value = -150 }
+			FROM = { country_event = 50014 }
+
+			ai_chance = {
+				factor = 5
+				modifier = {
+					factor = 5
+					is_disarmed = yes
+				}
+				modifier = {
+					factor = 10
+					any_greater_power = { war_with = THIS }
+				}
+			}
 		}
 	}
 
-	# Don't risk it
-	option = {
-		name = "EVTOPTB50010"
+	#Description: Triggered for the British when the UK demands that they leave Guyana altogether.
+	country_event = {
+		id = 50012
+		title = "EVTNAME50012"
+		desc = "EVTDESC50012"
+		picture = "ccastro"
 
-		any_pop = {
-			militancy = 3
-			consciousness = 3
+		is_triggered_only = yes
+
+		# Britannia rules the waves - war it is
+		option = {
+			name = "EVTOPTA50012"
+
+			badboy = 5
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = acquire_state state_province_id = 2242 }
+			}
+			FROM = {
+				add_casus_belli = {
+					target = THIS
+					type = free_people
+					months = 6
+				}
+				add_casus_belli = {
+					target = THIS
+					type = free_allied_cores
+					months = 6
+				}
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 2
+					military_score = FROM
+				}
+				modifier = {
+					factor = 0.5
+					war = yes
+				}
+				modifier = {
+					factor = 0
+					any_greater_power = { war_with = THIS }
+				}
+				modifier = {
+					factor = 0
+					is_disarmed = yes
+				}
+			}
 		}
-		scaled_militancy = { factor = 6 issue = jingoism }
-		scaled_consciousness = { factor = 4 ideology = conservative }
-		scaled_consciousness = { factor = 4 ideology = reactionary }
 
-		ai_chance = {
-			factor = 40
+		# neutral option??
+		option = {
+			name = "EVTOPTB50012"
+
+			ai_chance = {
+				factor = 10
+			}
+		}
+
+		# Give in to their demands - release Guyana to the US sphere
+		option = {
+			name = "EVTOPTC50012"
+
+			prestige = -25
+			badboy = -2
+
+			random_country = {
+				limit = { tag = VNZ exists = yes }
+				any_owned = { limit = { is_core = VNZ } secede_province = VNZ } # TODO event
+			}
+			random_country = {
+				limit = { tag = GCO exists = yes }
+				any_owned = { limit = { is_core = GCO } secede_province = GCO }
+			}
+			any_owned = {
+				limit = { is_core = GUY }
+				secede_province = GUY
+			}
+			diplomatic_influence = { who = GUY value = -100 }
+			FROM = {
+				relation = { who = GUY value = 200 }
+				diplomatic_influence = { who = GUY value = 400 }
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 2
+					is_disarmed = yes
+				}
+			}
 		}
 	}
-}
 
-#Description: Triggered for the USA when Scruggs lobbies for Monroe doctrine enforcement
-#Option 1: Kick the British out - demand that Guyana be released as a sovereign state, give VNZ cores
-#Option 2: Form a committee to arbitrate the dispute (historical)
-#Option 3: Leave the Venezuelans hanging - lose influence and relations with all spherelings in the Americas
+	#Description: Triggered for the British when the Americans form a committee to arbitrate the dispute
+	country_event = {
+		id = 50013
+		title = "EVTNAME50013"
+		desc = "EVTDESC50013"
+		picture = "ccastro"
 
-#Description: Triggered for the British when the UK demands that they leave Guyana altogether
-#Option 1: Britannia rules the waves - war it is
-#Option 2: neutral option??
-#Option 3: Give in to their demands
+		is_triggered_only = yes
 
-#Description: Triggered for the British when the Americans form a committee to arbitrate the dispute
-#Option 1: Accept their decision
-#Option 2: Make a deal / threaten / bribe the judges (historical) - lose money, prestige, affect the chances, 30% chance to get discovered
+		# Accept their decision
+		option = {
+			name = "EVTOPTA50013"
 
-#Description: Arbitration result - in favor of Venezuela
-#Option 1: Venezuela gets 2243
+			set_global_flag = venezuela_crisis_fair_committee
 
-#Description: Arbitration result - in favor of UK
-#Option 1: historical
+			ai_chance = { factor = 50 }
+		}
 
-#Description: Triggered for the USA if UK meddling is discovered
-#Option 1:
+		# Make a deal / threaten / bribe the judges (historical)
+		option = {
+			name = "EVTOPTB50013"
 
-#Description: Triggered for the UK if the ruling was against them
-#Option 1: Concede - give up the territory
-#Option 2: Contest the decision - gain infamy, lose prestige, lose relations with all GPs, USA gets free allied cores and free people
+			treasury = -10000
+			set_global_flag = venezuela_crisis_loaded_committee
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 6
+					rank = 1
+				}
+				modifier = {
+					factor = 0
+					badboy = 0.8
+				}
+				modifier = {
+					factor = 0.8
+					relation = { who = FROM value = 100 }
+				}
+				modifier = {
+					factor = 0.8
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 0.2
+					is_disarmed = yes
+				}
+			}
+		}
+	}
+
+	#Description: Triggered for Venezuela if the USA leaves them hanging.
+	country_event = {
+		id = 50014
+		title = "EVTNAME50014"
+		desc = "EVTDESC50014"
+		picture = "ccastro"
+
+		is_triggered_only = yes
+
+		# Damnation
+		option = {
+			name = "EVTOPTA50014"
+
+			prestige = -20
+			relation = { who = FROM value = -150 }
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Use this to spread dissatisfaction with the Americans in South America
+		option = {
+			name = "EVTOPTB50012"
+
+			# TODO
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: Arbitration result - in favor of Venezuela # TODO what if they fire on the same day
+	country_event = {
+		id = 50015
+		title = "EVTNAME50015"
+		desc = "EVTDESC50015"
+		picture = "ccastro"
+
+		trigger = {
+			OR = {
+				tag = VNZ
+				tag = GCO
+			}
+			exists = yes
+			OR = {
+				has_global_flag = venezuela_crisis_fair_committee
+				has_global_flag = venezuela_crisis_loaded_committee
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = { # making the event in favor of the UK more likely to fire first
+				factor = 1.2
+				has_global_flag = venezuela_crisis_loaded_committee
+			}
+		}
+
+		immediate = { # Only one of these events will fire
+			clr_global_flag = venezuela_crisis_fair_committee
+			clr_global_flag = venezuela_crisis_loaded_committee
+		}
+
+		option = {
+			name = "EVTOPTA50015"
+
+			prestige = 10
+			relation = { who = USA value = 50 }
+			random_owned = {
+				limit = { owner = { tag = VNZ } }
+				2243 = {
+					add_core = VNZ
+					secede_province = THIS
+				}
+			}
+			random_owned = {
+				limit = { owner = { tag = GCO } }
+				2243 = {
+					add_core = VNZ
+					add_core = GCO
+					secede_province = THIS
+				}
+			}
+
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	#Description: Arbitration result - in favor of UK
+	country_event = {
+		id = 50016
+		title = "EVTNAME50016"
+		desc = "EVTDESC50016"
+		picture = "ccastro"
+
+		trigger = {
+			tag = ENG
+			OR = {
+				has_global_flag = venezuela_crisis_fair_committee
+				has_global_flag = venezuela_crisis_loaded_committee
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = { # making the event in favor of the UK more likely to fire first
+				factor = 0.9
+				has_global_flag = venezuela_crisis_loaded_committee
+			}
+		}
+
+		immediate = { # Only one of these events will fire
+			clr_global_flag = venezuela_crisis_fair_committee
+			clr_global_flag = venezuela_crisis_loaded_committee
+		}
+
+		option = {
+			name = "EVTOPTA50016"
+
+			prestige = 10
+			relation = { who = USA value = 50 }
+			random_country = {
+				limit = { tag = VNZ exists = yes }
+				ENG_1979 = { remove_core = VNZ }
+				VNZ = {
+					any_owned = {
+						limit = { region = ENG_1979 }
+						secede_province = THIS
+					}
+				}
+			}
+			random_country = {
+				limit = { tag = GCO exists = yes }
+				ENG_1979 = {
+					remove_core = VNZ
+					remove_core = GCO
+				}
+				GCO = {
+					any_owned = {
+						limit = { region = ENG_1979 }
+						secede_province = THIS
+					}
+				}
+			}
+
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	#Description: Triggered for the USA if UK meddling is discovered
+	country_event = {
+		id = 50017
+		title = "EVTNAME50017"
+		desc = "EVTDESC50017"
+		picture = "ccastro"
+
+		trigger = {
+			tag = USA
+			has_global_flag = venezuela_crisis_loaded_committee
+		}
+
+		mean_time_to_happen = {
+			months = 10
+		}
+
+		immediate = { # Only one of these events will fire
+			clr_global_flag = venezuela_crisis_fair_committee
+			clr_global_flag = venezuela_crisis_loaded_committee
+		}
+
+		option = {
+			name = "EVTOPTA50017"
+
+			relation = { who = ENG value = -100 }
+			random_country = {
+				limit = { tag = VNZ exists = yes }
+				# TODO event
+			}
+			random_country = {
+				limit = { tag = GCO exists = yes }
+				# TODO event
+			}
+			ENG = {
+				# TODO event
+			}
+
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	#Description: Triggered for the UK if the ruling was against them
+	#Option 1: Concede - give up the territory
+	#Option 2: Contest the decision - gain infamy, lose prestige, lose relations with all GPs, USA gets free allied cores and free people
