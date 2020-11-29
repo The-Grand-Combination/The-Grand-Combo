@@ -2318,7 +2318,8 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
-#from FlavourMod_FRA_Colonial
+## French North America ##
+
 	the_quebec_question = {
 		picture = vive_le_quebec
 		potential = {
@@ -2825,47 +2826,37 @@ create_cambodian_protectorate = {
 
 		effect = {
 			set_global_flag = treaty_of_new_york
-			clr_global_flag = american_frontier
-			###Secede Southern Ontario to USA###
-				CAN_46 = { add_core = USA }
-				51 = { remove_core = USA }
-				50 = { remove_core = USA }
-			USA = {
-				remove_accepted_culture = cajun
-				###Add Lousiana Cores###
-					any_owned = { # TODO regardless of USA owns
-						limit = {
-							OR = {
-								region = USA_139 # Louisiana
-								region = USA_144 # Arkansas
-								region = USA_148 # Missouri
-								region = USA_151 # Iowa
-								province_id = 156 # Minnesota
-								region = USA_129 # Oklahoma
-								region = USA_126 # Kansas
-								region = USA_124 # Nebraska
-								region = USA_121 # South Dakota
-								region = USA_118 # North Dakota
-								province_id = 106 # Colorado
-								province_id = 112 # Wyoming
-								region = USA_116 # Montana
-								province_id = 24 # Canada
-								province_id = 30
-							}
-							NOT = {
-								province_id = 129 # Oklahoma
-								province_id = 128 # Kansas
-								province_id = 118 # North Dakota
-								province_id = 114 # Montana
-							}
-						}
-						add_core = ULA
-					}
-				###Population Transfers
-					any_pop = { limit = { has_pop_culture = french_canadian } move_pop = 65 }
-				###Remove Acadia Cores###
-					any_owned = { limit = { is_core = ACA } remove_core = ACA }
-				###Secede Provinces
+
+			## American Frontier flags ##
+				clr_global_flag = american_frontier
+				# TODO
+
+			## Louisiana cores ##
+				USA_139 = { add_core = ULA } # Louisiana
+				USA_144 = { add_core = ULA } # Arkansas
+				USA_148 = { add_core = ULA } # Missouri
+				USA_151 = { add_core = ULA } # Iowa
+				156 = { add_core = ULA } # Minnesota
+				USA_129 = { add_core = ULA } # Oklahoma
+				USA_126 = { add_core = ULA } # Kansas
+				USA_124 = { add_core = ULA } # Nebraska
+				USA_121 = { add_core = ULA } # South Dakota
+				USA_118 = { add_core = ULA } # North Dakota
+				106 = { add_core = ULA } # Colorado
+				112 = { add_core = ULA } # Wyoming
+				USA_116 = { add_core = ULA } # Montana
+				24 = { add_core = ULA } # Canada
+				30 = { add_core = ULA }
+				129 = { remove_core = ULA } # Oklahoma
+				128 = { remove_core = ULA } # Kansas
+				118 = { remove_core = ULA } # North Dakota
+				114 = { remove_core = ULA } # Montana
+				ULA = { all_core = { remove_core = FCA } }
+
+			## Territory swap #
+				treasury = -75000
+				USA = {
+					remove_accepted_culture = cajun
 					any_owned = {
 						limit = {
 							OR = {
@@ -2877,54 +2868,34 @@ create_cambodian_protectorate = {
 						secede_province = THIS
 					}
 					treasury = 75000
-			}
-			ULA = { all_core = { remove_core = FCA } }
-			THIS = {
+				}
 				any_owned = {
 					limit = {
 						is_core = USA
-						NOT = { is_core = ACA is_core = ULA region = USA_78 }
+						NOT = {
+							is_core = ACA
+							is_core = ULA
+							is_core = FCA
+						}
 					}
 					secede_province = USA
 					remove_core = THIS
-					remove_core = FCA
 				}
-			}
-			###Turn all these states into colonies
+
+			## Turn all these states into colonies ##
 				any_owned = {
 					limit = {
-						OR = {
-							region = USA_118 #North Dakota
-							region = USA_121 #South Dakota
-							region = USA_124 #Nebraska
-							region = USA_151 #Idaho
-							region = USA_158 #Iowa
-							region = USA_126 #Kansas
-							region = USA_111 #Wyoming
-							region = USA_116 #Montana
-							region = USA_78 #Washington
-							region = USA_81 #Oregon
-							region = USA_91 #Idaho
-							province_id = 106
-							province_id = 78
-							province_id = 79
+						is_core = ULA
+						NOT = {
+							region = USA_139
+							region = USA_144
+							region = USA_148
+							region = USA_129
 						}
 					}
 					secede_province = UTI
 				}
-			inherit = UTI
-			treasury = -75000
-			USA = { any_pop = { limit = { has_pop_culture = french_canadian } move_pop = 71 } }
-			FCA = { remove_accepted_culture = anglo_canadian }
-			random_country = {
-				limit = { tag = FCA }
-				any_owned = {
-					limit = { region = CAN_46 }
-					remove_core = FCA
-					secede_province = USA
-				}
-			}
-			46 = { state_scope = { change_region_name = "Southern Ontario" } }
+				inherit = UTI
 		}
 
 		ai_will_do = { factor = 1 }
