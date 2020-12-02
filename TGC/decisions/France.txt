@@ -2320,12 +2320,13 @@ create_cambodian_protectorate = {
 
 ## French North America ##
 
+	#Description: France can demand Quebec from the British.
 	the_quebec_question = {
 		picture = vive_le_quebec
 		potential = {
-			primary_culture = french
-			is_greater_power = yes
 			capital = 425
+			is_greater_power = yes
+			primary_culture = french
 			NOT = {
 				exists = CAN
 				exists = QUE
@@ -2352,15 +2353,15 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Treaty of Paris - Gets France Quebec and British Acadia, does not get the rest of British North America
+	#Description: Treaty of Paris - Gets France Quebec and British Acadia, does not get the rest of British North America
 	treaty_of_paris = {
 		picture = treaty_signing
 		potential = {
 			primary_culture = french
 			is_greater_power = yes
 			capital = 425
-			has_country_flag = french_america
-			has_country_flag = war_for_quebec
+			has_country_flag = french_america # France has chosen to pursue restoring its American territories
+			has_country_flag = war_for_quebec # UK said no to Quebec and France went to war for it
 			NOT = { has_country_flag = quebec_regained }
 		}
 
@@ -2407,10 +2408,22 @@ create_cambodian_protectorate = {
 			77 = { add_core = QUE }
 			CAN_60 = { add_core = QUE }
 			ENG = {
-				any_owned = { limit = { OR = { is_core = QUE is_core = ACA } } secede_province = THIS }
-				any_pop = { limit = { has_pop_culture = french_canadian } move_pop = 65 }
+				any_owned = {
+					limit = { OR = { is_core = QUE is_core = ACA } }
+					secede_province = THIS
+				}
+				any_pop = {
+					limit = { has_pop_culture = french_canadian }
+					move_pop = 65
+				}
 			}
-			RPL = { any_owned = { limit = { OR = { is_core = QUE is_core = ACA } } secede_province = THIS } }
+			random_country = {
+				limit = { tag = RPL exists = yes }
+				any_owned = {
+					limit = { OR = { is_core = QUE is_core = ACA } }
+					secede_province = THIS
+				}
+			}
 			QUE = {
 				all_core = {
 					remove_core = THIS
@@ -2426,7 +2439,7 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Full Treaty of Paris - Gives the whole of British North America
+	#Description: Treaty of Montreal - Gives the whole of British North America
 	treaty_of_paris2 = {
 		picture = establish_panfrenchism
 		potential = {
@@ -2451,34 +2464,55 @@ create_cambodian_protectorate = {
 
 		effect = {
 			FRA = { set_country_flag = french_total_victory set_country_flag = quebec_regained }
-			BOR = { set_country_flag = french_total_victory set_country_flag = quebec_regained}
+			BOR = { set_country_flag = french_total_victory set_country_flag = quebec_regained }
+			prestige = 15
 			badboy = 10
+			CAN_60 = { add_core = QUE }
+			2625 = { add_core = QUE }
+			76 = { add_core = QUE }
+			77 = { add_core = QUE }
 			QUE = { all_core = { add_core = THIS } }
 			treasury = -50000
-			prestige = 15
-			2625 = { add_core = QUE	}
-			76 = { add_core = QUE }
 			ENG = {
 				any_owned = {
-					limit = { OR = { is_core = CAN is_core = MRU is_core = NEW is_core = QUE is_core = COL is_core = RPL } }
+					limit = {
+						OR = {
+							is_core = CAN
+							is_core = MRU
+							is_core = NEW
+							is_core = QUE
+							is_core = COL
+							is_core = RPL
+						}
+					}
 					remove_core = ENG
 					secede_province = THIS
 				}
 			}
-			RPL = { annex_to = THIS }
-			any_owned = { limit = { OR = { province_id = 74 province_id = 75 } } secede_province = ENG }
+			random_country = {
+				limit = { tag = RPL exists = yes }
+				annex_to = THIS
+			}
+			random_owned = {
+				limit = { province_id = 74 }
+				secede_province = ENG
+			}
+			random_owned = {
+				limit = { province_id = 75 }
+				secede_province = ENG
+			}
 		}
 
 		ai_will_do = { factor = 1 }
 	}
 
-	#Organize Acadia
+	#Description: Organize Acadia - add colonial integration, move pops, integrate into FCA if total victory
 	organize_acadia = {
 		picture = "organize_acadia"
 		potential = {
-			primary_culture = french
-			is_greater_power = yes
 			capital = 425
+			is_greater_power = yes
+			primary_culture = french
 			has_country_flag = quebec_regained
 			owns = 71
 			NOT = {
@@ -2498,6 +2532,44 @@ create_cambodian_protectorate = {
 		effect = {
 			money = -50000
 			ACA = { set_country_flag = post_colonial_country }
+			FRA = { set_country_flag = acadia_organized }
+			BOR = { set_country_flag = acadia_organized }
+			any_owned = {
+				limit = { is_core = ACA }
+				add_province_modifier = {
+					name = french_colonial_integration
+					duration = 1825
+				}
+			}
+			random_owned = {
+				limit = { owner = { has_country_flag = french_total_victory } }
+				ACA = { all_core = { add_core = FCA remove_core = ACA } }
+			}
+
+			## Set Acadia Flag Based on whether Bourbon/Napoleonic ##
+
+				random_owned = {
+					limit = {
+						owner = {
+							tag = FRA
+							OR = {
+								government = hms_government
+								government = absolute_monarchy
+								government = prussian_constitutionalism
+							}
+						}
+					}
+					ACA = { government = hms_government }
+				}
+				random_owned = {
+					limit = { owner = { tag = BOR } }
+					ACA = { government = colonial_company }
+				}
+				random_owned = {
+					limit = { owner = { NOT = { colonial_policy = settlement } } }
+					owner = { political_reform = settlement }
+				}
+
 			any_pop = {
 				limit = {
 					location = { is_core = ACA }
@@ -2507,107 +2579,51 @@ create_cambodian_protectorate = {
 				consciousness = -10
 				reduce_pop = 2
 			}
-			any_pop = {
-				limit = {
-					location = { is_core = ACA }
-					culture = anglo_canadian
-					OR = {
-						type = soldiers
-						type = officers
+
+			## Move pops ##
+
+				any_pop = {
+					limit = {
+						location = { is_core = ACA }
+						has_pop_culture = anglo_canadian
+						OR = {
+							type = soldiers
+							type = officers
+						}
 					}
+					move_pop = 57 # Bytown / Ottawa
 				}
-				move_pop = 57
-			}
-			any_pop = {
-				limit = {
-					location = { is_core = ACA }
-					culture = yankee
-					OR = {
-						type = soldiers
-						type = officers
+				any_pop = {
+					limit = {
+						location = { is_core = ACA }
+						has_pop_culture = yankee
+						OR = {
+							type = soldiers
+							type = officers
+						}
 					}
+					move_pop = 243 # Boston
 				}
-				move_pop = 243
-			}
-			any_pop = {
-				limit = {
-					location = { is_core = ACA }
-					type = craftsmen
-					is_state_religion = no
-				}
-				move_pop = 46
-			}
-			random_pop = {
-				limit = {
-					culture = french
-					type = soldiers
-					location = { continent = europe }
-				}
-				move_pop = 72
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = soldiers
-					location = { continent = europe }
-				}
-				move_pop = 72
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = soldiers
-					location = { continent = europe }
-				}
-				move_pop = 71
-			}
-			any_pop = {
-				limit = {
-					location = {
-						is_core = ACA
+				any_pop = {
+					limit = {
+						location = { is_core = ACA }
+						type = craftsmen
+						is_state_religion = no
 					}
-					type = soldiers
-					has_pop_culture = anglo_canadian
+					move_pop = 46 # Toronto
 				}
-				move_pop = 57
-			}
-			any_pop = {
-				limit = {
-					location = {
-						is_core = ACA
-					}
-					type = soldiers
-					has_pop_culture = yankee
-				}
-				move_pop = 243
-			}
-			any_owned = {
-				limit = { is_core = ACA }
-				add_province_modifier = {
-					name = french_colonial_integration
-					duration = 1825
-				}
-			}
-			random_owned = { limit = { owner = { has_country_flag = french_total_victory } }
-				ACA = { all_core = { add_core = FCA remove_core = ACA } }
-			}
-			###Set Acadia Flag Based on whether Bourbon/Napoleonic###
-			random_owned = { limit = { owner = { tag = FRA OR = { government = hms_government government = absolute_monarchy government = prussian_constitutionalism } } ACA = { government = hms_government } } }
-			random_owned = { limit = { owner = { tag = BOR } } ACA = { government = colonial_company } }
-			random_owned = { limit = { owner = { NOT = { colonial_policy = settlement } } } owner = { political_reform = settlement } }
-			FRA = { set_country_flag = acadia_organized }
-			BOR = { set_country_flag = acadia_organized }
 		}
 
 		ai_will_do = { factor = 1 }
 	}
 
+
 	organize_canada = {
 		picture = "vive_le_quebec"
 		potential = {
-			primary_culture = french
-			is_greater_power = yes
 			capital = 425
+			is_greater_power = yes
+			primary_culture = french
 			NOT = {
 				exists = QUE
 				exists = ACA
@@ -2628,36 +2644,10 @@ create_cambodian_protectorate = {
 		}
 
 		effect = {
+			FRA = { set_country_flag = canada_organized }
+			BOR = { set_country_flag = canada_organized }
 			###Effects that will happen if either the Treaty of Montreal or Paris is taken###
 			treasury = -100000
-			any_pop = {
-				limit = {
-					location = { is_core = QUE }
-					culture = anglo_canadian
-					OR = {
-						type = soldiers
-						type = officers
-					}
-				}
-				move_pop = 57
-			}
-			any_pop = {
-				limit = {
-					OR = {
-						culture = anglo_canadian
-						culture = irish
-						culture = british
-					}
-				}
-				consciousness = 7
-				militancy = 7
-			}
-			any_pop = {
-				limit = {
-				has_pop_culture = british
-				location = { is_core = QUE } }
-				move_pop = 57
-			}
 			2593 = { state_scope = { change_region_name = "Nord-du-Québec" } }
 			65 = { change_province_name = "Québec" state_scope = { change_region_name = "Québec" } }
 			58 = { change_province_name = "Montréal" }
@@ -2668,18 +2658,13 @@ create_cambodian_protectorate = {
 			77 = { add_core = QUE }
 			MRU = { all_core = { remove_core = MRU } }
 			###British Acadia###
-			any_pop = {
-				limit = { location = { province_id = 72 } culture = french_canadian }
-				reduce_pop = 1.5
-				militancy = -10
-				consciousness = -10
-			}
+
 			###End of Common Effects###
 
 			###Effects for Treaty of Paris - This will end the French Goals in North America###
 			random_owned = {
 				limit = { owner = { has_country_flag = quebec_and_acadia_only } }
-				USA = { all_core = { remove_core = ACA } } #Removes Acadian Cores from the US
+				USA = { all_core = { remove_core = ACA } }
 				ULA = { all_core = { remove_core = ULA } }
 				owner = { badboy = -5 } #Reduces your infamy for dropping the rest of your claims
 				46 = { state_scope = { change_region_name = "Southern Ontario" } }
@@ -2700,9 +2685,34 @@ create_cambodian_protectorate = {
 			###Effects for Treaty of Montreal - Will change cores for the whole of British North America###
 			random_owned = {
 				limit = { owner = { has_country_flag = french_total_victory } }
-				COL = { all_core = { remove_core = COL remove_core = ENG remove_core = THIS add_core = FCA } }
-				CAN = { all_core = { add_core = FCA remove_core = ENG remove_core = THIS remove_core = CAN remove_core = COL remove_core = MRU } }
-				RPL = { annex_to = THIS government = democracy all_core = { add_core = FCA remove_core = ENG remove_core = THIS remove_core = COL } }
+				COL = {
+					all_core = {
+						remove_core = COL
+						remove_core = ENG
+						remove_core = THIS
+						add_core = FCA
+					}
+				}
+				CAN = {
+					all_core = {
+						add_core = FCA
+						remove_core = ENG
+						remove_core = THIS
+						remove_core = CAN
+						remove_core = COL
+						remove_core = MRU
+					}
+				}
+				RPL = {
+					annex_to = THIS
+					government = democracy
+					all_core = {
+						add_core = FCA
+						remove_core = ENG
+						remove_core = THIS
+						remove_core = COL
+					}
+				}
 				74 = { change_province_name = "Québec" state_scope = { change_region_name = "Terre-Neuve" } }
 				QUE = { all_core = { add_core = FCA remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW remove_core = QUE } }
 				ACA = { all_core = { add_core = ACA remove_core = ENG remove_core = THIS } }
@@ -2721,12 +2731,72 @@ create_cambodian_protectorate = {
 					set_country_flag = post_colonial_country
 				}
 			}
-			###Set Canada Flag Based on whether Bourbon/Napoleonic###
-			random_owned = { limit = { owner = { tag = FRA OR = { government = hms_government government = absolute_monarchy government = prussian_constitutionalism } } ACA = { government = hms_government } } }
-			random_owned = { limit = { owner = { tag = BOR } } FCA = { government = colonial_company } }
-			random_owned = { limit = { owner = { NOT = { colonial_policy = settlement } } } owner = { political_reform = settlement } }
-			FRA = { set_country_flag = canada_organized }
-			BOR = { set_country_flag = canada_organized }
+
+			## Set Canada Flag Based on whether Bourbon/Napoleonic ##
+
+				random_owned = {
+					limit = {
+						owner = {
+							tag = FRA
+							OR = {
+								government = hms_government
+								government = absolute_monarchy
+								government = prussian_constitutionalism
+							}
+						}
+					}
+					ACA = { government = hms_government }
+				}
+				random_owned = {
+					limit = { owner = { tag = BOR } }
+					FCA = { government = colonial_company }
+				}
+				random_owned = {
+					limit = { owner = { NOT = { colonial_policy = settlement } } }
+					owner = { political_reform = settlement }
+				}
+
+			any_pop = {
+				limit = {
+					OR = {
+						culture = anglo_canadian
+						culture = irish
+						culture = british
+					}
+				}
+				consciousness = 7
+				militancy = 7
+			}
+			any_pop = {
+				limit = {
+					location = { province_id = 72 }
+					culture = french_canadian
+				}
+				reduce_pop = 1.5
+				militancy = -10
+				consciousness = -10
+			}
+
+			## Move Pops ##
+
+				any_pop = {
+					limit = {
+						location = { is_core = QUE }
+						has_pop_culture = anglo_canadian
+						OR = {
+							type = soldiers
+							type = officers
+						}
+					}
+					move_pop = 57
+				}
+				any_pop = {
+					limit = {
+						location = { is_core = QUE }
+						has_pop_culture = british
+					}
+					move_pop = 57
+				}
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -2755,7 +2825,7 @@ create_cambodian_protectorate = {
 		}
 
 		effect = {
-			badboy = 25
+			badboy = 20
 			USA = {
 				add_casus_belli = {
 					target = THIS
