@@ -1310,7 +1310,7 @@ political_decisions = {
 		1083 = { add_core = RUS
 			secede_province = RUS }
 
-		1068 = { add_core = RUS 
+		1068 = { add_core = RUS
 			secede_province = RUS }
 
 		1186 = { secede_province = RUS }
@@ -2689,6 +2689,71 @@ political_decisions = {
 					add_province_modifier = { name = small_baby_boom duration = 1095 }
 				}
 			}
+		}
+	}
+
+	sell_alaska = { # TODO
+		picture = map_alaska
+		potential = {
+    exists = yes
+			NOT = { has_country_flag = alaska_purchase_started }
+			NOT = { has_global_flag = alaska_purchase_completed }
+			OR = {
+				has_global_flag = acw_war_started
+				year = 1870
+			}
+			tag = RUS
+			year = 1859
+			USA = { NOT = { war_with = CSA } }
+		}
+
+		allow = {
+			war = no
+			any_owned_province = {
+				region = USA_1
+			}
+		}
+
+		effect = {
+			set_country_flag = alaska_purchase_started
+			remove_accepted_culture = alaskan
+			prestige = 5
+			any_country = {
+				limit = {
+					NOT = { tag = RUS }
+					OR = {
+						is_greater_power = yes
+						is_secondary_power = yes
+					}
+					OR = {
+						any_owned_province = {
+							OR = {
+                            	region = MEX_85
+								region = USA_78
+								region = USA_81
+								region = CAN_13
+								region = JAP_1088
+							}
+						}
+						AND = {
+							tag = ENG
+							ENG = { is_our_vassal = RPL }
+							RPL = {
+								owns = 78
+								owns = 83
+							}
+						}
+					}
+				}
+				set_country_flag = alaska_purchase_interest
+			}
+			random_country = {
+				limit = { tag = USA }
+				relation = { who = THIS value = 50 }
+			}
+		}
+		ai_will_do = {
+			factor = 1
 		}
 	}
 }
