@@ -1616,6 +1616,7 @@ political_decisions = {
 					OR = {
 						UBD = { exists = yes owns = 350 NOT = { vassal_of = THIS } }
 						EST = { exists = yes owns = 350 NOT = { vassal_of = THIS } }
+						STH = { exists = yes owns = 350 NOT = { vassal_of = THIS } }
 					}
 				}
 				AND = {
@@ -1623,6 +1624,7 @@ political_decisions = {
 					OR = {
 						UBD = { exists = yes owns = 355 NOT = { vassal_of = THIS } }
 						LAT = { exists = yes owns = 355 NOT = { vassal_of = THIS } }
+						LIV = { exists = yes owns = 355 NOT = { vassal_of = THIS } }
 					}
 				}
 				NOT = { owns = 946 } # Polotsk
@@ -1910,8 +1912,20 @@ political_decisions = {
 		potential = {
 			primary_culture = russian
 			NOT = { has_country_flag = russification_of_the_baltic_states }
-			is_our_vassal = UBD
-			UBD = { ai = yes }
+			OR = {
+				AND = {
+					is_our_vassal = UBD
+					UBD = { ai = yes }
+				}
+				AND = {
+					is_our_vassal = STH
+					STH = { ai = yes }
+					is_our_vassal = LIV
+					LIV = { ai = yes }
+					is_our_vassal = COU
+					COU = { ai = yes }
+				}
+			}
 		}
 
 		allow = {
@@ -1928,18 +1942,54 @@ political_decisions = {
 		effect = {
 			set_country_flag = russification_of_the_baltic_states
 			remove_accepted_culture = north_german
-			release = UBD
-			UBD = {
+			random_country = {
+				limit = { tag = UBD vassal_of = THIS }
 				remove_accepted_culture = russian
 				clr_country_flag = ubd_substate
-				#all_core = { remove_core = UBD }
+				all_core = { remove_core = UBD }
 				government = absolute_monarchy
+				THIS = {
+					release = UBD
+					inherit = UBD
+				}
+			}
+			random_country = {
+				limit = { tag = STH vassal_of = THIS }
+				remove_accepted_culture = russian
+				clr_country_flag = ubd_substate
+				all_core = { remove_core = STH }
+				government = absolute_monarchy
+				THIS = {
+					release = STH
+					inherit = STH
+				}
+			}
+			random_country = {
+				limit = { tag = LIV vassal_of = THIS }
+				remove_accepted_culture = russian
+				clr_country_flag = ubd_substate
+				all_core = { remove_core = LIV }
+				government = absolute_monarchy
+				THIS = {
+					release = LIV
+					inherit = LIV
+				}
+			}
+			random_country = {
+				limit = { tag = COU vassal_of = THIS }
+				remove_accepted_culture = russian
+				clr_country_flag = ubd_substate
+				all_core = { remove_core = COU }
+				government = absolute_monarchy
+				THIS = {
+					release = COU
+					inherit = COU
+				}
 			}
 			1037 = {
 				add_core = VLG
 				add_province_modifier = { name = russoification duration = -1 }
 			}
-			inherit = UBD
 			political_reform = unitary
 			any_pop = {
 				limit = {
@@ -1951,8 +2001,8 @@ political_decisions = {
 					has_pop_culture = ashkenazi
 					}
 				}
-			consciousness = 5
-			militancy = 3
+				consciousness = 5
+				militancy = 3
 			}
 		}
 		ai_will_do = { factor = 1 }
