@@ -1,5 +1,7 @@
 political_decisions = {
 
+## Flavor ##
+
     #Description: If Brazil has a monarchy and is at war, they can form the Fatherland Volunteers, losing war exhaustion and gaining prestige.
 	fatherland_volunteers = {
 		potential = {
@@ -65,6 +67,149 @@ political_decisions = {
 				}
 			}
 			set_country_flag = minas_gerais_ordered
+		}
+	}
+
+	build_brasilia = { # TODO
+		picture = brasilia
+		potential = {
+			primary_culture = brazilian
+    		exists = yes
+			NOT = { has_country_flag = build_brasilia }
+		}
+
+		allow = {
+			war = no
+			money = 1000000
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+		}
+
+		effect = {
+			capital = 3254
+			money = -600000
+			3254 = { # TODO province id
+				change_province_name = "Brasília"
+				state_scope = { change_region_name = "Distrito Federal" }
+			}
+			set_country_flag = build_brasilia
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	build_teresina = { # TODO
+		picture = build_teresina
+		potential = {
+			tag = BRZ
+			year = 1852
+			NOT = { has_country_flag = teresina_built }
+		}
+		allow = {
+			money = 5000
+		}
+		effect = {
+			set_country_flag = teresina_built
+			treasury = -5000
+			2426 = { change_province_name = "Teresina" }
+			2426 = {
+				add_province_modifier = { name = recently_built_city duration = 365 }
+			}
+		}
+	}
+
+	build_belo_horizonte = { # TODO
+		picture = build_belo_horizonte
+		potential = {
+			tag = BRZ
+			year = 1870
+			NOT = { has_country_flag = bh_built }
+		}
+		allow = {
+			money = 5000
+		}
+		effect = {
+			set_country_flag = bh_built
+			treasury = -5000
+			2442 = { change_province_name = "Belo Horizonte" }
+			2442 = {
+				life_rating = 4
+				trade_goods = iron
+				add_province_modifier = { name = recently_built_city duration = 365 }
+			}
+		}
+	}
+
+	brazilian_rubber_boom = { # TODO
+		picture = rubber_cycle
+		potential = {
+			owns = 2550
+			owns = 2419
+			owns = 2532
+			owns = 2410
+			owns = 2402
+			year = 1880
+			NOT = { has_country_flag = brazilian_rubber_boom }
+		}
+
+		allow = {
+			war = no
+			owns = 2550
+			owns = 2419
+			owns = 2532
+			owns = 2410
+			owns = 2402
+			state_n_government = 1
+			2550 = { trade_goods = rubber }
+		}
+
+		effect = {
+			set_country_flag = brazilian_rubber_boom
+			2410 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
+			2402 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
+			2419 = { change_province_name = "Campo Grande" trade_goods = cattle }
+			2550 = { change_province_name = "Porto Velho" add_province_modifier = { name = recently_built_city duration = 150 } }
+			2532 = { change_province_name = "Boa Vista" add_province_modifier = { name = recently_built_city duration = 150 } }
+			random_owned = { limit = { province_id = 2549 }
+				change_province_name = "Rio Branco" add_province_modifier = { name = recently_built_city duration = 100 }
+			}
+		}
+	}
+
+	state_visit_to_argentina = { #original VIP event idea by General Perón, scripted by Scythe
+		picture = court_yard_speech
+		potential = {
+			tag = BRZ
+    		exists = yes
+			exists = ARG
+			NOT = { has_country_flag = state_visit_to_argentina }
+			OR = {
+				government = presidential_dictatorship
+				government = democracy
+			}
+		}
+
+		allow = {
+			ruling_party_ideology = liberal #Campos Sales was a liberal
+			NOT = { war_with = ARG }
+		}
+
+		effect = {
+			ARG = {
+				country_event = 146605
+				relation = { who = THIS value = 35 }
+			}
+			any_country = { #if the relations between Chile and Argentina are bad, decrease relations between Chile and Brazil as well
+				limit = {
+					tag = CHL
+					NOT = { relation = { who = ARG value = 0 } }
+				}
+				relation = { who = BRZ value = -20 }
+			}
+			prestige = 3
+			set_country_flag = state_visit_to_argentina
 		}
 	}
 
@@ -208,6 +353,69 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	## TODO Brazil-Colombia ##
+
+		buy_northernamazonas = {
+			picture = amazonia
+			potential = {
+				tag = BRZ
+				exists = yes
+				NOT = { has_country_flag = northern_amazonas }
+			}
+
+			allow = {
+				has_country_flag = amazonia_is_ours
+				war = no
+				money = 100000
+				OR = {
+					is_secondary_power = yes
+					is_greater_power = yes
+				}
+				CLM = {
+					owns = 3260
+					war = no
+					relation = { who = THIS value = 75 }
+				}
+			}
+
+			effect = {
+				set_country_flag = northern_amazonas
+				CLM_3260 = { add_core = BRZ }
+				3260 = { owner = { country_event = 187070 } }
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+		claim_amazonia = {
+			picture = amazonia
+			potential = {
+				primary_culture = brazilian
+				exists = yes
+				NOT = { has_country_flag = amazonia_is_ours }
+			}
+
+			allow = {
+				war = no
+				is_vassal = no
+				OR = {
+					is_greater_power = yes
+					is_secondary_power = yes
+				}
+				prestige = 20
+				owns = 2401
+				owns = 3256
+				owns = 3255
+			}
+
+			effect = {
+				BRZ = { all_core = { remove_core = CLM } }
+				prestige = 5
+				badboy = 4
+				set_country_flag = amazonia_is_ours
+			}
+		}
+
 	#Description: Whoever owns Acre and has a core there can pay the other countries who have a core there to remove their cores. # TODO how does Brazil get cores on this
 	treaty_of_petropolis = {
 		picture = treaty_of_petropolis_stamp
@@ -255,6 +463,109 @@ political_decisions = {
 			}
 		}
 	}
+
+	## TODO Bolivia-Brazil ##
+
+		bolivia_agreement = {
+			picture = acrewar_pic
+			potential = {
+				primary_culture = brazilian
+				exists = yes
+				NOT = { has_country_flag = bolivia_agreement }
+				NOT = { has_country_flag = acre_war }
+			}
+
+			allow = {
+				war = no
+				money = 100000
+				OR = {
+					is_secondary_power = yes
+					is_greater_power = yes
+				}
+				BOL = {
+					war = no
+					relation = { who = THIS value = 75 }
+				}
+			}
+
+			effect = {
+				3252 = { secede_province = THIS }
+				3251 = { secede_province = THIS }
+				2549 = { secede_province = THIS }
+				2549 = { secede_province = BOL }
+				BOL = {
+					release = MTG
+					money = +100000
+				}
+				THIS = {
+					inherit = MTG
+					money = -100000
+				}
+				set_country_flag = bolivia_agreement
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+		petropolis_agreement = {
+			picture = acrewar_pic
+			potential = {
+				primary_culture = brazilian
+				exists = yes
+				NOT = { has_country_flag = petropolis_agreement }
+				NOT = { has_country_flag = acre_war }
+			}
+
+			allow = {
+				war = no
+				money = 100000
+				has_country_flag = bolivia_agreement
+				OR = {
+					is_secondary_power = yes
+					is_greater_power = yes
+				}
+				BOL = {
+					war = no
+					relation = { who = THIS value = 100 }
+				}
+			}
+
+			effect = {
+				3252 = { secede_province = BOL }
+				2549 = { secede_province = THIS }
+				3252 = { remove_core = THIS }
+				set_country_flag = petropolis_agreement
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+		acre_war = {
+			picture = acrewar_pic
+			potential = {
+				primary_culture = brazilian
+				exists = yes
+				NOT = { has_country_flag = acre_war }
+			}
+
+			allow = {
+				war = no
+				is_vassal = no
+				OR = {
+					is_greater_power = yes
+					is_secondary_power = yes
+				}
+				prestige = 20
+							owns = 2549
+			}
+
+			effect = {
+				2549 = { change_province_name = "Acre" }
+				prestige = 5
+				badboy = -1
+				set_country_flag = acre_war
+			}
+		}
 
 	#Description: Brazil can dispute the Eastern Misiones from Argentina/Paraguay
 	eastern_misiones_dispute = {
@@ -341,6 +652,164 @@ political_decisions = {
 				overlord = { country_event = 34629 }
 			}
 		}
+	}
+
+## TODO Guyana Negotiations ##
+
+	guiana_negotiations = {
+		picture = guyanas
+		potential = {
+			primary_culture = brazilian
+			exists = yes
+			NOT = { has_country_flag = guiana_negotiations }
+		}
+
+		allow = {
+			war = no
+			money = 1000000
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			FRA = {
+				war = no
+				relation = { who = THIS value = 75 }
+			}
+			ENG = {
+				war = no
+				relation = { who = THIS value = 75 }
+			}
+			NET = {
+				war = no
+				relation = { who = THIS value = 75 }
+			}
+		}
+
+		effect = {
+			set_country_flag = guiana_purchase
+			FRA = { country_event = 224555 }
+			ENG = { country_event = 224555 }
+			NET = { country_event = 224555 }
+			THIS = { set_country_flag = guiana_negotiations }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	guiana_purchasebrz = {
+		picture = guyanas
+		potential = {
+			primary_culture = brazilian
+			exists = yes
+			NOT = { has_country_flag = guiana_purchase }
+		}
+
+		allow = {
+			war = no
+			has_country_flag = guiana_negotiations
+			money = 1000000
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			NET_2240 = {
+				owner = {
+					war = no
+					relation = { who = THIS value = 75 }
+					has_country_flag = guyana_negotiations
+				}
+			}
+			ENG_1979 = {
+				owner = {
+					war = no
+					relation = { who = THIS value = 75 }
+					has_country_flag = guyana_negotiations
+				}
+			}
+			FRA_2241 = {
+				owner = {
+					war = no
+					relation = { who = THIS value = 75 }
+					has_country_flag = guyana_negotiations
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = guiana_purchase
+			FRA = {
+				release = GUY
+				money = +500000
+			}
+			ENG = {
+				release = GUY
+				money = +400000
+			}
+			NET = {
+				release = GUY
+				money = +100000
+			}
+			THIS = {
+				inherit = GUY
+				money = -1000000
+			}
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	guiana_purchasepba = {
+		picture = guyanas
+		potential = {
+			tag = PBA
+			exists = yes
+			NOT = { has_country_flag = guiana_purchase }
+		}
+
+		allow = {
+			war = no
+			has_country_flag = guiana_negotiations
+			money = 1000000
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			FRA = {
+				war = no
+				relation = { who = THIS value = 75 }
+			}
+			ENG = {
+				war = no
+				relation = { who = THIS value = 75 }
+			}
+			NET = {
+				war = no
+				relation = { who = THIS value = 75 }
+			}
+		}
+
+		effect = {
+			set_country_flag = guiana_purchase
+			FRA = {
+				release = GUY
+				money = +500000
+			}
+			ENG = {
+				release = GUY
+				money = +400000
+			}
+			NET = {
+				release = GUY
+				money = +100000
+			}
+			THIS = {
+				inherit = GUY
+				money = -1000000
+				GUY = { all_core = { add_core = THIS } }
+			}
+		}
+
+		ai_will_do = { factor = 0 }
 	}
 
 ## Minors ##

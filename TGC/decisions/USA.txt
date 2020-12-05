@@ -1032,6 +1032,62 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	# TODO Annex the Republic of California
+	annex_california = {
+		picture = USA_annex_california
+		potential = {
+		exists = yes
+			tag = USA
+			is_greater_power = yes
+			has_recently_lost_war = no
+			CAL = { exists = yes }
+			has_global_flag = bear_flag_revolt
+			has_global_flag = mexican_american_war
+			has_country_flag = hasmanifestdestiny
+			war = no
+			neighbour = CAL
+			NOT = { has_country_flag = second_velasco }
+			NOT = { has_country_flag = annex_california }
+		}
+
+		allow = {
+			prestige = 35
+			war = no
+			MEX = {
+				has_recently_lost_war = yes
+				truce_with = THIS
+			}
+			CAL = {
+				OR = {
+					is_vassal = no
+					vassal_of = USA
+				}
+				OR = {
+					part_of_sphere = no
+					in_sphere = USA
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = annex_california
+			CAL = { end_war = MEX }
+			random_country = {
+				limit = {
+					alliance_with = MEX
+					war_with = CAL
+				}
+				end_war = CAL
+			}
+			relation = {
+				who = CAL
+				value = 200
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: The USA will propose to buy the Gadsden strip and Baja California from Mexico.
 	gadsden_purchase = {
 		picture = gadsden
@@ -1929,6 +1985,127 @@ political_decisions = {
 	}
 
 ## Expansion ##
+
+	annex_hawaii = { # TODO
+		potential = {
+    exists = yes
+			exists = HAW
+			is_sphere_leader_of = HAW
+			HAW = { ai = yes }
+			NOT = { has_country_flag = annexed_hawaii }
+			any_owned_province = { has_building = naval_base }
+			OR = {
+				any_owned_province = { continent = polynesia }
+				owns = 78
+				owns = 79
+				owns = 81
+				owns = 83
+				owns = 85
+				owns = 84
+				owns = 104
+				owns = 87
+				owns = 89
+				owns = 90
+				owns = 2139
+				owns = 2140
+				owns = 2138
+				owns = 2141
+				owns = 2157
+				owns = 2156
+				owns = 2161
+				owns = 2168
+				owns = 2169
+				owns = 2179
+				owns = 2171
+				owns = 2178
+				owns = 2181
+				owns = 2182
+				owns = 2186
+				owns = 2191
+				owns = 2192
+				owns = 2193
+				owns = 2199
+				owns = 2197
+				owns = 2198
+				owns = 2202
+				owns = 2201
+				owns = 2206
+				owns = 2205
+				owns = 1723
+				owns = 2204
+				owns = 2208
+				owns = 2253
+				owns = 2258
+				owns = 2281
+				owns = 2280
+				owns = 2291
+				owns = 2292
+				owns = 2298
+				owns = 2295
+				owns = 2297
+				owns = 2285
+				owns = 2336
+				owns = 2304
+				owns = 2578
+				owns = 2308
+				owns = 2307
+				owns = 2305
+				owns = 2309
+				any_owned_province = {
+					is_core = CHL
+					is_coastal = yes
+				}
+			}
+			OR = {
+				capital_scope = { continent = north_america }
+				capital_scope = { continent = south_america }
+				capital_scope = { continent = asia }
+				capital_scope = { continent = australia_new_zealand }
+				any_owned_province = { continent = polynesia }
+			}
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			is_sphere_leader_of = HAW
+            OR = {
+                AND = {
+                    year = 1898
+                    HAW = { militancy = 1 }
+                }
+                HAW = { militancy = 8 }
+                mass_politics = 1
+            }
+            HAW = {
+                war = no
+                is_mobilised = no
+            }
+		}
+
+		effect = {
+			set_country_flag = annexed_hawaii
+			658 = { trade_goods = coffee_beans }
+			prestige = 2
+			HAW = { civilized = no }
+			inherit = HAW
+			random_owned = {
+				limit = { owner = { capital_scope = { continent = north_america } } }
+				owner = { HAW_658 = { add_core = THIS } }
+			}
+			random_owned = { limit = { owner = { tag = USA ai = yes } } 658 = { naval_base = 1 } }
+			HAW = { civilized = yes }
+            random_owned = {
+                limit = {
+                    owner = { NOT = { is_primary_culture = yankee } }
+                    province_id = 658
+                    any_pop = { has_pop_culture = yankee }
+                }
+                658 = { add_core = USA }
+            }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 
 	#Description: If you own Hawaii, you can buy the Palmyra Atoll.
 	hawaiian_purchase = {
@@ -3612,7 +3789,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA.
+	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA. # TODO western collapse
 	become_the_fsa_french_lousiana = {
 		potential = {
 			tag = USA
@@ -3980,6 +4157,29 @@ political_decisions = {
 
 		effect = {
 			add_country_modifier = { name = the_homestead_act duration = -1 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	land_of_opportunity = {
+		picture = liberty_enlightening_the_world
+		potential = {
+			tag = USA
+			NOT = { has_country_flag = land_of_opportunity }
+		}
+
+		allow = {
+			war = no
+			government = democracy
+		}
+
+		effect = {
+			set_country_flag = land_of_opportunity
+			add_country_modifier = {
+				name = land_of_opportunity
+				duration = 7300
+			}
 		}
 
 		ai_will_do = { factor = 1 }

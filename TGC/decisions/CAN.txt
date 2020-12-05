@@ -105,6 +105,116 @@ political_decisions = {
 		}
 	}
 
+	# TODO
+	become_canada = {
+		picture = canadian_dominion
+		potential = {
+			tag = RPL
+			ai = no
+			primary_culture = anglo_canadian
+			NOT = { has_country_flag = become_canada }
+		}
+
+		allow = {
+			war = no
+			CAN = {
+				exists = yes
+				ai = yes
+				OR = {
+					government = democracy
+					government = hms_government
+					government = dominion
+				}
+			}
+			OR = {
+				is_vassal = no
+				overlord = { is_our_vassal = CAN }
+				overlord = {
+					ai = yes
+					is_sphere_leader_of = CAN
+				}
+			}
+			OR = {
+				in_sphere = CAN
+				AND = {
+					part_of_sphere = no
+					relation = { who = CAN value = 150 }
+				}
+				sphere_owner = { is_sphere_leader_of = CAN }
+			}
+		}
+
+		effect = {
+			set_country_flag = become_canada
+			all_core = { add_core = CAN }
+			any_owned = {
+				limit = { is_core = COL }
+				add_core = CAN
+			}
+			inherit = CAN
+			change_tag = CAN
+		}
+	}
+
+	# TODO
+	integrate_the_metis = {
+		picture = bytown_1853
+		potential = {
+			tag = CAN
+    		exists = yes
+			NOT = { accepted_culture = metis }
+			any_owned_province = {
+				any_pop = { has_pop_culture = metis }
+			}
+		}
+
+		allow = {
+			psychoanalysis = 1
+			plurality = 50
+			NOT = {
+				citizens_rights = primary_culture_only
+				citizenship_policy = residency
+			}
+			OR = {
+				government = democracy
+				government = hms_government
+			}
+		}
+
+		effect = {
+			add_accepted_culture = metis
+			random_country = {
+				limit = {
+					tag = MTC
+					exists = no
+				}
+				all_core = { remove_core = MTC }
+			}
+			random_country = {
+				limit = {
+					tag = RPL
+					exists = no
+				}
+				all_core = { remove_core = RPL }
+			}
+			random_country = {
+				limit = {
+					tag = MRU
+					exists = no
+				}
+				all_core = { remove_core = MRU }
+			}
+			random_country = {
+				limit = {
+					tag = COL
+					exists = no
+				}
+				all_core = { remove_core = COL }
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
 ## Flavor ##
 
 	#Description: Form the Royal Canadian Mounted Police - reduced militancy modifier and gain liferating in western territories.
@@ -158,7 +268,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-## Territory ##
+## Territory ## TODO new provinces
 
 	#Description: Occupy the Yukon territory if Alaska is already occupied.
 	claim_the_north = {
