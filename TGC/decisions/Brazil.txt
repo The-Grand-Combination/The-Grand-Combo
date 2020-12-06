@@ -70,114 +70,7 @@ political_decisions = {
 		}
 	}
 
-	build_brasilia = { # TODO
-		picture = brasilia
-		potential = {
-			primary_culture = brazilian
-    		exists = yes
-			NOT = { has_country_flag = build_brasilia }
-		}
-
-		allow = {
-			war = no
-			money = 1000000
-			OR = {
-				is_secondary_power = yes
-				is_greater_power = yes
-			}
-		}
-
-		effect = {
-			capital = 3254
-			money = -600000
-			3254 = { # TODO province id
-				change_province_name = "Brasília"
-				state_scope = { change_region_name = "Distrito Federal" }
-			}
-			set_country_flag = build_brasilia
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	build_teresina = { # TODO
-		picture = build_teresina
-		potential = {
-			tag = BRZ
-			year = 1852
-			NOT = { has_country_flag = teresina_built }
-		}
-		allow = {
-			money = 5000
-		}
-		effect = {
-			set_country_flag = teresina_built
-			treasury = -5000
-			2426 = { change_province_name = "Teresina" }
-			2426 = {
-				add_province_modifier = { name = recently_built_city duration = 365 }
-			}
-		}
-	}
-
-	build_belo_horizonte = { # TODO
-		picture = build_belo_horizonte
-		potential = {
-			tag = BRZ
-			year = 1870
-			NOT = { has_country_flag = bh_built }
-		}
-		allow = {
-			money = 5000
-		}
-		effect = {
-			set_country_flag = bh_built
-			treasury = -5000
-			2442 = { change_province_name = "Belo Horizonte" }
-			2442 = {
-				life_rating = 4
-				trade_goods = iron
-				add_province_modifier = { name = recently_built_city duration = 365 }
-			}
-		}
-	}
-
-	brazilian_rubber_boom = { # TODO
-		picture = rubber_cycle
-		potential = {
-			owns = 2550
-			owns = 2419
-			owns = 2532
-			owns = 2410
-			owns = 2402
-			year = 1880
-			NOT = { has_country_flag = brazilian_rubber_boom }
-		}
-
-		allow = {
-			war = no
-			owns = 2550
-			owns = 2419
-			owns = 2532
-			owns = 2410
-			owns = 2402
-			state_n_government = 1
-			2550 = { trade_goods = rubber }
-		}
-
-		effect = {
-			set_country_flag = brazilian_rubber_boom
-			2410 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
-			2402 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
-			2419 = { change_province_name = "Campo Grande" trade_goods = cattle }
-			2550 = { change_province_name = "Porto Velho" add_province_modifier = { name = recently_built_city duration = 150 } }
-			2532 = { change_province_name = "Boa Vista" add_province_modifier = { name = recently_built_city duration = 150 } }
-			random_owned = { limit = { province_id = 2549 }
-				change_province_name = "Rio Branco" add_province_modifier = { name = recently_built_city duration = 100 }
-			}
-		}
-	}
-
+	#Description: Gain relations with Argentina.
 	state_visit_to_argentina = { #original VIP event idea by General Perón, scripted by Scythe
 		picture = court_yard_speech
 		potential = {
@@ -198,10 +91,10 @@ political_decisions = {
 
 		effect = {
 			ARG = {
-				country_event = 146605
+				country_event = 146605 # TODO
 				relation = { who = THIS value = 35 }
 			}
-			any_country = { #if the relations between Chile and Argentina are bad, decrease relations between Chile and Brazil as well
+			random_country = { #if the relations between Chile and Argentina are bad, decrease relations between Chile and Brazil as well
 				limit = {
 					tag = CHL
 					NOT = { relation = { who = ARG value = 0 } }
@@ -210,6 +103,134 @@ political_decisions = {
 			}
 			prestige = 3
 			set_country_flag = state_visit_to_argentina
+		}
+	}
+
+## City Building ##
+
+	#Description: Build a new capital, gain population growth.
+	build_brasilia = {
+		picture = brasilia
+		potential = {
+			tag = BRZ
+    		owns = 2421
+			year = 1891
+			NOT = { has_country_flag = build_brasilia }
+		}
+
+		allow = {
+			war = no
+			money = 500000
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+		}
+
+		effect = {
+			money = -300000
+			2421 = {
+				change_province_name = "Brasília"
+				add_province_modifier = { name = recently_built_city duration = 365 }
+				add_province_modifier = { name = new_capital_modifier duration = 3650 }
+				state_scope = { change_region_name = "Distrito Federal" }
+			}
+			capital = 3254
+			set_country_flag = build_brasilia
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Build a new city, gain population growth.
+	build_teresina = {
+		picture = build_teresina
+		potential = {
+			OR = {
+				tag = BRZ
+				tag = KPB
+			}
+			owns = 2426
+			year = 1852
+			NOT = { has_country_flag = teresina_built }
+		}
+
+		allow = {
+			money = 10000
+		}
+
+		effect = {
+			set_country_flag = teresina_built
+			treasury = -5000
+			2426 = {
+				change_province_name = "Teresina"
+				add_province_modifier = { name = recently_built_city duration = 365 }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Build a new city, gain population growth.
+	build_belo_horizonte = {
+		picture = build_belo_horizonte
+		potential = {
+			OR = {
+				tag = BRZ
+				tag = KPB
+			}
+			owns = 2442
+			year = 1870
+			NOT = { has_country_flag = bh_built }
+		}
+
+		allow = {
+			money = 10000
+		}
+
+		effect = {
+			set_country_flag = bh_built
+			treasury = -5000
+			2442 = {
+				change_province_name = "Belo Horizonte"
+				life_rating = 4
+				trade_goods = iron
+				add_province_modifier = { name = recently_built_city duration = 365 }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Build new cities, gain population growth.
+	brazilian_rubber_boom = {
+		picture = rubber_cycle
+		potential = {
+			owns = 2550
+			owns = 2419
+			owns = 2532
+			owns = 2410
+			owns = 2402
+			year = 1880
+			NOT = { has_country_flag = brazilian_rubber_boom }
+		}
+
+		allow = {
+			war = no
+			state_n_government = 1
+		}
+
+		effect = {
+			set_country_flag = brazilian_rubber_boom
+			2410 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
+			2402 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
+			2419 = { change_province_name = "Campo Grande" trade_goods = cattle }
+			2550 = { change_province_name = "Porto Velho" add_province_modifier = { name = recently_built_city duration = 150 } }
+			2532 = { change_province_name = "Boa Vista" add_province_modifier = { name = recently_built_city duration = 150 } }
+			random_owned = {
+				limit = { province_id = 2549 }
+				change_province_name = "Rio Branco" add_province_modifier = { name = recently_built_city duration = 100 }
+			}
 		}
 	}
 
