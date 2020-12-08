@@ -8,21 +8,165 @@
 ## Formation ##
 
 	#Description: Triggered for Peru near the start of the game
-	#Option 1: Become puppet of Bolivia, Bolivia gets response
-	#Option 2: Bolivia gets response
+	country_event = {
+		id = 97049
+		title = "EVTNAME97049"
+		desc = "EVTDESC97049"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = PEU
+			war = no
+			BOL = {
+				neighbour = THIS
+				exists = yes
+				war = no
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		fire_only_once = yes
+
+		# Become puppet of Bolivia, PBC is formed (historical)
+		option = {
+			name = "EVTOPTA97049"
+
+			BOL = { country_event = 97048 }
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Refuse the confederation
+		option = {
+			name = "EVTOPTB97049"
+
+			prestige = 10
+			BOL = { country_event = 97047 }
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.5
+					NOT = { military_score = BOL }
+				}
+			}
+		}
+	}
 
 	#Description: Triggered for Bolivia if Peru accepts
-	#Option 1: Become PBC, prestige
+	country_event = {
+		id = 97048
+		title = "EVTNAME97048"
+		desc = "EVTDESC97048"
+		picture = "peru-bolivia"
+
+		is_triggered_only = yes
+
+		# Become puppet of Bolivia, PBC is formed (historical)
+		option = {
+			name = "EVTOPTA97048"
+
+			prestige = 15
+			create_vassal = FROM
+			all_core = { add_core = PBC }
+			FROM = { all_core = { add_core = PBC } }
+			change_tag = PBC
+		}
+	}
 
 	#Description: Triggered for Bolivia if Peru refuses
-	#Option 1: Go to war with make puppet CB, set flag to trigger PBC formation event when war is over
-	#Option 2: Lose prestige, set flag for confederation abandoned
+	country_event = {
+		id = 97047
+		title = "EVTNAME97047"
+		desc = "EVTDESC97047"
+		picture = "peru-bolivia"
+
+		is_triggered_only = yes
+
+		# Go to war
+		option = {
+			name = "EVTOPTA97047"
+
+			badboy = 1
+			war = {
+				target = PEU
+				attacker_goal = { casus_belli = make_puppet }
+			}
+			any_pop = {
+				dominant_issue = {
+					value = jingoism
+					factor = 0.1
+				}
+				consciousness = 1
+			}
+			set_global_flag = PBC_formation_war
+		}
+
+		# Abandon the idea
+		option = {
+			name = "EVTOPTB97047"
+
+			prestige = -10
+			set_global_flag = PBC_abandoned # TODO add this everywhere
+		}
+	}
 
 	#Description: Triggered for Bolivia after the war with Peru if they win
-	#Option 1: Become PBC
+	country_event = {
+		id = 97046
+		title = "EVTNAME97046"
+		desc = "EVTDESC97046"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = BOL
+			has_global_flag = PBC_formation_war
+			truce_with = PEU
+			has_recently_lost_war = no
+			PEU = {
+				vassal_of = THIS
+				has_recently_lost_war = yes
+			}
+		}
+
+		option = {
+			name = "EVTOPTA97046"
+
+			prestige = 10
+			all_core = { add_core = PBC }
+			PEU = { all_core = { add_core = PBC } }
+			change_tag = PBC
+		}
+	}
 
 	#Description: Triggered for Bolivia after the war with Peru if they lose
-	#Option 1: set flag for confederation abandoned
+	country_event = {
+		id = 97045
+		title = "EVTNAME97045"
+		desc = "EVTDESC97045"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = BOL
+			has_global_flag = PBC_formation_war
+			truce_with = PEU
+			has_recently_lost_war = yes
+			PEU = {
+				NOT = { vassal_of = THIS }
+				has_recently_lost_war = no
+			}
+		}
+
+		option = {
+			name = "EVTOPTA97045"
+
+			prestige = -5
+			set_global_flag = PBC_abandoned
+		}
+	}
 
 	#Description: The Peru-Bolivian Confederation - Triggered for Chile and Argentina once the PBC is formed
 	country_event = {
@@ -107,6 +251,21 @@
 				}
 			}
 			random_owned = {
+				limit = { owner = { tag = ARC } }
+				2370 = { add_core = ARC }
+				3353 = { add_core = ARC }
+			}
+			random_owned = {
+				limit = { owner = { tag = ARG } }
+				2370 = { add_core = ARG }
+				3353 = { add_core = ARG }
+			}
+			random_owned = {
+				limit = { owner = { tag = LPL } }
+				2370 = { add_core = LPL }
+				3353 = { add_core = LPL }
+			}
+			random_owned = {
 				limit = {
 					owner = {
 						OR = {
@@ -116,8 +275,8 @@
 						}
 					}
 				}
-				2370 = { add_core = ARC }
-				3353 = { add_core = ARC }
+				2371 = { add_core = PBC add_core = BOL }
+				3400 = { add_core = PBC add_core = BOL }
 				owner = {
 					war = {
 						target = PBC
@@ -247,7 +406,10 @@
 
 			all_core = { remove_core = PBC }
 			random_owned = {
-				limit = { province_id = 2313 }
+				limit = {
+					province_id = 2313
+					NOT = { owner = { capital = 2313 } }
+				}
 				owner = { capital = 2313 }
 			}
 			change_tag = BOL
@@ -338,7 +500,7 @@
 		}
 	}
 
-	# Description: Post PBC breakup, clean up territories and cores in the former PBC Amazon
+	# Description: Post PBC breakup, clean up territories and cores in the former PBC Amazon - triggered for Bolivia
 	country_event = {
 		id = 34625
 		title = "EVTNAME34625"
@@ -367,7 +529,7 @@
 		}
 	}
 
-	#Description: Post PBC breakup, Peru loses its northern territories to Ecuador and Columbia
+	#Description: Post PBC breakup, Peru loses its northern territories to Ecuador and Columbia - triggered for Peru
 	country_event = {
 		id = 34626
 		title = "EVTNAME34626"
@@ -428,7 +590,10 @@
 		option = {
 			name = "EVTOPTA4661006"
 
-			2315 = { owner = { country_event = 4661007 } }
+			random_country = {
+				limit = { owns = 2315 }
+				country_event = 4661007
+			}
 
 			ai_chance = { factor = 100 }
 		}
@@ -727,5 +892,109 @@ country_event = {
 		relation = { who = FROM value = -200 }
 
 		ai_chance = { factor = 10 }
+	}
+}
+
+
+country_event = { # TODO
+
+	id = 50006
+	title = "EVTNAME50006"
+	desc = "EVTDESC50006"
+	picture = "pacificwar"
+
+	trigger = {
+		tag = BOL
+		government = presidential_dictatorship
+		year = 1880
+		NOT = { year = 1900 }
+		OR = {
+			num_of_revolts = 1
+			average_militancy = 4
+			has_recently_lost_war = yes
+		}
+		NOT = { all_core = { owned_by = THIS } }
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	fire_only_once = yes
+
+	option = {
+		name = "¡Viva la democracia!"
+		government = democracy
+		political_reform = universal_voting
+		political_reform = population_equal_weight
+		political_reform = first_past_the_post
+		ruling_party_ideology = conservative
+		set_country_flag = tory_election_win
+		clr_country_flag = socialist_election_win
+		clr_country_flag = liberal_election_win
+		clr_country_flag = communist_election_win
+		clr_country_flag = fascist_election_win
+		clr_country_flag = reactionary_election_win
+		clr_country_flag = anarcho_liberal_election_win
+		any_owned = {
+			limit = {
+				is_colonial = no
+			}
+			any_pop = {
+				scaled_militancy = {
+					factor = 1
+					ideology = reactionary
+				}
+				scaled_consciousness = {
+					factor = 2
+					ideology = reactionary
+				}
+			}
+			any_pop = {
+				scaled_militancy = {
+					factor = -1
+					ideology = liberal
+				}
+				scaled_consciousness = {
+					factor = -2
+					ideology = liberal
+				}
+			}
+		}
+		ai_chance = {
+			factor = 85
+		}
+	}
+
+	option = {
+		name = "No! Bolivia will continue as a Dictatorship."
+		any_owned = {
+			limit = {
+				is_colonial = no
+			}
+			any_pop = {
+				scaled_militancy = {
+					factor = -2
+					ideology = reactionary
+				}
+				scaled_consciousness = {
+					factor = -4
+					ideology = reactionary
+				}
+			}
+			any_pop = {
+				scaled_militancy = {
+					factor = 3
+					ideology = liberal
+				}
+				scaled_consciousness = {
+					factor = 5
+					ideology = liberal
+				}
+			}
+		}
+		ai_chance = {
+			factor = 15
+		}
 	}
 }

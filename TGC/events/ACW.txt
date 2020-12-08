@@ -4108,6 +4108,39 @@
 			}
 		}
 
+		#Description: White House Burning # TODO rework
+		country_event = {
+			id = 182000
+			title = "White House Burning!"
+			desc = "Our enemies have devastated the glorious seat of our nation!"
+			picture = "washington_burned"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "We will have revenge!"
+
+				set_country_flag = white_house_burnt
+				casus_belli = {
+					target = FROM
+					type = humiliate
+					months = 240
+				}
+
+				ai_chance = { factor = 50 }
+			}
+
+			option = {
+				name = "We cannot afford more conflict."
+
+				set_country_flag = white_house_burnt
+				prestige = -10
+				war_exhaustion = 5
+
+				ai_chance = { factor = 50 }
+			}
+		}
+
 	## CSA Cuba ##
 
 		#Description: Triggered for the USA if Cuba joins the CSA.
@@ -4200,6 +4233,248 @@
 				name = EVTOPTB56277
 
 				ai_chance = { factor = 60 }
+			}
+		}
+
+	## Trent Affair ## TODO everything
+
+		#Britain gets event of HMS Trent being captured by crew of the USS San Jacinto
+		country_event = {
+			id = 187940
+			title = "The Trent Affair"
+			desc = "EVTDESC187940"
+			picture = "hms_trent"
+
+			trigger = {
+				NOT = {
+					has_global_flag = trent_affair_resolved
+					has_global_flag = trent_affair_begun
+					alliance_with = USA
+				}
+				is_greater_power = yes
+				tag = ENG
+				USA = {
+					war_with = CSA
+				}
+				relation = {
+					who = CSA
+					value = 0
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 4
+			}
+
+			option = {
+				name = "The United States must answer for this!"
+				set_global_flag = trent_affair_begun
+				USA = { country_event = 187942 }
+				CSA = { country_event = 187941 }
+				relation = {
+					who = USA
+					value = -25
+				}
+				ai_chance = {
+					factor = 90
+				}
+			}
+			option = {
+				name = "We will not risk a diplomatic incident."
+				set_global_flag = trent_affair_resolved
+				prestige = -15
+				ai_chance = {
+					factor = 10
+				}
+			}
+		}
+
+		#CSA gets to know what's going on
+		country_event = {
+			id = 187941
+			title = "The Trent Affair"
+			desc = "The British HMS Trent, with two Confederate diplomats on board, has been seized by Union forces."
+			picture = "hms_trent"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "This could be our chance..."
+			}
+		}
+
+		#USA decides whether to accept the British demands
+		country_event = {
+			id = 187942
+			title = "The Trent Affair"
+			desc = "EVTDESC187942"
+			picture = "hms_trent"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "We will apologize and release the envoys. This mustn't come to war."
+				prestige = -20
+				ENG = {
+					country_event = 187943
+				}
+				ai_chance = {
+					factor = 80
+					modifier = {
+						factor = 0
+						OR = {
+							has_country_modifier = raving_loon
+							has_country_modifier = power_vacuum
+							has_country_modifier = gauche_buffoon
+							has_country_modifier = prince_of_terror
+							has_country_modifier = efficient_sociopath
+							has_country_modifier = imperious_autocrat
+							has_country_modifier = pig_headed_isolationist
+						}
+					}
+					modifier = {
+						factor = 0.25
+						OR = {
+							has_country_modifier = lord_admiral
+							has_country_modifier = military_man
+							has_country_modifier = landed_gentleman
+						}
+					}
+					modifier = {
+						factor = 0.75
+						OR = {
+							has_country_modifier = successful_industrialist
+							has_country_modifier = dour_economist
+							has_country_modifier = administrative_genius
+						}
+					}
+					modifier = {
+						factor = 1.5
+						OR = {
+							has_country_modifier = expert_diplomat
+							has_country_modifier = great_statesman
+							has_country_modifier = backroom_boy
+							has_country_modifier = visionary_thinker
+						}
+					}
+				}
+			}
+
+			option = {
+				name = "All is fair in war!"
+				ENG = {
+					country_event = 187944
+				}
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 1.5
+						OR = {
+							has_country_modifier = raving_loon
+							has_country_modifier = power_vacuum
+							has_country_modifier = gauche_buffoon
+							has_country_modifier = prince_of_terror
+							has_country_modifier = efficient_sociopath
+							has_country_modifier = imperious_autocrat
+							has_country_modifier = pig_headed_isolationist
+						}
+					}
+					modifier = {
+						factor = 0.75
+						OR = {
+							has_country_modifier = lord_admiral
+							has_country_modifier = military_man
+							has_country_modifier = landed_gentleman
+						}
+					}
+					modifier = {
+						factor = 0.25
+						OR = {
+							has_country_modifier = successful_industrialist
+							has_country_modifier = dour_economist
+							has_country_modifier = administrative_genius
+						}
+					}
+					modifier = {
+						factor = 0
+						OR = {
+							has_country_modifier = expert_diplomat
+							has_country_modifier = great_statesman
+							has_country_modifier = backroom_boy
+							has_country_modifier = visionary_thinker
+						}
+					}
+				}
+			}
+		}
+
+		#UK reaction event - USA apologizes
+		country_event = {
+			id = 187943
+			title = "The Trent Affair"
+			desc = "EVTDESC187943"
+			picture = "hms_trent"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "Another victory for England!"
+				set_global_flag = trent_affair_resolved
+				prestige = 10
+				relation = {
+					who = USA
+					value = 25
+				}
+				CSA = {
+					country_event = 187945
+				}
+			}
+		}
+		#UK reaction event - USA doesn't back down
+		country_event = {
+			id = 187944
+			title = "The Trent Affair"
+			desc = "EVTDESC187944"
+			picture = "hms_trent"
+			major = yes
+
+			is_triggered_only = yes
+
+			option = {
+				name = "They will regret this."
+				set_global_flag = trent_affair_resolved
+				relation = {
+					who = USA
+					value = -175
+				}
+				war = {
+					target = USA
+					attacker_goal = {
+						casus_belli = cut_down_to_size
+					}
+					defender_goal = {
+						casus_belli = humiliate
+					}
+				}
+				diplomatic_influence = {
+					who = CSA
+					value = 100
+				}
+			}
+		}
+
+		#CSA reacts to the USA giving in to the British
+		country_event = {
+			id = 187945
+			title = "The Trent Affair"
+			desc = "The Union has given in to the British, and has released our diplomats, evading war."
+			picture = "hms_trent"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "This is not in our favor."
+				prestige = -5
 			}
 		}
 
@@ -4432,7 +4707,7 @@
 				}
 			}
 
-			#Description: Victory over the North
+			#Description: Victory over the North - prestige buff
 			country_event = {
 
 				id = 999886
@@ -4458,6 +4733,97 @@
 					set_country_flag = csaprestigebuff
 				}
 			}
+
+			#Description: The CSA can choose whether enlisted slaves should get the freedom they were promised. # TODO localization
+			country_event = {
+				id = 180000
+				title = "Post-War Freedom?"
+				desc = "EVT180000DESC"
+				picture = "coloured_troops_line"
+
+				trigger = {
+					has_country_flag = coloured_troops
+					slavery = yes_slavery
+					war = no
+					has_global_flag = american_civil_war_has_happened
+					NOT = { has_country_flag = freed_soldiers }
+				}
+
+				mean_time_to_happen = {
+					months = 1
+				}
+
+				# They will be freed
+				option = {
+					name = "We will stand by our promises: let them stay free."
+
+					clr_country_flag = coloured_troops
+					set_country_flag = freed_soldiers
+					prestige = 5
+					any_pop = {
+						limit = { NOT = { type = aristocrats } }
+						militancy = -1
+						consciousness = 1
+					}
+
+					ai_chance = {
+						factor = 50
+						modifier = {
+							factor = 1.5
+							OR = {
+								ruling_party_ideology = liberal
+								ruling_party_ideology = anarcho_liberal
+								ruling_party_ideology = communist
+								ruling_party_ideology = socialist
+							}
+						}
+						modifier = {
+							factor = 0.5
+							OR = {
+								ruling_party_ideology = reactionary
+								ruling_party_ideology = conservative
+								ruling_party_ideology = fascist
+								NOT = {
+									government = democracy
+								}
+							}
+						}
+					}
+				}
+
+				# They remain slaves
+				option = {
+					name = "They go back to the plantations, where they belong!"
+
+					prestige = -5
+					clr_country_flag = coloured_troops
+					any_pop = {
+						limit = {
+							has_pop_culture = afro_american
+							pop_type = soldiers
+						}
+						pop_type = slaves
+					}
+					any_pop = {
+						limit = { NOT = { type = aristocrats } }
+						militancy = 1
+						consciousness = 1
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								pop_type = slaves
+								pop_type = slaves_factory
+							}
+						}
+						militancy = 5
+					}
+
+					ai_chance = { factor = 50 }
+				}
+			}
+
+
 
 		## USA Victory ##
 
@@ -6689,6 +7055,413 @@
 				ai_chance = { factor = 100 }
 			}
 		}
+
+### New York ### TODO everything
+
+	#Events for the potential secession of New York after the Civil War goes decidedly... south.
+	country_event = {
+		id = 187900
+		title = "New York Secession"
+		desc = "EVTDESC187900"
+		picture = "draft_riots"
+
+		trigger = {
+			tag = USA
+			owns = 233
+			owns = 232
+			OR = {
+				war = no
+				war_with = CSA
+			}
+			NOT = {
+				has_country_flag = ny_secession_start
+				has_country_flag = has_used_radical_reconstruction
+				has_country_flag = CSA_created
+			}
+			CSA = {
+				exists = yes
+			}
+			has_country_flag = draft_riots_deadly
+			OR = {
+				war_exhaustion = 50
+				AND = {
+					war_exhaustion = 25
+					truce_with = CSA
+				}
+				CSA = {
+					is_greater_power = yes
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = {
+				factor = 0.1
+				war_exhaustion = 75
+			}
+		}
+
+		option = {
+			name = "They must stay in the Union!"
+			232 = {
+				add_core = UNY
+			}
+			233 = {
+				add_core = UNY
+			}
+			any_pop = {
+				militancy = 1
+				consciousness = 1
+			}
+			prestige = -10
+			set_country_flag = ny_secession_start
+		}
+	}
+
+	#New York Secedes!
+	country_event = {
+		id = 187901
+		title = "New York Secedes!"
+		desc = "EVTDESC187901"
+		picture = "new_york"
+
+		trigger = {
+			tag = USA
+			NOT = {
+				has_global_flag = ny_has_seceded
+			}
+			has_country_flag = ny_secession_start
+			any_owned_province = {
+				is_core = UNY
+				OR = {
+					average_militancy = 3
+					average_consciousness = 5
+					controlled_by = REB
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.5
+				war = yes
+			}
+		}
+
+		option = {
+			name = "Let them be an independent nation."
+			prestige = -25
+			set_global_flag = ny_has_seceded
+			release = UNY
+			any_pop = {
+				consciousness = 2
+			}
+			UNY = {
+				country_event = 187905
+			}
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 5
+					OR = {
+						war = yes
+						war_exhaustion = 75
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "The Union shall not be broken!"
+			prestige = 10
+			set_global_flag = ny_has_seceded
+			release = UNY
+			UNY = {
+				add_country_modifier = {
+					name = small_country_draft
+					duration = 1095
+				}
+				any_pop = {
+					militancy = -10
+					consciousness = -10
+				}
+				war_exhaustion = -50
+				small_arms = 100
+				canned_food = 200
+				artillery = 50
+				luxury_clothes = 50
+				wine = 50
+				liquor = 50
+				ammunition = 100
+				leadership = 25
+				money = 100000
+			}
+			war = {
+				target = UNY
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = status_quo
+				}
+			}
+			ai_chance = {
+				factor = 90
+			}
+		}
+
+		option = {
+			name = "Long live New York!"
+			prestige = 10
+			set_global_flag = ny_has_seceded
+			release = UNY
+			UNY = {
+				add_country_modifier = {
+					name = small_country_draft
+					duration = 1095
+				}
+				any_pop = {
+					militancy = -10
+					consciousness = -10
+				}
+				war_exhaustion = -50
+				small_arms = 100
+				canned_food = 200
+				artillery = 50
+				luxury_clothes = 50
+				wine = 50
+				liquor = 50
+				ammunition = 100
+				leadership = 25
+				money = 100000
+			}
+			war = {
+				target = UNY
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = status_quo
+				}
+			}
+			change_tag_no_core_switch = UNY
+			ai_chance = {
+				factor = 0
+			}
+		}
+	}
+
+	#New York searches for an ally to fight the USA
+	country_event = {
+		id = 187902
+		title = "War for Independence!"
+		desc = "EVTDESC187902"
+		picture = "deliberation"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = UNY
+			war_with = USA
+		}
+
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		option = {
+			name = "We will fight alone."
+			prestige = 20
+			plurality = 10
+			set_country_flag = ny_lonely_independence
+			ai_chance = {
+				factor = 20
+			}
+		}
+		option = {
+			name = "Anyone who will aid our just cause!"
+			USA = {
+				any_neighbor_country = {
+					limit = {
+						NOT = {
+							tag = UNY
+							alliance_with = USA
+						}
+					}
+					country_event = 187903
+				}
+			}
+			prestige = -10
+			ai_chance = {
+				factor = 80
+			}
+		}
+	}
+
+	#Reaction event for countries asked to aid with independence
+	country_event = {
+		id = 187903
+		title = "New York Independence"
+		desc = "EVTDESC187903"
+		picture = "draft_riots"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "We will not face American wrath to aid this republic."
+			relation = {
+				who = UNY
+				value = -50
+			}
+			ai_chance = {
+				factor = 65
+				modifier = {
+					factor = 0
+					relation = {
+						who = USA
+						value = 0
+					}
+				}
+			}
+		}
+		option = {
+			name = "Let the flames of independence burn on!"
+			any_pop = {
+				limit = {
+					is_primary_culture = no
+					is_accepted_culture = no
+				}
+				consciousness = 5
+			}
+			relation = {
+				who = UNY
+				value = 100
+			}
+			prestige = 10
+			UNY = {
+				country_event = 187904
+			}
+			war = {
+				target = USA
+				attacker_goal = {
+					casus_belli = cut_down_to_size
+				}
+				defender_goal = {
+					casus_belli = humiliate
+				}
+			}
+			ai_chance = {
+				factor = 35
+			}
+		}
+	}
+
+	#New York is notified of who is supporting them
+	country_event = {
+		id = 187904
+		title = "NYALLYTITLE"
+		desc = "EVTDESC187904"
+		picture = "deliberation"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "Hurrah!"
+			prestige = 5
+			plurality = 2
+			money = 10000
+		}
+	}
+
+	#New York successfully achieves independence from the USA
+	country_event = {
+		id = 187905
+		title = "Independence!"
+		desc = "EVTDESC187905"
+		picture = "new_york"
+
+		trigger = {
+			tag = UNY
+			war = no
+			NOT = {
+				has_global_flag = ny_independent_flag
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		option = {
+			name = "Free at last!"
+			set_global_flag = ny_independent_flag
+			prestige = 15
+			plurality = 5
+			remove_country_modifier = small_country_draft
+		}
+	}
+
+	#USA manages to reconquer New York
+	country_event = {
+		id = 187906
+		title = "EVTNAME187906"
+		desc = "EVTDESC187906"
+		picture = "celebration"
+
+		trigger = {
+			UNY = {
+				exists = no
+			}
+			tag = USA
+			any_owned_province = {
+				is_core = UNY
+			}
+			war = no
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "A grand day for the United States."
+			clr_global_flag = ny_independent_flag
+			prestige = 25
+			any_pop = {
+				militancy = -2
+				consciousness = -2
+			}
+			any_owned = {
+				limit = {
+					is_core = UNY
+				}
+				remove_core = UNY
+				add_core = USA
+			}
+		}
+	}
+
+	#Reaction event for the declaration of NY independence
+	country_event = {
+		id = 187907
+		title = "EVTNAME187907"
+		desc = "EVTDESC187907"
+		picture = "new_york"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "Damned secessionists!"
+			plurality = -20
+			prestige = -25
+			relation = {
+				who = UNY
+				value = -200
+			}
+		}
+	}
 
 ### Second American Civil War - Disunited States ###
 
@@ -9886,3 +10659,172 @@
 		}
 
 		## TODO secession of Upper Canada (Treaty of New York)
+
+		country_event = { # TODO
+
+			id = 95315
+			title = "EVTNAME95315" #Join the Canadian Confederation?
+			desc = "EVTDESC95315"
+			picture = "administration"
+
+			trigger = {
+				war = no
+				OR = {
+					tag = LSK
+					tag = NEN
+					tag = DAK
+					tag = UOR
+				}
+				NOT = {
+					tag = USA
+					has_country_flag = asked_to_join_canada
+					in_sphere = USA
+				}
+				has_global_flag = second_american_civil_war
+				neighbour = CAN
+				OR = {
+					government = democracy
+					government = hms_government
+				}
+				OR = {
+					in_sphere = CAN
+					alliance_with = CAN
+					relation = { who = CAN value = 50 }
+					tag = LSK
+					tag = NEN
+				}
+				CAN = {
+					is_vassal = no
+					OR = {
+						government = democracy
+						government = hms_government
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.5
+					ruling_party_ideology = liberal
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						alliance_with = CAN
+						in_sphere = CAN
+					}
+				}
+				modifier = {
+					factor = 2
+					CAN = { NOT = { ruling_party_ideology = liberal } }
+				}
+				modifier = {
+					factor = 2
+					NOT = { ruling_party_ideology = liberal }
+				}
+				modifier = {
+					factor = 2
+					ruling_party_ideology = reactionary
+				}
+				modifier = {
+					factor = 2
+					part_of_sphere = yes
+					NOT = { in_sphere = CAN }
+				}
+			}
+
+			option = {
+				name = "Send a delegate to Ottawa"
+				set_country_flag = asked_to_join_canada
+				prestige = -5
+				CAN = { country_event = 95316 }
+			}
+
+			option = {
+				name = "We will not do this"
+				set_country_flag = asked_to_join_canada
+				prestige = 1
+			}
+		}
+
+		country_event = { # TODO
+
+			id = 95316
+			title = "EVTNAME95316" #$FROMCOUNTRY$ Asks to Join Canada
+			desc = "EVTDESC95316"
+			major = yes
+
+			is_triggered_only = yes
+
+			option = {
+				name = "We welcome a new province"
+				prestige = 10
+				FROM = {
+					all_core = { add_core = CAN }
+				}
+				add_accepted_culture = yankee
+				inherit = FROM
+				USA = {
+					relation = {
+						who = CAN
+						value = -50
+					}
+					diplomatic_influence = {
+						who = CAN
+						value = -50
+					}
+					casus_belli = {
+						target = CAN
+						type = humiliate
+						months = 60
+					}
+				}
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.5
+						FROM = {
+							NOT = {
+								any_owned_province = {
+									any_neighbor_province = { is_core = CAN }
+								}
+							}
+						}
+					}
+				}
+			}
+
+			option = {
+				name = "We politely refuse the offer"
+				relation = {
+					who = FROM
+					value = -25
+				}
+				relation = {
+					who = USA
+					value = 25
+				}
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0
+						FROM = { tag = NEN }
+					}
+					modifier = {
+						factor = 0
+						FROM = { tag = UOR }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = {
+							NOT = {
+								any_owned_province = {
+									any_neighbor_province = { is_core = CAN }
+								}
+							}
+						}
+					}
+				}
+			}
+		}

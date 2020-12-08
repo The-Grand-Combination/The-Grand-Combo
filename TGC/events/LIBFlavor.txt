@@ -37,3 +37,273 @@ country_event = {
 		}
 	}
 }
+
+## Liberian Independence ##
+
+	#Description: The Colony of Liberia
+	country_event = {
+
+		id = 441266
+		title = "EVTNAME441266"
+		desc = "EVTDESC441266"
+		picture = "guinea_coast"
+
+		trigger = {
+			tag = USA
+			war = no
+			owns = 1887 # Monrovia
+			owns = 1888 # Harper
+			year = 1846
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = { months = 12 }
+
+		immediate = {
+			1887 = { add_core = LIB }
+			1888 = { add_core = LIB }
+			LIB = { all_core = { remove_core = USA } }
+		}
+
+		# Liberia becomes independent
+		option = {
+			name = "EVTOPTA441266"
+
+			release = LIB
+			relation = { who = LIB value = 400 }
+			diplomatic_influence = { who = LIB value = 400 }
+			LIB = {
+				capital = 1887
+				election = yes
+				add_country_modifier = { name = unrecognized_country duration = 3650 }
+			}
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Pay off the debts and keep the colony
+		option = {
+			name = "EVTOPTB441266"
+
+			treasury = -200000
+			any_owned = {
+				limit = { is_core = LIB }
+				add_province_modifier = { name = nationalist_agitation duration = 1095 }
+				any_pop = { militancy = 5 consciousness = 7 }
+			}
+
+			ai_chance = { factor = 0 }
+		}
+
+		# Play as Liberia
+		option = {
+			name = "EVTOPTC441266"
+
+			release = LIB
+			relation = { who = LIB value = 400 }
+			diplomatic_influence = { who = LIB value = 400 }
+			LIB = {
+				capital = 1887
+				election = yes
+				add_country_modifier = { name = unrecognized_country duration = 3650 }
+			}
+			change_tag_no_core_switch = LIB
+
+			ai_chance = { factor = 0 }
+		}
+
+		# TODO add option to release as vassal
+	}
+
+	#Description: Liberian Independence 1/3 - if Liberia is a vassal
+	country_event = {
+		id = 95026
+		title = "EVTNAME95026"
+		desc = "EVTDESC95026"
+		picture = "deliberation"
+
+		fire_only_once = yes
+
+		trigger = {
+			war = no
+			tag = LIB
+			vassal_of = USA
+			year = 1847
+		}
+
+		mean_time_to_happen = {
+			months = 6
+		}
+
+		# Proclaim independence
+		option = {
+			name = "EVTOPTA95026"
+
+			USA = { country_event = 95027 }
+
+			ai_chance = { factor = 95 }
+		}
+
+		# Stay a vassal
+		option = {
+			name = "EVTOPTB95026"
+
+			USA = {
+				relation = {
+					who = THIS
+					value = 50
+				}
+				diplomatic_influence = {
+					who = THIS
+					value = 50
+				}
+			}
+
+			ai_chance = { factor = 5 }
+		}
+	}
+
+	#Description: Liberian Independence 2/3 - triggered for the USA if Liberia declares independence
+	country_event = {
+		id = 95027
+		title = "EVTNAME95027"
+		desc = "EVTDESC95027"
+		picture = "deliberation"
+
+		is_triggered_only = yes
+
+		# Grant them independence
+		option = {
+			name = "EVTOPTA95027"
+
+			badboy = -2
+			release_vassal = LIB
+			relation = { who = LIB value = 50 }
+			diplomatic_influence = { who = LIB value = 50 }
+
+			ai_chance = { factor = 95 }
+		}
+
+		# Keep them as a vassal
+		option = {
+			name = "EVTOPTB95027"
+
+			badboy = 2
+			LIB = { country_event = 95028 }
+
+			ai_chance = { factor = 5 }
+		}
+	}
+
+	#Description: Liberian Independence 3/3 - triggered for Liberia if the USA refuses to grant them independence
+	country_event = {
+		id = 95028
+		title = "EVTNAME95028"
+		desc = "EVTDESC95028"
+		picture = "administration"
+
+		is_triggered_only = yes
+
+		# Grumble
+		option = {
+			name = "EVTOPTA95028"
+
+			prestige = -5
+			relation = { who = FROM = value = 50 }
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = 5
+			}
+			any_owned = {
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+			}
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Fight for independence
+		option = {
+			name = "EVTOPTB95028"
+
+			USA = {
+				release = LIB
+				relation = { who = THIS = value = -200 }
+				diplomatic_influence = { who = THIS = value = -200 }
+				war = {
+					target = LIB
+					attacker_goal = { casus_belli = make_puppet }
+				}
+			}
+
+			iron = 10
+			wool = 10
+			timber = 25
+			small_arms = 10
+			leadership = 20
+			add_country_modifier = {
+				name = small_country_draft
+				duration = 30
+			}
+
+			add_accepted_culture = kru
+			random_owned = {
+				limit = { NOT = { citizens_rights = culture_voting_only } }
+				political_reform = culture_voting_only
+			}
+
+			random_owned = {
+				limit = { 1890 = { empty = yes } }
+				1890 = {
+					secede_province = THIS
+					add_core = LIB
+					life_rating = 15
+				}
+			}
+			random_owned = {
+				limit = { 1891 = { empty = yes } }
+				1891 = {
+					secede_province = THIS
+					add_core = LIB
+					life_rating = 15
+				}
+			}
+
+			random_country = {
+				limit = {
+					is_greater_power = yes
+					war_with = FROM
+				}
+				relation = { who = THIS = value = 50 }
+				diplomatic_influence = { who = THIS = value = 50 }
+			}
+			random_country = {
+				limit = {
+					is_greater_power = yes
+					NOT = { any_greater_power = { war_with = FROM } }
+				}
+				relation = { who = THIS = value = 50 }
+				diplomatic_influence = { who = THIS = value = 50 }
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 2
+					any_greater_power = { war_with = FROM }
+				}
+				modifier = {
+					factor = 2
+					FROM = { is_disarmed = yes }
+				}
+			}
+		}
+	}

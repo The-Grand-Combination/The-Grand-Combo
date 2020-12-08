@@ -21,12 +21,63 @@ political_decisions = {
 		}
 
 		effect = {
-			prestige = 5
+			badboy = 3
 			set_country_flag = white_house_burned
 			USA = {
 				prestige = -10
 				war_exhaustion = 10
 				country_event = 182000 # TODO doesn't exist.
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.85
+			}
+		}
+	}
+
+	#Description: A Greater Power at war with the USA can destroy the Statue of Liberty, lowering their prestige and increasing their war exhaustion.
+	destroy_the_statue_of_liberty = {
+		picture = liberty_enlightening_the_world
+		potential = {
+			war_with = USA
+			is_greater_power = yes
+			USA = {
+				owns = 232
+				has_country_modifier = the_statue_of_liberty
+			}
+			revolution_n_counterrevolution = 1
+			NOT = {	has_global_flag = statue_of_liberty_destroyed }
+		}
+
+		allow = {
+			controls = 232
+			invention = nitroglycerin
+		}
+
+		effect = {
+			badboy = 3
+			set_global_flag = statue_of_liberty_destroyed
+			USA = { country_event = 188244 } # TODO
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					relation = {
+						who = USA
+						value = -150
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				badboy = 0.85
 			}
 		}
 	}
@@ -691,6 +742,37 @@ political_decisions = {
 		}
 
 		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The CSA can, if at war with the USA, enlist some Cherokee to become soldiers.
+	first_cherokee_mounted_rifles = { # TODO localization
+		picture = first_cherokee_mounted_rifles
+		potential = {
+			tag = CSA
+			war_with = USA
+			any_pop = {
+				type = farmers
+				has_pop_culture = cherokee
+			}
+			NOT = { has_country_flag = first_cherokee_mounted_rifles }
+		}
+
+		allow = {
+			war_exhaustion = 4
+		}
+
+		effect = {
+			random_pop = {
+				limit = {
+					type = farmers
+					has_pop_culture = cherokee
+				}
+				pop_type = soldiers
+			}
+			add_accepted_culture = cherokee
+			war_exhaustion = -1
+			set_country_flag = first_cherokee_mounted_rifles
+		}
 	}
 
 	#Description: The CSA can form the Irish brigade, gaining stockpiles and turning a farmer pop into soldiers.
