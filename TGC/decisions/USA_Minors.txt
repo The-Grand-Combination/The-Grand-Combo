@@ -276,17 +276,28 @@ yucatec_claims = {
 		}
 	}	
 
-
-texan_claims = {
-	picture = all_texas
+	#Description: An independent Texas can claim the lands of the old territory of Texas.
+	texan_claims = {
+		picture = all_texas
 		potential = {
 			tag = TEX
-			NOT = { year = 1870 }
-			NOT = { has_country_flag = lone_star_state }
-			is_vassal = no
 			exists = yes
+			is_vassal = no
+			OR = { # Any Texan claims from the Independence War other than the ones they start out with.
+				103 = { NOT = { is_core = TEX } }
+				105 = { NOT = { is_core = TEX } }
+				107 = { NOT = { is_core = TEX } }
+				128 = { NOT = { is_core = TEX } }
+				129 = { NOT = { is_core = TEX } }
+				136 = { NOT = { is_core = TEX } }
+				138 = { NOT = { is_core = TEX } }
+				2631 = { NOT = { is_core = TEX } }
+				3372 = { NOT = { is_core = TEX } }
+			}
+			NOT = { has_country_flag = texan_claims }
+			has_global_flag = texas_independent
 		}
-		
+
 		allow = {
 			war = no
 			NOT = { year = 1870 }
@@ -294,23 +305,327 @@ texan_claims = {
 				is_secondary_power = yes
 				is_greater_power = yes
 				nationalism_n_imperialism = 1
+				AND = {
+					state_n_government = 1
+					prestige = 50
+				}
 			}
 		}
-		
+
 		effect = {
-			set_country_flag = lone_star_state
+			set_country_flag = texan_claims
 			badboy = 1
 			relation = { who = MEX value = -100 }
-			105 = { add_core = TEX }
-			129 = { add_core = TEX }
-			128 = { add_core = TEX }
-			103 = { add_core = TEX }
-                        107 = { add_core = TEX }
-                        2631 = { add_core = TEX }
+			TEX_132 = { add_core = THIS } # Texas proper
+			103 = { add_core = TEX } # Fuerte Talpa
+			105 = { add_core = TEX } # Santa Fe
+			107 = { add_core = TEX } # Shoshones Occidentales
+			128 = { add_core = TEX } # Osage
+			129 = { add_core = TEX } # Kiowa
+			2631 = { add_core = TEX } # Apacheria del Norte
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 
+
+	#Description: A Texas with their expanded claims can claim all the way to the pacific coast
+	texan_expanded_claims = {
+		picture = alta_california
+		potential = {
+			tag = TEX
+			exists = yes
+			is_vassal = no
+			NOT = { has_country_flag = texan_expanded_claims }
+		}
+
+		allow = {
+		103 = { owned_by = THIS }
+		105 = { owned_by = THIS }
+		107 = { owned_by = THIS }
+		128 = { owned_by = THIS }
+		129 = { owned_by = THIS }
+		136 = { owned_by = THIS }
+		138 = { owned_by = THIS }
+		2631 = { owned_by = THIS }
+		3372 = { owned_by = THIS }
+			war = no
+			NOT = { year = 1870 }
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+				nationalism_n_imperialism = 1
+				AND = {
+					state_n_government = 1
+					prestige = 50
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = texan_expanded_claims
+			badboy = 5
+			relation = { who = MEX value = -100 }
+			110 = { add_core = TEX } # wyoming
+			135 = { add_core = TEX } # Colorado
+			108 = { add_core = TEX } # -
+			99 = { add_core = TEX } # Utah
+			97 = { add_core = TEX } # -
+			98 = { add_core = TEX } # -
+			95 = { add_core = TEX } # Nevada
+			94 = { add_core = TEX } # -
+			96 = { add_core = TEX } # -
+			101 = { add_core = TEX } # Arizona
+			3367 = { add_core = TEX } # -
+			100 = { add_core = TEX } # -
+			102 = { add_core = TEX } # -
+			3368 = { add_core = TEX } # Sonora
+			2139 = { add_core = TEX } # -
+			2138 = { add_core = TEX } # -
+			88 = { add_core = TEX } # - California
+			90 = { add_core = TEX } # -
+			89 = { add_core = TEX } # -
+			87 = { add_core = TEX } # -
+			84 = { add_core = TEX } # -
+			85 = { add_core = TEX } # -
+			3366 = { add_core = TEX } # -
+			86 = { add_core = TEX } # -
+			104 = { add_core = TEX } # -
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+		tex_cuba_purchase = {
+		picture = "claim_the_caribbean"
+		potential = {
+			tag = TEX
+			NOT = { has_country_flag = has_asked_for_cuba }
+			NOT = { owns = 2210 }
+		}
+
+		allow = {
+			is_greater_power = yes
+			money = 200000
+			OR = {
+				nationalism_n_imperialism = 1
+				battleship_column_doctrine = 1
+				2209 = { owned_by = SPA }
+				2597 = { owned_by = SPA }
+				2210 = { owned_by = SPA }
+				2211 = { owned_by = SPA }
+				2212 = { owned_by = SPA }
+				44 = { owned_by = SPA }
+			}
+		}
+
+		effect = {
+			set_country_flag = has_asked_for_cuba
+			random_owned = {
+				limit = {
+					owner = { ai = yes }
+				}
+				owner = {
+					activate_technology = post_nelsonian_thought
+					activate_technology = naval_design_bureaus
+				}
+			}
+			SPA = { country_event = 44200 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	#Adelsverein Level 1#
+	texas_german_funding = {
+		picture = adelsverein
+		potential = {
+			NOT = { has_global_flag = extra_flavour_disabled }
+			NOT = { has_global_flag = german_texas }
+			NOT = { has_global_flag = texas_german_funding }
+			tag = TEX
+			exists = TEX
+			ai = no
+		}
+
+		allow = {
+			money = 20000
+			war = no
+		}
+
+		effect = {
+		    set_global_flag = texas_german_funding
+			money = -20000
+			549 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 133 } } #Berlin - Austin
+			556 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 132 } } #Halle- Houston
+			554 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 43 } } #Erfurt - Clarksville
+			553 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 134 } } #Magdeburg - Fort Parker
+			random_pop = {
+				limit = {
+					culture = north_german
+					type = soldiers
+					location = { continent = europe }
+				}
+				move_pop = 134
+			}
+			random_pop = {
+				limit = {
+					culture = north_german
+					type = soldiers
+					location = { continent = europe }
+				}
+				move_pop = 43
+			}
+		}
+		ai_will_do = { factor = 0.4 }
+	}
+
+#Adelsverein Level 2#
+	texas_german_funding2 = {
+		picture = adelsverein
+		potential = {
+			NOT = { has_global_flag = extra_flavour_disabled }
+			NOT = { has_global_flag = german_texas }
+			has_global_flag = texas_german_funding
+			NOT = { has_global_flag = texas_german_funding2 }
+			tag = TEX
+			exists = TEX
+			ai = no
+		}
+
+		allow = {
+			money = 60000
+			war = no
+		}
+
+		effect = {
+		    set_global_flag = texas_german_funding2
+			money = -60000
+			575 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 133 } } #Coln - Austin
+			573 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 132 } } #Saarbucken - Houston
+			576 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 3369 } } #Aachen - San Augustine
+			577 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 3370 } } #Cleve - Nacogdoches
+		}
+		ai_will_do = { factor = 0.2 }
+	}
+
+#Adelsverein Level 3#
+	texas_german_funding3 = {
+		picture = adelsverein
+		potential = {
+			NOT = { has_global_flag = extra_flavour_disabled }
+			NOT = { has_global_flag = german_texas }
+			has_global_flag = texas_german_funding2
+			NOT = { has_global_flag = texas_german_funding3 }
+			tag = TEX
+			exists = TEX
+			ai = no
+		}
+
+		allow = {
+			money = 120000
+			war = no
+		}
+
+		effect = {
+		    set_global_flag = texas_german_funding3
+			money = -120000
+			695 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 133 } }#Konigsberg - Austin
+			682 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 132 } }#Breslau - Houston
+			683 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 137 } }#Waldenburg - San Antonio
+			697 = { any_pop = { limit = { has_pop_culture = north_german type = artisans } move_pop = 3371 } }#Heilsberg - Guadelope Victoria
+		}
+		ai_will_do = { factor = 0.1 }
+	}
+	
+	texas_land_reform = {
+		picture = iron_range
+		potential = {
+			tag = TEX
+			NOT = { has_country_modifier = texian_land_reform }
+			year = 1862
+			number_of_states = 3
+			num_of_ports = 1
+		}
+
+		allow = {
+			prestige = 40
+			state_n_government = 1
+		}
+
+		effect = {
+			add_country_modifier = { name = texian_land_reform duration = -1 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	
+	############################FIX
+		#Description: If Fort Ross is not owned by an American country, the owner of the surrounding province can offer to buy it. By Tecno3000
+	krepost_ross_purchase = {
+        picture = CAL_greater_california
+		potential = {
+			85 = {
+					owned_by = THIS
+			}
+			3366 = {
+				NOT = { owned_by = THIS }
+				owner = { NOT = { capital_scope = { continent = north_america } } }
+			}
+			OR = {
+				primary_culture = texan
+			}
+			NOT = { has_country_flag = krepost_ross_purchase }
+		}
+
+		allow = {
+			war = no
+			money = 9000
+			OR = {
+				introspectionism = 1
+                prestige = 15
+			}
+            3366 = {
+				owner = {
+					war = no
+					relation = { who = THIS value = 50 }
+				}
+			}
+        }
+
+		effect = {
+			set_country_flag = krepost_ross_purchase
+			3366 = { owner = { country_event = 44203 } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	
+		#Description: open diplomacy with france
+	tex_fra_diplomacy = {
+        picture = agriculture
+		potential = {
+			tag = TEX
+			NOT = { has_country_flag = tex_fra_diplomacy }
+			has_country_flag = tex_fra_recognized
+		}
+
+		allow = {
+			war = no
+			relation = { who = FRA value = 150 }
+        }
+
+		effect = {
+			set_country_flag = tex_fra_diplomacy
+			FRA = { set_country_flag = tex_fra_diplomacy }
+		}
+
+		ai_will_do = { factor = 100 }
+	}
+	
 
 #Claim Alta and Baja California
 greater_california = {
