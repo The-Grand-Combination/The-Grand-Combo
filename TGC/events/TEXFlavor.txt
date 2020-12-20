@@ -1,0 +1,771 @@
+country_event = {
+	news = yes
+	id = 44200
+	title = "EVTNAME44200" #Buy Cuba?
+	desc = "EVTDESC44200"
+	picture = "Expansion"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA44200"
+		set_country_flag = SPA_sold_cuba
+		treasury = 15000
+		2209 = { secede_province = TEX }
+		2597 = { secede_province = TEX }
+		2210 = { secede_province = TEX }
+		2211 = { secede_province = TEX }
+		2212 = { secede_province = TEX }
+		44 = { secede_province = TEX }
+
+		TEX = { country_event = 44201 }
+
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "EVTOPTB44200"
+		TEX = { country_event = 44002 }
+		set_country_flag = SPA_not_sell_cuba
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	news = yes
+	id = 44201
+	title = "EVTNAME44201" #Spain accepts
+	desc = "EVTDESC44201"
+	picture = "examplar_colony"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA44201"
+		treasury = -200000
+		prestige = 10
+		set_country_flag = purchased_cuba
+	}
+}
+
+country_event = {
+	news = yes
+	id = 44202
+	title = "EVTNAME44202" #Spain refuses
+	desc = "EVTDESC44202"
+	picture = "conscription_marching"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA44202"
+		prestige = -10
+		relation = {
+			who = SPA
+			value = -150
+		}
+	casus_belli = { target = SPA type = a_place_in_the_sun months = 24 }
+	}
+}
+
+
+## Krepost Ross purchase ##
+
+	#Description: Krepost Ross purchase 1/3 - triggered for the buyer when the decision is taken
+	country_event = {
+		id = 44203
+		title = "EVTNAME44203"
+		desc = "EVTDESC44203"
+		picture = "administration"
+		is_triggered_only = yes
+
+		#Accept
+		option = {
+			name = "EVTOPTA44203"
+
+			money = 9000
+			3366 = { remove_core = THIS remove_core = LSK }
+			TEX = { country_event = 44204 }
+
+			ai_chance = {
+				factor = 70
+				modifier = {
+					factor = 0.8
+					is_greater_power = no
+				}
+				modifier = {
+					factor = 0.7
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 0.7
+					relation = { who = FROM value = 50 }
+				}
+			}
+		}
+
+		#Refuse
+		option = {
+			name = "EVTOPTB44203"
+
+			TEX = { country_event = 44205 }
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 0.2
+					is_greater_power = no
+				}
+
+				modifier = {
+					factor = 0.6
+					FROM = { is_greater_power = no }
+				}
+				modifier = {
+					factor = 0.1
+					NOT = { relation = { who = FROM value = 0 } }
+				}
+			}
+		}
+	}
+
+	#Description: Krepost Ross purchase 2/3 - the buyer accepted
+	country_event = {
+		id = 44204
+		title = "EVTNAME44204"
+		desc = "EVTDESC44204"
+		picture = "administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA44204"
+
+			prestige = 5
+			money = -9000
+			3366 = { secede_province = THIS }
+			relation = { who = FROM value = 25 }
+			any_pop = { consciousness = -1 }
+		}
+	}
+
+	#Description: Krepost Ross purchase 3/3 - the buyer refused # TODO localization and id conflict
+	country_event = {
+		id = 44205
+		title = "EVTNAME44205"
+		desc = "EVTDESC44205"
+		picture = "administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA44205"
+
+			relation = { who = FROM value = -75 }
+		}
+	}
+	
+	
+	####################TO DO AMERICAN UNIFICATION WAR
+	
+	
+	
+	## USA INHERIT TEXAS ##
+	
+	country_event = {
+	id = 44206
+	title = "EVTNAME44206"
+	desc = "EVTDESC44206"
+	picture = "manifest_destiny"
+
+	is_triggered_only = yes
+
+	 #accept
+	option = {      
+		name = "EVTOPTA44206"
+		prestige = 5
+		USA = {
+		inherit = TEX		
+		}
+
+		ai_chance = {
+			factor = 90
+		}
+	}
+	
+	#decline
+	option = {       
+		name = "EVTOPTB44206"
+        prestige = 20
+        
+		USA = { country_event = 44207 }
+		
+		ai_chance = {
+			factor = 10
+		}
+	}
+	}
+	
+	#USA WAR WITH TEXAS
+	
+	country_event = {	
+	id = 44207
+	title = "EVTNAME44207"
+	desc = "EVTDESC44207"
+	picture = "texas"
+
+	is_triggered_only = yes
+
+	 #to war with TEX
+	option = {      
+		name = "EVTOPTA44207"
+		prestige = 5
+		badboy = 5
+		set_global_flag = us_tex_war
+		war = {
+			target = TEX
+			attacker_goal = { casus_belli = conquest }
+			defender_goal = { casus_belli = status_quo }
+			call_ally = no
+		}
+		
+		FRA = { country_event = 44210 }
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+
+	option = {       #back down
+		name = "EVTOPTB44207"
+        prestige = -20
+		any_pop = {
+			limit = {
+				OR = {
+					pop_majority_ideology = reactionary
+					pop_majority_ideology = conservative
+					}
+				   }
+				consciousness = 5
+				militancy = 3
+				}
+				
+		TEX = {		
+		all_core = { remove_core = USA }
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	}
+	
+	# US loses unification war
+	country_event = {	
+	id = 44208
+	title = "EVTNAME44208"
+	desc = "EVTDESC44208"
+	picture = "CSA_hunley_success"
+
+
+	trigger = {
+		has_global_flag = us_tex_war
+		war = no
+		TEX = {
+		exists = yes
+			}
+		tag = USA
+		}
+			
+	# US loses unification war
+	option = {      
+		name = "EVTOPTA44208"
+        prestige = -30
+		any_pop = {
+			limit = {
+				OR = {
+					pop_majority_ideology = reactionary
+					pop_majority_ideology = conservative
+					}
+				   }
+				consciousness = 5
+				militancy = 3
+				}
+				
+		TEX = {		
+		all_core = { remove_core = USA }
+		}
+		ai_chance = {
+			factor = 100
+		}
+		
+		TEX = {
+		country_event = 44209
+		}
+		
+		clr_global_flag = us_tex_war
+	}
+	}
+	
+	
+		# Texan Victory Event
+	country_event = {	
+	id = 44209
+	title = "EVTNAME44209"
+	desc = "EVTDESC44209"
+	picture = "CSA_hunley_success"
+
+	is_triggered_only = yes
+					
+	 # Victory!				
+	option = {     
+		name = "EVTOPTA44209"
+		prestige = 40
+		any_pop = {
+				consciousness = -2
+				militancy = -1
+				}
+		add_country_modifier = {
+				name = texian_victory
+				duration = 7300
+			}
+		add_country_modifier = {
+				name = the_bonnie_blue_flag
+				duration = 7300
+			}
+	}
+	}
+	
+	
+	
+	# France helps texas in unification war
+	country_event = {	
+	id = 44210
+	title = "EVTNAME44210"
+	desc = "EVTDESC44210"
+	picture = "greatpowers"
+	
+	is_triggered_only = yes
+					
+			
+	mean_time_to_happen = {
+		months = 2
+	}		
+	# Aid Texas	
+	option = {     
+		name = "EVTOPTA44210"
+		create_alliance = TEX
+		prestige = 5
+		relation = {
+			who = TEX
+			value = 200
+		}	
+		
+		TEX = { country_event = 44216 }
+		
+		TEX = {
+            war = {
+                attacker_goal = {
+                    casus_belli = call_allies_cb
+                }
+                call_ally = yes
+            }
+        }
+		ai_chance = {
+			factor = 60
+		}
+		
+
+	}	
+		#Don't help Texas
+		option = {      
+		name = "EVTOPTB44210"
+        prestige = -5
+
+		ai_chance = {
+			factor = 40
+		}
+	}
+	}
+	#####################################WORK ON
+	# Prussia/NGF/Germany helps texas in unification war
+	country_event = {	
+	id = 44211
+	title = "EVTNAME44211"
+	desc = "EVTDESC44211"
+	picture = "greatpowers"
+
+
+	trigger = {
+		has_global_flag = us_tex_war
+		TEX = {
+		exists = yes
+			}
+		OR = {
+		tag = PRU
+		tag = NGF
+		tag = GER
+		}
+	}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 2
+	}		
+			
+	# Aid Texas		
+	option = {      
+		name = "EVTOPTA44211"
+		create_alliance = TEX
+		prestige = 5
+		TEX = {
+            war = {
+                attacker_goal = {
+                    casus_belli = call_allies_cb
+                }
+                call_ally = yes
+            }
+        }
+		
+		relation = {
+			who = USA
+			value = -150
+		}
+		ai_chance = {
+			factor = 80
+		}
+			relation = {
+			who = USA
+			value = -150
+		}	
+
+	}
+		#Don't help Texas
+		option = {      
+		name = "EVTOPTB44211"
+        prestige = -5
+
+		ai_chance = {
+			factor = 20
+		}
+	}
+	}
+	
+		# France recognize Texan independence? (pre unification war)
+	country_event = {	
+	id = 44212
+	title = "EVTNAME44212"
+	desc = "EVTDESC44212"
+	picture = "texas_state"
+
+	trigger = {
+		has_global_flag = texas_independent
+		TEX = {	exists = yes }
+		FRA = {	exists = yes }
+		tag = FRA
+		}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 3
+	}	
+	
+	# Recognize Texas
+	option = {      
+		name = "EVTOPTA44212"
+		TEX = { country_event = 44213 }
+		
+		diplomatic_influence = {
+		who = TEX
+		value = 40
+		}
+		relation = {
+		who = TEX
+		value = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = fra_recognizes_texas
+	}
+		#Don't recognize Texas
+		option = {      
+		name = "EVTOPTB44212"
+
+		ai_chance = {
+			factor = 0
+		}
+	}
+	}
+	
+	# Texas is recognized by france
+	country_event = {	
+	id = 44213
+	title = "EVTNAME44213"
+	desc = "EVTDESC44213"
+	picture = "napoleon3"
+	news = yes
+
+	is_triggered_only = yes
+					
+	 # texas is recognized				
+	option = {     
+		name = "EVTOPTA44213"
+		prestige = 10
+		add_country_modifier = {
+				name = texian_french_recognition
+				duration = 7300
+			}
+	set_country_flag = tex_fra_recognized
+	}
+	}
+	
+	
+	
+	
+		# Prussian immigrants aid military
+	country_event = {	
+	id = 44214
+	title = "EVTNAME44214"
+	desc = "EVTDESC44214"
+	picture = "cowboy_army"
+
+
+	trigger = {
+		tag = TEX
+		TEX = {
+		exists = yes
+			}
+		has_global_flag = texas_german_funding
+	}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 14
+	}		
+			
+	# Talented new officers		
+	option = {      
+		name = "EVTOPTA44214"
+		prestige = 2
+		add_country_modifier = {
+				name = prussian_general_staff
+				duration = 7300
+			}
+		
+		
+		ai_chance = {
+			factor = 100
+		}
+	}
+	}
+	
+			# Germans demand Political Rights
+	country_event = {	
+	id = 44215
+	title = "EVTNAME44215"
+	desc = "EVTDESC44215"
+	picture = "prussian_constitution"
+
+
+	trigger = {
+		tag = TEX
+		TEX = {
+		exists = yes
+			}
+		has_global_flag = texas_german_funding2
+	}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 48
+	}		
+			
+	# Fully accept germans and german language
+	option = {      
+		name = "EVTOPTA44215"
+		add_accepted_culture = north_german
+		add_accepted_culture = south_german
+		any_pop = {
+			limit = {
+					culture = texan
+				   }
+				consciousness = 1
+				militancy = 1
+				}
+		ai_chance = {
+			factor = 50
+		}
+	}
+		# Of course not!
+	option = {
+			name = "EVTOPTB44215"
+			any_pop = {
+			limit = {
+				OR = {
+					culture = north_german
+					culture = south_german
+					}
+				   }
+				consciousness = 3
+				militancy = 3
+				}
+		ai_chance = {
+			factor = 50
+		}
+	}
+	}
+	
+	
+			# France Joins Texas in Unification war
+	country_event = {	
+	id = 44216
+	title = "EVTNAME44216"
+	desc = "EVTDESC44216"
+	picture = "napoleon3"
+	
+	is_triggered_only = yes	
+			
+	# Talented new officers		
+	option = {      
+		name = "EVTOPTA44216"
+		prestige = 2
+			
+		ai_chance = {
+			factor = 100
+		}
+	}
+	}
+	
+		# French investments 1
+	country_event = {	
+	id = 44217
+	title = "EVTNAME44217"
+	desc = "EVTDESC44217"
+	picture = "farming"
+
+	trigger = {
+		tag = TEX
+		TEX = {
+		exists = yes
+			}
+		FRA = { has_country_flag = tex_fra_diplomacy }
+	}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 48
+	}	
+					
+	 # France invests in Texas		
+	option = {     
+		name = "EVTOPTA44217"
+		relation = { who = FRA value = 25 }
+		build_factory_in_capital_state = cannery
+	   set_country_flag = tex_fra_investments1
+	   
+	   rich_strata = { money = 500 }
+	}
+	}
+	
+		# French investments 2
+	country_event = {	
+	id = 44218
+	title = "EVTNAME44218"
+	desc = "EVTDESC44218"
+	picture = "factory_workers"
+
+	trigger = {
+		tag = TEX
+		TEX = {
+		exists = yes
+			}
+		TEX = { has_country_flag = tex_fra_investments1 }
+	}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 12
+	}	
+					
+	 # France workers move to Texas	
+	option = {     
+		name = "EVTOPTA44218"
+			412 = { any_pop = { limit = { has_pop_culture = french type = artisans } move_pop = 133 } }
+			425 = { any_pop = { limit = { has_pop_culture = french type = capitalists } move_pop = 133 } }
+			446 = { any_pop = { limit = { has_pop_culture = french type = artisans } move_pop = 3369 } }
+			448 = { any_pop = { limit = { has_pop_culture = french type = bureaucrats } move_pop = 132 } }
+		relation = { who = FRA value = 25 }
+		
+	set_country_flag = tex_fra_investments2
+	}
+	}
+
+	# The new capital of Texas
+	country_event = {	
+	id = 44219
+	title = "EVTNAME44219"
+	desc = "EVTDESC44219"
+	picture = "texas"
+
+	trigger = {
+		tag = TEX
+		TEX = {
+		exists = yes
+			}
+		year = 1839
+	}
+		
+	fire_only_once = yes
+			
+	mean_time_to_happen = {
+		months = 2
+	}	
+					
+	 # France workers move to Texas	
+	option = {     
+		name = "EVTOPTA44219"
+		capital = 133
+		
+	}
+	}
+	
+	
+	
+	
+	
+	
+	
+	##events I have made
+	#france regocnize texas?							/
+	#france recognizes Texas							/
+	#french investments
+	#prussia/germany business deals
+	#Texas Refuses annexation!         				  	/
+	#The US declare war, conquest texas 				/
+	#the french response								/
+	#the prussian response								/
+	#The US are defeated!								/
+	#decision - independence from the US remove cores   /
+	#(us) we have lost texas							/ 
+	#french intervention into mexico, request texas aid
+	#state_of_union localization
+	#accept german culture event 						/
+	#tex becomes great power event 
+	#future germany event image bismarck_reforms
+	
+	#rio grande puppet decision/intervention in war
+	#expand rio grande claims
+	#expanded mexican civil war
+	
+	
+	
+	
+	
+	
+	
