@@ -1,0 +1,238 @@
+political_decisions = {
+
+### Independence ###
+
+    #Description: Dalmatia will unite with Croatia
+	dalmatia_unite_with_croatia = {
+		picture = gtfo
+		
+		potential = {
+			tag = DLM
+			exists = CRO
+			NOT = { has_country_flag = dalmatia_unite_with_croatia }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				is_vassal = no
+				overlord = { is_our_vassal = CRO }
+			}
+			OR = {
+				part_of_sphere = no
+				sphere_owner = { is_sphere_leader_of = CRO }
+			}
+			CRO = {
+				war = no
+				neighbour = THIS
+				OR = {
+					is_vassal = no
+					overlord = { is_our_vassal = DLM }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = dalmatia_unite_with_croatia
+			all_core = { remove_core = DLM }
+			random_country = {
+				limit = {
+					tag = CRO
+					THIS = { ai = yes }
+				}
+				inherit = THIS
+			}
+			random_country = {
+				limit = {
+					tag = CRO
+					ai = yes
+					THIS = { ai = no }
+				}
+				THIS = {
+					inherit = CRO
+					random_owned = {
+						limit = { province_id = 771 }
+						owner = { capital = 771 }
+					}
+					change_tag = CRO
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				government = fascist_dictatorship
+				CRO = {
+					NOT = { government = fascist_dictatorship }
+				}
+			}
+			modifier = {
+				factor = 0
+				NOT = { government = fascist_dictatorship }
+				CRO = { government = fascist_dictatorship }
+			}
+			modifier = {
+				factor = 0
+				government = proletarian_dictatorship
+				CRO = {
+					NOT = { government = proletarian_dictatorship }
+				}
+			}
+			modifier = {
+				factor = 0
+				NOT = { government = proletarian_dictatorship }
+				CRO = { government = proletarian_dictatorship }
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					government = democracy
+					government = hms_government
+				}
+				CRO = {
+					NOT = {
+						government = democracy
+						government = hms_government
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				CRO = {
+					OR = {
+						government = democracy
+						government = hms_government
+					}
+				}
+				NOT = {
+					government = democracy
+					government = hms_government
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					government = presidential_dictatorship
+					government = bourgeois_dictatorship
+				}
+			}
+		}
+	}
+
+    #Description: Croatia can if it owns some of its core territories declare independence from the Habsburgs and remove Hungarian and Austrian cores from its lands.
+	croatian_independence = {
+		picture = croatian_independence
+		
+		potential = {
+			tag = CRO
+			any_core = {
+				OR = {
+					is_core = HUN
+					is_core = AUS
+					is_core = KUK
+					is_core = DNB
+				}
+			}
+			NOT = { has_country_flag = first_croat_independence }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				AND = {
+					is_vassal = no
+					AUS_771 = { owned_by = THIS }
+					OR = {
+						AUS_780 = { owned_by = THIS }
+						AUS_774 = { owned_by = THIS }
+					}
+				}
+				AND = {
+					is_vassal = yes
+					AUS_771 = { owned_by = THIS }
+					AUS_780 = { owned_by = THIS }
+					AUS_774 = { owned_by = THIS }
+				}
+			}
+
+		}
+
+		effect = {
+			set_country_flag = first_croat_independence
+			any_country = {
+				limit = {
+					tag = THIS
+					is_vassal = yes
+				}
+				release_vassal = THIS
+			}
+			any_country = {
+				limit = {
+					exists = yes
+					any_core = { is_core = CRO }
+				}
+				casus_belli = {
+					target = CRO
+					type = make_puppet
+					months = 6
+				}
+			}
+			CRO = {
+				all_core = {
+					remove_core = HUN
+					remove_core = AUS
+					remove_core = KUK
+					remove_core = DNB
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+### Expansion ###
+
+	#Description: Greater Croatia includes Bosnia, Sanjak, Western Vojvodina, and Kotor.
+	greater_croatia = {
+		picture = greater_croatia_map
+		
+		potential = {
+			tag = CRO
+			NOT = { has_country_flag = claimed_greater_croatia }
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			is_disarmed = no
+			war_policy = jingoism
+			has_unclaimed_cores = no
+			invention = manifest_destiny
+			invention = nostalgic_romanticism
+		}
+
+		effect = {
+			set_country_flag = claimed_greater_croatia		
+			badboy = 12
+			791 = { add_core = CRO } #Srem
+			2538 = { add_core = CRO } #Novi Sad
+			3309 = { add_core = CRO } #Subotica
+			804 = { add_core = CRO } #Novi Pazar
+			2577 = { add_core = CRO } #Pljevlja
+			2582 = { add_core = CRO } #Kotor
+			TUR_788 = { add_core = CRO } #Bosnia
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.5
+			}
+		}
+	}
+}
