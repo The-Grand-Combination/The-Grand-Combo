@@ -10,31 +10,48 @@ political_decisions = {
 				tag = TEX
 				tag = CAL
 				tag = LSK
+				AND = {
+					OR = {
+						tag = NEW
+						tag = MRU
+						tag = COL
+						tag = MTC
+						tag = RPL
+						AND = {
+							tag = CAN
+							NOT = {
+								owns = 13
+								owns = 22
+								owns = 30
+								owns = 36
+							}
+						}
+					}
+					neighbour = USA
+				}
 			}
-			exists = USA
-			USA = { government = democracy }
 			OR = {
 				is_vassal = no
 				vassal_of = USA
 			}
 			OR = {
-				part_of_sphere = no
+				AND = {
+					part_of_sphere = no
+					NOT = { primary_culture = anglo_canadian }
+				}
 				in_sphere = USA
 			}
-			government = democracy
+			OR = {
+				government = democracy
+				government = hms_government
+			}
+			is_greater_power = no
 			NOT = { has_country_flag = alaskan_frontier_usa }
 			NOT = { has_country_flag = usstatehood_we_have_applied }
-		}
-
-		allow = {
-			war = no
-			relation = {
-				who = USA
-				value = 175
-			}
 			USA = {
 				war = no
 				owns = 139
+				government = democracy
 				NOT = {
 					badboy = 0.7
 					truce_with = THIS
@@ -45,8 +62,25 @@ political_decisions = {
 			}
 		}
 
+		allow = {
+			war = no
+			relation = {
+				who = USA
+				value = 175
+			}
+		}
+
 		effect = {
 			set_country_flag = usstatehood_we_have_applied
+			random_owned = {
+				limit = { owner = { tag = CAN } }
+				owner = {
+					any_owned = {
+						limit = { is_core = QUE }
+						remove_core = CAN
+					}
+				}
+			}
 			USA = {
 				country_event = 16400
 				war_exhaustion = -20
@@ -63,79 +97,15 @@ political_decisions = {
 				factor = 0
 				NOT = { year = 1845 }
 			}
+			modifier = {
+				factor = 0
+				is_secondary_power = yes
+			}
 		}
 	}
 
-	apply_for_USA_statehood2 = { # TODO merge with above
-		picture = apply_for_USA_statehood
-		potential = {
-			exists = USA
-			USA = { government = democracy }
-			OR = {
-				tag = NEW
-				tag = MRU
-				tag = COL
-				tag = MTC
-				tag = RPL
-				AND = {
-					tag = CAN
-					NOT = {
-						owns = 13
-						owns = 22
-						owns = 30
-						owns = 36
-					}
-				}
-			}
-			any_owned_province = {
-				any_neighbor_province = { owned_by = USA }
-			}
-			OR = {
-				government = democracy
-				government = hms_government
-			}
-			NOT = { has_country_flag = usstatehood_we_have_applied }
-		}
-		allow = {
-			war = no
-			OR = {
-				is_vassal = no
-				vassal_of = USA
-			}
-			USA = {
-				war = no
-				is_sphere_leader_of = THIS
-				NOT = { truce_with = THIS }
-			}
-			relation = {
-				who = USA
-				value = 175
-			}
-		}
-		effect = {
-			random_owned = {
-				limit = {
-					owner = { tag = CAN }
-				}
-				owner = {
-					any_owned = {
-						limit = { is_core = QUE }
-						remove_core = CAN
-					}
-				}
-			}
-			USA = {
-				country_event = 16400
-				war_exhaustion = -20
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	#Description: American minors can choose to join the USA.
-	rejoin_usa = {
+	#Description: American minors can choose to join the USA after the Disunited States event is over (USA is a democracy).
+	rejoin_usa = { # TODO this appears despite Disunited States not happening
 		potential = {
 			OR = {
 				AND = {
@@ -159,15 +129,25 @@ political_decisions = {
 				tag = UNM
 				tag = UOR
 				tag = DAK
+				AND = {
+					tag = SON
+					has_global_flag = sonora_is_a_state
+				}
+				AND = {
+					tag = RGR
+					has_global_flag = rio_grande_is_a_state
+				}
 			}
-			NOT = { has_global_flag = disunited_states }
-			NOT = { has_country_flag = asked_to_rejoin_usa }
-			NOT = {
-				tag = USA
-				tag = CSA
-				tag = FSA
-			}
+			has_global_flag = second_american_civil_war		# The Disunited States event fired
+			NOT = { has_global_flag = disunited_states }	# But the Union Reborn fired as well
 			is_greater_power = no
+			USA = {
+				war = no
+				owns = 139
+				government = democracy						# And the USA is a democracy
+				relation = { who = THIS value = 150 }
+			}
+			NOT = { has_country_flag = asked_to_rejoin_usa }
 		}
 
 		allow = {
@@ -177,12 +157,6 @@ political_decisions = {
 				sphere_owner = { is_sphere_leader_of = USA }
 				in_sphere = USA
 			}
-			USA = {
-				war = no
-				owns = 139
-				government = democracy
-				relation = { who = THIS value = 150 }
-			}
 		}
 
 		effect = {
@@ -190,7 +164,13 @@ political_decisions = {
 			USA = { country_event = 60130 }
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { is_culture_group = american_cultures }
+			}
+		}
 	}
 
 	#Description: Texas and New Mexico can choose to join the CSA.
@@ -200,10 +180,19 @@ political_decisions = {
 			OR = {
 				tag = TEX
 				tag = UNM
+				AND = {
+					tag = RGR
+					has_global_flag = rio_grande_is_a_state
+				}
 			}
 			is_vassal = no
 			NOT = { has_country_flag = asked_to_join_csa }
 			neighbour = CSA
+			CSA = {
+				war = no
+				government = democracy
+				NOT = { truce_with = THIS }
+			}
 		}
 
 		allow = {
@@ -215,11 +204,6 @@ political_decisions = {
 				part_of_sphere = no
 				sphere_owner = { is_sphere_leader_of = CSA }
 				in_sphere = CSA
-			}
-			CSA = {
-				war = no
-				government = democracy
-				NOT = { truce_with = THIS }
 			}
 			OR = {
 				in_sphere = CSA
@@ -236,123 +220,12 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: Columbia, Oregon or Alaska can form Cascadia.
-	form_cascadia = {
-		picture = map_alaska
-		potential = {
-			OR = {
-           		tag = UOR
-				tag = COL
-				tag = LSK
-			}
-			NOT = {
-				has_global_flag = organized_cascadia
-				has_global_flag = formed_cascadia
-				exists = CAS
-			}
-		}
-
-		allow = {
-			war = no
-			is_vassal = no
-			prestige = 50
-			nationalism_n_imperialism = 1
-			CAN_13 = {
-				owner = {
-					OR = {
-						tag = THIS
-						in_sphere = THIS
-						vassal_of = THIS
-					}
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-					war = no
-				}
-			}
-			USA_78 = {
-				owner = {
-					OR = {
-						tag = THIS
-						in_sphere = THIS
-						vassal_of = THIS
-					}
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-					war = no
-				}
-			}
-			USA_81 = {
-				owner = {
-					OR = {
-						tag = THIS
-						in_sphere = THIS
-						vassal_of = THIS
-					}
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-					war = no
-				}
-			}
-		}
-
-		effect = {
-			set_global_flag = formed_cascadia
-			prestige = 20
-			all_core = { add_core = CAS }
-			1 = { add_core = CAS } # Alaska
-			2 = { add_core = CAS }
-			CAN_13 = { add_core = CAS } # British Columbia
-			USA_78 = { add_core = CAS } # Washington
-			USA_81 = { add_core = CAS } # Oregon
-			USA_91 = { add_core = CAS } # Idaho
-			111 = { add_core = CAS } # Wyoming
-			113 = { add_core = CAS }
-			114 = { add_core = CAS } # Montana
-			COL = { all_core = { add_core = CAS } }
-			UOR = { all_core = { add_core = CAS } }
-			change_tag = CAS
-			add_accepted_culture = yankee
-			add_accepted_culture = dixie
-			add_accepted_culture = anglo_canadian
-			any_country = {
-				limit = {
-					OR = {
-						tag = UOR
-						tag = COL
-					}
-					exists = yes
-					ai = yes
-				}
-				THIS = { inherit = UOR }
-			}
-			any_country = {
-				limit = {
-					OR = {
-						tag = UOR
-						tag = COL
-					}
-					exists = yes
-					ai = no
-				}
-				country_event = 98650
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
 	#Description: Dakota and Nebraska can choose to join Illinois (New America)
 	join_new_america = {
 		potential = {
 			OR = {
-				tag = UNB
-				tag = DAK
+				tag = UNB # Nebraska
+				tag = DAK # Dakota
 			}
 			ai = yes
 			is_vassal = no
@@ -430,6 +303,130 @@ political_decisions = {
 			set_country_flag = asked_to_join_fsa
 			all_core = { add_core = FSA }
 			FSA = { country_event = 60130 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Cascadia ##
+
+	#Description: Columbia, Oregon or Alaska can form Cascadia.
+	form_cascadia = {
+		picture = map_alaska
+		potential = {
+			OR = {
+           		tag = UOR
+				tag = COL
+				tag = LSK
+			}
+			NOT = {
+				has_global_flag = organized_cascadia
+				has_global_flag = formed_cascadia
+				exists = CAS
+			}
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			prestige = 50
+			nationalism_n_imperialism = 1
+			CAN_13 = {
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					war = no
+				}
+			}
+			USA_78 = {
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					war = no
+				}
+			}
+			USA_81 = {
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					war = no
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = formed_cascadia
+			prestige = 20
+			all_core = { add_core = CAS }
+			1 = { add_core = CAS } # Alaska
+			2 = { add_core = CAS }
+			3 = { add_core = CAS }
+			CAN_13 = { add_core = CAS } # British Columbia
+			USA_78 = { add_core = CAS } # Washington
+			USA_81 = { add_core = CAS } # Oregon
+			USA_91 = { add_core = CAS } # Idaho
+			111 = { add_core = CAS } # Wyoming
+			113 = { add_core = CAS }
+			114 = { add_core = CAS } # Montana
+			COL = { all_core = { add_core = CAS } }
+			UOR = { all_core = { add_core = CAS } }
+			change_tag = CAS
+			add_accepted_culture = yankee
+			add_accepted_culture = dixie
+			add_accepted_culture = anglo_canadian
+			random_country = {
+				limit = {
+					tag = UOR
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = UOR }
+			}
+			random_country = {
+				limit = {
+					tag = COL
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = COL }
+			}
+			random_country = {
+				limit = {
+					tag = UOR
+					exists = yes
+					ai = no
+				}
+				country_event = 98650
+			}
+			random_country = {
+				limit = {
+					tag = COL
+					exists = yes
+					ai = no
+				}
+				country_event = 98650
+			}
 		}
 
 		ai_will_do = { factor = 1 }
@@ -1123,7 +1120,7 @@ political_decisions = {
 				move_pop = 97
 			}
 			97 = {
-				add_province_modifier = { name = home_of_the_mormons duration = 10950 }
+				add_province_modifier = { name = home_of_the_mormons duration = -1 }
 				any_pop = {
 					limit = { has_pop_culture = shoshone }
 					reduce_pop = 0.25
@@ -1188,52 +1185,49 @@ political_decisions = {
 ## Texas ##
 
 	#Description: If Texas exists and is independent while both the USA and the CSA exists, Texas can choose to support the CSA, create an alliance and gain wargoals on the USA.
-	# tex_support_csa = {
-		# picture = reform_csa
-		# potential = {
-			# tag = TEX
-			# exists = CSA
-			# is_vassal = no
-			# NOT = {
-				# alliance_with = CSA
-				# alliance_with = USA
-				# has_country_flag = tex_supported_csa
-			# }
-		# }
+	tex_support_csa = {
+		picture = reform_csa
+		potential = {
+			tag = TEX
+			exists = CSA
+			is_vassal = no
+			NOT = {
+				alliance_with = CSA
+				alliance_with = USA
+				has_country_flag = tex_supported_csa
+			}
+		}
 
-		# allow = {
-		# }
+		allow = {
+		}
 
-		# effect = {
-			# any_pop = {
-				# militancy = 1
-				# consciousness = 1
-			# }
-			# set_country_flag = tex_supported_csa
-			# USA = {
-				# relation = {
-					# who = THIS
-					# value = -100
-				# }
-			# }
-			# relation = {
-				# who = CSA
-				# value = 200
-			# }
-			# create_alliance = CSA
-			# diplomatic_influence = {
-				# who = CSA
-				# value = 200
-			# }
-			# add_casus_belli = {
-				# target = USA
-				# type = cut_down_to_size
-				# months = 36
-			# }
-		# }
-	# }
+		effect = {
+			any_pop = {
+				militancy = 1
+				consciousness = 1
+			}
+			set_country_flag = tex_supported_csa
+			USA = { relation = { who = THIS value = -100 } }
+			relation = { who = CSA value = 200 }
+			create_alliance = CSA
+			random_owned = {
+				limit = { owner = { is_greater_power = yes } CSA = { is_greater_power = no } }
+				THIS = { diplomatic_influence = { who = CSA value = 200 } }
+			}
+			random_owned = {
+				limit = { CSA = { is_greater_power = yes } owner = { is_greater_power = no } }
+				CSA = { diplomatic_influence = { who = THIS value = 200 } }
+			}
+			add_casus_belli = {
+				target = USA
+				type = cut_down_to_size
+				months = 36
+			}
+		}
+	}
 
 	#Description: If Louisiana is owned by neither the USA nor the CSA, and Texas is a puppet of the USA, they can secede and join the CSA instead.
+	#Note: this currently depends on Texas being a puppet of the USA after the French retake Louisiana
 	texas_vassal_join_csa = {
 		picture = manifest_destiny
 		potential = {
@@ -1319,94 +1313,80 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: If Texas is a GP they can declare to be independent forever and turn away from the USA.
-	# tex_final_independence = {
-		# picture = switch_to_liberty
-		# potential = {
-			# tag = TEX
-			# exists = USA
-			# any_owned_province = { is_core = USA }
-			# NOT = { has_country_flag = texas_final_independence }
-		# }
+	#Description: If Texas is a GP or SP they can declare to be independent forever and turn away from the USA.
+	tex_final_independence = {
+		picture = switch_to_liberty
+		potential = {
+			tag = TEX
+			exists = USA
+			any_owned_province = { is_core = USA }
+			NOT = { has_country_flag = texas_final_independence }
+		}
 
-		# allow = {
-			# prestige = 75
-			# war = no
-			# nationalism_n_imperialism = 1
-			# OR = {
-				# is_secondary_power = yes
-				# is_greater_power = yes
-			# }
-			# NOT = { num_of_revolts = 1 }
-		# }
+		allow = {
+			prestige = 75
+			war = no
+			nationalism_n_imperialism = 1
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			NOT = { num_of_revolts = 1 }
+		}
 
-		# effect = {
-			# set_country_flag = texas_final_independence
-			# prestige = 10
-			# any_pop = {
-				# militancy = -5
-				# consciousness = -5
-			# }
-			# all_core = { remove_core = USA }
-			# USA = {
-				# prestige = -10
-				# relation = {
-					# who = THIS
-					# value = -200
-				# }
-				# diplomatic_influence = {
-					# who = THIS
-					# value = -200
-				# }
-			# }
-		# }
-	# }
+		effect = {
+			set_country_flag = texas_final_independence
+			prestige = 10
+			any_pop = {
+				militancy = -5
+				consciousness = -5
+			}
+			all_core = { remove_core = USA }
+			USA = {
+				prestige = -10
+				relation = { who = THIS value = -200 }
+				diplomatic_influence = { who = THIS value = -200 }
+			}
+		}
+	}
 
 	#Description: If Texas had declared their intention to stay independent, they can claim the Rio Grande.
-	# tex_claim_rio_grande = {
-		# picture = manifest_destiny
-		# potential = {
-			# tag = TEX
-			# exists = MEX
-			# has_country_flag = texas_final_independence
-			# NOT = { has_country_flag = rgr_claimed }
-			# OR = {
-				# NOT = { exists = RGR }
-				# AND = {
-					# exists = RGR
-					# NOT = {
-						# relation = {
-							# who = RGR
-							# value = 0
-						# }
-					# }
-				# }
-			# }
-		# }
+	tex_claim_rio_grande = {
+		picture = manifest_destiny
+		potential = {
+			tag = TEX
+			exists = MEX
+			has_country_flag = texas_final_independence
+			NOT = { has_country_flag = rgr_claimed }
+			OR = {
+				NOT = { exists = RGR }
+				AND = {
+					exists = RGR
+					NOT = { relation = { who = RGR value = 0 } }
+				}
+			}
+		}
 
-		# allow = {
-			# prestige = 100
-			# war = no
-			# nationalism_n_imperialism = 1
-			# OR = {
-				# is_secondary_power = yes
-				# is_greater_power = yes
-			# }
-			# NOT = {
-				# alliance_with = MEX
-				# relation = {
-					# who = MEX
-					# value = 0
-				# }
-			# }
-		# }
+		allow = {
+			prestige = 100
+			war = no
+			nationalism_n_imperialism = 1
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+			}
+			NOT = {
+				alliance_with = MEX
+				relation = { who = MEX value = 0 }
+			}
+		}
 
-		# effect = {
-			# set_country_flag = rgr_claimed
-			# badboy = 10
-			# RGR = { all_core = { add_core = TEX } }
-		# }
-	# }
+		effect = {
+			set_country_flag = rgr_claimed
+			badboy = 10
+			RGR = { all_core = { add_core = TEX } }
+		}
+	}
 
 ## New England ##
 
@@ -1964,63 +1944,134 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-## New York ## - not yet implemented
+## New York ##
 
-	#Description: New York can declare independence from America.
-	# declaration_independence_ny = {
-		# picture = new_york_flag
-		# potential = {
-			# tag = MAN
-			# has_global_flag = ny_independent_flag
-			# NOT = { has_country_flag = ny_declaration_independence }
-		# }
+	#Description: New York can declare independence from America (once at peace after breaking away)
+	declaration_independence_ny = {
+		picture = new_york_flag
+		potential = {
+			tag = UNY
+			has_global_flag = ny_independent_flag
+			NOT = { has_country_flag = ny_declaration_independence }
+		}
 
-		# allow = {
-			# war = no
-		# }
+		allow = {
+			war = no
+		}
 
-		# effect = {
-			# prestige = 10
-			# war_exhaustion = -25
-			# 232 = { # New York City
-				# add_province_modifier = {
-					# name = gateway_to_america
-					# duration = -1
-				# }
-			# }
-			# USA = { country_event = 187907 }
-			# set_country_flag = ny_declaration_independence
-		# }
-	# }
+		effect = {
+			prestige = 10
+			war_exhaustion = -25
+			232 = { add_province_modifier = { name = gateway_to_america duration = -1 } } # New York City
+			USA = { country_event = 187907 }
+			set_country_flag = ny_declaration_independence
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 
 	#Description: If New York establishes itself, it can claim the entire state of New York.
-	# claim_ny_state = {
-		# picture = new_york_flag
-		# potential = {
-			# tag = MAN
-			# NOT = { has_country_flag = has_claimed_ny }
-			# OR = {
-				# is_secondary_power = yes
-				# is_greater_power = yes
-			# }
-			# NOT = { alliance_with = USA }
-		# }
+	claim_ny_state = {
+		picture = new_york_flag
+		potential = {
+			tag = UNY
+			NOT = { has_country_flag = has_claimed_ny }
+			OR = {
+				is_secondary_power = yes
+				is_greater_power = yes
+				234 = { owner = { is_greater_power = no } }
+			}
+			NOT = { alliance_with = USA }
+		}
 
-		# allow = {
-			# war = no
-			# prestige = 100
-		# }
+		allow = {
+			war = no
+			prestige = 100
+		}
 
-		# effect = {
-			# prestige = 10
-			# badboy = 5
-			# set_country_flag = has_claimed_ny
-			# relation = {
-				# who = USA
-				# value = -100
-			# }
-			# USA_232 = { add_core = MAN }
-		# }
-	# }
+		effect = {
+			prestige = 10
+			badboy = 5
+			set_country_flag = has_claimed_ny
+			random_country = {
+				limit = { owns = 234 NOT = { tag = THIS } } # Albany
+				relation = { who = THIS value = -100 }
+			}
+			USA_232 = { add_core = UNY }
+		}
 
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
+		}
+	}
+
+	#Description: New York can rename to New Amsterdam and accept Dutch pops if sphered by a GP Netherlands
+	rename_new_amsterdam = {
+		picture = liberty_enlightening_the_world
+		potential = {
+			tag = UNY
+			in_sphere = NET
+			NET = { is_disarmed = no }
+			NOT = { has_country_flag = new_amsterdam }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			add_accepted_culture = dutch
+			232 = {
+				change_province_name = "New Amsterdam"
+				any_pop = {
+					limit = { has_pop_culture = yankee }
+					militancy = 1
+				}
+			}
+			NET = {
+				prestige = 5
+				relation = { who = THIS value = 75 }
+			}
+			set_country_flag = new_amsterdam
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: New York will revert to New York if the Netherlands no longer sphere it or are disarmed
+	restore_new_amsterdam = {
+		picture = liberty_enlightening_the_world
+		potential = {
+			tag = UNY
+			OR = {
+				NOT = { in_sphere = NET }
+				NET = { is_disarmed = yes }
+			}
+			has_country_flag = new_amsterdam
+		}
+
+		allow = {
+		}
+
+		effect = {
+			remove_accepted_culture = dutch
+			232 = {
+				change_province_name = "New York City"
+				any_pop = {
+					limit = { has_pop_culture = dutch }
+					militancy = 2
+				}
+			}
+			NET = {
+				prestige = -3
+				relation = { who = THIS value = -50 }
+			}
+			clr_country_flag = new_amsterdam
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 }

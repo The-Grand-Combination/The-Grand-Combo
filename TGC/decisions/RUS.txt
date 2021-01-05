@@ -2745,23 +2745,21 @@ political_decisions = {
 	sell_alaska = { # TODO
 		picture = map_alaska
 		potential = {
-    exists = yes
+			tag = RUS
+    		exists = yes
 			NOT = { has_country_flag = alaska_purchase_started }
 			NOT = { has_global_flag = alaska_purchase_completed }
 			OR = {
 				has_global_flag = acw_war_started
 				year = 1870
 			}
-			tag = RUS
 			year = 1859
 			USA = { NOT = { war_with = CSA } }
 		}
 
 		allow = {
 			war = no
-			any_owned_province = {
-				region = USA_1
-			}
+			any_owned_province = { region = USA_1 }
 		}
 
 		effect = {
@@ -2802,8 +2800,92 @@ political_decisions = {
 				relation = { who = THIS value = 50 }
 			}
 		}
-		ai_will_do = {
-			factor = 1
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#ANON
+	sell_alaska_anon = {
+		picture = map_alaska
+		potential = {
+			NOT = { has_country_flag = alaska_purchase_started }
+			NOT = { has_global_flag = alaska_purchase_completed }
+			NOT = { has_global_flag = fort_ross_sale_refuse }
+			has_global_flag = fort_ross_purchase_completed
+			OR = {
+				has_global_flag = acw_war_started
+				year = 1870
+			}
+			tag = RUS
+			year = 1859
+			USA = { NOT = { war_with = CSA } }
 		}
+
+		allow = {
+			#war = no
+			OR = {
+				any_owned_province = {
+					region = USA_1
+				}
+				LSK = {
+					vassal_of = RUS
+					substate_of = RUS
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = alaska_purchase_started
+			remove_accepted_culture = alaskan
+			prestige = 5
+			any_country = {
+				limit = {
+					NOT = {
+						OR = {
+							tag = RUS
+							vassal_of = RUS
+							substate_of = RUS
+						}
+					}
+					#OR = {
+					#	is_greater_power = yes
+					#	is_secondary_power = yes
+					#	owns = 104 #SanFran
+					#}
+					OR = {
+						tag = USA
+						tag = CAN
+						tag = ENG
+						tag = MEX
+						tag = ARD
+						tag = JAP
+						tag = CAS
+						tag = CAL
+						tag = C4L
+						tag = LIE
+						has_country_flag = aridoamerica_alliance_leader
+						AND = {
+							OR = {
+								tag = SPA
+								tag = SPC
+								tag = IBR
+							}
+							has_global_flag = reconquista
+						}
+						AND = {
+							alliance_with = RUS
+							NOT = { tag = TUR }
+						}
+					}
+				}
+				set_country_flag = alaska_purchase_interest
+				prestige = 0.5
+			}
+			random_country = {
+				limit = { tag = USA }
+				relation = { who = THIS value = 50 }
+			}
+		}
+		ai_will_do = { factor = 1 }
 	}
 }

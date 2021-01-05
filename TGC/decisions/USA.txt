@@ -270,7 +270,6 @@ political_decisions = {
 				government = prussian_constitutionalism
 				government = presidential_dictatorship
 			}
-			has_country_flag = emancipation
 			slavery = no_slavery
 			NOT = { exists = CSA }
 		}
@@ -511,77 +510,6 @@ political_decisions = {
 
 ## Westward Expansion ##
 
-	#Description: If France is in a bad state, the USA can break the Treaty of New York and reclaim the lands lost.
-	reconquer_the_west = {
-		picture = manifest_destiny
-		potential = {
-			tag = USA
-			has_global_flag = treaty_of_new_york
-			has_global_flag = american_civil_war_has_happened
-			CSA = { exists = no }
-			NOT = {
-				owns = 139 # New Orleans
-				owns = 146 # St. Louis
-				owns = 155 # St. Paul
-			}
-			NOT = { has_country_flag = reconquer_the_west }
-		}
-
-		allow = {
-			war = no
-			is_greater_power = yes
-			is_disarmed = no
-			OR = {
-				FRA = { exists = yes NOT = { truce_with = THIS } }
-				BOR = { exists = yes NOT = { truce_with = THIS } }
-			}
-			OR = {
-				any_greater_power = { war_with = FRA }
-				any_greater_power = { war_with = BOR }
-				FRA = { exists = yes is_disarmed = yes }
-				BOR = { exists = yes is_disarmed = yes }
-				412 = { # Metz
-					NOT = {
-						owned_by = FRA
-						owned_by = BOR
-					}
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = reconquer_the_west
-			ULA = { all_core = { add_core = USA } } # Louisiana
-			ACA = { all_core = { add_core = USA } } # Acadie
-			random_owned = {
-				limit = { exists = FRA }
-				owner = {
-					war = {
-						target = FRA
-						attacker_goal = { casus_belli = acquire_all_cores }
-						attacker_goal = { casus_belli = cut_down_to_size }
-						defender_goal = { casus_belli = cut_down_to_size }
-						call_ally = yes
-					}
-				}
-			}
-			random_owned = {
-				limit = { exists = BOR }
-					owner = {
-					war = {
-						target = BOR
-						attacker_goal = { casus_belli = acquire_all_cores }
-						attacker_goal = { casus_belli = cut_down_to_size }
-						defender_goal = { casus_belli = cut_down_to_size }
-						call_ally = yes
-					}
-				}
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
 	#Description: Demand the westward expanse from Mexico.
 	usa_manifest_destiny = {
 		potential = {
@@ -607,116 +535,164 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = hasmanifestdestiny
-			badboy = 1.5
-			USA_78 = { add_core = USA } # Washington
-			USA_81 = { add_core = USA } # Oregon
-			MEX_85 = { add_core = USA } # California
-			USA_91 = { add_core = USA } # Idaho
-			MEX_94 = { add_core = USA } # Nevada
-			MEX_97 = { add_core = USA } # Utah
-			USA_106 = { add_core = USA } # Colorado
-			USA_111 = { add_core = USA } # Wyoming
-			USA_116 = { add_core = USA } # Montana
-			USA_126 = { add_core = USA } # Kansas
-			USA_129 = { add_core = USA } # Oklahoma/Indian Country
-			TEX_132 = { add_core = USA } # Texas
-			100 = { add_core = USA } # Arizona
-			101 = { add_core = USA }
-			3367 = { add_core = USA }
-			38 = { add_core = USA } # New Mexico
-			105 = { add_core = USA }
-			109 = { add_core = USA }
-			2148 = { add_core = USA }
-			2631 = { add_core = USA }
-			relation = { who = MEX value = -200 }
-			diplomatic_influence = { who = MEX value = -200 }
-			leave_alliance = MEX
-			random_country = {
-				limit = {
-					tag = MEX
-					vassal_of = THIS
+			badboy = 4
+
+			## Cores ##
+				USA_78 = { add_core = USA } # Washington
+				USA_81 = { add_core = USA } # Oregon
+				MEX_85 = { add_core = USA } # California
+				USA_91 = { add_core = USA } # Idaho
+				MEX_94 = { add_core = USA } # Nevada
+				MEX_97 = { add_core = USA } # Utah
+				USA_106 = { add_core = USA } # Colorado
+				USA_111 = { add_core = USA } # Wyoming
+				USA_116 = { add_core = USA } # Montana
+				USA_126 = { add_core = USA } # Kansas
+				USA_129 = { add_core = USA } # Oklahoma/Indian Country
+				TEX_132 = { add_core = USA } # Texas
+				100 = { add_core = USA } # Arizona
+				101 = { add_core = USA }
+				3367 = { add_core = USA }
+				38 = { add_core = USA } # New Mexico
+				105 = { add_core = USA }
+				109 = { add_core = USA }
+				2148 = { add_core = USA }
+				2631 = { add_core = USA }
+
+			## Diplomacy ##
+				relation = { who = MEX value = -200 }
+				diplomatic_influence = { who = MEX value = -200 }
+				leave_alliance = MEX
+				random_country = {
+					limit = {
+						tag = MEX
+						vassal_of = THIS
+					}
+					THIS = { release_vassal = MEX }
 				}
-				THIS = { release_vassal = MEX }
-			}
-			random_country = {
-				limit = {
-					is_our_vassal = MEX
-					NOT = { tag = THIS }
+				random_country = {
+					limit = {
+						is_our_vassal = MEX
+						NOT = { tag = THIS }
+					}
+					relation = { who = THIS value = -200 }
+					leave_alliance = THIS
 				}
-				relation = { who = THIS value = -200 }
-				leave_alliance = THIS
-			}
-			random_country = {
-				limit = {
-					tag = MEX
-					any_owned_province = {
-						OR = {
-							region = MEX_85
-							region = MEX_94
-							region = MEX_97
-							region = MEX_100
-							region = MEX_103
-							region = TEX_132
+				random_country = {
+					limit = {
+						tag = MEX
+						any_owned_province = {
+							OR = {
+								region = MEX_85 # California
+								region = MEX_94 # Nevada
+								region = MEX_97 # Utah
+								region = USA_106 # Colorado
+								region = USA_111 # Wyoming
+								region = USA_126 # Kansas
+								region = USA_129 # Oklahoma
+								region = TEX_132 # Texas
+								region = MEX_100 # Arizona
+								region = MEX_103 # New Mexico
+							}
 						}
 					}
+					country_event = 44126 # Demand territories
 				}
-				country_event = 44126 # Demand territories
-			}
-			any_country = {
-				limit = {
-					exists = yes
-					OR = {
+
+			## Inherit minors ##
+				random_country = { # California
+					limit = {
 						tag = CAL
+						exists = yes
+						OR = {
+							in_sphere = THIS
+							part_of_sphere = no
+						}
+						OR = {
+							vassal_of = THIS
+							is_vassal = no
+						}
+					}
+					country_event = 98650 # Inherit
+				}
+				random_country = { # Texas
+					limit = {
 						tag = TEX
+						exists = yes
+						OR = {
+							in_sphere = THIS
+							part_of_sphere = no
+						}
+						OR = {
+							vassal_of = THIS
+							is_vassal = no
+						}
+					}
+					country_event = 98650 # Inherit
+				}
+				random_country = { # Deseret
+					limit = {
 						tag = DES
+						exists = yes
+						OR = {
+							in_sphere = THIS
+							part_of_sphere = no
+						}
+						OR = {
+							vassal_of = THIS
+							is_vassal = no
+						}
 					}
-					OR = {
-						in_sphere = THIS
-						part_of_sphere = no
+					country_event = 98650 # Inherit
+				}
+				random_country = { # New Mexico
+					limit = {
+						tag = UNM
+						exists = yes
+						OR = {
+							in_sphere = THIS
+							part_of_sphere = no
+						}
+						OR = {
+							vassal_of = THIS
+							is_vassal = no
+						}
 					}
-					OR = {
-						vassal_of = THIS
-						is_vassal = no
+					country_event = 98650 # Inherit
+				}
+
+			## Population effects ##
+				any_pop = {
+					dominant_issue = { factor = 0.05 value = jingoism }
+					consciousness = 2
+				}
+				MEX = {
+					any_pop = {
+						limit = {
+							location = { is_core = CAL }
+							culture = yankee
+						}
+						reduce_pop = 5
+					}
+					any_pop = {
+						limit = {
+							location = { is_core = CAL }
+							culture = mexican
+						}
+						reduce_pop = 0.4
+					}
+					any_pop = {
+						limit = {
+							location = { is_core = CAL }
+							culture = native_american_minor
+						}
+						reduce_pop = 0.4
 					}
 				}
-				country_event = 98650 # Inherit
-			}
-			any_country = {
-				limit = {
-					is_greater_power = yes
-					NOT = { tag = THIS }
-				}
+
+			any_greater_power = {
+				limit = { NOT = { tag = THIS } }
 				diplomatic_influence = { who = MEX value = -100 }
-			}
-			any_pop = {
-				dominant_issue = {
-					factor = 0.05
-					value = jingoism
-				}
-				consciousness = 2
-			}
-			MEX = {
-				any_pop = {
-					limit = {
-						location = { is_core = CAL }
-						culture = yankee
-					}
-					reduce_pop = 5
-				}
-				any_pop = {
-					limit = {
-						location = { is_core = CAL }
-						culture = mexican
-					}
-					reduce_pop = 0.4
-				}
-				any_pop = {
-					limit = {
-						location = { is_core = CAL }
-						culture = native_american_minor
-					}
-					reduce_pop = 0.4
-				}
 			}
 		}
 
@@ -1036,7 +1012,6 @@ political_decisions = {
 	annex_california = {
 		picture = USA_annex_california
 		potential = {
-		exists = yes
 			tag = USA
 			is_greater_power = yes
 			has_recently_lost_war = no
@@ -1097,8 +1072,8 @@ political_decisions = {
 			100 = { owned_by = THIS NOT = { is_core = MEX } }
 			104 = { owned_by = THIS NOT = { is_core = MEX } }
 			105 = { owned_by = THIS NOT = { is_core = MEX } }
-			NOT = { owns = 102 }
-			102 = { NOT = { is_core = THIS } }
+			NOT = { any_owned_province = { is_core = MEX } }
+			102 = { NOT = { owned_by = THIS is_core = THIS } }
 			102 = { owner = { NOT = { OR = { primary_culture = yankee primary_culture = dixie primary_culture = texan } } } }
 			NOT = { has_country_flag = gadsden_negotiations }
 			NOT = { check_variable = { which = owed_cash_money value = 1 } }
@@ -1108,7 +1083,6 @@ political_decisions = {
 			war = no
 			money = 50000
 			nationalism_n_imperialism = 1
-			NOT = { any_owned_province = { is_core = MEX } }
 			102 = { owner = { NOT = { truce_with = THIS } } NOT = { owned_by = THIS } } # Tuscon
 			2662 = { owner = { NOT = { truce_with = THIS } } NOT = { owned_by = THIS } } # Chiricahua
 		}
@@ -1142,8 +1116,8 @@ political_decisions = {
 
 		allow = {
 			money = 50000
-			small_arms = 1000
-			ammunition = 1000
+			small_arms = 100
+			ammunition = 100
 			YUC = { all_core = { controlled_by = USA } }
 			2181 = { controlled_by = USA }
 			2165 = { controlled_by = USA }
@@ -1151,25 +1125,22 @@ political_decisions = {
 
 		effect = {
 			money = -50000
-			small_arms = -1000
-			ammunition = -1000
+			small_arms = -100
+			ammunition = -100
 			badboy = 5
 			set_country_flag = incite_yucatan_revolt
-			2181 = { add_core = YUC }
-			2165 = { add_core = YUC }
+			2181 = { add_core = YUC } # Maybe not?
+			2165 = { add_core = YUC } # Maybe not?
 			MEX = {
 				release = YUC
 				country_event = 5578766
 			}
-			diplomatic_influence = {
-					who = YUC
-					value = 400
-			}
+			diplomatic_influence = { who = YUC value = 400 }
 			YUC = {
 				government = democracy
 				money = 50000
-				small_arms = 1000
-				ammunition = 1000
+				small_arms = 100
+				ammunition = 100
 			}
 		}
 
@@ -1208,6 +1179,7 @@ political_decisions = {
 				treasury = 100000
 				any_owned = {
 					limit = { is_core = USA }
+					remove_core = RGR
 					secede_province = USA
 				}
 			}
@@ -1245,7 +1217,7 @@ political_decisions = {
 				AND = {
 					MEX = {
 						ai = yes
-						war_exhaustion = 0.65
+						war_exhaustion = 65
 					}
 					ai = yes
 					war = no
@@ -1267,159 +1239,70 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: If the Mexicans refuse the treaty of Guadalupe Hidalgo, the USA can claim northern Mexico as well.
-	mexican_american_war_alternate_treaty = {
-		picture = "manifest_destiny"
+	#Description: If Mexico refused the Treaty of Guadalupe Hidalgo or if the USA has a party with Jingoism in power, they can debate whether to annex all of Mexico, just the northern states, or no new states (only the Treaty of Guadalupe Hidalgo ones).
+	all_of_mexico_movement = {
+		picture = manifest_destiny # alternative?
 		potential = {
 			tag = USA
 			is_greater_power = yes
 			has_country_flag = hasmanifestdestiny
 			OR = {
-				war_policy = jingoism # TODO find a better way to have this option
+				war_with = MEX 	# War is ongoing
+				AND = {			# You won
+					38 = { owned_by = THIS is_core = THIS } # Fuerte Santa Maria
+					90 = { owned_by = THIS is_core = THIS } # San Diego
+					100 = { owned_by = THIS is_core = THIS } # Gilenos
+					136 = { owned_by = THIS is_core = THIS } # Apacheria del Sur
+				}
+			}
+			OR = {
+				war_policy = jingoism # The USA doesn't have any parties with jingoism until much later.
 				has_country_flag = mexico_refused_treaty
 			}
 			NOT = {
 				exists = SON
 				exists = RGR
-				has_country_flag = mexican_american_war_alternate_treaty
+				has_country_flag = all_of_mexico_movement_decided
+				has_global_flag = american_civil_war_has_happened
+				has_global_flag = alt_american_civil_war_has_happened
 			}
 		}
 
 		allow = {
-			war = no
 			idealism = 1
 			state_n_government = 1
-			NOT = { truce_with = MEX }
 			NOT = { war_policy = pacifism }
 		}
 
 		effect = {
-			set_country_flag = mexican_american_war_alternate_treaty
-			badboy = 5
-			MEX_2150 = { add_core = USA } # Rio Grande
-			MEX_2149 = { add_core = USA } # Cohauila
-			MEX_2142 = { add_core = USA } # Chihuahua
-			MEX_2151 = { add_core = USA } # Durango
-			set_global_flag = rio_grande_is_a_state
-			MEX_2139 = { add_core = USA } # Baja California
-			MEX_2138 = { add_core = USA } # Sonora
-			MEX_2156 = { add_core = USA } # Sinaloa
-			set_global_flag = sonora_is_a_state
-			2662 = { add_core = USA } # Gadsden purchase territories
-			102 = { add_core = USA }
-			relation = { who = MEX value = -200 }
-			diplomatic_influence = { who = MEX value = -200 }
-			leave_alliance = MEX
-			random_country = {
-				limit = {
-					tag = MEX
-					vassal_of = THIS
-				}
-				THIS = { release_vassal = MEX }
-			}
-			random_country = {
-				limit = {
-					is_our_vassal = MEX
-					NOT = { tag = THIS }
-				}
-				relation = { who = THIS value = -200 }
-				leave_alliance = THIS
-			}
-			any_country = {
-				limit = {
-					OR = {
-						tag = CAL
-						tag = TEX
-						tag = DES
-						tag = UNM
-					}
-					exists = yes
-					OR = {
-						in_sphere = THIS
-						part_of_sphere = no
-					}
-					OR = {
-						vassal_of = THIS
-						is_vassal = no
-					}
-				}
-				country_event = 98650 # Inherit
-			}
-			any_pop = {
-				dominant_issue = {
-					factor = 0.05
-					value = jingoism
-				}
-				consciousness = 2
-			}
+			country_event = 44850
 		}
+
+		ai_will_do = { factor = 1 }
 	}
 
-	all_mexico = { # TODO
-		picture = map_central_america
-		potential = {
-           		tag = USA
-			is_greater_power = yes
-			has_country_flag = hasmanifestdestiny
-			war_with = MEX
-			war_policy = jingoism
-			NOT = { has_country_flag = mexico_annexation }
-			NOT = { has_global_flag = american_civil_war_has_happened }
-		}
-
-		allow = {
-			MEX = { national_provinces_occupied = .90 }
-		}
-
-		effect = {
-			set_country_flag = mexico_annexation
-           		badboy = 25
-           		end_war = MEX
-			inherit = MEX
-			any_pop = {
-				limit = {
-					OR = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
-				}
-				scaled_militancy = {
-					issue = pacifism
-					factor = 6
-				}
-				scaled_militancy = {
-					issue = anti_military
-					factor = 4
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 0.1
-			modifier = {
-				factor = 0
-				badboy = 0.1
-			}
-		}
-	}
-
+	#Description: If the USA decides to annex Mexico, Mexico will get supplies and lose war exhaustion.
 	total_war_in_mexico = {
 		alert = yes
 		potential = {
 			tag = MEX
+			war_with = USA
 			USA = { has_country_flag = mexico_annexation }
 			NOT = { has_country_modifier = small_country_draft }
 			NOT = { has_country_flag = mexico_draft_happened }
 		}
 
 		allow = {
-			war_with = USA
 		}
 
 		effect = {
-			add_country_modifier = {
-				name = small_country_draft
-				duration = 730
-			}
+			war_exhaustion = -20
+			iron = 100
+			wool = 100
+			timber = 250
+			small_arms = 100
+			leadership = 20
+			add_country_modifier = { name = small_country_draft duration = 730 }
 			set_country_flag = mexico_draft_happened
 		}
 
@@ -1457,7 +1340,10 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = second_alaskan_purchase
-			2599 = { owner = { country_event = 44140 } }
+			random_country = {
+				limit = { owns = 2599 }
+				country_event = 44140
+			}
 		}
 
 		ai_will_do = { factor = 1 }
@@ -1513,7 +1399,14 @@ political_decisions = {
 
 		effect = {
 			set_global_flag = tratado_hay_herbert
-			2 = { owner = { country_event = 1904191424 } }
+			random_country = {
+				limit = { owns = 2 is_vassal = no }
+				country_event = 1904191424
+			}
+			random_country = {
+				limit = { owns = 2 is_vassal = yes }
+				overlord = { country_event = 1904191424 }
+			}
 		}
 
 		ai_will_do = { factor = 1 }
@@ -1522,7 +1415,7 @@ political_decisions = {
 	#Description: Choice whether to release Alaska as a satellite or incorporate it into America.
 	alaskan_frontier_usa = {
 		potential = {
-			tag = USA
+			is_culture_group = american_cultures
 			LSK = {
 				all_core = {
 					OR = {
@@ -2058,8 +1951,130 @@ political_decisions = {
 ## Expansion ##
 
 	annex_hawaii = { # TODO
+		picture = annex_hawaii
 		potential = {
-    exists = yes
+			is_sphere_leader_of = HAW
+			exists = HAW
+			NOT = { has_country_flag = annexed_hawaii }
+			any_owned_province = { has_building = naval_base }
+			OR = {
+				any_owned_province = { continent = polynesia }
+				## Pacific coast ot the Americas # TODO check provinces
+					owns = 78
+					owns = 79
+					owns = 81
+					owns = 83
+					owns = 85
+					owns = 84
+					owns = 104
+					owns = 87
+					owns = 89
+					owns = 90
+					owns = 2139
+					owns = 2140
+					owns = 2138
+					owns = 2141
+					owns = 2157
+					owns = 2156
+					owns = 2161
+					owns = 2168
+					owns = 2169
+					owns = 2179
+					owns = 2171
+					owns = 2178
+					owns = 2181
+					owns = 2182
+					owns = 2186
+					owns = 2191
+					owns = 2192
+					owns = 2193
+					owns = 2199
+					owns = 2197
+					owns = 2198
+					owns = 2202
+					owns = 2201
+					owns = 2206
+					owns = 2205
+					owns = 1723
+					owns = 2204
+					owns = 2208
+					owns = 2253
+					owns = 2258
+					owns = 2281
+					owns = 2280
+					owns = 2291
+					owns = 2292
+					owns = 2298
+					owns = 2295
+					owns = 2297
+					owns = 2285
+					owns = 2336
+					owns = 2304
+					owns = 2578
+					owns = 2308
+					owns = 2307
+					owns = 2305
+					owns = 2309
+				any_owned_province = {
+					is_core = CHL
+					is_coastal = yes
+				}
+			}
+			OR = {
+				capital_scope = { continent = north_america }
+				capital_scope = { continent = south_america }
+				capital_scope = { continent = asia }
+				capital_scope = { continent = australia_new_zealand }
+				any_owned_province = { continent = polynesia }
+			}
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			is_sphere_leader_of = HAW
+            OR = {
+                AND = {
+                    year = 1898
+                    HAW = { militancy = 1 }
+                }
+                HAW = { militancy = 8 }
+                mass_politics = 1
+            }
+            HAW = {
+                war = no
+                is_mobilised = no
+            }
+		}
+
+		effect = {
+			set_country_flag = annexed_hawaii
+			prestige = 2
+			inherit = HAW
+			random_owned = {
+				limit = { owner = { capital_scope = { continent = north_america } } }
+				owner = { HAW_658 = { add_core = THIS } }
+			}
+			658 = {
+				naval_base = 1
+				# trade_goods = coffee_beans
+			}
+			HAW = { civilized = yes }
+            random_owned = {
+                limit = {
+                    owner = { NOT = { is_primary_culture = yankee } }
+                    province_id = 658
+                    any_pop = { has_pop_culture = yankee }
+                }
+                658 = { add_core = USA }
+            }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#ANON
+	annex_hawaii_anon = {
+		potential = {
 			exists = HAW
 			is_sphere_leader_of = HAW
 			HAW = { ai = yes }
@@ -2067,25 +2082,25 @@ political_decisions = {
 			any_owned_province = { has_building = naval_base }
 			OR = {
 				any_owned_province = { continent = polynesia }
-				owns = 78
-				owns = 79
-				owns = 81
-				owns = 83
-				owns = 85
-				owns = 84
-				owns = 104
-				owns = 87
-				owns = 89
-				owns = 90
-				owns = 2139
-				owns = 2140
-				owns = 2138
-				owns = 2141
-				owns = 2157
-				owns = 2156
-				owns = 2161
-				owns = 2168
-				owns = 2169
+				owns = 78 #Seattle
+				owns = 79 #Olympia
+				owns = 81 #Portland
+				owns = 83 #Eugene
+				owns = 85 #Sonoma
+				owns = 84 #Sacramento
+				owns = 104 #San Francisco
+				owns = 87 #Monterey
+				owns = 89 #Los Angeles
+				owns = 90 #San Diego
+				owns = 2139 #Rosarito
+				owns = 2140 #Nogales
+				owns = 2138 #Loreto
+				owns = 2141 #Guaymas
+				owns = 2157 #Culiacan
+				owns = 2156	#Maztlan
+				owns = 2161 #Tepic
+				owns = 2168 #Puerto Vallalta
+				owns = 2169 #Okay anything below belongs to the pacific coast of spicland
 				owns = 2179
 				owns = 2171
 				owns = 2178
@@ -2121,58 +2136,89 @@ political_decisions = {
 				owns = 2308
 				owns = 2307
 				owns = 2305
-				owns = 2309
+				owns = 2309 #end of pacific spicland coast.
 				any_owned_province = {
 					is_core = CHL
 					is_coastal = yes
 				}
+				#ANON
+				owns = 3332 #Revillagigedo Islands
+				owns = 3333 #Clipperton
+				owns = 3334 #Cocos Island
+				owns = 3315 #Chincha Islands
+				owns = 3331 #Juan Fernandez
+				owns = 13 #Vancouver island/victoria
+				owns = 2468 #Sydney
+				owns = 2509 #Auckland
+				owns = 1074 #Petropavlovsk
+				owns = 1678 #Okinawa
+				owns = 1679 #Amari
+				any_owned_province = { continent = east_indies }
+				any_owned_province = { region = SIA_1392 is_coastal = yes } #Ayutthaya
+				any_owned_province = { region = SIA_1358 is_coastal = yes } #Isan
+				any_owned_province = { region = SIA_1366 is_coastal = yes } #Cambodia
+				any_owned_province = { region = DAI_1380 is_coastal = yes } #Conchinchina
+				any_owned_province = { region = DAI_1375 is_coastal = yes } #Annam
+				any_owned_province = { region = DAI_1369 is_coastal = yes } #Tonkin
+				any_owned_province = { is_core = CHI is_coastal = yes }
+				any_owned_province = { is_core = KOR is_coastal = yes }
+				any_owned_province = { is_core = LSK is_coastal = yes }
+				any_owned_province = { is_core = TKG is_coastal = yes }
+				any_owned_province = { is_core = JAP is_coastal = yes }
+				#
 			}
 			OR = {
 				capital_scope = { continent = north_america }
 				capital_scope = { continent = south_america }
+				#ANON
 				capital_scope = { continent = asia }
 				capital_scope = { continent = australia_new_zealand }
+				capital_scope = { continent = east_indies }
+				capital_scope = { continent = indochina }
 				any_owned_province = { continent = polynesia }
+				capital = 300 #London
+				is_culture_group = germanic
+				is_culture_group = beneluxian
+				is_culture_group = east_slavic
+				is_culture_group = iberian
+				#
 			}
 		}
 
 		allow = {
 			revolution_n_counterrevolution = 1
 			is_sphere_leader_of = HAW
-            OR = {
-                AND = {
-                    year = 1898
-                    HAW = { militancy = 1 }
-                }
-                HAW = { militancy = 8 }
-                mass_politics = 1
-            }
-            HAW = {
-                war = no
-                is_mobilised = no
-            }
 		}
 
 		effect = {
 			set_country_flag = annexed_hawaii
-			658 = { trade_goods = coffee_beans }
+			3301 = { trade_goods = coffee }
 			prestige = 2
 			HAW = { civilized = no }
 			inherit = HAW
 			random_owned = {
-				limit = { owner = { capital_scope = { continent = north_america } } }
-				owner = { HAW_658 = { add_core = THIS } }
+				limit = {
+					owner = {
+						OR = {
+							capital_scope = { continent = north_america }
+							capital_scope = { continent = south_america }
+							capital_scope = { continent = australia_new_zealand }
+							capital_scope = { continent = asia }
+							capital_scope = { continent = east_indies }
+							capital_scope = { continent = indochina }
+							capital_scope = { continent = polynesia }
+							is_culture_group = east_slavic
+						}
+					}
+				}
+				owner = {
+					HAW_658 = { add_core = THIS }
+					# HAW_2524 = { add_core = THIS }
+					3351 = { add_core = THIS }
+				}
 			}
 			random_owned = { limit = { owner = { tag = USA ai = yes } } 658 = { naval_base = 1 } }
 			HAW = { civilized = yes }
-            random_owned = {
-                limit = {
-                    owner = { NOT = { is_primary_culture = yankee } }
-                    province_id = 658
-                    any_pop = { has_pop_culture = yankee }
-                }
-                658 = { add_core = USA }
-            }
 		}
 
 		ai_will_do = { factor = 1 }
@@ -3799,6 +3845,77 @@ political_decisions = {
 
 ## Conflicts ##
 
+	#Description: If France is in a bad state, the USA can break the Treaty of New York and reclaim the lands lost.
+	reconquer_the_west = {
+		picture = manifest_destiny
+		potential = {
+			tag = USA
+			has_global_flag = treaty_of_new_york
+			has_global_flag = american_civil_war_has_happened
+			CSA = { exists = no }
+			NOT = {
+				owns = 139 # New Orleans
+				owns = 146 # St. Louis
+				owns = 155 # St. Paul
+			}
+			NOT = { has_country_flag = reconquer_the_west }
+		}
+
+		allow = {
+			war = no
+			is_greater_power = yes
+			is_disarmed = no
+			OR = {
+				FRA = { exists = yes NOT = { truce_with = THIS } }
+				BOR = { exists = yes NOT = { truce_with = THIS } }
+			}
+			OR = {
+				any_greater_power = { war_with = FRA }
+				any_greater_power = { war_with = BOR }
+				FRA = { exists = yes is_disarmed = yes }
+				BOR = { exists = yes is_disarmed = yes }
+				412 = { # Metz
+					NOT = {
+						owned_by = FRA
+						owned_by = BOR
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = reconquer_the_west
+			ULA = { all_core = { add_core = USA } } # Louisiana
+			ACA = { all_core = { add_core = USA } } # Acadie
+			random_owned = {
+				limit = { exists = FRA }
+				owner = {
+					war = {
+						target = FRA
+						attacker_goal = { casus_belli = acquire_all_cores }
+						attacker_goal = { casus_belli = cut_down_to_size }
+						defender_goal = { casus_belli = cut_down_to_size }
+						call_ally = yes
+					}
+				}
+			}
+			random_owned = {
+				limit = { exists = BOR }
+					owner = {
+					war = {
+						target = BOR
+						attacker_goal = { casus_belli = acquire_all_cores }
+						attacker_goal = { casus_belli = cut_down_to_size }
+						defender_goal = { casus_belli = cut_down_to_size }
+						call_ally = yes
+					}
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: If the USA has its western territories secured, they can force the French to leave and restore all their lands.
 	treaty_of_dc = {
 		picture = manifest_destiny
@@ -3860,7 +3977,8 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA. # TODO western collapse
+	#Description: If the USA has the Treaty of New York, and has lost the civil war (the CSA exists), they will release their western territories and become the FSA.
+	# TODO western collapse and this should be an event
 	become_the_fsa_french_lousiana = {
 		potential = {
 			tag = USA
@@ -4233,6 +4351,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: One-time immigration and population boost at game start.
 	land_of_opportunity = {
 		picture = liberty_enlightening_the_world
 		potential = {
@@ -4247,10 +4366,7 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = land_of_opportunity
-			add_country_modifier = {
-				name = land_of_opportunity
-				duration = 7300
-			}
+			add_country_modifier = { name = land_of_opportunity duration = 7300 }
 		}
 
 		ai_will_do = { factor = 1 }
@@ -4260,9 +4376,16 @@ political_decisions = {
 	the_iron_range = {
 		picture = iron_range
 		potential = {
-			owns = 232
+			OR = {
+				owns = 158
+				owns = 177
+				owns = 157
+				owns = 232
+				owns = 235
+				owns = 98
+			}
+			is_culture_group = american_cultures
 			NOT = { has_country_flag = iron_ranges }
-			NOT = { 232 = { trade_goods = iron } }
 		}
 
 		allow = {
@@ -4272,12 +4395,33 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = iron_ranges
-			158 = { trade_goods = iron change_province_name = "Duluth" } # Grand Portage
-			177 = { trade_goods = iron change_province_name = "Marquette" } # Fort Mackinac
-			157 = { trade_goods = iron change_province_name = "Moorhead" } # Fort Skene
-			232 = { trade_goods = iron } # New York City
-			235 = { trade_goods = iron } # Binghamton
-			98 = { trade_goods = iron } # Barbones
+			random_owned = {
+				limit = { province_id = 158 } # Grand Portage
+				trade_goods = iron
+				change_province_name = "Duluth"
+			}
+			random_owned = {
+				limit = { province_id = 177 } # Fort Mackinac
+				trade_goods = iron
+				change_province_name = "Marquette"
+			}
+			random_owned = {
+				limit = { province_id = 157 } # Fort Skene
+				trade_goods = iron
+				change_province_name = "Moorhead"
+			}
+			random_owned = {
+				limit = { province_id = 232 } # Grand Portage
+				trade_goods = iron
+			}
+			random_owned = {
+				limit = { province_id = 235 } # Grand Portage
+				trade_goods = iron
+			}
+			random_owned = {
+				limit = { province_id = 98 } # Grand Portage
+				trade_goods = iron
+			}
 		}
 
 		ai_will_do = { factor = 1 }

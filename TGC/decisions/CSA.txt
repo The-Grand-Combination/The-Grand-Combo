@@ -1,286 +1,91 @@
 political_decisions = {
 
+	#Description: The CSA can purchase Chihuahua, Sinaloa, Sonora and Baja California from Mexico.
+	#Note: This is just an alternative way for the CSA to acquire these lands early if Mexico agrees, but they can also get them via the Golden Circle
+	# TODO turn this into event chain so that Mexico can refuse
+	# TODO event for USA to incorporate the new lands (similar to Guadalupe Hidalgo refusal) or return them to Mexico
+	mexican_purchase = {
+		picture = csa_purchase
+		potential = {
+			tag = CSA
+			owns = 136
+			exists = yes
+			war = no
+			MEX = {
+				war = no
+				is_vassal = no
+				neighbor = THIS
+				is_greater_power = no
+			}
+			NOT = {
+				has_country_flag = golden_circle_1
+				owns = 87
+				owns = 89
+				owns = 90
+				has_country_flag = bought_pacific
+			}
+		}
+
+		allow = {
+			money = 300000
+			relation = { who = MEX value = 100 }
+			USA = {
+				NOT = {
+					alliance_with = MEX
+					is_sphere_leader_of = MEX
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = bought_pacific
+			prestige = 5
+			treasury = -300000
+			relation = { who = MEX value = 50 }
+			relation = { who = USA value = -50 }
+			MEX_2138 = { add_core = CSA remove_core = MEX } # Sonora
+			MEX_2139 = { add_core = CSA remove_core = MEX } # Baja California
+			MEX_2142 = { add_core = CSA remove_core = MEX } # Chihuahua
+			MEX_2156 = { add_core = CSA remove_core = MEX } # Sinaloa
+			random_country = {
+				limit = { tag = MEX owns = 102 NOT = { owns = 100 } }
+				102 = { add_core = CSA remove_core = MEX }
+			}
+			random_country = {
+				limit = { tag = MEX owns = 2662 NOT = { owns = 38 } }
+				2662 = { add_core = CSA remove_core = MEX }
+			}
+			MEX = {
+				treasury = 300000
+				any_owned = {
+					limit = { is_core = CSA }
+					secede_province = CSA
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { money = 600000 }
+			}
+		}
+	}
+
 ## Golden Circle ##
 
-	annex_cuba = {
-		picture = golden_cuba
-		potential = {
-			has_country_flag = golden_circle
-			exists = CUB
-			is_sphere_leader_of = CUB
-			CUB = { ai = yes }
-		}
-		allow = {
-			revolution_n_counterrevolution = 1
-			is_sphere_leader_of = CUB
-			is_greater_power = yes
-		}
-
-		effect = {
-			plurality = -2
-			badboy = 2
-			inherit = CUB
-		}
-	}
-
-	annex_puerto_rico = {
-		picture = golden_pri
-		potential = {
-			has_country_flag = golden_circle
-			exists = PRI
-			is_sphere_leader_of = PRI
-			PRI = { ai = yes }
-		}
-		allow = {
-			revolution_n_counterrevolution = 1
-			is_sphere_leader_of = PRI
-		}
-
-		effect = {
-			plurality = -1
-			inherit = PRI
-		}
-	}
-
-	annex_haiti = {
-		picture = golden_haiti
-		potential = {
-			has_country_flag = golden_circle
-			exists = HAI
-			is_sphere_leader_of = HAI
-			HAI = { ai = yes }
-		}
-		allow = {
-			revolution_n_counterrevolution = 1
-			is_sphere_leader_of = HAI
-			slavery = yes_slavery
-			NOT = {
-				average_militancy = 4
-			}
-		}
-		effect = {
-			plurality = -3
-			inherit = HAI
-			badboy = 2
-			any_pop = {
-				militancy = 0.5
-			}
-		}
-	}
-
-	sell_france_haiti = {
-		picture = golden_haiti
-		alert = no
-		potential = {
-			tag = CSA
-			exists = yes
-			exists = FRA
-			has_country_flag = golden_circle
-			NOT = {
-				has_country_flag = selling_haiti
-			}
-			OR = {
-				owns = 2213
-				owns = 2214
-				owns = 2215
-				owns = 2216
-			}
-		}
-		allow = {
-			owns = 2213
-			owns = 2214
-			owns = 2215
-			owns = 2216
-			has_country_flag = golden_circle
-			FRA = {
-				colonial_nation = yes
-				is_greater_power = yes
-			}
-		}
-		effect = {
-			FRA = {
-				country_event = 183000
-				set_country_flag = haiti_purchase
-			}
-			set_country_flag = selling_haiti
-		}
-
-		ai_will_do = {
-			factor = 1
-				modifier = {
-					factor = 0.1
-					ai = yes
-				}
-			modifier = {
-			factor = 0
-				NOT = {
-					relation = {
-						who = FRA
-						value = 50
-					}
-				}
-			}
-			modifier = {
-			factor = 5
-				relation = {
-					who = FRA
-					value = 180
-				}
-			}
-		}
-	}
-
-	caribean_purchase_offer = {
-		potential = {
-			tag = CSA
-			exists = yes
-			NOT = { has_global_flag = c_p_flag }
-		}
-		allow = {
-			war = no
-			prestige = 50
-			money = 300000
-		}
-		effect = {
-			ENG_2228 = { add_core = CSA }
-			ENG_2224 = { add_core = CSA	}
-			ENG_203 = { add_core = CSA }
-			SPA_2209 = { add_core = CSA }
-			2190 = { add_core = CSA }
-			2234 = { add_core = CSA }
-			2235 = { add_core = CSA }
-			any_country = {
-				limit = { any_owned_province = { region = ENG_203 } }
-				country_event = 1500003
-			}
-			any_country = {
-				limit = { any_owned_province = { region = SPA_2209 } }
-				country_event = 1500004
-			}
-			any_country = {
-				limit = { owns = 2222 }
-				country_event = 1500007
-			}
-			any_country = {
-				limit = { owns = 2223 }
-				country_event = 1500009
-			}
-			any_country = {
-				limit = { owns = 2224 }
-				country_event = 1500002
-			}
-			any_country = {
-				limit = { owns = 2230 }
-				country_event = 1500005
-			}
-			any_country = {
-				limit = { owns = 2236 }
-				country_event = 1500008
-			}
-			any_country = {
-				limit = { owns = 2228 }
-				country_event = 1500006
-			}
-			any_country = {
-				limit = { owns = 2229 }
-				country_event = 1500001
-			}
-			any_country = {
-				limit = { owns = 2234 }
-				country_event = 1500010
-			}
-			any_country = {
-				limit = { owns = 2190 }
-				country_event = 1500000
-			}
-			set_global_flag = c_p_flag
-		}
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				has_global_flag = c_p_flag
-			}
-		}
-	}
-
-    #Description: The CSA can claim Cuba if it is a slave state.
-	golden_cuba = {
-		potential = {
-			tag = CSA
-			slavery = yes_slavery
-			SPA_2209 = { is_slave = yes }
-			NOT = { has_country_flag = golden_cuba }
-		}
-
-		allow = {
-			prestige = 75
-			war = no
-			is_greater_power = yes
-			nationalism_n_imperialism = 1
-		}
-
-		effect = {
-			set_country_flag = golden_cuba
-			badboy = 3
-			SPA_2209 = { add_core = CSA }
-			add_accepted_culture = caribeno
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				badboy = 0.8
-			}
-		}
-	}
-
-	# TODO
-	move_capital_to_havana = {
-		picture = golden_havana
-		alert = no
-		potential = {
-			tag = CSA
-			exists = yes
-			has_country_flag = golden_circle
-			NOT = { has_country_flag = capital_moved_csa }
-			NOT = {
-				capital = 2209
-			}
-		}
-		allow = {
-			owns = 2209
-			2209 = {
-				is_colonial = no
-			}
-			war = no
-		}
-		effect = {
-			capital = 2209
-			plurality = -10
-			2209 = {
-				life_rating = 10
-				add_province_modifier = {
-					name = new_capital_modifier
-					duration = 3650
-				}
-
-			}
-			add_accepted_culture = caribeno
-			set_country_flag = capital_moved_csa
-		}
-		ai_will_do = {
-			factor = 0
-		}
-	}
-
     #Description: The CSA can claim Rio Grande, Hispaniola, and Puerto Rico.
+	#Note: To start the Golden Circle decision chain the CSA needs to own Cuba and Texas, but they can acquire them by any means.
 	golden_circle_1 = {
 		picture = golden_circle
 		potential = {
 			tag = CSA
-			has_country_flag = golden_cuba
+			owns = 2209 # Havana
+			OR = { # Texas
+				owns = 138
+				owns = 136
+			}
 			NOT = { has_country_flag = golden_circle_1 }
 		}
 
@@ -299,8 +104,6 @@ political_decisions = {
 			badboy = 6
 			any_pop = { consciousness = 1 }
 			RGR = { all_core = { add_core = CSA	} }
-			2143 = { add_core = CSA } # El Paso del Norte
-			2144 = { add_core = CSA } # Presidio del Norte
 			HAI_2213 = { add_core = CSA } # Hispanola
 			2222 = { add_core = CSA } # Puerto Rico
 			any_pop = {
@@ -321,9 +124,7 @@ political_decisions = {
 				limit = { any_owned_province = { is_core = CSA } }
 				relation = { who = CSA value = -100 }
 			}
-			any_greater_power = {
-				relation = { who = THIS value = -25 }
-			}
+			any_greater_power = { relation = { who = THIS value = -25 } }
 		}
 
 		ai_will_do = {
@@ -366,7 +167,7 @@ political_decisions = {
 			UCA_2191 = { add_core = THIS } # El Salvador
 			2217 = { add_core = THIS } # Jamaica
             2218 = { add_core = THIS } # Cayman Islands
-			add_accepted_culture = central_american
+			add_accepted_culture = central_american # Maybe move this to event?
 			any_pop = {
 				limit = {
 					OR = {
@@ -423,7 +224,6 @@ political_decisions = {
 			prestige_factor = -0.15
 			badboy = 15
 			any_pop = { consciousness = 1 }
-			2155 = { add_core = CSA } # Saltillo
 			MEX_2175 = { add_core = CSA } # Puebla & Tlaxcala
 			MEX_2177 = { add_core = CSA } # Oaxaca
 			UCA_2193 = { add_core = CSA } # Honduras
@@ -660,6 +460,250 @@ political_decisions = {
         }
 	}
 
+## Caribbean Expansion ##
+
+    #Description: The CSA can claim Cuba if it is a slave state.
+	golden_cuba = {
+		picture = golden_cuba
+		potential = {
+			tag = CSA
+			slavery = yes_slavery
+			SPA_2209 = { is_slave = yes }
+			NOT = { has_country_flag = golden_cuba }
+		}
+
+		allow = {
+			prestige = 75
+			war = no
+			is_greater_power = yes
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			set_country_flag = golden_cuba
+			badboy = 3
+			SPA_2209 = { add_core = CSA }
+			add_accepted_culture = caribeno
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
+		}
+	}
+
+	#Description: If the CSA has Cuba in their sphere, they can annex it.
+	annex_cuba = {
+		picture = golden_cuba
+		potential = {
+			tag = CSA
+			exists = CUB
+			is_sphere_leader_of = CUB
+			CUB = { ai = yes }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			CUB = {
+				war = no
+				NOT = { average_militancy = 4 }
+			}
+		}
+
+		effect = {
+			plurality = -2
+			badboy = 2
+			inherit = CUB
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If the CSA has Puerto Rico in their sphere, they can annex it.
+	annex_puerto_rico = {
+		picture = golden_pri
+		potential = {
+			tag = CSA
+			exists = PRI
+			is_sphere_leader_of = PRI
+			PRI = { ai = yes }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			PRI = {
+				war = no
+				NOT = { average_militancy = 4 }
+			}
+		}
+
+		effect = {
+			plurality = -1
+			badboy = 1
+			inherit = PRI
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If the CSA has Haiti in their sphere, they can annex it.
+	annex_haiti = {
+		picture = golden_haiti
+		potential = {
+			tag = CSA
+			exists = HAI
+			is_sphere_leader_of = HAI
+			HAI = { ai = yes }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			HAI = {
+				war = no
+				NOT = { average_militancy = 4 }
+			}
+		}
+
+		effect = {
+			plurality = -3
+			badboy = 3
+			inherit = HAI
+		}
+	}
+
+	#Description: The CSA can sell Haiti to France if they have good relations.
+	sell_france_haiti = {
+		picture = golden_haiti
+		alert = no
+		potential = {
+			tag = CSA
+			exists = yes
+			FRA = {
+				exists = yes
+				colonial_nation = yes
+				is_greater_power = yes
+			}
+			HAI = {
+				any_core = { owned_by = THIS }
+				NOT = { any_core = { owned_by = FRA } }
+			}
+			NOT = { has_country_flag = selling_haiti }
+		}
+
+		allow = {
+			owns = 2215
+			owns = 3329
+			owns = 2213
+			owns = 3373
+			owns = 3327
+			relation = { who = FRA value = 75 }
+		}
+
+		effect = {
+			FRA = {
+				country_event = 183000 # TODO
+				set_country_flag = haiti_purchase
+			}
+			set_country_flag = selling_haiti
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					relation = {
+						who = FRA
+						value = 125
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				money = 1000000
+			}
+		}
+	}
+
+	# TODO split into a decision tree
+	caribean_purchase_offer = {
+		potential = {
+			tag = CSA
+			exists = yes
+			is_greater_power = yes
+			NOT = { has_global_flag = c_p_flag }
+		}
+
+		allow = {
+			war = no
+			prestige = 50
+			money = 300000
+		}
+
+		effect = {
+			ENG_2228 = { add_core = CSA }
+			ENG_2224 = { add_core = CSA	}
+			ENG_203 = { add_core = CSA }
+			SPA_2209 = { add_core = CSA }
+			2190 = { add_core = CSA }
+			2234 = { add_core = CSA }
+			2235 = { add_core = CSA }
+			any_country = {
+				limit = { any_owned_province = { region = ENG_203 } }
+				country_event = 1500003
+			}
+			any_country = {
+				limit = { any_owned_province = { region = SPA_2209 } }
+				country_event = 1500004
+			}
+			random_country = {
+				limit = { owns = 2222 }
+				country_event = 1500007
+			}
+			random_country = {
+				limit = { owns = 2223 }
+				country_event = 1500009
+			}
+			random_country = {
+				limit = { owns = 2224 }
+				country_event = 1500002
+			}
+			random_country = {
+				limit = { owns = 2230 }
+				country_event = 1500005
+			}
+			random_country = {
+				limit = { owns = 2236 }
+				country_event = 1500008
+			}
+			random_country = {
+				limit = { owns = 2228 }
+				country_event = 1500006
+			}
+			random_country = {
+				limit = { owns = 2229 }
+				country_event = 1500001
+			}
+			random_country = {
+				limit = { owns = 2234 }
+				country_event = 1500010
+			}
+			random_country = {
+				limit = { owns = 2190 }
+				country_event = 1500000
+			}
+			set_global_flag = c_p_flag
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 ## Northern Expansion ##
 
     #Description: The CSA can, if it asserts its independence, demand all USA territories south of the 36th parallel.
@@ -864,6 +908,118 @@ political_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
+	move_capital_to_havana = {
+		picture = golden_havana
+		alert = no
+		potential = {
+			tag = CSA
+			exists = yes
+			has_country_flag = golden_circle_1
+			NOT = { has_country_flag = capital_moved_csa }
+			NOT = { capital = 2209 }
+		}
+
+		allow = {
+			owns = 2209
+			2209 = { is_colonial = no }
+			war = no
+		}
+
+		effect = {
+			capital = 2209
+			plurality = -10
+			2209 = {
+				life_rating = 5
+				add_province_modifier = { name = new_capital_modifier duration = 3650 }
+			}
+			set_country_flag = capital_moved_csa
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## CSA-Brazil Friendship - events in BRZFlavor.txt ## # TODO localization
+
+	#Description: Brazillian farmers move to the CSA, Brazillian becomes accepted
+	csa_brazilian_culture = {
+		picture = brazil_csa_flag
+		potential = {
+			tag = CSA
+			exists = yes
+			slavery = yes_slavery
+			BRZ = {
+				exists = yes
+				slavery = yes_slavery
+			}
+			NOT = { has_country_flag = brazilian_accepted }
+			has_global_flag = csa_brz_friendship
+		}
+
+		allow = {
+			war = no
+			alliance_with = BRZ
+		}
+
+		effect = {
+			plurality = -5
+			prestige = 10
+			set_country_flag = brazilian_accepted
+			BRZ = {
+				random_pop = {
+					limit = {
+						has_pop_culture = brazilian
+						type = farmers
+					}
+					move_pop = 211
+				}
+			}
+			any_pop = {
+				limit = { has_pop_culture = brazilian }
+				reduce_pop = 10
+			}
+		}
+	}
+
+	#Description: Confederate farmers move to Brazil, Dixie becomes accepted
+	brazil_dixie_culture = {
+		picture = raise_the_bonnie_blue_flag
+		potential = {
+			tag = BRZ
+			slavery = yes_slavery
+			exists = yes
+			CSA = {
+				exists = yes
+				slavery = yes_slavery
+			}
+			NOT = { has_country_flag = dixie_accepted }
+			has_global_flag = csa_brz_friendship
+		}
+
+		allow = {
+			war = no
+			alliance_with = CSA
+		}
+
+		effect = {
+			plurality = -5
+			prestige = 10
+			set_country_flag = dixie_accepted
+			CSA = {
+				random_pop = {
+					limit = {
+						has_pop_culture = dixie
+						type = farmers
+					}
+					move_pop = 2450
+				}
+			}
+			any_pop = {
+				limit = { has_pop_culture = dixie }
+				reduce_pop = 10
+			}
+		}
+	}
+
 ## Other ##
 
     #Description: If the French take back Louisiana, the CSA can recognize the independence of Texas.
@@ -890,480 +1046,5 @@ political_decisions = {
 		}
 
 		ai_will_do = { factor = 1 }
-	}
-
-## TODO ##
-
-	mexican_purchase = {
-		picture = csa_purchase
-		potential = {
-			tag = CSA
-			exists = yes
-			war = no
-			any_neighbor_country = {
-				tag = MEX
-			}
-			MEX = {
-				war = no
-				ai = yes
-				is_vassal = no
-			}
-			is_greater_power = no
-			is_secondary_power = yes
-			NOT = {
-				has_country_flag = golden_circle
-				has_country_flag = bought_pacific
-			}
-		}
-		allow = {
-			NOT = {
-				USA = {
-					OR = {
-						alliance_with = MEX
-						is_sphere_leader_of = MEX
-					}
-				}
-			}
-			relation = {
-				who = MEX
-				value = 100
-			}
-			money = 500000
-		}
-		effect = {
-			relation = {
-				who = MEX
-				value = 50
-			}
-			relation = {
-				who = USA
-				value = -50
-			}
-			treasury = -300000
-			2137 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2138 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2139 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2140 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2141 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2142 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2143 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2144 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2145 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			2147 = {
-				add_core = CSA
-				remove_core = MEX
-			}
-			prestige = 5
-			set_country_flag = bought_pacific
-			MEX = {
-				treasury = 300000
-				any_owned = {
-					limit = {
-						is_core = CSA
-					}
-					secede_province = CSA
-				}
-			}
-		}
-	}
-
-	state_of_nation = {
-		picture = union_speech
-		potential = {
-			government = democracy
-			exists = yes
-			civilized = yes
-			NOT = {
-				has_country_modifier = national_speech
-			}
-		}
-		allow = {
-			NOT = {
-				average_militancy = 8
-			}
-			prestige = 40
-		}
-		effect = {
-			any_pop = {
-				militancy = -1
-				consciousness = 1
-			}
-			prestige = 5
-			plurality = 1
-			add_country_modifier = {
-				name = national_speech
-				duration = 1460
-			}
-		}
-	}
-
-	restore_mexican_capital = {
-		picture = restore_richmond_capital
-		potential = {
-    exists = yes
-			exists = yes
-			tag = MEX
-			capital = 2170
-		}
-		allow = {
-			owns = 2172
-			owns = 2173
-			owns = 2174
-			owns = 2180
-			war = no
-		}
-		effect = {
-			capital = 2172
-			set_global_flag = golden_circle_defeated
-			any_owned = {
-				limit = {
-					is_core = CSA
-					owned_by = MEX
-				}
-				remove_core = CSA
-			}
-			2172 = {
-				add_province_modifier = {
-					name = new_capital_modifier
-					duration = 3650
-				}
-
-			}
-			prestige = 100
-			plurality = 5
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	csa_brazilian_culture = {
-		picture = brazil_csa_flag
-		potential = {
-    exists = yes
-			exists = yes
-			tag = CSA
-			exists = BRZ
-			NOT = {
-				has_country_flag = brazilian_accepted
-			}
-			has_global_flag = csa_brz_friendship
-		}
-		allow = {
-			alliance_with = BRZ
-			war = no
-		}
-		effect = {
-			plurality = -5
-			prestige = 10
-			set_country_flag = brazilian_accepted
-			random_pop = {
-				limit = {
-					has_pop_culture = brazilian
-					type = farmers
-				}
-				move_pop = 211
-			}
-			any_pop = {
-				limit = {
-					has_pop_culture = brazilian
-				}
-				reduce_pop = 10
-			}
-		}
-	}
-
-	brazil_dixie_culture = {
-		picture = raise_the_bonnie_blue_flag
-		potential = {
-    exists = yes
-			exists = yes
-			tag = BRZ
-			exists = CSA
-			NOT = {
-				has_country_flag = dixie_accepted
-			}
-			has_global_flag = csa_brz_friendship
-		}
-		allow = {
-			alliance_with = CSA
-			war = no
-		}
-		effect = {
-			plurality = -5
-			prestige = 10
-			set_country_flag = dixie_accepted
-			random_pop = {
-				limit = {
-					has_pop_culture = dixie
-					type = farmers
-				}
-				move_pop = 2450
-			}
-			any_pop = {
-				limit = {
-					has_pop_culture = dixie
-				}
-				reduce_pop = 10
-			}
-		}
-	}
-
-	slave_integration_CSA = {
-		potential = {
-    exists = yes
-			exists = yes
-			tag = CSA
-			OR = {
-				government = hms_government
-				government = democracy
-			}
-			slavery = no_slavery
-			NOT = {
-				has_country_flag = integrated
-			}
-		}
-		allow = {
-			NOT = {
-				average_militancy = 3
-			}
-		}
-		effect = {
-			add_accepted_culture = afro_american
-			add_accepted_culture = afro_caribbean
-			add_accepted_culture = afro_caribeno
-			add_accepted_culture = afro_antillean
-			set_country_flag = integrated
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	recognize_confederate_sovereignty = {
-		potential = {
-    exists = yes
-			exists = yes
-			tag = USA
-			exists = CSA
-			has_global_flag = american_civil_war_has_happened
-			NOT = {
-				has_global_flag = csa_sovereignty_offered
-			}
-		}
-		allow = {
-			war_exhaustion = 100
-			USA = {
-				war_with = CSA
-			}
-		}
-		effect = {
-			220 = {#Washington, DC
-				remove_core = USA
-				secede_province = CSA
-			}
-			USA_219 = { #Maryland
-				remove_core = USA
-				secede_province = CSA
-			}
-			USA_222 = { #Delaware
-				remove_core = USA
-				secede_province = CSA
-			}
-			USA_148 = { #Missouri
-				remove_core = USA
-				secede_province = CSA
-			}
-			USA_196 = { #Alabama
-				remove_core = USA
-				secede_province = CSA
-			}
-			USA_185 = {#Kentucky
-				remove_core = USA
-				secede_province = CSA
-			}
-			MEX_100 = {#Arizona
-				remove_core = USA
-				add_core = CSA
-				secede_province = CSA
-			}
-			MEX_103 = { #New Mexico
-				remove_core = USA
-				add_core = CSA
-				secede_province = CSA
-			}
-			USA_144 = {#Arkansas
-				remove_core = USA
-			}
-			USA_200 = { #Florida
-				remove_core = USA
-			}
-			USA_201 = { #Georgia
-				remove_core = USA
-			}
-			USA_139 = { #Louisiana
-				remove_core = USA
-			}
-			USA_194 = {#Mississippi
-				remove_core = USA
-			}
-			USA_2556 = {#North Carolina
-				remove_core = USA
-			}
-			USA_129 = {#Oklahoma
-				remove_core = USA
-			}
-			USA_205 = {#South Carolina
-				remove_core = USA
-			}
-			USA_188 = {#Tennessee
-				remove_core = USA
-			}
-			TEX_132 = {#Texas
-				remove_core = USA
-				add_core = CSA
-			}
-			USA_211 = { #Virginia
-				remove_core = USA
-			}
-			SPA_2209 = {#Cuba
-				remove_core = USA
-			}
-			end_war = CSA
-			prestige = -20
-			any_greater_power = {
-				relation = {
-					who = THIS
-					value = 20
-				}
-			}
-			CSA = {
-				relation = {
-					who = THIS
-					value = 50
-				}
-				prestige = 50
-			}
-			set_global_flag = csa_sovereignty_offered
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	AZ_NM_TX_slavery = {
-		potential = {
-    exists = yes
-			exists = yes
-			tag = USA
-			NOT = {
-				has_country_flag = AZ_NM_slavery_flag
-				has_global_flag = american_civil_war_has_happened
-			}
-		allow = {
-			USA = {
-				owns = 132
-				owns = 100
-				owns = 103
-			}
-		}
-		effect = {
-                        MEX_100 = {
-				state_scope = {
-					is_slave = yes
-				}
-			}
-                        MEX_103 = {
-                                state_scope = {
-					is_slave = yes
-				}
-                        }
-			TEX_132 = {
-				state_scope = {
-					is_slave = yes
-				}
-			}
-			set_country_flag = AZ_NM_slavery_flag
-		}
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				has_country_flag = AZ_NM_slavery_flag
-			}
-		}
-	}
-	}
-
-	burn_washington = {
-		potential = {
-    exists = yes
-			exists = yes
-			tag = CSA
-			220 = {
-				owned_by = USA
-			}
-			war_with = USA
-			USA = {
-				capital = 220
-			}
-		}
-		allow = {
-			CSA = {
-				controls = 220
-			}
-		}
-		effect = {
-			badboy = 3
-			prestige = 5
-			war_exhaustion = -10
-			USA = {
-				country_event = 99900
-			}
-		}
-	}
-
-	move_to_richmond = {
-		alert = no
-		potential = {
-    exists = yes
-			exists = yes
-			tag = CSA
-			CSA = {
-				capital = 195
-			}
-		}
-
-		effect = {
-			war_exhaustion = -5
-			capital = 211
-		}
 	}
 }

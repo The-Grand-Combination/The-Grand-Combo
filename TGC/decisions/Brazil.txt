@@ -5,10 +5,7 @@ political_decisions = {
     #Description: If Brazil has a monarchy and is at war, they can form the Fatherland Volunteers, losing war exhaustion and gaining prestige.
 	fatherland_volunteers = {
 		potential = {
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
+			has_country_modifier = dom_pedro_ii
 			government = hms_government
 			war = yes
 			NOT = { has_country_flag = pedro_said_it_best }
@@ -332,11 +329,13 @@ political_decisions = {
 				NOT = { owns = 2263 }
                 NOT = { owns = 3295 }
             }
+			2401 = { owner = { NOT = { truce_with = THIS } } }
+			2263 = { owner = { NOT = { truce_with = THIS } } }
+			3295 = { owner = { NOT = { truce_with = THIS } } }
 		}
 
 		allow = {
 			war = no
-			2401 = { owner = { NOT = { truce_with = THIS } } }
 			OR = {
 				year = 1908
 				mass_politics = 1
@@ -359,83 +358,75 @@ political_decisions = {
 				limit = { owner = { tag = KPB } }
 				2401 = { add_core = KPB }
 			}
-			any_country = {
-				limit = {
-					OR = {
+
+			## Event ##
+				random_country = {
+					limit = {
 						owns = 3295
 						owns = 2263
 						owns = 2401
+						NOT = { tag = THIS }
 					}
+					country_event = 34628
 				}
-				country_event = 34628
-			}
+				random_country = {
+					limit = {
+						owns = 3295
+						owns = 2263
+						NOT = { owns = 2401 }
+						NOT = { tag = THIS }
+					}
+					country_event = 34628
+				}
+				random_country = {
+					limit = {
+						owns = 3295
+						NOT = { owns = 2263 }
+						owns = 2401
+						NOT = { tag = THIS }
+					}
+					country_event = 34628
+				}
+				random_country = {
+					limit = {
+						NOT = { owns = 3295 }
+						owns = 2263
+						owns = 2401
+						NOT = { tag = THIS }
+					}
+					country_event = 34628
+				}
+				random_country = {
+					limit = {
+						owns = 3295
+						NOT = { owns = 2263 }
+						NOT = { owns = 2401 }
+						NOT = { tag = THIS }
+					}
+					country_event = 34628
+				}
+				random_country = {
+					limit = {
+						NOT = { owns = 3295 }
+						owns = 2263
+						NOT = { owns = 2401 }
+						NOT = { tag = THIS }
+					}
+					country_event = 34628
+				}
+				random_country = {
+					limit = {
+						NOT = { owns = 3295 }
+						NOT = { owns = 2263 }
+						owns = 2401
+						NOT = { tag = THIS }
+					}
+					country_event = 34628
+				}
 		}
 
 		ai_will_do = { factor = 1 }
 	}
-
-	## TODO Brazil-Colombia ##
-
-		buy_northernamazonas = {
-			picture = amazonia
-			potential = {
-				tag = BRZ
-				exists = yes
-				NOT = { has_country_flag = northern_amazonas }
-			}
-
-			allow = {
-				has_country_flag = amazonia_is_ours
-				war = no
-				money = 100000
-				OR = {
-					is_secondary_power = yes
-					is_greater_power = yes
-				}
-				CLM = {
-					owns = 3260
-					war = no
-					relation = { who = THIS value = 75 }
-				}
-			}
-
-			effect = {
-				set_country_flag = northern_amazonas
-				CLM_3260 = { add_core = BRZ }
-				3260 = { owner = { country_event = 187070 } }
-			}
-
-			ai_will_do = { factor = 0 }
-		}
-
-		claim_amazonia = {
-			picture = amazonia
-			potential = {
-				primary_culture = brazilian
-				exists = yes
-				NOT = { has_country_flag = amazonia_is_ours }
-			}
-
-			allow = {
-				war = no
-				is_vassal = no
-				OR = {
-					is_greater_power = yes
-					is_secondary_power = yes
-				}
-				prestige = 20
-				owns = 2401
-				owns = 3256
-				owns = 3255
-			}
-
-			effect = {
-				BRZ = { all_core = { remove_core = CLM } }
-				prestige = 5
-				badboy = 4
-				set_country_flag = amazonia_is_ours
-			}
-		}
 
 	#Description: Whoever owns Acre and has a core there can pay the other countries who have a core there to remove their cores. # TODO how does Brazil get cores on this
 	treaty_of_petropolis = {
@@ -485,109 +476,6 @@ political_decisions = {
 		}
 	}
 
-	## TODO Bolivia-Brazil ##
-
-		bolivia_agreement = {
-			picture = acrewar_pic
-			potential = {
-				primary_culture = brazilian
-				exists = yes
-				NOT = { has_country_flag = bolivia_agreement }
-				NOT = { has_country_flag = acre_war }
-			}
-
-			allow = {
-				war = no
-				money = 100000
-				OR = {
-					is_secondary_power = yes
-					is_greater_power = yes
-				}
-				BOL = {
-					war = no
-					relation = { who = THIS value = 75 }
-				}
-			}
-
-			effect = {
-				3252 = { secede_province = THIS }
-				3251 = { secede_province = THIS }
-				2549 = { secede_province = THIS }
-				2549 = { secede_province = BOL }
-				BOL = {
-					release = MTG
-					money = +100000
-				}
-				THIS = {
-					inherit = MTG
-					money = -100000
-				}
-				set_country_flag = bolivia_agreement
-			}
-
-			ai_will_do = { factor = 0 }
-		}
-
-		petropolis_agreement = {
-			picture = acrewar_pic
-			potential = {
-				primary_culture = brazilian
-				exists = yes
-				NOT = { has_country_flag = petropolis_agreement }
-				NOT = { has_country_flag = acre_war }
-			}
-
-			allow = {
-				war = no
-				money = 100000
-				has_country_flag = bolivia_agreement
-				OR = {
-					is_secondary_power = yes
-					is_greater_power = yes
-				}
-				BOL = {
-					war = no
-					relation = { who = THIS value = 100 }
-				}
-			}
-
-			effect = {
-				3252 = { secede_province = BOL }
-				2549 = { secede_province = THIS }
-				3252 = { remove_core = THIS }
-				set_country_flag = petropolis_agreement
-			}
-
-			ai_will_do = { factor = 0 }
-		}
-
-		acre_war = {
-			picture = acrewar_pic
-			potential = {
-				primary_culture = brazilian
-				exists = yes
-				NOT = { has_country_flag = acre_war }
-			}
-
-			allow = {
-				war = no
-				is_vassal = no
-				OR = {
-					is_greater_power = yes
-					is_secondary_power = yes
-				}
-				prestige = 20
-							owns = 2549
-			}
-
-			effect = {
-				2549 = { change_province_name = "Acre" }
-				prestige = 5
-				badboy = -1
-				set_country_flag = acre_war
-			}
-		}
-
 	#Description: Brazil can dispute the Eastern Misiones from Argentina/Paraguay
 	eastern_misiones_dispute = {
 		picture = military_aid # alternative?
@@ -602,7 +490,7 @@ political_decisions = {
 				2459 = { empty = yes }
 				2462 = { empty = yes }
 			}
-			# TODO uncomment before committing year = 1881
+			year = 1881
 			NOT = { has_global_flag = eastern_misiones_dispute }
 		}
 
@@ -624,6 +512,16 @@ political_decisions = {
 			random_owned = { limit = { owner = { tag = BRZ } } 2462 = { add_core = BRZ } }
 			random_owned = { limit = { owner = { tag = KPB } } 2462 = { add_core = BRZ add_core = KPB } }
 			random_owned = { limit = { 2462 = { empty = yes } } 2462 = { secede_province = THIS } }
+
+			random_owned = {
+				limit = { 2459 = { NOT = { life_rating = 30 } } }
+				2459 = { life_rating = 21 }
+			}
+			random_owned = {
+				limit = { 2462 = { NOT = { life_rating = 30 } } }
+				2462 = { life_rating = 21 }
+			}
+
 			random_country = {
 				limit = {
 					is_vassal = no
@@ -681,7 +579,7 @@ political_decisions = {
 		picture = guyanas
 		potential = {
 			primary_culture = brazilian
-			exists = yes
+			exists = no
 			NOT = { has_country_flag = guiana_negotiations }
 		}
 
@@ -721,7 +619,7 @@ political_decisions = {
 		picture = guyanas
 		potential = {
 			primary_culture = brazilian
-			exists = yes
+			exists = no
 			NOT = { has_country_flag = guiana_purchase }
 		}
 
@@ -773,60 +671,6 @@ political_decisions = {
 			THIS = {
 				inherit = GUY
 				money = -1000000
-			}
-		}
-
-		ai_will_do = { factor = 0 }
-	}
-
-	guiana_purchasepba = {
-		picture = guyanas
-		potential = {
-			tag = PBA
-			exists = yes
-			NOT = { has_country_flag = guiana_purchase }
-		}
-
-		allow = {
-			war = no
-			has_country_flag = guiana_negotiations
-			money = 1000000
-			OR = {
-				is_secondary_power = yes
-				is_greater_power = yes
-			}
-			FRA = {
-				war = no
-				relation = { who = THIS value = 75 }
-			}
-			ENG = {
-				war = no
-				relation = { who = THIS value = 75 }
-			}
-			NET = {
-				war = no
-				relation = { who = THIS value = 75 }
-			}
-		}
-
-		effect = {
-			set_country_flag = guiana_purchase
-			FRA = {
-				release = GUY
-				money = +500000
-			}
-			ENG = {
-				release = GUY
-				money = +400000
-			}
-			NET = {
-				release = GUY
-				money = +100000
-			}
-			THIS = {
-				inherit = GUY
-				money = -1000000
-				GUY = { all_core = { add_core = THIS } }
 			}
 		}
 
@@ -1095,7 +939,7 @@ political_decisions = {
 			set_country_flag = paraguay_is_ours
 			badboy = 9
 			PRG_2343 = { add_core = THIS } # Paraguay
-			# TODO event for Bolivia after this where they can reinstate their claim on northern chaco
+			# TODO event for Bolivia/Argentina after this where they can reinstate their claim on Chaco
 		}
 
 		ai_will_do = {
@@ -1146,9 +990,9 @@ political_decisions = {
 		}
 	}
 
-## The Dreadnought Race ## TODO
+## The Dreadnought Race ##
 
-	#Description: Brazil can buy a dreadnought
+	#Description: Brazil can offer to buy a dreadnought from a random Great Power.
 	sa_dreadnought_race = {
 		picture = dreadnought
 		potential = {
@@ -1183,9 +1027,9 @@ political_decisions = {
 			set_global_flag = dreadnought_race
 			random_country = {
 				limit = {
+					is_greater_power = yes
 					high_sea_battle_fleet = 1
 					invention = dreadnoughts
-					is_greater_power = yes
 				}
 				country_event = 188158
 			}
@@ -1194,6 +1038,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If Brazil wants to buy a dreadnought, Argentina can offer to buy one as well.
 	sa_dreadnought_race_arg = {
 		picture = dreadnought
 		potential = {
@@ -1233,16 +1078,18 @@ political_decisions = {
 			set_global_flag = dreadnought_race_arg
 			random_country = {
 				limit = {
+					is_greater_power = yes
 					high_sea_battle_fleet = 1
 					invention = dreadnoughts
-					is_greater_power = yes
 				}
 				country_event = 188158
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If Brazil wants to buy a dreadnought, Chile can offer to buy one as well.
 	sa_dreadnought_race_chl = {
 		picture = dreadnought
 		potential = {
@@ -1279,13 +1126,14 @@ political_decisions = {
 			set_global_flag = dreadnought_race_chl
 			random_country = {
 				limit = {
+					is_greater_power = yes
 					high_sea_battle_fleet = 1
 					invention = dreadnoughts
-					is_greater_power = yes
 				}
 				country_event = 188158
 			}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 

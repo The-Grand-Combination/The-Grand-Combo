@@ -16,17 +16,16 @@ political_decisions = {
 		}
 
 		allow = {
-			war_with = USA
 			controls = 2146
 		}
 
 		effect = {
 			badboy = 3
-			set_country_flag = white_house_burned
+			set_country_flag = white_house_burned # TODO add decision to rebuild
 			USA = {
 				prestige = -10
 				war_exhaustion = 10
-				country_event = 182000 # TODO doesn't exist.
+				country_event = 182000
 			}
 		}
 
@@ -61,19 +60,14 @@ political_decisions = {
 		effect = {
 			badboy = 3
 			set_global_flag = statue_of_liberty_destroyed
-			USA = { country_event = 188244 } # TODO
+			USA = { country_event = 188244 }
 		}
 
 		ai_will_do = {
 			factor = 1
 			modifier = {
 				factor = 0
-				NOT = {
-					relation = {
-						who = USA
-						value = -150
-					}
-				}
+				NOT = { relation = { who = USA value = -150 } }
 			}
 			modifier = {
 				factor = 0
@@ -269,7 +263,7 @@ political_decisions = {
 		potential = {
 			tag = USA
 			NOT = {
-				has_country_flag = emancipation
+				slavery = no_slavery
 				has_country_flag = the_slavery_debate
 			}
 			OR = {
@@ -292,7 +286,6 @@ political_decisions = {
 		}
 
 		effect = {
-			set_country_flag = emancipation
 			prestige = 5
 			political_reform = no_slavery
 			any_pop = {
@@ -300,12 +293,7 @@ political_decisions = {
 				consciousness = -5
 				militancy = -5
 			}
-			any_greater_power = {
-				relation = {
-					who = USA
-					value = 30
-				}
-			}
+			any_greater_power = { relation = { who = USA value = 30 } }
 		}
 
 		ai_will_do = { factor = 1 }
@@ -723,6 +711,9 @@ political_decisions = {
 		}
 
 		effect = {
+			small_arms = 25
+			regular_clothes = 25
+			canned_food = 25
 			random_pop = {
 				limit = {
 					pop_type = slaves
@@ -745,7 +736,7 @@ political_decisions = {
 	}
 
 	#Description: The CSA can, if at war with the USA, enlist some Cherokee to become soldiers.
-	first_cherokee_mounted_rifles = { # TODO localization
+	first_cherokee_mounted_rifles = {
 		picture = first_cherokee_mounted_rifles
 		potential = {
 			tag = CSA
@@ -762,6 +753,9 @@ political_decisions = {
 		}
 
 		effect = {
+			small_arms = 25
+			regular_clothes = 25
+			canned_food = 25
 			random_pop = {
 				limit = {
 					type = farmers
@@ -769,10 +763,11 @@ political_decisions = {
 				}
 				pop_type = soldiers
 			}
-			add_accepted_culture = cherokee
 			war_exhaustion = -1
 			set_country_flag = first_cherokee_mounted_rifles
 		}
+
+		ai_will_do = { factor = 1 }
 	}
 
 	#Description: The CSA can form the Irish brigade, gaining stockpiles and turning a farmer pop into soldiers.
@@ -790,9 +785,9 @@ political_decisions = {
 		}
 
 		effect = {
-			small_arms = 300
-			regular_clothes = 300
-			canned_food = 300
+			small_arms = 25
+			regular_clothes = 25
+			canned_food = 25
 			random_pop = {
 				limit = {
 					pop_type = farmers
@@ -1036,4 +1031,117 @@ political_decisions = {
 			regular_clothes = 100
 		}
 	}
+
+## Recognition ##
+
+	#Description: Greater Powers can recognize the CSA, hurting relations with the USA.
+	recognize_the_csa = {
+		picture = reform_csa
+		potential = {
+			is_greater_power = yes
+			has_global_flag = american_civil_war_has_happened
+			exists = CSA
+			CSA = { NOT = { in_sphere = USA } }
+			exists = USA
+			NOT = {
+				has_country_flag = recognize_the_csa
+				has_global_flag = alt_american_civil_war_has_happened
+				tag = CSA
+				tag = USA
+				tag = FSA
+			}
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+			OR = {
+				AND = {
+					NOT = { CSA = { national_provinces_occupied = 0.30 } }
+					NOT = {  relation = { who = USA value = 50 } }
+				}
+				AND = {
+					has_global_flag = declaration2
+					NOT = { has_global_flag = right_to_secede }
+				}
+			}
+		}
+
+		effect = {
+			prestige = 1
+			set_country_flag = recognize_the_csa
+			CSA = { prestige = 5 }
+			USA = { prestige = -5 }
+			relation = { who = CSA value = 100 }
+			diplomatic_influence = { who = CSA value = 25 }
+			relation = { who = USA value = -100 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				alliance_with = USA
+			}
+			modifier = {
+				factor = 0
+				relation = { who = USA value = 100 }
+			}
+		}
+	}
+
+	#Description: Greater Powers can recognize the FSA, hurting relations with the USA.
+	recognize_the_fsa = {
+		picture = form_fsa
+		potential = {
+			is_greater_power = yes
+			has_global_flag = alt_american_civil_war_has_happened
+			exists = FSA
+			FSA = { NOT = { in_sphere = USA } }
+			exists = USA
+			NOT = {
+				has_country_flag = recognize_the_fsa
+				has_global_flag = american_civil_war_has_happened
+				tag = CSA
+				tag = USA
+				tag = FSA
+			}
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+			OR = {
+				AND = {
+					NOT = { FSA = { national_provinces_occupied = 0.30 } }
+					NOT = { relation = { who = USA value = 50 } }
+				}
+				AND = {
+					has_global_flag = declaration3
+					NOT = { has_global_flag = fsa_right_to_secede }
+				}
+			}
+		}
+
+		effect = {
+			prestige = 1
+			set_country_flag = recognize_the_fsa
+			FSA = { prestige = 5 }
+			USA = { prestige = -5 }
+			relation = { who = FSA value = 100 }
+			diplomatic_influence = { who = FSA value = 25 }
+			relation = { who = USA value = -100 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				alliance_with = USA
+			}
+			modifier = {
+				factor = 0
+				relation = { who = USA value = 100 }
+			}
+		}
+	}
+
 }

@@ -1,55 +1,142 @@
-#Description: Jose Batlle y Ordonez - gain plurality, working pops gain consciousness and lose militancy
-country_event = {
+## Flavor ##
 
-	id = 46400
-	news = yes
-	news_desc_long = "EVTDESC46400_NEWS_LONG"
-	news_desc_medium = "EVTDESC46400_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC46400_NEWS_SHORT"
+	#Description: Jose Batlle y Ordonez - gain plurality, working pops gain consciousness and lose militancy
+	country_event = {
 
-	trigger = {
-		tag = URU
-		year = 1911
-		government = democracy
-		NOT = { year = 1916 }
-	}
+		id = 46400
+		news = yes
+		news_desc_long = "EVTDESC46400_NEWS_LONG"
+		news_desc_medium = "EVTDESC46400_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC46400_NEWS_SHORT"
 
-	fire_only_once = yes
-
-	mean_time_to_happen =  {
-		months = 5
-
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1912
+		trigger = {
+			tag = URU
+			year = 1911
+			government = democracy
+			NOT = { year = 1916 }
 		}
 
-		modifier = {
-			factor = 0.95 #increase likelihood to happen
-			year = 1913
+		fire_only_once = yes
+
+		mean_time_to_happen =  {
+			months = 5
+
+			modifier = {
+				factor = 0.75 #increase likelihood to happen
+				year = 1912
+			}
+
+			modifier = {
+				factor = 0.95 #increase likelihood to happen
+				year = 1913
+			}
+		}
+
+		title = "EVTNAME46400"
+		desc = "EVTDESC46400"
+		picture = "Prosper"
+
+		option = {
+			name = "EVTOPTA46400"
+
+			plurality = 5
+			farmers = { consciousness = 1 }
+			labourers = { consciousness = 1 }
+			craftsmen = { consciousness = 1 }
+			artisans = { consciousness = 1 }
+			farmers = { militancy = -1 }
+			labourers = { militancy = -1 }
+			craftsmen = { militancy = -1 }
+			artisans = { militancy = -1 }
 		}
 	}
 
-	title = "EVTNAME46400"
-	desc = "EVTDESC46400"
-	picture = "Prosper"
 
-	option = {
-		name = "EVTOPTA46400"
+	#Description: World Cup of Football - gain prestige
+	country_event = {
+		title = "EVTNAME5001"
+		desc = "EVTDESC5001"
+		news = yes
+		news_desc_long = "EVTDESC5001_NEWS_LONG"
+		news_desc_medium = "EVTDESC5001_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC5001_NEWS_SHORT"
+		id = 5001
+		picture = "football"
 
-		plurality = 5
-		farmers = { consciousness = 1 }
-		labourers = { consciousness = 1 }
-		craftsmen = { consciousness = 1 }
-		artisans = { consciousness = 1 }
-		farmers = { militancy = -1 }
-		labourers = { militancy = -1 }
-		craftsmen = { militancy = -1 }
-		artisans = { militancy = -1 }
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			year = 1930
+			month = 6
+			exists = ARG
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "EVTOPTA5001"
+
+			prestige = 5
+			poor_strata = {
+				consciousness = -1
+				militancy = -1
+			}
+		}
 	}
-}
 
 ## Political ##
+
+	#Description: The Uruguayan Civil War - setup event
+	country_event = {
+
+		id = 188174
+		title = "EVTNAME188174"
+		desc = "EVTDESC188174"
+		picture = "uruguay"
+
+		trigger = {
+			tag = URU
+			OR = {
+				ruling_party_ideology = reactionary
+				ruling_party_ideology = conservative
+			}
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		option = {
+			name = "EVTOPTA188174"
+
+			add_country_modifier = { name = fight_the_power duration = 3650 }
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					location = { NOT = { province_id = 2344 } }
+				}
+				ideology = { value = reactionary factor = 0.3 }
+				ideology = { value = conservative factor = 0.7 }
+			}
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					location = { province_id = 2344 }
+				}
+				ideology = { value = liberal factor = 0.6 }
+				consciousness = 3
+			}
+			random_owned = {
+				limit = { province_id = 2344 }
+				add_province_modifier = { name = peasant_revolt duration = 1095 }
+			}
+		}
+	}
 
 	#Description: Colorados won - triggered if liberal rebels enforce demands
 	country_event = {
@@ -1211,7 +1298,7 @@ country_event = {
 
 ## The Uruguayan Crisis - Brazil ##
 
-	#Description: The Uruguayan Crisis
+	#Description: The Uruguayan Crisis - Brazil
 	country_event = {
 		id = 97060
 		title = "EVTNAME97060"
@@ -1489,8 +1576,9 @@ country_event = {
 		}
 	}
 
-## The Uruguayan Crisis - Argentina ## TODO
+## The Uruguayan Crisis - Argentina ## TODO localization and ARC/LPL compatibility
 
+	#Description: The Uruguayan Crisis - Argentina
 	country_event = {
 		id = 188175
 		title = "EVTNAME188175"
@@ -1504,10 +1592,14 @@ country_event = {
 		fire_only_once = yes
 
 		trigger = {
-			tag = ARG
+			OR = {
+				tag = ARG
+				tag = ARC
+				tag = LPL
+			}
 			war = no
 			year = 1840
-			neighbour = URU
+			neighbour = URU # substate?
 			OR = {
 				ruling_party_ideology = conservative
 				ruling_party_ideology = reactionary
@@ -1537,17 +1629,20 @@ country_event = {
 
 		option = {
 			name = "Send an ultimatum. Oribe will be President."
+
 			set_country_flag = sent_uruguayan_ultimatum
 			badboy = 2
 			URU = { country_event = 188176 }
-			ai_chance = {
-				factor = 80
-			}
+
+			ai_chance = { factor = 80 }
 		}
+
 		option = {
 			name = "Uruguay is not worth it."
+
 			prestige = -5
 			badboy = -2
+
 			ai_chance = {
 				factor = 20
 				modifier = {
@@ -1562,9 +1657,10 @@ country_event = {
 		}
 	}
 
+	#Description: The Argentine Ultimatum - Uruguay can choose whether to accept and get a conservative government or refuse and risk war
 	country_event = {
 		id = 188176
-		title = "EVTNAME188176" #The Argentine Ultimatum
+		title = "EVTNAME188176"
 		desc = "EVTDESC188176"
 		picture = "rosas_victory"
 
@@ -1572,73 +1668,65 @@ country_event = {
 
 		option = {
 			name = "We reject the Argentine ultimatum."
-			ARG = { country_event = 188177 }
-			relation = {
-				who = ARG
-				value = -100
-			}
-			leave_alliance = ARG
-			ai_chance = {
-				factor = 90
-			}
+
+			FROM = { country_event = 188177 }
+			relation = { who = FROM value = -100 }
+			leave_alliance = FROM
+
+			ai_chance = { factor = 90 }
 		}
+
 		option = {
 			name = "We cannot risk war with Argentina."
+
 			prestige = -5
 			ruling_party_ideology = conservative
-			set_country_flag = tory_election_win
-			clr_country_flag = socialist_election_win
-			clr_country_flag = liberal_election_win
-			clr_country_flag = communist_election_win
-			clr_country_flag = fascist_election_win
-			clr_country_flag = reactionary_election_win
-			clr_country_flag = anarcho_liberal_election_win
-			remove_country_modifier = expert_diplomat
-			remove_country_modifier = successful_industrialist
-			remove_country_modifier = ivory_tower_intellectual
-			remove_country_modifier = man_of_the_people
-			remove_country_modifier = landed_gentleman
-			remove_country_modifier = military_man
-			remove_country_modifier = lord_admiral
-			remove_country_modifier = raving_loon
-			remove_country_modifier = luddite
-			remove_country_modifier = great_statesman
-			remove_country_modifier = backroom_boy
-			remove_country_modifier = great_reformer
-			remove_country_modifier = gauche_buffoon
-			remove_country_modifier = administrative_genius
-			remove_country_modifier = visionary_thinker
-			remove_country_modifier = competent_placeholder
-			remove_country_modifier = imperious_autocrat
-			remove_country_modifier = prince_of_terror
-			remove_country_modifier = efficient_sociopath
-			remove_country_modifier = pig_headed_isolationist
-			remove_country_modifier = ambitious_union_boss
-			remove_country_modifier = dour_economist
+			## Government Flags ##
+				set_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				clr_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
 			any_pop = {
-				ideology = {
-					value = conservative
-					factor = 0.15
-				}
-				scaled_militancy = {
-					ideology = liberal
-					factor = 4
-				}
+				ideology = { value = conservative factor = 0.15 }
+				scaled_militancy = { ideology = liberal factor = 4 }
 			}
-			create_alliance = ARG
-			relation = {
-				who = ARG
-				value = 400
-			}
-			ai_chance = {
-				factor = 10
-			}
+			create_alliance = FROM
+			relation = { who = FROM value = 400 }
+
+			ai_chance = { factor = 10 }
 		}
 	}
 
+	#Description: Uruguay Rejects the Ultimatum - Argentina can choose whether to go to war
 	country_event = {
 		id = 188177
-		title = "EVTNAME188177" #Uruguay Rejects the Ultimatum
+		title = "EVTNAME188177"
 		desc = "EVTDESC188177"
 		picture = "rosas_victory"
 
@@ -1646,35 +1734,34 @@ country_event = {
 
 		option = {
 			name = "War it is."
+
 			badboy = 2
-			casus_belli = {
+			casus_belli = { # unnecessary?
 				target = URU
 				type = cut_down_to_size
 				months = 12
 			}
 			war = {
 				target = URU
-				attacker_goal = {
-					casus_belli = cut_down_to_size
-				}
+				attacker_goal = { casus_belli = cut_down_to_size }
 			}
 			URU = { set_country_flag = war_with_argentina }
-			ai_chance = {
-				factor = 90
-			}
+
+			ai_chance = { factor = 90 }
 		}
 		option = {
 			name = "We will not push the matter further."
+
 			prestige = -10
-			ai_chance = {
-				factor = 10
-			}
+
+			ai_chance = { factor = 10 }
 		}
 	}
 
+	#Description: Uruguay Submits - if Uruguay refuses and loses the war, they get a conservative government
 	country_event = {
 		id = 188178
-		title = "EVTNAME188178" #Uruguay Submits
+		title = "EVTNAME188178"
 		desc = "EVTDESC188178"
 		picture = "rosas_victory"
 
@@ -1698,9 +1785,12 @@ country_event = {
 			days = 1
 		}
 
+		immediate = { clr_country_flag = war_with_argentina }
+
 		option = {
 			name = "Let's see how they fare with Argentina looking over their shoulder."
-			clr_country_flag = war_with_argentina
+
+
 			random_country = {
 				limit = {
 					tag = ARG
@@ -1709,51 +1799,48 @@ country_event = {
 				country_event = 188179
 			}
 			ruling_party_ideology = conservative
-			set_country_flag = tory_election_win
-			clr_country_flag = socialist_election_win
-			clr_country_flag = liberal_election_win
-			clr_country_flag = communist_election_win
-			clr_country_flag = fascist_election_win
-			clr_country_flag = reactionary_election_win
-			clr_country_flag = anarcho_liberal_election_win
-			remove_country_modifier = expert_diplomat
-			remove_country_modifier = successful_industrialist
-			remove_country_modifier = ivory_tower_intellectual
-			remove_country_modifier = man_of_the_people
-			remove_country_modifier = landed_gentleman
-			remove_country_modifier = military_man
-			remove_country_modifier = lord_admiral
-			remove_country_modifier = raving_loon
-			remove_country_modifier = luddite
-			remove_country_modifier = great_statesman
-			remove_country_modifier = backroom_boy
-			remove_country_modifier = great_reformer
-			remove_country_modifier = gauche_buffoon
-			remove_country_modifier = administrative_genius
-			remove_country_modifier = visionary_thinker
-			remove_country_modifier = competent_placeholder
-			remove_country_modifier = imperious_autocrat
-			remove_country_modifier = prince_of_terror
-			remove_country_modifier = efficient_sociopath
-			remove_country_modifier = pig_headed_isolationist
-			remove_country_modifier = ambitious_union_boss
-			remove_country_modifier = dour_economist
+			## Government Flags ##
+				set_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				clr_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
 			any_pop = {
-				ideology = {
-					value = conservative
-					factor = 0.15
-				}
-				scaled_militancy = {
-					ideology = liberal
-					factor = 4
-				}
+				ideology = { value = conservative factor = 0.15 }
+				scaled_militancy = { ideology = liberal	factor = 4 }
 			}
 		}
 	}
 
+	#Description: The Colorados Have Surrendered - cleanup event if Argentina remains at war with Uruguay
 	country_event = {
 		id = 188179
-		title = "EVTNAME188179" #The Colorados Have Surrendered
+		title = "EVTNAME188179"
 		desc = "EVTDESC188179"
 		picture = "unite"
 
@@ -1761,91 +1848,14 @@ country_event = {
 
 		option = {
 			name = "Excellent!"
+
 			prestige = 10
 			end_war = URU
 			create_alliance = URU
-			relation = {
-				who = URU
-				value = 400
-			}
+			relation = { who = URU value = 400 }
 			random_owned = {
-				limit = {
-					owner = { is_greater_power = yes }
-				}
-				owner = {
-					diplomatic_influence = {
-						who = URU
-						value = 200
-					}
-				}
+				limit = { owner = { is_greater_power = yes } }
+				owner = { diplomatic_influence = { who = URU value = 200 } }
 			}
 		}
 	}
-
-country_event = { # TODO
-
-	id = 188174
-	title = "EVTNAME188174"
-	desc = "EVTDESC188174"
-	picture = "uruguay"
-
-	trigger = {
-		tag = URU
-		OR = {
-			ruling_party_ideology = reactionary
-			ruling_party_ideology = conservative
-		}
-		NOT = {
-			has_country_flag = uruguay_1836_set_up
-			year = 1860
-		}
-	}
-
-	fire_only_once = yes
-
-	mean_time_to_happen = {
-		days = 1
-	}
-
-	option = {
-		name = "The rebels shall be brought to their knees."
-		set_country_flag = uruguay_1836_set_up
-		add_country_modifier = { name = fight_the_power duration = 3650 }
-		any_pop = {
-			limit = {
-				is_primary_culture = yes
-				location = {
-					NOT = { province_id = 2344 }
-				}
-			}
-			ideology = {
-				value = reactionary
-				factor = 0.3
-			}
-			ideology = {
-				value = conservative
-				factor = 0.7
-			}
-		}
-		any_pop = {
-			limit = {
-				is_primary_culture = yes
-				location = {
-					province_id = 2344
-				}
-			}
-			ideology = {
-				value = liberal
-				factor = 0.6
-			}
-			consciousness = 3
-		}
-		any_owned = {
-			limit = { province_id = 2344 }
-			add_province_modifier = {
-				name = peasant_revolt
-				duration = 1095
-			}
-		}
-	}
-}

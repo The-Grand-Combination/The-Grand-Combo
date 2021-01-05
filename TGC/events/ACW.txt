@@ -3736,8 +3736,6 @@
 				}
 				capital = 2146
 				country_event = { id = 16000 days = 150 }
-
-				ai_chance = { factor = 100 }
 			}
 		}
 
@@ -4046,13 +4044,13 @@
 				relation = { who = FROM value = 200 }
 
 				ai_chance = {
-					factor = 0
+					factor = 20
 					modifier = {
-						factor = 20
-						CSA = { brigades_compare = 2 }
+						factor = 0
+						NOT = { CSA = { brigades_compare = 2 } }
 					}
 					modifier = {
-						factor = 80
+						factor = 4
 						THIS = { in_sphere = CSA }
 					}
 				}
@@ -4073,7 +4071,7 @@
 				ai_chance = {
 					factor = 80
 					modifier = {
-						factor = 60
+						factor = 0.75
 						FROM = { brigades_compare = 1.5 }
 					}
 				}
@@ -4108,36 +4106,70 @@
 			}
 		}
 
-		#Description: White House Burning # TODO rework
+		#Description: White House Burning
 		country_event = {
 			id = 182000
-			title = "White House Burning!"
-			desc = "Our enemies have devastated the glorious seat of our nation!"
+			title = "EVTNAME182000"
+			desc = "EVTDESC182000"
 			picture = "washington_burned"
 
 			is_triggered_only = yes
 
-			option = {
-				name = "We will have revenge!"
+			immediate = { set_country_flag = white_house_burnt }
 
-				set_country_flag = white_house_burnt
+			option = {
+				name = "EVTOPTA182000"
+
+				badboy = 2
 				casus_belli = {
 					target = FROM
 					type = humiliate
 					months = 240
 				}
+				any_pop = { dominant_issue = { value = jingoism factor = 0.05 } }
 
-				ai_chance = { factor = 50 }
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0
+						badboy = 0.9
+					}
+				}
 			}
 
 			option = {
-				name = "We cannot afford more conflict."
+				name = "EVTOPTB182000"
 
-				set_country_flag = white_house_burnt
-				prestige = -10
-				war_exhaustion = 5
+				prestige = -5
+				war_exhaustion = 10
+				any_pop = { consciousness = -0.5 }
 
-				ai_chance = { factor = 50 }
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.01
+						war_exhaustion = 90
+					}
+				}
+			}
+		}
+
+		#Description: Statue of Liberty Destroyed
+		country_event = {
+			id = 188244
+			title = "EVTNAME188244"
+			desc = "EVTDESC188244"
+			picture = "statue_of_liberty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA188244"
+
+				prestige = -20
+				war_exhaustion = 10
+				remove_country_modifier = the_statue_of_liberty
+				232 = { remove_province_modifier = gateway_to_america } # how to get this other than by being UNY
 			}
 		}
 
@@ -4161,8 +4193,6 @@
 					}
 				}
 				CUB = { all_core = { add_core = USA } }
-
-				ai_chance = { factor = 100 }
 			}
 		}
 
@@ -4220,8 +4250,7 @@
 					value = 400
 				}
 				CUB = {
-					primary_culture = afro_caribeno
-					add_accepted_culture = caribeno
+					add_accepted_culture = afro_caribeno
 					all_core = { remove_core = USA }
 				}
 
@@ -4236,38 +4265,35 @@
 			}
 		}
 
-	## Trent Affair ## TODO everything
+	## Trent Affair ##
 
-		#Britain gets event of HMS Trent being captured by crew of the USS San Jacinto
+		#Description: Britain gets event of HMS Trent being captured by crew of the USS San Jacinto
 		country_event = {
 			id = 187940
-			title = "The Trent Affair"
+			title = "EVTNAME187940"
 			desc = "EVTDESC187940"
 			picture = "hms_trent"
 
 			trigger = {
+				tag = ENG
+				is_greater_power = yes
+				USA = { war_with = CSA }
 				NOT = {
 					has_global_flag = trent_affair_resolved
 					has_global_flag = trent_affair_begun
 					alliance_with = USA
 				}
-				is_greater_power = yes
-				tag = ENG
-				USA = {
-					war_with = CSA
-				}
-				relation = {
-					who = CSA
-					value = 0
-				}
+				relation = { who = CSA value = 0 }
 			}
 
 			mean_time_to_happen = {
 				months = 4
 			}
 
+			# The USA will pay
 			option = {
-				name = "The United States must answer for this!"
+				name = "EVTOPTA187940"
+
 				set_global_flag = trent_affair_begun
 				USA = { country_event = 187942 }
 				CSA = { country_event = 187941 }
@@ -4275,49 +4301,51 @@
 					who = USA
 					value = -25
 				}
-				ai_chance = {
-					factor = 90
-				}
+
+				ai_chance = { factor = 90 }
 			}
+
+			# Do nothing
 			option = {
-				name = "We will not risk a diplomatic incident."
+				name = "EVTOPTB187940"
+
 				set_global_flag = trent_affair_resolved
 				prestige = -15
-				ai_chance = {
-					factor = 10
-				}
+
+				ai_chance = { factor = 10 }
 			}
 		}
 
-		#CSA gets to know what's going on
+		#Description: CSA gets to know what's going on
 		country_event = {
 			id = 187941
-			title = "The Trent Affair"
-			desc = "The British HMS Trent, with two Confederate diplomats on board, has been seized by Union forces."
+			title = "EVTNAME187941"
+			desc = "EVTDESC187941"
 			picture = "hms_trent"
 
 			is_triggered_only = yes
 
 			option = {
-				name = "This could be our chance..."
+				name = "EVTOPTA187941"
 			}
 		}
 
-		#USA decides whether to accept the British demands
+		#Description: USA decides whether to accept the British demands
 		country_event = {
 			id = 187942
-			title = "The Trent Affair"
+			title = "EVTNAME187942"
 			desc = "EVTDESC187942"
 			picture = "hms_trent"
 
 			is_triggered_only = yes
 
+			# Apologize
 			option = {
-				name = "We will apologize and release the envoys. This mustn't come to war."
+				name = "EVTOPTA187942"
+
 				prestige = -20
-				ENG = {
-					country_event = 187943
-				}
+				ENG = { country_event = 187943 }
+
 				ai_chance = {
 					factor = 80
 					modifier = {
@@ -4360,11 +4388,12 @@
 				}
 			}
 
+			# Don't apologize
 			option = {
-				name = "All is fair in war!"
-				ENG = {
-					country_event = 187944
-				}
+				name = "EVTOPTB187942"
+
+				ENG = { country_event = 187944 }
+
 				ai_chance = {
 					factor = 20
 					modifier = {
@@ -4408,73 +4437,103 @@
 			}
 		}
 
-		#UK reaction event - USA apologizes
+		#Description: UK reaction event - USA apologizes
 		country_event = {
 			id = 187943
-			title = "The Trent Affair"
+			title = "EVTNAME187943"
 			desc = "EVTDESC187943"
 			picture = "hms_trent"
 
 			is_triggered_only = yes
 
 			option = {
-				name = "Another victory for England!"
+				name = "EVTOPTA187943"
+
 				set_global_flag = trent_affair_resolved
 				prestige = 10
 				relation = {
 					who = USA
 					value = 25
 				}
-				CSA = {
-					country_event = 187945
-				}
+				CSA = { country_event = 187945 }
 			}
 		}
-		#UK reaction event - USA doesn't back down
+
+		#Description: UK reaction event - USA doesn't back down
 		country_event = {
 			id = 187944
-			title = "The Trent Affair"
+			title = "EVTNAME187944"
 			desc = "EVTDESC187944"
 			picture = "hms_trent"
 			major = yes
 
 			is_triggered_only = yes
 
+			# Go to war
 			option = {
-				name = "They will regret this."
+				name = "EVTOPTA187944"
+
 				set_global_flag = trent_affair_resolved
-				relation = {
-					who = USA
-					value = -175
-				}
+				relation = { who = USA value = -175 }
+				diplomatic_influence = { who = CSA value = 100 }
 				war = {
 					target = USA
-					attacker_goal = {
-						casus_belli = cut_down_to_size
-					}
-					defender_goal = {
-						casus_belli = humiliate
-					}
+					attacker_goal = { casus_belli = cut_down_to_size }
+					defender_goal = { casus_belli = humiliate }
 				}
-				diplomatic_influence = {
-					who = CSA
-					value = 100
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Back down
+			option = {
+				name = "EVTOPTB187944"
+
+				prestige = -50
+				scaled_militancy = {
+					issue = jingoism
+					factor = 6
 				}
+				scaled_militancy = {
+					issue = pro_military
+					factor = 5
+				}
+				CSA = { country_event = 187946 }
+
+				ai_chance = { factor = 0 }
 			}
 		}
 
-		#CSA reacts to the USA giving in to the British
+		#Description: CSA reacts to the USA giving in to the British
 		country_event = {
 			id = 187945
-			title = "The Trent Affair"
-			desc = "The Union has given in to the British, and has released our diplomats, evading war."
+			title = "EVTNAME187945"
+			desc = "EVTDESC187945"
 			picture = "hms_trent"
 
 			is_triggered_only = yes
 
 			option = {
-				name = "This is not in our favor."
+				name = "EVTOPTA187945"
+
 				prestige = -5
+			}
+		}
+
+		#Description: CSA reacts to the UK backing down when the USA threaten war
+		country_event = {
+			id = 187946
+			title = "EVTNAME187946"
+			desc = "EVTDESC187946"
+			picture = "hms_trent"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA187946"
+
+				prestige = -5
+				relation = { who = ENG value = -50 }
 			}
 		}
 
@@ -4612,8 +4671,6 @@
 					}
 					USA = { all_core = { add_core = CSA } }
 					USA = { all_core = { remove_core = USA } }
-
-					ai_chance = { factor = 100 }
 				}
 			}
 
@@ -4718,27 +4775,27 @@
 					tag = CSA
 					war = no
 					has_global_flag = american_civil_war_has_happened
-					NOT = {	has_country_flag = csaprestigebuff }
 				}
 
 				mean_time_to_happen = {
 					days = 20
 				}
 
+				fire_only_once = yes
+
 				option = {
 					name = EVTOPTA999886
 
 					prestige = 50
 					USA = { prestige = -50 }
-					set_country_flag = csaprestigebuff
 				}
 			}
 
-			#Description: The CSA can choose whether enlisted slaves should get the freedom they were promised. # TODO localization
+			#Description: The CSA can choose whether enlisted slaves should get the freedom they were promised.
 			country_event = {
 				id = 180000
-				title = "Post-War Freedom?"
-				desc = "EVT180000DESC"
+				title = "EVTNAME180000"
+				desc = "EVTDESC180000"
 				picture = "coloured_troops_line"
 
 				trigger = {
@@ -4755,7 +4812,7 @@
 
 				# They will be freed
 				option = {
-					name = "We will stand by our promises: let them stay free."
+					name = "EVTOPTA180000"
 
 					clr_country_flag = coloured_troops
 					set_country_flag = freed_soldiers
@@ -4765,6 +4822,7 @@
 						militancy = -1
 						consciousness = 1
 					}
+					aristocrats = { militancy = 1}
 
 					ai_chance = {
 						factor = 50
@@ -4783,9 +4841,7 @@
 								ruling_party_ideology = reactionary
 								ruling_party_ideology = conservative
 								ruling_party_ideology = fascist
-								NOT = {
-									government = democracy
-								}
+								NOT = { government = democracy }
 							}
 						}
 					}
@@ -4793,7 +4849,7 @@
 
 				# They remain slaves
 				option = {
-					name = "They go back to the plantations, where they belong!"
+					name = "EVTOPTB180000"
 
 					prestige = -5
 					clr_country_flag = coloured_troops
@@ -4809,12 +4865,13 @@
 						militancy = 1
 						consciousness = 1
 					}
+					aristocrats = { militancy = -1 }
 					any_pop = {
 						limit = {
-							OR = {
+							#OR = {
 								pop_type = slaves
-								pop_type = slaves_factory
-							}
+								#pop_type = slaves_factory
+							#}
 						}
 						militancy = 5
 					}
@@ -4822,8 +4879,6 @@
 					ai_chance = { factor = 50 }
 				}
 			}
-
-
 
 		## USA Victory ##
 
@@ -4981,6 +5036,10 @@
 					has_global_flag = american_civil_war_has_happened
 					NOT = { war_with = CSA }
 					OR = {
+						NOT = { exists = CSA }
+						truce_with = CSA
+					}
+					OR = {
 						slavery = yes_slavery
 						slavery = freedom_of_womb
 					}
@@ -5032,753 +5091,449 @@
 				}
 			}
 
-### Indian Wars ###
+## Mexico in ACW ##
 
-	## Sioux Wars ##
+	#Description: If Mexico is not given autonomy, they will revolt alongside the CSA/FSA
+	country_event = {
 
-		#Description: The Sioux Wars - dakota pops gain militancy
-		country_event = {
-			id = 16420
-			title = "EVTNAME16420"
-			desc = "EVTDESC16420"
-			picture = "Sioux"
+		id = 993888
+		title = "EVTNAME993888"
+		desc = "EVTDESC993888"
+		picture = "mexico_soldiers"
 
-			trigger = {
-				has_country_flag = custers_expedition_sent
-				owns = 122 # Fort Pierre / Rapid City
-				122 = { trade_goods = precious_metal }
-				NOT = { accepted_culture = dakota }
-				NOT = { has_country_flag = sioux_wars }
-			}
-
-			mean_time_to_happen = {
-				months = 12
-			}
-
-			option = {
-				name = "EVTOPTA16420"
-
-				any_pop = {
-					limit = { has_pop_culture = dakota }
-					militancy = 8
+		trigger = {
+			tag = USA
+			OR = {
+				AND = {
+					war_with = CSA
+					has_global_flag = american_civil_war_has_happened
 				}
-				set_country_flag = sioux_wars
+				AND = {
+					war_with = FSA
+					has_global_flag = alt_american_civil_war_has_happened
+				}
 			}
+			has_country_flag = mexico_annexation
+			NOT = { has_country_flag = mexico_independence }
+			NOT = { exists = MEX }
 		}
 
-		#Description: Little Bighorn - dakota pops gain militancy and consciousness
-		country_event = {
-			id = 16425
-			title = "EVTNAME16425"
-			desc = "EVTDESC16430"
-			picture = "sittingbull"
-			fire_only_once = yes
+		fire_only_once = yes
 
-			trigger = {
-				has_country_flag = sioux_wars
-				NOT = { has_country_flag = sioux_wars_over }
-			}
-
-			mean_time_to_happen = {
-				months = 12
-			}
-
-			option = {
-				name = "EVTOPTA16430"
-
-				prestige = -5
-				any_pop = {
-					limit = { has_pop_culture = dakota }
-					militancy = 10
-					consciousness = 10
-				}
-			}
+		mean_time_to_happen = {
+			days = 5
 		}
 
-		#Description: End of The Sioux Wars - dakota pops lose militancy, consciousness and population
-		country_event = {
-			id = 16430
-			title = "EVTNAME16430"
-			desc = "EVTDESC16430"
-			picture = "sittingbull"
-			fire_only_once = yes
+		# Keep them in the union - war in 120 days, cores if you win
+		option = {
+			name = "EVTOPTA993888"
 
-			trigger = {
-				has_country_flag = sioux_wars
-				num_of_revolts = 0
+			set_country_flag = mexico_independence
+			any_owned = { # Remove cores so USA can't just cheesily peace out nations and gobble them up later individually
+				limit = { is_core = MEX }
+				remove_core = USA
 			}
-
-			mean_time_to_happen = {
-				months = 50
+			release_vassal = MEX
+			diplomatic_influence = { who = MEX value = 200 }
+			MEX = {
+				leadership = 100
+				small_arms = 750
+				canned_food = 1500
+				artillery = 750
+				luxury_clothes = 250
+				wine = 500
+				liquor = 500
+				add_country_modifier = { name = neutrality duration = 120 }
 			}
+			country_event = { id = 993889 days = 120 }
 
-			option = {
-				name = "EVTOPTA16430"
-
-				any_pop = {
-					limit = { has_pop_culture = dakota }
-					militancy = -10
-					consciousness = -10
-					reduce_pop = 0.5
-				}
-				set_country_flag = sioux_wars_over
-			}
+			ai_chance = { factor = 75 }
 		}
 
-	## Apache Wars ##
+		# Relase as vassal - no war, no cores
+		option = {
+			name = "EVTOPTB993888"
 
-		#Description: Apache Wars - Apache pops gain militancy, non-natives in Santa Fe reduce population
-		country_event = {
-			id = 16440
-			title = "EVTNAME16440"
-			desc = "EVTDESC16440"
-			picture = "Sioux"
-
-			trigger = {
-				owns = 105	# Santa Fe
-				year = 1840
-				tag = USA
-				NOT = { accepted_culture = apache }
-				NOT = {	has_country_flag = apache_wars }
+			prestige = -15
+			release_vassal = MEX
+			diplomatic_influence = { who = MEX value = 200 }
+			MEX = {
+				leadership = 100
+				small_arms = 750
+				canned_food = 1500
+				artillery = 750
+				luxury_clothes = 250
+				wine = 500
+				liquor = 500
 			}
 
-			mean_time_to_happen = {
-				months = 36
-			}
-
-			option = {
-				name = "EVTOPTA16440"
-
-				105 = {
-					state_scope = {
-						any_pop = {
-							limit = { has_pop_culture = apache }
-							militancy = 8
-						}
-						any_pop = {
-							limit = { NOT = { is_culture_group = native_american } }
-							reduce_pop = 0.5
-						}
-					}
-				}
-				set_country_flag = apache_wars
-			}
+			ai_chance = { factor = 25 }
 		}
+	}
 
-		#Description: Apache Raiders - Apache pops gain militancy, province gets militancy and pop growth debuff
-		province_event = {
-			id = 16445
-			title = "EVTNAME16445"
-			desc = "EVTDESC16445"
-			picture = "Sioux"
+	#Description: War breaks out between the USA and Mexico
+	country_event = {
+		id = 993889
+		title = "EVTNAME993889"
+		desc = "EVTDESC993889"
+		picture = "mexico_soldiers" # TODO alternative?
 
-			trigger = {
-				is_colonial = yes
-				has_country_flag = apache_wars
-				has_pop_culture = apache
-				NOT = { has_country_flag = apache_wars_over }
-			}
+		is_triggered_only = yes
 
-			mean_time_to_happen = {
-				months = 24
-			}
+		fire_only_once = yes
 
-			option = {
-				name = "EVTOPTA16445"
+		option = {
+			name = "EVTOPTA993889"
 
-				state_scope = {
-					any_pop = {
-						limit = { has_pop_culture = apache }
-						militancy = 10
-					}
-				}
-				add_province_modifier = {
-					name = apache_raiders
-					duration = 730
-				}
-			}
-		}
+			release_vassal = MEX
+			diplomatic_influence = { who = MEX value = -200 }
+			relation = { who = MEX value = -200 }
 
-		#Description: Apprehending Geronimo - Apache wars end, Apache pops lose militancy, consciousness and population
-		country_event = {
-			id = 16450
-			title = "EVTNAME16450"
-			desc = "EVTDESC16450"
-			picture = "geronimo"
-			fire_only_once = yes
-
-			trigger = {
-				tag = USA
-				year = 1886
-				has_country_flag = apache_wars
-			}
-
-			mean_time_to_happen = {
-				months = 96
-			}
-
-			option = {
-				name = "EVTOPTA16450"
-
-				any_pop = {
+			## Opportunistic alliance ##
+				random_country = {
 					limit = {
-						has_pop_culture = apache
-						NOT = { location = { state_id = 130 } }
+						war_with = THIS
+						OR = {
+							tag = FSA
+							tag = CSA
+						}
 					}
-					militancy = -10
-					consciousness = -10
-					reduce_pop = 0.8
+					create_alliance = MEX
 				}
-				set_country_flag = apache_wars_over
-			}
-		}
-
-	## Seminole Wars ##
-
-		#Description: The Second Seminole War
-		country_event = {
-			id = 16460
-			title = "EVTNAME16460"
-			desc = "EVTDESC16460"
-			picture = seminole_wars
-
-			trigger = {
-				owns = 200	# Dade
-				tag = USA
-				NOT = {	has_country_flag = second_seminole_war }
-			}
-
-			mean_time_to_happen = {
-				months = 1
-			}
-
-			fire_only_once = yes
-
-			option = {
-				name = "EVTOPTA16460"
-
-				USA_200 = {
-					any_pop = {
-						limit = {
-							OR = {
-								has_pop_culture = seminole
-								has_pop_culture = afro_american
-							}
+				random_country = {
+					limit = {
+						war_with = THIS
+						is_greater_power = yes
+						NOT = {
+							tag = CSA
+							tag = FSA
 						}
-						militancy = 8
+						relation = { who = MEX value = 0 }
 					}
-					any_pop = {
-						limit = {
-							NOT = {
-								is_culture_group = native_american
-								is_culture_group = african_diaspora_cultures
-							}
+					create_alliance = MEX
+				}
+
+			## Declare war ##
+				random_owned = {
+					limit = { USA = { any_owned_province = { is_core = MEX } } }
+					USA = {
+						war = {
+							target = MEX
+							attacker_goal = { casus_belli = civil_war }
+							defender_goal = { casus_belli = status_quo }
 						}
-						reduce_pop = 0.5
 					}
 				}
-				set_country_flag = second_seminole_war
-			}
+				random_owned = {
+					limit = { NOT = { USA = { any_owned_province = { is_core = MEX } } } }
+					USA = {
+						war = {
+							target = MEX
+							attacker_goal = { casus_belli = civil_war }
+							defender_goal = { casus_belli = acquire_all_cores }
+						}
+					}
+				}
 		}
+	}
 
-		#Description: Seminole Raiders - Seminole pops gain militancy, province gets militancy and pop growth debuff
-		province_event = {
-			id = 16461
-			title = "EVTNAME16461"
-			desc = "EVTDESC16461"
-			picture = seminole_wars
+	#Description: The UK can choose to intervene in the ACW against the USA if they own Canada and aren't on great relations with the USA
+	country_event = {
+		id = 993891
+		title = "EVTNAME993891"
+		desc = "EVTDESC993891"
+		picture = "confederation"
 
-			trigger = {
-				region = USA_200
-				has_pop_culture = seminole
+		trigger = {
+			tag = ENG
+			is_greater_power = yes
+			57 = { # Bytown / Ottawa
 				OR = {
-					owner = {
-						has_country_flag = second_seminole_war
-						NOT = { has_country_flag = second_seminole_war_over }
+					owned_by = THIS
+					owner = { vassal_of = THIS }
+				}
+			}
+			NOT = { relation = { who = USA value = 50 } }
+			OR = {
+				relation = { who = CSA value = 75 }
+				relation = { who = FSA value = 75 }
+				relation = { who = MEX value = 75 }
+			}
+			USA = {
+				OR = {
+					AND = {
+						OR = {
+							war_with = CSA
+							war_with = FSA
+						}
+						war_with = MEX
+						has_country_flag = mexico_independence
 					}
-					owner = {
-						has_country_flag = third_seminole_war
-						NOT = { has_country_flag = third_seminole_war_over }
+					AND = {
+						OR = {
+							war_with = CSA
+							war_with = FSA
+						}
+						badboy = 1
 					}
 				}
 			}
+		}
 
-			mean_time_to_happen = {
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		# Go to war now
+		option = {
+			name = "EVTOPTA993891"
+
+			prestige = 15
+			badboy = 5
+			relation = { who = USA value = -150 }
+			ENG = {
+				war = {
+					target = USA
+					attacker_goal = { casus_belli = cut_down_to_size }
+					defender_goal = { casus_belli = status_quo }
+					call_ally = yes
+				}
+			}
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 2
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.6
+					war = yes
+				}
+				modifier = {
+					factor = 0
+					any_greater_power = { war_with = THIS }
+				}
+				modifier = {
+					factor = 0
+					relation = { who = USA value = 150 }
+				}
+			}
+		}
+
+		# Maybe later
+		option = {
+			name = "EVTOPTB993891"
+
+			relation = { who = USA value = -100 }
+			casus_belli = {
+				target = USA
+				type = cut_down_to_size
 				months = 24
 			}
 
-			option = {
-				name = "EVTOPTA16461"
-
-				state_scope = {
-					any_pop = {
-						limit = { has_pop_culture = seminole }
-						militancy = 10
-					}
-				}
-				add_province_modifier = {
-					name = seminole_raiders
-					duration = 730
-				}
-			}
-		}
-
-		#Description: The End of the Second Seminole War
-		country_event = {
-			id = 16462
-			title = "EVTNAME16462"
-			desc = "EVTDESC16462"
-			picture = seminole_wars
-			fire_only_once = yes
-
-			trigger = {
-				tag = USA
-				year = 1841
-				has_country_flag = second_seminole_war
-				NOT = {
-					any_owned_province = {
-						region = USA_200
-						controlled_by_rebels = yes
-					}
-				}
-			}
-
-			mean_time_to_happen = {
-				months = 120
-			}
-
-			# Peace at last
-			option = {
-				name = "EVTOPTA16462"
-
-				any_pop = {
-					limit = {
-						has_pop_culture = seminole
-						NOT = { location = { state_id = 130 } }
-					}
-					militancy = -10
-					consciousness = -10
-					reduce_pop = 0.8
-				}
-				set_country_flag = second_seminole_war_over
-
-				ai_chance = { factor = 1 }
-			}
-
-			# Drive them out completely
-			option = {
-				name = "EVTOPTA16462"
-
-				badboy = 1
-				any_pop = {
-					limit = {
-						has_pop_culture = seminole
-						NOT = { location = { state_id = 130 } }
-					}
-					militancy = -10
-					consciousness = -10
-					reduce_pop = 0.4
-				}
-				set_country_flag = second_seminole_war_over
-
-				ai_chance = { factor = 0 }
-			}
-		}
-
-		#Description: The Third Seminole War
-		country_event = {
-			id = 16463
-			title = "EVTNAME16463"
-			desc = "EVTDESC16463"
-			picture = seminole_wars
-
-			trigger = {
-				owns = 200	# Dade
-				200 = { is_colonial = no }
-				tag = USA
-				has_country_flag = second_seminole_war_over
-			}
-
-			mean_time_to_happen = {
-				months = 36
+			ai_chance = {
+				factor = 70
 				modifier = {
 					factor = 0.8
-					has_global_flag = marching_on_the_trail_of_tears
+					war = yes
 				}
-			}
-
-			fire_only_once = yes
-
-			option = {
-				name = "EVTOPTA16463"
-
-				USA_200 = {
-					any_pop = {
-						limit = {
-							OR = {
-								has_pop_culture = seminole
-								has_pop_culture = afro_american
-							}
-						}
-						militancy = 8
-					}
-					any_pop = {
-						limit = {
-							NOT = {
-								is_culture_group = native_american
-								is_culture_group = african_diaspora_cultures
-							}
-						}
-						reduce_pop = 0.5
-					}
+				modifier = {
+					factor = 0.2
+					any_greater_power = { war_with = THIS }
 				}
-				set_country_flag = third_seminole_war
-			}
-		}
-
-		#Description: The End of the Third Seminole War
-		country_event = {
-			id = 16464
-			title = "EVTNAME16464"
-			desc = "EVTDESC16464"
-			picture = seminole_wars
-			fire_only_once = yes
-
-			trigger = {
-				tag = USA
-				year = 1855
-				has_country_flag = third_seminole_war
-				NOT = {
-					any_owned_province = {
-						region = USA_200
-						controlled_by_rebels = yes
-					}
-				}
-			}
-
-			mean_time_to_happen = {
-				months = 120
-			}
-
-			option = {
-				name = "EVTOPTA16464"
-
-				any_pop = {
-					limit = {
-						has_pop_culture = seminole
-						NOT = { location = { state_id = 130 } }
-					}
-					militancy = -10
-					consciousness = -10
-					reduce_pop = 0.8
-				}
-				set_country_flag = third_seminole_war_over
-			}
-		}
-
-		#Description: Seminole nation - triggered for the USA if the Seminole rebels enforce demands
-		country_event = {
-			id = 16465
-			title = "EVTNAME16465"
-			desc = "EVTDESC16465"
-			picture = seminole_wars
-			is_triggered_only = yes
-
-			immediate = {
-				MSC = {
-					all_core = {
-						limit = { region = USA_200 }
-						secede_province = MSC
-					}
-				}
-			}
-
-			# Continue the war
-			option = {
-				name = "EVTOPTA16465"
-
-				badboy = 5
-				war = {
-					target = MSC
-					attacker_goal = { casus_belli = annex_core_country }
-					call_ally = no
-				}
-				MSC = { add_country_modifier = { name = small_country_draft duration = 365 } }
-				random_country = {
-					limit = {
-						OR = {
-							tag = SPA
-							tag = SPC
-							tag = IBR
-						}
-						exists = yes
-					}
-					country_event = 16466
-				}
-				random_country = {
-					limit = {
-						tag = ENG
-						exists = yes
-					}
-					country_event = 16466
-				}
-			}
-
-			# Accept the loss
-			option = {
-				name = "EVTOPTB16465"
-
-				prestige = -25
-				scaled_militancy = {
-					factor = 3
-					issue = pro_military
-				}
-				scaled_militancy = {
-					factor = 5
-					issue = jingoism
+				modifier = {
+					factor = 0.2
+					relation = { who = USA value = 150 }
 				}
 			}
 		}
 
-		#Description: A new state in Florida - triggered for Spain and the UK if the USA decides to continue the war
-		country_event = {
-			id = 16466
-			title = "EVTNAME16466"
-			desc = "EVTDESC16466"
-			picture = seminole_wars
-			is_triggered_only = yes
+		# Don't go to war
+		option = {
+			name = "EVTOPTC993891"
 
-			# Intervene
-			option = {
-				name = "EVTOPTA16466"
+			prestige = -5
+			relation = { who = USA value = 100 }
 
-				create_alliance = MSC
-				diplomatic_influence = { who = MSC value = 50 }
-				relation = { who = MSC value = 50 }
-				add_casus_belli = { target = USA type = humiliate months = 6 }
-				MSC = {
-					money = 1000
-					iron = 10
-					wool = 10
-					timber = 25
-					small_arms = 10
-					leadership = 20
-					add_casus_belli = { target = USA type = war_reparations months = 6 }
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 1.5
+					relation = { who = USA value = 150 }
 				}
-
-				ai_chance = {
-					factor = 60
-					modifier = {
-						factor = 0
-						alliance_with = USA
-					}
+				modifier = {
+					factor = 4
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.2
+					USA = { war_with = FSA }
+				}
+				modifier = {
+					factor = 0.1
+					USA = { badboy = 1 }
 				}
 			}
+		}
+	}
 
-			# Send supplies and advisors
-			option = {
-				name = "EVTOPTB16466"
+	#Description: USA control of Mexico confirmed - USA gets cores on all of Mexico
+	country_event = {
+		id = 993895
+		title = "EVTNAME993895"
+		desc = "EVTDESC993895"
+		picture = "mexico_soldiers" # TODO alternative
 
-				MSC = {
-					money = 1000
-					iron = 10
-					wool = 10
-					timber = 25
-					small_arms = 10
-					leadership = 20
-				}
+		trigger = {
+			tag = USA
+			has_country_flag = mexico_independence
+			OR = {
+				has_global_flag = american_civil_war_has_happened
+				has_global_flag = alt_american_civil_war_has_happened
+			}
+			war = no
+			NOT = { exists = MEX }
+			NOT = {
+				has_country_flag = mexico_integration_succeeded
+				has_country_flag = mexico_integration_failed
+			}
+		}
 
-				ai_chance = {
-					factor = 20
-					modifier = {
-						factor = 0.5
-						NOT = { relation = { who = USA value = 0 } }
-					}
-				}
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			days = 14
+		}
+
+		immediate = {
+			set_country_flag = mexico_integration_succeeded
+			set_global_flag = rio_grande_is_a_state
+			set_global_flag = sonora_is_a_state
+		}
+
+		# Integrate Mexico as is - no assimilation of Mexican pops, but you will be able to accept them later # TODO
+		option = {
+			name = "EVTOPTA993895"
+
+			prestige = 15
+			badboy = 8
+			all_core = { remove_core = MEX }
+			any_owned = {
+				limit = { is_core = MEX }
+				add_core = USA
 			}
 
-			# Don't recognize them
-			option = {
-				name = "EVTOPTC16466"
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				dominant_issue = { value = full_citizenship factor = 0.5 }
+				dominant_issue = { value = no_slavery factor = 0.6 }
+				consciousness = 5
+			}
 
-				relation = { who = MSC value = -25 }
-
-				ai_chance = {
-					factor = 20
-					modifier = {
-						factor = 0.5
-						NOT = { relation = { who = USA value = 0 } }
-					}
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					NOT = { badboy = 0.48 }
 				}
 			}
 		}
 
-		#Description: A new state in Florida - triggered for MSC if they exist at peace
-		country_event = {
-			id = 16467
-			title = "EVTNAME16467"
-			desc = "EVTDESC16467"
-			picture = seminole_wars
-			fire_only_once = yes
+		# Anglify the north - remove MEX cores in the north to allow for assimilation, but you will be unable to accept Mexican culture later
+		option = {
+			name = "EVTOPTB993895"
 
-			trigger = {
-				tag = MSC
+			prestige = 15
+			badboy = 12
+			MEX_2150 = { add_core = USA } # Rio Grande
+			MEX_2149 = { add_core = USA } # Cohauila
+			MEX_2142 = { add_core = USA } # Chihuahua
+			MEX_2151 = { add_core = USA } # Durango
+			MEX_2139 = { add_core = USA } # Baja California
+			MEX_2138 = { add_core = USA } # Sonora
+			MEX_2156 = { add_core = USA } # Sinaloa
+			set_global_flag = usa_anglify_north_mexico
+			all_core = { remove_core = MEX }
+			any_owned = {
+				limit = { is_core = MEX }
+				add_core = USA
+			}
+
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				dominant_issue = { value = full_citizenship factor = 0.6 }
+				dominant_issue = { value = no_slavery factor = 0.75 }
+				militancy = 2
+				consciousness = 6
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					badboy = 0.48
+				}
+			}
+		}
+	}
+
+	#Description: USA control of Mexico denied - USA loses cores if Mexico exists at peace
+	country_event = {
+		id = 993892
+		title = "EVTNAME993892"
+		desc = "EVTDESC993892"
+		picture = "mexico_soldiers"
+
+		trigger = {
+			tag = USA
+			has_country_flag = mexico_independence
+			OR = {
+				has_global_flag = american_civil_war_has_happened
+				has_global_flag = alt_american_civil_war_has_happened
+			}
+			MEX = {
 				exists = yes
+				truce_with = THIS
 				war = no
 			}
-
-			mean_time_to_happen = {
-				days = 3
+			NOT = {
+				has_country_flag = mexico_integration_succeeded
+				has_country_flag = mexico_integration_failed
 			}
+		}
 
-			option = {
-				name = "EVTOPTA16467"
+		fire_only_once = yes
 
-				prestige = 5
-				war_exhaustion = -20
+		mean_time_to_happen = {
+			days = 14
+		}
+
+		immediate = { set_country_flag = mexico_integration_failed }
+
+		option = {
+			name = "EVTOPTA993892"
+
+			prestige = -20
+			MEX = {
+				any_owned = {
+					limit = { is_core = MEX }
+					remove_core = USA
+				}
 				any_pop = {
-					limit = { has_pop_culture = seminole }
-					reduce_pop = 1.5
+					limit = { is_culture_group = american_cultures }
+					move_pop = 104 # San Francisco
 				}
-				any_owned = { add_province_modifier = { name = baby_boom duration = 365 } }
-				USA = {
-					random_owned = {
-						limit = { owner = { has_country_flag = second_seminole_war } }
-						owner = { set_country_flag = second_seminole_war_over }
-					}
-					random_owned = {
-						limit = { owner = { has_country_flag = third_seminole_war } }
-						owner = { set_country_flag = third_seminole_war_over }
-					}
-				}
-				any_country = {
-					limit = {
-						is_greater_power = yes
-						NOT = { tag = USA }
-					}
-					country_event = { id = 16468 days = 5 }
-				}
+			}
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				militancy = 3
+				consciousness = 3
 			}
 		}
-
-		#Description: A new state in Florida - triggered for every GP if the Seminoles achieve independence
-		country_event = {
-			id = 16468
-			title = "EVTNAME16468"
-			desc = "EVTDESC16468"
-			picture = seminole_wars
-			is_triggered_only = yes
-
-			# Recognize the new state
-			option = {
-				name = "EVTOPTA16468"
-
-				diplomatic_influence = { who = MSC value = 10 }
-				relation = { who = MSC value = 20 }
-				MSC = { prestige = 5 }
-				USA = { prestige = -5 }
-
-				ai_chance = {
-					factor = 50
-					modifier = {
-						factor = 0
-						alliance_with = USA
-					}
-					modifier = {
-						factor = 2
-						any_owned_province = {
-							OR = {
-								continent = north_america
-								continent = south_america
-							}
-						}
-					}
-				}
-			}
-
-			# Don't recognize them
-			option = {
-				name = "EVTOPTB16468"
-
-				relation = { who = MSC value = -15 }
-
-				ai_chance = {
-					factor = 50
-					modifier = {
-						factor = 0.5
-						NOT = { relation = { who = USA value = 0 } }
-					}
-				}
-			}
-		}
-
-		#Description: Osceola raids a province
-		province_event = {
-			id = 16469
-			title = "EVTNAME16469"
-			desc = "EVTDESC16469"
-			picture = seminole_wars
-
-			trigger = {
-				region = USA_200
-				owned_by = USA
-				any_pop = { is_culture_group = american_cultures }
-				has_country_flag = second_seminole_war
-				NOT = { has_country_flag = second_seminole_war_over }
-				NOT = { has_country_flag = osceola_captured }
-			}
-
-			mean_time_to_happen = {
-				months = 10
-			}
-
-			option = {
-				name = "EVTOPTA16469"
-
-				owner = { set_country_flag = osceola_raids }
-				any_pop = {
-					limit = {
-						NOT = {
-							is_culture_group = native_american
-							is_culture_group = african_diaspora_cultures
-						}
-					}
-					reduce_pop = 0.9
-				}
-				add_province_modifier = {
-					name = seminole_raiders
-					duration = 730
-				}
-			}
-		}
-
-		#Description: Osceola Captured
-		country_event = {
-			id = 16470
-			title = "EVTNAME16470"
-			desc = "EVTDESC16470"
-			picture = seminole_wars
-			fire_only_once = yes
-
-			trigger = {
-				has_country_flag = osceola_raids
-				NOT = { has_country_flag = osceola_captured }
-			}
-
-			mean_time_to_happen = {
-				months = 30
-			}
-
-			option = {
-				name = "EVTOPTA16468"
-
-				prestige = -10
-				badboy = 2
-				any_pop = { consciousness = 1 }
-				any_pop = { limit = { is_culture_group = native_american } militancy = 3 }
-				set_global_flag = osceola_captured
-			}
-		}
+	}
 
 ### Alternative American Civil War - USA vs FSA ###
 
@@ -6457,1012 +6212,6 @@
 		}
 	}
 
-### New England ###
-
-	## Maritimes Purchase ##
-
-		#Description: Triggered for the UK if New England wants to buy the Maritimes
-		country_event = {
-			id = 8297686
-			title = EVTNAME8297686
-			desc = EVTDESC8297686
-			is_triggered_only = yes
-			picture = countryside
-
-			option = {
-				name = EVTOPTA8297686
-
-				NEN = {
-					money = -300000
-					country_event = 1314529
-				}
-				money = 300000
-				diplomatic_influence = {
-					who = NEN
-					value = 200
-				}
-				ENG_68 = {
-					remove_core = THIS
-					remove_core = CAN
-					secede_province = NEN
-				}
-				ENG_71 = {
-					remove_core = THIS
-					remove_core = CAN
-					secede_province = NEN
-				}
-
-				ai_chance = {
-					factor = 80
-					modifier = {
-						factor = 2
-						OR = {
-							alliance_with = FROM
-							relation = { who = FROM value = 150 }
-						}
-					}
-				}
-			}
-
-			option = {
-				name = EVTOPTB8297686
-
-				NEN = { country_event = 6165914 }
-
-				ai_chance = { factor = 20 }
-			}
-		}
-
-		#Description: Triggered for New England if the UK agrees to sell the Maritimes
-		country_event = {
-			id = 1314529
-			title = EVTNAME1314529
-			desc = EVTDESC1314529
-			is_triggered_only = yes
-			picture = countryside
-
-			option = {
-				name = EVTOPTA1314529
-
-				prestige = 10
-				add_accepted_culture = anglo_canadian
-
-				ai_chance = { factor = 100 }
-			}
-		}
-
-		#Description: Triggered for New England if the UK refuses to sell the Maritimes
-		country_event = {
-			id = 6165914
-			title = EVTNAME6165914
-			desc = EVTDESC6165914
-			is_triggered_only = yes
-			picture = countryside
-
-			option = {
-				name = EVTOPTA6165914
-
-				prestige = -5
-				set_country_flag = NEN_maritimes_refuse
-				relation = {
-					who = ENG
-					value = -100
-				}
-
-				ai_chance = { factor = 100 }
-			}
-		}
-
-	## Sherbrooke Purchase ##
-
-		#Description: Triggered for the UK if New England wants to buy Sherbrooke
-		country_event = {
-			id = 9510843
-			title = EVTNAME9510843
-			desc = EVTDESC9510843
-			is_triggered_only = yes
-			picture = countryside
-
-			option = {
-				name = EVTOPTA9510843
-
-				NEN = { treasury = -100000 }
-				treasury = 100000
-				61 = {
-					remove_core = ENG
-					remove_core = CAN
-					secede_province = NEN
-				}
-				66 = {
-					remove_core = ENG
-					remove_core = CAN
-					secede_province = NEN
-				}
-				67 = {
-					remove_core = ENG
-					remove_core = CAN
-					secede_province = NEN
-				}
-				NEN = { country_event = 8916799 }
-
-				ai_chance = {
-					factor = 80
-					modifier = {
-						factor = 2
-						OR = {
-							alliance_with = FROM
-							relation = { who = FROM value = 150 }
-						}
-					}
-				}
-			}
-
-			option = {
-				name = EVTOPTB9510843
-
-				NEN = { country_event = 9652809 }
-
-				ai_chance = { factor = 20 }
-			}
-		}
-
-		#Description: Triggered for New England if the UK agrees to sell Sherbrooke
-		country_event = {
-			id = 8916799
-			title = EVTNAME8916799
-			desc = EVTDESC8916799
-			is_triggered_only = yes
-			picture = countryside
-
-			option = {
-				name = EVTOPTA8916799
-
-				prestige = 10
-				set_country_flag = NEN_lawrence_agrees
-
-				ai_chance = { factor = 100 }
-			}
-		}
-
-		#Description: Triggered for New England if the UK refuses to sell Sherbrooke
-		country_event = {
-			id = 9652809
-			title = EVTNAME9652809
-			desc = EVTDESC9652809
-			is_triggered_only = yes
-			picture = countryside
-
-			option = {
-				name = EVTOPTA9652809
-
-				prestige = -5
-				set_country_flag = NEN_lawrence_refuse
-				relation = {
-					who = FROM
-					value = -100
-				}
-
-				ai_chance = { factor = 100 }
-			}
-		}
-
-	#Description: If New England owns New York City and Long Island, they will refuse to integrate and get nationalist agitation
-	country_event = {
-		id = 7493599
-		title = EVTNAME7493599
-		desc = EVTDESC7493599
-		fire_only_once = yes
-		picture = communist_riot
-
-		trigger = {
-			tag = NEN
-			owns = 232 # New York City
-			owns = 233 # Long Island
-		}
-
-		mean_time_to_happen = {
-			months = 6
-			modifier = {
-				factor = 0.85
-				232 = {
-					OR = {
-						average_consciousness = 3
-						average_militancy = 3
-					}
-				}
-			}
-			modifier = {
-				factor = 0.7
-				232 = {
-					OR = {
-						average_consciousness = 6
-						average_militancy = 6
-					}
-				}
-			}
-		}
-
-		option = {
-			name = EVTOPTA7493599
-			232 = {
-				remove_core = NEN
-				add_province_modifier = {
-					name = nationalist_agitation
-					duration = 730
-				}
-				any_pop = {
-					consciousness = 3
-					militancy = 3
-				}
-			}
-			233 = {
-				remove_core = NEN
-				add_province_modifier = {
-					name = nationalist_agitation
-					duration = 730
-				}
-				any_pop = {
-					consciousness = 3
-					militancy = 3
-				}
-			}
-
-			ai_chance = { factor = 100 }
-		}
-	}
-
-### Louisiana ###
-
-	#Description: If Louisiana claims all former Louisianan territory and owns it, the western states will declare independence
-	country_event = {
-		id = 4489019
-		title = EVTNAME4489019
-		desc = EVTDESC4489019
-		picture = "treaty"
-		major = yes
-
-		trigger = {
-			tag = USA
-			ULA = {
-				has_country_flag = ULA_greater
-				all_core = { NOT = { owned_by = USA } }
-			}
-			war = no
-			NOT = { has_country_flag = western_collapse }
-		}
-
-		fire_only_once = yes
-
-		option = {
-			name = EVTOPTA4489019
-
-			prestige = -25
-			random_owned = { # Texas
-				limit = {
-					OR = {
-						province_id = 107
-						province_id = 103
-						province_id = 128
-						province_id = 105
-						province_id = 129
-						province_id = 2641
-						region = TEX_132
-					}
-				}
-				TEX_132 = { add_core = TEX } # Texas
-				107 = { add_core = TEX }
-				103 = { add_core = TEX }
-				128 = { add_core = TEX }
-				105 = { add_core = TEX }
-				129 = { add_core = TEX }
-				2631 = { add_core = TEX }
-				TEX = { all_core = { remove_core = USA } }
-				owner = { release = TEX }
-			}
-			random_owned = { # New Mexico
-				limit = {
-					OR = {
-						region = MEX_100
-						region = MEX_103
-					}
-				}
-				MEX_100 = { add_core = UNM } # Arizona
-				MEX_103 = { add_core = UNM } # New Mexico
-				UNM = { all_core = { remove_core = USA } }
-				owner = { release = UNM }
-			}
-			random_owned = { # California
-				limit = {
-					OR = {
-						region = MEX_85
-						region = MEX_94
-					}
-				}
-				MEX_85 = { add_core = CAL } # California
-				MEX_94 = { add_core = CAL } # Nevada
-				CAL = { all_core = { remove_core = USA } }
-				owner = { release = CAL }
-			}
-			random_owned = { # Oregon
-				limit = {
-					OR = {
-						region = USA_78
-						region = USA_81
-						region = USA_91
-					}
-				}
-				USA_78 = { add_core = UOR } # Washington
-				USA_81 = { add_core = UOR } # Oregon
-				USA_91 = { add_core = UOR } # Idaho
-				111 = { add_core = UOR }
-				113 = { add_core = UOR }
-				114 = { add_core = UOR }
-				UOR = { all_core = { remove_core = USA } }
-				owner = { release = UOR }
-			}
-			random_owned = { # Deseret
-				limit = {
-					OR = {
-						region = MEX_97
-						province_id = 110
-						province_id = 108
-						province_id = 135
-					}
-				}
-				MEX_97 = { add_core = DES } # Utah
-				110 = { add_core = DES }
-				108 = { add_core = DES }
-				135 = { add_core = DES }
-				DES = { all_core = { remove_core = USA } }
-				owner = { release = DES }
-			}
-			random_owned = { # Rio Grande
-				limit = {
-					has_global_flag = rio_grande_is_a_state
-					OR = {
-						region = MEX_2150
-						region = MEX_2149
-						region = MEX_2142
-						region = MEX_2151
-					}
-				}
-				MEX_2150 = { add_core = RGR } # Rio Grande
-				MEX_2149 = { add_core = RGR } # Cohauila
-				MEX_2142 = { add_core = RGR } # Chihuahua
-				MEX_2151 = { add_core = RGR } # Durango
-				135 = { add_core = RGR } # Pueblos (Colorado)
-				2148 = { add_core = RGR } # Albuquerque (New Mexico)
-				38 = { add_core = RGR } # Fuerte Santa Maria
-				2662 = { add_core = RGR } # Chiricahua
-				138 = { add_core = RGR } # Laredo (Texas)
-				RGR = { all_core = { remove_core = USA } }
-				owner = { release = RGR }
-			}
-			random_owned = { # Sonora
-				limit = {
-					has_global_flag = sonora_is_a_state
-					OR = {
-						region = MEX_2139
-						region = MEX_2138
-						region = MEX_2156
-					}
-				}
-				MEX_2139 = { add_core = SON } # Baja California
-				MEX_2138 = { add_core = SON } # Sonora
-				MEX_2156 = { add_core = SON } # Sinaloa
-				102 = { add_core = SON }
-				SON = { all_core = { remove_core = USA } }
-				owner = { release = SON }
-			}
-			random_owned = { # Alaska
-				limit = { is_core = LSK }
-				owner = { release = LSK }
-			}
-			random_owned = { # Hawaii
-				limit = { is_core = HAW }
-				owner = {
-					release = HAW
-					any_owned = {
-						limit = { continent = polynesia }
-						secede_province = HAW
-					}
-				}
-			}
-
-			set_country_flag = western_collapse
-		}
-	}
-
-	#Description: The Treaty of New York - if the French retake Louisiana, the Pacific states will be released as vassals
-	country_event = {
-		id = 99971
-		title = "EVTNAME99971"
-		desc = "EVTDESC99971"
-		picture = "treaty"
-		major = yes
-
-		trigger = {
-			tag = USA
-			has_global_flag = treaty_of_new_york
-			war = no
-			NOT = { has_country_flag = treaty_of_new_york_implemented }
-		}
-
-		fire_only_once = yes
-
-		option = {
-			name = "EVTOPTA99971"
-
-			## Move pops ##
-				random_owned = {
-					limit = { owner = { any_pop = { has_pop_culture = french_canadian } } }
-					any_pop = {
-						limit = { has_pop_culture = french_canadian }
-						move_pop = 65  # Quebec City
-					}
-				}
-				random_owned = {
-					limit = { owner = { any_pop = { has_pop_culture = cajun } } }
-					any_pop = {
-						limit = { has_pop_culture = cajun }
-						move_pop = 139 # New Orleans
-					}
-				}
-				random_owned = {
-					limit = { owner = { any_pop = { has_pop_culture = acadian } } }
-					any_pop = {
-						limit = { has_pop_culture = acadian }
-						move_pop = 71 # Halifax
-					}
-				}
-
-			## Southern Ontario as a state ##
-				random_country = {
-					limit = {
-						tag = FCA
-						exists = yes
-						any_owned_province = { region = CAN_46 }
-					}
-					remove_accepted_culture = anglo_canadian
-					any_owned = {
-						limit = {
-							region = CAN_46
-							NOT = {
-								province_id = 50
-								province_id = 51
-							}
-						}
-						remove_core = FCA
-						add_core = USA
-						secede_province = USA
-					}
-				}
-				random_owned = {
-					limit = { region = CAN_46 }
-					owner = { add_accepted_culture = anglo_canadian }
-					CAN_46 = {
-						is_slave = no
-						change_region_name = "Southern Ontario"
-					}
-				}
-
-			set_country_flag = treaty_of_new_york_implemented
-			country_event = 4489019
-		}
-	}
-
-	#Description: Triggered for the USA when Louisiana buys back its land, removing all USA cores
-	country_event = {
-		id = 1388079
-		title = EVTNAME1388079
-		desc = EVTDESC1388079
-		is_triggered_only = yes
-		picture = countryside
-
-		option = {
-			name = EVTOPTA1388079
-
-			prestige = -20
-			ULA = { money = -400000 }
-			money = 400000
-			ULA = { all_core = { remove_core = USA } }
-
-			ai_chance = { factor = 100 }
-		}
-	}
-
-	# TODO for UK if they or their puppet owns 24 and 30 and ULA owns 116 and 119, they can disregard the treaty of 1818 and occupy 118, 155, 157, 158, giving 24 and 30 to ULA instead
-
-	## Treaty of St. Louis ##
-
-		#Description: Triggered for the CSA if Louisiana seeks to form a friendship treaty.
-		country_event = {
-			id = 1793144
-			title = EVTNAME1793144
-			desc = EVTDESC1793144
-			is_triggered_only = yes
-			picture = "treaty"
-
-			# Accept the treaty
-			option = {
-				name = EVTOPTA1793144
-
-				set_country_flag = CSA_ULA_friendship
-				badboy = -10
-				ULA = { country_event = 9149119 }
-				create_alliance = ULA
-				relation = {
-					who = ULA
-					value = 100
-				}
-
-				ai_chance = { factor = 100 }
-			}
-
-			# Reject the treaty
-			option = {
-				name = EVTOPTB1793144
-
-				set_country_flag = CSA_ULA_reject
-				relation = {
-					who = ULA
-					value = -50
-				}
-				ULA = { country_event = 8224916 }
-
-				ai_chance = { factor = 0 }
-			}
-		}
-
-		#Description: Triggered for Louisiana if the CSA accepts the friendship treaty - remove CSA cores
-		country_event = {
-			id = 9149119
-			title = EVTNAME9149119
-			desc = EVTDESC9149119
-			is_triggered_only = yes
-			picture = "treaty"
-
-			option = {
-				name = EVTOPTA9149119
-
-				create_alliance = CSA
-				relation = {
-					who = CSA
-					value = 100
-				}
-				ULA = { all_core = { remove_core = CSA } }
-
-				ai_chance = { factor = 100 }
-			}
-		}
-
-		#Description: Triggered for Louisiana if the CSA rejects the friendship treaty
-		country_event = {
-			id = 8224916
-			title = EVTNAME8224916
-			desc = EVTDESC8224916
-			is_triggered_only = yes
-			picture = "treaty"
-
-			option = {
-				name = EVTOPTA8224916
-
-				relation = {
-					who = CSA
-					value = -75
-				}
-
-				ai_chance = { factor = 100 }
-			}
-		}
-
-### New York ### TODO everything
-
-	#Events for the potential secession of New York after the Civil War goes decidedly... south.
-	country_event = {
-		id = 187900
-		title = "New York Secession"
-		desc = "EVTDESC187900"
-		picture = "draft_riots"
-
-		trigger = {
-			tag = USA
-			owns = 233
-			owns = 232
-			OR = {
-				war = no
-				war_with = CSA
-			}
-			NOT = {
-				has_country_flag = ny_secession_start
-				has_country_flag = has_used_radical_reconstruction
-				has_country_flag = CSA_created
-			}
-			CSA = {
-				exists = yes
-			}
-			has_country_flag = draft_riots_deadly
-			OR = {
-				war_exhaustion = 50
-				AND = {
-					war_exhaustion = 25
-					truce_with = CSA
-				}
-				CSA = {
-					is_greater_power = yes
-				}
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 6
-			modifier = {
-				factor = 0.1
-				war_exhaustion = 75
-			}
-		}
-
-		option = {
-			name = "They must stay in the Union!"
-			232 = {
-				add_core = UNY
-			}
-			233 = {
-				add_core = UNY
-			}
-			any_pop = {
-				militancy = 1
-				consciousness = 1
-			}
-			prestige = -10
-			set_country_flag = ny_secession_start
-		}
-	}
-
-	#New York Secedes!
-	country_event = {
-		id = 187901
-		title = "New York Secedes!"
-		desc = "EVTDESC187901"
-		picture = "new_york"
-
-		trigger = {
-			tag = USA
-			NOT = {
-				has_global_flag = ny_has_seceded
-			}
-			has_country_flag = ny_secession_start
-			any_owned_province = {
-				is_core = UNY
-				OR = {
-					average_militancy = 3
-					average_consciousness = 5
-					controlled_by = REB
-				}
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 3
-			modifier = {
-				factor = 0.5
-				war = yes
-			}
-		}
-
-		option = {
-			name = "Let them be an independent nation."
-			prestige = -25
-			set_global_flag = ny_has_seceded
-			release = UNY
-			any_pop = {
-				consciousness = 2
-			}
-			UNY = {
-				country_event = 187905
-			}
-			ai_chance = {
-				factor = 10
-				modifier = {
-					factor = 5
-					OR = {
-						war = yes
-						war_exhaustion = 75
-					}
-				}
-			}
-		}
-
-		option = {
-			name = "The Union shall not be broken!"
-			prestige = 10
-			set_global_flag = ny_has_seceded
-			release = UNY
-			UNY = {
-				add_country_modifier = {
-					name = small_country_draft
-					duration = 1095
-				}
-				any_pop = {
-					militancy = -10
-					consciousness = -10
-				}
-				war_exhaustion = -50
-				small_arms = 100
-				canned_food = 200
-				artillery = 50
-				luxury_clothes = 50
-				wine = 50
-				liquor = 50
-				ammunition = 100
-				leadership = 25
-				money = 100000
-			}
-			war = {
-				target = UNY
-				attacker_goal = {
-					casus_belli = civil_war
-				}
-				defender_goal = {
-					casus_belli = status_quo
-				}
-			}
-			ai_chance = {
-				factor = 90
-			}
-		}
-
-		option = {
-			name = "Long live New York!"
-			prestige = 10
-			set_global_flag = ny_has_seceded
-			release = UNY
-			UNY = {
-				add_country_modifier = {
-					name = small_country_draft
-					duration = 1095
-				}
-				any_pop = {
-					militancy = -10
-					consciousness = -10
-				}
-				war_exhaustion = -50
-				small_arms = 100
-				canned_food = 200
-				artillery = 50
-				luxury_clothes = 50
-				wine = 50
-				liquor = 50
-				ammunition = 100
-				leadership = 25
-				money = 100000
-			}
-			war = {
-				target = UNY
-				attacker_goal = {
-					casus_belli = civil_war
-				}
-				defender_goal = {
-					casus_belli = status_quo
-				}
-			}
-			change_tag_no_core_switch = UNY
-			ai_chance = {
-				factor = 0
-			}
-		}
-	}
-
-	#New York searches for an ally to fight the USA
-	country_event = {
-		id = 187902
-		title = "War for Independence!"
-		desc = "EVTDESC187902"
-		picture = "deliberation"
-
-		fire_only_once = yes
-
-		trigger = {
-			tag = UNY
-			war_with = USA
-		}
-
-		mean_time_to_happen = {
-			days = 7
-		}
-
-		option = {
-			name = "We will fight alone."
-			prestige = 20
-			plurality = 10
-			set_country_flag = ny_lonely_independence
-			ai_chance = {
-				factor = 20
-			}
-		}
-		option = {
-			name = "Anyone who will aid our just cause!"
-			USA = {
-				any_neighbor_country = {
-					limit = {
-						NOT = {
-							tag = UNY
-							alliance_with = USA
-						}
-					}
-					country_event = 187903
-				}
-			}
-			prestige = -10
-			ai_chance = {
-				factor = 80
-			}
-		}
-	}
-
-	#Reaction event for countries asked to aid with independence
-	country_event = {
-		id = 187903
-		title = "New York Independence"
-		desc = "EVTDESC187903"
-		picture = "draft_riots"
-
-		is_triggered_only = yes
-
-		option = {
-			name = "We will not face American wrath to aid this republic."
-			relation = {
-				who = UNY
-				value = -50
-			}
-			ai_chance = {
-				factor = 65
-				modifier = {
-					factor = 0
-					relation = {
-						who = USA
-						value = 0
-					}
-				}
-			}
-		}
-		option = {
-			name = "Let the flames of independence burn on!"
-			any_pop = {
-				limit = {
-					is_primary_culture = no
-					is_accepted_culture = no
-				}
-				consciousness = 5
-			}
-			relation = {
-				who = UNY
-				value = 100
-			}
-			prestige = 10
-			UNY = {
-				country_event = 187904
-			}
-			war = {
-				target = USA
-				attacker_goal = {
-					casus_belli = cut_down_to_size
-				}
-				defender_goal = {
-					casus_belli = humiliate
-				}
-			}
-			ai_chance = {
-				factor = 35
-			}
-		}
-	}
-
-	#New York is notified of who is supporting them
-	country_event = {
-		id = 187904
-		title = "NYALLYTITLE"
-		desc = "EVTDESC187904"
-		picture = "deliberation"
-
-		is_triggered_only = yes
-
-		option = {
-			name = "Hurrah!"
-			prestige = 5
-			plurality = 2
-			money = 10000
-		}
-	}
-
-	#New York successfully achieves independence from the USA
-	country_event = {
-		id = 187905
-		title = "Independence!"
-		desc = "EVTDESC187905"
-		picture = "new_york"
-
-		trigger = {
-			tag = UNY
-			war = no
-			NOT = {
-				has_global_flag = ny_independent_flag
-			}
-		}
-
-		mean_time_to_happen = {
-			days = 7
-		}
-
-		option = {
-			name = "Free at last!"
-			set_global_flag = ny_independent_flag
-			prestige = 15
-			plurality = 5
-			remove_country_modifier = small_country_draft
-		}
-	}
-
-	#USA manages to reconquer New York
-	country_event = {
-		id = 187906
-		title = "EVTNAME187906"
-		desc = "EVTDESC187906"
-		picture = "celebration"
-
-		trigger = {
-			UNY = {
-				exists = no
-			}
-			tag = USA
-			any_owned_province = {
-				is_core = UNY
-			}
-			war = no
-		}
-
-		mean_time_to_happen = {
-			months = 1
-		}
-
-		option = {
-			name = "A grand day for the United States."
-			clr_global_flag = ny_independent_flag
-			prestige = 25
-			any_pop = {
-				militancy = -2
-				consciousness = -2
-			}
-			any_owned = {
-				limit = {
-					is_core = UNY
-				}
-				remove_core = UNY
-				add_core = USA
-			}
-		}
-	}
-
-	#Reaction event for the declaration of NY independence
-	country_event = {
-		id = 187907
-		title = "EVTNAME187907"
-		desc = "EVTDESC187907"
-		picture = "new_york"
-
-		is_triggered_only = yes
-
-		option = {
-			name = "Damned secessionists!"
-			plurality = -20
-			prestige = -25
-			relation = {
-				who = UNY
-				value = -200
-			}
-		}
-	}
-
 ### Second American Civil War - Disunited States ###
 
 	#Description: The Disunited States - If the USA is not a democracy
@@ -7484,7 +6233,10 @@
 			NOT = { government = democracy }
 			NOT = { has_global_flag = disunited_states }
 			NOT = { has_country_modifier = begin_disunited_states }
-			has_global_flag = american_civil_war_has_happened
+			OR = {
+				has_global_flag = american_civil_war_has_happened
+				has_global_flag = alt_american_civil_war_has_happened
+			}
 		}
 
 		mean_time_to_happen = {
@@ -7676,6 +6428,68 @@
 		}
 	}
 
+	#Description: The Dream is Over - lose the Statue of Liberty buff if you are no longer a democracy
+	country_event = {
+		id = 19301
+		title = "EVTNAME19301"
+		desc = "EVTDESC19301"
+		major = yes
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = USA
+			has_country_modifier = the_statue_of_liberty
+			OR = {
+				NOT = { government = democracy }
+				AND = {
+					has_global_flag = disunited_states
+					has_global_flag = second_american_civil_war
+				}
+			}
+		}
+
+		mean_time_to_happen = { months = 1 }
+
+		option = {
+			name = "EVTOPTA19301"
+
+			remove_country_modifier = the_statue_of_liberty
+		}
+	}
+
+	#Description: End of homesteading - if the USA is no longer a democracy
+	country_event = {
+
+		id = 441267
+		title = "EVTNAME441267"
+		desc = "EVTDESC441267"
+		picture = "homesteading"
+
+		trigger = {
+			tag = USA
+			has_country_modifier = the_homestead_act
+			OR = {
+				AND = {
+					NOT = { ruling_party_ideology = liberal }
+					NOT = { government = democracy }
+				}
+				NOT = { number_of_states = 3 }
+				NOT = { num_of_ports = 1 }
+			}
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = { months = 1 }
+
+		option = {
+			name = "EVTOPTA441267"
+
+			remove_country_modifier = the_homestead_act
+		}
+	}
+
 	#Description: The Union Reborn - when the USA becomes a democracy again
 	country_event = {
 
@@ -7710,6 +6524,47 @@
 					factor = -6
 				}
 			}
+		}
+	}
+
+	#Description: American minors apply for statehood
+	country_event = {
+		id = 16400
+		title = EVTNAME16400
+		desc = EVTDESC16400
+		picture = "Administration"
+
+		is_triggered_only = yes
+		major = yes
+
+		# Accept them into the union
+		option = {
+			name = EVTOPTA16400
+
+			FROM = { all_core = { add_core = USA } }
+			inherit = FROM
+			random_owned = {
+				limit = {
+					is_core = RGR
+					state_scope = { is_slave = no }
+					owner = { slavery = yes_slavery }
+				}
+				state_scope = { is_slave = yes }
+			}
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Refuse them
+		option = {
+			name = EVTOPTB16400
+
+			relation = {
+				who = FROM
+				value = -100
+			}
+
+			ai_chance = { factor = 0 }
 		}
 	}
 
@@ -7820,6 +6675,14 @@
 				USA_223 = { add_core = FSA } # Pennsylvania
 				USA_218 = { add_core = FSA } # West Virginia
 				USA_162 = { add_core = FSA } # Wisconsin
+				random_owned = { # If Upper Canada is a state it will join the FSA (other than that little bit next to Minnesota)
+					limit = {
+						region = CAN_46 # Southern Ontario
+						is_core = THIS
+						NOT = { province_id = 49 } # "part" of Minnesota
+					}
+					owner = { any_owned = { limit = { region = CAN_46 NOT = { province_id = 49 } } add_core = FSA } }
+				}
 				any_state = {
 					limit = {
 						NOT = { any_owned_province = { is_capital = yes } }
@@ -8885,6 +7748,14 @@
 						secede_province = UIL
 					}
 				}
+				random_owned = {
+					limit = {
+						province_id = 49
+						owner = { NOT = { owns = 2594 owns = 50 } }
+						UIL = { owns = 158 }
+					}
+					49 = { secede_province = UIL }
+				}
 				UIL = {
 					capital = 163
 					leadership = 40
@@ -9007,6 +7878,18 @@
 						}
 						change_controller = THIS
 						secede_province = UIL
+					}
+				}
+				owner = {
+					random_owned = {
+						limit = {
+							province_id = 158
+							49 = {
+								NOT = { owned_by = THIS }
+								owner = { NOT = { owns = 2594 owns = 50 } }
+							}
+						}
+						49 = { secede_province = UIL }
 					}
 				}
 			}
@@ -10142,6 +9025,7 @@
 
 			trigger = {
 				tag = USA
+				has_global_flag = sonora_is_a_state
 				any_owned_province = {
 					province_id = 2140 # Hermosillo
 					is_colonial = no
@@ -10261,6 +9145,9 @@
 				}
 				SON = {
 					set_country_flag = usstatehood_we_have_applied
+					# TODO maybe add culture clash content for SON
+					primary_culture = yankee
+					add_accepted_culture = mexican
 					government = democracy
 					ruling_party_ideology = liberal
 					political_reform = universal_voting
@@ -10404,6 +9291,7 @@
 
 			trigger = {
 				tag = USA
+				has_global_flag = rio_grande_is_a_state
 				any_owned_province = {
 					province_id = 2149 # Monterrey
 					is_colonial = no
@@ -10524,6 +9412,10 @@
 				}
 				RGR = {
 					set_country_flag = usstatehood_we_have_applied
+					# TODO maybe add culture clash content for RGR
+					primary_culture = yankee
+					add_accepted_culture = texan
+					add_accepted_culture = mexican
 					government = democracy
 					ruling_party_ideology = liberal
 					political_reform = universal_voting
@@ -10658,25 +9550,30 @@
 			}
 		}
 
-		## TODO secession of Upper Canada (Treaty of New York)
+		## TODO secession of Upper Canada (Treaty of New York) - maybe small chance to ask to rejoin French Canada? or definitely if somehow Anglo Canada exists
 
-		country_event = { # TODO
+		## TODO UNY secedes on its own?
+
+		## TODO if All of Mexico, Mexico secedes, Mexican minors secede (OAX, TBS, YUC, ZAC)
+
+		#Description: #Join the Canadian Confederation? - American minors can choose whether to ask to join Canada
+		country_event = {
 
 			id = 95315
-			title = "EVTNAME95315" #Join the Canadian Confederation?
+			title = "EVTNAME95315"
 			desc = "EVTDESC95315"
 			picture = "administration"
 
 			trigger = {
-				war = no
 				OR = {
-					tag = LSK
-					tag = NEN
-					tag = DAK
-					tag = UOR
+					tag = LSK # Alaska
+					tag = NEN # New England
+					tag = DAK # Dakota
+					tag = UOR # Oregon
 				}
+				war = no
+				is_greater_power = no
 				NOT = {
-					tag = USA
 					has_country_flag = asked_to_join_canada
 					in_sphere = USA
 				}
@@ -10734,77 +9631,86 @@
 				}
 			}
 
+			# Ask to join
 			option = {
-				name = "Send a delegate to Ottawa"
+				name = "EVTOPTA95315"
+
 				set_country_flag = asked_to_join_canada
 				prestige = -5
 				CAN = { country_event = 95316 }
-			}
 
-			option = {
-				name = "We will not do this"
-				set_country_flag = asked_to_join_canada
-				prestige = 1
-			}
-		}
-
-		country_event = { # TODO
-
-			id = 95316
-			title = "EVTNAME95316" #$FROMCOUNTRY$ Asks to Join Canada
-			desc = "EVTDESC95316"
-			major = yes
-
-			is_triggered_only = yes
-
-			option = {
-				name = "We welcome a new province"
-				prestige = 10
-				FROM = {
-					all_core = { add_core = CAN }
-				}
-				add_accepted_culture = yankee
-				inherit = FROM
-				USA = {
-					relation = {
-						who = CAN
-						value = -50
-					}
-					diplomatic_influence = {
-						who = CAN
-						value = -50
-					}
-					casus_belli = {
-						target = CAN
-						type = humiliate
-						months = 60
-					}
-				}
 				ai_chance = {
-					factor = 50
+					factor = 60
 					modifier = {
-						factor = 0.5
-						FROM = {
-							NOT = {
-								any_owned_province = {
-									any_neighbor_province = { is_core = CAN }
-								}
-							}
+						factor = 2
+						OR = {
+							tag = LSK
+							tag = NEN
 						}
 					}
 				}
 			}
 
+			# Don't ask to join
 			option = {
-				name = "We politely refuse the offer"
-				relation = {
-					who = FROM
-					value = -25
+				name = "EVTOPTB95315"
+
+				set_country_flag = asked_to_join_canada
+				prestige = 1
+
+				ai_chance = {
+					factor = 40
+					modifier = {
+						factor = 1.5
+						is_secondary_power = yes
+					}
 				}
-				relation = {
-					who = USA
-					value = 25
+			}
+		}
+
+		#Description: Triggered for Canada when American minors decide to ask to join.
+		country_event = {
+
+			id = 95316
+			title = "EVTNAME95316"
+			desc = "EVTDESC95316"
+			major = yes
+
+			is_triggered_only = yes
+
+			# Accept
+			option = {
+				name = "EVTOPTA95316"
+
+				prestige = 10
+				FROM = { all_core = { add_core = CAN } }
+				inherit = FROM
+				random_owned = {
+					limit = { owner = { NOT = { accepted_culture = yankee } } }
+					owner = { add_accepted_culture = yankee }
 				}
+				USA = {
+					relation = { who = CAN value = -50 }
+					diplomatic_influence = { who = CAN value = -50 }
+					casus_belli = { target = CAN type = humiliate months = 60 }
+				}
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.5
+						FROM = { NOT = { any_owned_province = { any_neighbor_province = { is_core = CAN } } } }
+					}
+				}
+			}
+
+			# Refuse
+			option = {
+				name = "EVTOPTB95316"
+
+				relation = { who = FROM value = -25 }
+				relation = { who = USA value = 25 }
+
 				ai_chance = {
 					factor = 50
 					modifier = {
@@ -10817,13 +9723,7 @@
 					}
 					modifier = {
 						factor = 1.5
-						FROM = {
-							NOT = {
-								any_owned_province = {
-									any_neighbor_province = { is_core = CAN }
-								}
-							}
-						}
+						FROM = { NOT = { any_owned_province = { any_neighbor_province = { is_core = CAN } } } }
 					}
 				}
 			}

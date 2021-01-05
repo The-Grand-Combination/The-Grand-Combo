@@ -218,6 +218,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA97084"
 
+		badboy = 1
 		random_owned = { # So it doesn't happen again for the other country
 			limit = { province_id = 2397 }
 			add_province_modifier = { name = gold_rush duration = 365 }
@@ -236,7 +237,6 @@ country_event = {
 				reduce_pop = 0.125
 			}
 		}
-		badboy = 1
 		random_country = { # If owned by different countries
 			limit = {
 				owns = 2400
@@ -244,6 +244,144 @@ country_event = {
 			}
 			country_event = 97084
 		}
+	}
+}
+
+#Description: The Chilean Civil War
+country_event = {
+	id = 188162
+	title = "EVTNAME188162"
+	desc = "EVTDESC188162"
+	picture = "chilean_civil_war"
+
+	trigger = {
+		tag = CHL
+		year = 1891
+		government = democracy
+		ruling_party_ideology = liberal
+		NOT = { year = 1900 }
+	}
+
+	mean_time_to_happen = {
+		months = 6
+		modifier = {
+			factor = 0.8
+			average_militancy = 3
+		}
+		modifier = {
+			factor = 0.7
+			average_militancy = 4
+		}
+		modifier = {
+			factor = 0.6
+			average_militancy = 5
+		}
+	}
+
+	fire_only_once = yes
+
+	# Navy (conservative)
+	option = {
+		name = "EVTOPTA188162"
+
+		ruling_party_ideology = conservative
+		## Government Flags ##
+			set_country_flag = tory_election_win
+			clr_country_flag = socialist_election_win
+			clr_country_flag = liberal_election_win
+			clr_country_flag = communist_election_win
+			clr_country_flag = fascist_election_win
+			clr_country_flag = reactionary_election_win
+			clr_country_flag = anarcho_liberal_election_win
+		## Prime Ministers ##
+			remove_country_modifier = expert_diplomat
+			remove_country_modifier = successful_industrialist
+			remove_country_modifier = ivory_tower_intellectual
+			remove_country_modifier = man_of_the_people
+			remove_country_modifier = landed_gentleman
+			remove_country_modifier = military_man
+			remove_country_modifier = lord_admiral
+			remove_country_modifier = raving_loon
+			remove_country_modifier = luddite
+			remove_country_modifier = great_statesman
+			remove_country_modifier = backroom_boy
+			remove_country_modifier = great_reformer
+			remove_country_modifier = gauche_buffoon
+			remove_country_modifier = administrative_genius
+			remove_country_modifier = visionary_thinker
+			remove_country_modifier = competent_placeholder
+			remove_country_modifier = imperious_autocrat
+			remove_country_modifier = prince_of_terror
+			remove_country_modifier = efficient_sociopath
+			remove_country_modifier = pig_headed_isolationist
+			remove_country_modifier = ambitious_union_boss
+			remove_country_modifier = dour_economist
+		add_country_modifier = { name = lord_admiral duration = 3650 }
+		add_country_modifier = { name = national_confusion duration = 365 }
+		tech_school = naval_tech_school
+		add_country_modifier = { name = academic_confusion duration = 3650 }
+		any_pop = {
+			limit = { is_primary_culture = yes }
+			ideology = { factor = 0.1 value = conservative }
+			scaled_militancy = { actor = -3 ideology = conservative }
+			scaled_consciousness = { factor = -5 ideology = conservative }
+			scaled_militancy = { factor = 3 ideology = liberal }
+			scaled_consciousness = { factor = 5 ideology = liberal }
+		}
+
+		ai_chance = { factor = 85 }
+	}
+
+	# Army (liberal)
+	option = {
+		name = "EVTOPTB188162"
+
+		ruling_party_ideology = liberal
+		## Government Flags ##
+			clr_country_flag = tory_election_win
+			clr_country_flag = socialist_election_win
+			set_country_flag = liberal_election_win
+			clr_country_flag = communist_election_win
+			clr_country_flag = fascist_election_win
+			clr_country_flag = reactionary_election_win
+			clr_country_flag = anarcho_liberal_election_win
+		## Prime Ministers ##
+			remove_country_modifier = expert_diplomat
+			remove_country_modifier = successful_industrialist
+			remove_country_modifier = ivory_tower_intellectual
+			remove_country_modifier = man_of_the_people
+			remove_country_modifier = landed_gentleman
+			remove_country_modifier = military_man
+			remove_country_modifier = lord_admiral
+			remove_country_modifier = raving_loon
+			remove_country_modifier = luddite
+			remove_country_modifier = great_statesman
+			remove_country_modifier = backroom_boy
+			remove_country_modifier = great_reformer
+			remove_country_modifier = gauche_buffoon
+			remove_country_modifier = administrative_genius
+			remove_country_modifier = visionary_thinker
+			remove_country_modifier = competent_placeholder
+			remove_country_modifier = imperious_autocrat
+			remove_country_modifier = prince_of_terror
+			remove_country_modifier = efficient_sociopath
+			remove_country_modifier = pig_headed_isolationist
+			remove_country_modifier = ambitious_union_boss
+			remove_country_modifier = dour_economist
+		add_country_modifier = { name = military_man duration = 3650 }
+		add_country_modifier = { name = national_confusion duration = 365 }
+		tech_school = army_tech_school
+		add_country_modifier = { name = academic_confusion duration = 3650 }
+		any_pop = {
+			limit = { is_primary_culture = yes }
+			ideology = { factor = 0.1 value = liberal }
+			scaled_militancy = { factor = 3 ideology = conservative }
+			scaled_consciousness = { factor = 5 ideology = conservative }
+			scaled_militancy = { factor = -3 ideology = liberal }
+			scaled_consciousness = { factor = -5 ideology = liberal }
+		}
+
+		ai_chance = { factor = 15 }
 	}
 }
 
@@ -388,6 +526,17 @@ country_event = {
 		option = {
 			name = "EVTOPTA97082"
 
+			random_country = {
+				limit = { is_sphere_leader_of = THIS }
+				country_event = { id = 97084 days = 2 }
+			}
+			random_country = {
+				limit = {
+					is_sphere_leader_of = CHL
+					NOT = { war_with = THIS }
+				}
+				country_event = { id = 97084 days = 2 }
+			}
 			war = {
 				target = FROM
 				attacker_goal = { casus_belli = war_reparations }
@@ -402,22 +551,81 @@ country_event = {
 		option = {
 			name = "EVTOPTB97082"
 
-			any_owned = {
-				limit = {
-					OR = {
-						province_id = 2305
-						province_id = 2309
-						province_id = 2308
-						province_id = 2307
-						province_id = 2578
-					}
-				}
+			random_owned = {
+				limit = { province_id = 2305 }
+				secede_province = CHL
+			}
+			random_owned = {
+				limit = { province_id = 2309 }
+				secede_province = CHL
+			}
+			random_owned = {
+				limit = { province_id = 2308 }
+				secede_province = CHL
+			}
+			random_owned = {
+				limit = { province_id = 2307 }
+				secede_province = CHL
+			}
+			random_owned = {
+				limit = { province_id = 2578 }
 				secede_province = CHL
 			}
 
 			ai_chance = {
 				factor = 10
 				modifier = { factor = 3 war = yes }
+			}
+		}
+	}
+
+	#The War of the Pacific - Sphere owner declares neutrality? # TODO id
+	country_event = {
+		id = 97084
+		title = "EVTNAME97084"
+		desc = "EVTDESC97084"
+		picture = "sinking_of_the_esmeralda"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVT97084OPTA" #We will not intervene
+
+			random_owned = {
+				limit = { owner = { war_with = FROM } }
+				owner = { end_war = FROM }
+			}
+			random_owned = {
+				limit = { owner = { alliance_with = FROM } }
+				owner = { leave_alliance = FROM }
+			}
+			random_owned = {
+				limit = { owner = { war_with = CHL } }
+				owner = { end_war = CHL }
+			}
+			random_owned = {
+				limit = { owner = { alliance_with = CHL } }
+				owner = { leave_alliance = CHL }
+			}
+			diplomatic_influence = { who = CHL value = -200 }
+			diplomatic_influence = { who = FROM value = -200 }
+
+			ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 0.25
+					is_sphere_leader_of = CHL
+					relation = { who = FROM value = 150 }
+				}
+			}
+		}
+
+		option = {
+			name = "EVT97084OPTB"
+
+			ai_chance = {
+				factor = 10
+				modifier = { factor = 0 war = yes }
 			}
 		}
 	}
@@ -629,177 +837,3 @@ country_event = {
 			}
 		}
 	}
-
-
-country_event = { # TODO
-	id = 188162
-	title = "EVTNAME188162"
-	desc = "EVTDESC188162"
-	picture = "chilean_civil_war"
-
-	trigger = {
-		tag = CHL
-		year = 1891
-		government = democracy
-		ruling_party_ideology = liberal
-		NOT = { year = 1900 }
-	}
-
-	mean_time_to_happen = {
-		months = 6
-		modifier = {
-			factor = 0.8
-			average_militancy = 3
-		}
-		modifier = {
-			factor = 0.7
-			average_militancy = 4
-		}
-		modifier = {
-			factor = 0.6
-			average_militancy = 5
-		}
-	}
-
-	fire_only_once = yes
-
-	option = {
-		name = "...the victory of the Congress and the navy."
-		ruling_party_ideology = conservative
-		set_country_flag = tory_election_win
-		clr_country_flag = socialist_election_win
-		clr_country_flag = liberal_election_win
-		clr_country_flag = communist_election_win
-		clr_country_flag = fascist_election_win
-		clr_country_flag = reactionary_election_win
-		clr_country_flag = anarcho_liberal_election_win
-		remove_country_modifier = expert_diplomat
-		remove_country_modifier = successful_industrialist
-		remove_country_modifier = ivory_tower_intellectual
-		remove_country_modifier = man_of_the_people
-		remove_country_modifier = landed_gentleman
-		remove_country_modifier = military_man
-		remove_country_modifier = lord_admiral
-		remove_country_modifier = raving_loon
-		remove_country_modifier = luddite
-		remove_country_modifier = great_statesman
-		remove_country_modifier = backroom_boy
-		remove_country_modifier = great_reformer
-		remove_country_modifier = gauche_buffoon
-		remove_country_modifier = administrative_genius
-		remove_country_modifier = visionary_thinker
-		remove_country_modifier = competent_placeholder
-		remove_country_modifier = imperious_autocrat
-		remove_country_modifier = prince_of_terror
-		remove_country_modifier = efficient_sociopath
-		remove_country_modifier = pig_headed_isolationist
-		remove_country_modifier = ambitious_union_boss
-		remove_country_modifier = dour_economist
-		add_country_modifier = {
-			name = lord_admiral
-			duration = 3650
-		}
-		add_country_modifier = {
-			name = national_confusion
-			duration = 365
-		}
-		tech_school = naval_tech_school
-		add_country_modifier = {
-			name = academic_confusion
-			duration = 3650
-		}
-		any_pop = {
-			limit = { is_primary_culture = yes }
-			ideology = { factor = 0.1 value = conservative }
-			scaled_militancy = {
-				factor = -3
-				ideology = conservative
-			}
-			scaled_consciousness = {
-				factor = -5
-				ideology = conservative
-			}
-			scaled_militancy = {
-				factor = 3
-				ideology = liberal
-			}
-			scaled_consciousness = {
-				factor = 5
-				ideology = liberal
-			}
-		}
-		ai_chance = {
-			factor = 85
-		}
-	}
-
-	option = {
-		name = "...the victory of the President and the army."
-		ruling_party_ideology = liberal
-		clr_country_flag = tory_election_win
-		clr_country_flag = socialist_election_win
-		set_country_flag = liberal_election_win
-		clr_country_flag = communist_election_win
-		clr_country_flag = fascist_election_win
-		clr_country_flag = reactionary_election_win
-		clr_country_flag = anarcho_liberal_election_win
-		remove_country_modifier = expert_diplomat
-		remove_country_modifier = successful_industrialist
-		remove_country_modifier = ivory_tower_intellectual
-		remove_country_modifier = man_of_the_people
-		remove_country_modifier = landed_gentleman
-		remove_country_modifier = military_man
-		remove_country_modifier = lord_admiral
-		remove_country_modifier = raving_loon
-		remove_country_modifier = luddite
-		remove_country_modifier = great_statesman
-		remove_country_modifier = backroom_boy
-		remove_country_modifier = great_reformer
-		remove_country_modifier = gauche_buffoon
-		remove_country_modifier = administrative_genius
-		remove_country_modifier = visionary_thinker
-		remove_country_modifier = competent_placeholder
-		remove_country_modifier = imperious_autocrat
-		remove_country_modifier = prince_of_terror
-		remove_country_modifier = efficient_sociopath
-		remove_country_modifier = pig_headed_isolationist
-		remove_country_modifier = ambitious_union_boss
-		remove_country_modifier = dour_economist
-		add_country_modifier = {
-			name = military_man
-			duration = 3650
-		}
-		add_country_modifier = {
-			name = national_confusion
-			duration = 365
-		}
-		tech_school = army_tech_school
-		add_country_modifier = {
-			name = academic_confusion
-			duration = 3650
-		}
-		any_pop = {
-			limit = { is_primary_culture = yes }
-			ideology = { factor = 0.1 value = liberal }
-			scaled_militancy = {
-				factor = 3
-				ideology = conservative
-			}
-			scaled_consciousness = {
-				factor = 5
-				ideology = conservative
-			}
-			scaled_militancy = {
-				factor = -3
-				ideology = liberal
-			}
-			scaled_consciousness = {
-				factor = -5
-				ideology = liberal
-			}
-		}
-		ai_chance = {
-			factor = 15
-		}
-	}
-}

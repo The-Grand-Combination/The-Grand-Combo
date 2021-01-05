@@ -357,209 +357,6 @@
 		}
 	}
 
-## The Treaty of Guadalupe Hidalgo ##
-
-	#Description: Triggered when the USA offers peace in the Mexican-American war
-	country_event = {
-
-		id = 44825
-		title = EVTNAME44825
-		desc = EVTDESC44825
-		picture = "treaty"
-
-		is_triggered_only = yes
-
-		# Acceot the treaty
-		option = {
-			name = EVTOPTA44825
-
-			set_country_flag = treaty_of_guadalupe_hidalgo
-			prestige_factor = -0.5
-			treasury = 100000
-			random_owned = {
-				limit = { owner = { war_with = USA } }
-				owner = { end_war = USA }
-				any_country = {
-					limit = {
-						war_with = THIS
-						alliance_with = USA
-					}
-					end_war = THIS
-				}
-			}
-			all_core = {
-				limit = {
-					OR = {
-						region = TEX_132	# Texas
-						region = MEX_94		# Nevada
-						region = MEX_97		# Utah
-						region = MEX_85		# California
-						region = USA_106	# Colorado
-						region = USA_111	# Wyoming
-						region = USA_126	# Kansas
-						region = USA_129	# Oklahoma
-						province_id = 100	# Arizona
-						province_id = 101
-						province_id = 3367
-						province_id = 38	# New Mexico
-						province_id = 105
-						province_id = 109
-						province_id = 2148
-						province_id = 2631
-					}
-				}
-				remove_core = MEX
-			}
-			any_owned = {
-				limit = {
-					OR = {
-						is_core = USA
-						region = TEX_132	# Texas
-						region = MEX_94		# Nevada
-						region = MEX_97		# Utah
-						region = MEX_85		# California
-						region = USA_106	# Colorado
-						region = USA_111	# Wyoming
-						region = USA_126	# Kansas
-						region = USA_129	# Oklahoma
-						province_id = 100	# Arizona
-						province_id = 101
-						province_id = 3367
-						province_id = 38	# New Mexico
-						province_id = 105
-						province_id = 109
-						province_id = 2148
-						province_id = 2631
-					}
-				}
-				secede_province = USA
-			}
-			USA = { country_event = 44826 }
-
-			random_owned = {
-				limit = { exists = CAL }
-				owner = { end_war = CAL }
-			}
-
-			ai_chance = { factor = 90 }
-		}
-
-		# Reject the treaty
-		option = {
-			name = EVTOPTB44825
-
-			war_exhaustion = 20
-			USA = { country_event = 44827 }
-
-			ai_chance = { factor = 10 }
-		}
-	}
-
-	#Description: Mexico Agrees
-	country_event = {
-
-		id = 44826
-		title = EVTNAME44826
-		desc = EVTDESC44826
-		news = yes
-		news_title = EVTNAME44825
-		news_desc_long = EVTDESC44826_NEWS_LONG
-		news_desc_medium = EVTDESC44826_NEWS_MEDIUM
-		news_desc_short = EVTDESC44826_NEWS_SHORT
-		picture = "treaty"
-
-		is_triggered_only = yes
-
-		option = {
-			name = EVTOPTA44826
-
-			prestige = 20
-			random_owned = { limit = { owner = { ai = no } } owner = { treasury = -100000 } }
-			random_owned = {
-				limit = { owner = { ai = yes } }
-				owner = { set_variable = { which = owed_cash_money value = 100 } }
-			}
-			any_owned = { limit = { is_core = MEX } secede_province = MEX }
-			diplomatic_influence = {
-				who = FROM
-				value = 400
-			}
-			relation = {
-				who = FROM
-				value = 200
-			}
-			FROM = {
-				any_owned = {
-					limit = {
-						OR = {
-							is_core = USA
-							region = TEX_132	# Texas
-							region = MEX_94		# Nevada
-							region = MEX_97		# Utah
-							region = MEX_85		# California
-							region = USA_106	# Colorado
-							region = USA_111	# Wyoming
-							region = USA_126	# Kansas
-							region = USA_129	# Oklahoma
-							province_id = 100	# Arizona
-							province_id = 101
-							province_id = 3367
-							province_id = 38	# New Mexico
-							province_id = 105
-							province_id = 109
-							province_id = 2148
-							province_id = 2631
-						}
-					}
-					secede_province = USA
-				}
-			}
-		}
-	}
-
-	#Description: Mexico Refuses
-	country_event = {
-
-		id = 44827
-		title = EVTNAME44827
-		desc = EVTDESC44827
-		picture = "treaty"
-
-		is_triggered_only = yes
-
-		option = {
-			name = "EVTOPTA44827"
-
-			set_country_flag = mexico_refused_treaty
-			random_owned = {
-				limit = {
-					owner = { ai = yes }
-					OR = {
-						is_core = USA
-						region = TEX_132	# Texas
-						region = MEX_94		# Nevada
-						region = MEX_97		# Utah
-						region = MEX_85		# California
-						region = USA_106	# Colorado
-						region = USA_111	# Wyoming
-						region = USA_126	# Kansas
-						region = USA_129	# Oklahoma
-						province_id = 100	# Arizona
-						province_id = 101
-						province_id = 3367
-						province_id = 38	# New Mexico
-						province_id = 105
-						province_id = 109
-						province_id = 2148
-						province_id = 2631
-					}
-				}
-				secede_province = USA
-			}
-			war_exhaustion = -20
-		}
-	}
-
 ## War with Texas ##
 
 	#Description: Antonio López de Santa Anna - 1836 Setup event
@@ -801,83 +598,6 @@
 				remove_province_modifier = peasant_revolt
 				any_pop = { militancy = -4 }
 			}
-		}
-	}
-
-	#Description: If Texas wins the war of independence, they will lose any cores that they didn't free.
-	country_event = {
-		id = 99960
-		title = EVTNAME99960
-		desc = EVTDESC99960
-		picture = texas_state
-
-		trigger = {
-			tag = TEX
-			owns = 132
-			war = no
-			truce_with = MEX
-			is_vassal = no
-			NOT = { MEX = { has_country_flag = texas_recaptured } }
-		}
-
-		fire_only_once = yes
-
-		option = {
-			name = EVTOPTA99960
-
-			war_exhaustion = -10
-			random_owned = {
-				limit = { owner = { any_core = { NOT = { owned_by = THIS } } } }
-				owner = {
-					all_core = {
-						limit = { NOT = { owned_by = THIS } }
-						remove_core = THIS
-					}
-				}
-			}
-			set_global_flag = texas_independent
-		}
-	}
-
-	#Description: The Battle of the Alamo
-	country_event = {
-		id = 44847
-		title = EVTNAME44847
-		desc = EVTDESC44847
-		picture = fall_of_the_alamo
-
-		trigger = {
-			tag = TEX
-			war_with = MEX
-			# 137 = { # DEVNOTE: This doesn't appear to work, but ideally it would be like this
-				# country_units_in_province = TEX
-				# country_units_in_province = MEX
-			# }
-			NOT = {
-				has_global_flag = texas_independent
-				MEX = { has_country_flag = texas_recaptured }
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 2
-			modifier = {
-				factor = 0.05
-				137 = { country_units_in_province = MEX }
-			}
-		}
-
-		fire_only_once = yes
-
-		option = {
-			name = EVTOPTA44847
-
-			war_exhaustion = -5
-			any_pop = {
-				limit = { type = soldiers }
-				reduce_pop = 1.1
-			}
-			add_country_modifier = { name = small_country_draft duration = 90 }
 		}
 	}
 
@@ -1350,7 +1070,7 @@
 		}
 	}
 
-	#Description: Yucatan revolt - Triggered for Mexico when the USA incites the Yucatan revolt # TODO localization
+	#Description: Yucatan revolt - Triggered for Mexico when the USA incites the Yucatan revolt
 	country_event = {
 		id = 5578766
 		title = EVTNAME5578766
@@ -1372,7 +1092,7 @@
 		}
 	}
 
-	#Description: Triggered for Mexico when Guatemala/USCA seizes Tapachula # TODO localization
+	#Description: Triggered for Mexico when Guatemala/USCA seizes Tapachula
 	country_event = {
 		id = 8194746
 		title = EVTNAME8194746
@@ -1423,7 +1143,6 @@
 		mean_time_to_happen = {
 			months = 1
 		}
-
 
 		option = {
 			name = EVTOPTA44822
@@ -1847,7 +1566,7 @@
 		option = {
 			name = EVTOPTA190419120
 
-			money = 9000
+			money = 10000
 			3366 = { remove_core = THIS remove_core = LSK }
 			FROM = { country_event = 190419121 }
 
@@ -1906,14 +1625,14 @@
 			name = EVTOPTA190419121
 
 			prestige = 5
-			money = -9000
+			money = -10000
 			3366 = { secede_province = THIS }
 			relation = { who = FROM value = 25 }
 			any_pop = { consciousness = -1 }
 		}
 	}
 
-	#Description: Krepost Ross purchase 3/3 - the buyer refused # TODO localization and id conflict
+	#Description: Krepost Ross purchase 3/3 - the buyer refused
 	country_event = {
 		id = 190419122
 		title = EVTNAME190419122
@@ -1929,7 +1648,7 @@
 		}
 	}
 
-## Other ##
+## Flavor ##
 
 	#Description: Around 1850 found the city of Piedras Negras and discover coal.
 	country_event = {
@@ -1991,6 +1710,7 @@
 			name = EVTOPTA72742
 
 			prestige = 2
+			plurality = 2
 			set_global_flag = ciudad_juarez_renamed
 			2143 = { change_province_name = "Ciudad Juárez" }
 		}
@@ -2099,7 +1819,7 @@
 		}
 	}
 
-	#Description: If Mexico City is under threat, Mexico will move its capital to Morelia
+	#Description: If Mexico City is under threat, Mexico will move its capital to Morelia.
 	country_event = {
 		id = 187830
 		title = "EVTNAME187830"
@@ -2109,10 +1829,10 @@
 		trigger = {
 			tag = MEX
 			capital = 2172
-			OR = { # TODO lookup with golden circle decisions
+			OR = {
 				CSA = { owns = 2173 }
 				CSA = { owns = 2174 }
-				CSA = { owns = 2180 }
+				CSA = { owns = 2175 }
 			}
 			war_with = CSA
 			CSA = { controls = 2172 }
@@ -2129,5 +1849,6 @@
 
 			prestige = -15
 			capital = 2171 # Morelia
+			set_country_flag = mexico_capital_retreated
 		}
 	}

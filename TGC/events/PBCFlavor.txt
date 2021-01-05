@@ -1,39 +1,515 @@
-#### TODOs
-# 1. Peru starts independent (Orbegoso is in charge)
-# 2. Bolivia (Santa Cruz) asks him to form a confederation in return for their help
-# 2.1. If he refuses, Bolivia gets a puppet CB on Peru
-# 2.2. If he accepts, Peru becomes a puppet and Bolivia becomes PBC
-# 3. When Bolivia becomes PBC, enable events to pop which will create South Peru and give them the appropriate territories and give (north) Peru territories accordingly
+## Civil War ## TODO find images for this
+
+	#Description: Triggered for South Peru (Obregoso) to become Peru if Peru doesn't exist (after the civil war) - declare victory (historical)
+	country_event = {
+		id = 97044
+		title = "EVTNAME97044"
+		desc = "EVTDESC97044"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = SPU
+			owns = 2295
+			NOT = { exists = PEU }
+			war = no
+			NOT = { has_country_flag = obregoso_restored }
+			NOT = { has_country_flag = salaverry_victorious }
+			NOT = { has_global_flag = peru_civil_war_stalemate }
+			NOT = { has_global_flag = PBC_abandoned }
+		}
+
+		mean_time_to_happen = { days = 1 }
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA97044"
+
+			prestige = 5
+			war_exhaustion = -10
+			capital = 2295
+			change_tag = PEU
+			SPU = { all_core = { remove_core = SPU } }
+			set_country_flag = obregoso_restored # Necessary for the first PBC to form
+			BOL = { country_event = 97043 }
+
+			random_owned = {
+				limit = { owner = { has_leader = "Agustin Gamarra" } }
+				kill_leader = "Agustin Gamarra"
+			}
+			CHL = {
+				define_general = {
+					name = "Agustin Gamarra"
+					background = war_college
+					personality = imperious
+				}
+			}
+		}
+	}
+
+	#Description: Triggered for Peru (Salaverry) if South Peru doesn't exist (after the civil war) - declare victory # TODO localization
+	country_event = {
+		id = 97037
+		title = "EVTNAME97037"
+		desc = "EVTDESC97037"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = PEU
+			owns = 2295
+			NOT = { exists = SPU }
+			war = no
+			NOT = { has_country_flag = salaverry_victorious }
+			NOT = { has_country_flag = obregoso_restored }
+			NOT = { has_global_flag = peru_civil_war_stalemate }
+			NOT = { has_global_flag = PBC_abandoned }
+		}
+
+		mean_time_to_happen = { days = 1 }
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA97037"
+
+			prestige = 5
+			war_exhaustion = -10
+			SPU = {
+				all_core = { remove_core = SPU }
+				kill_leader = "Luis José de Orbegoso"
+			}
+			BOL = {
+				define_general = {
+					name = "Luis José de Orbegoso"
+					personality = timid
+					background = aristocrat
+				}
+			}
+			set_country_flag = salaverry_victorious
+		}
+	}
+
+	#Description: Triggered for Peru (Salaverry) if the civil war ends in a stalemate # TODO localization
+	country_event = {
+		id = 97036
+		title = "EVTNAME97036"
+		desc = "EVTDESC97036"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = PEU
+			owns = 2295
+			exists = SPU
+			war = no
+			NOT = { has_country_flag = salaverry_victorious }
+			NOT = { has_country_flag = obregoso_restored }
+			NOT = { has_global_flag = peru_civil_war_stalemate }
+			NOT = { has_global_flag = PBC_abandoned }
+		}
+
+		mean_time_to_happen = { days = 1 }
+
+		fire_only_once = yes
+
+		immediate = { PEU = { all_core = { add_core = SPU } } } # With both countries having cores on all of each other's land, the civil war can continue at any moment
+
+		option = {
+			name = "EVTOPTA97036"
+
+			set_global_flag = peru_civil_war_stalemate
+			war_exhaustion = -5
+		}
+	}
+
+## Post Civil War ##
+
+	#Description: Salaverry Captured - Triggered for Bolivia if they restore Obregoso
+	country_event = {
+		id = 97043
+		title = "EVTNAME97043"
+		desc = "EVTDESC97043"
+		picture = "peru-bolivia"
+
+		is_triggered_only = yes
+
+		# Execute him (historical)
+		option = {
+			name = "EVTOPTA97043"
+
+			badboy = 2
+			PEU = { any_pop = { militancy = 4 } }
+			any_pop = { militancy = 4 }
+		}
+
+		# Life in prison
+		option = {
+			name = "EVTOPTB97043"
+
+			add_country_modifier = { name = salaverry_in_prison duration = -1 }
+		}
+
+		# Spare him
+		option = {
+			name = "EVTOPTC97043"
+
+			any_pop = { consciousness = 4 }
+			PEU = {
+				any_pop = { consciousness = 4 }
+				define_general = {
+					name = "Felipe Santiago Salaverry"
+					background = generals_aide
+					personality = bold
+				}
+			}
+		}
+
+		# Exile him
+		option = {
+			name = "EVTOPTD97043"
+
+			random_country = {
+				limit = {
+					capital_scope = { continent = south_america }
+					is_vassal = no
+					is_substate = no
+					NOT = { tag = BOL tag = PEU tag = SPU }
+				}
+				country_event = 97042
+			}
+		}
+	}
+
+	## Salaverry in exile ##
+
+		#Description: When Salaverry is seeking asylum countries can choose whether to grant it to him
+		country_event = {
+			id = 97042
+			title = "EVTNAME97042"
+			desc = "EVTDESC97042"
+			picture = "peru-bolivia"
+
+			is_triggered_only = yes
+
+			# Grant him asylum
+			option = {
+				name = "EVTOPTA97042"
+
+				any_pop = { consciousness = -0.5 }
+				relation = { who = PEU value = -25 }
+				define_general = {
+					name = "Felipe Santiago Salaverry"
+					background = generals_aide
+					personality = bold
+				}
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 1.2
+						neighbour = PEU
+					}
+					modifier = {
+						factor = 4
+						any_core = { owned_by = PEU }
+					}
+				}
+			}
+
+			# Send him away
+			option = {
+				name = "EVTOPTB97042"
+
+				set_country_flag = salaverry_rejected
+				relation = { who = PEU value = 10 }
+				random_country = {
+					limit = {
+						capital_scope = { continent = south_america }
+						is_vassal = no
+						is_substate = no
+						NOT = { has_country_flag = salaverry_rejected }
+						NOT = { tag = BOL tag = PEU tag = SPU }
+					}
+					country_event = 97042
+				}
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.5
+						relation = { who = PEU value = 100 }
+					}
+					modifier = {
+						factor = 0.5
+						relation = { who = BOL value = 100 }
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for the country where Salaverry is in asylum when the PBC is in a war, asking whether they want to go free Peru.
+		country_event = {
+			id = 97041
+			title = "EVTNAME97041"
+			desc = "EVTDESC97041"
+			picture = "peru-bolivia"
+
+			trigger = {
+				has_leader = "Felipe Santiago Salaverry"
+				NOT = {
+					tag = PEU
+					tag = SPU
+				}
+				war = no
+				PBC = { war = yes }
+			}
+
+			fire_only_once = yes
+
+			# Go to war to free Peru
+			option = {
+				name = "EVTOPTA97041"
+
+				random_country = {
+					limit = {
+						tag = PEU
+						exists = yes
+						vassal_of = PBC
+					}
+					THIS = {
+						badboy = 1.5
+						war = {
+							target = PBC
+							attacker_goal = { casus_belli = release_puppet country = PEU }
+						}
+					}
+				}
+				random_country = {
+					limit = {
+						tag = PEU
+						exists = no
+						PBC = { owns = 2295 } # Lima
+					}
+					THIS = {
+						badboy = 3
+						war = {
+							target = PBC
+							attacker_goal = { casus_belli = liberate_country country = PEU }
+						}
+					}
+				}
+				soldiers = { militancy = -1 consciousness = -1 }
+				officers = { militancy = -1 consciousness = -1 }
+				set_country_flag = supported_salaverry
+				set_global_flag = salaverry_war_for_peru
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 3
+						is_greater_power = yes
+					}
+
+				}
+			}
+
+			# Send him alone
+			option = {
+				name = "EVTOPTB97041"
+
+				kill_leader = "Felipe Santiago Salaverry"
+				set_country_flag = supported_salaverry
+				soldiers = { reduce_pop = 0.99 }
+				officers = { reduce_pop = 0.99 }
+				treasury = -1000
+				small_arms = -5
+
+				ai_chance = { factor = 30 }
+			}
+
+			# Kick him out
+			option = {
+				name = "EVTOPTC97041"
+
+				kill_leader = "Felipe Santiago Salaverry"
+
+				ai_chance = {
+					factor = 30
+					modifier = {
+						factor = 1.5
+						war_policy = pacifism
+					}
+				}
+			}
+
+			# Implore him to stay
+			option = {
+				name = "EVTOPTD97041"
+
+				random_list = {
+					90 = {
+						kill_leader = "Felipe Santiago Salaverry"
+						soldiers = { consciousness = 1 }
+						officers = { consciousness = 1 }
+					}
+					10 = { }
+				}
+
+				ai_chance = { factor = 50 }
+			}
+		}
+
+		#Description: If we support Salaverry's liberation of Peru, we get prestige and relations and influence in Peru
+		country_event = {
+			id = 97040
+			title = "EVTNAME97040"
+			desc = "EVTDESC97040"
+			picture = "peru-bolivia"
+
+			trigger = {
+				has_country_flag = supported_salaverry
+				has_global_flag = salaverry_war_for_peru
+				PEU = {
+					exists = yes
+					is_vassal = no
+					owns = 2295 # Lima
+				}
+				PBC = { exists = no }
+			}
+
+			mean_time_to_happen = { days = 7 }
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA97040"
+
+				prestige = 5
+				relation = { who = PEU value = 150 }
+				random_owned = {
+					limit = { owner = { is_greater_power = yes } }
+					diplomatic_influence = { who = PEU value = 100 }
+				}
+				random_owned = {
+					limit = { owner = { has_leader = "Felipe Santiago Salaverry" } }
+					owner = { kill_leader = "Felipe Santiago Salaverry" }
+					PEU = {
+						define_general = {
+							name = "Felipe Santiago Salaverry"
+							background = generals_aide
+							personality = bold
+						}
+					}
+				}
+			}
+		}
+
+	## Salaverry in prison ##
+
+		#Description: Triggered for the PBC if Salaverry dies in prison # TODO decision to release
+		country_event = {
+			id = 97035
+			title = "EVTNAME97035"
+			desc = "EVTDESC97035"
+			picture = "peru-bolivia"
+
+			trigger = {
+				has_country_modifier = salaverry_in_prison
+			}
+
+			mean_time_to_happen = { months = 360 } # Salaverry was relatively young when he was captured so it would be fair to assume he would make it 30 years
+
+			fire_only_once = yes
+
+			immediate = { set_global_flag = salaverry_dead }
+
+			option = {
+				name = "EVTOPTA97035"
+
+				remove_country_modifier = salaverry_in_prison
+
+				any_pop = {
+					militancy = 3
+					consciousness = 3
+				}
+				PEU = {
+					any_core = {
+						limit = {
+							OR = {
+								owned_by = THIS
+								owner = { vassal_of = THIS }
+							}
+						}
+						random = {
+							chance = 35
+							add_province_modifier = { name = nationalist_agitation duration = 180 }
+						}
+					}
+				}
+			}
+		}
 
 ## Formation ##
 
-	#Description: Triggered for Peru near the start of the game
+	#Description: Triggered for Bolivia when Obregoso is restored in Peru - demand the Confederation or not?
+	country_event = {
+		id = 97039
+		title = "EVTNAME97039"
+		desc = "EVTDESC97039"
+		picture = "peru-bolivia"
+
+		trigger = {
+			tag = BOL
+			war = no
+			PEU = {
+				neighbour = THIS
+				exists = yes
+				war = no
+				has_country_flag = obregoso_restored
+			}
+		}
+
+		mean_time_to_happen = { days = 7 }
+
+		fire_only_once = yes
+
+		# Demand the Confederation (historical)
+		option = {
+			name = "EVTOPTA97039"
+
+			PEU = { country_event = 97049 }
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Let it go
+		option = {
+			name = "EVTOPTB97039"
+
+			prestige = -1
+			set_global_flag = PBC_abandoned
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: Triggered for Peru when Bolivia demands that Obregoso uphold his end of the bargain and form the PBC - agree or not?
 	country_event = {
 		id = 97049
 		title = "EVTNAME97049"
 		desc = "EVTDESC97049"
 		picture = "peru-bolivia"
 
-		trigger = {
-			tag = PEU
-			war = no
-			BOL = {
-				neighbour = THIS
-				exists = yes
-				war = no
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 1
-		}
-
-		fire_only_once = yes
+		is_triggered_only = yes
 
 		# Become puppet of Bolivia, PBC is formed (historical)
 		option = {
 			name = "EVTOPTA97049"
 
+			any_pop = {
+				limit = { strata = rich }
+				consciousness = 4
+				militancy = 2
+			}
 			BOL = { country_event = 97048 }
 
 			ai_chance = { factor = 90 }
@@ -65,19 +541,19 @@
 
 		is_triggered_only = yes
 
-		# Become puppet of Bolivia, PBC is formed (historical)
+		# Become puppet of Bolivia, PBC is formed
 		option = {
 			name = "EVTOPTA97048"
 
-			prestige = 15
-			create_vassal = FROM
+			prestige = 10
 			all_core = { add_core = PBC }
-			FROM = { all_core = { add_core = PBC } }
 			change_tag = PBC
+
+			set_country_flag = PBC_administration
 		}
 	}
 
-	#Description: Triggered for Bolivia if Peru refuses
+	#Description: Triggered for Bolivia if Peru refuses - war or not?
 	country_event = {
 		id = 97047
 		title = "EVTNAME97047"
@@ -110,11 +586,11 @@
 			name = "EVTOPTB97047"
 
 			prestige = -10
-			set_global_flag = PBC_abandoned # TODO add this everywhere
+			set_global_flag = PBC_abandoned
 		}
 	}
 
-	#Description: Triggered for Bolivia after the war with Peru if they win
+	#Description: Triggered for Bolivia after the war with Peru if they win - PBC formed
 	country_event = {
 		id = 97046
 		title = "EVTNAME97046"
@@ -132,17 +608,24 @@
 			}
 		}
 
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		fire_only_once = yes
+
 		option = {
 			name = "EVTOPTA97046"
 
 			prestige = 10
 			all_core = { add_core = PBC }
-			PEU = { all_core = { add_core = PBC } }
 			change_tag = PBC
+
+			set_country_flag = PBC_administration
 		}
 	}
 
-	#Description: Triggered for Bolivia after the war with Peru if they lose
+	#Description: Triggered for Bolivia after the war with Peru if they lose - PBC abandoned
 	country_event = {
 		id = 97045
 		title = "EVTNAME97045"
@@ -160,6 +643,12 @@
 			}
 		}
 
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		fire_only_once = yes
+
 		option = {
 			name = "EVTOPTA97045"
 
@@ -167,6 +656,125 @@
 			set_global_flag = PBC_abandoned
 		}
 	}
+
+	#Description: Sets the territories of (North) Peru and South Peru when the PBC forms.
+	country_event = {
+		id = 97038
+		title = "EVTNAME97038"
+		desc = "EVTDESC97038"
+		picture = "peru-bolivia"
+
+		trigger = {
+			has_country_flag = PBC_administration
+		}
+
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		fire_only_once = yes
+
+		immediate = {
+			clr_country_flag = PBC_administration
+			inherit = PEU
+		}
+
+		option = {
+			name = "EVTOPTA97038"
+
+			## South Peru's territories ##
+				release_vassal = SPU
+				random_owned = {
+					limit = { 2307 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2307 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2308 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2308 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2578 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2578 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2304 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2304 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2303 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2303 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2299 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2299 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2297 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2297 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2302 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2302 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2301 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2301 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2319 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2319 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 3297 = { OR = { owned_by = THIS owned_by = PEU } } }
+					3297 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 2321 = { OR = { owned_by = THIS owned_by = PEU } } }
+					2321 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { 3296 = { OR = { owned_by = THIS owned_by = PEU } } }
+					3296 = { add_core = SPU secede_province = SPU }
+				}
+				random_owned = {
+					limit = { SPU = { NOT = { vassal_of = THIS } } }
+					THIS = { create_vassal = SPU }
+				}
+
+			## Peru's territories ##
+				release_vassal = PEU
+				random_owned = {
+					limit = { province_id = 2300 }
+					secede_province = PEU
+				}
+				random_owned = {
+					limit = { province_id = 2290 }
+					secede_province = PEU
+				}
+				random_owned = {
+					limit = { province_id = 2549 }
+					secede_province = PEU
+				}
+				random_owned = {
+					limit = { province_id = 2298 }
+					secede_province = PEU
+				}
+				random_owned = {
+					limit = { province_id = 2407 }
+					secede_province = PEU
+				}
+				random_owned = {
+					limit = { PEU = { NOT = { vassal_of = THIS } } }
+					THIS = { create_vassal = PEU }
+				}
+
+			2578 = { add_province_modifier = { name = new_capital_modifier duration = 365 } }
+
+			political_reform = federalism
+		}
+	}
+
+## Post-Formation ##
 
 	#Description: War of the Confederation - Triggered for Chile and Argentina once the PBC is formed
 	country_event = {
@@ -218,7 +826,7 @@
 		}
 
 		# War of the Confederation (historical)
-		option = {
+		option = { # TODO how to make these cores if no war?
 			name = "EVTOPTA97050"
 
 			set_country_flag = fight_the_PBC
@@ -231,6 +839,7 @@
 			}
 			random_owned = {
 				limit = { owner = { tag = CHL } }
+				2305 = { add_core = CHL }
 				owner = {
 					casus_belli = {
 						target = PEU
@@ -289,7 +898,13 @@
 				}
 			}
 
-			ai_chance = { factor = 90 }
+			ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 1.5
+					PBC = { war = yes }
+				}
+			}
 		}
 
 		# Let them be
@@ -325,7 +940,7 @@
 
 ## Breakup ##
 
-	#Description: End of the Confederation? - If the PBC suffers a military defeat, they can let the confederation go and become Bolivia or fight to keep the Confederation together
+	#Description: End of the Confederation? - If the PBC suffers a military defeat (Peru is independent or Chile owns Antofagasta), they can let the confederation go and become Bolivia or fight to keep the Confederation together
 	country_event = {
 		id = 97055
 		title = "EVTNAME97055"
@@ -346,7 +961,6 @@
 			has_recently_lost_war = yes
 			OR = {
 				AND = {
-					has_recently_lost_war = yes
 					truce_with = CHL
 					NOT = { owns = 2370 } # Cochinoca
 				}
@@ -374,60 +988,87 @@
 
 			prestige = -5
 			badboy = -2
-			random_country = {
-				limit = {
-					tag = PEU
-					vassal_of = PBC
-				}
-				set_global_flag = first_pbc_fell
-				THIS = { release_vassal = PEU }
-			}
-			random_country = {
-				limit = {
-					tag = SPU
-					vassal_of = PBC
-				}
-				THIS = { release_vassal = SPU }
-			}
-			random_owned = {
-				limit = {
-					province_id = 2295
-					NOT = { exists = PEU }
-				}
-				owner = { release = PEU }
-			}
-			random_owned = {
-				limit = {
-					province_id = 2304
-					NOT = { exists = SPU }
-				}
-				owner = { release = SPU }
-			}
 
-			all_core = { remove_core = PBC }
-			random_owned = {
-				limit = {
-					province_id = 2313
-					NOT = { owner = { capital = 2313 } }
-				}
-				owner = { capital = 2313 }
-			}
-			change_tag = BOL
-			PRG = { relation = { who = BOL value = -300 } }
-			any_country = {
-				limit = {
-					exists = yes
-					OR = {
-						tag = CHL
-						tag = ARG
-						tag = ARC
-						tag = LPL
+			## Component states ##
+				random_country = {
+					limit = {
 						tag = PEU
-						tag = BRZ
+						vassal_of = PBC
 					}
+					set_global_flag = first_pbc_fell
+					THIS = { release_vassal = PEU }
 				}
-				relation = { who = BOL value = 300 }
-			}
+				random_country = {
+					limit = {
+						tag = SPU
+						vassal_of = PBC
+					}
+					THIS = { release_vassal = SPU }
+				}
+				random_owned = {
+					limit = {
+						province_id = 2295
+						NOT = { exists = PEU }
+					}
+					owner = { release = PEU }
+				}
+				random_owned = {
+					limit = {
+						province_id = 2304
+						NOT = { exists = SPU }
+					}
+					owner = { release = SPU }
+				}
+
+			## This ##
+				random_owned = {
+					limit = {
+						province_id = 2313
+						NOT = { owner = { capital = 2313 } }
+					}
+					owner = { capital = 2313 }
+				}
+				all_core = { remove_core = PBC }
+				change_tag = BOL
+				random_owned = {
+					limit = { centralization = federalism }
+					political_reform = unitary
+				}
+
+			## Neighbors ##
+				random_country = {
+					limit = { tag = PRG exists = yes }
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = { tag = CHL exists = yes }
+					relation = { who = THIS value = 300 }
+				}
+				random_country = {
+					limit = {
+						OR = {
+							tag = ARC
+							tag = ARG
+							tag = LPL
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = 300 }
+				}
+				random_country = {
+					limit = { tag = PEU exists = yes }
+					relation = { who = THIS value = 300 }
+				}
+				random_country = {
+					limit = {
+						OR = {
+							tag = BRZ
+							tag = KPB
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = 300 }
+				}
 
 			ai_chance = {
 				factor = 50
@@ -512,20 +1153,25 @@
 		option = {
 			name = "EVTOPTA34625"
 
-			2549 = { # Tarauaca
-				remove_core = PEU
-				add_core = BOL
-				secede_province = BOL
+			BOL = {
+				all_core = {
+					limit = {
+						OR = {
+							owned_by = PEU
+							owned_by = SPU
+						}
+					}
+					secede_province = BOL
+				}
+				all_core = {
+					limit = { is_core = PEU }
+					remove_core = PEU
+				}
+				all_core = {
+					limit = { is_core = SPU }
+					remove_core = SPU
+				}
 			}
-			2407 = { # Tabatinga
-				remove_core = PEU
-				add_core = BOL
-				secede_province = BOL
-			}
-
-			3296 = { secede_province = BOL } # Pauini
-			3297 = { secede_province = BOL } # Majuria
-			2321 = { secede_province = BOL } # Cobija
 		}
 	}
 
@@ -541,13 +1187,341 @@
 		option = {
 			name = "EVTOPTA34626"
 
-			2283 = { secede_province = ECU } # Zamora
-			2284 = { secede_province = ECU } # Tena
-			2288 = { secede_province = ECU } # Yuncos
-			2289 = { secede_province = ECU } # Puca Urco
+			## Ecuador only - if not disarmed ##
 
-			2263 = { secede_province = CLM } # El Encanto
-			3295 = { secede_province = CLM } # Ambrosio
+				# Trujilo ##
+					random_owned = { # Jaen
+						limit = { province_id = 2287 is_core = ECU ECU = { owns = 2280 is_disarmed = no } }
+						secede_province = ECU
+					}
+					random_owned = {
+						limit = { province_id = 2287 is_core = GCO GCO = { owns = 2280 is_disarmed = no } }
+						secede_province = GCO
+					}
+
+				# Quito #
+					random_owned = { # San Francisco de Quito
+						limit = { province_id = 2279 is_core = ECU ECU = { owns = 2280 is_disarmed = no } }
+						secede_province = ECU
+					}
+					random_owned = {
+						limit = { province_id = 2279 is_core = GCO GCO = { owns = 2280 is_disarmed = no } }
+						secede_province = GCO
+					}
+					random_owned = { # Puerto Francisco de Orellana
+						limit = { province_id = 2282 is_core = ECU ECU = { owns = 2280 is_disarmed = no } }
+						secede_province = ECU
+					}
+					random_owned = {
+						limit = { province_id = 2282 is_core = GCO GCO = { owns = 2280 is_disarmed = no } }
+						secede_province = GCO
+					}
+					random_owned = { # Macas
+						limit = { province_id = 2283 is_core = ECU ECU = { owns = 2280 is_disarmed = no } }
+						secede_province = ECU
+					}
+					random_owned = {
+						limit = { province_id = 2283 is_core = GCO GCO = { owns = 2280 is_disarmed = no } }
+						secede_province = GCO
+					}
+
+				# Loreto #
+					random_owned = { # San Pablo y San Pedro de Iquitos
+						limit = { province_id = 2288 is_core = ECU ECU = { owns = 2280 is_disarmed = no } }
+						secede_province = ECU
+					}
+					random_owned = {
+						limit = { province_id = 2288 is_core = GCO GCO = { owns = 2280 is_disarmed = no } }
+						secede_province = GCO
+					}
+
+			## Colombia or Ecuador ##
+				## South ##
+					# If neither are disarmed and 2282 is not owned by Peru, the owner will get it
+					# If both are disarmed Peru keeps it
+					# Else Ecuador has priority
+					# Loreto - Rio Napo #
+						random_owned = {
+							limit = {
+								province_id = 2284
+								is_core = ECU
+								ECU = {
+									owns = 2280
+									is_disarmed = no
+								}
+								CLM = { NOT = { owns = 2282 } }
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 2284
+								is_core = CLM
+								CLM = {
+									OR = {
+										ECU = { NOT = { owns = 2280 } }
+										ECU = { is_disarmed = yes }
+										owns = 2282
+									}
+									is_disarmed = no
+								}
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 2284
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
+					# Loreto - Rio Putumayo #
+						random_owned = {
+							limit = {
+								province_id = 2289
+								is_core = ECU
+								ECU = {
+									owns = 2280
+									is_disarmed = no
+								}
+								CLM = { NOT = { owns = 2282 } }
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 2289
+								is_core = CLM
+								CLM = {
+									OR = {
+										ECU = { NOT = { owns = 2280 } }
+										ECU = { is_disarmed = yes }
+										owns = 2282
+									}
+									is_disarmed = no
+								}
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 2289
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
+					# Boyaca - Amacayacu #
+						random_owned = {
+							limit = {
+								province_id = 2261
+								is_core = ECU
+								ECU = {
+									owns = 2280
+									is_disarmed = no
+								}
+								CLM = { NOT = { owns = 2282 } }
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 2261
+								is_core = CLM
+								CLM = {
+									OR = {
+										ECU = { NOT = { owns = 2280 } }
+										ECU = { is_disarmed = yes }
+										owns = 2282
+									}
+									is_disarmed = no
+								}
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 2261
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
+					# Amazonas - Sao Francisco Xavier de Tabatinga #
+						random_owned = {
+							limit = {
+								province_id = 3295
+								is_core = ECU
+								ECU = {
+									owns = 2280
+									is_disarmed = no
+								}
+								CLM = { NOT = { owns = 2282 } }
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 3295
+								is_core = CLM
+								CLM = {
+									OR = {
+										ECU = { NOT = { owns = 2280 } }
+										ECU = { is_disarmed = yes }
+										owns = 2282
+									}
+									is_disarmed = no
+								}
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 3295
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
+				## North ##
+					# If neither are disarmed and 2259 is not owned by Peru, the owner will get it
+					# If both are disarmed Peru keeps it
+					# Else Columbia has priority
+					# Cauca - Ipales #
+						random_owned = {
+							limit = {
+								province_id = 2259
+								is_core = CLM
+								CLM = {
+									owns = 2257
+									is_disarmed = no
+								}
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 2259
+								is_core = ECU
+								ECU = {
+									owns = 2280
+									OR = {
+										CLM = { NOT = { owns = 2257 } }
+										CLM = { is_disarmed = yes }
+									}
+									is_disarmed = no
+								}
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 2259
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
+					# Boyaca - Cahuinari #
+						random_owned = {
+							limit = {
+								province_id = 2291
+								is_core = CLM
+								CLM = {
+									owns = 2257
+									owns = 2260
+									is_disarmed = no
+								}
+								ECU = { NOT = { owns = 2259 } }
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 2291
+								is_core = ECU
+								ECU = {
+									OR = {
+										CLM = { NOT = { owns = 2257 } }
+										CLM = { NOT = { owns = 2260 } }
+										CLM = { is_disarmed = yes }
+										owns = 2259
+									}
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 2291
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
+					# Amazonas - Sao Paulo dos Cambebas #
+						random_owned = {
+							limit = {
+								province_id = 2263
+								is_core = CLM
+								CLM = {
+									owns = 2257
+									owns = 2401
+									is_disarmed = no
+								}
+								ECU = { NOT = { owns = 2259 } }
+							}
+							secede_province = CLM
+						}
+						random_owned = {
+							limit = {
+								province_id = 2263
+								is_core = ECU
+								ECU = {
+									OR = {
+										CLM = { NOT = { owns = 2257 } }
+										CLM = { NOT = { owns = 2401 } }
+										CLM = { is_disarmed = yes }
+										owns = 2259
+									}
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = ECU
+						}
+						random_owned = {
+							limit = {
+								province_id = 2263
+								is_core = GCO
+								GCO = {
+									owns = 2280
+									is_disarmed = no
+								}
+							}
+							secede_province = GCO
+						}
 		}
 	}
 
@@ -573,20 +1547,22 @@
 			OR = {
 				ARC = {
 					war = no
-					owns = 2370 # Cochinoca
-					owns = 2315 # Tarija
+					owns = 2370
+					owns = 3353
+					owns = 2315
 				}
 				ARG = {
 					war = no
-					owns = 2370 # Cochinoca
-					owns = 2315 # Tarija
+					owns = 2370
+					owns = 3353
+					owns = 2315
 				}
 			}
 		}
 
 		mean_time_to_happen = { days = 15 }
 
-
+		# Propose the border treaty
 		option = {
 			name = "EVTOPTA4661006"
 
@@ -598,6 +1574,7 @@
 			ai_chance = { factor = 100 }
 		}
 
+		# Maintain our claims
 		option = {
 			name = "EVTOPTB4661006"
 
@@ -620,7 +1597,7 @@
 			badboy = -2
 			war_exhaustion = -10
 			any_owned = {
-				limit = { OR = { is_core = BOL is_core = PBC } }
+				limit = { is_core = FROM }
 				remove_province_modifier = integration_refusal
 				remove_province_modifier = core_integration
 				remove_province_modifier = national_assimilation
@@ -628,11 +1605,9 @@
 				remove_province_modifier = national_assimilation_acceptance
 				remove_province_modifier = national_assimilation_complete
 			}
-			2369 = { remove_core = BOL remove_core = PBC } # Jujuy
-			2370 = { remove_core = BOL remove_core = PBC } # Cochinoca
-			2371 = { remove_core = BOL remove_core = PBC } # Uquia
-			1714 = { remove_core = BOL remove_core = PBC } # Santa Rosa
-			2315 = { remove_core = ARC remove_core = ARG remove_core = THIS } # Tarija
+			3353 = { remove_core = BOL remove_core = PBC }
+			2370 = { remove_core = BOL remove_core = PBC }
+			2315 = { remove_core = THIS }
 			FROM = { country_event = 4661008 }
 			relation = { who = BOL value = 25 }
 			FROM = { any_owned = { limit = { is_core = THIS } secede_province = THIS } }
@@ -644,7 +1619,7 @@
 			name = "EVTOPTB4661007"
 
 			badboy = 5
-			2315 = { add_core = ARC } # Tarija
+			2315 = { add_core = THIS }
 			relation = {
 				who = FROM
 				value = -300
@@ -680,109 +1655,111 @@
 		}
 	}
 
-#Description: PBC picks a Capital
-country_event = {
-	id = 4661009
-	title = "EVTNAME33042"
-	desc = "EVTDESC33042"
-	picture = "sucre"
+## Capital ##
 
-	trigger = {
-		tag = PBC
-		is_independant = yes
-		owns = 2295 # Lima
-		owns = 2302 # Cusco
-		owns = 2578 # Tacna
-		owns = 2313 # Sucre
-		owns = 2310 # La Paz
-		SPU = { exists = no }
-		PEU = { exists = no }
+	#Description: PBC picks a Capital
+	country_event = {
+		id = 4661009
+		title = "EVTNAME33042"
+		desc = "EVTDESC33042"
+		picture = "sucre"
+
+		trigger = {
+			tag = PBC
+			is_independant = yes
+			owns = 2295 # Lima
+			owns = 2302 # Cusco
+			owns = 2578 # Tacna
+			owns = 2313 # Sucre
+			owns = 2310 # La Paz
+			SPU = { exists = no }
+			PEU = { exists = no }
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = { months = 2 }
+
+		# Lima
+		option = {
+			name = "EVTOPTA4661009"
+
+			capital_scope = { any_pop = { consciousness = 2 } }
+			2295 = { any_pop = { militancy = -1 } }
+			capital = 2295
+
+			ai_chance = { factor = 2 }
+		}
+
+		# Cusco
+		option = {
+			name = "EVTOPTB4661009"
+
+			capital_scope = { any_pop = { consciousness = 2 } }
+			2302 = { any_pop = { militancy = -1 } }
+			capital = 2302
+
+			ai_chance = { factor = 2 }
+		}
+
+		# Tacna
+		option = {
+			name = "EVTOPTC4661009"
+
+			capital_scope = { any_pop = { consciousness = 2 } }
+			2578 = { any_pop = { militancy = -1 } change_province_name = "New Tacna" }
+			capital = 2578
+
+			ai_chance = { factor = 2 }
+		}
+
+		#Sucre
+		option = {
+			name = "EVTOPTD4661009"
+
+			capital_scope = { any_pop = { consciousness = 2 } }
+			2313 = { any_pop = { militancy = -1 } }
+			capital = 2313
+
+			ai_chance = { factor = 2 }
+		}
+
+		#Don't change
+		option = {
+			name = "EVTOPTE33042"
+
+			ai_chance = { factor = 90 }
+		}
 	}
 
-	fire_only_once = yes
+	#Description: Renaming Sucre - Nueva Toledo gets renamed to Sucre
+	country_event = {
+		id = 97051
+		title = "EVTNAME97051"
+		desc = "EVTDESC97051"
+		picture = "sucre"
 
-	mean_time_to_happen = { months = 2 }
+		fire_only_once = yes
 
-	# Lima
-	option = {
-		name = "EVTOPTA4661009"
+		trigger = {
+			tag = BOL
+			is_vassal = no
+			year = 1838
+			owns = 2313
+		}
 
-		capital_scope = { any_pop = { consciousness = 2 } }
-		2295 = { any_pop = { militancy = -1 } }
-		capital = 2295
+		mean_time_to_happen = { days = 5 }
 
-		ai_chance = { factor = 2 }
+		option = {
+			name = "EVTOPTA97051"
+
+			2313 = { change_province_name = "Sucre" }
+		}
 	}
-
-	# Cusco
-	option = {
-		name = "EVTOPTB4661009"
-
-		capital_scope = { any_pop = { consciousness = 2 } }
-		2302 = { any_pop = { militancy = -1 } }
-		capital = 2302
-
-		ai_chance = { factor = 2 }
-	}
-
-	# Tacna
-	option = {
-		name = "EVTOPTC4661009"
-
-		capital_scope = { any_pop = { consciousness = 2 } }
-		2578 = { any_pop = { militancy = -1 } change_province_name = "New Tacna" }
-		capital = 2578
-
-		ai_chance = { factor = 2 }
-	}
-
-	#Sucre
-	option = {
-		name = "EVTOPTD4661009"
-
-		capital_scope = { any_pop = { consciousness = 2 } }
-		2313 = { any_pop = { militancy = -1 } }
-		capital = 2313
-
-		ai_chance = { factor = 2 }
-	}
-
-	#Don't change
-	option = {
-		name = "EVTOPTE33042"
-
-		ai_chance = { factor = 90 }
-	}
-}
-
-#Description: Renaming Sucre - Nueva Toledo gets renamed to Sucre
-country_event = {
-	id = 97051
-	title = "EVTNAME97051"
-	desc = "EVTDESC97051"
-	picture = "sucre"
-
-	fire_only_once = yes
-
-	trigger = {
-		tag = BOL
-		is_vassal = no
-		year = 1838
-		owns = 2313
-	}
-
-	mean_time_to_happen = { days = 5 }
-
-	option = {
-		name = "EVTOPTA97051"
-
-		2313 = { change_province_name = "Sucre" }
-	}
-}
 
 # TODO Argentina gets 2370 and 3353 and Tierra del Fuego split after War of the Pacific
 
-#Description: Chile-Bolivia Treaty of Peace and Friendship - The losers of the War of the Pacific lose their cores in Antofagasta
+#Description: Chile-Bolivia Treaty of Peace and Friendship - The losers of the War of the Pacific lose their cores in Antofagasta # TODO test
 country_event = {
 	id = 46610102
 	title = "EVTNAME46610102"
@@ -895,8 +1872,8 @@ country_event = {
 	}
 }
 
-
-country_event = { # TODO
+#Description: If Bolivia loses a war as a Presitendial Dictatorship, they can choose to become a democracy
+country_event = {
 
 	id = 50006
 	title = "EVTNAME50006"
@@ -922,8 +1899,10 @@ country_event = { # TODO
 
 	fire_only_once = yes
 
+	# Become a democracy
 	option = {
-		name = "¡Viva la democracia!"
+		name = "EVTOPTA50006"
+
 		government = democracy
 		political_reform = universal_voting
 		political_reform = population_equal_weight
@@ -937,64 +1916,36 @@ country_event = { # TODO
 		clr_country_flag = reactionary_election_win
 		clr_country_flag = anarcho_liberal_election_win
 		any_owned = {
-			limit = {
-				is_colonial = no
+			limit = { is_colonial = no }
+			any_pop = {
+				scaled_militancy = { factor = 1 ideology = reactionary }
+				scaled_consciousness = { factor = 2 ideology = reactionary }
 			}
 			any_pop = {
-				scaled_militancy = {
-					factor = 1
-					ideology = reactionary
-				}
-				scaled_consciousness = {
-					factor = 2
-					ideology = reactionary
-				}
-			}
-			any_pop = {
-				scaled_militancy = {
-					factor = -1
-					ideology = liberal
-				}
-				scaled_consciousness = {
-					factor = -2
-					ideology = liberal
-				}
+				scaled_militancy = { factor = -1 ideology = liberal }
+				scaled_consciousness = { factor = -2 ideology = liberal }
 			}
 		}
-		ai_chance = {
-			factor = 85
-		}
+
+		ai_chance = { factor = 85 }
 	}
 
+	# Remain a dictatorship
 	option = {
-		name = "No! Bolivia will continue as a Dictatorship."
+		name = "EVTOPTB50006"
+
 		any_owned = {
-			limit = {
-				is_colonial = no
+			limit = { is_colonial = no }
+			any_pop = {
+				scaled_militancy = { factor = -2 ideology = reactionary }
+				scaled_consciousness = { factor = -4 ideology = reactionary }
 			}
 			any_pop = {
-				scaled_militancy = {
-					factor = -2
-					ideology = reactionary
-				}
-				scaled_consciousness = {
-					factor = -4
-					ideology = reactionary
-				}
-			}
-			any_pop = {
-				scaled_militancy = {
-					factor = 3
-					ideology = liberal
-				}
-				scaled_consciousness = {
-					factor = 5
-					ideology = liberal
-				}
+				scaled_militancy = { factor = 3 ideology = liberal }
+				scaled_consciousness = { factor = 5 ideology = liberal }
 			}
 		}
-		ai_chance = {
-			factor = 15
-		}
+
+		ai_chance = { factor = 15 }
 	}
 }

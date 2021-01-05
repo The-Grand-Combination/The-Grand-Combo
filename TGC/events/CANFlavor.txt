@@ -1865,48 +1865,57 @@
 				set_country_flag = agreed_ruperts_land
 				prestige = 10
 				FROM = { treasury = -100000 }
-				ENG_6 = {	# Yukon
-					remove_core = RPL
-					add_core = CAN
+				random_country = {
+					limit = { tag = FROM any_owned_province = { region = USA_1 } } # Alaska
+					USA_1 = { add_core = CAN }
 				}
-				ENG_9 = {	# Northwest Territories
-					remove_core = RPL
-					add_core = CAN
+				ENG_6 = { remove_core = RPL add_core = CAN } # Yukon
+				ENG_9 = {  remove_core = RPL add_core = CAN } # Northwest Territories
+				random_country = {
+					limit = { tag = FROM NOT = { has_country_flag = british_columbia_organized } }
+					CAN_13 = { remove_core = RPL add_core = CAN } # Columbia
+					COL = { all_core = { add_core = CAN } }
+					set_country_flag = british_columbia_organized
 				}
-				ENG_22 = {	# Alberta
-					remove_core = RPL
-					add_core = CAN
-				}
-				ENG_30 = {	# Saskatchewan
-					remove_core = RPL
-					add_core = CAN
-				}
-				ENG_36 = {	# Manitoba
-					remove_core = RPL
-					add_core = CAN
-				}
-				CAN_50 = {	# Northern Ontario
-					remove_core = RPL
-					add_core = CAN
-				}
+				ENG_22 = { remove_core = RPL add_core = CAN } # Alberta
+				ENG_30 = { remove_core = RPL add_core = CAN } # Saskatchewan
+				ENG_36 = { remove_core = RPL add_core = CAN } # Manitoba
+				CAN_50 = { remove_core = RPL add_core = CAN } # Northern Ontario
 				random_owned = {
-					limit = { owner = { owns = 65 } }
-					CAN_60 = {	# Northern Quebec
-						remove_core = RPL
-						add_core = CAN
-					}
+					limit = { province_id = 65 }
+					CAN_60 = { remove_core = RPL add_core = CAN } # Northern Quebec
 				}
 				RPL = { all_core = { remove_core = RPL } }
-				random_country = {
+				random_country = { # If RPL is a player and Canada is not, RPL will become Canada
 					limit = {
 						tag = RPL
+						ai = no
+						THIS = { ai = yes }
+						exists = yes
+						vassal_of = FROM
+					}
+					all_core = { remove_core = RPL }
+					inherit = CAN
+					change_tag = CAN
+					random_owned = {
+						limit = { province_id = 46 }
+						capital = 46
+					}
+				}
+				random_country = { # Else annex RPL to Canada
+					limit = {
+						tag = RPL
+						OR = {
+							ai = yes
+							THIS = { ai = no }
+						}
 						exists = yes
 						vassal_of = FROM
 					}
 					all_core = { remove_core = RPL }
 					annex_to = CAN
 				}
-				random_country = {
+				random_country = { # Unless RPL is independent, then re-add cores for them on all owned CAN cores
 					limit = {
 						tag = RPL
 						exists = yes
@@ -1918,19 +1927,6 @@
 					}
 				}
 				FROM = {
-					random_owned = {
-						limit = { region = USA_1 }	# Alaska
-						USA_1 = { add_core = CAN }
-					}
-					random_owned = {
-						limit = { owner = { NOT = { has_country_flag = british_columbia_organized } } }
-						CAN_13 = {	# Columbia
-							add_core = CAN
-							remove_core = RPL
-						}
-						COL = { all_core = { add_core = CAN } }
-						owner = { set_country_flag = british_columbia_organized }
-					}
 					any_owned = {
 						limit = { is_core = CAN }
 						any_pop = { militancy = -6 }
@@ -2824,323 +2820,668 @@
 			}
 		}
 
+		#Description: The Northwest Territories - England/Canada Annex White Horse # TODO add new provinces
+		country_event = {
 
+			id = 44339
+			title = "EVTNAME44339"
+			desc = "EVTDESC44339"
+			picture = "Southpole3"
 
-#Description: If Newfoundland is broke, they can ask to become part of the UK again.
-country_event = {
+			trigger = {
+				OR = {
+					tag = CAN
+					tag = ENG
+				}
+				war = no
+				money = 1100
+				OR = {
+					revolution_n_counterrevolution = 1
+					year = 1880
+				}
+				OR = {
+					NOT = { has_global_flag = berlin_conference }
+					NOT = { invention = mission_to_civilize }
+					NOT = { invention = colonial_negotiations }
+					AND = {
+						is_greater_power = no
+						is_secondary_power = no
+					}
+				}
+				OR = {
+					AND = { 6 = { empty = yes }
+						owns = 17 } # Whitehorse
+					AND = { 6 = { empty = no } 7 = { empty = yes }
+						OR = { owns = 6 owns = 8 } } # Dawson
+					AND = { 6 = { empty = no } 7 = { empty = no } 8 = { empty = yes }
+						OR = { owns = 17 owns = 2629 } } # Ross River
+					AND = { 6 = { empty = no } 7 = { empty = no } 8 = { empty = no } 2596 = { empty = yes } OR = { owns = 23 owns = 43 } } # Fort Resolution
+					AND = { 6 = { empty = no } 7 = { empty = no } 8 = { empty = no } 2596 = { empty = no } 2598 = { empty = yes } OR = { owns = 2629 owns = 8 } } # Fort Liard
+					AND = {	6 = { empty = no } 7 = { empty = no } 8 = { empty = no } 2596 = { empty = no } 2598 = { empty = no } 9 = { empty = yes } OR = { owns = 2598 owns = 11 } } # Fort Simpson
+					AND = { 6 = { empty = no } 7 = { empty = no } 8 = { empty = no } 2596 = { empty = no } 2598 = { empty = no } 9 = { empty = no } 11 = { empty = yes }
+						OR = { owns = 23 owns = 2596 }
+					} # Echo Bay
+					AND = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = no }
+						2598 = { empty = no }
+						9 = { empty = no }
+						11 = { empty = no }
+						12 = { empty = yes } #Reliance
+						OR = {
+							owns = 43
+							owns = 2596
+						}
+					}
+					AND = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = no }
+						2598 = { empty = no }
+						9 = { empty = no }
+						11 = { empty = no }
+						12 = { empty = no }
+						10 = { empty = yes } #Inuvik
+						OR = {
+							owns = 9
+							owns = 8
+						}
+					}
+				}
+			}
 
-	id = 44331
+			mean_time_to_happen = {
+				months = 12
+				modifier = {
+					factor = 0.2
+					6 = { empty = yes }
+				}
+				modifier = {
+					factor = 3
+					6 = { empty = no }
+					7 = { empty = no }
+					8 = { empty = no }
+					2596 = { empty = no }
+					NOT = { year = 1880 }
+				}
+				modifier = {
+					factor = 1.5
+					6 = { empty = no }
+					7 = { empty = no }
+					8 = { empty = no }
+					2596 = { empty = no }
+					year = 1880
+					NOT = { year = 1900 }
+				}
+			}
 
-	title = "EVTNAME44331"
-	desc = "EVTDESC44331"
-	picture = "danishgovernment"
-	major = yes
+			option = {
+				name = "EVTOPTA44339"
 
-	trigger = {
-		tag = NEW
-		war = no
-		OR = {
-			has_country_modifier = great_depression
-			has_country_modifier = in_bankrupcy
-			has_country_modifier = generalised_debt_default
+				treasury = -1000
+				random_owned = {
+					limit = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = no }
+						2598 = { empty = no }
+						9 = { empty = no }
+						11 = { empty = no }
+						12 = { empty = no }
+						10 = { empty = yes }
+						OR = {
+							9 = { owned_by = THIS }
+							8 = { owned_by = THIS }
+						}
+					}
+					owner = { prestige = -3 }
+					10 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = no }
+						2598 = { empty = no }
+						9 = { empty = no }
+						11 = { empty = yes }
+						OR = {
+							23 = { owned_by = THIS }
+							2596 = { owned_by = THIS }
+						}
+					}
+					owner = { prestige = -3 }
+					11 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = no }
+						2598 = { empty = no }
+						9 = { empty = yes }
+						OR = {
+							2598 = { owned_by = THIS }
+							11 = { owned_by = THIS }
+						}
+					}
+					owner = { prestige = -3 }
+					9 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = no }
+						2598 = { empty = yes }
+						OR = {
+							2629 = { owned_by = THIS }
+							8 = { owned_by = THIS }
+						}
+					}
+					owner = { prestige = -3 }
+					2598 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = no }
+						2596 = { empty = yes }
+						OR = {
+							23 = { owned_by = THIS }
+							43 = { owned_by = THIS }
+						}
+					}
+					owner = { prestige = -5 }
+					2596 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+				}
+				random_owned = {
+					limit = {
+						6 = { empty = no }
+						7 = { empty = no }
+						8 = { empty = yes }
+						OR = {
+							17 = { owned_by = THIS }
+							2629 = { owned_by = THIS }
+						}
+					}
+					owner = { prestige = -3 }
+					8 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+				}
+
+				## Yukon ##
+					random_owned = {
+						limit = {
+							7 = { owned_by = THIS }
+							3443 = { empty = yes }
+						}
+						owner = { prestige = 1 }
+						3443 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							6 = { owned_by = THIS }
+							7 = { empty = yes }
+						}
+						owner = { prestige = 1 }
+						7 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							17 = { owned_by = THIS }
+							6 = { empty = yes }
+						}
+						owner = { prestige = 1 }
+						6 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+			}
 		}
-		OR = {
-			vassal_of = ENG
-			vassal_of = ENL
+
+	## Minors ##
+
+		#Description: If Newfoundland is broke, they can ask to become part of the UK again.
+		country_event = {
+
+			id = 44331
+
+			title = "EVTNAME44331"
+			desc = "EVTDESC44331"
+			picture = "danishgovernment"
+			major = yes
+
+			trigger = {
+				tag = NEW
+				war = no
+				OR = {
+					has_country_modifier = great_depression
+					has_country_modifier = in_bankrupcy
+					has_country_modifier = generalised_debt_default
+				}
+				OR = {
+					vassal_of = ENG
+					vassal_of = ENL
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 6
+			}
+
+			# Ask UK to rejoin
+			option = {
+				name = "EVTOPTA44331"
+
+				overlord = { country_event = 60130 }
+			}
+
+			# Remain independent and broke
+			option = {
+				name = "EVTOPTB44331"
+
+				prestige = -20
+
+				any_pop = { consciousness = 4 }
+			}
 		}
-	}
 
-	mean_time_to_happen = {
-		months = 6
-	}
+## Flavor ##
 
-	# Ask UK to rejoin
-	option = {
-		name = "EVTOPTA44331"
+	#Description: Stanley Cup - gain prestige
+	country_event = {
+		title = "EVTNAME5002"
+		desc = "EVTDESC5002"
+		news = yes
+		news_desc_long = "EVTDESC5002_NEWS_LONG"
+		news_desc_medium = "EVTDESC5002_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC5002_NEWS_SHORT"
+		id = 5002
+		picture = "stanley_cup"
 
-		overlord = { country_event = 60130 }
-	}
+		fire_only_once = yes
 
-	# Remain independent and broke
-	option = {
-		name = "EVTOPTB44331"
-
-		prestige = -20
-
-		any_pop = { consciousness = 4 }
-	}
-}
-
-#Description: The Northwest Territories - England/Canada Annex White Horse # TODO fix
-country_event = {
-
-	id = 44339
-	title = "EVTNAME44339"
-	desc = "EVTDESC44339"
-	picture = "Southpole3"
-
-	trigger = {
-		OR = {
+		trigger = {
 			tag = CAN
-			tag = ENG
+			year = 1892
 		}
-		war = no
-		money = 1100
-		OR = {
-			revolution_n_counterrevolution = 1
-			year = 1880
+
+		mean_time_to_happen = {
+			months = 12
 		}
-		OR = {
-			NOT = { has_global_flag = berlin_conference }
-			NOT = { invention = mission_to_civilize }
-			NOT = { invention = colonial_negotiations }
-			AND = {
-				is_greater_power = no
-				is_secondary_power = no
+
+		option = {
+			name = "EVTOPTA5002"
+
+			prestige = 2
+		}
+	}
+
+	#Description: The Assassination of D'Arcy McGee
+	country_event = {
+		id = 44304
+		title = "EVTNAME44304"
+		desc = "EVTDESC44304"
+		picture = "mcgeefuneral"
+
+		trigger = {
+			tag = CAN
+			year = 1866
+			owns = 57
+			NOT = { year = 1890 }
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen =  {
+			months = 24
+		}
+
+		# Mourn his passing
+		option = {
+			name = "EVTOPTA44304"
+
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				consciousness = 1
 			}
 		}
-		OR = {
-			AND = {
-				6 = { empty = yes } #Whitehorse
+
+		# Arrest the murderers
+		option = {
+			name = "EVTOPTB44304"
+
+			any_pop = {
+				limit = { has_pop_religion = protestant }
+				ideology = {
+					factor = 0.05
+					value = conservative
+				}
+			}
+			plurality = -1
+		}
+	}
+
+	#Description: Klondike Gold Rush - get gold and immigration to Yukon
+	country_event = {
+		id = 44307
+		title = "EVTNAME44307"
+		desc = "EVTDESC44307"
+		picture = "diamonds_in_kimberley"
+
+		trigger = {
+			owns = 17
+			any_owned_province = { region = ENG_6 }
+			year = 1880
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 120
+		}
+
+		option = {
+			name = "EVTOPTA44307"
+
+			set_global_flag = klondike_gold_rush
+			ENG_6 = {
+				trade_goods = precious_metal
+				add_province_modifier = { name = "gold_rush" duration = 730 }
+			}
+		}
+	}
+
+	#Description: Robert Service - get prestige
+	country_event = {
+		id = 44308
+		title = "EVTNAME44308"
+		desc = "EVTDESC44308"
+		picture = "diamonds_in_kimberley"
+
+		trigger = {
+			tag = CAN
+			owns = 7
+			has_global_flag = klondike_gold_rush
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 36
+		}
+
+		option = {
+			name = "EVTOPTA44308"
+
+			prestige = 5
+		}
+	}
+
+	## Gold Rush ## TODO localization
+
+		#Description: Fraser Gold Rush
+		province_event = {
+			id = 144300
+			title = "EVTNAME144300"
+			desc = "EVTDESC144300"
+			picture = "goldrush"
+
+			trigger = {
+				province_id = 13 # Vancouver
+				year = 1853
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = fraser_gold_rush }
+
+			option = {
+				name = "EVTOPTA144300"
+
+				trade_goods = precious_metal
+				add_province_modifier = { name = gold_rush duration = 730 }
+			}
+		}
+
+		#Description: Cariboo Gold Rush
+		country_event = {
+			id = 144400
+			title = "EVTNAME144400"
+			desc = "EVTDESC144400"
+			picture = "goldrush"
+
+			trigger = {
+				owns = 13 # Vancouver
+				owns = 19
+				owns = 20
+				year = 1856
+				has_global_flag = fraser_gold_rush
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = cariboo_gold_rush }
+
+			option = {
+				name = "EVTOPTA144400"
+
+				19 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
+				20 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
+			}
+		}
+
+		#Description: #Omineca Gold Rush
+		country_event = {
+			id = 144500
+			title = "EVTNAME144500"
+			desc = "EVTDESC144500"
+			picture = "goldrush"
+
+			trigger = {
+				owns = 13 # Vancouver
+				owns = 15
+				owns = 16
+				year = 1859
+				has_global_flag = cariboo_gold_rush
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = omineca_gold_rush }
+
+			option = {
+				name = "EVTOPTA144500"
+
+				15 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
+				16 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
+			}
+		}
+
+		#Description: Stikine Gold Rush
+		country_event = {
+			id = 144600
+			title = "EVTNAME144600"
+			desc = "EVTDESC144600"
+			picture = "goldrush"
+
+			trigger = {
+				owns = 13 # Vancouver
 				owns = 17
+				year = 1864
+				has_global_flag = omineca_gold_rush
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = yes } #Dawson
-				OR = {
-					owns = 6
-					owns = 8
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = stikine_gold_rush }
+
+			option = {
+				name = "EVTOPTA144600"
+
+				#Atlin
+				17 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
 				}
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = yes } #Ross River
+		}
+
+		#Description: Gold Rush Ends
+		province_event = {
+			id = 144700
+			title = "EVTNAME144700"
+			desc = "EVTDESC144700"
+
+			trigger = {
 				OR = {
-					owns = 17
-					owns = 2629
+					province_id = 13
+					province_id = 15
+					province_id = 16
+					province_id = 17
+					province_id = 19
+				}
+				trade_goods = precious_metal
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 24
+				modifier = {
+					factor = 4
+					has_province_modifier = gold_rush
 				}
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = yes } #Fort Resolution
-				OR = {
-					owns = 23
-					owns = 43
+
+			option = {
+				name = "EVTOPTA144700"
+
+				trade_goods = timber
+				remove_province_modifier = gold_rush
+			}
+		}
+
+		#Description: Gold Rush ends, specific to Kelowna
+		province_event = {
+			id = 144900
+			title = "EVTNAME144900"
+			desc = "EVTDESC144900"
+
+			trigger = {
+				province_id = 20
+				trade_goods = precious_metal
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 24
+				modifier = {
+					factor = 4
+					has_province_modifier = gold_rush
 				}
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = yes } #Fort Liard
-				OR = {
-					owns = 2629
-					owns = 8
-				}
+
+			option = {
+				name = "EVTOPTA144900"
+
+				trade_goods = grain
+				remove_province_modifier = gold_rush
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = yes } #Fort Simpson
-				OR = {
-					owns = 2598
-					owns = 11
-				}
+		}
+
+	#A mari usque ad mare # TODO
+	country_event = {
+		id = 145000
+		title = "EVTNAME145000"
+		desc = "EVTDESC145000"
+
+		trigger = {
+			or = {
+				tag = COL
+				tag = NBR
+				tag = NEW
+				tag = NOV
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = no }
-				11 = { empty = yes } #Echo Bay
-				OR = {
-					owns = 23
-					owns = 2596
-				}
+			exists = no
+			CAN = { has_country_flag = confederation }
+		}
+
+		mean_time_to_happen = {
+			months = 72
+			modifier = {
+				factor = 0.8
+				USA = { has_country_flag = hasmanifestdestiny }
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = no }
-				11 = { empty = no }
-				12 = { empty = yes } #Reliance
-				OR = {
-					owns = 43
-					owns = 2596
-				}
+			modifier = {
+				factor = 0.8
+				neighbour = USA
 			}
-			AND = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = no }
-				11 = { empty = no }
-				12 = { empty = no }
-				10 = { empty = yes } #Inuvik
-				OR = {
-					owns = 9
-					owns = 8
-				}
-			}
+		}
+
+		# Rnter into negotiations
+		option = {
+			name = "EVTOPTA145000"
+
+			CAN = { country_event = 944335 }
+
+			ai_chance = { factor = 100 }
+		}
+
+		# We should join them
+		option = {
+			name = "EVTOPTB145000"
+
+			change_tag_no_core_switch = CAN
+			CAN = { country_event = 944335 }
+
+			ai_chance = { factor = 0 }
+		}
+
+		# We want no part of this
+		option = {
+			name = "EVTOPTC145000"
+
+			ai_chance = { factor = 0 }
 		}
 	}
-
-	mean_time_to_happen = {
-		months = 12
-		modifier = {
-			factor = 0.2
-			6 = { empty = yes }
-		}
-		modifier = {
-			factor = 3
-			6 = { empty = no }
-			7 = { empty = no }
-			8 = { empty = no }
-			2596 = { empty = no }
-			NOT = { year = 1880 }
-		}
-		modifier = {
-			factor = 1.5
-			6 = { empty = no }
-			7 = { empty = no }
-			8 = { empty = no }
-			2596 = { empty = no }
-			year = 1880
-			NOT = { year = 1900 }
-		}
-	}
-
-	option = {
-		name = "EVTOPTA44339"
-
-		treasury = -1000
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = no }
-				11 = { empty = no }
-				12 = { empty = no }
-				10 = { empty = yes }
-				OR = {
-					9 = { owned_by = THIS }
-					8 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -3 }
-			10 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = no }
-				11 = { empty = yes }
-				OR = {
-					23 = { owned_by = THIS }
-					2596 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -3 }
-			11 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = no }
-				9 = { empty = yes }
-				OR = {
-					2598 = { owned_by = THIS }
-					11 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -3 }
-			9 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = no }
-				2598 = { empty = yes }
-				OR = {
-					2629 = { owned_by = THIS }
-					8 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -3 }
-			2598 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = no }
-				2596 = { empty = yes }
-				OR = {
-					23 = { owned_by = THIS }
-					43 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -5 }
-			2596 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = no }
-				8 = { empty = yes }
-				OR = {
-					17 = { owned_by = THIS }
-					2629 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -3 }
-			8 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = no }
-				7 = { empty = yes }
-				OR = {
-					6 = { owned_by = THIS }
-					8 = { owned_by = THIS }
-				}
-			}
-			owner = { prestige = -3 }
-			7 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-		random_owned = {
-			limit = {
-				6 = { empty = yes }
-				17 = { owned_by = THIS }
-			}
-			owner = { prestige = -5 }
-			6 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
-		}
-	}
-}
