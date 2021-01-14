@@ -851,6 +851,7 @@ country_event = {
 		set_country_flag = willem_i_unhappy
 		clr_country_flag = pol_reform_blocker
 		political_reform = landed_only
+		government = prussian_constitutionalism
 		}
 	}
 #Willem I abdicates and goes into exile in Berlin
@@ -923,7 +924,7 @@ country_event = {
 		}
 	}
 }
-#Willem I dies (while in power), needs rework, for now its just to force Willem off the throne if you stick with him, waiting for more flavour
+#Willem I dies (while in power)
 country_event = {
 	id = 993524
 	title = "EVTNAME993524"
@@ -955,5 +956,499 @@ country_event = {
 		clr_country_flag = pol_reform_blocker
 		clr_country_flag = willem_i
 		remove_country_modifier = { name = willem_i_absolutism }
+		remove_country_modifier = { name = willem_i_limited_absolutism }
+		add_country_modifier = { name = willem_i_legacy duration = -1 }
+	}
+}
+
+###Willem I Random Events NOTE: All still need localisation###
+#Old Order disagrees with Willem I
+country_event = {
+	id =  993525
+	title = "EVTNAME993525"
+	desc = "EVTDESC993525"
+	picture = "nederlandsch_congres" #Needs picture
+
+	trigger = {
+		has_country_modifier = willem_i_absolutism
+		NOT = { has_country_modifier = willem_i_counter }
+		}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	immediate = {
+		add_country_modifier = { name = willem_i_counter duration = 90 }
+	}
+
+	option = {
+		name = "EVTOPTA993525"
+		any_pop = {
+			limit = {
+				culture = dutch
+				OR = {
+					type = soldiers
+					type = officers
+					type = bureaucrats
+					type = aristocrats
+				}
+			}
+				ideology = {
+					value = liberal
+					factor = 0.1
+					}
+				scaled_militancy = 3
+				}
+		}
+}
+#Peasantry mad at Willem I
+country_event = {
+	id = 993526
+	title = "EVTNAME993526"
+	desc = "EVTDESC993526"
+	picture = "nederlandsch_congres" #Needs picture
+
+	trigger = {
+		has_country_modifier = willem_i_absolutism
+		NOT = { has_country_modifier = willem_i_counter }
+		}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	immediate = {
+		add_country_modifier = { name = willem_i_counter duration = 90 }
+	}
+
+	option = {
+		name = "EVTOPTA993526"
+		any_pop = {
+			limit = {
+				culture = dutch
+				OR = {
+					type = labourers
+					type = farmers
+					type = craftsmen
+					type = artisans
+					type = clerks
+				}
+			}
+				ideology = {
+					value = liberal
+					factor = 0.2
+					}
+				scaled_militancy = 3
+				}
+		}
+}
+#Protestant Clergy supports Willem I
+country_event = {
+	id = 993527
+	title = "EVTNAME993527"
+	desc = "EVTDESC993527"
+	picture = "nederlandsch_congres" #Needs picture
+
+	trigger = {
+		has_country_modifier = willem_i_absolutism
+		NOT = { has_country_modifier = willem_i_counter }
+		}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	immediate = {
+		add_country_modifier = { name = willem_i_counter duration = 90 }
+	}
+
+	option = {
+		name = "EVTOPTA993527"
+		any_pop = {
+			limit = {
+				culture = dutch
+				religion = protestant
+				type = clergymen
+			}
+				ideology = {
+					value = reactionary
+					factor = 0.25
+					}
+				scaled_militancy = -3
+				}
+			any_pop = {
+				limit = {
+					culture = dutch
+					religion = protestant
+				}
+				ideology = { value = conservative factor = 0.1 }
+				scaled_consciousness = -1.5
+				scaled_militancy = -0.5
+				}
+		}
+}
+
+#########################################
+#The Thorbecke Constitution	(Mostly from DIM)	(NOTE: All still need localisation)				#
+#########################################
+#Thorbecke
+country_event = {
+	id = 993528
+	title = "EVTNAME993528"
+	desc = "EVTDESC993528"
+	picture = "DIM_thorbecke"
+	fire_only_once = yes
+
+	trigger = {
+		tag = NET
+		OR = {
+			government = prussian_constitutionalism
+			government = absolute_monarchy
+		}
+		year = 1839
+		NOT = { has_country_flag = had_liberal_revolution }
+	}
+
+	mean_time_to_happen =  { months = 12 }
+
+	option = {
+		name = "EVTOPTA993528"
+		set_country_flag = thorbecke
+		upper_house = { ideology = reactionary value = 0.10 }
+		any_pop = {
+			limit = {
+				OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+			}
+			dominant_issue = { factor = 0.01 value = wealth_weighted_voting }
+		}
+	}
+}
+
+#The Negenmannen
+country_event = {
+	id = 993529
+	title = "EVTNAME993529"
+	desc = "EVTDESC993529"
+	picture = "DIM_negenmannen"
+	fire_only_once = yes
+
+	trigger = {
+		tag = NET
+		OR = {
+			government = prussian_constitutionalism
+			government = absolute_monarchy
+		}
+		OR = {
+			year = 1840
+			has_country_flag = thorbecke
+		}
+		NOT = { has_country_flag = had_liberal_revolution }
+		OR = {
+			NOT = {
+				poor_strata_life_needs = 0.30
+				middle_strata_life_needs = 0.50
+			}
+			NOT = {
+				poor_strata_life_needs = 0.50
+				middle_strata_life_needs = 0.75
+			}
+			NOT = { rich_strata_life_needs = 0.75 }
+			has_country_modifier = stock_market_crash
+			has_country_modifier = great_depression
+			has_country_flag = liberal_revolution_in_progress
+			has_global_flag = liberal_revolution_somewhere
+			has_global_flag = liberal_revolutions_should_now_fire
+		}
+	}
+
+	mean_time_to_happen =  { months = 12 }
+
+	option = {
+		name = "EVTOPTA993529"
+		set_country_flag = negenmannen
+		upper_house = { ideology = reactionary value = 0.10 }
+		any_pop = {
+			limit = {
+				OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+			}
+			scaled_militancy = { factor = 1.5 ideology = liberal }
+			scaled_militancy = { factor = 2 ideology = anarcho_liberal }
+		}
+
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		name = "EVTOPTB993529"
+		set_country_flag = DIM_schoolstrijd
+		set_country_flag = thorbecke_reforms
+		upper_house = { ideology = reactionary value = 0.30 }
+		ruling_party_ideology = liberal
+		prestige = -15
+		add_country_modifier = { name = thorbecke_reforms duration = 7300 }
+		random_owned = {
+			limit = {	owner = { government = prussian_constitutionalism } }
+			owner = {
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = wealth_weighted_voting
+				political_reform = state_equal_weight
+			}
+		}
+		random_owned = {
+			limit = { owner = { government = absolute_monarchy } }
+			owner = {
+				government = prussian_constitutionalism
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = landed_only
+				political_reform = state_equal_weight
+			}
+		}
+		political_reform = open_borders
+		remove_country_modifier = global_liberal_agitation
+		remove_country_modifier = willem_i_legacy
+		country_event = 10051
+		any_owned = {
+			limit = { is_colonial = no }
+			remove_province_modifier = liberal_agitation
+			any_pop = {
+				ideology = { factor = 0.1 value = reactionary }
+				scaled_militancy = { ideology = liberal factor = -6 }
+				scaled_consciousness = { ideology = liberal factor = -6 }
+				scaled_militancy = { ideology = conservative factor = -3 }
+				scaled_militancy = { ideology = reactionary factor = 6 }
+			}
+		}
+
+		ai_chance = { factor = 0 }
+	}
+}
+
+#Liberal blackmail for a new constitution
+country_event = {
+	id = 993530
+	title = "EVTNAME993530"
+	desc = "EVTDESC993530"
+	picture = "DIM_willem_ii"
+	fire_only_once = yes
+
+	trigger = {
+		tag = NET
+		OR = {
+			government = prussian_constitutionalism
+			government = absolute_monarchy
+		}
+		has_country_flag = negenmannen
+		has_country_modifier = springtime_of_nations
+		average_militancy = 3
+		NOT = { has_country_flag = had_liberal_revolution }
+	}
+
+	mean_time_to_happen =  {
+		months = 8
+
+		modifier = {
+			factor = 0.9
+			average_militancy = 3.5
+		}
+
+		modifier = {
+			factor = 0.8
+			average_militancy = 4
+		}
+
+		modifier = {
+			factor = 0.6
+			average_militancy = 5
+		}
+	}
+
+	option = {
+		name = "EVTOPTB993530"
+		set_country_flag = DIM_schoolstrijd
+		set_country_flag = thorbecke_reforms
+		upper_house = { ideology = liberal value = 0.1 }
+		prestige = -10
+		add_country_modifier = { name = thorbecke_reforms duration = 7300 }
+		random_owned = {
+			limit = {	owner = {	government = prussian_constitutionalism }	}
+			owner = {
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = wealth_weighted_voting
+				political_reform = state_equal_weight
+			}
+		}
+		random_owned = {
+			limit = { owner = { government = absolute_monarchy } }
+			owner = {
+				government = prussian_constitutionalism
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = landed_only
+				political_reform = state_equal_weight
+			}
+		}
+		ruling_party_ideology = liberal
+		political_reform = open_borders
+		remove_country_modifier = global_liberal_agitation
+		remove_country_modifier = willem_i_legacy
+		any_owned = {
+			limit = { is_colonial = no }
+			remove_province_modifier = liberal_agitation
+			any_pop = {
+				ideology = { factor = 0.1 value = reactionary }
+				scaled_militancy = { ideology = liberal factor = -8 }
+				scaled_consciousness = { ideology = liberal factor = -8 }
+				scaled_militancy = { ideology = conservative factor = -6 }
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						strata = rich
+						strata = middle
+					}
+				}
+				ideology = { factor = 0.1 value = conservative }
+				ideology = { factor = 0.05 value = reactionary }
+				ideology = { factor = -0.25 value = liberal }
+			}
+			any_pop = {
+				limit = { strata = poor }
+				ideology = { factor = 0.05 value = conservative }
+				ideology = { factor = -0.05 value = liberal }
+			}
+		}
+		country_event = 10051
+
+		ai_chance = { factor = 90 }
+	}
+
+	option = {
+		name = "EVTOPTA993530"
+		prestige = -5
+		plurality = -5
+		set_country_flag = DIM_willem_ii_outed
+		upper_house = { ideology = liberal value = 0.1 }
+		any_pop = {
+			limit = {
+				OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+			}
+			militancy = 2
+			consciousness = 3
+			ideology = { factor = 0.05 value = liberal }
+		}
+
+		ai_chance = { factor = 10 }
+	}
+}
+#Willem II outed as bisexual
+country_event = {
+	id = 993531
+	news = yes
+	news_title = "NEWS_willem_2_bi_title"
+	news_desc_long = "NEWS_willem_2_bi_long"
+	news_desc_medium = "NEWS_willem_2_bi_medium"
+	news_desc_short = "NEWS_willem_2_bi_short"
+	title = "EVTNAME993531"
+	desc = "EVTDESC993531"
+	picture = "DIM_willem_ii"
+	fire_only_once = yes
+	major = yes
+
+	trigger = {
+	exists = yes
+		tag = NET
+		OR = {
+			government = prussian_constitutionalism
+			government = absolute_monarchy
+		}
+		has_country_flag = DIM_willem_ii_outed
+	}
+
+	mean_time_to_happen =  {
+		months = 12
+		modifier = {
+			factor = 3
+			press_rights = censored_press
+		}
+		modifier = {
+			factor = 12
+			press_rights = state_press
+		}
+	}
+
+	option = {
+		name = "EVTOPTA993531"
+		government = democracy
+		political_reform = secret_ballots
+		political_reform = free_press
+		political_reform = wealth_voting
+		political_reform = state_equal_weight
+		political_reform = yes_meeting
+		ruling_party_ideology = liberal
+		set_country_flag = DIM_schoolstrijd
+		remove_country_modifier = willem_i_legacy
+		prestige = -30
+		plurality = -5
+		upper_house = { ideology = reactionary value = 0.25 }
+		any_pop = {
+			limit = {
+				OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+			}
+			ideology = { factor = 0.25 value = reactionary }
+			scaled_militancy = { factor = -3 ideology = liberal }
+			scaled_militancy = { factor = -4 ideology = anarcho_liberal }
+			scaled_militancy = { factor = 2 ideology = conservative }
+			scaled_militancy = { factor = 6 ideology = reactionary }
+		}
+		any_pop = {
+			limit = {
+				OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+					has_pop_religion = catholic
+				}
+			}
+			militancy = -2
+		}
+
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "EVTOPTB993531"
+		prestige = -30
+		plurality = -5
+		upper_house = { ideology = liberal value = 0.3 }
+		ruling_party_ideology = liberal
+		any_pop = {
+			limit = {
+				OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+			}
+			ideology = { factor = 0.3 value = liberal }
+			scaled_militancy = { factor = 3 ideology = liberal }
+			scaled_militancy = { factor = 5 ideology = anarcho_liberal }
+			scaled_militancy = { factor = 3 ideology = conservative }
+			scaled_militancy = { factor = 3 ideology = reactionary }
+		}
+
+		ai_chance = { factor = 80 }
 	}
 }
