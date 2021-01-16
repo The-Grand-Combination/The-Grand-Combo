@@ -1,18 +1,14 @@
 political_decisions = {
 
+### Politics ###
+
 	#Description: Adopt a constitution, changing government type.
 	danmarks_riges_grundlov = {
 		picture = danmarks_riges_grundlov
 		potential = {
-			OR = {
-				tag = DEN
-				AND = {
-					tag = SCA
-					primary_culture = danish
-				}
-			}
-			government = absolute_monarchy
+			primary_culture = danish
 			NOT = { has_country_flag = danish_constitutionalism }
+			government = absolute_monarchy
 		}
 
 		allow = {
@@ -27,17 +23,23 @@ political_decisions = {
 			set_country_flag = danish_constitutionalism
 		}
 	}
+	
+### Claims ###
 
 	#Description: If Schleswig-Holstein is not our vassal and owns Schleswig,
 	claim_schleswig = {
 		picture = claim_schleswig
+		
 		potential = {
-			tag = DEN
-			is_vassal = no
+			primary_culture = danish
+			NOT = { has_country_flag = annex_schleswig_holstein }
 			SWH = {
 				exists = yes
-				owns = 370
-				owns = 371
+				any_owned = {
+					limit = {
+						is_core = SCH #Schleswig
+					}
+				}
 				is_vassal = no
 			}
 			OR = {
@@ -45,27 +47,24 @@ political_decisions = {
 				government = prussian_constitutionalism
 				government = hms_government
 			}
-			NOT = {
-				has_country_flag = annex_schleswig_holstein
-				num_of_revolts = 1
-			}
+			is_vassal = no
+			NOT = { num_of_revolts = 1 }
 		}
 
 		allow = {
-			war = no
 			SWH = {
-				war = no
 				OR = {
 					part_of_sphere = no
 					sphere_owner = { NOT = { is_sphere_leader_of = THIS } }
 				}
+				war = no
 			}
+			war = no
 		}
 
 		effect = {
 			set_country_flag = annex_schleswig_holstein
-			370 = { add_core = DEN }
-			371 = { add_core = DEN }
+			SCH = { all_core = { add_core = THIS } }
 			SWH = { country_event = 90051 }
 			any_pop = {
 				limit = { has_pop_culture = danish }
@@ -90,93 +89,115 @@ political_decisions = {
 		}
 	}
 
-	#Description: If the year is at least 1850, Denmark can sell their colony in Ghana if they so choose.
-	selling_danish_ghana = {
-		picture = map_africa
-		alert = no
-		potential = {
-			OR = {
-				tag = DEN
-				tag = SCA
-			}
-			is_vassal = no
-			owns = 1907
-			NOT = { has_country_flag = selling_danish_ghana }
-			year = 1850
-			is_greater_power = no
-		}
+### Colonial ###
 
-		allow = {
-			war = no
-			state_n_government = 1
-			1908 = {
-				owner = {
-					money = 35001
-					relation = { who = DEN value = 0 }
-					civilized = yes
-					NOT = { ruling_party_ideology = fascist }
-					NOT = { ruling_party_ideology = communist }
-					NOT = { ruling_party_ideology = reactionary }
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = selling_danish_ghana
-			1908 = { owner = { country_event = 36950 } }
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Demnark can sell their colony in India if they so choose.
+	#Description: Demnark can sell their colony in India to the owner of Tanjore or others.
 	selling_danish_india = {
 		picture = map_india
 		alert = no
+		
 		potential = {
-			OR = {
-				tag = DEN
-				tag = SCA
+			primary_culture = danish
+			NOT = { has_country_flag = selling_danish_india }
+			any_owned = {
+				limit = {
+					is_core = HND
+				}
+				owner = THIS
 			}
+			state_n_government = 1
 			is_vassal = no
-			owns = 2591
-			NOT = { has_country_flag = selling_dane_india }
 			is_greater_power = no
 		}
 
 		allow = {
-			war = no
-			state_n_government = 1
-			1309 = {
+			year = 1845
+			1309 = { # Tanjore
 				owner = {
+					relation = { who = DEN value = 0 }
 					money = 20001
-					civilized = yes
-					capital_scope = { continent = europe }
 					NOT = { ruling_party_ideology = fascist }
 					NOT = { ruling_party_ideology = communist }
-					NOT = { ruling_party_ideology = reactionary }
 					OR = {
 						is_vassal = no
 						vassal_of = THIS
 					}
+					civilized = yes
 				}
 			}
+			war = no
 		}
 
 		effect = {
-			set_country_flag = selling_dane_india
+			set_country_flag = selling_danish_india
 			prestige = -5
 			1309 = { owner = { country_event = 36224 } }
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = { 
+			factor = 1 
+		}
+	}
+	
+	#Description: If the year is at least 1850, Denmark can sell their colony in Ghana to the owner of Cape Coast or others.
+	selling_danish_ghana = {
+		picture = map_africa
+		alert = no
+		
+		potential = {
+			primary_culture = danish
+			NOT = { has_country_flag = selling_danish_ghana }
+			any_owned = {
+				limit = {
+					region = { 
+						OR = { 
+							ASH_1909 # Gold Coast
+							FRA_1907 # Ghana
+						}
+					}
+				}
+				owner = THIS
+			}
+			state_n_government = 1
+			is_vassal = no
+			is_greater_power = no
+		}
+
+		allow = {
+			year = 1850
+			1908 = { # Cape Coast
+				owner = {
+					relation = { who = DEN value = 0 }				
+					money = 35001
+					NOT = { ruling_party_ideology = fascist }
+					NOT = { ruling_party_ideology = communist }
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					civilized = yes
+				}
+			}
+			war = no
+		}
+
+		effect = {
+			set_country_flag = selling_danish_ghana
+			prestige = -5
+			1908 = { owner = { country_event = 36950 } }
+		}
+
+		ai_will_do = { 
+			factor = 1 
+		}
 	}
 
-#from Setup.txt
+
+##########################
+
+#         Setup          #
+
+##########################
 
 	1836_denmark_setup = {
 		picture = constantinople
