@@ -1,12 +1,18 @@
 political_decisions = {
 
-### Politics ###
+## Politics ##
 
 	#Description: Adopt a constitution, changing government type.
 	danmarks_riges_grundlov = {
 		picture = danmarks_riges_grundlov
 		potential = {
-			primary_culture = danish
+			OR = {
+				tag = DEN
+				AND = {
+					tag = SCA
+					primary_culture = danish
+				}
+			}
 			NOT = { has_country_flag = danish_constitutionalism }
 			government = absolute_monarchy
 		}
@@ -23,23 +29,18 @@ political_decisions = {
 			set_country_flag = danish_constitutionalism
 		}
 	}
-	
-### Claims ###
+
+## Claims ##
 
 	#Description: If Schleswig-Holstein is not our vassal and owns Schleswig,
 	claim_schleswig = {
 		picture = claim_schleswig
-		
 		potential = {
-			primary_culture = danish
+			tag = DEN
 			NOT = { has_country_flag = annex_schleswig_holstein }
 			SWH = {
 				exists = yes
-				any_owned = {
-					limit = {
-						is_core = SCH #Schleswig
-					}
-				}
+				any_owned_province = { is_core = SCH } # Schleswig
 				is_vassal = no
 			}
 			OR = {
@@ -52,14 +53,14 @@ political_decisions = {
 		}
 
 		allow = {
+			war = no
 			SWH = {
+				war = no
 				OR = {
 					part_of_sphere = no
 					sphere_owner = { NOT = { is_sphere_leader_of = THIS } }
 				}
-				war = no
 			}
-			war = no
 		}
 
 		effect = {
@@ -89,32 +90,31 @@ political_decisions = {
 		}
 	}
 
-### Colonial ###
+## Colonial ##
 
 	#Description: Demnark can sell their colony in India to the owner of Tanjore or others.
 	selling_danish_india = {
 		picture = map_india
 		alert = no
-		
 		potential = {
-			primary_culture = danish
-			NOT = { has_country_flag = selling_danish_india }
-			any_owned = {
-				limit = {
-					is_core = HND
-				}
-				owner = THIS
+			OR = {
+				tag = DEN
+				tag = SCA
 			}
+			NOT = { has_country_flag = selling_danish_india }
+			any_owned_province = { is_core = HND }
+			NOT = { owns = 1309 }
 			state_n_government = 1
 			is_vassal = no
 			is_greater_power = no
+			year = 1845
 		}
 
 		allow = {
-			year = 1845
+			war = no
 			1309 = { # Tanjore
 				owner = {
-					relation = { who = DEN value = 0 }
+					relation = { who = THIS value = 0 }
 					money = 20001
 					NOT = { ruling_party_ideology = fascist }
 					NOT = { ruling_party_ideology = communist }
@@ -125,49 +125,50 @@ political_decisions = {
 					civilized = yes
 				}
 			}
-			war = no
 		}
 
 		effect = {
 			set_country_flag = selling_danish_india
 			prestige = -5
-			1309 = { owner = { country_event = 36224 } }
+			random_country = {
+				limit = { owns = 1309 }
+				country_event = 36224
+			}
 		}
 
-		ai_will_do = { 
-			factor = 1 
+		ai_will_do = {
+			factor = 1
 		}
 	}
-	
+
 	#Description: If the year is at least 1850, Denmark can sell their colony in Ghana to the owner of Cape Coast or others.
 	selling_danish_ghana = {
 		picture = map_africa
 		alert = no
-		
 		potential = {
-			primary_culture = danish
-			NOT = { has_country_flag = selling_danish_ghana }
-			any_owned = {
-				limit = {
-					region = { 
-						OR = { 
-							ASH_1909 # Gold Coast
-							FRA_1907 # Ghana
-						}
-					}
-				}
-				owner = THIS
+			OR = {
+				tag = DEN
+				tag = SCA
 			}
+			NOT = { has_country_flag = selling_danish_ghana }
+			any_owned_province = {
+				OR = {
+					region = ASH_1909 # Gold Coast
+					region = FRA_1907 # Ghana
+				}
+			}
+			NOT = { owns = 1908 }
 			state_n_government = 1
 			is_vassal = no
 			is_greater_power = no
+			year = 1850
 		}
 
 		allow = {
-			year = 1850
+			war = no
 			1908 = { # Cape Coast
 				owner = {
-					relation = { who = DEN value = 0 }				
+					relation = { who = THIS value = 0 }
 					money = 35001
 					NOT = { ruling_party_ideology = fascist }
 					NOT = { ruling_party_ideology = communist }
@@ -178,26 +179,23 @@ political_decisions = {
 					civilized = yes
 				}
 			}
-			war = no
 		}
 
 		effect = {
 			set_country_flag = selling_danish_ghana
 			prestige = -5
-			1908 = { owner = { country_event = 36950 } }
+			random_country = {
+				limit = { owns = 1908 }
+				country_event = 36950
+			}
 		}
 
-		ai_will_do = { 
-			factor = 1 
+		ai_will_do = {
+			factor = 1
 		}
 	}
 
-
-##########################
-
-#         Setup          #
-
-##########################
+## Setup ##
 
 	1836_denmark_setup = {
 		picture = constantinople
