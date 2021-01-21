@@ -1,0 +1,632 @@
+political_decisions = {
+
+	#Description: Political reforms for Sardinia-Piedmont.
+	statuto_albertino = {
+		potential = {
+			OR = {
+				tag = SAR
+				tag = SVY
+			}
+			OR = {
+				government = absolute_monarchy
+				government = prussian_constitutionalism
+			}
+			OR = {
+				has_country_flag = liberal_revolution_in_progress
+				has_country_flag = liberal_revolution_fired
+			}
+			NOT = { has_country_flag = get_your_statuto_albertino_here }
+		}
+
+		allow = {
+			OR = {
+				average_militancy = 2
+				average_consciousness = 5
+				num_of_revolts = 1
+			}
+		}
+
+		effect = {
+			any_owned = {
+				limit = { is_colonial = no }
+				remove_province_modifier = liberal_agitation
+				any_pop = {
+					scaled_consciousness = {
+						ideology = liberal
+						factor = -8
+					}
+					scaled_militancy = {
+						ideology = liberal
+						factor = -8
+					}
+					scaled_militancy = {
+						ideology = conservative
+						factor = -6
+					}
+					scaled_militancy = {
+						ideology = reactionary
+						factor = 3
+					}
+				}
+			}
+			political_reform = universal_weighted_voting
+			political_reform = proportional_representation
+			political_reform = harassment
+			political_reform = censored_press
+			political_reform = yes_meeting
+			social_reform = incarceration
+			prestige = 5
+			set_country_flag = get_your_statuto_albertino_here
+			remove_country_modifier = global_liberal_agitation
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Lucca unites with Tuscany.
+	unite_with_tuscany = {
+		picture = gtfo
+		potential = {
+			tag = LUC
+			exists = TUS
+			NOT = { has_country_flag = unite_with_tuscany }
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			OR = {
+				part_of_sphere = no
+				AND = {
+					sphere_owner = { is_sphere_leader_of = TUS }
+					month = 11
+					NOT = { month = 12 }
+					year = 1847
+				}
+			}
+			TUS = {
+				war = no
+				neighbour = LUC
+				is_vassal = no
+			}
+		}
+
+		effect = {
+			set_country_flag = unite_with_tuscany
+			all_core = {
+				remove_core = LUC
+				add_core = TUS
+			}
+			random_country = {
+				limit = {
+					tag = TUS
+					ai = yes
+					LUC = { ai = yes }
+				}
+				inherit = LUC
+			}
+			random_country = {
+				limit = {
+					tag = TUS
+					ai = yes
+					LUC = { ai = no }
+				}
+				any_owned = { secede_province = LUC }
+				LUC = {
+					random_owned = {
+						limit = { province_id = 744 }
+						owner = { capital = 744 }
+					}
+					change_tag = TUS
+				}
+			}
+			random_country = {
+				limit = {
+					tag = TUS
+					ai = no
+				}
+				country_event = 60130
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Sardinia-Piedmont can accept South Italian culture.
+	perfect_fusion = {
+		picture = perfect_fusion
+		potential = {
+			tag = SAR
+			NOT = { has_country_flag = perfect_fusion }
+		}
+
+		allow = {
+			OR = {
+				state_n_government = 1
+				year = 1847
+			}
+			OR = {
+				government = hms_government
+				government = prussian_constitutionalism
+			}
+			OR = {
+				average_militancy = 2
+				has_country_flag = liberal_revolution_in_progress
+				has_country_flag = liberal_revolution_fired
+				has_country_flag = had_liberal_revolution
+			}
+			SRD = { all_core = { owned_by = THIS } }
+			GEN = { all_core = { owned_by = THIS } }
+		}
+
+		effect = {
+			add_accepted_culture = south_italian
+			plurality = 5
+			SRD = {
+				all_core = {
+					any_pop = { consciousness = 3 militancy = -9 }
+					remove_core = SRD
+				}
+			}
+			GEN = {
+				all_core = {
+					any_pop = { consciousness = 3 militancy = -9 }
+					remove_core = GEN
+				}
+			}
+			any_pop = { scaled_militancy = { factor = 3 ideology = reactionary } }
+			set_country_flag = perfect_fusion
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Become Savoy if Sardinia-Piedmont doesn't own Sardinia.
+	become_savoy = {
+		potential = {
+			tag = SAR
+			NOT = {
+				exists = SVY
+				owns = 765
+			}
+		}
+
+		allow = {
+			war = no
+			owns = 720
+			NOT = { owns = 765 }
+		}
+
+		effect = {
+			all_core = { add_core = SVY remove_core = SAR }
+			change_tag = SVY
+			any_pop = {
+				limit = { has_pop_culture = north_italian }
+				militancy = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Change tag to Sardinia-Piedmont if Savoy owns Sardinia.
+	become_piedmont = {
+		picture = become_savoy
+		potential = {
+			tag = SVY
+			NOT = { exists = SAR }
+			SRD = {
+				OR = {
+					exists = no
+					ai = yes
+				}
+			}
+		}
+
+		allow = {
+			war = no
+			owns = 720
+			OR = {
+				owns = 765
+				SRD = {
+					war = no
+					exists = yes
+					NOT = { truce_with = THIS }
+					is_vassal = no
+					relation = { who = THIS value = 150 }
+					OR = {
+						NOT = { part_of_sphere = yes }
+						in_sphere = THIS
+						sphere_owner = { is_sphere_leader_of = THIS }
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			all_core = { add_core = SAR remove_core = SVY }
+			random_country = {
+				limit = {
+					tag = SRD
+					exists = yes
+				}
+				annex_to = THIS
+			}
+			change_tag = SAR
+			add_accepted_culture = south_italian
+			any_pop = {
+				limit = { is_culture_group = italian }
+				militancy = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Become Naples if Sicily is lost
+	become_naples = {
+		potential = {
+			tag = SIC
+			NOT = {
+				exists = NPL
+				owns = 762 # Palermo
+			}
+		}
+
+		allow = {
+			war = no
+			owns = 754 # Naples
+			NOT = { any_owned_province = { is_core = SYC } }
+		}
+
+		effect = {
+			all_core = { add_core = NPL remove_core = SIC }
+			change_tag = NPL
+			any_pop = {
+				limit = { has_pop_culture = south_italian }
+				militancy = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Change tag to Two Sicilies if Naples owns Sicily
+	become_two_sicilies = {
+		picture = become_naples
+		potential = {
+			tag = NPL
+			NOT = { exists = SIC }
+			SYC = {
+				OR = {
+					exists = no
+					ai = yes
+				}
+			}
+		}
+
+		allow = {
+			war = no
+			owns = 754
+			OR = {
+				owns = 762
+				SYC = {
+					war = no
+					exists = yes
+					NOT = { truce_with = THIS }
+					is_vassal = no
+					relation = { who = THIS value = 150 }
+					OR = {
+						NOT = { part_of_sphere = yes }
+						in_sphere = THIS
+						sphere_owner = { is_sphere_leader_of = THIS }
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			all_core = { add_core = SIC remove_core = NPL }
+			random_country = {
+				limit = {
+					tag = SYC
+					exists = yes
+				}
+				annex_to = THIS
+			}
+			change_tag = SIC
+			any_pop = {
+				limit = { is_culture_group = italian }
+				militancy = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If a Catholic country has PAP as a vassal but they are not a theocracy, they can restore the Pope.
+	PAP_restore = {
+		picture = the_first_vatican_council
+		potential = {
+			PAP = {
+				vassal_of = THIS
+				NOT = { government = theocracy }
+			}
+			has_country_flag = catholic_country
+		}
+
+		allow = {
+			war = no
+			religious_policy = moralism
+		}
+
+		effect = {
+			PAP = { government = theocracy }
+			prestige = 5
+			any_pop = {
+				limit = { religion = catholic }
+				consciousness = -3
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: After joining in the Prussian-Austrian Brothers' war, Italy can take Venice from Austria.
+	prussian_italian_alliance_claim_udine = {
+		picture = italia_irredenta
+		potential = {
+			OR = {
+				tag = ITS
+				tag = ITA
+				tag = ITP
+			}
+			owns = 726
+			OR = {
+				owns = 729
+				AND = {
+					OR = {
+						war_with = AUS
+						truce_with = AUS
+					}
+					AUS = { has_country_flag = brothers_war_loser }
+				}
+				AND = {
+					OR = {
+						war_with = KUK
+						truce_with = KUK
+					}
+					KUK = { has_country_flag = brothers_war_loser }
+				}
+			}
+			has_country_flag = prussian_italian_alliance
+			NOT = { has_country_flag = prussian_italian_alliance_claim_udine }
+		}
+
+		allow = {
+			OR = {
+				owns = 729
+				AND = {
+					OR = {
+						war_with = AUS
+						truce_with = AUS
+					}
+					AUS = { has_country_flag = brothers_war_loser }
+				}
+				AND = {
+					OR = {
+						war_with = KUK
+						truce_with = KUK
+					}
+					KUK = { has_country_flag = brothers_war_loser }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = prussian_italian_alliance_claim_udine
+			prestige = 5
+			random_country = {
+				limit = {
+					OR = {
+						tag = AUS
+						tag = KUK
+					}
+					exists = yes
+					owns = 733
+				}
+				end_war = THIS
+			}
+			733 = { remove_core = KUK remove_core = AUS }
+			AUS = {
+				random_owned = {
+					limit = {
+						province_id = 733 #Udine
+						owned_by = AUS
+					}
+					secede_province = THIS
+				}
+				random_owned = {
+					limit = {
+						province_id = 729
+						owned_by = AUS
+					}
+					state_scope = {
+						any_owned = {
+							secede_province = THIS
+						}
+					}
+				}
+			}
+			KUK = {
+				random_owned = {
+					limit = {
+						province_id = 733 #Udine
+						owned_by = KUK
+					}
+					secede_province = THIS
+				}
+				random_owned = {
+					limit = {
+						province_id = 729
+						owned_by = KUK
+					}
+					state_scope = {
+						any_owned = {
+							secede_province = THIS
+						}
+					}
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Changes tag to ITS if Italy is formed by a South Italian culture country.
+	form_ITS = {
+		picture = form_italy
+		potential = {
+			tag = ITA
+			primary_culture = south_italian
+			NOT = { government = theocracy }
+			NOT = { has_global_flag = ITS_form }
+		}
+
+		allow = { war = no }
+
+		effect = {
+			change_tag = ITS
+			add_accepted_culture = north_italian
+			ITA = { all_core = { add_core = ITS } }
+			ITA = { all_core = { remove_core = ITA } }
+			set_global_flag = ITS_form
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Changes tag to ITP if Italy is formed by a the Papal States.
+	form_ITP = {
+		picture = the_first_vatican_council
+		potential = {
+			tag = ITA
+			primary_culture = south_italian
+			government = theocracy
+			NOT = { has_global_flag = ITS_form }
+		}
+
+		allow = { war = no }
+
+		effect = {
+			change_tag = ITP
+			ITA = { all_core = { add_core = ITP } }
+			ITA = { all_core = { remove_core = ITA } }
+			set_global_flag = ITP_form
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If the player forms northern Italy, they can annex southern Italy. DEVNOTE: What purpose does this serve?
+	ITA_annex_ITS = {
+		potential = {
+			ai = no
+			tag = ITA
+			exists = yes
+			has_global_flag = ITS_form
+		}
+
+		allow = { }
+
+		effect = { ITS = { inherit = ITA } }
+	}
+
+	#Description: If an Italian country owns Malta and has a core on it, they can accept Maltese culture.
+	italy_accept_maltese = {
+		picture = embrace_minority
+		potential = {
+			is_culture_group = italian
+			NOT = { accepted_culture = maltese }
+			owns = 854
+			is_core = 854
+		}
+
+		allow = {
+			war = no
+			OR = {
+				ruling_party_ideology = liberal
+				citizens_rights = all_voting_pops
+			}
+			NOT = { average_militancy = 5 }
+		}
+
+		effect = {
+			prestige = 5
+			badboy = -1
+			add_accepted_culture = maltese
+		}
+	}
+
+## Literacy.txt ##
+
+	literacy_PAP = {
+		potential = {
+			tag = PAP
+			always = no
+		}
+
+		allow = {
+			tag = PAP
+		}
+
+		effect = {
+			any_pop = {
+				limit = { has_pop_culture = north_italian }
+				literacy = 0.10
+			}
+		}
+	}
+
+## Setup.txt ##
+
+	PAP_1836_setup = {
+		picture = constantinople
+		potential = {
+			tag = PAP
+			always = no
+		}
+
+		allow = {
+			tag = PAP
+		}
+
+		effect = {
+			749 = { any_pop = { literacy = 0.08 } }
+			750 = { any_pop = { literacy = 0.05 } }
+			741 = { any_pop = { literacy = 0.06 } }
+			742 = { any_pop = { literacy = 0.06 } }
+			743 = { any_pop = { literacy = 0.06 } }
+		}
+	}
+
+	SAR_1836_setup = {
+		picture = constantinople
+		potential = {
+			tag = SAR
+			always = no
+		}
+
+		allow = {
+			tag = SAR
+		}
+
+		effect = {
+			724 = { any_pop = { literacy = -0.1 } }
+			725 = { any_pop = { literacy = -0.1 } }
+			any_pop = { limit = { has_pop_culture = french } literacy = 0.4 }
+		}
+	}
+}
