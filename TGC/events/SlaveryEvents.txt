@@ -1,3 +1,62 @@
+#Description: Clears abolished_slavery flags and reinstates the slavery modifier for countries who have slavery.
+country_event = {
+	id = 203769
+	title = "EVTNAME203769"
+	desc = "EVTDESC203769"
+	picture = "Slaves"
+
+	trigger = {
+		civilized = yes
+		slavery = yes_slavery
+		OR = {
+			year = 1850
+			has_country_flag = abolished_slavery
+			NOT = { has_country_modifier = slavery_timer }
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 7
+	}
+
+	option = {
+		name = "EVTOPTA203769"
+
+		random_owned = {
+			limit = { owner = { has_country_flag = abolished_slavery } }
+			owner = { clr_country_flag = abolished_slavery }
+		}
+		add_country_modifier = {
+			name = slavery_timer
+			duration = -1
+		}
+	}
+}
+
+#Description: Slave pop growth.
+country_event = {
+	id = 203770
+	title = "EVTNAME203770"
+	desc = "EVTDESC203770"
+	picture = "Slaves"
+
+	trigger = {
+		slavery = yes_slavery
+		NOT = { has_country_modifier = slavery_timer }
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = "EVTOPTA203770"
+
+		slaves = { reduce_pop = 1.08 }
+		add_country_modifier = { name = slavery_timer duration = 2920 } # 8 Years
+	}
+}
+
 ## Slave Trade ##
 
 	#Description: The Slave Trade - buy slaves?
@@ -345,7 +404,7 @@
 				slavery = yes_slavery
 			}
 			state_scope = { is_capital = no }
-			OR = { # TODO
+			OR = {
 				terrain = hills
 				terrain = mountain
 				terrain = woods
@@ -455,7 +514,7 @@
 		}
 	}
 
-## Lategame ## Partly commented until we add slaves_factory
+## Lategame ## DEVNOTE anzu-3278: Partly commented until we add slaves_factory
 
 	#Description: Black Abolitionist
 	province_event = {
@@ -839,85 +898,23 @@
 		}
 	}
 
-## TODO ##
-
-	country_event = {
-		id = 203770
-		title = "EVTNAME203770"
-		desc = "EVTDESC203770"
-		picture = "Slaves"
-
-		trigger = {
-			civilized = yes
-			slavery = yes_slavery
-			OR = {
-				year = 1850
-				has_country_flag = abolished_slavery
-			}
-			NOT = { has_country_modifier = slavery_timer }
-		}
-
-		mean_time_to_happen = {
-			days = 7
-		}
-
-		option = {
-			name = "EVTOPTA203770"
-			random_owned = {
-				limit = { owner = { has_country_flag = abolished_slavery } }
-				owner = { clr_country_flag = abolished_slavery }
-			}
-			add_country_modifier = {
-				name = slavery_timer
-				duration = -1
-			}
-		}
-	}
-
-	country_event = {
-		id = 203770
-		title = "EVTNAME203770"
-		desc = "EVTDESC203770"
-		picture = "Slaves"
-
-		trigger = {
-			slavery = yes_slavery
-			NOT = { has_country_modifier = slavery_timer }
-		}
-
-		mean_time_to_happen = {
-			months = 1
-		}
-
-		option = {
-			name = "EVTOPTA203770"
-
-			slaves = { reduce_pop = 1.08 }
-			add_country_modifier = { name = slavery_timer duration = 2920 } # 8 Years
-		}
-	}
-
+	#Description: The End of Slavery - change slave pops and remove all slavery related modifiers and flags
 	country_event = {
 		id = 188110
-		title = "The End of Slavery"
-		desc = "Once, we may have made slavery he centrepiece of our country, but those times have passed, and we now sever all our attachments to those detestable pieces of our history."
+		title = "EVTNAME188110"
+		desc = "EVTDESC188110"
 		picture = "slaves_freed"
 
 		trigger = {
+			slavery = no_slavery
 			OR = {
-				slavery = abolish_slavery
-				AND = {
-					slavery = no_slavery
+				has_country_modifier = slavery_timer
+				any_owned_province = {
 					OR = {
-						has_country_modifier = slavery_timer
-						any_owned_province = {
-							OR = {
-								has_province_modifier = quilombo_presence
-								has_province_modifier = progressive_society_csa
-								has_province_modifier = marxist_slaves
-								has_province_modifier = immigrant_workers_csa
-							}
-						}
+						has_province_modifier = quilombo_presence
+						has_province_modifier = progressive_society_csa
+						has_province_modifier = marxist_slaves
+						has_province_modifier = immigrant_workers_csa
 					}
 				}
 			}
@@ -928,28 +925,14 @@
 		}
 
 		option = {
-			name = "Slavery is no more, for the good of our nation!"
+			name = "EVTOPTA188110"
+
 			prestige = 1
 			badboy = -1
-			any_pop = {
-				limit = {
-					pop_type = slaves_factory
-				}
-				pop_type = craftsmen
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						slavery = abolish_slavery
-					}
-				}
-				owner = {
-					political_reform = no_slavery
-					set_country_flag = abolished_slavery
-				}
-			}
-			remove_country_modifier = slavery_timer
+			# slaves_factory = { pop_type = craftsmen }
+			set_country_flag = abolished_slavery
 			clr_country_flag = the_slavery_debate
+			remove_country_modifier = slavery_timer
 			remove_country_modifier = the_slavery_debate
 			any_owned = {
 				remove_province_modifier = quilombo_presence

@@ -331,7 +331,6 @@
 	}
 
 	#Description: Western Collapse - If Louisiana claims all former Louisianan territory and owns it, or if the Treaty of New York is enforced, the western states will become vassals/independent
-	# TODO if USA stops being a GP these tags will declare independence
 	country_event = {
 		id = 4489019
 		title = EVTNAME4489019
@@ -570,6 +569,121 @@
 					}
 					owner = { release = MEX }
 				}
+		}
+	}
+
+	#Description: After Western Collapse, if the USA falls from GP status their western states will become independent.
+	country_event = {
+		id = 4489020
+		title = EVTNAME4489020
+		desc = EVTDESC4489020
+		picture = "treaty"
+
+		trigger = {
+			OR = {
+				tag = TEX
+				tag = UNM
+				tag = CAL
+				tag = UOR
+				tag = DES
+				tag = RGR
+				tag = SON
+				tag = LSK
+				tag = HAW
+			}
+			vassal_of = USA
+			USA = {
+				has_country_flag = western_collapse
+				is_greater_power = no
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 30
+		}
+
+		option = {
+			name = EVTOPTA4489020
+
+			prestige = 5
+			USA = {
+				prestige = -5
+				release_vassal = THIS
+			}
+		}
+	}
+
+	#Description: After the Treaty of New York, if the CSA exists, the USA will become the FSA and release any vassals left over from Western Collapse
+	country_event = {
+		id = 4489021
+		title = EVTNAME4489021
+		desc = EVTDESC4489021
+		picture = "treaty"
+
+		trigger = {
+			tag = USA
+			NOT = { owns = 139 }
+			has_global_flag = treaty_of_new_york
+			war = no
+			exists = CSA
+			NOT = { has_country_modifier = no_more_war }
+			has_global_flag = american_civil_war_has_happened
+		}
+
+		mean_time_to_happen = {
+			days = 30
+		}
+
+		option = {
+			name = EVTOPTA4489021
+
+			prestige = -20
+
+			# DEVNOTE anzu-3278: The original decision (become_the_fsa_french_lousiana) released CAL, DES and TEX as vassals here but that would not be deterministic behavior (release as a vassal vs free existing vassal), so I opted to release existing puppets in a manner similar to the situation above. Not sure if that was the original intent though.
+
+			## Vassals become independent ##
+				random_country = {
+					limit = { tag = TEX vassal_of = THIS }
+					release_vassal = TEX
+				}
+				random_country = {
+					limit = { tag = UNM vassal_of = THIS }
+					release_vassal = UNM
+				}
+				random_country = {
+					limit = { tag = CAL vassal_of = THIS }
+					release_vassal = CAL
+				}
+				random_country = {
+					limit = { tag = UOR vassal_of = THIS }
+					release_vassal = UOR
+				}
+				random_country = {
+					limit = { tag = DES vassal_of = THIS }
+					release_vassal = DES
+				}
+				random_country = {
+					limit = { tag = RGR vassal_of = THIS }
+					release_vassal = RGR
+				}
+				random_country = {
+					limit = { tag = SON vassal_of = THIS }
+					release_vassal = SON
+				}
+				random_country = {
+					limit = { tag = LSK vassal_of = THIS }
+					release_vassal = LSK
+				}
+				random_country = {
+					limit = { tag = HAW vassal_of = THIS }
+					release_vassal = HAW
+				}
+
+			any_owned = {
+				limit = { is_core = THIS }
+				add_core = FSA
+			}
+			change_tag = FSA
 		}
 	}
 
@@ -1123,7 +1237,54 @@
 		}
 	}
 
-	## TODO if New York owns NY state and the USA doesn't have a connection to New England, they can also secede
+	#Description: If New York owns NY state and the USA doesn't have a connection to New England, they can also secede
+	country_event = {
+		id = 187909
+		title = "EVTNAME187909"
+		desc = "EVTDESC187909"
+		picture = "deliberation"
+
+		trigger = {
+			tag = USA
+			any_owned_province = { is_core = NEN }
+			NOT = { # New England cores only neighbor foreign provinces and other New England cores
+				NEN = {
+					any_core = {
+						any_neighbor_province = {
+							owned_by = THIS
+							NOT = { is_core = NEN }
+						}
+					}
+				}
+			}
+			NOT = { any_owned_province = { region = USA_232 } } # New York State
+			USA_232 = { owned_by = UNY }
+		}
+
+		immediate = { release = NEN }
+
+		# Let them go
+		option = {
+			name = "EVTOPTA187909"
+
+			prestige = -10
+			# TODO
+		}
+
+		# Go to war
+		option = {
+			name = "EVTOPTB187909"
+
+			prestige = -15
+			badboy = 6
+			war = {
+				target = NEN
+				attacker_goal = { casus_belli = annex_core_country }
+				defender_goal = { casus_belli = status_quo }
+			}
+		}
+	}
+
 
 ### California ###
 
@@ -1236,7 +1397,13 @@
 
 			release = CAL
 			CAL = {
-				add_country_modifier = { name = unrecognized_country duration = 3650 }
+				random_owned = {
+					limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+					owner = {
+						add_country_modifier = { name = unrecognized_country duration = 3650 }
+						set_country_flag = recognized_country
+					}
+				}
 				add_country_modifier = { name = small_country_draft duration = 365 }
 			}
 			war = {
@@ -1277,7 +1444,13 @@
 
 			release = CAL
 			CAL = {
-				add_country_modifier = { name = unrecognized_country duration = 3650 }
+				random_owned = {
+					limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+					owner = {
+						add_country_modifier = { name = unrecognized_country duration = 3650 }
+						set_country_flag = recognized_country
+					}
+				}
 				add_country_modifier = { name = small_country_draft duration = 365 }
 			}
 			war = {

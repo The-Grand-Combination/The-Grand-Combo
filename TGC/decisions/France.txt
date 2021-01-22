@@ -2077,6 +2077,56 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
+	organize_algeria_fra = {
+		picture = "organize_french_algeria"
+		potential = {
+			primary_culture = french
+			is_greater_power = yes
+			capital = 425
+			NOT = {
+				exists = ALD
+				has_global_flag = algeria_organized
+				capital_scope = { continent = africa }
+				capital_scope = { continent = west_africa }
+				capital_scope = { continent = central_africa }
+				capital_scope = { continent = east_africa }
+				capital_scope = { continent = south_west_africa }
+			}
+			owns = 1700
+			owns = 1721
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			owns = 1700
+			owns = 1721
+		}
+
+		effect = {
+			set_global_flag = algeria_organized
+			prestige = 3
+			any_owned = {
+				limit = { is_core = ALD }
+				add_province_modifier = { name = colonial_exploitation duration = 1095 }
+			}
+			ALD = {
+				tech_school = unciv_tech_school
+				government = colonial_company
+				political_reform = landed_voting
+				capital = 1700
+				primary_culture = french
+				add_accepted_culture = maghrebi
+			}
+			1700 = {
+				change_province_name = "Alger"
+				state_scope = { change_region_name = "Alger" }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	cremieux_decree = {
 	picture = cremieux_decree
 		potential = {
@@ -2313,7 +2363,7 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
-## French North America ## TODO
+## French North America ##
 
 	#Description: France can demand Quebec from the British.
 	the_quebec_question = {
@@ -2441,8 +2491,8 @@ create_cambodian_protectorate = {
 			primary_culture = french
 			is_greater_power = yes
 			capital = 425
-			has_country_flag = french_america
-			has_country_flag = war_for_quebec
+			has_country_flag = french_america # France has chosen to pursue restoring its American territories
+			has_country_flag = war_for_quebec # UK said no to Quebec and France went to war for it
 			NOT = { has_country_flag = quebec_regained }
 		}
 
@@ -2531,10 +2581,7 @@ create_cambodian_protectorate = {
 			BOR = { set_country_flag = acadia_organized }
 			any_owned = {
 				limit = { is_core = ACA }
-				add_province_modifier = {
-					name = french_colonial_integration
-					duration = 1825
-				}
+				add_province_modifier = { name = french_colonial_integration duration = 1825 }
 			}
 			random_owned = {
 				limit = { owner = { has_country_flag = french_total_victory } }
@@ -2612,7 +2659,7 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
-
+	#Description: Rename Canada, move Anglo pops, sets up cores, cultures, governments.
 	organize_canada = {
 		picture = "vive_le_quebec"
 		potential = {
@@ -2641,91 +2688,89 @@ create_cambodian_protectorate = {
 		effect = {
 			FRA = { set_country_flag = canada_organized }
 			BOR = { set_country_flag = canada_organized }
-			###Effects that will happen if either the Treaty of Montreal or Paris is taken###
-			treasury = -100000
-			2593 = { state_scope = { change_region_name = "Nord-du-Québec" } }
-			65 = { change_province_name = "Québec" state_scope = { change_region_name = "Québec" } }
-			58 = { change_province_name = "Montréal" }
-			63 = { change_province_name = "Témiscaming" }
-			70 = { change_province_name = "Île Saint-Jean" }
-			73 = { change_province_name = "Île-Royale" }
-			71 = { state_scope = { change_region_name = "Acadie" } }
-			77 = { add_core = QUE }
-			MRU = { all_core = { remove_core = MRU } }
-			###British Acadia###
 
-			###End of Common Effects###
+			## Effects that will happen if either the Treaty of Montreal or Paris is taken ##
 
-			###Effects for Treaty of Paris - This will end the French Goals in North America###
-			random_owned = {
-				limit = { owner = { has_country_flag = quebec_and_acadia_only } }
-				USA = { all_core = { remove_core = ACA } }
-				ULA = { all_core = { remove_core = ULA } }
-				owner = { badboy = -5 } #Reduces your infamy for dropping the rest of your claims
-				46 = { state_scope = { change_region_name = "Southern Ontario" } }
-				QUE = { all_core = { remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW } }
-				THIS = {
-					any_owned = {
-						limit = { is_core = QUE }
-						add_province_modifier = {
-							name = french_colonial_integration
-							duration = 1825
+				treasury = -100000
+				2593 = { state_scope = { change_region_name = "Nord-du-Québec" } }
+				65 = { change_province_name = "Québec" state_scope = { change_region_name = "Québec" } }
+				58 = { change_province_name = "Montréal" }
+				63 = { change_province_name = "Témiscaming" }
+				70 = { change_province_name = "Île Saint-Jean" }
+				73 = { change_province_name = "Île-Royale" }
+				71 = { state_scope = { change_region_name = "Acadie" } }
+				77 = { add_core = QUE }
+				MRU = { all_core = { remove_core = MRU } }
+
+			## Treaty of Paris - Only Quebec and Acadia ##
+
+				random_owned = {
+					limit = { owner = { has_country_flag = quebec_and_acadia_only } }
+					USA = { all_core = { remove_core = ACA } }
+					ULA = { all_core = { remove_core = ULA } }
+					owner = { badboy = -5 } # Reduces your infamy for dropping the rest of your claims
+					46 = { state_scope = { change_region_name = "Southern Ontario" } }
+					QUE = { all_core = { remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW } }
+					THIS = {
+						any_owned = {
+							limit = { is_core = QUE }
+							add_province_modifier = { name = french_colonial_integration duration = 1825 }
 						}
 					}
+					FRA = { set_country_flag = no_more_north_america }
+					BOR = { set_country_flag = no_more_north_america }
 				}
-				FRA = { set_country_flag = no_more_north_america }
-				BOR = { set_country_flag = no_more_north_america }
-			}
 
-			###Effects for Treaty of Montreal - Will change cores for the whole of British North America###
-			random_owned = {
-				limit = { owner = { has_country_flag = french_total_victory } }
-				COL = {
-					all_core = {
-						remove_core = COL
-						remove_core = ENG
-						remove_core = THIS
-						add_core = FCA
-					}
-				}
-				CAN = {
-					all_core = {
-						add_core = FCA
-						remove_core = ENG
-						remove_core = THIS
-						remove_core = CAN
-						remove_core = COL
-						remove_core = MRU
-					}
-				}
-				RPL = {
-					annex_to = THIS
-					government = democracy
-					all_core = {
-						add_core = FCA
-						remove_core = ENG
-						remove_core = THIS
-						remove_core = COL
-					}
-				}
-				74 = { change_province_name = "Québec" state_scope = { change_region_name = "Terre-Neuve" } }
-				QUE = { all_core = { add_core = FCA remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW remove_core = QUE } }
-				ACA = { all_core = { add_core = ACA remove_core = ENG remove_core = THIS } }
-				owner = {
-					any_owned = {
-						limit = { is_core = FCA }
-						add_province_modifier = {
-							name = french_colonial_integration
-							duration = 1825
+			## Treaty of Montreal - The whole of British North America ##
+
+				random_owned = {
+					limit = { owner = { has_country_flag = french_total_victory } }
+					COL = {
+						all_core = {
+							remove_core = COL
+							remove_core = ENG
+							remove_core = THIS
+							add_core = FCA
 						}
 					}
+					CAN = {
+						all_core = {
+							add_core = FCA
+							remove_core = ENG
+							remove_core = THIS
+							remove_core = CAN
+							remove_core = COL
+							remove_core = MRU
+						}
+					}
+					RPL = {
+						annex_to = THIS
+						government = democracy
+						all_core = {
+							add_core = FCA
+							remove_core = ENG
+							remove_core = THIS
+							remove_core = COL
+						}
+					}
+					74 = {
+						change_province_name = "Québec"
+						state_scope = { change_region_name = "Terre-Neuve" }
+					}
+					QUE = { all_core = { add_core = FCA remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW remove_core = QUE } }
+					ACA = { all_core = { add_core = ACA remove_core = ENG remove_core = THIS } }
+					owner = {
+						any_owned = {
+							limit = { is_core = FCA }
+							add_province_modifier = { name = french_colonial_integration duration = 1825 }
+						}
+					}
+					FCA = {
+						remove_accepted_culture = french
+						add_accepted_culture = anglo_canadian
+						set_country_flag = post_colonial_country
+					}
 				}
-				FCA = {
-					remove_accepted_culture = french
-					add_accepted_culture = anglo_canadian
-					set_country_flag = post_colonial_country
-				}
-			}
 
 			## Set Canada Flag Based on whether Bourbon/Napoleonic ##
 
@@ -2777,34 +2822,34 @@ create_cambodian_protectorate = {
 				any_pop = {
 					limit = {
 						location = { is_core = QUE }
-						has_pop_culture = anglo_canadian
 						OR = {
-							type = soldiers
-							type = officers
+							AND = {
+								has_pop_culture = anglo_canadian
+								OR = {
+									type = soldiers
+									type = officers
+								}
+							}
+							has_pop_culture = british
 						}
 					}
-					move_pop = 57
-				}
-				any_pop = {
-					limit = {
-						location = { is_core = QUE }
-						has_pop_culture = british
-					}
-					move_pop = 57
+					move_pop = 57 # Bytown / Ottawa
 				}
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Declare war on the USA for Louisiana.
 	french_louisiana = {
 		picture = new_france_louisiana
 		potential = {
 			primary_culture = french
 			is_greater_power = yes
 			capital = 425
-			has_country_flag = french_total_victory
-			has_country_flag = french_america
-			has_country_flag = canada_organized
+			has_country_flag = french_total_victory	# France has won against Britain and taken all of British North America
+			has_country_flag = french_america 		# France has chosen to pursue restoring its American territories
+			has_country_flag = canada_organized 	# France has organized Canada
 			NOT = {
 				has_country_flag = war_for_louisiana
 				exists = ULA
@@ -2821,31 +2866,27 @@ create_cambodian_protectorate = {
 
 		effect = {
 			badboy = 20
-			USA = {
-				add_casus_belli = {
-					target = THIS
-					type = cut_down_to_size
-					months = 60
-				}
-			}
 			FRA = { set_country_flag = war_for_louisiana }
 			BOR = { set_country_flag = war_for_louisiana }
 			relation = { who = USA value = -200 }
 			diplomatic_influence = { who = USA value = -200 }
 			leave_alliance = USA
-			random_country = { limit = { tag = USA vassal_of = THIS } THIS = { release_vassal = USA } }
-			random_country = { limit = { is_our_vassal = USA NOT = { tag = THIS } } relation = { who = THIS value = -200 } leave_alliance = THIS }
-			any_pop = { dominant_issue = { factor = 0.05 value = jingoism } consciousness = 2 }
-			casus_belli = {
-				target = USA
-				type = cut_down_to_size
-				months = 12
+			random_country = {
+				limit = { tag = USA vassal_of = THIS }
+				THIS = { release_vassal = USA }
 			}
+			random_country = {
+				limit = { is_our_vassal = USA NOT = { tag = THIS } }
+				relation = { who = THIS value = -200 } leave_alliance = THIS
+			}
+			any_pop = { dominant_issue = { factor = 0.05 value = jingoism } consciousness = 2 }
+
 			war = {
 				target = USA
 				attacker_goal = { casus_belli = cut_down_to_size }
 				defender_goal = { casus_belli = cut_down_to_size }
 			}
+
 			any_pop = {
 				limit = {
 					OR = {
@@ -2871,6 +2912,7 @@ create_cambodian_protectorate = {
 		}
 	}
 
+	#Description: Treaty of New York - peace deal after above war, takes all of Louisiana from the USA
 	treaty_of_new_york = {
 		picture = establish_panfrenchism
 		potential = {
@@ -2892,11 +2934,8 @@ create_cambodian_protectorate = {
 		effect = {
 			set_global_flag = treaty_of_new_york
 
-			## American Frontier flags ##
-				clr_global_flag = american_frontier
-				# TODO
-
 			## Louisiana cores ##
+
 				USA_139 = { add_core = ULA } # Louisiana
 				USA_144 = { add_core = ULA } # Arkansas
 				USA_148 = { add_core = ULA } # Missouri
@@ -2916,9 +2955,11 @@ create_cambodian_protectorate = {
 				128 = { remove_core = ULA } # Kansas
 				118 = { remove_core = ULA } # North Dakota
 				114 = { remove_core = ULA } # Montana
+
 				ULA = { all_core = { remove_core = FCA } }
 
 			## Territory swap #
+
 				treasury = -75000
 				USA = {
 					remove_accepted_culture = cajun
@@ -2948,6 +2989,7 @@ create_cambodian_protectorate = {
 				}
 
 			## Turn all these states into colonies ##
+
 				any_owned = {
 					limit = {
 						is_core = ULA
@@ -2966,6 +3008,7 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Setup territory and cores, move pops, assimilate pops, setup government and flags.
 	organize_louisiana	= {
 		picture = "new_france_louisiana"
 		potential = {
@@ -2987,57 +3030,27 @@ create_cambodian_protectorate = {
 
 		effect = {
 			money = -150000
-			any_owned = {
-				limit = {
-					OR = {
-						region = USA_139 # Louisiana
-						region = USA_144 # Arkansas
-						region = USA_148 # Missouri
-						region = USA_118 # North Dakota
-						region = USA_121 # South Dakota
-						region = USA_124 # Nebraska
-						region = USA_151 # Idaho
-						region = USA_158 # Iowa
-						region = USA_126 # Kansas
-						region = USA_129 # Oklahoma
-						region = USA_111 # Wyoming
-						region = USA_116 # Montana
-						region = USA_78 # Washington
-						region = USA_81 # Oregon
-						region = USA_91 # Idaho
-						province_id = 106
-						province_id = 78
-						province_id = 79
-					}
-					NOT = {
-						province_id = 129
-						province_id = 110
-						province_id = 107
-						province_id = 128
-					}
-				}
-				remove_core = THIS
-				add_core = ULA
-			}
-			FCA = {
+
+			## Setup Territory ##
+
 				any_owned = {
 					limit = {
 						OR = {
-							region = USA_139 #Louisiana
-							region = USA_144 #Arkansas
-							region = USA_148 #Missouri
-							region = USA_118 #North Dakota
-							region = USA_121 #South Dakota
-							region = USA_124 #Nebraska
-							region = USA_151 #Idaho
-							region = USA_158 #Iowa
-							region = USA_126 #Kansas
-							region = USA_129 #Oklahoma
-							region = USA_111 #Wyoming
-							region = USA_116 #Montana
-							region = USA_78 #Washington
-							region = USA_81 #Oregon
-							region = USA_91 #Idaho
+							region = USA_139 # Louisiana
+							region = USA_144 # Arkansas
+							region = USA_148 # Missouri
+							region = USA_118 # North Dakota
+							region = USA_121 # South Dakota
+							region = USA_124 # Nebraska
+							region = USA_151 # Idaho
+							region = USA_158 # Iowa
+							region = USA_126 # Kansas
+							region = USA_129 # Oklahoma
+							region = USA_111 # Wyoming
+							region = USA_116 # Montana
+							region = USA_78 # Washington
+							region = USA_81 # Oregon
+							region = USA_91 # Idaho
 							province_id = 106
 							province_id = 78
 							province_id = 79
@@ -3049,34 +3062,72 @@ create_cambodian_protectorate = {
 							province_id = 128
 						}
 					}
-					remove_core = FCA
+					remove_core = THIS
 					add_core = ULA
-					secede_province = THIS
 				}
-			}
+				FCA = {
+					any_owned = {
+						limit = {
+							OR = {
+								region = USA_139 #Louisiana
+								region = USA_144 #Arkansas
+								region = USA_148 #Missouri
+								region = USA_118 #North Dakota
+								region = USA_121 #South Dakota
+								region = USA_124 #Nebraska
+								region = USA_151 #Idaho
+								region = USA_158 #Iowa
+								region = USA_126 #Kansas
+								region = USA_129 #Oklahoma
+								region = USA_111 #Wyoming
+								region = USA_116 #Montana
+								region = USA_78 #Washington
+								region = USA_81 #Oregon
+								region = USA_91 #Idaho
+								province_id = 106
+								province_id = 78
+								province_id = 79
+							}
+							NOT = {
+								province_id = 129
+								province_id = 110
+								province_id = 107
+								province_id = 128
+							}
+						}
+						remove_core = FCA
+						add_core = ULA
+						secede_province = THIS
+					}
+				}
+
 			add_accepted_culture = cajun
-			any_pop = {
-				limit = {
-					type = craftsmen
-					has_pop_culture = dixie
+
+			## Move American Pops ##
+
+				any_pop = {
+					limit = {
+						type = craftsmen
+						has_pop_culture = dixie
+					}
+					move_pop = 194
 				}
-				move_pop = 194
-			}
-			any_pop = {
-				limit = {
-					type = craftsmen
-					has_pop_culture = yankee
+				any_pop = {
+					limit = {
+						type = craftsmen
+						has_pop_culture = yankee
+					}
+					move_pop = 167
 				}
-				move_pop = 167
-			}
-			any_pop = {
-				limit = {
-					location = { is_core = ULA }
-					type = craftsmen
-					is_state_religion = no
+				any_pop = {
+					limit = {
+						location = { is_core = ULA }
+						type = craftsmen
+						is_state_religion = no
+					}
+					move_pop = 167
 				}
-				move_pop = 167
-			}
+
 			ULA = {
 				set_country_flag = post_colonial_country
 				primary_culture = cajun
@@ -3084,80 +3135,97 @@ create_cambodian_protectorate = {
 			}
 			ULA = { all_core = { remove_core = COL remove_core = FCA } }
 			D01 = { primary_culture = cajun }
-			random_owned = { limit = { owner = { NOT = { slavery = no_slavery } } } D01 = { political_reform = yes_slavery } }
-			random_owned = { limit = { owner = { slavery = no_slavery } } D01 = { political_reform = no_slavery } }
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = soldiers
-					location = { continent = europe }
+
+			## Setup Slavery ##
+
+				random_owned = {
+					limit = { owner = { slavery = yes_slavery } }
+					D01 = { political_reform = yes_slavery }
 				}
-				move_pop = 151
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = artisans
-					location = { continent = europe }
+				random_owned = {
+					limit = { owner = { slavery = freedom_of_womb } }
+					D01 = { political_reform = freedom_of_womb }
 				}
-				move_pop = 146
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = artisans
-					location = { continent = europe }
+				random_owned = {
+					limit = { owner = { slavery = no_slavery } }
+					D01 = { political_reform = no_slavery }
 				}
-				move_pop = 143
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = soldiers
-					location = { continent = europe }
+
+			## Move French Pops ##
+
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = soldiers
+						location = { continent = europe }
+					}
+					move_pop = 151
 				}
-				move_pop = 144
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = artisans
-					location = { continent = europe }
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = artisans
+						location = { continent = europe }
+					}
+					move_pop = 146
 				}
-				move_pop = 145
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = clergymen
-					location = { continent = europe }
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = artisans
+						location = { continent = europe }
+					}
+					move_pop = 143
 				}
-				move_pop = 150
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = clergymen
-					location = { continent = europe }
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = soldiers
+						location = { continent = europe }
+					}
+					move_pop = 144
 				}
-				move_pop = 149
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = soldiers
-					location = { continent = europe }
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = artisans
+						location = { continent = europe }
+					}
+					move_pop = 145
 				}
-				move_pop = 140
-			}
-			random_pop = {
-				limit = {
-					has_pop_culture = french
-					type = artisans
-					location = { continent = europe }
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = clergymen
+						location = { continent = europe }
+					}
+					move_pop = 150
 				}
-				move_pop = 146
-			}
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = clergymen
+						location = { continent = europe }
+					}
+					move_pop = 149
+				}
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = soldiers
+						location = { continent = europe }
+					}
+					move_pop = 140
+				}
+				random_pop = {
+					limit = {
+						has_pop_culture = french
+						type = artisans
+						location = { continent = europe }
+					}
+					move_pop = 146
+				}
+
 			any_pop = {
 				limit = { culture = yankee }
 				consciousness = 7
@@ -3177,20 +3245,24 @@ create_cambodian_protectorate = {
 				}
 				move_pop = 193
 			}
-			any_owned = {
-				limit = {
-					OR = {
-						province_id = 146
-						province_id = 143
+
+			## Assimilate ##
+
+				any_owned = {
+					limit = {
+						OR = {
+							province_id = 146
+							province_id = 143
+						}
 					}
+					secede_province = D01
 				}
-				secede_province = D01
-			}
-			D01 = {
-				146 = { assimilate = yes }
-				143 = { assimilate = yes }
-			}
-			THIS = { inherit = D01 }
+				D01 = {
+					146 = { assimilate = yes }
+					143 = { assimilate = yes }
+				}
+				THIS = { inherit = D01 }
+
 			any_pop = {
 				limit = {
 					location = { province_id = 143 }
@@ -3207,23 +3279,35 @@ create_cambodian_protectorate = {
 			}
 			any_owned = {
 				limit = { is_core = ULA }
-				add_province_modifier = {
-					name = french_colonial_integration
-					duration = 3650
-				}
+				add_province_modifier = { name = french_colonial_integration duration = 3650 }
 			}
 			any_pop = {
-				limit = {
-						has_pop_culture = cajun
-				}
+				limit = { has_pop_culture = cajun }
 				reduce_pop = 3
 			}
-			any_pop = { limit = { location = { province_id = 146 } type = artisans } pop_type = farmers }
-			any_pop = { limit = { location = { province_id = 146 } type = soldiers } pop_type = farmers }
-			any_pop = { limit = { culture = cajun } reduce_pop = 2 }
-			random_owned = { limit = { owner = { NOT = { colonial_policy = settlement } } } owner = { political_reform = settlement } }
-			random_owned = { limit = { owner = { tag = FRA OR = { government = hms_government government = absolute_monarchy government = prussian_constitutionalism } } ULA = { government = hms_government } } }
-			random_owned = { limit = { owner = { tag = BOR } } ULA = { government = colonial_company } }
+			any_pop = {
+				limit = { location = { province_id = 146 } type = artisans }
+				pop_type = farmers
+			}
+			any_pop = {
+				limit = { location = { province_id = 146 } type = soldiers }
+				pop_type = farmers
+			}
+
+			## Setup Government ##
+
+				random_owned = {
+					limit = { owner = { NOT = { colonial_policy = settlement } } }
+					owner = { political_reform = settlement }
+				}
+				random_owned = {
+					limit = { owner = { tag = FRA OR = { government = hms_government government = absolute_monarchy government = prussian_constitutionalism } }
+					ULA = { government = hms_government } }
+				}
+				random_owned = {
+					limit = { owner = { tag = BOR } }
+					ULA = { government = colonial_company }
+				}
 
 			FRA = { set_country_flag = louisiana_organized }
 			BOR = { set_country_flag = louisiana_organized }
@@ -3232,55 +3316,6 @@ create_cambodian_protectorate = {
 		ai_will_do = { factor = 1 }
 	}
 
-	organize_algeria_fra = {
-		picture = "organize_french_algeria"
-		potential = {
-			primary_culture = french
-			is_greater_power = yes
-			capital = 425
-			NOT = {
-				exists = ALD
-				has_global_flag = algeria_organized
-				capital_scope = { continent = africa }
-				capital_scope = { continent = west_africa }
-				capital_scope = { continent = central_africa }
-				capital_scope = { continent = east_africa }
-				capital_scope = { continent = south_west_africa }
-			}
-			owns = 1700
-			owns = 1721
-		}
-
-		allow = {
-			war = no
-			revolution_n_counterrevolution = 1
-			owns = 1700
-			owns = 1721
-		}
-
-		effect = {
-			set_global_flag = algeria_organized
-			prestige = 3
-			any_owned = {
-				limit = { is_core = ALD }
-				add_province_modifier = { name = colonial_exploitation duration = 1095 }
-			}
-			ALD = {
-				tech_school = unciv_tech_school
-				government = colonial_company
-				political_reform = landed_voting
-				capital = 1700
-				primary_culture = french
-				add_accepted_culture = maghrebi
-			}
-			1700 = {
-				change_province_name = "Alger"
-				state_scope = { change_region_name = "Alger" }
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
 
 #from FlavourMod_FRA.txt
 	notre_dame_afrique = {

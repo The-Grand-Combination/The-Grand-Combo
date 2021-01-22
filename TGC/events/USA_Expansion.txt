@@ -1,0 +1,5288 @@
+
+### Caribbean Expansion ##
+
+	#Description: Guantanamo Lease - triggered for the owner of Cuba
+	country_event = {
+		id = 16458
+		title = "EVTNAME16458"
+		desc = "EVTDESC16458"
+		picture = "Danishgovernment"
+
+		is_triggered_only = yes
+
+		# Agree to the lease
+		option = {
+			name = "EVTOPTA16458"
+
+			44 = { secede_province = FROM } # Guantanamo
+			relation = { who = FROM value = 50 }
+			FROM = { diplomatic_influence = { who = THIS value = 100 } }
+			FROM = { treasury = -10000 }
+			treasury = 100000
+
+			ai_chance = { factor = 0.9 }
+		}
+
+		# Refuse the lease
+		option = {
+			name = "EVTOPTB16458"
+
+			prestige = 5
+			relation = { who = FROM value = -400 }
+
+			random_owned = {
+				limit = { owner = { NOT = { number_of_states = 2 } owns = 2209 } }
+				owner = { add_casus_belli = { target = FROM type = conquest months = 36 } }
+			}
+
+			random_owned = {
+				limit = { owner = { number_of_states = 2 owns = 2209 capital = 2209 } }
+				owner = { add_casus_belli = { target = FROM type = cut_down_to_size months = 36 } }
+			}
+
+			random_owned = {
+				limit = { owner = { 2209 = { owned_by = THIS state_scope = { is_colonial = yes } } } }
+				owner = { add_casus_belli = { target = FROM type = place_in_the_sun months = 36 } }
+			}
+
+			ai_chance = {
+				factor = 0.1
+				modifier = {
+					factor = 0.7
+					OR = {
+						ruling_party_ideology = fascist
+						ruling_party_ideology = reactionary
+						ruling_party_ideology = communist
+					}
+				}
+			}
+		}
+	}
+
+	## Mole Saint Nicolas Affair ##
+
+		#Description: The Mole St-Nicolas Affair - triggered for Haiti if the USA wants the St. Nicholas port
+		country_event = {
+			id = 530010
+			title = "EVTNAME530010"
+			desc = "EVTDESC530010"
+			picture = "Administration"
+			is_triggered_only = yes
+
+			# Accept
+			option = {
+				name = "EVTOPTA530010"
+
+				prestige = -25
+				treasury = 75000
+				any_pop = { militancy = 5 }
+				3284 = { secede_province = FROM }
+				FROM = {
+					treasury = -75000
+					badboy = 1.0
+					prestige = 15
+				}
+
+				ai_chance = {
+					factor = 15
+					modifier = {
+						factor = 6.5
+						vassal_of = FROM
+					}
+					modifier = {
+						factor = 0
+						is_secondary_power = yes
+					}
+				}
+			}
+
+			# Refuse
+			option = {
+				name = "EVTOPTB530010"
+
+				prestige = 5
+				FROM = { country_event = 530011 }
+
+				ai_chance = {
+					factor = 85
+					modifier = {
+						factor = 0.35
+						vassal_of = FROM
+					}
+				}
+			}
+		}
+
+		#Description: Haiti Refuses - the USA can let it go or go to war
+		country_event = {
+			id = 530011
+			title = "EVTNAME530011"
+			desc = "EVTDESC530011"
+			picture = "treaty"
+			is_triggered_only = yes
+
+			# War
+			option = {
+				name = "EVTOPTA530011"
+
+				prestige = 5
+				badboy = 3
+				USA = {
+					casus_belli = {
+						target = HAI
+						type = add_to_sphere
+						months = 6
+					}
+				}
+				war = {
+					target = HAI
+					attacker_goal = { casus_belli = add_to_sphere }
+					defender_goal = { casus_belli = status_quo }
+					call_ally = no
+				}
+
+				ai_chance = { factor = 0.05 }
+			}
+
+			# Let it go
+			option = {
+				name = "EVTOPTB530011"
+
+				prestige = -10
+				badboy = -0.5
+				move_issue_percentage = {
+					from = pro_military
+					to = anti_military
+					value = 0.05
+				}
+
+				ai_chance = { factor = 0.95 }
+			}
+		}
+
+### Mexican Expansion ##
+
+	## Mexican-American War ##
+
+		#Description: USA Demands Northwest Territories! - triggered for Mexico
+		country_event = {
+			id = 44126
+			title = "EVTNAME44126"
+			desc = "EVTDESC44126"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Refuse
+			option = {
+				name = "EVTOPTA44126"
+
+				set_country_flag = mexico_refused_usa_once
+				USA = { country_event = 44127 }
+				any_pop = { militancy = -1 }
+
+				ai_chance = { factor = 90 }
+			}
+
+			# Accept
+			option = {
+				name = "EVTOPTB44126"
+
+				set_country_flag = treaty_of_guadalupe_hidalgo
+				set_country_flag = mexico_gave_in_once
+				money = 100000
+				all_core = {
+					limit = {
+						OR = {
+							region = MEX_85 # California
+							region = MEX_94 # Nevada
+							region = MEX_97 # Utah
+							region = USA_106 # Colorado
+							region = USA_111 # Wyoming
+							region = USA_126 # Kansas
+							region = USA_129 # Oklahoma
+							region = TEX_132 # Texas
+							region = MEX_100 # Arizona
+							region = MEX_103 # New Mexico
+						}
+						NOT = {
+							province_id = 102 # Gadsden Purchase
+							province_id = 2662
+						}
+					}
+					remove_core = MEX
+				}
+				any_owned = {
+					limit = {
+						is_core = USA
+						OR = {
+							region = MEX_85 # California
+							region = MEX_94 # Nevada
+							region = MEX_97 # Utah
+							region = USA_106 # Colorado
+							region = USA_111 # Wyoming
+							region = USA_126 # Kansas
+							region = USA_129 # Oklahoma
+							region = TEX_132 # Texas
+							region = MEX_100 # Arizona
+							region = MEX_103 # New Mexico
+						}
+						NOT = {
+							province_id = 102 # Gadsden Purchase
+							province_id = 2662
+						}
+					}
+					secede_province = USA
+				}
+				USA = { country_event = 44128 }
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						is_greater_power = yes
+					}
+					modifier = {
+						factor = 0
+						NOT = { in_sphere = USA }
+						part_of_sphere = yes
+					}
+					modifier = {
+						factor = 0
+						NOT = { war_exhaustion = 15 }
+					}
+					modifier = {
+						factor = 2
+						USA = { brigades_compare = 2 }
+					}
+					modifier = {
+						factor = 0.5
+						NOT = { USA = { brigades_compare = 1 } }
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = jingoism
+					}
+				}
+			}
+		}
+
+		#Description: Mexico Has Refused!
+		country_event = {
+			id = 44127
+			title = "EVTNAME44127"
+			desc = "EVTDESC44127"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Go to war
+			option = {
+				name = "EVTOPTA44127"
+
+				set_global_flag = mexican_american_war
+				war_exhaustion = -20
+				relation = { who = MEX value = -200 }
+				diplomatic_influence = { who = MEX value = -400 }
+				leave_alliance = MEX
+				war = {
+					target = MEX
+					attacker_goal = { casus_belli = acquire_all_cores country = USA }
+				}
+				any_pop = {
+					limit = { has_pop_culture = mexican }
+					militancy = 6
+				}
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Leave it be
+			option = {
+				name = "EVTOPTB44127"
+
+				set_global_flag = no_mexican_american_war
+				prestige_factor = -0.2
+				any_pop = {
+					consciousness = 1
+					militancy = 1
+				}
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Mexico Agrees
+		country_event = {
+
+			id = 44128
+			title = "EVTNAME44826"
+			desc = "EVTDESC44826"
+			news = yes
+			news_title = "EVTNAME44825"
+			news_desc_long = "EVTDESC44826_NEWS_LONG"
+			news_desc_medium = "EVTDESC44826_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44826_NEWS_SHORT"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44147"
+
+				prestige = 20
+
+				random_owned = {
+					limit = { owner = { ai = no } }
+					owner = { treasury = -100000 }
+				}
+				random_owned = {
+					limit = { owner = { ai = yes } }
+					owner = { set_variable = { which = owed_cash_money value = 100 } }
+				}
+				relation = { who = FROM value = 200 }
+				diplomatic_influence = { who = FROM value = 400 }
+			}
+		}
+
+	## The Treaty of Guadalupe Hidalgo ##
+
+		#Description: Triggered for Mexico when the USA offers peace in the Mexican-American war
+		country_event = {
+
+			id = 44825
+			title = EVTNAME44825
+			desc = EVTDESC44825
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Acceot the treaty
+			option = {
+				name = EVTOPTA44825
+
+				set_country_flag = treaty_of_guadalupe_hidalgo
+				prestige_factor = -0.5
+				treasury = 100000
+				random_owned = {
+					limit = { owner = { war_with = USA } }
+					owner = { end_war = USA }
+					any_country = {
+						limit = {
+							war_with = THIS
+							alliance_with = USA
+						}
+						end_war = THIS
+					}
+				}
+				all_core = {
+					limit = {
+						OR = {
+							region = TEX_132	# Texas
+							region = MEX_94		# Nevada
+							region = MEX_97		# Utah
+							region = MEX_85		# California
+							region = USA_106	# Colorado
+							region = USA_111	# Wyoming
+							region = USA_126	# Kansas
+							region = USA_129	# Oklahoma
+							province_id = 100	# Arizona
+							province_id = 101
+							province_id = 3367
+							province_id = 38	# New Mexico
+							province_id = 105
+							province_id = 109
+							province_id = 2148
+							province_id = 2631
+						}
+					}
+					remove_core = MEX
+				}
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = USA
+							region = TEX_132	# Texas
+							region = MEX_94		# Nevada
+							region = MEX_97		# Utah
+							region = MEX_85		# California
+							region = USA_106	# Colorado
+							region = USA_111	# Wyoming
+							region = USA_126	# Kansas
+							region = USA_129	# Oklahoma
+							province_id = 100	# Arizona
+							province_id = 101
+							province_id = 3367
+							province_id = 38	# New Mexico
+							province_id = 105
+							province_id = 109
+							province_id = 2148
+							province_id = 2631
+						}
+					}
+					secede_province = USA
+				}
+				USA = { country_event = 44826 }
+
+				random_owned = {
+					limit = { exists = CAL }
+					owner = { end_war = CAL }
+				}
+
+				ai_chance = {
+					factor = 90
+					modifier = {
+						factor = 0.5
+						is_secondary_power = yes
+					}
+					modifier = {
+						factor = 0
+						any_greater_power = { alliance_with = THIS war_with = USA }
+					}
+					modifier = {
+						factor = 0
+						is_greater_power = yes
+					}
+					modifier = {
+						factor = 0
+						NOT = { war_exhaustion = 15 }
+					}
+					modifier = {
+						factor = 0
+						NOT = { national_provinces_occupied = 0.1 }
+					}
+				}
+			}
+
+			# Reject the treaty
+			option = {
+				name = EVTOPTB44825
+
+				war_exhaustion = 20
+				USA = { country_event = 44827 }
+
+				ai_chance = { factor = 10 }
+			}
+		}
+
+		#Description: Mexico Agrees
+		country_event = {
+
+			id = 44826
+			title = EVTNAME44826
+			desc = EVTDESC44826
+			news = yes
+			news_title = EVTNAME44825
+			news_desc_long = EVTDESC44826_NEWS_LONG
+			news_desc_medium = EVTDESC44826_NEWS_MEDIUM
+			news_desc_short = EVTDESC44826_NEWS_SHORT
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA44826
+
+				prestige = 20
+				random_owned = {
+					limit = { owner = { ai = no } }
+					owner = { treasury = -100000 }
+				}
+				random_owned = {
+					limit = { owner = { ai = yes } }
+					owner = { set_variable = { which = owed_cash_money value = 100 } }
+				}
+				any_owned = { limit = { is_core = MEX } secede_province = MEX }
+				diplomatic_influence = {
+					who = FROM
+					value = 400
+				}
+				relation = {
+					who = FROM
+					value = 200
+				}
+			}
+		}
+
+		#Description: Mexico Refuses
+		country_event = {
+
+			id = 44827
+			title = EVTNAME44827
+			desc = EVTDESC44827
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44827"
+
+				set_country_flag = mexico_refused_treaty
+				random_owned = {
+					limit = {
+						owner = { ai = yes }
+						OR = {
+							is_core = USA
+							region = TEX_132	# Texas
+							region = MEX_94		# Nevada
+							region = MEX_97		# Utah
+							region = MEX_85		# California
+							region = USA_106	# Colorado
+							region = USA_111	# Wyoming
+							region = USA_126	# Kansas
+							region = USA_129	# Oklahoma
+							province_id = 100	# Arizona
+							province_id = 101
+							province_id = 3367
+							province_id = 38	# New Mexico
+							province_id = 105
+							province_id = 109
+							province_id = 2148
+							province_id = 2631
+						}
+					}
+					secede_province = USA
+				}
+				war_exhaustion = -20
+			}
+		}
+
+	## Gadsden Purchase ##
+
+		#Description: Gadsden Purchase 1/5
+		country_event = {
+			id = 16453
+			title = "EVTNAME16453"
+			desc = "EVTDESC16453"
+			picture = "gadsden_treaty"
+
+			is_triggered_only = yes
+
+			# Sell everything they want
+			option = {
+				name = "EVTOPTA16453"
+
+				FROM = { country_event = 16454 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 1.1
+						relation = { who = FROM value = 180 }
+					}
+					modifier = {
+						factor = 0
+						is_greater_power = yes
+					}
+				}
+			}
+
+			# Sell only historical borders
+			option = {
+				name = "EVTOPTB16453"
+
+				FROM = { country_event = 16455 }
+
+				ai_chance = { factor = 90 }
+			}
+
+			# We will not sell anything
+			option = {
+				name = "EVTOPTC16453"
+
+				FROM = { country_event = 16456 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 1.2
+						NOT = { relation = { who = FROM value = -50 } }
+					}
+					modifier = {
+						factor = 1.8
+						is_greater_power = yes
+					}
+					modifier = {
+						factor = 8.0
+						USA = { any_owned_province = { is_core = MEX } ai = no }
+					}
+				}
+			}
+		}
+
+		#Description: Gadsden Purchase 2/5 - Mexico Agrees to sell everything
+		country_event = {
+			id = 16454
+			title = "EVTNAME16454"
+			desc = "EVTDESC16454"
+			picture = "gadsden_treaty"
+
+			is_triggered_only = yes
+
+			# Alright, let's buy everything
+			option = {
+				name = "EVTOPTA16454"
+
+				FROM = {
+					treasury = 100000
+					any_pop = { militancy = 2 consciousness = 3 }
+				}
+
+				random_owned = {
+					limit = { owner = { ai = no } }
+					owner = { treasury = -100000 }
+				}
+				random_owned = {
+					limit = { owner = { ai = yes } }
+					owner = { change_variable = { which = owed_cash_money value = 100 } }
+				}
+
+				102 = { add_core = THIS add_core = CAL remove_core = MEX }
+				2662 = { add_core = THIS add_core = CAL remove_core = MEX }
+				2139 = { add_core = THIS add_core = CAL remove_core = MEX }
+				2138 = { add_core = THIS add_core = CAL remove_core = MEX }
+				3368 = { add_core = THIS add_core = CAL remove_core = MEX }
+				FROM = { any_owned = { limit = { is_core = THIS } secede_province = THIS } }
+				random_owned = {
+					limit = { owner = { NOT = { slavery = no_slavery } } }
+					MEX_2138 = { is_slave = yes }
+				}
+				relation = { who = FROM value = 150 }
+				any_pop = {
+					scaled_consciousness = {
+						factor = 2
+						ideology = liberal
+					}
+					scaled_militancy = {
+						factor = 1
+						ideology = liberal
+					}
+					scaled_consciousness = {
+						factor = 2
+						ideology = reactionary
+					}
+					scaled_militancy = {
+						factor = 1
+						ideology = reactionary
+					}
+				}
+
+				ai_chance = { factor = 20 }
+			}
+
+			# We don't have the money, buy only the historical stuff
+			option = {
+				name = "EVTOPTB16454"
+
+				FROM = {
+					treasury = 50000
+					any_pop = { militancy = 1 consciousness = 1 }
+				}
+				random_owned = {
+					limit = { owner = { ai = no } }
+					owner = { treasury = -50000 }
+				}
+				random_owned = {
+					limit = { owner = { ai = yes } }
+					owner = { change_variable = { which = owed_cash_money value = 50 } }
+				}
+				102 = { add_core = THIS secede_province = THIS remove_core = MEX }
+				2662 = { add_core = THIS secede_province = THIS remove_core = MEX }
+				relation = { who = FROM value = 50 }
+
+				ai_chance = { factor = 80 }
+			}
+
+			# We are broke, don't buy anything
+			option = {
+				name = "EVTOPTC16454"
+
+				FROM = { country_event = 16457 }
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Gadsden Purchase 3/5 - Mexico Agrees to historical purchase
+		country_event = {
+			id = 16455
+			title = "EVTNAME16455"
+			desc = "EVTDESC16455"
+			picture = "gadsden_treaty"
+
+			is_triggered_only = yes
+
+			# Done
+			option = {
+				name = "EVTOPTA16455"
+
+				FROM = {
+					treasury = 50000
+					any_pop = { militancy = 1 consciousness = 1 }
+				}
+				random_owned = {
+					limit = { owner = { ai = no } }
+					owner = { treasury = -50000 }
+				}
+				random_owned = {
+					limit = { owner = { ai = yes } }
+					owner = { change_variable = { which = owed_cash_money value = 50 } }
+				}
+				102 = { add_core = THIS secede_province = THIS remove_core = MEX }
+				2662 = { add_core = THIS secede_province = THIS remove_core = MEX }
+				relation = { who = FROM value = 150 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# We are broke, don't buy anything
+			option = {
+				name = "EVTOPTB16455"
+
+				FROM = { country_event = 16457 }
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Gadsden Purchase 4/5 - Mexico won't sell anything
+		country_event = {
+			id = 16456
+			title = "EVTNAME16456"
+			desc = "EVTDESC16456"
+			picture = "gadsden_treaty"
+
+			is_triggered_only = yes
+
+			# We will have what we want - one way or another
+			option = {
+				name = "EVTOPTA16456"
+
+				badboy = 10
+				prestige = -5
+				102 = { add_core = THIS }
+				2662 = { add_core = THIS }
+				relation = { who = FROM value = -100 }
+				diplomatic_influence = { who = FROM value = -200 }
+
+				ai_chance = {
+					factor = 90
+					modifier = {
+						factor = 50
+						is_greater_power = no
+					}
+				}
+			}
+
+			# Let it go
+			option = {
+				name = "EVTOPTB16456"
+
+				relation = { who = FROM value = -10 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 50
+						is_greater_power = no
+					}
+				}
+			}
+
+			# Pay reparations
+			option = {
+				name = "EVTOPTC16456"
+
+				random_owned = {
+					limit = { owner = { ai = no } }
+					owner = { treasury = -10000 }
+				}
+				random_owned = {
+					limit = { owner = { ai = yes } }
+					owner = { change_variable = { which = owed_cash_money value = 10 } }
+				}
+				FROM = { treasury = 10000 }
+				relation = { who = FROM value = -10 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 50
+						is_greater_power = no
+					}
+				}
+			}
+		}
+
+		#Description: Gadsden Purchase 5/5 - USA breaks negotiations because they are broke
+		country_event = {
+			id = 16457
+			title = "EVTNAME16457"
+			desc = "EVTDESC16457"
+			picture = "gadsden_treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA16457"
+
+				relation = { who = FROM value = -10 }
+			}
+		}
+
+	## All of Mexico ##
+
+		#Description: The debate whether to extend claims on Mexico and by how much
+		country_event = {
+
+			id = 44850
+			title = EVTNAME44850
+			desc = EVTDESC44850
+			picture = "senate_debate"
+
+			is_triggered_only = yes
+
+			immediate = { set_country_flag = all_of_mexico_movement_decided }
+
+			# Incorporate no new states
+			option = {
+				name = EVTOPTA44850
+
+				any_pop = { consciousness = -1 }
+				scaled_militancy = { issue = jingoism value = 4 }
+				scaled_militancy = { issue = pro_military value = 4 }
+
+				ai_chance = {
+					factor = 80
+				}
+			}
+
+			# Just take the northern states
+			option = {
+				name = EVTOPTB44850
+
+				random_owned = { # Sanity check, if slavery is still around go to the slavery debate event
+					limit = {
+						owner = {
+							OR = {
+								slavery = yes_slavery
+								slavery = freedom_of_womb
+								has_country_modifier = the_slavery_debate
+							}
+						}
+					}
+					owner = { country_event = 44851 }
+				}
+				random_owned = { # If not, go straight to the effect (this shouldn't happen)
+					limit = {
+						owner = {
+							NOT = {
+								slavery = yes_slavery
+								slavery = freedom_of_womb
+								has_country_modifier = the_slavery_debate
+							}
+						}
+					}
+					owner = { country_event = 44852 }
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						badboy = 0.8
+					}
+				}
+			}
+
+			# Annex all of Mexico
+			option = {
+				name = EVTOPTC44850
+
+				random_owned = { # Sanity check, if slavery is still around go to the slavery debate event
+					limit = {
+						owner = {
+							OR = {
+								slavery = yes_slavery
+								slavery = freedom_of_womb
+								has_country_modifier = the_slavery_debate
+							}
+						}
+					}
+					owner = { country_event = 44853 }
+				}
+				random_owned = { # If not, go straight to the effect (this shouldn't happen)
+					limit = {
+						owner = {
+							NOT = {
+								slavery = yes_slavery
+								slavery = freedom_of_womb
+								has_country_modifier = the_slavery_debate
+							}
+						}
+					}
+					owner = { country_event = 44854 }
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						badboy = 0.24
+					}
+				}
+			}
+
+			# Decide later
+			option = {
+				name = EVTOPTD44850
+
+				clr_country_flag = all_of_mexico_movement_decided
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Just take the northern states - slavery debate
+		country_event = {
+
+			id = 44851
+			title = EVTNAME44851
+			desc = EVTDESC44851
+			picture = "senate_debate"
+
+			is_triggered_only = yes
+
+			# All slave states
+			option = {
+				name = EVTOPTA44851
+
+				# set promise flags for later events
+				country_event = 44852
+				any_state = {
+					limit = { is_slave = no }
+					any_pop = { consciousness = 2 }
+				}
+				any_state = {
+					limit = { is_slave = yes }
+					any_pop = { consciousness = -1 }
+				}
+
+				ai_chance = { factor = 10 }
+			}
+
+			# All free states
+			option = {
+				name = EVTOPTB44851
+
+				# set promise flags for later events
+				country_event = 44852
+				any_state = {
+					limit = { is_slave = yes }
+					any_pop = { consciousness = 2 }
+				}
+				any_state = {
+					limit = { is_slave = no }
+					any_pop = { consciousness = -1 }
+				}
+
+				ai_chance = { factor = 10 }
+			}
+
+			# Balanced
+			option = {
+				name = EVTOPTC44851
+
+				# set promise flags for later events
+				country_event = 44852
+				any_pop = { consciousness = 1 }
+
+				ai_chance = { factor = 80 }
+			}
+
+			# Go back
+			option = {
+				name = EVTOPTD44851
+
+				country_event = 44850
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Just take the northern states - claims and effects
+		country_event = {
+			id = 44852
+			title = EVTNAME44852
+			desc = EVTDESC44852
+			picture = "senate_debate"
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA44852
+
+				badboy = 5
+
+				## Cores ##
+					MEX_2150 = { add_core = USA } # Rio Grande
+					MEX_2149 = { add_core = USA } # Cohauila
+					MEX_2142 = { add_core = USA } # Chihuahua
+					MEX_2151 = { add_core = USA } # Durango
+					set_global_flag = rio_grande_is_a_state
+					MEX_2139 = { add_core = USA } # Baja California
+					MEX_2138 = { add_core = USA } # Sonora
+					MEX_2156 = { add_core = USA } # Sinaloa
+					set_global_flag = sonora_is_a_state
+					2662 = { add_core = USA } # Gadsden purchase territories
+					102 = { add_core = USA }
+
+				## Diplomacy ##
+					relation = { who = MEX value = -200 }
+					diplomatic_influence = { who = MEX value = -200 }
+					leave_alliance = MEX
+					random_country = {
+						limit = {
+							tag = MEX
+							vassal_of = THIS
+						}
+						THIS = { release_vassal = MEX }
+					}
+					random_country = {
+						limit = {
+							is_our_vassal = MEX
+							NOT = { tag = THIS }
+						}
+						relation = { who = THIS value = -200 }
+						leave_alliance = THIS
+					}
+
+				## Inherit Minors ##
+					random_country = { # California
+						limit = {
+							tag = CAL
+							exists = yes
+							OR = {
+								in_sphere = THIS
+								part_of_sphere = no
+							}
+							OR = {
+								vassal_of = THIS
+								is_vassal = no
+							}
+						}
+						country_event = 98650 # Inherit
+					}
+					random_country = { # Texas
+						limit = {
+							tag = TEX
+							exists = yes
+							OR = {
+								in_sphere = THIS
+								part_of_sphere = no
+							}
+							OR = {
+								vassal_of = THIS
+								is_vassal = no
+							}
+						}
+						country_event = 98650 # Inherit
+					}
+					random_country = { # Deseret
+						limit = {
+							tag = DES
+							exists = yes
+							OR = {
+								in_sphere = THIS
+								part_of_sphere = no
+							}
+							OR = {
+								vassal_of = THIS
+								is_vassal = no
+							}
+						}
+						country_event = 98650 # Inherit
+					}
+					random_country = { # New Mexico
+						limit = {
+							tag = UNM
+							exists = yes
+							OR = {
+								in_sphere = THIS
+								part_of_sphere = no
+							}
+							OR = {
+								vassal_of = THIS
+								is_vassal = no
+							}
+						}
+						country_event = 98650 # Inherit
+					}
+
+				any_pop = {
+					dominant_issue = {
+						factor = 0.05
+						value = jingoism
+					}
+					consciousness = 2
+				}
+			}
+		}
+
+		#Description: Annex all of Mexico - slavery debate
+		country_event = {
+
+			id = 44853
+			title = EVTNAME44853
+			desc = EVTDESC44853
+			picture = "senate_debate"
+
+			is_triggered_only = yes
+
+			# All slave states
+			option = {
+				name = EVTOPTA44853
+
+				# set promise flags for later events
+				country_event = 44852
+
+				any_state = {
+					limit = { is_slave = no }
+					any_pop = { consciousness = 6 }
+				}
+				any_state = {
+					limit = { is_slave = yes }
+					any_pop = { consciousness = -3 }
+				}
+
+				ai_chance = { factor = 10 }
+			}
+
+			# All free states
+			option = {
+				name = EVTOPTB44853
+
+				# set promise flags for later events
+				country_event = 44852
+
+				any_state = {
+					limit = { is_slave = yes }
+					any_pop = { consciousness = 6 }
+				}
+				any_state = {
+					limit = { is_slave = no }
+					any_pop = { consciousness = -3 }
+				}
+
+
+				ai_chance = { factor = 10 }
+			}
+
+			# Balanced
+			option = {
+				name = EVTOPTC44853
+
+				# set promise flags for later events
+				country_event = 44852
+				any_pop = { consciousness = 3 }
+
+				ai_chance = { factor = 80 }
+			}
+
+			# Go back
+			option = {
+				name = EVTOPTD44853
+
+				country_event = 44850
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Annex all of Mexico - effects
+		country_event = {
+			id = 44854
+			title = EVTNAME44854
+			desc = EVTDESC44854
+			picture = "senate_debate"
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA44854
+
+				set_country_flag = mexico_annexation
+				badboy = 18
+				add_casus_belli = { target = MEX type = conquest months = 24 }
+
+				any_pop = {
+					limit = {
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					scaled_militancy = {
+						issue = pacifism
+						factor = 6
+					}
+					scaled_militancy = {
+						issue = anti_military
+						factor = 4
+					}
+				}
+
+				any_country = {
+					limit = {
+						OR = {
+							is_greater_power = yes
+							capital_scope = { continent = north_america }
+							capital_scope = { continent = south_america }
+						}
+					}
+					relation = { who = THIS value = -100 }
+				}
+			}
+		}
+
+		#Description: If the USA succeeded in annexing all of Mexico, they can choose whether to keep them fully occupied or grant limited autonomy
+		country_event = {
+
+			id = 993887
+			title = "EVTNAME993887"
+			desc = "EVTDESC993887"
+			picture = "mexico_soldiers"
+
+			trigger = {
+				tag = USA
+				has_country_flag = mexico_annexation
+				MEX = { exists = no }
+				NOT = { has_country_flag = mexico_resistance }
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				days = 14
+			}
+
+			immediate = {
+				set_country_flag = mexico_resistance
+				set_country_flag = treaty_of_guadalupe_hidalgo
+				MEX = { set_country_flag = treaty_of_guadalupe_hidalgo }
+
+				MEX_85 = { remove_core = MEX } 	# California
+				TEX_132 = { remove_core = MEX }	# Texas
+				MEX_103 = { remove_core = MEX }	# New Mexico
+				MEX_94 = { remove_core = MEX }	# Nevada
+				MEX_97 = { remove_core = MEX }	# Utah
+				MEX_100 = { remove_core = MEX }	# Arizona
+				USA_129 = { remove_core = MEX }	# Oklahoma
+				USA_106 = { remove_core = MEX }	# Colorado
+				USA_78 = { remove_core = MEX }	# Washington
+				USA_81 = { remove_core = MEX }	# Portland
+				USA_91 = { remove_core = MEX }	# Idaho
+				USA_111 = { remove_core = MEX }	# Wyoming
+				USA_126 = { remove_core = MEX }	# Kansas
+
+				2662 = { add_core = USA } # Gadsden purchase territories
+				102 = { add_core = USA }
+			}
+
+			# Fully occupy them - this allow them to revolt during the Civil War, but is the only way to get cores on all of Mexico
+			option = {
+				name = "EVTOPTA993887"
+
+				any_pop = {
+					limit = { location = { is_core = MEX } }
+					militancy = 5
+					consciousness = 5
+				}
+				MEX = { all_core = { add_province_modifier = { name = nationalist_agitation duration = 7300 } } }
+				any_pop = {
+					limit = {
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					scaled_militancy = { issue = residency value = 5 }
+					scaled_consciousness = { issue = residency value = 5 }
+					scaled_militancy = { issue = limited_citizenship value = 3.5 }
+					scaled_consciousness = { issue = limited_citizenship value = 3.5 }
+					scaled_militancy = { issue = jingoism value = -1 }
+					scaled_consciousness = { issue = jingoism value = -1 }
+					scaled_militancy = { issue = pro_military value = -1.5 }
+					scaled_consciousness = { issue = pro_military value = -1.5 }
+				}
+
+				ai_chance = {
+					factor = 30
+				}
+			}
+
+			# Grant limited autonomy except in the north
+			option = {
+				name = "EVTOPTB993887"
+
+				badboy = -6
+
+				MEX_2150 = { add_core = USA } # Rio Grande
+				MEX_2149 = { add_core = USA } # Cohauila
+				MEX_2142 = { add_core = USA } # Chihuahua
+				MEX_2151 = { add_core = USA } # Durango
+				set_global_flag = rio_grande_is_a_state
+				MEX_2139 = { add_core = USA } # Baja California
+				MEX_2138 = { add_core = USA } # Sonora
+				MEX_2156 = { add_core = USA } # Sinaloa
+				set_global_flag = sonora_is_a_state
+
+				any_owned = {
+					limit = {
+						is_core = MEX
+						NOT = { is_core = THIS }
+					}
+					secede_province = MEX
+				}
+				MEX = { government = democracy }
+				create_vassal = MEX
+				diplomatic_influence = { who = MEX value = 200 }
+
+				any_pop = {
+					limit = {
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					scaled_militancy = { issue = residency value = 2 }
+					scaled_consciousness = { issue = residency value = 2 }
+					scaled_militancy = { issue = limited_citizenship value = 1.5 }
+					scaled_consciousness = { issue = limited_citizenship value = 1.5 }
+					scaled_militancy = { issue = jingoism value = 2 }
+					scaled_consciousness = { issue = jingoism value = 2 }
+					scaled_militancy = { issue = pro_military value = 1.5 }
+					scaled_consciousness = { issue = pro_military value = 1.5 }
+				}
+
+				ai_chance = {
+					factor = 45
+					modifier = {
+						factor = 0
+						NOT = { badboy = 0.25 }
+					}
+				}
+			}
+
+			# Grant limited autonomy
+			option = {
+				name = "EVTOPTC993887"
+
+				badboy = -10
+				any_owned = {
+					limit = {
+						is_core = MEX
+						NOT = { is_core = THIS }
+					}
+					secede_province = MEX
+				}
+				MEX = { government = democracy }
+				create_vassal = MEX
+				diplomatic_influence = { who = MEX value = 200 }
+
+				any_pop = {
+					limit = {
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					scaled_militancy = { issue = residency value = -1 }
+					scaled_consciousness = { issue = residency value = -1 }
+					scaled_militancy = { issue = limited_citizenship value = -1.5 }
+					scaled_consciousness = { issue = limited_citizenship value = -1.5 }
+					scaled_militancy = { issue = jingoism value = 5 }
+					scaled_consciousness = { issue = jingoism value = 5 }
+					scaled_militancy = { issue = pro_military value = 3.5 }
+					scaled_consciousness = { issue = pro_military value = 3.5 }
+				}
+
+				ai_chance = {
+					factor = 25
+					modifier = {
+						factor = 0
+						NOT = { badboy = 0.4 }
+					}
+				}
+			}
+		}
+
+### Alaskan expansion ##
+
+	#Description: The Alaskan Frontier - integrate Alaska or keep it as a puppet
+	country_event = {
+		id = 5853546
+		title = EVTNAME5853546
+		desc = EVTDESC5853546
+		picture = alaska
+		is_triggered_only = yes
+
+		# Integrate
+		option = {
+			name = EVTOPTA5853546
+
+			add_accepted_culture = alaskan
+			LSK = { all_core = { add_core = USA } }
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Puppet
+		option = {
+			name = EVTOPTB5853546
+
+			prestige = 5
+			badboy = -3
+			LSK = { set_country_flag = alaskan_frontier_usa }
+			release_vassal = LSK
+			diplomatic_influence = {
+				who = LSK
+				value = 400
+			}
+			create_alliance = LSK
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	country_event = { # TODO
+
+		id = 44342
+		title = "EVTNAME44342" #The Alaskan Territories
+		desc = "EVTDESC44342"
+		picture = "Southpole3"
+
+		trigger = {
+			OR = {
+				tag = LSK
+				AND = {
+					owns = 1
+					NOT = { exists = LSK }
+				}
+			}
+			war = no
+			money = 5000
+			OR = {
+				revolution_n_counterrevolution = 1
+				year = 1880
+			}
+			OR = {
+				NOT = { has_global_flag = berlin_conference }
+				NOT = { invention = mission_to_civilize }
+				NOT = { invention = colonial_negotiations }
+				AND = {
+					is_greater_power = no
+					is_secondary_power = no
+				}
+			}
+			OR = {
+				AND = {
+					2631 = { empty = yes }
+					OR = {
+						owns = 5
+						owns = 2599
+					}
+				}
+				AND = {
+					2630 = { empty = yes }
+					OR = {
+						owns = 2
+						owns = 3
+					}
+				}
+				AND = {
+					2630 = { empty = no }
+					2599 = { empty = yes } #Dawson
+					OR = {
+						owns = 3
+						owns = 2630
+						owns = 2631
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 12
+			modifier = {
+				factor = 0.2
+				2630 = { empty = yes }
+			}
+		}
+
+		option = {
+			name = "We must claim the Great White North."
+
+			treasury = -5000
+			random_owned = {
+				limit = {
+					2 = { empty = no }
+					3 = { empty = no }
+					2630 = { empty = yes }
+					OR = {
+						2 = { owned_by = THIS }
+						3 = { owned_by = THIS }
+					}
+				}
+				owner = { prestige = 1 }
+				2630 = { secede_province = THIS }
+			}
+			random_owned = {
+				limit = {
+					5 = { empty = no }
+					2630 = { empty = no }
+					2631 = { empty = yes }
+					OR = {
+						5 = { owned_by = THIS }
+						2599 = { owned_by = THIS }
+					}
+				}
+				owner = { prestige = 1 }
+				2631 = { secede_province = THIS }
+			}
+			random_owned = {
+				limit = {
+					3 = { empty = no }
+					2630 = { empty = no }
+					2631 = { empty = no }
+					2599 = { empty = yes }
+					OR = {
+						3 = { owned_by = THIS }
+						2630 = { owned_by = THIS }
+						2631 = { owned_by = THIS }
+					}
+				}
+				owner = { prestige = 1 }
+				2599 = { secede_province = THIS }
+			}
+		}
+	}
+
+	## The Northern Alaska Purchase ##
+
+		#Description: The Northern Alaska Purchase 1/3 - Triggered by the owner of Sitka (1) for the owner of Nome (2599)
+		country_event = {
+
+			id = 44140
+			title = "EVTNAME44140"
+			desc = "EVTDESC44140"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Sell the territory
+			option = {
+				name = "EVTOPTA44145"
+
+				FROM = { country_event = 44142 }
+				money = 50000
+				prestige = 5
+
+				ai_chance = {
+					factor = 75
+					modifier = {
+						factor = 0.1
+						any_core = { owned_by = FROM }
+					}
+					modifier = {
+						factor = 0.5
+						truce_with = FROM
+					}
+				}
+			}
+
+			# Don't sell the territory
+			option = {
+				name = "EVTOPTB44145"
+
+				FROM = { country_event = 44141 }
+
+				ai_chance = {
+					factor = 25
+					modifier = {
+						factor = 0.75
+						relation = { who = FROM value = 100 }
+					}
+					modifier = {
+						factor = 0.5
+						alliance_with = FROM
+					}
+				}
+			}
+		}
+
+		#Description: The Northern Alaska Purchase 2/3 - Refused
+		country_event = {
+
+			id = 44141
+			title = "EVTNAME44141"
+			desc = "EVTDESC44141"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44146"
+
+				relation = {
+					who = FROM
+					value = -50
+				}
+				leave_alliance = FROM
+				any_pop = {
+					dominant_issue = {
+						factor = 0.02
+						value = jingoism
+					}
+				}
+			}
+		}
+
+		#Description: The Northern Alaska Purchase 3/3 - Agreed
+		country_event = {
+
+			id = 44142
+			title = "EVTNAME44142"
+			desc = "EVTDESC44142"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44147"
+
+				money = -50000
+				FROM = {
+					any_owned = {
+						limit = { region = USA_1 }
+						secede_province = THIS
+					}
+				}
+				relation = {
+					who = FROM
+					value = 50
+				}
+			}
+		}
+
+	## Hay-Herbert Treaty ##
+
+		#Description: Hay-Herbert Treaty 1/3 - Triggered by decision to decide who owns Juneau (2)
+		country_event = {
+			id = 1904191424
+			title = "EVTNAME1904191424"
+			desc = "EVTDESC1904191424"
+			picture = "administration"
+
+			is_triggered_only = yes
+
+			# Give them the coastline
+			option = {
+				name = "EVTOPTA1904191424"
+
+				2 = { remove_core = THIS }
+				FROM = { country_event = 1904191425 }
+
+				ai_chance = {
+					factor = 40
+						modifier = {
+							factor = 0.8
+							is_greater_power = no
+						}
+						modifier = {
+							factor = 0.7
+							alliance_with = FROM
+						}
+						modifier = {
+							factor = 0.6
+							relation = { who = FROM value = 50 }
+						}
+					}
+			}
+
+			# Keep the coastline
+			option = {
+				name = "EVTOPTB1904191424"
+
+				FROM = { country_event = 1904191426 }
+
+				ai_chance = {
+					factor = 60
+						modifier = {
+							factor = 0.2
+							is_greater_power = no
+						}
+						modifier = {
+							factor = 0.6
+							FROM = { is_greater_power = no }
+						}
+						modifier = {
+							factor = 0.1
+							NOT = { relation = { who = FROM value = 0 } }
+						}
+					}
+			}
+		}
+
+		#Description: Hay-Herbert Treaty 2/3 - in favor of who claims an outlet to the sea by the Alaska region (It can be Canada or the British or another country)
+		country_event = {
+			id = 1904191425
+			title = "EVTNAME1904191425"
+			desc = "EVTDESC1904191425"
+			picture = "administration"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA1904191425"
+
+				prestige = 5
+				2 = {
+					secede_province = THIS
+					add_core = THIS
+				}
+				relation = { who = FROM value = -100 }
+				war_exhaustion = -10
+				any_pop = { consciousness = -0.5 }
+			}
+		}
+
+		#Description: Hay-Herbert Treaty 3/3 - in favor of who controls Alaska (It can be Russia or the United States or another country)
+		country_event = {
+			id = 1904191426
+			title = "EVTNAME1904191426"
+			desc = "EVTDESC1904191426"
+			picture = "administration"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA1904191426"
+
+				random_owned = {
+					limit = { province_id = 17 }
+					any_pop = { militancy = 3 }
+				}
+				prestige = 10
+				relation = { who = FROM value = 100 }
+				FROM = { war_exhaustion = -5 }
+			}
+		}
+
+### Pacific Expansion ##
+
+	## The Hawaiian Islands Purchase ##
+
+		#Description: The Hawaiian Islands Purchase 1/3 - triggered for the owner of Palmyra Atoll
+		country_event = {
+
+			id = 44145
+			title = "EVTNAME44145"
+			desc = "EVTDESC44145"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Sell the territory
+			option = {
+				name = "EVTOPTA44145"
+
+				FROM = { country_event = 44147 }
+				money = 50000
+				prestige = 5
+
+				ai_chance = {
+					factor = 75
+					modifier = {
+						factor = 0.1
+						any_core = { owned_by = FROM }
+					}
+					modifier = {
+						factor = 0.5
+						truce_with = FROM
+					}
+				}
+			}
+
+			# Don't sell the territory
+			option = {
+				name = "EVTOPTB44145"
+
+				FROM = { country_event = 44146 }
+
+				ai_chance = {
+					factor = 25
+					modifier = {
+						factor = 0.75
+						relation = { who = FROM value = 100 }
+					}
+					modifier = {
+						factor = 0.5
+						alliance_with = FROM
+					}
+				}
+			}
+		}
+
+		#Description: The Hawaiian Islands Purchase 2/3 - Refused
+		country_event = {
+
+			id = 44146
+			title = "EVTNAME44141"
+			desc = "EVTDESC44146"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44146"
+
+				relation = {
+					who = FROM
+					value = -50
+				}
+				leave_alliance = FROM
+				any_pop = {
+					dominant_issue = {
+						factor = 0.02
+						value = jingoism
+					}
+				}
+			}
+		}
+
+		#Description: The Hawaiian Islands Purchase 3/3 - Accepted
+		country_event = {
+
+			id = 44147
+			title = "EVTNAME44142"
+			desc = "EVTDESC44147"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44147"
+
+				money = -50000
+				FROM = {
+					any_owned = {
+						limit = { region = HAW_658 }
+						secede_province = THIS
+					}
+				}
+				relation = {
+					who = FROM
+					value = 50
+				}
+			}
+		}
+
+### Oregon Expansion ###
+
+	# TODO how to get 91, 92, 93, 111, 113, 114
+
+	#Description: Great Migration of 1843 to Oregon - if the USA owns Idaho, they will eventually settle Oregon
+	country_event = {
+
+		id = 44123
+		title = "EVTNAME44123"
+		desc = "EVTDESC44123"
+		picture = "1843_GreatMigration"
+
+		trigger = {
+			tag = USA
+			owns = 91 # Idaho
+			owns = 92
+			year = 1841
+			81 = { empty = yes } # Oregon
+			82 = { empty = yes }
+			83 = { empty = yes }
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 24
+			modifier = {
+				factor = 0.5 #increase likelihood to happen
+				year = 1843
+			}
+		}
+
+		option = {
+			name = "EVTOPTA44123"
+
+			81 = {
+				change_province_name = "Portland"
+				life_rating = 15
+				secede_province = THIS
+				random_list = {
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 2 } }
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 2.5 } }
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 3 } }
+				}
+				state_scope = { change_region_name = "Oregon" }
+			}
+			82 = {
+				change_province_name = "Lakeview"
+				life_rating = 15
+				secede_province = THIS
+				random_list = {
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 2 } }
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 2.5 } }
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 3 } }
+				}
+			}
+			83 = {
+				change_province_name = "Pendelton"
+				life_rating = 15
+				secede_province = THIS
+				random_list = {
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 2 } }
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 2.5 } }
+					33 = { any_pop = { limit = { has_pop_culture = yankee } reduce_pop = 3 } }
+				}
+			}
+		}
+	}
+
+	## Oregon Treaty Events ##
+
+		#Description: 54-40 or Fight! - after the USA does Manifest Destiny
+		country_event = {
+			id = 44150
+			title = "EVTNAME44150"
+			desc = "EVTDESC44150"
+			picture = "boer_war"
+
+			fire_only_once = yes
+
+			trigger = {
+				tag = USA
+				79 = { # Fort Vancouver / Olympia
+					empty = no
+					OR = {
+						owned_by = USA
+						owned_by = ENG
+						AND = {
+							owned_by = RPL
+							RPL = { vassal_of = ENG }
+						}
+					}
+				}
+				21 = { # Kootenae House
+					empty = no
+					OR = {
+						owned_by = USA
+						owned_by = ENG
+						AND = {
+							owned_by = RPL
+							RPL = { vassal_of = ENG }
+						}
+					}
+				}
+				NOT = {
+					war_with = ENG
+					has_country_flag = oregon_treaty
+				}
+				has_country_flag = hasmanifestdestiny
+				OR = {
+					election = yes
+					NOT = { government = democracy }
+				}
+				COL = { exists = no }
+			}
+
+			mean_time_to_happen = {
+				months = 1
+				modifier = {
+					factor = 0.25
+					year = 1850
+				}
+			}
+
+			# Claim all of Oregon
+			option = {
+				name = "EVTOPTA44150"
+
+				set_country_flag = oregon_treaty
+				badboy = 5
+				COL = {
+					all_core = {
+						add_core = ENG
+						add_core = USA
+					}
+				}
+				ENG = { country_event = 44154 }
+				any_pop = {
+					dominant_issue = {
+						factor = 0.05
+						value = jingoism
+					}
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0.8
+						war_policy = anti_military
+					}
+					modifier = {
+						factor = 0.2
+						war_policy = pacifism
+					}
+					modifier = {
+						factor = 0
+						alliance_with = ENG
+					}
+					modifier = {
+						factor = 0.5
+						truce_with = ENG
+					}
+					modifier = {
+						factor = 0.25
+						relation = { who = ENG value = 10 }
+					}
+					modifier = {
+						factor = 4
+						owns = 21
+					}
+					modifier = {
+						factor = 0.5
+						war = yes
+					}
+					modifier = {
+						factor = 0
+						is_greater_power = no
+					}
+				}
+			}
+
+			# Negotiate (historical)
+			option = {
+				name = "EVTOPTB44150"
+
+				set_country_flag = oregon_treaty
+				ENG = { country_event = 44151 }
+				any_pop = {
+					scaled_consciousness = {
+						issue = jingoism
+						factor = 3
+					}
+				}
+
+				ai_chance = {
+					factor = 75
+					modifier = {
+						factor = 0.8
+						NOT = { relation = { who = ENG value = -50 } }
+					}
+					modifier = {
+						factor = 1.5
+						79 = {
+							OR = {
+								owned_by = ENG
+								owner = { vassal_of = ENG }
+							}
+						}
+					}
+					modifier = {
+						factor = 1.2
+						war = yes
+					}
+				}
+			}
+
+			# Give them everything
+			option = {
+				name = "EVTOPTC44150"
+
+				set_country_flag = oregon_treaty
+				ENG = { country_event = 44156 }
+				any_pop = {
+					scaled_consciousness = {
+						issue = jingoism
+						factor = 6
+					}
+				}
+
+				ai_chance = {
+					factor = 15
+					modifier = {
+						factor = 1.5
+						79 = {
+							OR = {
+								owned_by = ENG
+								owner = {
+									vassal_of = ENG
+									war = no
+								}
+							}
+						}
+					}
+					modifier = {
+						factor = 0.8
+						war = no
+					}
+				}
+			}
+		}
+
+		#Description: The Columbia District - negotiate with the British (historical)
+		country_event = {
+			id = 44151
+			title = "EVTNAME44151"
+			desc = "EVTDESC44151"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Agree to split the territory
+			option = {
+				name = "EVTOPTA44151"
+
+				badboy = -2
+				prestige = -10
+				USA = { country_event = 44152 }
+				CAN_13 = {
+					limit = { empty = no }
+					add_core = ENG
+					add_province_modifier = { name = gateway_to_america duration = 365 }
+				}
+				ENG_22 = { add_core = ENG }
+				USA_78 = {
+					remove_core = COL
+					remove_core = ENG
+				}
+				USA_81 = {
+					remove_core = COL
+					remove_core = ENG
+				}
+				USA_91 = {
+					remove_core = COL
+					remove_core = ENG
+				}
+				114 = { remove_core = COL }
+				111 = { remove_core = COL }
+				RPL = {
+					any_owned = {
+						limit = {
+							empty = no
+							region = CAN_13
+						}
+						add_core = COL
+						add_core = RPL
+					}
+				}
+				RPL = { all_core = { remove_core = ENG } }
+				any_owned = {
+					limit = {
+						OR = {
+							region = USA_78
+							region = USA_81
+							region = USA_91
+						}
+						is_core = USA
+					}
+					secede_province = USA
+					remove_core = ENG
+					life_rating = 5
+					add_province_modifier = { name = gateway_to_america duration = 3650 }
+				}
+
+				ai_chance = {
+					factor = 95
+					modifier = {
+						factor = 0.8
+						NOT = { relation = { who = USA value = 0 } }
+					}
+					modifier = {
+						factor = 1.2
+						relation = { who = USA value = 100 }
+					}
+					modifier = {
+						factor = 0.8
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 1.5
+						USA = { owns = 21 }
+					}
+				}
+			}
+
+			# Refuse to deal with the Americans
+			option = {
+				name = "EVTOPTB44151"
+
+				badboy = 5
+				prestige = 10
+				COL = { all_core = { add_core = ENG } }
+				17 = { add_core = COL remove_core = RPL }
+				2629 = { remove_core = USA remove_core = ENG }
+				18 = { remove_core = USA remove_core = ENG }
+				leave_alliance = USA
+				USA = { country_event = 44153 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 0
+						alliance_with = USA
+					}
+					modifier = {
+						factor = 0.5
+						relation = { who = USA value = 100 }
+					}
+					modifier = {
+						factor = 2
+						NOT = { relation = { who = USA value = 0 } }
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = anti_military
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+				}
+			}
+		}
+
+		#Description: The Oregon Treaty - the British agree to negotiate
+		country_event = {
+			id = 44152
+			title = "EVTNAME44152"
+			desc = "EVTDESC44152"
+			news = yes
+			news_desc_long = "EVTDESC44152_NEWS_LONG"
+			news_desc_medium = "EVTDESC44152_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44152_NEWS_SHORT"
+			picture = "treaty"
+			major = yes
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44152"
+
+				prestige = 10
+				relation = { who = ENG value = 100 }
+				any_owned = {
+					limit = {
+						OR = {
+							region = CAN_13
+							region = ENG_22
+						}
+					}
+					remove_core = USA
+					secede_province = ENG
+				}
+				RPL = {
+					any_pop = {
+						limit = {
+							location = { province_id = 78 } # Seattle
+							culture = coastal_indian
+						}
+						reduce_pop = 0.1
+					}
+					any_pop = {
+						limit = {
+							location = { province_id = 79 } # Olympia
+							culture = coastal_indian
+						}
+						reduce_pop = 0.4
+					}
+					any_pop = {
+						limit = {
+							location = { province_id = 78 } # Seattle
+							culture = yankee
+						}
+						reduce_pop = 2.5
+					}
+					any_owned = {
+						limit = { region = USA_78 }
+						remove_core = ENG
+						remove_core = COL
+						secede_province = USA
+					}
+				}
+				any_pop = {
+					scaled_consciousness = {
+						issue = pacifism
+						factor = -3
+					}
+					scaled_militancy = {
+						issue = jingoism
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Negotiations Break Down - the British refuse to negotiate
+		country_event = {
+			id = 44153
+			title = "EVTNAME44153"
+			desc = "EVTDESC44153"
+			news = yes
+			news_desc_long = "EVTDESC44153_NEWS_LONG"
+			news_desc_medium = "EVTDESC44153_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44153_NEWS_SHORT"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Abandon claims
+			option = {
+				name = "EVTOPTA44153"
+
+				prestige = -20
+				relation = { who = ENG value = -50 }
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = COL
+							is_core = RPL
+						}
+					}
+					secede_province = RPL
+				}
+				COL = { all_core = { remove_core = USA } }
+				any_pop = {
+					scaled_militancy = {
+						issue = jingoism
+						factor = 3
+					}
+				}
+
+				ai_chance = {
+					factor = 30
+					modifier = {
+						factor = 1.5
+						any_greater_power = { war_with = THIS }
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = jingoism
+					}
+				}
+			}
+
+			# Press our claims - war
+			option = {
+				name = "EVTOPTB44153"
+
+				prestige = 5
+				relation = { who = ENG value = -100 }
+				COL = { all_core = { add_core = USA } }
+				COL = { all_core = { add_core = ENG } }
+				CAN_13 = { add_core = USA }
+				CAN_13 = { add_core = ENG }
+				18 = { remove_core = USA remove_core = ENG }
+				any_pop = {
+					scaled_consciousness = {
+						issue = jingoism
+						factor = -3
+					}
+				}
+				ENG = { country_event = 44157 }
+				war = {
+					target = ENG
+					attacker_goal = { casus_belli = acquire_all_cores country = USA }
+					defender_goal = { casus_belli = acquire_all_cores country = ENG }
+				}
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0
+						is_greater_power = no
+					}
+					modifier = {
+						factor = 0.5
+						war = yes
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = anti_military
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+				}
+			}
+		}
+
+		#Description: American Claims in Columbia - the British response when the USA claims all of Oregon
+		country_event = {
+			id = 44154
+			title = "EVTNAME44154"
+			desc = "EVTDESC44154"
+			news = yes
+			news_desc_long = "EVTDESC44154_NEWS_LONG"
+			news_desc_medium = "EVTDESC44154_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44154_NEWS_SHORT"
+			picture = "administration"
+
+			is_triggered_only = yes
+
+			# Let them have it
+			option = {
+				name = "EVTOPTA44154"
+
+				set_global_flag = USA_claimoregon
+				prestige = -20
+				USA = { country_event = 44155 }
+				relation = { who = USA value = 50 }
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = COL
+							is_core = USA
+						}
+					}
+					secede_province = USA
+					remove_core = RPL
+					remove_core = ENG
+				}
+				RPL = {
+					any_owned = {
+						limit = {
+							OR = {
+								is_core = COL
+								is_core = USA
+							}
+						}
+						secede_province = USA
+						remove_core = RPL
+					}
+				}
+				COL = {
+					primary_culture = yankee
+					remove_accepted_culture = anglo_canadian
+					remove_accepted_culture = french_canadian
+				}
+
+				ai_chance = {
+					factor = 25
+					modifier = {
+						factor = 1.5
+						any_greater_power = { war_with = ENG }
+					}
+					modifier = {
+						factor = 0.5
+						NOT = { relation = { who = USA value = 100 } }
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = jingoism
+					}
+				}
+			}
+
+			# Go to war over it
+			option = {
+				name = "EVTOPTB44154"
+
+				set_global_flag = USA_claimoregon
+				set_country_flag = oregon_war
+				prestige = 5
+				leave_alliance = USA
+				relation = { who = USA value = -200 }
+				RPL = {
+					any_owned = {
+						limit = { is_core = COL }
+						secede_province = ENG
+					}
+				}
+				war = {
+					target = USA
+					attacker_goal = { casus_belli = acquire_all_cores country = ENG }
+					defender_goal = { casus_belli = acquire_all_cores country = USA }
+				}
+
+				ai_chance = {
+					factor = 75
+					modifier = {
+						factor = 0.5
+						relation = { who = USA value = 100 }
+					}
+					modifier = {
+						factor = 2
+						NOT = { relation = { who = USA value = 0 } }
+					}
+					modifier = {
+						factor = 1.5
+						war_policy = jingoism
+					}
+					modifier = {
+						factor = 0.8
+						war_policy = anti_military
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = pacifism
+					}
+				}
+			}
+		}
+
+		#Description: Oregon Country is Ours - triggered for the USA when the British give up all of Oregon
+		country_event = {
+			id = 44155
+			title = "EVTNAME44155"
+			desc = "EVTDESC44155"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44155"
+
+				prestige = 25
+				RPL = {
+					any_owned = {
+						limit = {
+							is_core = COL
+							NOT = {
+								province_id = 17
+								province_id = 18
+							}
+						}
+						add_core = USA
+						remove_core = RPL
+						remove_core = ENG
+						remove_core = COL
+						secede_province = USA
+					}
+				}
+				17 = { remove_core = USA }
+				18 = { remove_core = USA }
+				COL = { all_core = { remove_core = ENG } }
+				USA_78 = {
+					remove_core = ENG
+					remove_core = COL
+					add_core = USA
+				}
+				USA_81 = {
+					remove_core = ENG
+					remove_core = COL
+				}
+				USA_91 = {
+					remove_core = ENG
+					remove_core = COL
+				}
+				114 = { remove_core = COL }
+				111 = { remove_core = COL }
+				any_pop = {
+					scaled_consciousness = {
+						issue = jingoism
+						factor = -6
+					}
+				}
+			}
+		}
+
+		#Description: Oregon Country is Split Along Columbia River - triggered for the UK
+		country_event = {
+			id = 44156
+			title = "EVTNAME44156"
+			desc = "EVTDESC44156"
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			# Accept the offer
+			option = {
+				name = "EVTOPTA44156"
+
+				prestige = 15
+				78 = { add_core = ENG }
+				79 = { add_core = ENG }
+				CAN_13 = { add_core = ENG }
+				ENG_22 = { add_core = ENG }
+				USA_81 = {
+					add_core = USA
+					remove_core = COL
+					remove_core = ENG
+				}
+				USA_91 = {
+					add_core = USA
+					remove_core = COL
+				}
+				114 = { remove_core = COL }
+				111 = { remove_core = COL }
+				80 = { remove_core = COL }
+				USA = { country_event = 44152 }
+				any_pop = {
+					scaled_consciousness = {
+						issue = jingoism
+						factor = -3
+					}
+				}
+
+				ai_chance = {
+					factor = 98
+					modifier = {
+						factor = 2
+						relation = { who = USA value = 100 }
+					}
+					modifier = {
+						factor = 0.5
+						NOT = { relation = { who = USA value = -100 } }
+					}
+					modifier = {
+						factor = 1.2
+						war_policy = anti_military
+					}
+					modifier = {
+						factor = 1.5
+						war_policy = pacifism
+					}
+				}
+			}
+
+			# Demand all of Oregon
+			option = {
+				name = "EVTOPTB44156"
+
+				badboy = 5
+				prestige = 10
+				COL = { all_core = { add_core = ENG } }
+				leave_alliance = USA
+				USA = { country_event = 44153 }
+				any_pop = {
+					scaled_militancy = {
+						issue = jingoism
+						factor = -6
+					}
+					scaled_militancy = {
+						issue = pacifism
+						factor = 6
+					}
+				}
+
+				ai_chance = {
+					factor = 2
+					modifier = {
+						factor = 0
+						alliance_with = USA
+					}
+					modifier = {
+						factor = 0.5
+						relation = { who = USA value = 100 }
+					}
+					modifier = {
+						factor = 2
+						NOT = { relation = { who = USA value = 0 } }
+					}
+					modifier = {
+						factor = 0.5
+						war_policy = anti_military
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+				}
+			}
+		}
+
+		#Description: UK Gets Colombia from HBC - in case it comes to war
+		country_event = {
+			id = 44157
+			title = EVTNAME44157
+			desc = EVTDESC44157
+			picture = "treaty"
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA44157
+
+				RPL = {
+					any_owned = {
+						limit = { is_core = COL }
+						secede_province = ENG
+					}
+				}
+			}
+		}
+
+	#Description: Founding Seattle - rename Washington and Oregon
+	country_event = {
+
+		id = 441255
+		title = "EVTNAME441255"
+		desc = "EVTDESC441255"
+		picture = "seattle_1870"
+
+		trigger = {
+			tag = USA
+			owns = 78
+			owns = 79
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = { days = 10 }
+
+		option = {
+			name = "EVTOPTA441255"
+
+			prestige = 2
+			78 = {
+				change_province_name = "Seattle"
+				state_scope = { change_region_name = "Washington" }
+				any_pop = {
+					limit = { is_culture_group = native_american }
+					reduce_pop = 0.3
+				}
+			}
+			79 = { change_province_name = "Olympia" }
+			80 = { change_province_name = "Spokane" }
+
+			ai_chance = { factor = 100 }
+		}
+
+		option = {
+			name = "EVTOPTB441255"
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	## From Whitehorse and Down ##
+
+		#Description: From Whitehorse and Down 1/2 - claim the land south of Yukon or not?
+		country_event = {
+
+			id = 441290
+			title = "EVTNAME441295"
+			desc = "EVTDESC441290"
+			picture = "administration"
+
+			trigger = {
+				tag = USA
+				1 = { # Novo-Arkhangelsk / Sitka
+					OR = {
+						owned_by = THIS
+						owner = { vassal_of = THIS }
+					}
+				}
+				16 = { # Fort McLeod
+					OR = {
+						owned_by = THIS
+						owner = { vassal_of = THIS }
+					}
+				}
+				17 = { # Teslin Post
+					NOT = {
+						owned_by = ENG
+						owner = { vassal_of = ENG }
+					}
+				}
+				invention = manifest_destiny
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = { months = 6 }
+
+			# Claim the territory
+			option = {
+				name = "EVTOPTA441290"
+
+				badboy = 3
+				random_country = {
+					limit = { owns = 17 is_vassal = no }
+					country_event = 441295
+					relation = { who = THIS value = -100 }
+				}
+				random_country = {
+					limit = { owns = 17 is_vassal = yes }
+					overlord = { country_event = 441295 }
+					relation = { who = THIS value = -100 }
+				}
+
+				ai_chance = {
+					factor = 90
+					modifier = {
+						factor = 0.5
+						17 = { owner = { military_score = THIS } }
+					}
+					modifier = {
+						factor = 0
+						is_disarmed = yes
+						17 = { owner = { is_disarmed = no } }
+					}
+				}
+			}
+
+			# Leave it be
+			option = {
+				name = "EVTOPTB441290"
+
+				prestige = -10
+				random_country = {
+					limit = { owns = 17 is_vassal = no }
+					country_event = 441295
+					relation = { who = THIS value = 50 }
+				}
+				random_country = {
+					limit = { owns = 17 is_vassal = yes }
+					overlord = { country_event = 441295 }
+					relation = { who = THIS value = 50 }
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						is_disarmed = no
+						17 = { owner = { war = yes } }
+					}
+				}
+			}
+		}
+
+		#Description: From Whitehorse and Down 2/2 - the British response
+		country_event = {
+
+			id = 441295
+			title = "EVTNAME441295"
+			desc = "EVTDESC441295"
+			picture = "alaska"
+
+			is_triggered_only = yes
+
+			fire_only_once = yes
+
+			# Give them the territory
+			option = {
+				name = "EVTOPTA441295"
+
+				STK = {
+					all_core = {
+						add_core = USA
+						add_core = LSK
+						remove_core = RPL
+						remove_core = CAN
+						secede_province = USA
+					}
+				}
+				relation = { who = USA value = 20 }
+				prestige = -20
+
+				ai_chance = { factor = 90 }
+			}
+
+			# Refuse their demands
+			option = {
+				name = "EVTOPTB441295"
+
+				prestige = 15
+				relation = { who = USA value = -200 }
+				USA = {
+					add_casus_belli = {
+						target = ENG
+						type = place_in_the_sun
+						months = 12
+					}
+				}
+
+				ai_chance = { factor = 10 }
+			}
+		}
+
+### Canadian Expansion ###
+
+	#Description: Webster–Ashburton Treaty
+	country_event = {
+
+		id = 44122
+		title = "EVTNAME44122"
+		desc = "EVTDESC44122"
+		news = yes
+		news_desc_long = "EVTDESC44122_NEWS_LONG"
+		news_desc_medium = "EVTDESC44122_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC44122_NEWS_SHORT"
+		picture = "treaty"
+
+		is_triggered_only = yes
+
+		# Accept the border proposal (historical)
+		option = {
+			name = "EVTOPTA44122"
+
+			prestige = 10
+
+			250 = { # Madawaska
+				add_core = THIS
+				secede_province = THIS
+				remove_core = CAN
+				remove_core = NBR
+				remove_core = MRU
+			}
+			158 = { # Grand Portage
+				add_core = THIS
+				secede_province = THIS
+				remove_core = CAN
+			}
+
+			49 = { remove_core = USA } # Fort William
+			69 = { # Fredericton
+				remove_core = USA
+				remove_core = NEN
+			}
+			3280 = { # Fort Little Falls
+				remove_core = USA
+				remove_core = NEN
+			}
+			239 = { # Indian Stream
+				remove_core = CAN
+				remove_core = QUE
+			}
+			relation = { who = ENG value = 100 }
+
+			ai_chance = { factor = 95 }
+		}
+
+		#Refuse the deal and escalate the conflict
+		option = {
+			name = "EVTOPTB44122"
+
+			prestige = 15
+			badboy = 4
+
+			158 = { add_core = ENG } # Grand Portage
+			250 = { add_core = ENG } # Madawaska
+			249 = { # Bangor
+				add_core = ENG
+				add_core = CAN
+				add_core = MRU
+			}
+			239 = { # Indian Stream
+				add_core = ENG
+				add_core = CAN
+			}
+			relation = { who = ENG value = -200 }
+
+			ai_chance = { factor = 5 }
+		}
+	}
+
+	## Crusade For Canada ##
+
+		#Description: Triggered for the UK when the USA claims all of Canada
+		country_event = {
+			id = 72749
+			title = EVTNAME72749
+			desc = EVTDESC72749
+			picture = "boer_war"
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA72749
+
+				any_country = {
+					limit = {
+						vassal_of = THIS
+						OR = {
+							tag = CAN # Canada
+							tag = COL # Columbia
+							tag = RPL # Rupert's Land
+							tag = MRU # Maritime Union
+							tag = QUE # Quebec
+							tag = NEW # Newfoundland
+							tag = MTC # Metis Confederacy
+						}
+					}
+					annex_to = THIS
+				}
+				RPL = { all_core = { remove_core = RPL } }
+
+				any_owned = {
+					limit = {
+						OR = {
+							region = ENG_9
+							region = CAN_13
+							region = ENG_22
+							region = ENG_30
+							region = ENG_36
+							region = CAN_46
+							region = CAN_50
+							region = CAN_58
+							region = CAN_60
+							region = ENG_68
+							region = ENG_74
+						}
+					}
+					add_core = ENG add_core = CAN
+				}
+				war = {
+					target = USA
+					attacker_goal = { casus_belli = cut_down_to_size }
+					defender_goal = { casus_belli = cut_down_to_size }
+					call_ally = yes
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: If the UK denies the Crusade for Canada, they can release New England as a vassal or incorporate it into Canada
+		country_event = {
+			id = 994180
+			title = EVTNAME994180
+			desc = EVTDESC994180
+			picture = "boer_war"
+
+			fire_only_once = yes
+
+			trigger = {
+				tag = ENG
+				owns = 243
+				has_global_flag = USA_CAN_denied
+				war = no
+			}
+
+			# Release New England as a vassal
+			option = {
+				name = EVTOPTA994180
+
+				release_vassal = NEN
+				badboy = -5
+				NEN = {
+					primary_culture = yankee
+					add_accepted_culture = anglo_canadian
+					government = democracy
+				}
+				create_alliance = NEN
+				diplomatic_influence = {
+					who = NEN
+					value = 400
+				}
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Incorporate New England into Canada
+			option = {
+				name = EVTOPTB994180
+
+				NEN = { all_core = { add_core = CAN } }
+				random_owned = {
+					limit = { exists = CAN }
+					NEN = { all_core = { secede_province = CAN } }
+				}
+				CAN = { add_accepted_culture = yankee }
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: Fired for the USA if the UK denies them the crusade for Canada.
+		country_event = {
+			id = 72748
+			title = EVTNAME72748
+			desc = EVTDESC72748
+			major = yes
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA72748
+
+				prestige = -30
+				any_pop = {
+					limit = {
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					militancy = 8
+					consciousness = 8
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Fired for the UK's spherelings and vassals in the Americas if America successfully takes Canada.
+		country_event = {
+			id = 72747
+			title = EVTNAME72747
+			desc = EVTDESC72747
+			is_triggered_only = yes
+
+			# Alliance, influence with the USA and become a democracy
+			option = {
+				name = EVTOPTA72747
+
+				FROM = {
+					release_vassal = THIS
+					diplomatic_influence = {
+						who = THIS
+						value = -400
+					}
+					leave_alliance = THIS
+				}
+				USA = {
+					diplomatic_influence = {
+						who = THIS
+						value = 400
+					}
+					create_alliance = THIS
+				}
+				government = democracy
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered for the UK if the USA wins the Crusade for Canada # TODO not called anywhere
+		country_event = {
+			id = 72740
+			title = EVTNAME72740
+			desc = EVTDESC72740
+			major = yes
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA72740
+
+				prestige = -30
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered by decision for the USA if they conquer Canada so they can choose whether to integrate Quebec or give it home rule.
+		country_event = {
+			id = 93744
+			title = EVTNAME93744
+			desc = EVTDESC93744
+			picture = french_canada
+			is_triggered_only = yes
+
+			# Refuse home rule
+			option = {
+				name = EVTOPTA93744
+
+				add_accepted_culture = french_canadian
+				set_country_flag = USA_french
+				any_pop = {
+					limit = { culture = french_canadian }
+					militancy = 3
+					consciousness = 3
+				}
+
+				ai_chance = { factor = 60 }
+			}
+
+			# Grant home rule
+			option = {
+				name = EVTOPTB93744
+
+				badboy = -5
+				set_country_flag = USA_QUE_agree
+				CAN_60 = { add_core = QUE } # Northern Quebec
+				ENG_75 = { add_core = QUE } # Labrador
+				QUE = { all_core = { remove_core = USA } }
+				release_vassal = QUE
+				diplomatic_influence = {
+					who = QUE
+					value = 400
+				}
+				create_alliance = QUE
+
+				ai_chance = { factor = 40 }
+			}
+		}
+
+		## Quebec Purchase ##
+
+			#Description: Triggered for the USA if, after the Crusade for Canada is successful, the French want to buy Quebec
+			country_event = {
+				id = 72738
+				title = EVTNAME72738
+				desc = EVTDESC72738
+				picture = french_canada
+				is_triggered_only = yes
+
+				# Sell Quebec in full
+				option = {
+					name = EVTOPTA72738
+
+					relation = { who = FRA value = 100 }
+					set_country_flag = betray_revolution
+					FRA = { country_event = { id = 72737 days = 0 } }
+
+					ai_chance = { factor = 30 }
+				}
+
+				# Sell Quebec as a vassal
+				option = {
+					name = EVTOPTB72738
+
+					FRA = { country_event = { id = 72736 days = 0 } }
+
+					ai_chance = { factor = 50 }
+				}
+
+				# Don't sell Quebec
+				option = {
+					name = EVTOPTC72738
+
+					add_accepted_culture = french_canadian
+					relation = { who = FRA value = -100 }
+					FRA = { country_event = { id = 72735 days = 0 } }
+
+					ai_chance = { factor = 20 }
+				}
+			}
+
+			#Description: The Americans agree to sell Quebec in full
+			country_event = {
+				id = 72737
+				title = EVTNAME72737
+				desc = EVTDESC72737
+				picture = french_canada
+				is_triggered_only = yes
+
+				option = {
+					name = EVTOPTA72737
+
+					THIS = { treasury = -100000 }
+					FROM = { treasury = 100000 }
+					relation = {
+						who = FROM
+						value = 100
+					}
+					CAN_60 = { add_core = QUE } # Northern Quebec
+					ENG_75 = { add_core = QUE } # Labrador
+					QUE = { all_core = { remove_core = USA } }
+					QUE = { all_core = { add_core = THIS } }
+					FROM = {
+						any_owned = {
+							limit = { is_core = QUE }
+							secede_province = THIS
+						}
+					}
+
+					ai_chance = { factor = 100 }
+				}
+			}
+
+			#Description: The Americans agree to sell Quebec with a caveat
+			country_event = {
+				id = 72736
+				title = EVTNAME72736
+				desc = EVTDESC72736
+				picture = french_canada
+				is_triggered_only = yes
+
+				# Agree to the caveat
+				option = {
+					name = EVTOPTA72736
+
+					THIS = { treasury = -50000 }
+					FROM = { treasury = 50000 }
+					CAN_60 = { add_core = QUE } # Northern Quebec
+					ENG_75 = { add_core = QUE } # Labrador
+					QUE = { all_core = { remove_core = USA } }
+					FROM = { set_country_flag = betray_revolution }
+					relation = {
+						who = FROM
+						value = 100
+					}
+					FROM = {
+						any_owned = {
+							limit = { is_core = QUE }
+							secede_province = THIS
+						}
+					}
+					release_vassal = QUE
+					diplomatic_influence = {
+						who = QUE
+						value = 400
+					}
+					create_alliance = QUE
+
+					ai_chance = { factor = 60 }
+				}
+
+				# Refuse the deal
+				option = {
+					name = EVTOPTB72736
+
+					relation = {
+						who = FROM
+						value = -50
+					}
+					FROM = { country_event = { id = 72734 days = 0 } }
+
+					ai_chance = { factor = 30 }
+				}
+
+				# Go to war
+				option = {
+					name = EVTOPTC72736
+
+					badboy = 7
+					CAN_60 = { add_core = QUE } # Northern Quebec
+					ENG_75 = { add_core = QUE } # Labrador
+					QUE = { all_core = { add_core = THIS } }
+					war = {
+						target = FROM
+						attacker_goal = { casus_belli = acquire_all_cores country = THIS }
+						defender_goal = { casus_belli = monroe_doctrine country = FROM }
+					}
+					relation = {
+						who = USA
+						value = -200
+					}
+					FROM = { country_event = { id = 72733 days = 0 } }
+
+					ai_chance = { factor = 10 }
+				}
+			}
+
+			#Description: The Americans refuse to sell Quebec
+			country_event = {
+				id = 72735
+				title = EVTNAME72735
+				desc = EVTDESC72735
+				picture = french_canada
+				is_triggered_only = yes
+
+				# Let it go
+				option = {
+					name = EVTOPTA72735
+
+					relation = {
+						who = FROM
+						value = -100
+					}
+
+					ai_chance = { factor = 80 }
+				}
+
+				# Go to war
+				option = {
+					name = EVTOPTB72735
+
+					badboy = 7
+					CAN_60 = { add_core = QUE } # Northern Quebec
+					ENG_75 = { add_core = QUE } # Labrador
+					QUE = { all_core = { add_core = THIS } }
+					war = {
+						target = FROM
+						attacker_goal = { casus_belli = acquire_all_cores country = THIS }
+						defender_goal = { casus_belli = monroe_doctrine country = FROM }
+					}
+					relation = {
+						who = FROM
+						value = -200
+					}
+					FROM = { country_event = { id = 72733 days = 0 } }
+
+					ai_chance = { factor = 20 }
+				}
+			}
+
+			#Description: If the French refuse Quebec home rule, the USA has to decide whether to grant it
+			country_event = {
+				id = 72734
+				title = EVTNAME72734
+				desc = EVTDESC72734
+				picture = french_canada
+				is_triggered_only = yes
+
+				# Refuse home rule
+				option = {
+					name = EVTOPTA72734
+
+					add_accepted_culture = french_canadian
+					set_country_flag = USA_french
+					QUE = { all_core = { add_core = USA } }
+					any_pop = {
+						limit = { culture = french_canadian }
+						militancy = 6
+						consciousness = 6
+					}
+
+					ai_chance = { factor = 70 }
+				}
+
+				# Grant home rule
+				option = {
+					name = EVTOPTB72734
+
+					set_country_flag = USA_QUE_agree
+					CAN_60 = { add_core = QUE } # Northern Quebec
+					ENG_75 = { add_core = QUE } # Labrador
+					QUE = { all_core = { remove_core = USA } }
+					release_vassal = QUE
+					diplomatic_influence = {
+						who = QUE
+						value = 400
+					}
+					create_alliance = QUE
+
+					ai_chance = { factor = 30 }
+				}
+			}
+
+			#Description: Triggered for the USA if the French go to war over Quebec
+			country_event = {
+				id = 72733
+				title = EVTNAME72733
+				desc = EVTDESC72733
+				picture = french_canada
+				is_triggered_only = yes
+
+				option = {
+					name = EVTOPTA72733
+
+					set_country_flag = USA_french
+					add_accepted_culture = french_canadian
+
+					ai_chance = { factor = 100 }
+				}
+			}
+
+### Hegemony ###
+
+	## Monroe Doctrine ##
+
+		#Description: Triggered for any country with territory in the Americas when the USA declares the Monroe Doctrine.
+		country_event = {
+			id = 2278764
+			title = EVTNAME2278764
+			desc = EVTDESC2278764
+			picture = exemplar_colony
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA2278764
+
+				relation = {
+					who = USA
+					value = -200
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered for countries outside the Americas who have territory in the Americas when the USA secures the Monroe Doctrine.
+		country_event = {
+			id = 3309812
+			title = EVTNAME3309812
+			desc = EVTDESC3309812
+			picture = exemplar_colony
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA3309812
+
+				all_core = {
+					limit = {
+						OR = {
+							continent = north_america
+							continent = south_america
+						}
+					}
+					remove_core = THIS
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered for countries in the Americas when the USA secures the Monroe Doctrine.
+		country_event = {
+			id = 5517145
+			title = EVTNAME5517145
+			desc = EVTDESC5517145
+			picture = exemplar_colony
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA5517145
+
+				USA = {
+					diplomatic_influence = {
+						who = THIS
+						value = 100
+					}
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered upon peace-out with Monroe Doctrine CB (removes non-American cores on American provinces)
+		country_event = {
+			id = 111979
+			title = EVTNAME111979
+			desc = EVTDESC111979
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA111979
+
+				clr_country_flag = NW_overlord
+				THIS = {
+					any_owned = {
+						limit = {
+							OR = {
+								continent = north_america
+								continent = south_america
+							}
+						}
+						secede_province = USA
+					}
+				}
+				any_country = {
+					limit = {
+						OR = {
+							continent = north_america
+							continent = south_america
+						}
+						OR = {
+							in_sphere = THIS
+							vassal_of = THIS
+						}
+					}
+					country_event = {
+						id = 72747 # Move sphere and become a democracy
+						days = 0
+					}
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+	#Description: Once New World Hegemony is declared, New England can be renamed to Independence # Devnote: USA_247 in TGC refers to New Hampshire.
+	country_event = {
+		id = 1602682
+		title = EVTNAME1602682
+		desc = EVTDESC1602682
+		fire_only_once = yes
+
+		trigger = {
+			has_country_flag = NW_hegemony
+			USA_247 = { owned_by = THIS }
+		}
+
+		mean_time_to_happen = {
+			months = 12
+		}
+
+		option = {
+			name = EVTOPTA1602682
+
+			prestige = 3
+			set_global_flag = new_england_rename
+			USA_247 = {
+				change_region_name = "Independence"
+				any_pop = {
+					militancy = 3
+					consciousness = 3
+				}
+			}
+
+			ai_chance = { factor = 40 }
+		}
+
+		option = {
+			name = EVTOPTB1602682
+
+			ai_chance = { factor = 60 }
+		}
+	}
+
+	#Description: When forming the Caribbean as a puppet, you can choose the Capital and primary culture.
+	country_event = {
+		id = 8016634
+		title = EVTNAME8016634
+		desc = EVTDESC8016634
+		picture = annexation_santo_domingo
+		is_triggered_only = yes
+
+		# Jamaica
+		option = {
+			name = EVTOPTA8016634
+
+			CRB = {
+				capital = 2217
+				primary_culture = afro_caribbean
+				add_accepted_culture = afro_caribeno
+				add_accepted_culture = afro_antillean
+				add_accepted_culture = caribeno
+			}
+
+			ai_chance = { factor = 35 }
+		}
+
+		# Havana
+		option = {
+			name = EVTOPTB8016634
+
+			CRB = {
+				capital = 2209
+				primary_culture = caribeno
+				add_accepted_culture = afro_caribeno
+				add_accepted_culture = afro_antillean
+				add_accepted_culture = afro_caribbean
+			}
+
+			ai_chance = { factor = 35 }
+		}
+
+		# Port-au-Prince
+		option = {
+			name = EVTOPTC8016634
+
+			CRB = {
+				capital = 2213
+				primary_culture = afro_antillean
+				add_accepted_culture = caribeno
+				add_accepted_culture = afro_caribeno
+				add_accepted_culture = afro_caribbean
+			}
+
+			ai_chance = { factor = 30 }
+		}
+	}
+
+	#Description: The USA can arbitrate whether Panama will belong to the USCA or Gran Columbia.
+	country_event = {
+		id = 3552310
+		title = EVTNAME3552310
+		desc = EVTDESC3552310
+		picture = Treaty
+		is_triggered_only = yes
+
+		# Compromise
+		option = {
+			name = EVTOPTA3552310
+
+			any_country = {
+				limit = { any_owned_province = { is_core = PNM } }
+				any_owned = {
+					limit = { is_core = PNM	}
+					secede_province = THIS
+				}
+			}
+			2205 = { # Pueblo Nuevo de Coto
+				secede_province = UCA
+				add_core = UCA
+				remove_core = GCO
+			}
+			2206 = { # Bocas del Toro
+				secede_province = UCA
+				add_core = UCA
+				remove_core = GCO
+			}
+			2204 = { # San Jose de David
+				secede_province = GCO
+				add_core = GCO
+				remove_core = UCA
+			}
+			2208 = { # Ciudad de Panama
+				secede_province = GCO
+				add_core = GCO
+				remove_core = UCA
+			}
+			1723 = { # Chagres / Panama Canal
+				secede_province = THIS
+				add_core = USA
+				remove_core = GCO
+				remove_core = UCA
+			}
+
+			ai_chance = { factor = 60 }
+		}
+
+		# Favor Central America
+		option = {
+			name = EVTOPTB3552310
+
+			any_country = {
+				limit = { any_owned_province = { is_core = PNM } }
+				any_owned = {
+					limit = { is_core = PNM }
+					secede_province = THIS
+				}
+			}
+			PNM = {
+				all_core = {
+					add_core = UCA
+					remove_core = GCO
+				}
+			}
+			CLM_1723 = { secede_province = UCA }
+			1723 = { # Chagres / Panama Canal
+				secede_province = THIS
+				add_core = USA
+				remove_core = GCO
+				remove_core = UCA
+			}
+
+			ai_chance = { factor = 20 }
+		}
+
+		# Favor Colombia
+		option = {
+			name = EVTOPTC3552310
+
+			any_country = {
+				limit = { any_owned_province = { is_core = PNM } }
+				any_owned = {
+					limit = { is_core = PNM }
+					secede_province = THIS
+				}
+			}
+			PNM = {
+				all_core = {
+					add_core = GCO
+					remove_core = UCA
+				}
+			}
+			CLM_1723 = { secede_province = GCO }
+			1723 = { # Chagres / Panama Canal
+				secede_province = THIS
+				add_core = USA
+				remove_core = GCO
+				remove_core = UCA
+			}
+
+			ai_chance = { factor = 20 }
+		}
+	}
+
+	## The Monarchy of Mexico ##
+
+		#Description: If the USA has New World Hegemony and Mexico is a Monarchy, they can decide if they want to topple it.
+		country_event = {
+			id = 7597306
+			title = EVTNAME7597306
+			desc = EVTDESC7597306
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Democracy is nonnegotiable.
+			option = {
+				name = EVTOPTA7597306
+
+				MEX = {
+					country_event = {
+						id = 2786154
+						days = 4
+					}
+				}
+
+				ai_chance = { factor = 60 }
+			}
+
+			# Democracy and tradition may coexist if done properly
+			option = {
+				name = EVTOPTB7597306
+
+				MEX = {
+					country_event = {
+						id = 1726880
+						days = 4
+					}
+				}
+
+				ai_chance = { factor = 20 }
+			}
+
+			# Foreign monarchs are a greater threat
+			option = {
+				name = EVTOPTC7597306
+
+				relation = {
+					who = MEX
+					value = 100
+				}
+
+				ai_chance = { factor = 20 }
+			}
+		}
+
+		#Description: Triggered for Mexico if the USA demands they become a democracy.
+		country_event = {
+			id = 2786154
+			title = EVTNAME2786154
+			desc = EVTDESC2786154
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Keep the monarchy
+			option = {
+				name = EVTOPTA2786154
+
+				USA = {
+					relation = {
+						who = MEX
+						value = -100
+					}
+					diplomatic_influence = {
+						who = MEX
+						value = -400
+					}
+					country_event = 8981518
+				}
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = -8
+					militancy = -8
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = 4
+					militancy = 4
+				}
+
+				ai_chance = {
+					factor = 60
+					modifier = {
+						factor = 0.8
+						government = absolute_monarchy
+					}
+				}
+			}
+
+			# Become a democracy
+			option = {
+				name = EVTOPTB2786154
+
+				USA = { set_country_flag = USA_demcoup }
+				government = democracy
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = 8
+					militancy = 8
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = -6
+					militancy = -6
+				}
+				relation = {
+					who = USA
+					value = 100
+				}
+
+				ai_chance = { factor = 40 }
+			}
+		}
+
+		#Description: Triggered for Mexico if the USA demands they reform their monarchy.
+		country_event = {
+			id = 1726880
+			title = EVTNAME1726880
+			desc = EVTDESC1726880
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Keep the monarchy
+			option = {
+				name = EVTOPTA1726880
+
+				USA = {
+					relation = {
+						who = MEX
+						value = -100
+					}
+					diplomatic_influence = {
+						who = MEX
+						value = -400
+					}
+					country_event = 8981518
+				}
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = -5
+					militancy = -5
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = 5
+					militancy = 5
+				}
+
+				ai_chance = {
+					factor = 40
+					modifier = {
+						factor = 0.8
+						government = absolute_monarchy
+					}
+				}
+			}
+
+			# Accept the reforms
+			option = {
+				name = EVTOPTB1726880
+
+				relation = {
+					who = USA
+					value = 100
+				}
+				government = hms_government
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = 5
+					militancy = 5
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = -5
+					militancy = -5
+				}
+
+				ai_chance = {
+					factor = 60
+					modifier = {
+						factor = 0.75
+						government = hms_government
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for the USA if Mexico refuses reforms.
+		country_event = {
+			id = 8981518
+			title = EVTNAME8981518
+			desc = EVTDESC8981518
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Leave it be
+			option = {
+				name = EVTOPTA8981518
+
+				prestige = -10
+				relation = {
+					who = MEX
+					value = 100
+				}
+				diplomatic_influence = {
+					who = MEX
+					value = 200
+				}
+
+				ai_chance = { factor = 20 }
+			}
+
+			# Go to war
+			option = {
+				name = EVTOPTB8981518
+
+				badboy = 2
+				set_country_flag = USA_demcoup
+				release_vassal = MEX
+				relation = {
+					who = MEX
+					value = -200
+				}
+				diplomatic_influence = {
+					who = MEX
+					value = -400
+				}
+				casus_belli = {
+					target = MEX
+					type = install_democracy_make_puppet
+					months = 12
+				}
+				war = {
+					target = MEX
+					attacker_goal = { casus_belli = install_democracy_make_puppet country = USA }
+					defender_goal = { casus_belli = humiliate country = MEX }
+				}
+
+				ai_chance = { factor = 80 }
+			}
+		}
+
+	## Brazillian Strongman ##
+
+		#Description: Triggered for Brazil if the USA has taken steps to install a democracy in Mexico.
+		country_event = {
+			id = 7391609
+			title = EVTNAME7391609
+			desc = EVTDESC7391609
+			picture = brazil_court
+
+			fire_only_once = yes
+
+			trigger = {
+				tag = BRZ
+				USA = { has_country_flag = USA_demcoup }
+				is_vassal = no
+				is_greater_power = no
+				OR = {
+					government = hms_government
+					government = prussian_constitutionalism
+					government = absolute_monarchy
+				}
+			}
+
+			mean_time_to_happen = {
+				days = 10
+			}
+
+			# Stand strong
+			option = {
+				name = EVTOPTA7391609
+
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = socialist
+							pop_majority_ideology = liberal
+						}
+					}
+					militancy = 9
+					consciousness = 9
+				}
+
+				ai_chance = { factor = 40 }
+			}
+
+			# The monarchy flees
+			option = {
+				name = EVTOPTB7391609
+
+				set_country_flag = brazil_monarchy_fled
+				government = democracy
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				scaled_consciousness = {
+					factor = 5
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = 5
+					ideology = reactionary
+				}
+				USA = { country_event = 9452276 }
+
+				ai_chance = { factor = 60 }
+			}
+		}
+
+		#Description: Triggered for the USA if the Brazillian monarchy flees.
+		country_event = {
+			id = 9452276
+			title = EVTNAME9452276
+			desc = EVTDESC9452276
+			picture = brazil_court
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA9452276
+
+				diplomatic_influence = { who = BRZ value = 400 }
+				relation = { who = BRZ value = 200 }
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered for Brazil 6 months after the monarchy flees.
+		country_event = {
+			id = 3886062
+			title = EVTNAME3886062
+			desc = EVTDESC3886062
+			picture = dominican_revolution2
+
+			trigger = {
+				has_country_flag = brazil_monarchy_fled
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = { months = 12 }
+
+			# Remain a democracy
+			option = {
+				name = EVTOPTA3886062
+
+				scaled_consciousness = {
+					factor = 8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = reactionary
+				}
+
+				ai_chance = { factor = 50 }
+			}
+
+			# Become presidential dictatorship
+			option = {
+				name = EVTOPTB3886062
+
+				government = presidential_dictatorship
+				ruling_party_ideology = conservative
+				political_reform = none_voting
+				political_reform = party_appointed
+				political_reform = no_meeting
+				political_reform = state_press
+				political_reform = underground_parties
+				political_reform = no_trade_unions
+				scaled_consciousness = {
+					factor = 8
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = 8
+					ideology = liberal
+				}
+				scaled_consciousness = {
+					factor = -8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = -8
+					ideology = reactionary
+				}
+				scaled_consciousness = {
+					factor = -8
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = -8
+					ideology = conservative
+				}
+				USA = { country_event = { id = 2791898 days =  8 } }
+
+				ai_chance = { factor = 50 }
+			}
+		}
+
+		#Description: Triggered for the USA if Brazil becomes a dictatorship
+		country_event = {
+			id = 2791898
+			title = EVTNAME2791898
+			desc = EVTDESC2791898
+			picture = dominican_revolution2
+			is_triggered_only = yes
+
+			# Accept the new dictator
+			option = {
+				name = EVTOPTA2791898
+
+				relation = { who = BRZ value = 100 }
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = 5
+				}
+
+				ai_chance = { factor = 50 }
+			}
+
+			# Pressure him to step down
+			option = {
+				name = EVTOPTB2791898
+
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = 5
+				}
+				BRZ = { country_event = { id = 1595471 days = 10 } }
+
+				ai_chance = { factor = 50 }
+			}
+		}
+
+		#Description: Triggered for Brazil if the USA pressures the dictator to step down
+		country_event = {
+			id = 1595471
+			title = EVTNAME1595471
+			desc = EVTDESC1595471
+			picture = dominican_revolution2
+			is_triggered_only = yes
+
+			# Resist
+			option = {
+				name = EVTOPTA1595471
+
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					militancy = -5
+					consciousness = -5
+				}
+				relation = { who = USA value = -80 }
+				USA = { country_event = { id = 2931608 days = 5 } }
+
+				ai_chance = { factor = 75 }
+			}
+
+			# Comply
+			option = {
+				name = EVTOPTB1595471
+
+				government = democracy
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = -9
+					militancy = -9
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = reactionary }
+					militancy = 8
+					consciousness = 8
+				}
+				USA = { country_event = 4949670 }
+
+				ai_chance = { factor = 25 }
+			}
+		}
+
+		#Description: Triggered for the USA if the Brazillian dictator refuses to step down.
+		country_event = {
+			id = 2931608
+			title = EVTNAME2931608
+			desc = EVTDESC2931608
+			picture = dominican_revolution2
+			is_triggered_only = yes
+
+			# Go to war
+			option = {
+				name = EVTOPTA2931608
+
+				badboy = 4
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = 5
+					militancy = 3
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = -4
+					militancy = -4
+				}
+				diplomatic_influence = { who = BRZ value = -400 }
+				relation = { who = BRZ value = -200 }
+				casus_belli = {
+					target = BRZ
+					type = install_democracy_make_puppet
+					months = 12
+				}
+				war = {
+					target = BRZ
+					attacker_goal = { casus_belli = install_democracy_make_puppet country = USA }
+					defender_goal = { casus_belli = humiliate country = BRZ }
+				}
+
+				ai_chance = { factor = 40 }
+			}
+
+			# Let it go
+			option = {
+				name = EVTOPTB2931608
+
+				relation = { who = BRZ value = 100 }
+				any_pop = {
+					limit = {
+						OR = {
+							pop_majority_ideology = reactionary
+							pop_majority_ideology = conservative
+						}
+					}
+					consciousness = -5
+					militancy = -3
+				}
+				any_pop = {
+					limit = { pop_majority_ideology = liberal }
+					consciousness = 4
+					militancy = 4
+				}
+
+				ai_chance = { factor = 60 }
+			}
+		}
+
+		#Description: Triggered for the USA if the Brazillian dictator steps down.
+		country_event = {
+			id = 4949670
+			title = EVTNAME4949670
+			desc = EVTDESC4949670
+			picture = dominican_revolution2
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA4949670
+
+				diplomatic_influence = { who = BRZ value = 400 }
+				relation = { who = BRZ value = 200 }
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+	## Brazillian Monarchy ##
+
+		#Description: The USA can choose what to do regarding the Brazillian monarchy
+		country_event = {
+			id = 8133696
+			title = EVTNAME8133696
+			desc = EVTDESC8133696
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Demand democracy
+			option = {
+				name = EVTOPTA8133696
+
+				BRZ = { country_event = { id = 4640050 days = 15 } }
+
+				ai_chance = { factor = 60 }
+			}
+
+			# Demand reform
+			option = {
+				name = EVTOPTB8133696
+
+				BRZ = { country_event = { id = 5984582 days = 15 } }
+
+				ai_chance = { factor = 20 }
+			}
+
+			# Do nothing
+			option = {
+				name = EVTOPTC8133696
+
+				relation = { who = BRZ value = 100 }
+
+				ai_chance = { factor = 20 }
+			}
+		}
+
+		#Description: Triggered for Brazil if the USA demands reform
+		country_event = {
+			id = 5984582
+			title = EVTNAME5984582
+			desc = EVTDESC5984582
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Agree
+			option = {
+				name = EVTOPTA5984582
+
+				relation = {
+					who = USA
+					value = 100
+				}
+				government = hms_government
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+
+				ai_chance = {
+					factor = 60
+					modifier = {
+						factor = 0.75
+						government = hms_government
+					}
+				}
+			}
+
+			# Refuse
+			option = {
+				name = EVTOPTB5984582
+
+				USA = {
+					relation = {
+						who = BRZ
+						value = -100
+					}
+					country_event = 7078003
+				}
+
+				ai_chance = {
+					factor = 40
+					modifier = {
+						factor = 0.8
+						government = absolute_monarchy
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for Brazil if the USA demands democracy
+		country_event = {
+			id = 4640050
+			title = EVTNAME4640050
+			desc = EVTDESC4640050
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Accept
+			option = {
+				name = EVTOPTA4640050
+
+				government = democracy
+				political_reform = no_slavery
+				political_reform = universal_voting
+				political_reform = state_equal_weight
+				political_reform = first_past_the_post
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = secret_ballots
+				relation = {
+					who = USA
+					value = 100
+				}
+
+				ai_chance = { factor = 40 }
+			}
+
+			# Refuse
+			option = {
+				name = EVTOPTB4640050
+
+				USA = {
+					relation = {
+						who = BRZ
+						value = -100
+					}
+					country_event = 7078003
+				}
+
+				ai_chance = {
+					factor = 60
+					modifier = {
+						factor = 0.8
+						government = absolute_monarchy
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for the USA when Brazil refuses.
+		country_event = {
+			id = 7078003
+			title = EVTNAME7078003
+			desc = EVTDESC7078003
+			picture = autocracy
+			is_triggered_only = yes
+
+			# Let it go
+			option = {
+				name = EVTOPTA7078003
+
+				prestige = -10
+
+				ai_chance = { factor = 20 }
+			}
+
+			# Go to war
+			option = {
+				name = EVTOPTB7078003
+
+				badboy = 2
+				release_vassal = BRZ
+				relation = {
+					who = BRZ
+					value = -200
+				}
+				diplomatic_influence = {
+					who = BRZ
+					value = -400
+				}
+				casus_belli = {
+					target = BRZ
+					type = install_democracy_make_puppet
+					months = 12
+				}
+				war = {
+					target = BRZ
+					attacker_goal = { casus_belli = install_democracy_make_puppet country = USA }
+					defender_goal = { casus_belli = humiliate country = BRZ }
+				}
+
+				ai_chance = { factor = 80 }
+			}
+		}
+
+	## Andes Federation ##
+
+		#Description: Triggered for Chile when the USA asks them to join their Andean puppet
+		country_event = {
+			id = 1225875
+			title = EVTNAME1225875
+			desc = EVTDESC1225875
+			picture = Andes2
+			is_triggered_only = yes
+
+			# Accept
+			option = {
+				name = EVTOPTA1225875
+
+				all_core = { add_core = PBC }
+				annex_to = PBC
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 0.8
+						vassal_of = USA
+					}
+				}
+			}
+
+			# Refuse
+			option = {
+				name = EVTOPTB1225875
+
+				prestige = 10
+				USA = {
+					country_event = { id = 7859305 days = 12 }
+					diplomatic_influence = { who = THIS value = -200 }
+					relation = { who = THIS value = -100 }
+				}
+
+				ai_chance = { factor = 50 }
+			}
+		}
+
+		#Description: Triggered for the USA if Chile refuses to join the Andean puppet
+		country_event = {
+			id = 7859305
+			title = EVTNAME7859305
+			desc = EVTDESC7859305
+			picture = Andes2
+			is_triggered_only = yes
+
+			# Let it be
+			option = {
+				name = EVTOPTA7859305
+
+				badboy = -5
+				prestige = -20
+				diplomatic_influence = { who = CHL value = 200 }
+				relation = { who = CHL value = 100 }
+
+				ai_chance = { factor = 40 }
+			}
+
+			# Go to war
+			option = {
+				name = EVTOPTB7859305
+
+				badboy = 5
+				CHL = {
+					all_core = { add_core = PBC }
+					set_country_flag = CHL_PBC
+				}
+				diplomatic_influence = { who = CHL value = -200 }
+				relation = { who = CHL value = -200 }
+				casus_belli = {
+					target = CHL
+					type = install_democracy_make_puppet
+					months = 12
+				}
+				war = {
+					target = CHL
+					attacker_goal = { casus_belli = install_democracy_make_puppet country = USA }
+					defender_goal = { casus_belli = humiliate country = CHL }
+					call_ally = no
+				}
+
+				ai_chance = { factor = 60 }
+			}
+		}
+
+	## End of Hegemony ##
+
+		#Description: American Hegemony will end if it is no longer a democracy, a great power, or if it is disarmed
+		country_event = {
+			id = 7680756
+			title = EVTNAME7680756
+			desc = EVTDESC7680756
+			major = yes
+
+			fire_only_once = yes
+
+			trigger = {
+				has_country_flag = NW_hegemony
+				tag = USA
+				OR = {
+					NOT = { government = democracy }
+					is_greater_power = no
+					is_disarmed = yes
+				}
+			}
+
+			option = {
+				name = EVTOPTA7680756
+
+				prestige = -30
+				set_global_flag = no_NWHeg
+				clr_country_flag = NW_hegemony
+				clr_country_flag = shield_NW
+				any_country = {
+					limit = {
+						NOT = { tag = USA }
+						OR = {
+							vassal_of = THIS
+							in_sphere = THIS
+						}
+						OR = {
+							capital_scope = { continent = north_america }
+							capital_scope = { continent = south_america }
+						}
+					}
+					country_event = 2667604 # Release
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		#Description: Triggered for the USA's puppets and spherelings in the Americas, releasing them and removing influence and relations.
+		country_event = {
+			id = 2667604
+			title = EVTNAME2667604
+			desc = EVTDESC2667604
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA2667604
+
+				USA = {
+					release_vassal = THIS
+					relation = { who = THIS value = -200 }
+					diplomatic_influence = { who = THIS value = -400 }
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+
+		## Unstable minors ##
+
+			#Description: After the collapse of American hegemony, choose the fate of Gran Columbia
+			country_event = {
+				id = 5220256
+				title = EVTNAME5220256
+				desc = EVTDESC5220256
+
+				fire_only_once = yes
+
+				trigger = {
+					has_global_flag = no_NWHeg
+					tag = GCO
+					has_country_flag = hegpuppet
+					war = no
+				}
+
+				mean_time_to_happen = {
+					months = 1
+				}
+
+				# Preserve the union
+				option = {
+					name = EVTOPTA5220256
+
+					government = presidential_dictatorship
+					ruling_party_ideology = conservative
+					political_reform = none_voting
+					political_reform = party_appointed
+					political_reform = no_meeting
+					political_reform = state_press
+					political_reform = underground_parties
+					political_reform = no_trade_unions
+					set_country_flag = unstable_union
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = 7
+						consciousness = 7
+					}
+					add_country_modifier = {
+						name = nationalist_agitation
+						duration = 1460
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						add_province_modifier = { name = former_cores_GCO duration = -1 }
+					}
+					THIS = { all_core = { remove_core = THIS } }
+
+					ai_chance = { factor = 40 }
+				}
+
+				# End the union
+				option = {
+					name = EVTOPTB5220256
+
+					change_tag = CLM
+					release = VNZ
+					release = ECU
+					GCO = { all_core = { remove_core = GCO } }
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = -8
+						consciousness = -8
+					}
+
+					ai_chance = { factor = 60 }
+				}
+			}
+
+			#Description: After the collapse of American hegemony, choose the fate of the USCA
+			country_event = {
+				id = 4408766
+				title = EVTNAME4408766
+				desc = EVTDESC4408766
+
+				fire_only_once = yes
+
+				trigger = {
+					has_global_flag = no_NWHeg
+					tag = UCA
+					has_country_flag = hegpuppet
+					war = no
+				}
+
+				mean_time_to_happen = {
+					months = 1
+				}
+
+				# Preserve the union
+				option = {
+					name = EVTOPTA4408766
+
+					government = presidential_dictatorship
+					ruling_party_ideology = conservative
+					political_reform = none_voting
+					political_reform = party_appointed
+					political_reform = no_meeting
+					political_reform = state_press
+					political_reform = underground_parties
+					political_reform = no_trade_unions
+					set_country_flag = unstable_union
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = 7
+						consciousness = 7
+					}
+					add_country_modifier = {
+						name = nationalist_agitation
+						duration = 1460
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						add_province_modifier = { name = former_cores_UCA duration = -1 }
+					}
+					THIS = { all_core = { remove_core = THIS } }
+
+					ai_chance = { factor = 40 }
+				}
+
+				# End the union
+				option = {
+					name = EVTOPTB4408766
+
+					change_tag = GUA
+					release = COS
+					release = ELS
+					release = HON
+					release = NIC
+					release = YUC
+					release = PNM
+					UCA = { all_core = { remove_core = UCA } }
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = -8
+						consciousness = -8
+					}
+
+					ai_chance = { factor = 60 }
+				}
+			}
+
+			#Description: After the collapse of American hegemony, choose the fate of the PBC
+			country_event = {
+				id = 4634701
+				title = EVTNAME4634701
+				desc = EVTDESC4634701
+
+				fire_only_once = yes
+
+				trigger = {
+					has_global_flag = no_NWHeg
+					tag = PBC
+					has_country_flag = hegpuppet
+					war = no
+				}
+
+				mean_time_to_happen = {
+					months = 1
+				}
+
+				# Preserve the union
+				option = {
+					name = EVTOPTA4634701
+
+					government = presidential_dictatorship
+					ruling_party_ideology = conservative
+					political_reform = none_voting
+					political_reform = party_appointed
+					political_reform = no_meeting
+					political_reform = state_press
+					political_reform = underground_parties
+					political_reform = no_trade_unions
+					set_country_flag = unstable_union
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = 7
+						consciousness = 7
+					}
+					add_country_modifier = {
+						name = nationalist_agitation
+						duration = 1460
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						add_province_modifier = { name = former_cores_PBC duration = -1 }
+					}
+					THIS = { all_core = { remove_core = THIS } }
+
+					ai_chance = { factor = 40 }
+				}
+
+				# End the union
+				option = {
+					name = EVTOPTB4634701
+
+					change_tag = PEU
+					capital = 2295
+					release = CHL
+					release = BOL
+					PBC = { all_core = { remove_core = PBC } }
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = -8
+						consciousness = -8
+					}
+
+					ai_chance = { factor = 60 }
+				}
+			}
+
+			#Description: After the collapse of American hegemony, choose the fate of La Plata
+			country_event = {
+				id = 7281959
+				title = EVTNAME7281959
+				desc = EVTDESC7281959
+
+				fire_only_once = yes
+
+				trigger = {
+					has_global_flag = no_NWHeg
+					tag = LPL
+					has_country_flag = hegpuppet
+					war = no
+				}
+
+				mean_time_to_happen = {
+					months = 1
+				}
+
+				# Preserve the union
+				option = {
+					name = EVTOPTA7281959
+
+					government = presidential_dictatorship
+					ruling_party_ideology = conservative
+					political_reform = none_voting
+					political_reform = party_appointed
+					political_reform = no_meeting
+					political_reform = state_press
+					political_reform = underground_parties
+					political_reform = no_trade_unions
+					set_country_flag = unstable_union
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = 7
+						consciousness = 7
+					}
+					add_country_modifier = {
+						name = nationalist_agitation
+						duration = 1460
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						add_province_modifier = { name = former_cores_LPL duration = -1 }
+					}
+					THIS = { all_core = { remove_core = THIS } }
+
+					ai_chance = { factor = 40 }
+				}
+
+				# End the union
+				option = {
+					name = EVTOPTB7281959
+
+					change_tag = ARG
+					release = PRG
+					release = URU
+					LPL = { all_core = { remove_core = LPL } }
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = -8
+						consciousness = -8
+					}
+
+					ai_chance = { factor = 60 }
+				}
+			}
+
+			#Description: After the collapse of American hegemony, choose the fate of the Caribbean Federation
+			country_event = {
+				id = 4580109
+				title = EVTNAME4580109
+				desc = EVTDESC4580109
+
+				fire_only_once = yes
+
+				trigger = {
+					has_global_flag = no_NWHeg
+					tag = CRB
+					has_country_flag = hegpuppet
+					war = no
+				}
+
+				mean_time_to_happen = {
+					months = 1
+				}
+
+				# Preserve the union
+				option = {
+					name = EVTOPTA4580109
+
+					government = presidential_dictatorship
+					ruling_party_ideology = conservative
+					political_reform = none_voting
+					political_reform = party_appointed
+					political_reform = no_meeting
+					political_reform = state_press
+					political_reform = underground_parties
+					political_reform = no_trade_unions
+					set_country_flag = unstable_union
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = 7
+						consciousness = 7
+					}
+					add_country_modifier = {
+						name = nationalist_agitation
+						duration = 1460
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						add_province_modifier = { name = former_cores_CRB duration = -1 }
+					}
+					THIS = { all_core = { remove_core = THIS } }
+
+					ai_chance = { factor = 40 }
+				}
+
+				# End the union
+				option = {
+					name = EVTOPTB4580109
+
+					capital = 2229
+					primary_culture = afro_caribbean
+					add_accepted_culture = afro_caribeno
+					add_accepted_culture = afro_antillean
+					add_accepted_culture = caribeno
+					release = CUB
+					release = DOM
+					release = HAI
+					release = TTB
+					release = JAM
+					release = PRI
+					CUB = { all_core = { remove_core = CRB } }
+					DOM = { all_core = { remove_core = CRB } }
+					HAI = { all_core = { remove_core = CRB } }
+					TTB = { all_core = { remove_core = CRB } }
+					JAM = { all_core = { remove_core = CRB } }
+					PRI = { all_core = { remove_core = CRB } }
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = -8
+						consciousness = -8
+					}
+
+					ai_chance = { factor = 60 }
+				}
+			}
+
+		## Minors stabilization ##
+
+			#Description: If a union is preserved following the collapse of American hegemony, and it can survive, it will get its cores back.
+			country_event = {
+				id = 8870778
+				title = EVTNAME8870778
+				desc = EVTDESC8870778
+
+				trigger = {
+					has_country_flag = unstable_union
+					NOT = { has_country_modifier = nationalist_agitation }
+				}
+
+				mean_time_to_happen = {
+					days = 3
+				}
+
+				option = {
+					name = EVTOPTA8870778
+
+					clr_country_flag = unstable_union
+					any_pop = {
+						limit = {
+							OR = {
+								is_primary_culture = yes
+								is_accepted_culture = yes
+							}
+						}
+						militancy = -5
+						consciousness = -5
+					}
+					random_country = {
+						limit = { tag = GCO exists = yes }
+						any_owned = {
+							limit = { has_province_modifier = former_cores_GCO }
+							remove_province_modifier = former_cores_GCO
+							add_core = THIS
+						}
+					}
+					random_country = {
+						limit = { tag = UCA exists = yes }
+						any_owned = {
+							limit = { has_province_modifier = former_cores_UCA }
+							remove_province_modifier = former_cores_UCA
+							add_core = THIS
+						}
+					}
+					random_country = {
+						limit = { tag = PBC exists = yes }
+						any_owned = {
+							limit = { has_province_modifier = former_cores_PBC }
+							remove_province_modifier = former_cores_PBC
+							add_core = THIS
+						}
+					}
+					random_country = {
+						limit = { tag = LPL exists = yes }
+						any_owned = {
+							limit = { has_province_modifier = former_cores_LPL }
+							remove_province_modifier = former_cores_LPL
+							add_core = THIS
+						}
+					}
+					random_country = {
+						limit = { tag = CRB exists = yes }
+						any_owned = {
+							limit = { has_province_modifier = former_cores_CRB }
+							remove_province_modifier = former_cores_CRB
+							add_core = THIS
+						}
+					}
+
+					ai_chance = { factor = 100 }
+				}
+			}
+
+			#Description: Provinces regain cores once owned again by a stable country (in case a former core is not owned by the relevant country when the above event fires)
+			province_event = {
+				id = 8870779
+				title = EVTNAME8870779
+				desc = EVTDESC8870779
+
+				trigger = {
+					OR = {
+						AND = {
+							owner = { tag = GCO }
+							has_province_modifier = former_cores_GCO
+						}
+						AND = {
+							owner = { tag = UCA }
+							has_province_modifier = former_cores_UCA
+						}
+						AND = {
+							owner = { tag = PBC }
+							has_province_modifier = former_cores_PBC
+						}
+						AND = {
+							owner = { tag = LPL }
+							has_province_modifier = former_cores_LPL
+						}
+						AND = {
+							owner = { tag = CRB }
+							has_province_modifier = former_cores_CRB
+						}
+					}
+					owner = { NOT = { has_country_flag = unstable_union } }
+				}
+
+				mean_time_to_happen = {
+					days = 3
+				}
+
+				option = {
+					name = EVTOPTA8870779
+
+					add_core = THIS
+
+					remove_province_modifier = former_cores_GCO
+					remove_province_modifier = former_cores_UCA
+					remove_province_modifier = former_cores_PBC
+					remove_province_modifier = former_cores_LPL
+					remove_province_modifier = former_cores_CRB
+				}
+			}
