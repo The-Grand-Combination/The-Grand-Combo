@@ -1250,7 +1250,8 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	# TODO Annex the Republic of California
+	#Description: If California is in the USA's sphere and the USA has won against Mexico, they can invite California into the Union (max relations and end their war against Mexico and their allies)
+	#Note: California will still not join if it's not a democracy or if it's at war with someone other than Mexico and their allies since those wars don't get ended by this.
 	annex_california = {
 		picture = USA_annex_california
 		potential = {
@@ -1270,6 +1271,7 @@ political_decisions = {
 		allow = {
 			prestige = 35
 			war = no
+			has_recently_lost_war = no
 			MEX = {
 				has_recently_lost_war = yes
 				truce_with = THIS
@@ -1288,17 +1290,20 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = annex_california
-			CAL = { end_war = MEX }
+			relation = { who = CAL value = 200 }
 			random_country = {
+				limit = {
+					tag = MEX
+					war_with = CAL
+				}
+				end_war = MEX
+			}
+			any_country = {
 				limit = {
 					alliance_with = MEX
 					war_with = CAL
 				}
 				end_war = CAL
-			}
-			relation = {
-				who = CAL
-				value = 200
 			}
 		}
 
