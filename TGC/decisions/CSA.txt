@@ -341,7 +341,10 @@ political_decisions = {
 		}
 	}
 
+## Caribbean Expansion ##
+
     #Description: The CSA can buy Cuba and Puerto Rico from Spain.
+	# TODO turn this into event chain so that Spain can refuse and be non-AI
 	cuba_pri_purchase = {
 		picture = golden_hispania
 		potential = {
@@ -406,38 +409,17 @@ political_decisions = {
 			treasury = -250000
 			random_country = {
 				limit = {
-					tag = SPA
+					OR = {
+						tag = SPA
+						tag = SPC
+						tag = IBR
+					}
 					exists = yes
-				}
-				treasury = 250000
-				any_owned = {
-					limit = { is_core = CSA }
-					secede_province = CSA
-				}
-				relation = {
-					who = CSA
-					value = 50
-				}
-			}
-			random_country = {
-				limit = {
-					tag = SPC
-					exists = yes
-				}
-				treasury = 250000
-				any_owned = {
-					limit = { is_core = CSA }
-					secede_province = CSA
-				}
-				relation = {
-					who = CSA
-					value = 50
-				}
-			}
-			random_country = {
-				limit = {
-					tag = IBR
-					exists = yes
+					OR = {
+						any_owned_province = { is_core = CSA }
+						is_sphere_leader_of = PRI
+						is_sphere_leader_of = CUB
+					}
 				}
 				treasury = 250000
 				any_owned = {
@@ -459,8 +441,6 @@ political_decisions = {
             }
         }
 	}
-
-## Caribbean Expansion ##
 
     #Description: The CSA can claim Cuba if it is a slave state.
 	golden_cuba = {
@@ -574,60 +554,6 @@ political_decisions = {
 			plurality = -3
 			badboy = 3
 			inherit = HAI
-		}
-	}
-
-	#Description: The CSA can sell Haiti to France if they have good relations.
-	sell_france_haiti = {
-		picture = golden_haiti
-		alert = no
-		potential = {
-			tag = CSA
-			exists = yes
-			FRA = {
-				exists = yes
-				colonial_nation = yes
-				is_greater_power = yes
-			}
-			HAI = {
-				any_core = { owned_by = THIS }
-				NOT = { any_core = { owned_by = FRA } }
-			}
-			NOT = { has_country_flag = selling_haiti }
-		}
-
-		allow = {
-			owns = 2215
-			owns = 3329
-			owns = 2213
-			owns = 3373
-			owns = 3327
-			relation = { who = FRA value = 75 }
-		}
-
-		effect = {
-			FRA = {
-				country_event = 183000 # TODO
-				set_country_flag = haiti_purchase
-			}
-			set_country_flag = selling_haiti
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				NOT = {
-					relation = {
-						who = FRA
-						value = 125
-					}
-				}
-			}
-			modifier = {
-				factor = 0
-				money = 1000000
-			}
 		}
 	}
 
