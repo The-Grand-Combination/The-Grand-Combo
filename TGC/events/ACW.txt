@@ -3873,7 +3873,6 @@
 				clr_country_flag = the_slavery_debate
 				CSA = { set_country_flag = the_slavery_debate }
 				set_global_flag = american_civil_war_has_happened
-				set_global_flag = acw_war_started
 			}
 
 			mean_time_to_happen = {
@@ -5078,11 +5077,11 @@
 			NOT = { exists = MEX }
 		}
 
-		fire_only_once = yes
-
 		mean_time_to_happen = {
 			days = 5
 		}
+
+		fire_only_once = yes
 
 		# Keep them in the union - war in 120 days, cores if you win
 		option = {
@@ -5136,11 +5135,9 @@
 		id = 993889
 		title = "EVTNAME993889"
 		desc = "EVTDESC993889"
-		picture = "mexico_soldiers" # TODO alternative?
+		picture = "MEX_revolution"
 
 		is_triggered_only = yes
-
-		fire_only_once = yes
 
 		option = {
 			name = "EVTOPTA993889"
@@ -5345,7 +5342,7 @@
 		id = 993895
 		title = "EVTNAME993895"
 		desc = "EVTDESC993895"
-		picture = "mexico_soldiers" # TODO alternative
+		picture = "mexico_city_occupation"
 
 		trigger = {
 			tag = USA
@@ -5362,11 +5359,11 @@
 			}
 		}
 
-		fire_only_once = yes
-
 		mean_time_to_happen = {
 			days = 14
 		}
+
+		fire_only_once = yes
 
 		immediate = {
 			set_country_flag = mexico_integration_succeeded
@@ -5374,7 +5371,7 @@
 			set_global_flag = sonora_is_a_state
 		}
 
-		# Integrate Mexico as is - no assimilation of Mexican pops, but you will be able to accept them later # TODO (Mexico City is core of USA and no anglify flag)
+		# Integrate Mexico as is - no assimilation of Mexican pops, but you will be able to accept them later
 		option = {
 			name = "EVTOPTA993895"
 
@@ -5465,11 +5462,11 @@
 			}
 		}
 
-		fire_only_once = yes
-
 		mean_time_to_happen = {
 			days = 14
 		}
+
+		fire_only_once = yes
 
 		immediate = { set_country_flag = mexico_integration_failed }
 
@@ -5491,6 +5488,142 @@
 				limit = { has_pop_culture = mexican }
 				militancy = 3
 				consciousness = 3
+			}
+		}
+	}
+
+	#Description: Integration of Mexican pops if North Mexico was not anglified
+	country_event = {
+		id = 993893
+		title = "EVTNAME993893"
+		desc = "EVTDESC993893"
+		picture = "Cubanrebels"
+
+		trigger = {
+			tag = USA
+			is_core = 2172 # Mexico City
+			owns = 2172
+			war = no
+			is_disarmed = no
+			has_recently_lost_war = no
+			prestige = 250
+			mass_politics = 1
+			NOT = { has_global_flag = usa_anglify_north_mexico }
+			government = democracy
+			political_reform = all_voting_pops
+			NOT = {
+				average_militancy = 6
+				num_of_revolts = 1
+				national_provinces_occupied = 0.1
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 60
+		}
+
+		fire_only_once = yes
+
+		# Accept Mexicans
+		option = {
+			name = "EVTOPTA993893"
+
+			add_accepted_culture = mexican
+			add_country_modifier = { name = usa_mexican_integration duration = 7300 } # 20 years
+			any_pop = {
+				limit = { is_culture_group = american_cultures }
+				scaled_militancy = { ideology = conservative factor = 3 }
+				scaled_militancy = { ideology = reactionary factor = 5 }
+				scaled_militancy = { issue = residency factor = 3 }
+				scaled_militancy = { issue = limited_citizenship factor = 5 }
+			}
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				militancy = -3
+				consciousness = -4
+			}
+
+			ai_chance = {
+				factor = 99
+				modifier = {
+					factor = 0
+					ruling_party_ideology = fascist
+				}
+				modifier = {
+					fascist = 0
+					ruling_party_ideology = reactionary
+				}
+			}
+		}
+
+		# Don't accept Mexicans
+		option = {
+			name = "EVTOPTB993893"
+
+			any_pop = {
+				limit = { is_culture_group = american_cultures }
+				scaled_militancy = { ideology = conservative factor = -3 }
+				scaled_militancy = { ideology = reactionary factor = -5 }
+				scaled_militancy = { issue = residency factor = -3 }
+				scaled_militancy = { issue = limited_citizenship factor = -5 }
+			}
+			any_pop = { scaled_consciousness = { issue = all_voting_pops factor = 4 } }
+			move_issue_percentage  = {
+				from = all_voting_pops
+				to = culture_voting_only
+				value = 0.2
+			}
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				militancy = 6
+				consciousness = 8
+			}
+
+			ai_chance = {
+				factor = 1
+				modifier = {
+					factor = 0
+					NOT = { ruling_party_ideology = fascist }
+				}
+				modifier = {
+					fascist = 0
+					NOT = { ruling_party_ideology = reactionary }
+				}
+			}
+		}
+	}
+
+	#Description: If the USA stops having All Cultures Can Vote, Mexican will stop being an accepted culture
+	country_event = {
+		id = 993894
+		title = "EVTNAME993894"
+		desc = "EVTDESC993894"
+		picture = "streetriot"
+
+		trigger = {
+			tag = USA
+			accepted_culture = mexican
+			NOT = { citizens_rights = all_voting_pops }
+			OR = {
+				NOT = { government = democracy }
+				ruling_party_ideology = reactionary
+				ruling_party_ideology = fascist
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "EVTOPTA993894"
+
+			remove_accepted_culture = mexican
+			remove_country_modifier = usa_mexican_integration
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				militancy = 6
+				consciousness = 8
 			}
 		}
 	}
@@ -8691,6 +8824,10 @@
 					}
 				}
 				modifier = {
+					factor = 0.5
+					exists = UNY
+				}
+				modifier = {
 					factor = 2
 					government = democracy
 				}
@@ -9510,13 +9647,167 @@
 			}
 		}
 
-		## TODO secession of Upper Canada (Treaty of New York) - maybe small chance to ask to rejoin French Canada? or definitely if somehow Anglo Canada exists
+		#Description: The Manhattan Convention - New York secedes
+		country_event = {
+			id = 95288
+			title = "EVTNAME95288"
+			desc = "EVTDESC95288"
+			major = yes
 
-		## TODO UNY secedes on its own?
+			trigger = {
+				tag = USA
+				any_owned_province = {
+					province_id = 232 # New York City
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					UNY = { exists = yes }
+					has_country_flag = UNY_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					232 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					232 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					232 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					232 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					232 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = UNY_created
+				set_global_flag = ny_independent_flag # Enables the rest of independent UNY content
+				prestige = -25
+				USA_232 = { add_core = UNY } # New York State
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = UNY
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = UNY
+					}
+				}
+				UNY = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = yankee
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 232
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = UNY value = -200 }
+				diplomatic_influence = { who = UNY value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		## TODO secession of Upper Canada (Treaty of New York) - maybe small chance to ask to rejoin French Canada? or definitely if somehow Anglo Canada exists
 
 		## TODO if All of Mexico, Mexico secedes, Mexican minors secede (OAX, TBS, YUC, ZAC)
 
-		#Description: #Join the Canadian Confederation? - American minors can choose whether to ask to join Canada
+		#Description: Join the Canadian Confederation? - American minors can choose whether to ask to join Canada
 		country_event = {
 
 			id = 95315

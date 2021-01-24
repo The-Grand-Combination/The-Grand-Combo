@@ -1,11 +1,11 @@
-## Civil War ## TODO find images for this
+## Civil War ##
 
 	#Description: Triggered for South Peru (Obregoso) to become Peru if Peru doesn't exist (after the civil war) - declare victory (historical)
 	country_event = {
 		id = 97044
 		title = "EVTNAME97044"
 		desc = "EVTDESC97044"
-		picture = "peru-bolivia"
+		picture = "peru_civil_war"
 
 		trigger = {
 			tag = SPU
@@ -52,7 +52,7 @@
 		id = 97037
 		title = "EVTNAME97037"
 		desc = "EVTDESC97037"
-		picture = "peru-bolivia"
+		picture = "peru_civil_war"
 
 		trigger = {
 			tag = PEU
@@ -94,7 +94,7 @@
 		id = 97036
 		title = "EVTNAME97036"
 		desc = "EVTDESC97036"
-		picture = "peru-bolivia"
+		picture = "peru_civil_war"
 
 		trigger = {
 			tag = PEU
@@ -128,7 +128,7 @@
 		id = 97043
 		title = "EVTNAME97043"
 		desc = "EVTDESC97043"
-		picture = "peru-bolivia"
+		picture = "peru_civil_war"
 
 		is_triggered_only = yes
 
@@ -186,7 +186,7 @@
 			id = 97042
 			title = "EVTNAME97042"
 			desc = "EVTDESC97042"
-			picture = "peru-bolivia"
+			picture = "treaty"
 
 			is_triggered_only = yes
 
@@ -251,7 +251,7 @@
 			id = 97041
 			title = "EVTNAME97041"
 			desc = "EVTDESC97041"
-			picture = "peru-bolivia"
+			picture = "peru_civil_war"
 
 			trigger = {
 				has_leader = "Felipe Santiago Salaverry"
@@ -261,6 +261,13 @@
 				}
 				war = no
 				PBC = { war = yes }
+				PEU = {
+					OR = {
+						exists = no
+						war_with = PBC
+						vassal_of = PBC
+					}
+				}
 			}
 
 			fire_only_once = yes
@@ -269,6 +276,27 @@
 			option = {
 				name = "EVTOPTA97041"
 
+				random_country = {
+					limit = {
+						tag = PEU
+						exists = yes
+						war_with = PEU
+					}
+					THIS = {
+						badboy = 1.5
+						create_alliance = PEU
+						relation = { who = PEU value = 150 }
+						random_owned = {
+							limit = { owner = { is_greater_power = yes } }
+							owner = { diplomatic_influence = { who = PEU value = 200 } }
+						}
+					}
+
+					war = {	# No target initiates a one-day war that automatically resolves in a WP, but call_ally causes the new ally
+						attacker_goal = { casus_belli = call_allies_cb }
+						call_ally = yes
+					}
+				}
 				random_country = {
 					limit = {
 						tag = PEU
@@ -363,7 +391,7 @@
 			id = 97040
 			title = "EVTNAME97040"
 			desc = "EVTDESC97040"
-			picture = "peru-bolivia"
+			picture = "peru_civil_war"
 
 			trigger = {
 				has_country_flag = supported_salaverry
@@ -405,12 +433,12 @@
 
 	## Salaverry in prison ##
 
-		#Description: Triggered for the PBC if Salaverry dies in prison # TODO decision to release
+		#Description: Triggered for the PBC if Salaverry dies in prison
 		country_event = {
 			id = 97035
 			title = "EVTNAME97035"
 			desc = "EVTDESC97035"
-			picture = "peru-bolivia"
+			picture = "san_antonio_tx"
 
 			trigger = {
 				has_country_modifier = salaverry_in_prison
@@ -455,7 +483,7 @@
 		id = 97039
 		title = "EVTNAME97039"
 		desc = "EVTDESC97039"
-		picture = "peru-bolivia"
+		picture = "meeting"
 
 		trigger = {
 			tag = BOL
@@ -497,7 +525,7 @@
 		id = 97049
 		title = "EVTNAME97049"
 		desc = "EVTDESC97049"
-		picture = "peru-bolivia"
+		picture = "meeting3"
 
 		is_triggered_only = yes
 
@@ -537,7 +565,7 @@
 		id = 97048
 		title = "EVTNAME97048"
 		desc = "EVTDESC97048"
-		picture = "peru-bolivia"
+		picture = "Celebration"
 
 		is_triggered_only = yes
 
@@ -558,7 +586,7 @@
 		id = 97047
 		title = "EVTNAME97047"
 		desc = "EVTDESC97047"
-		picture = "peru-bolivia"
+		picture = "streetriot"
 
 		is_triggered_only = yes
 
@@ -630,7 +658,7 @@
 		id = 97045
 		title = "EVTNAME97045"
 		desc = "EVTDESC97045"
-		picture = "peru-bolivia"
+		picture = "treaty"
 
 		trigger = {
 			tag = BOL
@@ -669,7 +697,7 @@
 		}
 
 		mean_time_to_happen = {
-			days = 7
+			months = 2
 		}
 
 		fire_only_once = yes
@@ -826,7 +854,7 @@
 		}
 
 		# War of the Confederation (historical)
-		option = { # TODO how to make these cores if no war?
+		option = {
 			name = "EVTOPTA97050"
 
 			set_country_flag = fight_the_PBC
@@ -840,6 +868,7 @@
 			random_owned = {
 				limit = { owner = { tag = CHL } }
 				2305 = { add_core = CHL }
+				3299 = { add_core = PBC add_core = BOL }
 				owner = {
 					casus_belli = {
 						target = PEU
@@ -886,6 +915,9 @@
 				}
 				2371 = { add_core = PBC add_core = BOL }
 				3400 = { add_core = PBC add_core = BOL }
+				2368 = { add_core = PBC add_core = BOL }
+				2373 = { add_core = PBC add_core = BOL }
+				1714 = { add_core = PBC add_core = BOL }
 				owner = {
 					war = {
 						target = PBC
@@ -934,6 +966,55 @@
 					factor = 0.25
 					tag = CHL
 				}
+			}
+		}
+	}
+
+	#Description: The PBC loses the claims they made during the War of the Confederation if they lose.
+	country_event = {
+		id = 97052
+		title = "EVTNAME97052"
+		desc = "EVTDESC97052"
+		picture = "treaty"
+
+		trigger = {
+			has_country_flag = fight_the_PBC
+			has_recently_lost_war = no
+			truce_with = PBC
+			PBC = { has_recently_lost_war = yes }
+		}
+
+		mean_time_to_happen = {
+			days = 14
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA97052"
+
+			prestige = 2
+
+			random_owned = {
+				limit = { owner = { tag = CHL } }
+				3299 = { remove_core = PBC remove_core = BOL }
+			}
+
+			random_owned = {
+				limit = {
+					owner = {
+						OR = {
+							tag = ARG
+							tag = ARC
+							tag = LPL
+						}
+					}
+				}
+				2371 = { remove_core = PBC remove_core = BOL }
+				3400 = { remove_core = PBC remove_core = BOL }
+				2368 = { remove_core = PBC remove_core = BOL }
+				2373 = { remove_core = PBC remove_core = BOL }
+				1714 = { remove_core = PBC remove_core = BOL }
 			}
 		}
 	}
@@ -1757,9 +1838,7 @@
 		}
 	}
 
-# TODO Argentina gets 2370 and 3353 and Tierra del Fuego split after War of the Pacific
-
-#Description: Chile-Bolivia Treaty of Peace and Friendship - The losers of the War of the Pacific lose their cores in Antofagasta # TODO test
+#Description: Chile-Bolivia Treaty of Peace and Friendship - The losers of the War of the Pacific lose their cores in Antofagasta
 country_event = {
 	id = 46610102
 	title = "EVTNAME46610102"

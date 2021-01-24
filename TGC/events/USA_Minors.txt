@@ -1259,6 +1259,7 @@
 			}
 			NOT = { any_owned_province = { region = USA_232 } } # New York State
 			USA_232 = { owned_by = UNY }
+			NOT = { has_global_flag = disunited_states }
 		}
 
 		immediate = { release = NEN }
@@ -1267,8 +1268,20 @@
 		option = {
 			name = "EVTOPTA187909"
 
-			prestige = -10
-			# TODO
+			prestige = -25
+			NEN = {
+				prestige = 10
+				all_core = { remove_core = USA }
+			}
+			any_pop = { consciousness = 6 }
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0
+					is_disarmed = no
+				}
+			}
 		}
 
 		# Go to war
@@ -1282,9 +1295,10 @@
 				attacker_goal = { casus_belli = annex_core_country }
 				defender_goal = { casus_belli = status_quo }
 			}
+
+			ai_chance = { factor = 90 }
 		}
 	}
-
 
 ### California ###
 
@@ -1626,17 +1640,59 @@
 			name = EVTOPTA99401
 
 			set_country_flag = emperornorton
+			government = absolute_monarchy
+			ruling_party_ideology = conservative
+			political_reform = none_voting
+			political_reform = yes_meeting
+			political_reform = free_press
+			political_reform = no_trade_unions
+			political_reform = underground_parties
+			## Election Flags ##
+				clr_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				clr_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+				add_country_modifier = { name = raving_loon duration = 3650 }
+			add_country_modifier = {
+				name = national_confusion
+				duration = 365
+			}
 			any_pop = {
 				consciousness = 1
 				militancy = -1
 			}
-			any_country = {
-				limit = {
-					OR = {
-						tag = USA
-						tag = MEX
-					}
-				}
+			random_country = {
+				limit = { tag = USA exists = yes }
+				relation = { who = THIS value = -50 }
+			}
+			random_country = {
+				limit = { tag = MEX exists = yes }
 				relation = { who = THIS value = -50 }
 			}
 
@@ -1653,13 +1709,36 @@
 				militancy = 2
 			}
 			money = 50000
-			any_country = {
-				limit = {
-					OR = {
-						tag = USA
-						tag = MEX
-					}
-				}
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+				add_country_modifier = { name = dour_economist duration = 3650 }
+			random_country = {
+				limit = { tag = USA exists = yes }
+				relation = { who = THIS value = 20 }
+			}
+			random_country = {
+				limit = { tag = MEX exists = yes }
 				relation = { who = THIS value = 20 }
 			}
 
@@ -1667,10 +1746,11 @@
 		}
 	}
 
-	country_event = { # TODO unite with above / id / localization
-		id = 99401
-		title = "EVTNAME99401"
-		desc = "EVTDESC99401"
+	#Description: California can pick whether to put Norton in charge or not.
+	country_event = {
+		id = 99406
+		title = "EVTNAME99406"
+		desc = "EVTDESC99406"
 		news = yes
 		news_desc_long = "EVTDESC99401_NEWS_LONG"
 		news_desc_medium = "EVTDESC99401_NEWS_MEDIUM"
@@ -1686,6 +1766,7 @@
 				year = 1870
 			}
 			NOT = { has_global_flag = extra_flavour_disabled }
+			NOT = { has_global_flag = leader_events_disabled }
 		}
 
 		mean_time_to_happen = {
@@ -1699,8 +1780,9 @@
 			}
 		}
 
+		# Interesting fellow
 		option = {
-			name = "Interesting fellow, that's for sure."
+			name = "EVTOPTA99406"
 
 			set_country_flag = emperornorton
 			any_pop = { scaled_militancy = { factor = 2 ideology = reactionary } }
@@ -1708,8 +1790,9 @@
 			ai_chance = { factor = 95 }
 		}
 
+		# Put him in charge
 		option = {
-			name = "Maybe he is right, what we need is an Emperor. Norton shall take charge!"
+			name = "EVTOPTB99406"
 
 			set_country_flag = emperornorton
 			government = absolute_monarchy

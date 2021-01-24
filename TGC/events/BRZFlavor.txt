@@ -276,16 +276,16 @@
 		option = {
 			name = "EVTOPTA116303"
 
-			BRZ_2439 = { #Bahia
-				any_owned = { add_province_modifier = { name = chinese_floods duration = 1095 } } # TODO drought or flood??
+			BRZ_2439 = { # Bahia
+				any_owned = { add_province_modifier = { name = provincial_drought duration = 1095 } }
 				any_pop = { reduce_pop = 0.90 }
 			}
-			BRZ_2428 = { #Pernambuco
-				any_owned = { add_province_modifier = { name = chinese_floods duration = 1095 } } # provincial_drought
+			BRZ_2428 = { # Pernambuco
+				any_owned = { add_province_modifier = { name = provincial_drought duration = 1095 } }
 				any_pop = { reduce_pop = 0.90 }
 			}
-			BRZ_2410 = { #Maranhão
-				any_owned = { add_province_modifier = { name = chinese_floods duration = 1095 } }
+			BRZ_2410 = { # Maranhão
+				any_owned = { add_province_modifier = { name = provincial_drought duration = 1095 } }
 				any_pop = { reduce_pop = 0.90 }
 			}
 		}
@@ -1558,7 +1558,33 @@
 			}
 		}
 
-		# TODO remove Dom Pedro II modifier if no longer a monarchy
+		#Description: A Retired Emperor - Sanity check event to remove the Dom Pedro II modifier if Brazil is not a monarchy.
+		country_event = {
+
+			id = 110076
+			title = "EVTNAME110076"
+			desc = "EVTDESC110076"
+			picture = "DPII"
+
+			trigger = {
+				has_country_modifier = dom_pedro_ii
+				NOT = {
+					government = absolute_monarchy
+					government = prussian_constitutionalism
+					government = hms_government
+				}
+			}
+
+			mean_time_to_happen = { days = 7 }
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA110076"
+
+				remove_country_modifier = dom_pedro_ii
+			}
+		}
 
 	## Vargas ##
 
@@ -1758,7 +1784,7 @@
 		id = 97087
 		title = "EVTNAME97087"
 		desc = "EVTDESC97087"
-		picture = "conquest_of_the_desert" # TODO change
+		picture = "conquest_of_the_amazon"
 
 		trigger = {
 			OR = {
@@ -2351,7 +2377,7 @@
 						}
 					}
 					relation = { who = THIS value = -50 }
-					# TODO renounce claim?
+					country_event = 34637
 				}
 
 				FROM = { country_event = 34630 }
@@ -2517,356 +2543,398 @@
 			}
 		}
 
-		#Description: Triggered for Brazil if the owner threatens war
-		country_event = {
-			id = 34632
-			title = "EVTNAME34632"
-			desc = "EVTDESC34632"
-			picture = "map_of_colombia"
+		## War ##
 
-			is_triggered_only = yes
+			#Description: Triggered for Brazil if the owner threatens war
+			country_event = {
+				id = 34632
+				title = "EVTNAME34632"
+				desc = "EVTDESC34632"
+				picture = "map_of_colombia"
 
-			immediate = {
-				random_owned = { limit = { province_id = 2459 } 2459 = { secede_province = FROM } }
-				random_owned = { limit = { province_id = 2462 } 2462 = { secede_province = FROM } }
-			}
+				is_triggered_only = yes
 
-			# Back off - lose prestige
-			option = {
-				name = "EVTOPTA34632"
+				immediate = {
+					random_owned = { limit = { province_id = 2459 } 2459 = { secede_province = FROM } }
+					random_owned = { limit = { province_id = 2462 } 2462 = { secede_province = FROM } }
+				}
 
-				prestige = -15
-				badboy = -1
-				random_owned = { limit = { owner = { tag = RGS } } 2459 = { remove_core = RGS } }
-				random_owned = { limit = { owner = { tag = BRZ } } 2459 = { remove_core = BRZ } }
-				random_owned = { limit = { owner = { tag = KPB } } 2459 = { remove_core = BRZ remove_core = KPB } }
-				random_owned = { limit = { owner = { tag = RGS } } 2462 = { remove_core = RGS } }
-				random_owned = { limit = { owner = { tag = BRZ } } 2462 = { remove_core = BRZ } }
-				random_owned = { limit = { owner = { tag = KPB } } 2462 = { remove_core = BRZ remove_core = KPB } }
+				# Back off - lose prestige
+				option = {
+					name = "EVTOPTA34632"
 
-				ai_chance = {
-					factor = 10
-					modifier = {
+					prestige = -15
+					badboy = -1
+					random_owned = { limit = { owner = { tag = RGS } } 2459 = { remove_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2459 = { remove_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2459 = { remove_core = BRZ remove_core = KPB } }
+					random_owned = { limit = { owner = { tag = RGS } } 2462 = { remove_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2462 = { remove_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2462 = { remove_core = BRZ remove_core = KPB } }
+
+					ai_chance = {
 						factor = 10
-						any_greater_power = { alliance_with = FROM }
-						NOT = { any_greater_power = { alliance_with = THIS } }
-					}
-					modifier = {
-						factor = 0
-						OR = {
-							military_score = FROM
-							NOT = { FROM = { brigades_compare = 1 } }
+						modifier = {
+							factor = 10
+							any_greater_power = { alliance_with = FROM }
+							NOT = { any_greater_power = { alliance_with = THIS } }
 						}
-					}
-				}
-			}
-
-			# Go to war
-			option = {
-				name = "EVTOPTB34632"
-
-				badboy = 3
-				set_country_flag = eastern_misiones_war
-
-				# Do I really need this?
-				random_owned = {
-					limit = { 2459 = { owner = { vassal_of = FROM } } }
-					2459 = { secede_province = FROM }
-				}
-				random_owned = {
-					limit = { 2462 = { owner = { vassal_of = FROM } } }
-					2462 = { secede_province = FROM }
-				}
-
-				war = {
-					target = FROM
-					attacker_goal = { casus_belli = acquire_core_state state_province_id = 2461 }
-					defender_goal = { casus_belli = cut_down_to_size }
-					call_ally = no
-				}
-
-				ai_chance = {
-					factor = 40
-					modifier = {
-						factor = 0
-						is_disarmed = yes
-					}
-					modifier = {
-						factor = 2
-						is_greater_power = yes
-					}
-				}
-			}
-		}
-
-		#Description: Triggered for Brazil if during the war for Eastern Misiones they own Rio Grande do Sul and control Misiones - claim all of Misiones or not
-		country_event = {
-			id = 34633
-			title = "EVTNAME34633"
-			desc = "EVTDESC34633"
-			picture = "map_of_colombia"
-
-			trigger = {
-				has_country_flag = eastern_misiones_war
-				owns = 2466
-				2554 =  { owner = { war_with = THIS } }
-				controls = 2461
-				OR = {
-					controls = 2459
-					controls = 2462
-				}
-				controls = 2554
-			}
-
-			mean_time_to_happen = {
-				months = 2
-			}
-
-			# Claim all of Misiones
-			option = {
-				name = "EVTOPTA34633"
-
-				badboy = 5
-				random_owned = { limit = { owner = { tag = RGS } } 2341 = { add_core = RGS } }
-				random_owned = { limit = { owner = { tag = BRZ } } 2341 = { add_core = BRZ } }
-				random_owned = { limit = { owner = { tag = KPB } } 2341 = { add_core = BRZ add_core = KPB } }
-				random_owned = { limit = { owner = { tag = RGS } } 2554 = { add_core = RGS } }
-				random_owned = { limit = { owner = { tag = BRZ } } 2554 = { add_core = BRZ } }
-				random_owned = { limit = { owner = { tag = KPB } } 2554 = { add_core = BRZ add_core = KPB } }
-
-				ai_chance = {
-					factor = 20
-					modifier = {
-						factor = 2
-						war_policy = jingoism
-					}
-					modifier = {
-						factor = 0
-						badboy = 0.75
-					}
-				}
-			}
-
-			# Do nothing
-			option = {
-				name = "EVTOPTB34633"
-
-				ai_chance = {
-					factor = 80
-					modifier = {
-						factor = 0.25
-						controls = 2348
-					}
-				}
-			}
-		}
-
-		#Description: Triggered for the USA if they are asked to arbitrate the dispute
-		country_event = {
-			id = 34634
-			title = "EVTNAME34634"
-			desc = "EVTDESC34634"
-			picture = "map_of_colombia"
-
-			is_triggered_only = yes
-
-			immediate = { set_global_flag = eastern_misiones_decided }
-
-			# Favor Brazil
-			option = {
-				name = "EVTOPTA34634"
-
-				random_country = { limit = { owns = 2461 } country_event = 34636 }
-				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 34635 }
-				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 34635 }
-				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 34635 }
-				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 34635 } }
-				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 34635 } }
-				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 34635 } }
-
-				ai_chance = {
-					factor = 50
-					modifier = {
-						factor = 0.5
-						2461 = { owner = { tag = KPB } }
-					}
-					modifier = {
-						factor = 0.8
-						2461 = {
-							owner = {
-								OR = {
-									government = absolute_monarchy
-									government = prussian_constitutionalism
-									government = hms_government
-								}
+						modifier = {
+							factor = 0
+							OR = {
+								military_score = FROM
+								NOT = { FROM = { brigades_compare = 1 } }
 							}
 						}
 					}
-					modifier = {
-						factor = 0.7
-						2461 = { owner = { NOT = { government = democracy } } }
+				}
+
+				# Go to war
+				option = {
+					name = "EVTOPTB34632"
+
+					badboy = 3
+					set_country_flag = eastern_misiones_war
+
+					# Do I really need this?
+					random_owned = {
+						limit = { 2459 = { owner = { vassal_of = FROM } } }
+						2459 = { secede_province = FROM }
 					}
-					modifier = {
-						factor = 0
-						2461 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+					random_owned = {
+						limit = { 2462 = { owner = { vassal_of = FROM } } }
+						2462 = { secede_province = FROM }
+					}
+
+					war = {
+						target = FROM
+						attacker_goal = { casus_belli = acquire_core_state state_province_id = 2461 }
+						defender_goal = { casus_belli = cut_down_to_size }
+						call_ally = no
+					}
+
+					ai_chance = {
+						factor = 40
+						modifier = {
+							factor = 0
+							is_disarmed = yes
+						}
+						modifier = {
+							factor = 2
+							is_greater_power = yes
+						}
 					}
 				}
 			}
 
-			# Favor Argentina
-			option = {
-				name = "EVTOPTB34634"
+			#Description: Triggered for Brazil if during the war for Eastern Misiones they own Rio Grande do Sul and control Misiones - claim all of Misiones or not
+			country_event = {
+				id = 34633
+				title = "EVTNAME34633"
+				desc = "EVTDESC34633"
+				picture = "map_of_colombia"
 
-				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 34636 }
-				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 34636 }
-				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 34636 }
-				random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 34636 } }
-				random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 34636 } }
-				random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 34636 } }
-				random_country = { limit = { owns = 2461 } country_event = 34635 }
+				trigger = {
+					has_country_flag = eastern_misiones_war
+					owns = 2466
+					2554 =  { owner = { war_with = THIS } }
+					controls = 2461
+					OR = {
+						controls = 2459
+						controls = 2462
+					}
+					controls = 2554
+				}
 
-				ai_chance = {
-					factor = 50
-					modifier = {
-						factor = 0.8
-						OR = {
+				mean_time_to_happen = {
+					months = 2
+				}
+
+				# Claim all of Misiones
+				option = {
+					name = "EVTOPTA34633"
+
+					badboy = 5
+					random_owned = { limit = { owner = { tag = RGS } } 2341 = { add_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2341 = { add_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2341 = { add_core = BRZ add_core = KPB } }
+					random_owned = { limit = { owner = { tag = RGS } } 2554 = { add_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2554 = { add_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2554 = { add_core = BRZ add_core = KPB } }
+
+					ai_chance = {
+						factor = 20
+						modifier = {
+							factor = 2
+							war_policy = jingoism
+						}
+						modifier = {
+							factor = 0
+							badboy = 0.75
+						}
+					}
+				}
+
+				# Do nothing
+				option = {
+					name = "EVTOPTB34633"
+
+					ai_chance = {
+						factor = 80
+						modifier = {
+							factor = 0.25
+							controls = 2348
+						}
+					}
+				}
+			}
+
+		## Arbitration ##
+
+			#Description: Triggered for the USA if they are asked to arbitrate the dispute
+			country_event = {
+				id = 34634
+				title = "EVTNAME34634"
+				desc = "EVTDESC34634"
+				picture = "map_of_colombia"
+
+				is_triggered_only = yes
+
+				immediate = { set_global_flag = eastern_misiones_decided }
+
+				# Favor Brazil
+				option = {
+					name = "EVTOPTA34634"
+
+					random_country = { limit = { owns = 2461 } country_event = 34636 }
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 34635 }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 34635 }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 34635 }
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 34635 } }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 34635 } }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 34635 } }
+
+					ai_chance = {
+						factor = 50
+						modifier = {
+							factor = 0.5
+							2461 = { owner = { tag = KPB } }
+						}
+						modifier = {
+							factor = 0.8
+							2461 = {
+								owner = {
+									OR = {
+										government = absolute_monarchy
+										government = prussian_constitutionalism
+										government = hms_government
+									}
+								}
+							}
+						}
+						modifier = {
+							factor = 0.7
+							2461 = { owner = { NOT = { government = democracy } } }
+						}
+						modifier = {
+							factor = 0
+							2461 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+						}
+					}
+				}
+
+				# Favor Argentina
+				option = {
+					name = "EVTOPTB34634"
+
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 34636 }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 34636 }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 34636 }
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 34636 } }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 34636 } }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 34636 } }
+					random_country = { limit = { owns = 2461 } country_event = 34635 }
+
+					ai_chance = {
+						factor = 50
+						modifier = {
+							factor = 0.8
+							OR = {
+								2341 = {
+									owner = {
+										OR = {
+											government = absolute_monarchy
+											government = prussian_constitutionalism
+											government = hms_government
+										}
+									}
+								}
+								2554 = {
+									owner = {
+										OR = {
+											government = absolute_monarchy
+											government = prussian_constitutionalism
+											government = hms_government
+										}
+									}
+								}
+							}
+						}
+						modifier = {
+							factor = 0.7
+							OR = {
+								2341 = { owner = { NOT = { government = democracy } } }
+								2554 = { owner = { NOT = { government = democracy } } }
+							}
+						}
+						modifier = {
+							factor = 0
+							OR = {
+								2341 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+								2554 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+							}
+						}
+					}
+				}
+
+				# Don't get involved
+				option = {
+					name = "EVTOPTC34634"
+
+					random_country = { limit = { tag = BRZ owns = 2461 } THIS = { diplomatic_influence = { who = BRZ value = -50 } } }
+					random_country = { limit = { tag = KPB owns = 2461 } THIS = { diplomatic_influence = { who = KPB value = -50 } } }
+					random_country = { limit = { tag = RGS owns = 2461 } THIS = { diplomatic_influence = { who = RGS value = -50 } } }
+					diplomatic_influence = { who = FROM value = -50 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 0
+							OR = {
+								relation = { who = FROM value = 0 }
+								2461 = { owner = { relation = { who = THIS value = 0 } } }
+							}
+						}
+					}
+				}
+			}
+
+			#Description: Triggered for the side whose argument was not favored by the Great Power - remove cores
+			country_event = {
+				id = 34635
+				title = "EVTNAME34635"
+				desc = "EVTDESC34635"
+				picture = "map_of_colombia"
+
+				is_triggered_only = yes
+
+				option = {
+					name = "EVTOPTA34635"
+
+					relation = { who = FROM value = -20 }
+
+					random_owned = {
+						limit = { 2459 = { is_core = THIS } }
+						2459 = { remove_core = THIS }
+					}
+					random_owned = {
+						limit = { 2459 = { is_core = CRT } CRT = { vassal_of = THIS } }
+						2459 = { remove_core = CRT }
+					}
+					random_owned = {
+						limit = { 2462 = { is_core = THIS } }
+						2462 = { remove_core = THIS }
+					}
+					random_owned = {
+						limit = { 2462 = { is_core = CRT } CRT = { vassal_of = THIS } }
+						2462 = { remove_core = CRT }
+					}
+				}
+			}
+
+			#Description: Triggered for the side whose argument was favored by the Great Power - gain prestige, provinces
+			country_event = {
+				id = 34636
+				title = "EVTNAME34636"
+				desc = "EVTDESC34636"
+				picture = "map_of_colombia"
+
+				is_triggered_only = yes
+
+				option = {
+					name = "EVTOPTA34636"
+
+					prestige = 5
+					relation = { who = FROM value = -20 }
+					FROM = { diplomatic_influence = { who = THIS value = 50 } }
+
+					random_owned = {
+						limit = { province_id = 2461 }
+						2459 = { secede_province = THIS }
+						2462 = { secede_province = THIS }
+					}
+					random_owned = {
+						limit = {
 							2341 = {
-								owner = {
-									OR = {
-										government = absolute_monarchy
-										government = prussian_constitutionalism
-										government = hms_government
-									}
-								}
-							}
-							2554 = {
-								owner = {
-									OR = {
-										government = absolute_monarchy
-										government = prussian_constitutionalism
-										government = hms_government
-									}
+								OR = {
+									owned_by = THIS
+									owner = { vassal_of = THIS }
 								}
 							}
 						}
+						2462 = { secede_province = THIS }
 					}
-					modifier = {
-						factor = 0.7
-						OR = {
-							2341 = { owner = { NOT = { government = democracy } } }
-							2554 = { owner = { NOT = { government = democracy } } }
+					random_owned = {
+						limit = {
+							2341 = {
+								OR = {
+									owned_by = THIS
+									owner = { vassal_of = THIS }
+								}
+							}
 						}
+						2459 = { secede_province = THIS }
 					}
-					modifier = {
-						factor = 0
-						OR = {
-							2341 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
-							2554 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
-						}
-					}
+
+					# TODO Clevelandia
 				}
 			}
 
-			# Don't get involved
-			option = {
-				name = "EVTOPTC34634"
-
-				random_country = { limit = { tag = BRZ owns = 2461 } THIS = { diplomatic_influence = { who = BRZ value = -50 } } }
-				random_country = { limit = { tag = KPB owns = 2461 } THIS = { diplomatic_influence = { who = KPB value = -50 } } }
-				random_country = { limit = { tag = RGS owns = 2461 } THIS = { diplomatic_influence = { who = RGS value = -50 } } }
-				diplomatic_influence = { who = FROM value = -50 }
-
-				ai_chance = {
-					factor = 10
-					modifier = {
-						factor = 0
-						OR = {
-							relation = { who = FROM value = 0 }
-							2461 = { owner = { relation = { who = THIS value = 0 } } }
-						}
-					}
-				}
-			}
-		}
-
-		#Description: Triggered for the side whose argument was not favored by the Great Power - remove cores
+		#Description: Triggered for the other countries who have claims in Eastern Misiones - renounce claim, or keep claim
 		country_event = {
-			id = 34635
-			title = "EVTNAME34635"
-			desc = "EVTDESC34635"
+			id = 34637
+			title = "EVTNAME34637"
+			desc = "EVTDESC34637"
 			picture = "map_of_colombia"
 
 			is_triggered_only = yes
 
+			# Renounce claim
 			option = {
-				name = "EVTOPTA34635"
+				name = "EVTOPTA34637"
 
-				relation = { who = FROM value = -20 }
+				relation = { who = FROM value = 100 }
 
 				random_owned = {
 					limit = { 2459 = { is_core = THIS } }
 					2459 = { remove_core = THIS }
 				}
 				random_owned = {
-					limit = { 2459 = { is_core = CRT } CRT = { vassal_of = THIS } }
-					2459 = { remove_core = CRT }
-				}
-				random_owned = {
 					limit = { 2462 = { is_core = THIS } }
 					2462 = { remove_core = THIS }
 				}
-				random_owned = {
-					limit = { 2462 = { is_core = CRT } CRT = { vassal_of = THIS } }
-					2462 = { remove_core = CRT }
-				}
+
+				ai_chance = { factor = 80 }
 			}
-		}
 
-		#Description: Triggered for the side whose argument was favored by the Great Power - gain prestige, provinces
-		country_event = {
-			id = 34636
-			title = "EVTNAME34636"
-			desc = "EVTDESC34636"
-			picture = "map_of_colombia"
-
-			is_triggered_only = yes
-
+			# Keep claim
 			option = {
-				name = "EVTOPTA34636"
+				name = "EVTOPTA34637"
 
 				prestige = 5
-				relation = { who = FROM value = -20 }
-				FROM = { diplomatic_influence = { who = THIS value = 50 } }
+				relation = { who = FROM value = -50 }
 
-				random_owned = {
-					limit = { province_id = 2461 }
-					2459 = { secede_province = THIS }
-					2462 = { secede_province = THIS }
-				}
-				random_owned = {
-					limit = {
-						2341 = {
-							OR = {
-								owned_by = THIS
-								owner = { vassal_of = THIS }
-							}
-						}
-					}
-					2462 = { secede_province = THIS }
-				}
-				random_owned = {
-					limit = {
-						2341 = {
-							OR = {
-								owned_by = THIS
-								owner = { vassal_of = THIS }
-							}
-						}
-					}
-					2459 = { secede_province = THIS }
-				}
-
-				# TODO Clevelandia
+				ai_chance = { factor = 20 }
 			}
 		}
 

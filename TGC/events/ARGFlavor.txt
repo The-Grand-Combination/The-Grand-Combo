@@ -1409,6 +1409,291 @@
 			}
 		}
 
+	## Argentinian involvement in the War of the Pacific ##
+
+		#Description: If the War in the Pacific happens or Bolivia gives up Atacama, Argentina can claim Salta-Jujuy
+		country_event = {
+			id = 97102
+			title = "EVTNAME97102"
+			desc = "EVTDESC97102"
+			picture = "pacificwar"
+
+			trigger = {
+				has_country_flag = war_in_the_pacific_blood_in_the_water
+			}
+
+			mean_time_to_happen = {
+				days = 14
+			}
+
+			fire_only_once = yes
+
+			immediate = { clr_country_flag = war_in_the_pacific_blood_in_the_water }
+
+			# Demand Salta-Jujuy
+			option = {
+				name = "EVTOPTA97102"
+
+				badboy = 2
+
+				3353 = { add_core = THIS }
+				2370 = { add_core = THIS }
+
+				random_country = {
+					limit = {
+						owns = 3353
+						owns = 2371
+						OR = {
+							tag = PBC
+							tag = BOL
+						}
+					}
+					relation = { who = THIS value = -150 }
+					country_event = 97103
+				}
+
+				ai_chance = {
+					factor = 70
+					modifier = {
+						factor = 0.5
+						war = yes
+					}
+					modifier = {
+						factor = 1.5
+						OR = {
+							PBC = { war = yes }
+							BOL = { war = yes }
+						}
+					}
+				}
+			}
+
+			# Bide our time
+			option = {
+				name = "EVTOPTB97102"
+
+				3353 = { add_core = THIS }
+				2370 = { add_core = THIS }
+
+				random_country = {
+					limit = {
+						owns = 3353
+						owns = 2370
+						OR = {
+							tag = PBC
+							tag = BOL
+						}
+					}
+					relation = { who = THIS value = -25 }
+				}
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 2.5
+						war = yes
+					}
+				}
+			}
+
+			# Do nothing
+			option = {
+				name = "EVTOPTC97102"
+
+				prestige = -5
+
+				random_country = {
+					limit = {
+						owns = 3353
+						owns = 2370
+						OR = {
+							tag = PBC
+							tag = BOL
+						}
+					}
+					relation = { who = THIS value = 100 }
+				}
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						is_disarmed = no
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for Bolivia/PBC if Argentina demands Salta-Jujuy
+		country_event = {
+			id = 97103
+			title = "EVTNAME97103"
+			desc = "EVTDESC97103"
+			picture = "pacificwar"
+
+			is_triggered_only = yes
+
+			# Preemptive strike
+			option = {
+				name = "EVTOPTA97103"
+
+				badboy = 2
+				treasury = -5000
+
+				random_owned = {
+					limit = { province_id = 3353 }
+					fort = 1
+				}
+				random_owned = {
+					limit = { province_id = 2370 }
+					fort = 1
+				}
+
+				add_country_modifier = { name = small_country_draft duration = 180 }
+
+				3400 = { add_core = BOL }
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					3400 = { add_core = PBC }
+				}
+				2371 = { add_core = BOL }
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					2371 = { add_core = PBC }
+				}
+
+				war = {
+					target = FROM
+					attacker_goal = { casus_belli = humiliate }
+					call_ally = no
+				}
+
+				ai_chance = {
+					factor = 20
+					modifier = {
+						factor = 2
+						NOT = { war_exhaustion = 10 }
+						NOT = { national_provinces_occupied = 0.1 }
+					}
+					modifier = {
+						factor = 0
+						NOT = { money = 10000 }
+					}
+				}
+			}
+
+			# Call their bluff
+			option = {
+				name = "EVTOPTB97103"
+
+				FROM = { country_event = 97104 }
+
+				ai_chance = { factor = 70 }
+			}
+
+			# Give in
+			option = {
+				name = "EVTOPTC97103"
+
+				prestige = -10
+
+				3353 = { remove_core = BOL }
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					3353 = { remove_core = PBC }
+				}
+				3353 = { secede_province = FROM }
+				2370 = { remove_core = BOL }
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					2370 = { remove_core = PBC }
+				}
+				2370 = { secede_province = FROM }
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						NOT = { national_provinces_occupied = 0.1 }
+					}
+					modifier = {
+						factor = 4
+						national_provinces_occupied = 0.4
+					}
+					modifier = {
+						factor = 0
+						NOT = { war_exhaustion = 10 }
+					}
+					modifier = {
+						factor = 4
+						war_exhaustion = 40
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for Argentina if Bolivia/PBC refuses
+		country_event = {
+			id = 97104
+			title = "EVTNAME97104"
+			desc = "EVTDESC97104"
+			picture = "pacificwar"
+
+			is_triggered_only = yes
+
+			# Go to war
+			option = {
+				name = "EVTOPTA97104"
+
+				badboy = 2
+				scaled_militancy = { issue = pacifism factor = 4 }
+				scaled_militancy = { issue = anti_military factor = 4 }
+				scaled_consciousness = { issue = pacifism factor = 4 }
+				scaled_consciousness = { issue = anti_military factor = 4 }
+				war = {
+					target = FROM
+					attacker_goal = { casus_belli = acquire_core_state state_province_id = 2370 }
+					call_ally = no
+				}
+
+				ai_chance = { factor = 95 }
+			}
+
+			# Back down
+			option = {
+				name = "EVTOPTB97104"
+
+				prestige = -10
+				3353 = { remove_core = THIS }
+				2370 = { remove_core = THIS }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 2
+						FROM = { brigades_compare = 2 }
+					}
+					modifier = {
+						factor = 2
+						NOT = { military_score = FROM }
+					}
+					modifier = {
+						factor = 0
+						is_greater_power = yes
+						FROM = { is_greater_power = no }
+					}
+					modifier = {
+						factor = 0
+						is_secondary_power = yes
+						FROM = {
+							is_greater_power = no
+							is_secondary_power = no
+						}
+					}
+				}
+			}
+		}
+
 ### Platine War in Argentina ###
 
 	## Entre Rios vs Argentina ##

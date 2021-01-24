@@ -361,6 +361,49 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+## TODO PBC irredentism
+# Salta-Jujuy (like in War of the Confederation)
+# All of Aracuania (like in War of the Confederation)
+# Northern and Central Chaco
+
+## Other ##
+
+	#Description: If Salaverry is being kept in prison, he can be released.
+	release_salaverry = {
+		picture = salaverry
+		alert = no
+		potential = {
+			has_country_modifier = salaverry_in_prison
+		}
+
+		allow = {
+		}
+
+		effect = {
+			remove_country_modifier = salaverry_in_prison
+			badboy = -1
+			any_pop = {
+				militancy = -1
+				consciousness = 1
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { # AI will not do unless one of these is satisfied
+					ruling_party_ideology = liberal
+					badboy = 0.99
+					AND = {
+						year = 1845
+						NOT = { tag = PBC }
+					}
+				}
+			}
+		}
+	}
+
 ## Bolivia ##
 
 	#Description: After 1898 Bolivia can make La Paz its capital.
@@ -588,12 +631,11 @@ political_decisions = {
 		}
 
 	# TODO claims on ECU
-
-	# TODO Peru gets Tacna from Chile in 1929
+	# deal with CLM to split their claims over ECU
 
 ## War of the Pacific ##
 
-	#Description: The winner of the War of the Pacific (who ends up owning all of Antofagasta) can start negotiating the claims in the region. # TODO split into multiple decisions
+	#Description: The winner of the War of the Pacific (who ends up owning all of Antofagasta) can start negotiating the claims in the region.
 	chile_treaty_of_peace_and_friendship = {
 		picture = chile_bolivia_peru_borders
 		potential = {
@@ -687,7 +729,6 @@ political_decisions = {
 					}
 				}
 				set_country_flag = treaty_of_peace_and_friendship_bolivia
-				country_event = 46610102
 			}
 
 			# Regarding northern Antofagasta
@@ -706,10 +747,44 @@ political_decisions = {
 					}
 				}
 				set_country_flag = treaty_of_lima_1929
+			}
+
+			random_country = {
+				limit = {
+					tag = CHL
+					OR = {
+						has_country_flag = treaty_of_peace_and_friendship_bolivia
+						has_country_flag = treaty_of_lima_1929
+					}
+				}
+				country_event = 46610102
+			}
+			random_country = {
+				limit = {
+					tag = PBC
+					OR = {
+						has_country_flag = treaty_of_peace_and_friendship_bolivia
+						has_country_flag = treaty_of_lima_1929
+					}
+				}
+				country_event = 46610102
+			}
+			random_country = {
+				limit = {
+					tag = PEU
+					has_country_flag = treaty_of_lima_1929
+				}
+				country_event = 46610102
+			}
+			random_country = {
+				limit = {
+					tag = BOL
+					has_country_flag = treaty_of_peace_and_friendship_bolivia
+				}
 				country_event = 46610102
 			}
 
-			# If Chile owns Tacna
+			# If Chile owns Tacna - A Great Power can arbitrate on whether Tacna belongs to Peru or Chile
 			random_owned = {
 				limit = {
 					owner = {
@@ -732,7 +807,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-## Other ##
+## Setup ##
 
 	literacy_all = {
 		potential = {
@@ -758,9 +833,7 @@ political_decisions = {
 				}
 			}
 			any_country = {
-				limit = {
-					NOT = { is_culture_group = germanic }
-				}
+				limit = { NOT = { is_culture_group = germanic } }
 				any_pop = {
 					limit = {
 						OR = {
@@ -772,12 +845,8 @@ political_decisions = {
 				}
 			}
 			any_country = {
-				slaves = {
-					literacy = -0.05
-				}
-				slaves = {
-					literacy = -0.05
-				}
+				slaves = { literacy = -0.05 }
+				slaves = { literacy = -0.05 }
 			}
 			any_country = {
 				any_pop = {
