@@ -2,104 +2,17 @@ political_decisions = {
 
 ## Slavery ##
 
-	atlantic_slave_trade_reinstate = {
-		picture = slave_trade
-		potential = {
-			is_greater_power = yes
-			slavery = yes_slavery
-			NOT = {
-				has_country_flag = slave_trade_leader
-				has_country_modifier = national_confusion
-				has_global_flag = slave_trade_reinstated
-				has_global_flag = berlin_conference
-				tag = USA
-				tag = EGY
-			}
-			OR = {
-				capital_scope = { continent = south_america }
-				capital_scope = { continent = north_america }
-				capital_scope = { continent = africa }
-			}
-		}
-
-		allow = {
-			slavery = yes_slavery
-			is_greater_power = yes
-			NOT = { has_country_flag = national_confusion }
-			OR = {
-				is_sphere_leader_of = ARO
-				is_sphere_leader_of = ASH
-				is_sphere_leader_of = BEN
-				is_sphere_leader_of = CLA
-				is_sphere_leader_of = DAH
-				is_sphere_leader_of = GBU
-				is_sphere_leader_of = MAS
-				is_sphere_leader_of = MOS
-				is_sphere_leader_of = SOK
-				is_sphere_leader_of = OYO
-				is_sphere_leader_of = SEG
-				is_sphere_leader_of = TOO
-				is_sphere_leader_of = WOL
-				is_sphere_leader_of = WRI
-				any_owned_province = { continent = africa }
-			}
-			total_num_of_ports = 8
-		}
-
-		effect = {
-			badboy = 10
-			any_greater_power = {
-				limit = {
-					NOT = { alliance_with = THIS }
-					slavery = no_slavery
-				}
-				relation = { who = THIS value = -200 }
-			}
-			add_country_modifier = {
-				name = atlantic_slave_trade
-				duration = -1
-			}
-			set_global_flag = slave_trade_reinstated
-			set_country_flag = slave_trade_leader
-			set_country_flag = the_slavery_debate
-			random_country = {
-				limit = { tag = ENG slavery = no_slavery }
-				add_casus_belli = {
-					target = THIS
-					type = cut_down_to_size
-					months = 360
-				}
-				relation = { who = THIS value = -200 }
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				OR = {
-					truce_with = ENG
-					badboy = 0.7
-				}
-			}
-		}
-	}
-
+	#Description: Slave countries can enslave their African and Asian Minor pops.
 	enslave_the_free = {
 		picture = slaves_cotton
 		alert = no
 		potential = {
 			slavery = yes_slavery
 			civilized = yes
-			has_global_flag = american_civil_war_has_happened
 			any_pop = {
 				OR = {
-					has_pop_culture = afro_american
-					has_pop_culture = afro_brazilian
+					is_culture_group = african_diaspora_cultures
 					# has_pop_culture = african_minor
-					has_pop_culture = afro_caribeno
-					has_pop_culture = afro_caribbean
-					has_pop_culture = afro_antillean
 					has_pop_culture = asian_minor
 				}
 				OR = {
@@ -107,95 +20,85 @@ political_decisions = {
 					pop_type = labourers
 					pop_type = craftsmen
 				}
-				NOT = {
-					OR = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
-				}
+				is_primary_culture = no
+				is_accepted_culture = no
+				location = { state_scope = { is_slave = yes } }
 			}
-			NOT = {
-				has_country_modifier = enslaved_freedom
-			}
+			NOT = { has_country_modifier = enslaved_freedom }
 		}
+
 		allow = {
+			war = no
 			money = 50000
 			NOT = {
-				militancy = 6
 				badboy = 1
+				militancy = 6
 			}
-			war = no
 		}
+
 		effect = {
 			badboy = 5
 			treasury = -50000
+			add_country_modifier = { name = enslaved_freedom duration = 5475 }
 			any_pop = {
 				militancy = 2
 				consciousness = 3
 			}
-			any_pop = {
-				limit = {
-					OR = {
-						is_culture_group = african_diaspora_cultures
-						# has_pop_culture = african_minor
-						has_pop_culture = asian_minor
-					}
-					OR = {
-						pop_type = farmers
-						pop_type = labourers
-					}
-					NOT = {
+
+			## Enslave African and Asian Minor pops ##
+				any_pop = {
+					limit = {
 						OR = {
-							is_primary_culture = yes
-							is_accepted_culture = yes
+							is_culture_group = african_diaspora_cultures
+							# has_pop_culture = african_minor
+							has_pop_culture = asian_minor
 						}
-					}
-					location = {
-						state_scope = {
-							is_slave = yes
-						}
-					}
-				}
-				pop_type = slaves
-				militancy = 7
-				consciousness = 7
-			}
-			any_pop = {
-				limit = {
-					OR = {
-						is_culture_group = african_diaspora_cultures
-						# has_pop_culture = african_minor
-						has_pop_culture = asian_minor
-					}
-					pop_type = craftsmen
-					NOT = {
 						OR = {
-							is_primary_culture = yes
-							is_accepted_culture = yes
+							pop_type = farmers
+							pop_type = labourers
 						}
+						is_primary_culture = no
+						is_accepted_culture = no
+						location = { state_scope = { is_slave = yes } }
 					}
-					location = {
-						state_scope = {
-							is_slave = yes
-						}
-					}
+					pop_type = slaves
+					militancy = 7
+					consciousness = 7
 				}
-				pop_type = slaves
-				militancy = 7
-				consciousness = 7
-			}
-			add_country_modifier = {
-				name = enslaved_freedom
-				duration = 5475
-			}
+				any_pop = {
+					limit = {
+						OR = {
+							is_culture_group = african_diaspora_cultures
+							# has_pop_culture = african_minor
+							has_pop_culture = asian_minor
+						}
+						pop_type = craftsmen
+						is_primary_culture = no
+						is_accepted_culture = no
+						location = { state_scope = { is_slave = yes } }
+					}
+					pop_type = slaves
+					# pop_type = slaves_factory
+					militancy = 7
+					consciousness = 7
+				}
 		}
+
 		ai_will_do = {
-			factor = 0.3
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
+			modifier = {
+				factor = 0
+				NOT = { money = 100000 }
+			}
 			modifier = {
 				factor = 0
 				OR = {
-					war = yes
 					tag = USA
+					war = yes
 				}
 			}
 			modifier = {
@@ -210,6 +113,7 @@ political_decisions = {
 		}
 	}
 
+	#Description: Non-constitutional monarchies with Serfdom can enslave their serfs.
 	enslave_the_serfs = {
 		alert = no
 		picture = enslave_the_serfs_image
@@ -219,13 +123,14 @@ political_decisions = {
 				government = prussian_constitutionalism
 			}
 			debt_law = serfdom
+			any_pop = { pop_type = serfs }
 		}
 
 		allow = {
 			war = no
-			ruling_party_ideology = reactionary
-			slavery = yes_slavery
 			state_n_government = 1
+			slavery = yes_slavery
+			ruling_party_ideology = reactionary
 		}
 
 		effect = {
@@ -242,16 +147,21 @@ political_decisions = {
 				militancy = 5
 				consciousness = 7
 			}
-			any_country = {
-				limit = { civilized = yes slavery = no_slavery is_greater_power = yes }
+			any_greater_power = {
+				limit = { slavery = no_slavery }
 				relation = { who = THIS value = -100 }
 			}
 			any_neighbor_country = {
-				limit = { is_greater_power = no civilized = yes slavery = no_slavery NOT = { vassal_of = THIS } NOT = { in_sphere = THIS } }
+				limit = {
+					is_greater_power = no
+					civilized = yes
+					slavery = no_slavery
+					NOT = { vassal_of = THIS }
+					NOT = { in_sphere = THIS }
+				}
 				relation = { who = THIS value = -50 }
 			}
 		}
-
 
 		ai_will_do = {
 			factor = 1
@@ -266,6 +176,7 @@ political_decisions = {
 		}
 	}
 
+	#Description: Spread Pro-slavery propaganda (lose prestige, militancy and consciousness over time)
 	pro_slavery_propaganda = {
 		picture = slavery_propaganda
 		alert = no
@@ -276,10 +187,9 @@ political_decisions = {
 			}
 			OR = {
 				NOT = { tag = USA }
-				year = 1860
+				NOT = { has_country_modifier = the_slavery_debate }
 			}
 			slavery = yes_slavery
-			civilized = yes
 			NOT = { has_country_modifier = slavery_propaganda }
 		}
 
@@ -290,251 +200,325 @@ political_decisions = {
 		}
 
 		effect = {
-			any_pop = {
-				militancy = -1
-				consciousness = -2
-				dominant_issue = {
-					value = yes_slavery
-					factor = 0.1
-				}
-			}
-			add_country_modifier = {
-				name = slavery_propaganda
-				duration = 5475
-			}
 			prestige = -15
 			badboy = 2
 			plurality = -5
 			treasury = -25000
+			any_pop = {
+				militancy = -1
+				consciousness = -2
+				dominant_issue = { value = yes_slavery factor = 0.1 }
+			}
+			add_country_modifier = { name = slavery_propaganda duration = 5475 }
 		}
 
 		ai_will_do = {
-			factor = 0.5
+			factor = 1
 			modifier = {
 				factor = 0
 				OR = {
 					war = yes
 					tag = USA
-					capital_scope = {
-						continent = europe
-					}
+					capital_scope = { continent = europe }
 				}
 			}
 		}
 	}
 
-	join_slave_trade = {
-		picture = slave_ship
-		potential = {
-			slavery = yes_slavery
-			has_global_flag = slave_trade_reinstated
-			NOT = { has_country_flag = slave_trade_leader }
-			NOT = { tag = USA }
-			NOT = { tag = EGY }
-			NOT = { has_country_flag = slave_trader }
-			capital_scope = {
-				OR = {
-					continent = north_america
-					continent = south_america
-					continent = africa
-				}
-			}
-		}
+	## Slave Trade ##
 
-		allow = {
-			slavery = yes_slavery
-			total_num_of_ports = 1
-			war = no
-			NOT = { has_country_modifier = national_confusion }
-		}
-
-		effect = {
-			badboy = 5
-			remove_country_modifier = the_slavery_debate
-			set_country_flag = the_slavery_debate
-			add_country_modifier = { name = atlantic_slave_trade duration = -1 }
-			set_country_flag = slave_trader
-			add_country_modifier = { name = national_confusion duration = 365 }
-			any_greater_power = {
-				limit = { slavery = no_slavery }
-				relation = {
-					who = THIS
-					value = -50
-				}
-			}
-			any_country = {
-				limit = {
-					OR = {
-						has_country_flag = slave_trade_leader
-						has_country_flag = slave_trader
-					}
-				}
-				relation = {
-					who = THIS
-					value = 80
-				}
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				war = yes
-			}
-			modifier = {
-				factor = 0
-				has_global_flag = berlin_conference
-			}
-			modifier = {
-				factor = 0
+		#Description: The Slave Trade can be reinstated by any slave country in Africa or the Americas that has influence in West Africa.
+		atlantic_slave_trade_reinstate = {
+			picture = slave_trade
+			potential = {
+				is_greater_power = yes
+				slavery = yes_slavery
 				NOT = {
+					has_global_flag = slave_trade_reinstated	# Already reinstated
+					has_country_flag = slave_trade_leader		# Already leader - probably redundant
+					has_global_flag = berlin_conference			# Berlin Conference Fired - too late
+					has_country_modifier = national_confusion	# Obviously
+					AND = {										# USA only if it keeps slavery long enough and beats the FSA
+						tag = USA
+						has_country_modifier = the_slavery_debate
+					}
+					tag = EGY									# DEVNOTE anzu-3278: And other Mediterranean African countries as well?
+				}
+				OR = {
+					capital_scope = { continent = south_america }
+					capital_scope = { continent = north_america }
+					capital_scope = { continent = africa }
+				}
+				OR = {
+					is_sphere_leader_of = ARO
+					is_sphere_leader_of = ASH
+					is_sphere_leader_of = BEN
+					is_sphere_leader_of = CLA
+					is_sphere_leader_of = DAH
+					is_sphere_leader_of = GBU
+					is_sphere_leader_of = MAS
+					is_sphere_leader_of = MOS
+					is_sphere_leader_of = SOK
+					is_sphere_leader_of = OYO
+					is_sphere_leader_of = SEG
+					is_sphere_leader_of = TOO
+					is_sphere_leader_of = WOL
+					is_sphere_leader_of = WRI
+					any_owned_province = { continent = africa }
+				}
+				NOT = { has_country_modifier = national_confusion }
+			}
+
+			allow = {
+				slavery = yes_slavery
+				is_greater_power = yes
+				total_num_of_ports = 8
+			}
+
+			effect = {
+				set_global_flag = slave_trade_reinstated
+				set_country_flag = slave_trade_leader
+				set_country_flag = the_slavery_debate
+
+				badboy = 10
+				add_country_modifier = { name = atlantic_slave_trade duration = -1 }
+				any_greater_power = {
+					limit = {
+						NOT = { alliance_with = THIS }
+						slavery = no_slavery
+					}
+					relation = { who = THIS value = -200 }
+				}
+
+				random_country = {
+					limit = {
+						tag = ENG
+						slavery = no_slavery
+					}
+					add_casus_belli = {
+						target = THIS
+						type = cut_down_to_size
+						months = 360
+					}
+					relation = { who = THIS value = -200 }
+				}
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
 					OR = {
-						ruling_party_ideology = reactionary
-						ruling_party_ideology = conservative
-						ruling_party_ideology = fascist
+						truce_with = ENG
+						badboy = 0.7
 					}
 				}
 			}
 		}
-	}
 
-	leave_slave_trade = {
-		picture = slaves_freed
-		alert = no
-		potential = {
-			has_country_flag = slave_trader
-		}
-
-		allow = {
-			war = no
-			NOT = { has_country_modifier = national_confusion }
-			upper_house = {
-				ideology = liberal
-				value = 0.38
-			}
-		}
-
-		effect = {
-			remove_country_modifier = the_slavery_debate
-			clr_country_flag = the_slavery_debate
-			remove_country_modifier = atlantic_slave_trade
-			add_country_modifier = { name = national_confusion duration = 365 }
-			clr_country_flag = slave_trader
-			any_country = {
-				limit = {
-					OR = {
-						has_country_flag = slave_trader
-						has_country_flag = slave_trade_leader
+		#Description: If the Slave Trade has been reinstated, any slave country in Africa and the Americas can join.
+		join_slave_trade = {
+			picture = slave_ship
+			potential = {
+				slavery = yes_slavery
+				has_global_flag = slave_trade_reinstated
+				NOT = {
+					has_country_flag = slave_trade_leader			# Already leader - probably redundant
+					has_country_flag = slave_trader					# Already slave trader
+					AND = {											# USA only if it keeps slavery long enough and beats the FSA
+						tag = USA
+						has_country_modifier = the_slavery_debate
 					}
+					tag = EGY										# DEVNOTE anzu-3278: And other Mediterranean African countries as well?
+				}
+				OR = {
+					capital_scope = { continent = south_america }
+					capital_scope = { continent = north_america }
+					capital_scope = { continent = africa }
+				}
+				NOT = { has_country_modifier = national_confusion }
+			}
+
+			allow = {
+				war = no
+				slavery = yes_slavery
+				total_num_of_ports = 1
+			}
+
+			effect = {
+				badboy = 5
+				remove_country_modifier = the_slavery_debate
+				set_country_flag = the_slavery_debate
+				add_country_modifier = { name = atlantic_slave_trade duration = -1 }
+				set_country_flag = slave_trader
+				add_country_modifier = { name = national_confusion duration = 365 }
+				any_greater_power = {
+					limit = { slavery = no_slavery }
 					relation = {
 						who = THIS
-						value = -60
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						OR = {
+							has_country_flag = slave_trade_leader
+							has_country_flag = slave_trader
+						}
+					}
+					relation = { who = THIS value = 80 }
+				}
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					war = yes
+				}
+				modifier = {
+					factor = 0
+					has_global_flag = berlin_conference
+				}
+				modifier = {
+					factor = 0
+					NOT = {
+						OR = {
+							ruling_party_ideology = reactionary
+							ruling_party_ideology = conservative
+							ruling_party_ideology = fascist
+						}
 					}
 				}
 			}
-			any_pop = {
-				militancy = -3
-				consciousness = 1
-			}
-			badboy = -4
 		}
 
-		ai_will_do = {
-			factor = 0.4
-			modifier = {
-				factor = 0
-				OR = {
-					is_greater_power = yes
-					is_secondary_power = yes
-					ruling_party_ideology = reactionary
-					NOT = {
+		#Description: Any country can leave the slave trade with enough liberal support.
+		leave_slave_trade = {
+			picture = slaves_freed
+			alert = no
+			potential = {
+				has_country_flag = slave_trader
+			}
+
+			allow = {
+				war = no
+				NOT = { has_country_modifier = national_confusion }
+				upper_house = {
+					ideology = liberal
+					value = 0.38
+				}
+			}
+
+			effect = {
+				clr_country_flag = the_slavery_debate
+				clr_country_flag = slave_trader
+
+				badboy = -4
+				remove_country_modifier = the_slavery_debate
+				remove_country_modifier = atlantic_slave_trade
+				add_country_modifier = { name = national_confusion duration = 365 }
+
+				any_country = {
+					limit = {
 						OR = {
+							has_country_flag = slave_trader
+							has_country_flag = slave_trade_leader
+						}
+						relation = { who = THIS value = -60 }
+					}
+				}
+				any_pop = {
+					militancy = -3
+					consciousness = 1
+				}
+			}
+
+			ai_will_do = {
+				factor = 0.4
+				modifier = {
+					factor = 0.1
+					OR = {
+						is_greater_power = yes
+						is_secondary_power = yes
+						ruling_party_ideology = reactionary
+						NOT = {
 							government = democracy
 							government = hms_government
 						}
 					}
 				}
-			}
-			modifier = {
-				factor = 10
-				OR = {
-					ruling_party_ideology = liberal
-					ruling_party_ideology = anarcho_liberal
+				modifier = {
+					factor = 10
+					OR = {
+						ruling_party_ideology = liberal
+						ruling_party_ideology = anarcho_liberal
+					}
 				}
-			}
-			modifier = { # When the Scramble for Africa begins and European powers move in, the Slave Trade should naturally fall apart
-				factor = 100
-				has_global_flag = berlin_conference
-			}
-		}
-	}
-
-	end_slave_trade = {
-		picture = slaves_freed
-		alert = no
-		potential = {
-			has_country_flag = slave_trade_leader
-		}
-
-		allow = {
-			war = no
-			NOT = { has_country_modifier = national_confusion }
-			upper_house = {
-				ideology = liberal
-				value = 0.51
-			}
-		}
-
-		effect = {
-			clr_global_flag = slave_trade_reinstated
-			clr_country_flag = slave_trade_leader
-			clr_country_flag = the_slavery_debate
-			remove_country_modifier = the_slavery_debate
-			remove_country_modifier = atlantic_slave_trade
-			add_country_modifier = { name = national_confusion duration = 365 }
-			any_country = {
-				limit = { has_country_flag = slave_trader }
-				set_country_flag = slave_trade_ended
-			}
-			badboy = -7
-			prestige = 10
-			any_pop = { militancy = -4 }
-			any_greater_power = {
-				limit = { NOT = { tag = THIS } }
-				relation = {
-					who = THIS
-					value = 50
+				modifier = { # When the Scramble for Africa begins and European powers move in, the Slave Trade should naturally fall apart
+					factor = 100
+					has_global_flag = berlin_conference
 				}
 			}
 		}
 
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				is_greater_power = yes
+		#Description: The Slave Trade leader can end the slave trade with enough liberal support.
+		end_slave_trade = {
+			picture = slaves_freed
+			alert = no
+			potential = {
+				has_country_flag = slave_trade_leader
 			}
-			modifier = {
-				factor = 100
-				is_greater_power = no
-				is_secondary_power = no
+
+			allow = {
+				war = no
+				NOT = { has_country_modifier = national_confusion }
+				upper_house = {
+					ideology = liberal
+					value = 0.51
+				}
+			}
+
+			effect = {
+				clr_global_flag = slave_trade_reinstated
+				clr_country_flag = slave_trade_leader
+				clr_country_flag = the_slavery_debate
+				prestige = 10
+				badboy = -7
+				remove_country_modifier = the_slavery_debate
+				remove_country_modifier = atlantic_slave_trade
+				add_country_modifier = { name = national_confusion duration = 365 }
+				any_country = {
+					limit = { has_country_flag = slave_trader }
+					set_country_flag = slave_trade_ended
+				}
+				any_pop = { militancy = -4 }
+				any_greater_power = {
+					limit = { NOT = { tag = THIS } }
+					relation = { who = THIS value = 50 }
+				}
+			}
+
+			ai_will_do = {
+				factor = 0.5
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
+				modifier = {
+					factor = 100
+					is_greater_power = no
+					is_secondary_power = no
+				}
 			}
 		}
-	}
 
 #from MiniMod-General.txt
+
 	remove_kebab = {
-	picture = remove_undesireables
-	alert = no
+		picture = remove_undesireables
+		alert = no
 		potential = {
-			ideological_thought = 1
-			NOT = {
-				has_country_modifier = kebabbies
-			}
-			NOT = {
-				tag = TUR
-			}
 			OR = {
 				tag = YUG
 				tag = SER
@@ -551,15 +535,19 @@ political_decisions = {
 				tag = CLC
 				tag = PNT
 			}
+			ideological_thought = 1
+			NOT = { has_country_modifier = kebabbies }
 		}
+
 		allow = {
 			ideological_thought = 1
 		}
+
 		effect = {
+			add_country_modifier = { name = kebabbies duration = 3650 }
+			add_country_modifier = { name = local_balkan_assim duration = 1080 }
 			any_pop = {
-				limit = {
-					culture = turkish
-				}
+				limit = { culture = turkish }
 				reduce_pop = 0.35
 				militancy = 9
 				consciousness = 6
@@ -568,9 +556,7 @@ political_decisions = {
 				limit = {
 					is_primary_culture = no
 					is_accepted_culture = no
-					NOT = {
-						culture = turkish
-					}
+					NOT = { culture = turkish }
 				}
 				reduce_pop = 0.95
 				militancy = 1
@@ -583,44 +569,16 @@ political_decisions = {
 						is_accepted_culture = yes
 					}
 				}
-				scaled_militancy = {
-					ideology = fascist
-					factor = -8
-				}
-				scaled_militancy = {
-					ideology = reactionary
-					factor = -4
-				}
-				scaled_militancy = {
-					ideology = socialist
-					factor = 4
-				}
-				scaled_militancy = {
-					ideology = communist
-					factor = 1
-				}
-				scaled_militancy = {
-					ideology = conservative
-					factor = -1
-				}
-				scaled_militancy = {
-					ideology = liberal
-					factor = 6
-				}
-				scaled_militancy = {
-					ideology = anarcho_liberal
-					factor = 7
-				}
-			}
-			add_country_modifier = {
-				name = kebabbies
-				duration = 3650
-			}
-			add_country_modifier = {
-					name = local_balkan_assim
-					duration = 1080
+				scaled_militancy = { ideology = fascist factor = -8 }
+				scaled_militancy = { ideology = reactionary factor = -4 }
+				scaled_militancy = { ideology = socialist factor = 4 }
+				scaled_militancy = { ideology = communist factor = 1 }
+				scaled_militancy = { ideology = conservative factor = -1 }
+				scaled_militancy = { ideology = liberal factor = 6 }
+				scaled_militancy = { ideology = anarcho_liberal factor = 7 }
 			}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -725,7 +683,9 @@ political_decisions = {
 			factor = 0
 		}
 	}
-#from Pop_manipulation
+
+## Internment Camps ##
+
 	internment_camps = {
 		picture = boer_war_camps2
 		potential = {
@@ -912,1663 +872,1664 @@ political_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
-	#Religious
-	intern_animist = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = animist } }
-			NOT = {
-				has_country_flag = interning_animists
-				has_country_flag = animist_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
+	## Religious ##
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_animists
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_catholic = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = catholic } }
-			NOT = {
-				has_country_flag = interning_catholics
-				has_country_flag = catholic_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_catholics
-			change_variable = { which = slowdown_point value = 6 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_coptic = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = coptic } }
-			NOT = {
-				has_country_flag = interning_coptics
-				has_country_flag = coptic_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_coptics
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_druze = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = druze } }
-			NOT = {
-				has_country_flag = interning_druzi
-				has_country_flag = druze_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_druzi
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_gelugpa = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = gelugpa } }
-			NOT = {
-				has_country_flag = interning_gelugpas
-				has_country_flag = gelugpa_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_gelugpas
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_hindu = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = hindu } }
-			NOT = {
-				has_country_flag = interning_hindus
-				has_country_flag = hindu_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_hindus
-			change_variable = { which = slowdown_point value = 12 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_ibadi = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = ibadi } }
-			NOT = {
-				has_country_flag = interning_ibadis
-				has_country_flag = ibadi_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_ibadis
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-	intern_bektashi = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = bektashi } }
-			NOT = {
-				has_country_flag = interning_bektashis
-				has_country_flag = bektashi_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_bektashis
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_jews = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = jewish } }
-			NOT = {
-				has_country_flag = interning_jewish
-				has_country_flag = jewish_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_jewish
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_mahayana = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = mahayana } }
-			NOT = {
-				has_country_flag = interning_mahayanas
-				has_country_flag = mahayana_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_mahayanas
-			change_variable = { which = slowdown_point value = 12 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_mormon = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = mormon } }
-			NOT = {
-				has_country_flag = interning_mormons
-				has_country_flag = mormon_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_mormons
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_orthodox = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = orthodox } }
-			NOT = {
-				has_country_flag = interning_orthodoxies
-				has_country_flag = orthodox_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_orthodoxies
-			change_variable = { which = slowdown_point value = 6 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_protestant = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = protestant } }
-			NOT = {
-				has_country_flag = interning_protestants
-				has_country_flag = protestant_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_protestants
-			change_variable = { which = slowdown_point value = 6 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_sikh = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = sikh } }
-			NOT = {
-				has_country_flag = interning_sikhs
-				has_country_flag = sikh_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_sikhs
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_shiite = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = shiite } }
-			NOT = {
-				has_country_flag = interning_shiites
-				has_country_flag = shiite_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_shiites
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_shinto = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = hindu } }
-			NOT = {
-				has_country_flag = interning_shintos
-				has_country_flag = shinto_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_shintos
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_sunni = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = sunni } }
-			NOT = {
-				has_country_flag = interning_sunnis
-				has_country_flag = sunni_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_sunnis
-			change_variable = { which = slowdown_point value = 6 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_theravada = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = gelugpa } }
-			NOT = {
-				has_country_flag = interning_theravadas
-				has_country_flag = theravada_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_theravadas
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_yazidi = {
-		picture = generic_religion
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_religions
-			any_owned_province = { any_pop = { has_pop_religion = yazidi } }
-			NOT = {
-				has_country_flag = interning_yazidis
-				has_country_flag = yazidi_country
-			}
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_yazidis
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	#Cultural
-	intern_african_diaspora_cultures = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = african_diaspora_cultures
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
+		intern_animist = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = animist } }
+				NOT = {
+					has_country_flag = interning_animists
+					has_country_flag = animist_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_african_diaspora_cultures }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_animists
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_african_diaspora_cultures
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_central_african = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = central_african
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
+		intern_catholic = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = catholic } }
+				NOT = {
+					has_country_flag = interning_catholics
+					has_country_flag = catholic_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_central_african }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_catholics
+				change_variable = { which = slowdown_point value = 6 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_central_african
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_east_african = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = east_african
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
+		intern_coptic = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = coptic } }
+				NOT = {
+					has_country_flag = interning_coptics
+					has_country_flag = coptic_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_east_african }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_coptics
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_east_african
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_southern_african = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = southern_african
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
+		intern_druze = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = druze } }
+				NOT = {
+					has_country_flag = interning_druzi
+					has_country_flag = druze_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_southern_african }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_druzi
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
+		intern_gelugpa = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = gelugpa } }
+				NOT = {
+					has_country_flag = interning_gelugpas
+					has_country_flag = gelugpa_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_gelugpas
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		effect = {
-			set_country_flag = interning_southern_african
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
+		intern_hindu = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = hindu } }
+				NOT = {
+					has_country_flag = interning_hindus
+					has_country_flag = hindu_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
 
-	# interning_finnougric_people = {
-		# picture = generic_culture
-		# potential = {
-			# has_country_modifier = interment_camps
-			# has_country_flag = interning_cultures
-			# any_owned_province = {
-				# any_pop = {
-					# is_culture_group = finnougric
-					# NOT = {
-						# is_primary_culture = yes
-						# is_accepted_culture = yes
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_hindus
+				change_variable = { which = slowdown_point value = 12 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_ibadi = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = ibadi } }
+				NOT = {
+					has_country_flag = interning_ibadis
+					has_country_flag = ibadi_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_ibadis
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+		intern_bektashi = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = bektashi } }
+				NOT = {
+					has_country_flag = interning_bektashis
+					has_country_flag = bektashi_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_bektashis
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_jews = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = jewish } }
+				NOT = {
+					has_country_flag = interning_jewish
+					has_country_flag = jewish_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_jewish
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_mahayana = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = mahayana } }
+				NOT = {
+					has_country_flag = interning_mahayanas
+					has_country_flag = mahayana_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_mahayanas
+				change_variable = { which = slowdown_point value = 12 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_mormon = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = mormon } }
+				NOT = {
+					has_country_flag = interning_mormons
+					has_country_flag = mormon_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_mormons
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_orthodox = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = orthodox } }
+				NOT = {
+					has_country_flag = interning_orthodoxies
+					has_country_flag = orthodox_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_orthodoxies
+				change_variable = { which = slowdown_point value = 6 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_protestant = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = protestant } }
+				NOT = {
+					has_country_flag = interning_protestants
+					has_country_flag = protestant_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_protestants
+				change_variable = { which = slowdown_point value = 6 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_sikh = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = sikh } }
+				NOT = {
+					has_country_flag = interning_sikhs
+					has_country_flag = sikh_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_sikhs
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_shiite = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = shiite } }
+				NOT = {
+					has_country_flag = interning_shiites
+					has_country_flag = shiite_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_shiites
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_shinto = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = hindu } }
+				NOT = {
+					has_country_flag = interning_shintos
+					has_country_flag = shinto_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_shintos
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_sunni = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = sunni } }
+				NOT = {
+					has_country_flag = interning_sunnis
+					has_country_flag = sunni_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_sunnis
+				change_variable = { which = slowdown_point value = 6 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_theravada = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = gelugpa } }
+				NOT = {
+					has_country_flag = interning_theravadas
+					has_country_flag = theravada_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_theravadas
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_yazidi = {
+			picture = generic_religion
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_religions
+				any_owned_province = { any_pop = { has_pop_religion = yazidi } }
+				NOT = {
+					has_country_flag = interning_yazidis
+					has_country_flag = yazidi_country
+				}
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_yazidis
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+	## Cultural ##
+
+		intern_african_diaspora_cultures = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = african_diaspora_cultures
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_african_diaspora_cultures }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_african_diaspora_cultures
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_central_african = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = central_african
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_central_african }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_central_african
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_east_african = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = east_african
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_east_african }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_east_african
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_southern_african = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = southern_african
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_southern_african }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_southern_african
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		# interning_finnougric_people = {
+			# picture = generic_culture
+			# potential = {
+				# has_country_modifier = interment_camps
+				# has_country_flag = interning_cultures
+				# any_owned_province = {
+					# any_pop = {
+						# is_culture_group = finnougric
+						# NOT = {
+							# is_primary_culture = yes
+							# is_accepted_culture = yes
+						# }
 					# }
 				# }
+				# NOT = { has_country_flag = interning_finnougric }
+				# OR = {
+					# has_country_flag = government_decisions_on
+					# ai = yes
+				# }
 			# }
-			# NOT = { has_country_flag = interning_finnougric }
-			# OR = {
-				# has_country_flag = government_decisions_on
-				# ai = yes
+
+			# allow = {
 			# }
+
+			# effect = {
+				# set_country_flag = interning_finnougric
+				# change_variable = { which = slowdown_point value = 1 }
+			# }
+			# ai_will_do = { factor = 0 }
 		# }
 
-		# allow = {
-		# }
-
-		# effect = {
-			# set_country_flag = interning_finnougric
-			# change_variable = { which = slowdown_point value = 1 }
-		# }
-		# ai_will_do = { factor = 0 }
-	# }
-
-
-
-	intern_west_african = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = west_african
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_west_african = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = west_african
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_west_african }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_west_african }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_west_african
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_west_african
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_pan_albanian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = pan_albanian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_pan_albanian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = pan_albanian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_pan_albanian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_pan_albanian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_pan_albanian
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_pan_albanian
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_latin_american_cultures = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = latin_american_cultures
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_latin_american_cultures = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = latin_american_cultures
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_latin_american_cultures }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_latin_american_cultures }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_latin_american_cultures
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_latin_american_cultures
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_native_american = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = native_american
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_native_american = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = native_american
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_native_american }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_native_american }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_native_american
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_native_american
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_american_cultures = { #North American
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = american_cultures
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_american_cultures = { #North American
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = american_cultures
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_american_cultures }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_american_cultures }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_american_cultures
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_american_cultures
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_arab = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = arab
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_arab = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = arab
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_arab }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_arab }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_arab
+				change_variable = { which = slowdown_point value = 3 }
+
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_arab
-			change_variable = { which = slowdown_point value = 3 }
-
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_east_asian = { #Chinese
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = east_asian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_east_asian = { #Chinese
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = east_asian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_east_asian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_east_asian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_east_asian
+				change_variable = { which = slowdown_point value = 8 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_east_asian
-			change_variable = { which = slowdown_point value = 8 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_central_asian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = central_asian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_central_asian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = central_asian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_central_asian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_central_asian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_central_asian
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_central_asian
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_far_east_asian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = far_east_asian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_far_east_asian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = far_east_asian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_far_east_asian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_far_east_asian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_far_east_asian
+				change_variable = { which = slowdown_point value = 6 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_far_east_asian
-			change_variable = { which = slowdown_point value = 6 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_southeast_asian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = southeast_asian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_southeast_asian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = southeast_asian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_southeast_asian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_southeast_asian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_southeast_asian
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_southeast_asian
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_baltic = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = baltic
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_baltic = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = baltic
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_baltic }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_baltic
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_beneluxian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = beneluxian
+				NOT = { has_country_flag = interning_baltic }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_beneluxian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
-		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_beneluxian
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_british = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = pan_british
-				}
+			effect = {
+				set_country_flag = interning_baltic
+				change_variable = { which = slowdown_point value = 2 }
 			}
-			NOT = { has_country_flag = interning_british }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_british
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_caucasian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = caucasian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_beneluxian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = beneluxian
 					}
 				}
+				NOT = { has_country_flag = interning_beneluxian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_caucasian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_beneluxian
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_caucasian
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_czecho_slovak_culture_group = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = czecho_slovak_culture_group
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_british = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = pan_british
 					}
 				}
+				NOT = { has_country_flag = interning_british }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_czecho_slovak_culture_group }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_british
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_czecho_slovak_culture_group
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_neo_european_cultures = { #European Diaspora
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = neo_european_cultures
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_caucasian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = caucasian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_neo_european_cultures }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_neo_european_cultures
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_french = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = pan_french
+				NOT = { has_country_flag = interning_caucasian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_french }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
-		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_french
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_germanic = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = germanic
-				}
+			effect = {
+				set_country_flag = interning_caucasian
+				change_variable = { which = slowdown_point value = 2 }
 			}
-			NOT = { has_country_flag = interning_germanics }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_germanics
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_hungarian_culture_group = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = hungarian_culture_group
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_czecho_slovak_culture_group = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = czecho_slovak_culture_group
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_hungarian_culture_group }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_hungarian_culture_group
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_iberian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = iberian
+				NOT = { has_country_flag = interning_czecho_slovak_culture_group }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_iberian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_czecho_slovak_culture_group
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_iberian
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_south_asian = { #Indians
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = south_asian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_neo_european_cultures = { #European Diaspora
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = neo_european_cultures
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_neo_european_cultures }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_south_asian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_neo_european_cultures
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_south_asian
-			change_variable = { which = slowdown_point value = 8 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_indo_iranian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = indo_iranian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_french = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = pan_french
 					}
 				}
+				NOT = { has_country_flag = interning_french }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_indo_iranian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_french
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_indo_iranian
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_iranian_turanian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = iranian_turanian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_germanic = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = germanic
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_iranian_turanian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_iranian_turanian
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_italian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = italian
+				NOT = { has_country_flag = interning_germanics }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_italian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
-		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_italian
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_jewish_cultures = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = jewish_cultures
-				}
+			effect = {
+				set_country_flag = interning_germanics
+				change_variable = { which = slowdown_point value = 4 }
 			}
-			NOT = { has_country_flag = interning_jewish_cultures }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_jewish_cultures
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_levantine = { #Greco-Caucasian
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = levantine
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_hungarian_culture_group = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = hungarian_culture_group
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
+				NOT = { has_country_flag = interning_hungarian_culture_group }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_levantine }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_hungarian_culture_group
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_levantine
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_oceanic = { #Pacific Islander
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = oceanic
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_iberian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = iberian
 					}
 				}
+				NOT = { has_country_flag = interning_iberian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
 			}
-			NOT = { has_country_flag = interning_oceanic }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_iberian
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_oceanic
-			change_variable = { which = slowdown_point value = 1 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_pan_romanian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = pan_romanian
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_south_asian = { #Indians
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = south_asian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_pan_romanian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_pan_romanian
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_scandinavian = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = scandinavian
+				NOT = { has_country_flag = interning_south_asian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_scandinavian }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_south_asian
+				change_variable = { which = slowdown_point value = 8 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_scandinavian
-			change_variable = { which = slowdown_point value = 3 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_east_slavic = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = east_slavic
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_indo_iranian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = indo_iranian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_east_slavic }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_east_slavic
-			change_variable = { which = slowdown_point value = 6 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_south_slavic = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_primary_culture = no
-					is_accepted_culture = no
-					is_culture_group = south_slavic
+				NOT = { has_country_flag = interning_indo_iranian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_south_slavic }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_indo_iranian
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_south_slavic
-			change_variable = { which = slowdown_point value = 4 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_polish_culture_group = { #Western Slavic
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = polish_culture_group
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
+		intern_iranian_turanian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = iranian_turanian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
 					}
 				}
-			}
-			NOT = { has_country_flag = interning_polish_culture_group }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			set_country_flag = interning_polish_culture_group
-			change_variable = { which = slowdown_point value = 2 }
-		}
-		ai_will_do = { factor = 0 }
-	}
-
-	intern_turko_semitic = {
-		picture = generic_culture
-		potential = {
-			has_country_modifier = interment_camps
-			has_country_flag = interning_cultures
-			any_owned_province = {
-				any_pop = {
-					is_culture_group = turko_semitic
-					NOT = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
+				NOT = { has_country_flag = interning_iranian_turanian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
 				}
 			}
-			NOT = { has_country_flag = interning_turko_semitic }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
+
+			allow = {
 			}
+
+			effect = {
+				set_country_flag = interning_iranian_turanian
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
+		intern_italian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = italian
+					}
+				}
+				NOT = { has_country_flag = interning_italian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_italian
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
 		}
 
-		effect = {
-			set_country_flag = interning_turko_semitic
-			change_variable = { which = slowdown_point value = 4 }
+		intern_jewish_cultures = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = jewish_cultures
+					}
+				}
+				NOT = { has_country_flag = interning_jewish_cultures }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_jewish_cultures
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
 		}
-		ai_will_do = { factor = 0 }
-	}
+
+		intern_levantine = { #Greco-Caucasian
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = levantine
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_levantine }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_levantine
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_oceanic = { #Pacific Islander
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = oceanic
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_oceanic }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_oceanic
+				change_variable = { which = slowdown_point value = 1 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_pan_romanian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = pan_romanian
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_pan_romanian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_pan_romanian
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_scandinavian = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = scandinavian
+					}
+				}
+				NOT = { has_country_flag = interning_scandinavian }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_scandinavian
+				change_variable = { which = slowdown_point value = 3 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_east_slavic = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = east_slavic
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_east_slavic }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_east_slavic
+				change_variable = { which = slowdown_point value = 6 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_south_slavic = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_primary_culture = no
+						is_accepted_culture = no
+						is_culture_group = south_slavic
+					}
+				}
+				NOT = { has_country_flag = interning_south_slavic }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_south_slavic
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_polish_culture_group = { #Western Slavic
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = polish_culture_group
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_polish_culture_group }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_polish_culture_group
+				change_variable = { which = slowdown_point value = 2 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
+		intern_turko_semitic = {
+			picture = generic_culture
+			potential = {
+				has_country_modifier = interment_camps
+				has_country_flag = interning_cultures
+				any_owned_province = {
+					any_pop = {
+						is_culture_group = turko_semitic
+						NOT = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+				}
+				NOT = { has_country_flag = interning_turko_semitic }
+				OR = {
+					has_country_flag = government_decisions_on
+					ai = yes
+				}
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_country_flag = interning_turko_semitic
+				change_variable = { which = slowdown_point value = 4 }
+			}
+			ai_will_do = { factor = 0 }
+		}
+
 #from Political.txt
 	genocide_minorities = {
 		picture = genocide_minorities
@@ -2723,16 +2684,14 @@ political_decisions = {
 #from Communism.txt
 	kill_the_commies = {
 		potential = {
-			is_ideology_enabled = socialist
-			is_ideology_enabled = communist
-			average_militancy = 7
 			OR = {
 				government = absolute_monarchy
 				government = fascist_dictatorship
 			}
-			NOT = {
-				has_country_modifier = killcommies
-			}
+			is_ideology_enabled = socialist
+			is_ideology_enabled = communist
+			average_militancy = 7
+			NOT = { has_country_modifier = killcommies }
 		}
 
 		allow = {
@@ -2756,7 +2715,7 @@ political_decisions = {
 		}
 
 		ai_will_do = {
-			factor = 0.4
+			factor = 0.5
 			modifier = {
 				factor = 2
 				num_of_revolts = 1
@@ -2767,5 +2726,4 @@ political_decisions = {
 			}
 		}
 	}
-
 }
