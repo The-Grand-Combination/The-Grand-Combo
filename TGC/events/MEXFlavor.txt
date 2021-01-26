@@ -1,5 +1,140 @@
 ## Political ##
 
+	#Description: The Seven Laws - Mexico becomes a dictatorship
+	country_event = {
+
+		id = 44834
+		title = EVTNAME44834
+		desc = EVTDESC44834
+		picture = "antonio_lopez_de_santa_ana"
+
+		trigger = {
+			tag = MEX
+			government = democracy
+		}
+
+		mean_time_to_happen = {
+			months = 14
+			modifier = {
+				factor = 1.5
+				war = no
+			}
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = EVTOPTA44834
+
+			clr_country_flag = pol_reform_blocker
+			clr_country_flag = democracy_gov
+			set_country_flag = presidential_dictatorship_gov
+			government = presidential_dictatorship
+
+			add_country_modifier = { name = fight_the_power duration = 3650 }
+			political_reform = landed_voting
+			political_reform = appointed
+		}
+	}
+
+	#Description: A New Constitution? - become a democracy or stay a dictatorship
+	country_event = {
+
+		id = 44833
+		title = EVTNAME44833
+		desc = EVTDESC44833
+		picture = "DIM_dagbladzegel"
+
+		trigger = {
+			tag = MEX
+			government = presidential_dictatorship
+			centralization = unitary
+			year = 1845
+			average_militancy = 3
+		}
+
+		mean_time_to_happen = {
+			months = 2
+		}
+
+		fire_only_once = yes
+
+		# Restore the constitution of 1824 - ecome a democracy
+		option = {
+			name = EVTOPTA44833
+
+			clr_country_flag = presidential_dictatorship_gov
+			set_country_flag = democracy_gov
+			government = democracy
+			random_owned = {
+				limit = {
+					owner = {
+						OR = {
+							vote_franschise = none_voting
+							vote_franschise = landed_voting
+							vote_franschise = wealth_weighted_voting
+						}
+					}
+				}
+				owner = { political_reform = wealth_voting }
+			}
+			random_owned = {
+				limit = { upper_house_composition = party_appointed }
+				owner = { political_reform = appointed }
+			}
+			political_reform = federalism
+			any_pop = {
+				scaled_militancy = { ideology = reactionary factor = 2 }
+				scaled_militancy = { ideology = conservative factor = 2 }
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Stay a dictatorship
+		option = {
+			name = EVTOPTB44833
+
+			random_owned = {
+				limit = { owner = { NOT = { vote_franschise = none_voting } } }
+				owner = { political_reform = landed_voting }
+			}
+			random_owned = {
+				limit = { NOT = { upper_house_composition = party_appointed } }
+				owner = { political_reform = party_appointed }
+			}
+			## Increase Schools by 1 ##
+				random_owned = {
+					limit = { owner = { school_reforms = no_schools } }
+					owner = { political_reform = low_schools }
+				}
+				random_owned = {
+					limit = { owner = { school_reforms = low_schools } }
+					owner = { political_reform = acceptable_schools }
+				}
+				random_owned = {
+					limit = { owner = { school_reforms = acceptable_schools } }
+					owner = { political_reform = good_schools }
+				}
+			any_pop = {
+				scaled_militancy = { ideology = reactionary factor = -2 }
+				scaled_militancy = { ideology = conservative factor = -2 }
+				scaled_militancy = { ideology = liberal factor = 4 }
+				scaled_consciousness = { ideology = liberal factor = 4 }
+			}
+
+			any_owned = {
+				limit = { average_militancy = 6 }
+				add_province_modifier = {
+					name = peasant_revolt
+					duration = 1095
+				}
+			}
+
+			ai_chance = { factor = 20 }
+		}
+	}
+
 	#Description: The Plan of Tuxtepec - Porfirio Diaz becomes president
 	country_event = {
 
