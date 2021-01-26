@@ -955,6 +955,7 @@ country_event = {
 		clr_country_flag = vote_reform_blocker
 		clr_country_flag = pol_reform_blocker
 		clr_country_flag = willem_i
+		set_country_flag = had_liberal_revolution #Should *theoretically* prevent the liberal revolution event chain
 		remove_country_modifier = willem_i_absolutism
 		remove_country_modifier = willem_i_limited_absolutism
 		add_country_modifier = { name = willem_i_legacy duration = -1 }
@@ -967,7 +968,6 @@ country_event = {
 	id = 993525
 	title = "EVTNAME993525"
 	desc = "EVTDESC993525"
-	picture = "nederlandsch_congres" #Needs picture
 
 	trigger = {
 		has_country_modifier = willem_i_absolutism
@@ -981,7 +981,7 @@ country_event = {
 		name = "EVTOPTA993525"
 		any_pop = {
 			limit = {
-				culture = dutch
+				has_pop_culture = dutch
 				OR = {
 					type = soldiers
 					type = officers
@@ -993,7 +993,6 @@ country_event = {
 					value = liberal
 					factor = 0.1
 					}
-				}
 				scaled_militancy = 3
 			}
 		}
@@ -1003,7 +1002,6 @@ country_event = {
 	id = 993526
 	title = "EVTNAME993526"
 	desc = "EVTDESC993526"
-	picture = "nederlandsch_congres" #Needs picture
 
 	trigger = {
 		has_country_modifier = willem_i_absolutism
@@ -1017,7 +1015,7 @@ country_event = {
 		name = "EVTOPTA993526"
 		any_pop = {
 			limit = {
-				culture = dutch
+				has_pop_culture = dutch
 				OR = {
 					type = labourers
 					type = farmers
@@ -1039,7 +1037,6 @@ country_event = {
 	id = 993527
 	title = "EVTNAME993527"
 	desc = "EVTDESC993527"
-	picture = "nederlandsch_congres" #Needs picture
 
 	trigger = {
 		has_country_modifier = willem_i_absolutism
@@ -1053,8 +1050,8 @@ country_event = {
 		name = "EVTOPTA993527"
 		any_pop = {
 			limit = {
-				culture = dutch
-				religion = protestant
+				has_pop_culture = dutch
+				has_pop_religion = protestant
 				type = clergymen
 			}
 				ideology = {
@@ -1093,7 +1090,10 @@ country_event = {
 			government = absolute_monarchy
 		}
 		year = 1839
-		NOT = { has_country_flag = had_liberal_revolution }
+		OR = {
+			NOT = { has_country_flag = had_liberal_revolution }
+			has_country_modifier = { willem_i_legacy }
+		}
 	}
 
 	mean_time_to_happen =  { months = 12 }
@@ -1132,7 +1132,10 @@ country_event = {
 			year = 1840
 			has_country_flag = thorbecke
 		}
-		NOT = { has_country_flag = had_liberal_revolution }
+		OR = {
+			NOT = { has_country_flag = had_liberal_revolution }
+			has_country_modifier = willem_i_legacy
+		}
 		OR = {
 			NOT = {
 				poor_strata_life_needs = 0.30
@@ -1201,7 +1204,16 @@ country_event = {
 		political_reform = open_borders
 		remove_country_modifier = global_liberal_agitation
 		remove_country_modifier = willem_i_legacy
-		country_event = 10051
+		random_country = {
+			limit = {
+			tag = THIS
+			OR = {
+				has_country_flag = liberal_revolution_in_progress
+				has_country_flag = liberal_revolution_fired
+				}
+			}
+			country_event = 10051
+		}
 		any_owned = {
 			limit = { is_colonial = no }
 			remove_province_modifier = liberal_agitation
@@ -1235,7 +1247,10 @@ country_event = {
 		has_country_flag = negenmannen
 		has_country_modifier = springtime_of_nations
 		average_militancy = 3
-		NOT = { has_country_flag = had_liberal_revolution }
+		OR = {
+			NOT = { has_country_flag = had_liberal_revolution }
+			has_country_modifier = willem_i_legacy
+		}
 	}
 
 	mean_time_to_happen =  {
@@ -1313,7 +1328,16 @@ country_event = {
 				ideology = { factor = -0.05 value = liberal }
 			}
 		}
-		country_event = 10051
+		random_country = {
+			limit = {
+			tag = THIS
+			OR = {
+				has_country_flag = liberal_revolution_in_progress
+				has_country_flag = liberal_revolution_fired
+				}
+			}
+			country_event = 10051
+		}
 
 		ai_chance = { factor = 90 }
 	}
@@ -1411,6 +1435,16 @@ country_event = {
 				}
 			}
 			militancy = -2
+		}
+		random_country = {
+			limit = {
+			tag = THIS
+			OR = {
+				has_country_flag = liberal_revolution_in_progress
+				has_country_flag = liberal_revolution_fired
+				}
+			}
+			country_event = 10051
 		}
 
 		ai_chance = { factor = 20 }
