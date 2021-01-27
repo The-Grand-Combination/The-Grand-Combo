@@ -5634,6 +5634,8 @@
 		}
 	}
 
+	## TODO if Mexico is annexed have the option to grant Yucatan statehood, removing MEX cores and adding USA cores
+
 ### Alternative American Civil War - USA vs FSA ###
 
 	#Description: Second Constitutional Convention - FSA cores start, upper house is not population equal weight
@@ -9809,7 +9811,431 @@
 			}
 		}
 
-		## TODO NAF Secedes
+		#Description: The Jackson Convention - New Africa secedes
+		country_event = {
+			id = 95289
+			title = "EVTNAME95289"
+			desc = "EVTDESC95289"
+			major = yes
+
+			trigger = {
+				tag = USA
+				any_owned_province = {
+					province_id = 192 # Jackson
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					NAF = { exists = yes }
+					has_country_flag = NAF_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					192 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					192 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					192 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					192 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					192 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+				modifier = {
+					factor = 1.5
+					accepted_culture = afro_american
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = NAF_created
+				prestige = -25
+				USA_139 = { add_core = NAF } # Louisiana
+				USA_194 = { add_core = NAF } # Mississippi
+				USA_196 = { add_core = NAF } # Alabama
+				USA_200 = { add_core = NAF } # Florida
+				USA_201 = { add_core = NAF } # Georgia
+				USA_205 = { add_core = NAF } # South Carolina
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = NAF
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = NAF
+					}
+				}
+				NAF = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 192
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = NAF value = -200 }
+				diplomatic_influence = { who = NAF value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins New Africa
+		province_event = {
+			id = 95290
+			title = "EVTNAME95266"
+			desc = "EVTDESC95290"
+
+			trigger = {
+				owned_by = USA
+				is_core = NAF
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				NAF = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = NAF }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = NAF
+					}
+				}
+			}
+		}
+
+		#Description: The New Orleans Convention - Louisiana secedes
+		country_event = {
+			id = 95291
+			title = "EVTNAME95291"
+			desc = "EVTDESC95291"
+			major = yes
+
+			trigger = {
+				tag = USA
+				any_owned_province = {
+					province_id = 139 # New Orleans
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					ULA = { exists = yes }
+					has_country_flag = ULA_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					139 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					139 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					139 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					139 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					139 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = ULA_created
+				prestige = -25
+				USA_139 = { add_core = ULA } # Louisiana
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = ULA
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = ULA
+					}
+				}
+				ULA = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = cajun
+					accepted_culture = yankee
+					accepted_culture = dixie
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 139
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = ULA value = -200 }
+				diplomatic_influence = { who = ULA value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
 
 		## TODO secession of Upper Canada (Treaty of New York) - maybe small chance to ask to rejoin French Canada? or definitely if somehow Anglo Canada exists
 
