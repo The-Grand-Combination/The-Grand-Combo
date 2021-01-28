@@ -106,15 +106,15 @@
 			## Increase Schools by 1 ##
 				random_owned = {
 					limit = { owner = { school_reforms = no_schools } }
-					owner = { political_reform = low_schools }
+					owner = { social_reform = low_schools }
 				}
 				random_owned = {
 					limit = { owner = { school_reforms = low_schools } }
-					owner = { political_reform = acceptable_schools }
+					owner = { social_reform = acceptable_schools }
 				}
 				random_owned = {
 					limit = { owner = { school_reforms = acceptable_schools } }
-					owner = { political_reform = good_schools }
+					owner = { social_reform = good_schools }
 				}
 			any_pop = {
 				scaled_militancy = { ideology = reactionary factor = -2 }
@@ -1387,9 +1387,9 @@
 
 	#Description: The Second Oaxaca Rebellion
 	country_event = {
-		id = 44823
-		title = EVTNAME44823
-		desc = EVTDESC44823
+		id = 44824
+		title = EVTNAME44824
+		desc = EVTDESC44824
 		picture = "mexico_soldiers"
 
 		trigger = {
@@ -2027,6 +2027,232 @@
 				}
 			}
 		}
+
+## The Pastry War ##
+
+	#Description:  The Baker and the King - France decides whether to demand reparations from Mexico or not?
+	country_event = {
+		id = 1100054
+		title = "EVTNAME1100054"
+		desc = "EVTDESC1100054"
+		picture = "MEX_revolution"
+
+		trigger = {
+			tag = FRA
+			year = 1837
+			exists = MEX
+			war = no
+			NOT = {
+				is_our_vassal = MEX
+				alliance_with = MEX
+				truce_with = MEX
+				year = 1856
+			}
+		}
+
+		mean_time_to_happen = { months = 24 }
+
+		fire_only_once = yes
+
+		# Demand Reparations
+		option = {
+			name = "EVTOPTA1100054"
+
+			MEX = { country_event = 1100055 }
+			diplomatic_influence = { who = MEX value = -100 }
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Forget about it
+		option = {
+			name = "EVTOPTB1100054"
+
+			prestige = -30
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = 3
+				consciousness = 7
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.5
+					is_greater_power = yes
+				}
+				modifier = {
+					factor = 1.5
+					NOT = { is_greater_power = yes }
+				}
+				modifier = {
+					factor = 2
+					has_recently_lost_war = yes
+				}
+				modifier = {
+					factor = 2
+					is_disarmed = yes
+				}
+			}
+		}
+	}
+
+	#Description: France demands reparations - Mexico can choose whether to pay
+	country_event = {
+		id = 1100055
+		title = "EVTNAME1100055"
+		desc = "EVTDESC1100055"
+		picture = "MEX_revolution"
+
+		is_triggered_only = yes
+
+		# Agree to their demands
+		option = {
+			name = "EVTOPTA1100055"
+
+			prestige = -30
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = 3
+				consciousness = 7
+			}
+			FROM = { country_event = 1100056 }
+
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = { money = 120000 }
+						check_variable = { which = owed_cash_money value = 9 }
+					}
+				}
+				owner = { change_variable = { which = owed_cash_money value = 120 } }
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = { money = 120000 }
+						NOT = { check_variable = { which = owed_cash_money value = 1 } }
+					}
+				}
+				owner = { set_variable = { which = owed_cash_money value = 120 } }
+			}
+			random_owned = {
+				limit = { owner = { money = 120000 } }
+				owner = { treasury = -120000 }
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.5
+					is_secondary_power = yes
+				}
+				modifier = {
+					factor = 0.5
+					owns = 134
+				}
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
+			}
+		}
+
+		# We are not paying
+		option = {
+			name = "EVTOPTB1100055"
+
+			set_country_flag = pastry_war
+			prestige = 5
+			FROM = { country_event = 1100057 }
+
+			ai_chance = { factor = 80 }
+		}
+	}
+
+	#Description: Mexico Pays Reparations
+	country_event = {
+		id = 1100056
+		title = "EVTNAME1100056"
+		desc = "EVTDESC1100056"
+		picture = "MEX_pastry_war"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA1100056"
+
+			prestige = 10
+			treasury = 120000
+			relation = { who = FROM value = 25 }
+			diplomatic_influence = { who = MEX value = 100 }
+			set_country_flag = pastry_war
+		}
+	}
+
+	#Description: Mexico refuses to pay Reparations - go to war or not?
+	country_event = {
+		id = 1100057
+		title = "EVTNAME1100057"
+		desc = "EVTDESC1100057"
+		picture = "MEX_pastry_war"
+
+		is_triggered_only = yes
+
+		# Go to war
+		option = {
+			name = "EVTOPTA1100057"
+
+			MEX = { set_country_flag = pay_1st_pastry_war }
+			casus_belli = {
+				target = FROM
+				type = war_reparations
+				months = 12
+			}
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = war_reparations }
+			}
+
+			ai_chance = { factor = 95 }
+		}
+
+		# Forget about it
+		option = {
+			name = "EVTOPTB1100057"
+
+			prestige = -50
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = 5
+				consciousness = 8
+			}
+
+			ai_chance = {
+				factor = 5
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
+			}
+		}
+	}
+
 
 ## Mexican-British War ##
 
