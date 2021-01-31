@@ -14,7 +14,7 @@ political_decisions = {
 			MEX = {
 				war = no
 				is_vassal = no
-				neighbor = THIS
+				neighbour = THIS
 				is_greater_power = no
 			}
 			NOT = {
@@ -899,31 +899,34 @@ political_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
+	#Description: The CSA can move the capital to Havana if they own it, giving it a buff to liferating and immigrant attraction.
 	move_capital_to_havana = {
 		picture = golden_havana
 		alert = no
 		potential = {
 			tag = CSA
-			exists = yes
-			has_country_flag = golden_circle_1
-			NOT = { has_country_flag = capital_moved_csa }
+			owns = 2209
+			2209 = { is_colonial = no }
 			NOT = { capital = 2209 }
 		}
 
 		allow = {
-			owns = 2209
-			2209 = { is_colonial = no }
 			war = no
 		}
 
 		effect = {
 			capital = 2209
-			plurality = -10
-			2209 = {
-				life_rating = 5
-				add_province_modifier = { name = new_capital_modifier duration = 3650 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = capital_moved_csa } } }
+				owner = {
+					plurality = -10
+					set_country_flag = capital_moved_csa
+				}
+				2209 = {
+					life_rating = 5
+					add_province_modifier = { name = new_capital_modifier duration = 3650 }
+				}
 			}
-			set_country_flag = capital_moved_csa
 		}
 
 		ai_will_do = { factor = 1 }

@@ -435,29 +435,29 @@ political_decisions = {
 
 ## New Africa ##
 
-#	#Description: The player can choose to play as New Africa at game start (in 1836) if playing as the USA.
-#	NAF_start = {
-#		potential = {
-#			tag = USA
-#			ai = no
-#			NOT = { exists = NAF }
-#			NOT = { year = 1837 }
-#		}
-#
-#		allow = {
-#			war = no
-#		}
-#
-#		effect = {
-#			USA_139 = { add_core = NAF } #Louisiana
-#			USA_194 = { add_core = NAF } #Mississippi
-#			USA_139 = { remove_core = USA } #Louisiana
-#			USA_194 = { remove_core = USA } #Mississippi
-#			NAF = { capital = 140 }
-#			release = NAF
-#			change_tag_no_core_switch = NAF
-#		}
-#	}
+	#	#Description: The player can choose to play as New Africa at game start (in 1836) if playing as the USA.
+	#	NAF_start = {
+	#		potential = {
+	#			tag = USA
+	#			ai = no
+	#			NOT = { exists = NAF }
+	#			NOT = { year = 1837 }
+	#		}
+	#
+	#		allow = {
+	#			war = no
+	#		}
+	#
+	#		effect = {
+	#			USA_139 = { add_core = NAF } #Louisiana
+	#			USA_194 = { add_core = NAF } #Mississippi
+	#			USA_139 = { remove_core = USA } #Louisiana
+	#			USA_194 = { remove_core = USA } #Mississippi
+	#			NAF = { capital = 140 }
+	#			release = NAF
+	#			change_tag_no_core_switch = NAF
+	#		}
+	#	}
 
 	#Description: If the USA or the CSA turns communist, they can give self-determination to the blacks of the south and release New Africa as a satellite.
 	NAF_selfdetermination = {
@@ -1391,12 +1391,18 @@ political_decisions = {
 
 ## New England ##
 
+	# DEVNOTE anzu-3278:
+	# region scope in trigger behaves as "is this true for any province in this region" when given province triggers that aren't also state triggers, so in this section audax ignore commands are used to make the validator not complain about stuff that works as intended
+
 	#Description: An independent New England can claim New York.
 	NEN_NY = {
 		potential = {
 			tag = NEN
 			is_vassal = no
-			USA_232 = { NOT = { is_core = NEN } } # New York
+			USA_232 = { # New York
+				# Audax Validator "." Ignore_NEXT
+				NOT = { is_core = NEN }
+			}
 			OR = {
 				is_secondary_power = yes
 				is_greater_power = yes
@@ -1427,8 +1433,14 @@ political_decisions = {
 		potential = {
 			tag = NEN
 			is_vassal = no
-			ENG_68 = { NOT = { is_core = NEN } } # New Brunswick
-			ENG_71 = { NOT = { is_core = NEN } } # Nova Scotia
+			ENG_68 = { # New Brunswick
+				# Audax Validator "." Ignore_NEXT
+				NOT = { is_core = NEN }
+			}
+			ENG_71 = { # Nova Scotia
+				# Audax Validator "." Ignore_NEXT
+				NOT = { is_core = NEN }
+			}
 			OR = {
 				has_country_flag = NEN_maritimes_refuse
 				AND = {
@@ -1478,26 +1490,25 @@ political_decisions = {
 				is_vassal = no
 				vassal_of = ENG
 			}
-			ENG_68 = {
+			ENG_68 = { # New Brunswick
 				owned_by = ENG
+				# Audax Validator "." Ignore_NEXT
 				NOT = { is_core = NEN }
 			}
-			ENG_71 = {
+			ENG_71 = { # Nova Scotia
 				owned_by = ENG
+				# Audax Validator "." Ignore_NEXT
 				NOT = { is_core = NEN }
 			}
 		}
 
 		allow = {
 			war = no
-			ENG = { war = no }
-			has_unclaimed_cores = no
-			state_n_government = 1
 			money = 300000
-			relation = {
-				who = ENG
-				value = 100
-			}
+			state_n_government = 1
+			has_unclaimed_cores = no
+			ENG = { war = no }
+			relation = { who = ENG value = 100 }
 		}
 
 		effect = {
@@ -1513,33 +1524,25 @@ political_decisions = {
 		potential = {
 			is_vassal = no
 			tag = NEN
-			ENG_68 = {
-				owned_by = THIS
-				is_core = THIS
-			}
-			USA_232 = {
-				owned_by = THIS
-				is_core = THIS
-			}
+			# Audax Validator "." Ignore_NEXT
+			ENG_68 = { owned_by = THIS is_core = THIS } # New Brunswick
+			# Audax Validator "." Ignore_NEXT
+			USA_232 = { owned_by = THIS is_core = THIS } # New York
 			NOT = { has_country_flag = NEN_lawrence_agrees }
 			NOT = { has_country_flag = NEN_lawrence_conquest }
 			OR = {
 				has_country_flag = NEN_lawrence_refuse
-				AND ={
+				AND = {
 					66 = {
 						NOT = {
-							OR = {
-								owned_by = ENG
-								owned_by = CAN
-							}
+							owned_by = ENG
+							owned_by = CAN
 						}
 					}
 					67 = {
 						NOT = {
-							OR = {
-								owned_by = ENG
-								owned_by = CAN
-							}
+							owned_by = ENG
+							owned_by = CAN
 						}
 					}
 					OR = {
@@ -1551,28 +1554,24 @@ political_decisions = {
 		}
 
 		allow = {
+			war = no
+			has_unclaimed_cores = no
 			nationalism_n_imperialism = 1
 			prestige = 50
 			OR = {
 				war_policy = jingoism
 				AND = {
-					66 = {
-						owned_by = THIS
-					}
-					67 = {
-						owned_by = THIS
-					}
+					owns = 66
+					owns = 67
 				}
 			}
-			war = no
-			has_unclaimed_cores = no
 		}
 
 		effect = {
 			set_country_flag = NEN_lawrence_conquest
 			badboy = 4
 			prestige = 10
-			66 = { add_core = NEN  }
+			66 = { add_core = NEN }
 			67 = { add_core = NEN }
 		}
 
@@ -1587,14 +1586,10 @@ political_decisions = {
 				is_vassal = no
 				vassal_of = ENG
 			}
-			ENG_68 = { # New Brunswick
-				owned_by = THIS
-				is_core = THIS
-			}
-			USA_232 = { # New York
-				owned_by = THIS
-				is_core = THIS
-			}
+			# Audax Validator "." Ignore_NEXT
+			ENG_68 = { owned_by = THIS is_core = THIS } # New Brunswick
+			# Audax Validator "." Ignore_NEXT
+			USA_232 = { owned_by = THIS is_core = THIS } # New York
 			NOT = { has_country_flag = NEN_lawrence_purchase }
 			NOT = { has_country_flag = NEN_maritimes_refuse }
 			OR = {
@@ -1619,10 +1614,7 @@ political_decisions = {
 			66 = {
 				owner = {
 					war = no
-					relation = {
-						who = THIS
-						value = 100
-					}
+					relation = { who = THIS value = 100 }
 				}
 			}
 		}
