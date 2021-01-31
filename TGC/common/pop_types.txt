@@ -741,66 +741,69 @@ migration_chance = {
 			primary_culture = russian
 		}
 	}
-	#internal migration for accepted pops
-	modifier = {
-		factor = 1.0
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		country = { ai = no }
-		NOT = { country = { administration_spending = 0.99 } }
-		country = { education_spending = 0.99 }
-		is_accepted_culture = yes
-	}
 
-	#internal migration for non accepted pops
-	modifier = {
-		factor = 1.0
-		location = { has_building = province_selector }
-		country = { ai = no }
-		country = { has_country_flag = direct_immigration }
-		NOT = { country = { administration_spending = 0.99 } }
-		NOT = { country = { education_spending = 0.99 } }
-		is_accepted_culture = no
-	}
+	## Direct Immigration Shenanigans ## Pops will move internally if administrative spending is not 100%
 
-	#no internal migration for non accepted cultures
-	modifier = {
-		factor = -3
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		is_accepted_culture = no
-		country = { ai = no }
-		NOT = { country = { administration_spending = 0.99 } }
-		country = { education_spending = 0.99 }
-	}
+		# Accepted cultures will move if education spending is 100%
+		modifier = {
+			factor = 1.5
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			country = { ai = no }
+			NOT = { country = { administration_spending = 0.99 } }
+			country = { education_spending = 0.99 }
+			is_accepted_culture = yes
+		}
 
-	#no internal migration for accepted cultures
-	modifier = {
-		factor = -3
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		is_accepted_culture = yes
-		country = { ai = no }
-		NOT = { country = { administration_spending = 0.99 } }
-		NOT = { country = { education_spending = 0.99 } }
-	}
+		# Non-accepted cultures will not move if education spending is 100%
+		modifier = {
+			factor = -3
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			is_accepted_culture = no
+			country = { ai = no }
+			NOT = { country = { administration_spending = 0.99 } }
+			country = { education_spending = 0.99 }
+		}
 
-	#no migration if set up to force colonial migration
-	modifier = {
-		factor = -5
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		country = { ai = no }
-		country = { administration_spending = 0.99 }
-	}
+		# Non-accepted cultures will move if education spending is not 100%
+		modifier = {
+			factor = 1.5
+			location = { has_building = province_selector }
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration }
+			NOT = { country = { administration_spending = 0.99 } }
+			NOT = { country = { education_spending = 0.99 } }
+			is_accepted_culture = no
+		}
 
-	#no migration from province if NOT requested using province selector
-	modifier = {
-		factor = -1000
-		NOT = { location = { has_building = province_selector } }
-		country = { has_country_flag = direct_immigration }
-		country = { ai = no }
-	}
+		# Accepted cultures will not move if education spending is not 100%
+		modifier = {
+			factor = -3
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			is_accepted_culture = yes
+			country = { ai = no }
+			NOT = { country = { administration_spending = 0.99 } }
+			NOT = { country = { education_spending = 0.99 } }
+		}
+
+		# No internal migration for any culture if administrative spending is 100%
+		modifier = {
+			factor = -5
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			country = { ai = no }
+			country = { administration_spending = 0.99 }
+		}
+
+		# No migration if no province selector present
+		modifier = {
+			factor = -1000
+			NOT = { location = { has_building = province_selector } }
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration }
+		}
 }
 
 #general colonial migration mtth, same for all pops
@@ -828,66 +831,68 @@ colonialmigration_chance = {
 		}
 	}
 
-	#colonial migration for acepted cultures
-	modifier = {
-		factor = 1.5
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		is_accepted_culture = yes
-		country = { ai = no }
-		country = { administration_spending = 0.99 }
-		country = { education_spending = 0.99 }
-	}
+	## Direct Immigration Shenanigans ## Pops will move to colonies if administrative spending is 100%
 
-	#colonial migration for non accepted culture
-	modifier = {
-		factor = 1.5
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		is_accepted_culture = no
-		country = { ai = no }
-		country = { administration_spending = 0.99 }
-		NOT = { country = { education_spending = 0.99 } }
-	}
+		# Accepted cultures will move if education spending is 100%
+		modifier = {
+			factor = 1.5
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			is_accepted_culture = yes
+			country = { ai = no }
+			country = { administration_spending = 0.99 }
+			country = { education_spending = 0.99 }
+		}
 
-	#no colonial migration for non accepted cultures
-	modifier = {
-		factor = -3
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		is_accepted_culture = no
-		country = { ai = no }
-		country = { administration_spending = 0.99 }
-		country = { education_spending = 0.99 }
-	}
+		# Non-accepted cultures will not move if education spending is 100%
+		modifier = {
+			factor = -3
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			is_accepted_culture = no
+			country = { ai = no }
+			country = { administration_spending = 0.99 }
+			country = { education_spending = 0.99 }
+		}
 
-	#no colonial migration for accepted cultures
-	modifier = {
-		factor = -3
-		location = { has_building = province_selector }
-		country = { has_country_flag = direct_immigration }
-		is_accepted_culture = yes
-		country = { ai = no }
-		country = { administration_spending = 0.99 }
-		NOT = { country = { education_spending = 0.99 } }
-	}
+		# Non-accepted cultures will move if education spending is not 100%
+		modifier = {
+			factor = 1.5
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			is_accepted_culture = no
+			country = { ai = no }
+			country = { administration_spending = 0.99 }
+			NOT = { country = { education_spending = 0.99 } }
+		}
 
-	#no colonial migration for any culture if migration set for internal state migration
-	modifier = {
-		factor = -5
-		location = { has_building = province_selector }
-		NOT = { country = { administration_spending = 0.99 } }
-		country = { ai = no }
-		country = { has_country_flag = direct_immigration }
-	}
+		# Accepted cultures will not move if education spending is not 100%
+		modifier = {
+			factor = -3
+			location = { has_building = province_selector }
+			country = { has_country_flag = direct_immigration }
+			is_accepted_culture = yes
+			country = { ai = no }
+			country = { administration_spending = 0.99 }
+			NOT = { country = { education_spending = 0.99 } }
+		}
 
-	#no migration if no province selector present
-	modifier = {
-		factor = -1000
-		NOT = { location = { has_building = province_selector } }
-		country = { ai = no }
-		country = { has_country_flag = direct_immigration }
-	}
+		# No colonial migration for any culture if administrative spending is not 100%
+		modifier = {
+			factor = -5
+			location = { has_building = province_selector }
+			NOT = { country = { administration_spending = 0.99 } }
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration }
+		}
+
+		# No migration if no province selector present
+		modifier = {
+			factor = -1000
+			NOT = { location = { has_building = province_selector } }
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration }
+		}
 
 	modifier = {
 		factor = -100
@@ -1631,15 +1636,25 @@ assimilation_chance = {
 		has_culture_core = yes
 	}
 
-	modifier = {
+	modifier = { # DEVNOTE anzu-3278: I'm not convinced that this works, maybe we should rethink this.
 		factor = -20
 		OR = {
 			is_culture_group = east_asian
 			is_culture_group = south_asian
 		}
 		OR = {
-			location = { any_core = { is_accepted_culture = THIS is_cultural_union = yes } }
-			location = { is_overseas = yes any_core = { is_accepted_culture = THIS } }
+			location = {
+				any_core = {
+					# Audax Validator "." Ignore_NEXT
+					is_accepted_culture = THIS
+					is_cultural_union = yes
+				}
+			}
+			location = {
+				is_overseas = yes
+				# Audax Validator "." Ignore_NEXT
+				any_core = { is_accepted_culture = THIS }
+			}
 		}
 	}
 
@@ -1743,7 +1758,7 @@ assimilation_chance = {
 	}
 
 	modifier = {
-		factor = 1.0
+		factor = 1.5
 		has_pop_culture = ainu
 		country = { primary_culture = japanese }
 	}
@@ -1905,6 +1920,7 @@ assimilation_chance = {
 	# This is to help get rid of any noculture pops that may arise for some reason
 	modifier = {
 		factor = 100.0
+		# Audax Validator "." Ignore_NEXT
 		has_pop_culture = noculture
 	}
 
@@ -1916,70 +1932,66 @@ assimilation_chance = {
 		country = { primary_culture = british }
 	}
 
-## GEF Additions ##
+	## GEF Additions ##
 
-	modifier = {
-		factor = 22
-		OR = {
-			AND = {
-				has_pop_culture = dutch
-				country = { has_country_flag = germanize_the_netherlands }
+		modifier = {
+			factor = 22
+			has_pop_culture = dutch
+			country = { has_country_flag = germanize_the_netherlands }
+			NOT = { has_global_flag = extra_flavour_disabled }
+			country = { is_culture_group = germanic }
+			has_culture_core = yes
+		}
+
+		modifier = {
+			factor = 80
+			OR = {
+				has_pop_culture = south_german
+				has_pop_culture = north_german
 			}
-	    }
-		NOT = { has_global_flag = extra_flavour_disabled }
-		country = { is_culture_group = germanic }
-		has_culture_core = yes
-	}
-
-	modifier = {
-		factor = 80
-		OR = {
-			has_pop_culture = south_german
-			has_pop_culture = north_german
+			NOT = { has_global_flag = extra_flavour_disabled }
+			country = { has_country_flag = South-German-Assimilation }
 		}
-		NOT = { has_global_flag = extra_flavour_disabled }
-		country = { has_country_flag = South-German-Assimilation }
-	}
 
-	modifier = {
-		factor = -80
-		OR = {
-			has_pop_culture = south_german
-			has_pop_culture = north_german
-		}
-		NOT = { has_global_flag = extra_flavour_disabled }
-		OR = {
-			AND = {
-				OR = {
-					location = { continent = south_america }
-					location = { continent = australia_new_zealand }
-					location = { continent = north_america }
+		modifier = {
+			factor = -80
+			OR = {
+				has_pop_culture = south_german
+				has_pop_culture = north_german
+			}
+			NOT = { has_global_flag = extra_flavour_disabled }
+			OR = {
+				AND = {
+					OR = {
+						location = { continent = south_america }
+						location = { continent = australia_new_zealand }
+						location = { continent = north_america }
+					}
+					OR = {
+						country = { NOT = { war_with = GER } }
+						country = { NOT = { war_with = GCF } }
+					}
 				}
-				OR = {
-					country = { NOT = { war_with = GER } }
-					country = { NOT = { war_with = GCF } }
+				country = { primary_culture = hungarian }
+				country = { primary_culture = romanian }
+				country = { primary_culture = slovene }
+				country = { primary_culture = slovak }
+				country = { primary_culture = russian }
+				country = { primary_culture = ukrainian }
+				AND = {
+					country = { primary_culture = dutch }
+					NOT = { has_country_flag = Thicc-Niederlands }
+				}
+				AND = {
+					country = { primary_culture = czech }
+					NOT = { has_country_flag = Thicc-Bohemia }
 				}
 			}
-			country = { primary_culture = hungarian }
-			country = { primary_culture = romanian }
-			country = { primary_culture = slovene }
-			country = { primary_culture = slovak }
-			country = { primary_culture = russian }
-			country = { primary_culture = ukrainian }
-			AND = {
-				country = { primary_culture = dutch }
-				NOT = { has_country_flag = Thicc-Niederlands }
-			}
-			AND = {
-				country = { primary_culture = czech }
-				NOT = { has_country_flag = Thicc-Bohemia }
+			OR = {
+				NOT = { country = { primary_culture = south_german } }
+				NOT = { country = { primary_culture = north_german } }
 			}
 		}
-		OR = {
-			NOT = { country = { primary_culture = south_german } }
-			NOT = { country = { primary_culture = north_german } }
-		}
-	}
 
 }
 
