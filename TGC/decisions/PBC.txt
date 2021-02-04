@@ -361,10 +361,121 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-## TODO PBC irredentism
-# Salta-Jujuy (like in War of the Confederation)
-# All of Aracuania (like in War of the Confederation)
-# Northern and Central Chaco
+## Expansion ##
+
+	#Description: Occupation of the empty provinces in the Chaco.
+	conquest_of_the_chaco_bolivia = {
+		picture = conquest_of_the_chaco
+		potential = {
+			OR = {
+				tag = BOL
+				tag = PBC
+			}
+			OR = {
+				PRG_2338 = { empty = yes } # Northern Chaco
+				ARG_2366 = { empty = yes } # Central Chaco
+			}
+			owns = 2318
+			owns = 2315
+			NOT = { has_country_flag = conquest_of_the_chaco }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				nationalism_n_imperialism = 1
+				iron_railroad = 1
+			}
+		}
+
+		effect = {
+			set_country_flag = conquest_of_the_chaco
+			prestige = 3
+			PRG_2338 = { add_core = THIS }
+			ARG_2366 = { add_core = THIS }
+			2369 = { add_core = THIS }
+
+			random_owned = {
+				limit = { 2369 = { empty = yes } }
+				secede_province = THIS
+				any_pop = {
+					limit = { NOT = { is_culture_group = latin_american_cultures } }
+					literacy = -0.99
+				}
+			}
+			random_owned = {
+				limit = { 2369 = { NOT = { life_rating = 30 } } }
+				2369 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2367 = { empty = yes } }
+				secede_province = THIS
+				any_pop = {
+					limit = { NOT = { is_culture_group = latin_american_cultures } }
+					literacy = -0.99
+				}
+			}
+			random_owned = {
+				limit = { 2367 = { NOT = { life_rating = 30 } } }
+				2367 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2366 = { empty = yes } }
+				secede_province = THIS
+				any_pop = {
+					limit = { NOT = { is_culture_group = latin_american_cultures } }
+					literacy = -0.99
+				}
+			}
+			random_owned = {
+				limit = { 2366 = { NOT = { life_rating = 30 } } }
+				2366 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2338 = { empty = yes } }
+				secede_province = THIS
+				any_pop = {
+					limit = { NOT = { is_culture_group = latin_american_cultures } }
+					literacy = -0.99
+				}
+			}
+			random_owned = {
+				limit = { 2338 = { NOT = { life_rating = 30 } } }
+				2338 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2337 = { empty = yes } }
+				secede_province = THIS
+				any_pop = {
+					limit = { NOT = { is_culture_group = latin_american_cultures } }
+					literacy = -0.99
+				}
+			}
+			random_owned = {
+				limit = { 2337 = { NOT = { life_rating = 30 } } }
+				2337 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2343 = { empty = yes } }
+				secede_province = THIS
+				any_pop = {
+					limit = { NOT = { is_culture_group = latin_american_cultures } }
+					literacy = -0.99
+				}
+			}
+			random_owned = {
+				limit = { 2343 = { NOT = { life_rating = 30 } } }
+				2343 = { life_rating = 20 }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	## TODO PBC irredentism
+	# Salta-Jujuy (like in War of the Confederation)
+	# All of Aracuania (like in War of the Confederation)
+	# South Chaco
 
 ## Other ##
 
@@ -439,7 +550,6 @@ political_decisions = {
 				tag = BOL
 				tag = PBC
 			}
-			exists = yes
 			owns = 3298 # Corumba
 			owns = 2407 # Rio Jurua
 			owns = 3296 # Rio Purus
@@ -458,7 +568,6 @@ political_decisions = {
         }
 
         effect = {
-            set_country_flag = corumba_sale
 			random_country = {
 				limit = {
 					OR = {
@@ -471,7 +580,61 @@ political_decisions = {
 			}
         }
 
-        ai_will_do = { factor = 1 }
+        ai_will_do = {
+			factor = 1
+			modifier = { # Bolivia will not sell if Brazil lost the Paraguayan War and Bolivia didn't
+				factor = 0
+				has_global_flag = paraguayan_war_won
+				OR = {
+					BRZ = { exists = yes has_country_flag = will_support_uruguay }
+					KPB = { exists = yes has_country_flag = will_support_uruguay }
+				}
+				owns = 2318
+			}
+			modifier = {
+				factor = 0
+				money = 300000
+				NOT = { year = 1890 }
+			}
+		}
+    }
+
+	#Description: Sell the Outer Chaco (Lagunillas) to Paraguay.
+    outer_chaco_sale = {
+        picture = pbc_argentina_border_treaty
+        potential = {
+			OR = {
+				tag = BOL
+				tag = PBC
+			}
+			owns = 2318 # Lagunillas
+            PRG = { owns = 2338 } # Fuerte Olimpo
+			OR = {
+            	year = 1865
+				has_global_flag = paraguayan_war_won
+			}
+        }
+
+        allow = {
+            war = no
+			owns = 2318
+        }
+
+        effect = {
+			PRG = { country_event = 24601 }
+        }
+
+        ai_will_do = {
+			factor = 1
+			modifier = { # Bolivia will not sell if Paraguay lost the war
+				factor = 0
+				has_global_flag = paraguayan_war_lost
+			}
+			modifier = {
+				factor = 0
+				money = 200000
+			}
+		}
     }
 
 	# TODO Final Amazon rearrangement 1903

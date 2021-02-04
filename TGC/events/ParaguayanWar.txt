@@ -1,0 +1,1541 @@
+## War of the Triple Alliance ##
+
+	#Description: If the liberals take power in Uruguay, supporting the liberal regime will antagonize Solano Lopez
+	country_event = {
+		id = 46620
+		title = "EVTNAME46620"
+		desc = "EVTDESC46620"
+		picture = "solano_lopez"
+
+		trigger = {
+			neighbour = PRG
+			OR = {
+				government = democracy
+				government = hms_government
+			}
+			capital_scope = { continent = south_america }
+			PRG = { government = presidential_dictatorship }
+			URU = { ruling_party_ideology = liberal }
+			year = 1860
+			NOT = {
+				tag = PBC
+				tag = BOL
+				exists = ENT
+				exists = SBA
+				relation = { who = PRG value = 150 }
+				has_country_flag = will_support_uruguay
+				has_country_flag = will_not_support_uruguay
+				has_global_flag = paraguayan_war
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		# Support the Uruguayan liberals
+		option = {
+			name = "EVTOPTA46620"
+
+			set_country_flag = will_support_uruguay
+			any_pop = { scaled_militancy = { ideology = liberal factor = -3 } }
+			relation = { who = PRG value = -25 }
+			leave_alliance = PRG
+
+			ai_chance = {
+				factor = 85
+				modifier = {
+					factor = 0.75
+					alliance_with = PRG
+				}
+				modifier = {
+					factor = 0.5
+					num_of_revolts = 1
+				}
+			}
+		}
+
+		# Don't support them
+		option = {
+			name = "EVTOPTB46620"
+
+			set_country_flag = will_not_support_uruguay
+			any_pop = { scaled_militancy = { ideology = liberal factor = 3 } }
+
+			ai_chance = {
+				factor = 15
+				modifier = {
+					factor = 0.5
+					truce_with = PRG
+				}
+				modifier = {
+					factor = 0
+					NOT = { relation = { who = PRG value = 0 } }
+				}
+			}
+		}
+	}
+
+	#Description: Solano's Ambition - start the war?
+	country_event = {
+		id = 46304
+		title = "EVTNAME46304"
+		desc = "EVTDESC46304"
+		picture = "paraguayan_war"
+
+		fire_only_once = yes
+
+		trigger = {
+			has_country_flag = solano_lopez
+			war = no
+			URU = {
+				ruling_party_ideology = liberal
+				is_vassal = no
+			}
+			ENT = { exists = no }
+			CRT = { exists = no }
+			SBA = { exists = no }
+			NOT = {
+				num_of_revolts = 1
+				any_neighbor_country = {
+					has_country_flag = will_support_uruguay
+					truce_with = THIS
+				}
+				truce_with = URU
+				in_sphere = URU
+				government = democracy
+				government = hms_government
+				ruling_party_ideology = liberal
+				badboy = 0.64
+				has_global_flag = paraguayan_war
+				has_global_flag = berlin_conference
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 36
+			modifier = {
+				factor = 0.1
+				OR = {
+					BRZ = { war = yes }
+					KPB = { war = yes }
+				}
+			}
+			modifier = {
+				factor = 0.5
+				any_neighbor_country = { has_country_flag = will_support_uruguay }
+			}
+		}
+
+		# Go to war
+		option = {
+			name = "EVTOPTA46304"
+
+			## Paraguay gets cores on Misiones ##
+				random_owned = {
+					limit = { 2341 = { NOT = { is_core = THIS } } }
+					2341 = { add_core = THIS }
+				}
+				random_owned = {
+					limit = { 2554 = { NOT = { is_core = THIS } } }
+					2554 = { add_core = THIS }
+				}
+
+			## Brazil gets cores on Mato Grosso ##
+				random_country = {
+					limit = { tag = BRZ exists = yes has_country_flag = will_support_uruguay }
+					2420 = { add_core = BRZ }
+				}
+				random_country = {
+					limit = { tag = KPB exists = yes has_country_flag = will_support_uruguay }
+					2420 = { add_core = BRZ add_core = KPB }
+				}
+			## Argemtina gets cores on Central Chaco ##
+				random_country = {
+					limit = { tag = ARC exists = yes has_country_flag = will_support_uruguay }
+					ARG_2366 = { add_core = ARC }
+					2369 = { add_core = ARC }
+				}
+				random_country = {
+					limit = { tag = ARG exists = yes has_country_flag = will_support_uruguay }
+					ARG_2366 = { add_core = ARG }
+					2369 = { add_core = ARG }
+				}
+				random_country = {
+					limit = { tag = ARC exists = yes has_country_flag = will_support_uruguay }
+					ARG_2366 = { add_core = LPL }
+					2369 = { add_core = LPL }
+				}
+			## Bolivia gets cores on Northern Chaco ##
+				random_country = {
+					limit = { tag = BOL exists = yes has_country_flag = will_support_uruguay }
+					PRG_2338 = { add_core = BOL }
+				}
+				random_country = {
+					limit = { tag = PBC exists = yes has_country_flag = will_support_uruguay }
+					PRG_2338 = { add_core = BOL add_core = PBC }
+				}
+
+			set_global_flag = paraguayan_war
+			add_country_modifier = {
+				name = small_country_draft
+				duration = 730
+			}
+			any_pop = {
+				militancy = -6
+				dominant_issue = { value = jingoism factor = 0.20 }
+			}
+			any_country = {
+				limit = { has_country_flag = will_support_uruguay }
+				create_alliance = URU
+				military_access = URU
+				leave_alliance = PRG
+				relation = { who = URU value = 400 }
+				relation = { who = PRG value = -400 }
+				casus_belli = {
+					target = PRG
+					type = cut_down_to_size
+					months = 12
+				}
+			}
+			war = {
+				target = URU
+				attacker_goal = { casus_belli = make_puppet }
+				defender_goal = { casus_belli = status_quo }
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Don't go to war
+		option = {
+			name = "EVTOPTB46304"
+
+			prestige = -5
+			any_pop = {
+				militancy = 3
+				dominant_issue = { value = pacifism factor = 0.10 }
+			}
+
+			ai_chance = { factor = 20 }
+		}
+	}
+
+	#Description: Triple Alliance Defeated - just sea access or extensive expansion?
+	country_event = {
+		id = 46621
+		title = "EVTNAME46621"
+		desc = "EVTDESC46621"
+		picture = "paraguayan_war"
+
+		trigger = {
+			tag = PRG
+			war = no
+			has_recently_lost_war = no
+			has_global_flag = paraguayan_war
+			URU = { vassal_of = THIS }
+			any_neighbor_country = {
+				has_country_flag = will_support_uruguay
+				truce_with = THIS
+				has_recently_lost_war = yes
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		fire_only_once = yes
+
+		immediate = { set_global_flag = paraguayan_war_won }
+
+		# Just sea access
+		option = {
+			name = "EVTOPTA46621"
+
+			prestige = 20
+			badboy = 10
+			any_pop = { militancy = -4 }
+			## Brazil ##
+				random_country = {
+					limit = {
+						tag = BRZ
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2420 = { remove_core = BRZ }
+					2416 = { add_core = PRG secede_province = PRG } # Mato Grosso
+					2462 = { add_core = PRG secede_province = PRG } # Eastern Misiones
+					2459 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+				random_country = {
+					limit = {
+						tag = KPB
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2420 = { remove_core = BRZ remove_core = KPB }
+					2416 = { add_core = PRG secede_province = PRG } # Mato Grosso
+					2462 = { add_core = PRG secede_province = PRG } # Eastern Misiones
+					2459 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+			## Argentina ##
+				random_country = {
+					limit = {
+						tag = ARC
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2366 = { remove_core = ARC } # Central Chaco
+					2367 = { remove_core = ARC }
+					2369 = { remove_core = ARC }
+					ARG_2356 = { add_core = PRG add_core = CRT secede_province = PRG } # Corrientes
+					ARG_2360 = { add_core = PRG add_core = ENT secede_province = PRG } # Entre Rios
+					relation = { who = PRG value = 100 }
+				}
+				random_country = {
+					limit = {
+						tag = ARG
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2366 = { remove_core = ARG } # Central Chaco
+					2367 = { remove_core = ARG }
+					2369 = { remove_core = ARG }
+					ARG_2356 = { add_core = PRG add_core = CRT secede_province = PRG } # Corrientes
+					ARG_2360 = { add_core = PRG add_core = ENT secede_province = PRG } # Entre Rios
+					relation = { who = PRG value = 100 }
+				}
+				random_country = {
+					limit = {
+						tag = LPL
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2366 = { remove_core = LPL } # Central Chaco
+					2367 = { remove_core = LPL }
+					2369 = { remove_core = LPL }
+					ARG_2356 = { add_core = PRG add_core = CRT secede_province = PRG } # Corrientes
+					ARG_2360 = { add_core = PRG add_core = ENT secede_province = PRG } # Entre Rios
+					relation = { who = PRG value = 100 }
+				}
+			## Bolivia ##
+				random_country = {
+					limit = {
+						tag = BOL
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					PRG_2338 = { remove_core = BOL add_core = PRG secede_province = PRG }
+					ARG_2366 = { remove_core = BOL add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+
+				random_country = {
+					limit = {
+						tag = PBC
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					PRG_2338 = { remove_core = BOL remove_core = PBC add_core = PRG secede_province = PRG }
+					ARG_2366 = { remove_core = BOL remove_core = PBC add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+
+			ai_chance = { factor = 85 }
+		}
+
+		# Full expansion
+		option = {
+			name = "EVTOPTB46621"
+
+			prestige = 20
+			badboy = 20
+			any_pop = { militancy = -4 }
+			## Brazil ##
+				random_country = {
+					limit = {
+						tag = BRZ
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2420 = { remove_core = BRZ }
+					2458 = { add_core = PRG secede_province = PRG }
+					2416 = { add_core = PRG secede_province = PRG } # Mato Grosso
+					2462 = { add_core = PRG secede_province = PRG } # Eastern Misiones
+					2459 = { add_core = PRG secede_province = PRG }
+
+					relation = { who = PRG value = 100 }
+				}
+				random_country = {
+					limit = {
+						tag = KPB
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2420 = { remove_core = BRZ remove_core = KPB }
+					2458 = { add_core = PRG secede_province = PRG }
+					2416 = { add_core = PRG secede_province = PRG } # Mato Grosso
+					2462 = { add_core = PRG secede_province = PRG } # Eastern Misiones
+					2459 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+			## Argentina ##
+				random_country = {
+					limit = {
+						tag = ARC
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2366 = { remove_core = ARC } # Central Chaco
+					2367 = { remove_core = ARC }
+					2369 = { remove_core = ARC }
+					ARG_2356 = { add_core = PRG add_core = CRT secede_province = PRG } # Corrientes
+					ARG_2360 = { add_core = PRG add_core = ENT secede_province = PRG } # Entre Rios
+					ARG_2377 = { add_core = PRG secede_province = PRG } # Southern Chaco
+					2361 = { add_core = PRG secede_province = PRG }
+					2362 = { add_core = PRG secede_province = PRG }
+					2372 = { add_core = PRG secede_province = PRG }
+					2377 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+				random_country = {
+					limit = {
+						tag = ARG
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2366 = { remove_core = ARG } # Central Chaco
+					2367 = { remove_core = ARG }
+					2369 = { remove_core = ARG }
+					ARG_2356 = { add_core = PRG add_core = CRT secede_province = PRG } # Corrientes
+					ARG_2360 = { add_core = PRG add_core = ENT secede_province = PRG } # Entre Rios
+					ARG_2377 = { add_core = PRG secede_province = PRG } # Southern Chaco
+					2361 = { add_core = PRG secede_province = PRG }
+					2362 = { add_core = PRG secede_province = PRG }
+					2372 = { add_core = PRG secede_province = PRG }
+					2377 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+				random_country = {
+					limit = {
+						tag = LPL
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					2366 = { remove_core = LPL } # Central Chaco
+					2367 = { remove_core = LPL }
+					2369 = { remove_core = LPL }
+					ARG_2356 = { add_core = PRG add_core = CRT secede_province = PRG } # Corrientes
+					ARG_2360 = { add_core = PRG add_core = ENT secede_province = PRG } # Entre Rios
+					ARG_2377 = { add_core = PRG secede_province = PRG } # Southern Chaco
+					2361 = { add_core = PRG secede_province = PRG }
+					2362 = { add_core = PRG secede_province = PRG }
+					2372 = { add_core = PRG secede_province = PRG }
+					2377 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+			## Bolivia ##
+				random_country = {
+					limit = {
+						tag = BOL
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+
+					PRG_2338 = { remove_core = BOL add_core = PRG secede_province = PRG }
+					ARG_2366 = { remove_core = BOL add_core = PRG secede_province = PRG }
+					2318 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+
+				random_country = {
+					limit = {
+						tag = PBC
+						has_country_flag = will_support_uruguay
+						truce_with = THIS
+					}
+					any_owned = {
+						limit = { is_core = THIS }
+						secede_province = THIS
+					}
+					PRG_2338 = { remove_core = BOL remove_core = PBC add_core = PRG secede_province = PRG }
+					ARG_2366 = { remove_core = BOL remove_core = PBC add_core = PRG secede_province = PRG }
+					2318 = { add_core = PRG secede_province = PRG }
+					relation = { who = PRG value = 100 }
+				}
+
+			ai_chance = { factor = 15 }
+		}
+	}
+
+	#Description: Triple Alliance Victorious - reduce Paraguay or partition it entirely?
+	country_event = {
+		id = 46622
+		title = "EVTNAME46622"
+		desc = "EVTDESC46622"
+		picture = "avay"
+
+		trigger = {
+			has_country_flag = will_support_uruguay
+			truce_with = PRG
+			war = no
+			has_recently_lost_war = no
+			PRG = { has_recently_lost_war = yes }
+			has_global_flag = paraguayan_war
+			URU = { is_vassal = no }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		fire_only_once = yes
+
+		immediate = { set_variable = { which = supported_paraguay_partition value = 0 } }
+
+		# Reduce Paraguay
+		option = {
+			name = "EVTOPTA46622"
+
+			set_country_flag = supported_paraguay_reduction
+
+			prestige = 10
+			badboy = 5
+			relation = { who = PRG value = 100 }
+			any_pop = { militancy = -4 }
+
+			ai_chance = {
+				factor = 85
+				modifier = {
+					factor = 0.5
+					check_variable = { which = supported_paraguay_partition value = 1 }
+				}
+				modifier = {
+					factor = 0.5
+					check_variable = { which = supported_paraguay_partition value = 2 }
+				}
+			}
+		}
+
+		# Partition Paraguay
+		option = {
+			name = "EVTOPTB46622"
+
+			set_country_flag = supported_paraguay_partition
+			change_variable = { which = supported_paraguay_partition value = 1 }
+
+			prestige = 20
+			badboy = 15
+			any_pop = { militancy = -4 }
+
+			any_country = {
+				limit = { has_country_flag = supported_paraguay_reduction }
+				country_event = 46626
+			}
+
+			ai_chance = {
+				factor = 15
+				modifier = {
+					factor = 0
+					badboy = 0.4
+				}
+			}
+		}
+	}
+
+	#Description: Change your mind regarding partition?
+	country_event = {
+		id = 46626
+		title = "EVTNAME46626"
+		desc = "EVTDESC46626"
+		picture = "avay"
+
+		is_triggered_only = yes
+
+		# Don't change your mind - don't partition Paraguay
+		option = {
+			name = "EVTOPTA46626"
+
+			ai_chance = {
+				factor = 65
+				modifier = {
+					factor = 0.5
+					check_variable = { which = supported_paraguay_partition value = 2 }
+				}
+				modifier = {
+					factor = 0
+					vassal_of = FROM
+				}
+			}
+		}
+
+		# Change your mind - partition Paraguay
+		option = {
+			name = "EVTOPTB46626"
+
+			set_country_flag = supported_paraguay_partition
+			clr_country_flag = supported_paraguay_reduction
+			change_variable = { which = supported_paraguay_partition value = 1 }
+
+			prestige = 10
+			badboy = 10
+
+			ai_chance = {
+				factor = 35
+				modifier = {
+					factor = 0
+					badboy = 0.4
+				}
+				modifier = {
+					factor = 2
+					relation = { who = FROM value = 100 }
+				}
+				modifier = {
+					factor = 1.5
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 2
+					in_sphere = FROM
+				}
+			}
+		}
+	}
+
+	#Description: Triple Alliance Victorious - Reduce event for Paraguay - if fewer than 2 countries support partition
+	country_event = {
+		id = 46623
+		title = "EVTNAME46622"
+		desc = "EVTDESC46623"
+		picture = "avay"
+
+		trigger = {
+			tag = PRG
+			war = no
+			has_recently_lost_war = yes
+			has_global_flag = paraguayan_war
+			NOT = { # Every neighboring country has either decided the above event or was not part of the war
+				any_neighbor_country = {
+					NOT = {
+						NOT = { has_country_flag = will_support_uruguay }
+						has_country_flag = supported_paraguay_reduction
+						has_country_flag = supported_paraguay_partition
+					}
+				}
+			}
+			NOT = { check_variable = { which = supported_paraguay_partition value = 2 } }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		fire_only_once = yes
+
+		immediate = { set_global_flag = paraguayan_war_lost } # So that The Liberal Constitution pops
+
+		option = {
+			name = "EVTOPTA46623"
+
+			prestige = -10
+			random_list = {
+				25 = { any_pop = { reduce_pop = 0.80 } }
+				25 = { any_pop = { reduce_pop = 0.70 } }
+				25 = { any_pop = { reduce_pop = 0.60 } }
+				25 = { any_pop = { reduce_pop = 0.50 } }
+			}
+			## If Brazil participated but Argentina didn't Brazil also gets Paraguayan Misiones
+				random_country = {
+					limit = {
+						tag = BRZ
+						exists = yes
+						has_country_flag = will_support_uruguay
+						NOT = {
+							ARC = { exists = yes has_country_flag = will_support_uruguay }
+							ARG = { exists = yes has_country_flag = will_support_uruguay }
+							LPL = { exists = yes has_country_flag = will_support_uruguay }
+						}
+						THIS = { any_owned_province = { region = ARG_2554 } }
+					}
+					THIS = {
+						any_owned = {
+							limit = { region = ARG_2554 }
+							add_core = BRZ
+						}
+					}
+				}
+				random_country = {
+					limit = {
+						tag = KPB
+						exists = yes
+						has_country_flag = will_support_uruguay
+						NOT = {
+							ARC = { exists = yes has_country_flag = will_support_uruguay }
+							ARG = { exists = yes has_country_flag = will_support_uruguay }
+							LPL = { exists = yes has_country_flag = will_support_uruguay }
+						}
+						THIS = { any_owned_province = { region = ARG_2554 } }
+					}
+					THIS = {
+						any_owned = {
+							limit = { region = ARG_2554 }
+							add_core = BRZ
+							add_core = KPB
+						}
+					}
+				}
+			## Brazil ##
+				random_country = {
+					limit = { tag = BRZ exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = BRZ }
+							secede_province = BRZ
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = KPB exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = KPB }
+							secede_province = KPB
+						}
+					}
+				}
+			## If Bolivia participated but Argentina didn't Bolivia also gets Central Chaco
+				random_country = {
+					limit = {
+						tag = BOL
+						exists = yes
+						has_country_flag = will_support_uruguay
+						NOT = {
+							ARC = { exists = yes has_country_flag = will_support_uruguay }
+							ARG = { exists = yes has_country_flag = will_support_uruguay }
+							LPL = { exists = yes has_country_flag = will_support_uruguay }
+						}
+						THIS = { any_owned_province = { region = ARG_2366 } }
+					}
+					THIS = {
+						any_owned = {
+							limit = { region = ARG_2366 }
+							add_core = BOL
+						}
+					}
+				}
+				random_country = {
+					limit = {
+						tag = PBC
+						exists = yes
+						has_country_flag = will_support_uruguay
+						NOT = {
+							ARC = { exists = yes has_country_flag = will_support_uruguay }
+							ARG = { exists = yes has_country_flag = will_support_uruguay }
+							LPL = { exists = yes has_country_flag = will_support_uruguay }
+						}
+						THIS = { any_owned_province = { region = ARG_2366 } }
+					}
+					THIS = {
+						any_owned = {
+							limit = { region = ARG_2366 }
+							add_core = BOL
+							add_core = PBC
+						}
+					}
+				}
+			## Bolivia ##
+				random_country = {
+					limit = { tag = BOL exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = BOL }
+							secede_province = BOL
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = PBC exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = PBC }
+							secede_province = PBC
+						}
+					}
+				}
+			## Argentina ##
+				random_country = {
+					limit = { tag = ARC exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = ARC }
+							secede_province = ARC
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = ARG exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = ARG }
+							secede_province = ARG
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = LPL exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = LPL }
+							secede_province = LPL
+						}
+					}
+				}
+		}
+	}
+
+	#Description: Triple Alliance Victorious - Paraguay annexation event - if 2 or more countries support partition
+	country_event = {
+		id = 46624
+		title = "EVTNAME46622"
+		desc = "EVTDESC46624"
+		picture = "avay"
+
+		trigger = {
+			tag = PRG
+			war = no
+			has_recently_lost_war = yes
+			has_global_flag = paraguayan_war
+			NOT = { # Every neighboring country has either decided the above event or was not part of the war
+				any_neighbor_country = {
+					NOT = {
+						NOT = { has_country_flag = will_support_uruguay }
+						has_country_flag = supported_paraguay_reduction
+						has_country_flag = supported_paraguay_partition
+					}
+				}
+			}
+			check_variable = { which = supported_paraguay_partition value = 2 }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA46624"
+
+			prestige = -20
+			random_list = {
+				25 = { any_pop = { reduce_pop = 0.80 } }
+				25 = { any_pop = { reduce_pop = 0.70 } }
+				25 = { any_pop = { reduce_pop = 0.60 } }
+				25 = { any_pop = { reduce_pop = 0.50 } }
+			}
+
+			## Brazil ##
+				random_country = {
+					limit = { tag = BRZ exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = BRZ }
+							secede_province = BRZ
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = KPB exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = KPB }
+							secede_province = KPB
+						}
+					}
+				}
+			## Argentina ##
+				random_country = {
+					limit = { tag = ARC exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = ARC }
+							secede_province = ARC
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = ARG exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = ARG }
+							secede_province = ARG
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = LPL exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = LPL }
+							secede_province = LPL
+						}
+					}
+				}
+			## Bolivia ##
+				random_country = {
+					limit = { tag = BOL exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = BOL }
+							secede_province = BOL
+						}
+					}
+				}
+				random_country = {
+					limit = { tag = PBC exists = yes }
+					all_core = { remove_core = THIS }
+					THIS = {
+						any_owned = {
+							limit = { is_core = PBC }
+							secede_province = PBC
+						}
+					}
+				}
+
+			## Northern Chaco ##
+				## Bolivia will get it if they participated
+					random_country = {
+						limit = {
+							tag = BOL
+							exists = yes
+							has_country_flag = will_support_uruguay
+						}
+						PRG_2338 = { add_core = BOL }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = BOL
+							}
+						}
+					}
+					random_country = {
+						limit = {
+							tag = PBC
+							exists = yes
+							has_country_flag = will_support_uruguay
+						}
+						PRG_2338 = { add_core = BOL add_core = PBC }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = PBC
+							}
+						}
+					}
+				## Argentina will get it if they participated and Bolivia didn't
+					random_country = {
+						limit = {
+							tag = ARC
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = ARC }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = ARC
+							}
+						}
+					}
+					random_country = {
+						limit = {
+							tag = ARG
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = ARG }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = ARG
+							}
+						}
+					}
+					random_country = {
+						limit = {
+							tag = LPL
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = LPL }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = LPL
+							}
+						}
+					}
+				## Brazil will get it if they participated and neither Bolivia nor Argentina did
+					random_country = {
+						limit = {
+							tag = BRZ
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = BRZ }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = BRZ
+							}
+						}
+					}
+					random_country = {
+						limit = {
+							tag = KPB
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = BRZ add_core = KPB }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = KPB
+							}
+						}
+					}
+				## If neither Bolivia nor Argentina nor Brazil participated, it will go to Bolivia
+					random_country = {
+						limit = {
+							tag = BOL
+							exists = yes
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = BOL }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = BOL
+							}
+						}
+					}
+					random_country = {
+						limit = {
+							tag = PBC
+							exists = yes
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2338 = { add_core = BOL add_core = PBC }
+						THIS = {
+							any_owned = {
+								limit = { region = PRG_2338 }
+								secede_province = PBC
+							}
+						}
+					}
+
+			## Paraguay Proper ##
+				## Brazil will get it if they participated
+					random_country = {
+						limit = {
+							tag = BRZ
+							exists = yes
+							has_country_flag = will_support_uruguay
+						}
+						PRG_2343 = { add_core = BRZ }
+						inherit = THIS
+					}
+					random_country = {
+						limit = {
+							tag = KPB
+							exists = yes
+							has_country_flag = will_support_uruguay
+						}
+						PRG_2343 = { add_core = BRZ add_core = KPB }
+						inherit = THIS
+					}
+				## Argentina will get it if they participated and Brazil didn't
+					random_country = {
+						limit = {
+							tag = ARC
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = ARC }
+						inherit = THIS
+					}
+					random_country = {
+						limit = {
+							tag = ARG
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = ARG }
+						inherit = THIS
+					}
+					random_country = {
+						limit = {
+							tag = LPL
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = LPL }
+						inherit = THIS
+					}
+				## Bolivia will get it if they participated and neither Brazil nor Argentina did
+					random_country = {
+						limit = {
+							tag = BOL
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = BOL }
+						inherit = THIS
+					}
+					random_country = {
+						limit = {
+							tag = PBC
+							exists = yes
+							has_country_flag = will_support_uruguay
+							NOT = {
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = BOL add_core = PBC }
+						inherit = THIS
+					}
+				## If neither Bolivia nor Argentina nor Brazil participated, it will go to Brazil
+					random_country = {
+						limit = {
+							tag = BRZ
+							exists = yes
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = BRZ }
+						inherit = THIS
+					}
+					random_country = {
+						limit = {
+							tag = KPB
+							exists = yes
+							NOT = {
+								BOL = { exists = yes has_country_flag = will_support_uruguay }
+								PBC = { exists = yes has_country_flag = will_support_uruguay }
+								ARC = { exists = yes has_country_flag = will_support_uruguay }
+								ARG = { exists = yes has_country_flag = will_support_uruguay }
+								LPL = { exists = yes has_country_flag = will_support_uruguay }
+								BRZ = { exists = yes has_country_flag = will_support_uruguay }
+								KPB = { exists = yes has_country_flag = will_support_uruguay }
+							}
+						}
+						PRG_2343 = { add_core = BRZ add_core = KPB }
+						inherit = THIS
+					}
+		}
+	}
+
+	#Description: The Liberal Constitution - if Paraguay loses the War of the Triple Alliance, become a democracy or stay a dictatorship?
+	country_event = {
+
+		id = 50005
+		title = "EVTNAME50005"
+		desc = "EVTDESC50005"
+		picture = "paraguayan_war"
+
+		trigger = {
+			tag = PRG
+			government = presidential_dictatorship
+			war = no
+			has_global_flag = paraguayan_war_lost
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		# Become a democracy
+		option = {
+			name = "EVTOPTA50005"
+
+			government = democracy
+			ruling_party_ideology = liberal
+			## Reforms ##
+				political_reform = wealth_weighted_voting
+				political_reform = population_equal_weight
+				political_reform = gerrymandering
+				political_reform = first_past_the_post
+			## Election Flags ##
+				clr_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				set_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+			add_country_modifier = {
+				name = national_confusion
+				duration = 3650
+			}
+			upper_house = { ideology = liberal value = 0.5 }
+			upper_house = { ideology = conservative value = 0.25 }
+			any_owned = {
+				limit = { is_colonial = no }
+				any_pop = {
+					scaled_militancy = { ideology = reactionary factor = 2 }
+					scaled_consciousness = { ideology = reactionary factor = 4 }
+					scaled_militancy = { ideology = liberal factor = -3 }
+					scaled_consciousness = { ideology = liberal factor = -5 }
+				}
+			}
+
+			ai_chance = {factor = 90  }
+		}
+
+		# Stay a dictatorship
+		option = {
+			name = "EVTOPTB50005"
+
+			prestige = -5
+			any_owned = {
+				limit = { is_colonial = no }
+				any_pop = {
+					scaled_militancy = { ideology = liberal factor = 6 }
+					scaled_consciousness = { ideology = liberal factor = 8 }
+					scaled_militancy = { ideology = conservative factor = 3 }
+					scaled_consciousness = { ideology = conservative factor = 4 }
+				}
+			}
+
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	#Description: The Future of Paraguay - if Paraguay wins the War of the Triple Alliance - become a monarchy, stay a dictatorship or become a democracy?
+	country_event = {
+
+		id = 46625
+		title = "EVTNAME46625"
+		desc = "EVTDESC46625"
+		picture = "solano_lopez"
+
+		trigger = {
+			tag = PRG
+			government = presidential_dictatorship
+			war = no
+			has_global_flag = paraguayan_war_won
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		# Become a monarchy
+		option = {
+			name = "EVTOPTA46625"
+
+			government = absolute_monarchy
+			ruling_party_ideology = reactionary
+			## Reforms ##
+				political_reform = none_voting
+				political_reform = party_appointed
+				political_reform = no_meeting
+				political_reform = state_press
+				political_reform = no_trade_unions
+				political_reform = underground_parties
+			## Election Flags ##
+				clr_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				clr_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+			add_country_modifier = {
+				name = national_confusion
+				duration = 3650
+			}
+			upper_house = { ideology = conservative value = 0.25 }
+			upper_house = { ideology = reactionary value = 0.50 }
+			any_pop = {
+				limit = { location = { is_core = THIS } }
+				scaled_militancy = { ideology = reactionary	factor = -4  }
+				scaled_consciousness = { ideology = reactionary factor = -4 }
+				scaled_militancy = { ideology = conservative factor = -2 }
+				scaled_consciousness = { ideology = conservative factor = -2 }
+				scaled_militancy = { ideology = liberal factor = 4 }
+				scaled_consciousness = { ideology = liberal factor = 4 }
+				scaled_militancy = { ideology = anarcho_liberal factor = 6 }
+			}
+
+			ai_chance = { factor = 60 }
+		}
+
+		# Stay a dictatorship
+		option = {
+			name = "EVTOPTB46625"
+
+			any_owned = {
+				limit = {is_colonial = no  }
+				any_pop = {
+					scaled_militancy = { ideology = liberal factor = 6 }
+					scaled_consciousness = { ideology = liberal factor = 8 }
+					scaled_militancy = { ideology = conservative factor = 3 }
+					scaled_consciousness = { ideology = conservative factor = 4 }
+				}
+			}
+
+			ai_chance = { factor = 35 }
+		}
+
+		# Become a democracy
+		option = {
+			name = "EVTOPTC46625"
+
+			government = democracy
+			ruling_party_ideology = liberal
+			## Reforms ##
+				political_reform = wealth_weighted_voting
+				political_reform = population_equal_weight
+				political_reform = gerrymandering
+				political_reform = first_past_the_post
+			## Election Flags ##
+				clr_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				set_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+			add_country_modifier = {
+				name = national_confusion
+				duration = 3650
+			}
+			upper_house = { ideology = liberal value = 0.5 }
+			upper_house = { ideology = conservative value = 0.25 }
+			any_owned = {
+				limit = { is_colonial = no }
+				any_pop = {
+					scaled_militancy = { ideology = reactionary	factor = 2 }
+					scaled_consciousness = { ideology = reactionary factor = 4 }
+					scaled_militancy = { ideology = liberal factor = -3 }
+					scaled_consciousness = { ideology = liberal factor = -5 }
+				}
+			}
+
+			ai_chance = { factor = 5 }
+		}
+	}
