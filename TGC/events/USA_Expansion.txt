@@ -1455,10 +1455,11 @@
 		}
 	}
 
-	country_event = { # TODO
+	#Description: The Alaskan Territories - occupation of empty provinces in Alaska
+	country_event = {
 
 		id = 44342
-		title = "EVTNAME44342" #The Alaskan Territories
+		title = "EVTNAME44342"
 		desc = "EVTDESC44342"
 		picture = "Southpole3"
 
@@ -1470,13 +1471,33 @@
 					NOT = { exists = LSK }
 				}
 			}
+			OR = {
+				AND = {
+					year = 1900
+					OR = {
+						AND = { 3445 = { empty = yes } owns = 3409 owns = 3395 }
+						AND = { 3408 = { empty = yes } owns = 3391 }
+					}
+				}
+				AND = {
+					year = 1885
+					OR = {
+						AND = { 3444 = { empty = yes } 3395 = { empty = yes } owns = 3390 owns = 3409 }
+						AND = { 3409 = { empty = yes } owns = 3390 }
+						AND = { 3390 = { empty = yes } owns = 2599 owns = 3391 }
+						AND = { 2 = { empty = yes } owns = 3 }
+					}
+				}
+				AND = { 3391 = { empty = yes } owns = 4 }
+				AND = { 3 = { empty = yes } owns = 1 }
+			}
 			war = no
-			money = 5000
+			money = 5500
 			OR = {
 				revolution_n_counterrevolution = 1
 				year = 1880
 			}
-			OR = {
+			OR = { # The idea here is that if this is not true, the provinces can be colonized the old fashioned way
 				NOT = { has_global_flag = berlin_conference }
 				NOT = { invention = mission_to_civilize }
 				NOT = { invention = colonial_negotiations }
@@ -1485,85 +1506,103 @@
 					is_secondary_power = no
 				}
 			}
-			OR = {
-				AND = {
-					2631 = { empty = yes }
-					OR = {
-						owns = 5
-						owns = 2599
-					}
-				}
-				AND = {
-					2630 = { empty = yes }
-					OR = {
-						owns = 2
-						owns = 3
-					}
-				}
-				AND = {
-					2630 = { empty = no }
-					2599 = { empty = yes } #Dawson
-					OR = {
-						owns = 3
-						owns = 2630
-						owns = 2631
-					}
-				}
-			}
 		}
 
 		mean_time_to_happen = {
-			months = 12
+			months = 120
 			modifier = {
-				factor = 0.2
-				2630 = { empty = yes }
+				factor = 0.9
+				administration_spending = 0.9
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.8
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.7
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.6
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.5
 			}
 		}
 
 		option = {
-			name = "We must claim the Great White North."
+			name = "EVTOPTA44342"
 
 			treasury = -5000
+			prestige = 1
 			random_owned = {
 				limit = {
-					2 = { empty = no }
-					3 = { empty = no }
-					2630 = { empty = yes }
-					OR = {
-						2 = { owned_by = THIS }
-						3 = { owned_by = THIS }
-					}
+					3445 = { empty = yes }
+					3409 = { owned_by = THIS }
+					3395 = { owned_by = THIS }
+					year = 1900
 				}
-				owner = { prestige = 1 }
-				2630 = { secede_province = THIS }
+				3445 = { secede_province = THIS any_pop = { literacy = -0.99 } }
 			}
 			random_owned = {
 				limit = {
-					5 = { empty = no }
-					2630 = { empty = no }
-					2631 = { empty = yes }
-					OR = {
-						5 = { owned_by = THIS }
-						2599 = { owned_by = THIS }
-					}
+					3408 = { empty = yes }
+					3391 = { owned_by = THIS }
+					year = 1900
 				}
-				owner = { prestige = 1 }
-				2631 = { secede_province = THIS }
+				3408 = { secede_province = THIS any_pop = { literacy = -0.99 } }
 			}
 			random_owned = {
 				limit = {
-					3 = { empty = no }
-					2630 = { empty = no }
-					2631 = { empty = no }
-					2599 = { empty = yes }
-					OR = {
-						3 = { owned_by = THIS }
-						2630 = { owned_by = THIS }
-						2631 = { owned_by = THIS }
-					}
+					3444 = { empty = yes }
+					3395 = { empty = yes }
+					3390 = { owned_by = THIS }
+					3409 = { owned_by = THIS }
+					year = 1885
 				}
-				owner = { prestige = 1 }
-				2599 = { secede_province = THIS }
+				3444 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+				3395 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = {
+					3409 = { empty = yes }
+					3390 = { owned_by = THIS }
+					year = 1885
+				}
+				3409 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = {
+					3390 = { empty = yes }
+					2599 = { owned_by = THIS }
+					3391 = { owned_by = THIS }
+					year = 1885
+				}
+				3390 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = {
+					2 = { empty = yes }
+					3 = { owned_by = THIS }
+					year = 1885
+				}
+				2 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = {
+					3391 = { empty = yes }
+					4 = { owned_by = THIS }
+				}
+				3391 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+			}
+			random_owned = {
+				limit = {
+					3 = { empty = yes }
+					1 = { owned_by = THIS }
+				}
+				3 = { secede_province = THIS any_pop = { literacy = -0.99 } }
 			}
 		}
 	}
