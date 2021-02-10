@@ -3116,7 +3116,7 @@
 		}
 	}
 
-	# Guyana Border Dispute ## TODO find picture for this event chain
+	## Guyana Border Dispute ## TODO find picture for this event chain
 
 		#Description: Triggered for the UK if they own Guyana but not 1979 (Upper Takutu River)
 		country_event = {
@@ -3321,132 +3321,726 @@
 			}
 		}
 
-	#Description: Settling Tarauaca # TODO needs rework as it assumes Tarauaca will be empty ## TODO rework into Acre War
-	country_event = {
-		id = 97076
-		title = "EVTNAME97076"
-		desc = "EVTDESC97076"
-		picture = "BurkeandWills"
+	## Paraguay partition - triggered when Brazil claims Paraguay proper ##
 
-		trigger = {
-			war = no
-			2290 = { empty = no NOT = { owned_by = THIS } }
-			2549 = { empty = no NOT = { owned_by = THIS } }
-			3297 = { empty = no NOT = { owned_by = THIS } }
-			OR = {
-				owns = 2404 # Tefe
-				owns = 2321 # Cobija (South Peru)
-				owns = 2301 # Puerto Maldonaldo (South Peru)
-				owns = 2300 # Pucallpa (Peru)
-			}
-			OR = {
-				revolution_n_counterrevolution = 1
-				machine_guns = 1
-				year = 1890
-			}
-			NOT = { has_country_flag = ignoring_tarauaca }
-			NOT = { has_country_modifier = in_bankrupcy }
-		}
+		#Description: Bolivia can choose whether to claim North Chaco
+		country_event = {
+			id = 24605
+			title = "EVTNAME24605"
+			desc = "EVTDESC24605"
+			picture = "paraguayan_war"
 
-		mean_time_to_happen = {
-			months = 60
-			modifier = {
-				factor = 2
-				NOT = { medicine = 1 }
-			}
-			modifier = {
-				factor = 0.5
+			trigger = {
 				OR = {
-					machine_guns = 1
-					revolution_n_counterrevolution = 1
+					tag = BOL
+					tag = PBC
+				}
+				neighbour = PRG
+				OR = { # At least one province in North Chaco owned by Paraguay and not a Bolivia core
+					AND = { NOT = { is_core = 2318 } PRG = { owns = 2318 } }
+					AND = { NOT = { is_core = 2337 } PRG = { owns = 2337 } }
+					AND = { NOT = { is_core = 2338 } PRG = { owns = 2338 } }
+					AND = { NOT = { is_core = 2343 } PRG = { owns = 2343 } }
+				}
+				NOT = { # Central Chaco is not owned by Paraguay
+					PRG = { owns = 2369 }
+					PRG = { owns = 2367 }
+					PRG = { owns = 2366 }
+				}
+				OR = {
+					BRZ = { has_country_flag = paraguay_is_ours }
+					KPB = { has_country_flag = paraguay_is_ours }
 				}
 			}
-			modifier = {
-				factor = 0.5
-				year = 1895
-			}
-			modifier = {
-				factor = 0.5
-				year = 1900
-			}
-		}
 
-		# We will settle the Amazon.
-		option = {
-			name = "EVTOPTA97076"
-
-			prestige = 5
-			treasury = -25000
-			2549 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-
-			ai_chance = { factor = 90 }
-		}
-
-		# Ignore Tarauaca. It's not worth it.
-		option = {
-			name = "EVTOPTB97076"
-
-			set_country_flag = ignoring_tarauaca
-			prestige = -2
-
-			ai_chance = {
-				factor = 10
+			mean_time_to_happen = {
+				months = 12
 				modifier = {
-					factor = 0
-					tag = BRZ
-				}
-			}
-		}
-	}
-
-	#Description: Treaty of Petropolis - triggered for countries with a core in Acre to ask them to remove it
-	country_event = {
-		id = 46610101
-		title = "EVTNAME46610101"
-		desc = "EVTDESC46610101"
-		picture = "treaty_of_petropolis"
-
-		is_triggered_only = yes
-
-		# We agree
-		option = {
-			name = "EVTOPTA46610101"
-
-			set_country_flag = signed_treaty_of_petropolis
-			badboy = -2
-			BRZ_2549 = { remove_core = THIS }
-			relation = { who = FROM value = 300 }
-			treasury = 1000000
-			random_owned = {
-				limit = {
-					is_core = THIS
-					can_build_in_province = {
-						building = railroad
-						limit_to_world_greatest_level = yes
+					factor = 0.05
+					PRG = {
+						OR = {
+							war_with = BRZ
+							war_with = KPB
+						}
 					}
 				}
-				infrastructure = 1
 			}
 
-			ai_chance = { factor = 80 }
-		}
+			fire_only_once = yes
 
-		#No
-		option = {
-			name = "EVTOPTB46610101"
+			# Claim North Chaco
+			option = {
+				name = "EVTOPTA24605"
 
-			badboy = 1
-			relation = { who = BRZ value = -200 }
+				badboy = 8
+				relation = { who = PRG value = -150 }
 
-			ai_chance = {
-				factor = 20
-				modifier = { factor = 1.5 is_greater_power = yes }
-				modifier = { factor = 1.8 tag = BRZ }
-				modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
-				modifier = { factor = 0 badboy = 0.95 }
+				random_owned = {
+					limit = { owner = { tag = BOL } }
+					2318 = { add_core = BOL }
+					PRG_2338 = { add_core = BOL }
+				}
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					2318 = { add_core = BOL add_core = PBC }
+					PRG_2338 = { add_core = BOL add_core = PBC }
+				}
+
+				ai_chance = {
+					factor = 95
+					modifier = {
+						factor = 0
+						badboy = 0.68
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+				}
+			}
+
+			# Don't claim anything
+			option = {
+				name = "EVTOPTB24605"
+
+				badboy = -1
+				relation = { who = PRG value = 80 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 0
+						NOT = { war_policy = pacifism }
+					}
+				}
 			}
 		}
-	}
+
+		#Description: Bolivia can choose whether to claim North Chaco or North and Central Chaco
+		country_event = {
+			id = 24606
+			title = "EVTNAME24606"
+			desc = "EVTDESC24606"
+			picture = "paraguayan_war"
+
+			trigger = {
+				OR = {
+					tag = BOL
+					tag = PBC
+				}
+				neighbour = PRG
+				OR = { # At least one province in North Chaco owned by Paraguay and not a Bolivia core
+					AND = { NOT = { is_core = 2318 } PRG = { owns = 2318 } }
+					AND = { NOT = { is_core = 2337 } PRG = { owns = 2337 } }
+					AND = { NOT = { is_core = 2338 } PRG = { owns = 2338 } }
+					AND = { NOT = { is_core = 2343 } PRG = { owns = 2343 } }
+				}
+				#DEVNOTE anzu-3278: Potential edge case here if Paraguay owns South Chaco and Bolivia has it as cores but doesn't have cores on Northern Chaco, though that shouldn't happen
+				OR = { # At least one province in Central Chaco owned by Paraguay and not a Bolivia core
+					AND = { NOT = { is_core = 2369 } PRG = { owns = 2369 } }
+					AND = { NOT = { is_core = 2367 } PRG = { owns = 2367 } }
+					AND = { NOT = { is_core = 2366 } PRG = { owns = 2366 } }
+				}
+				OR = {
+					BRZ = { has_country_flag = paraguay_is_ours }
+					KPB = { has_country_flag = paraguay_is_ours }
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 12
+				modifier = {
+					factor = 0.05
+					PRG = {
+						OR = {
+							war_with = BRZ
+							war_with = KPB
+						}
+					}
+				}
+			}
+
+			fire_only_once = yes
+
+			# Claim Central and North Chaco
+			option = {
+				name = "EVTOPTA24606"
+
+				badboy = 12
+				relation = { who = PRG value = -200 }
+
+				random_owned = {
+					limit = { owner = { tag = BOL } }
+					2318 = { add_core = BOL }
+					PRG_2338 = { add_core = BOL }
+					2369 = { add_core = BOL }
+					ARG_2366 = { add_core = BOL }
+				}
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					2318 = { add_core = BOL add_core = PBC }
+					PRG_2338 = { add_core = BOL add_core = PBC }
+					2369 = { add_core = BOL add_core = PBC }
+					ARG_2366 = { add_core = BOL add_core = PBC }
+				}
+
+				random_country = {
+					limit = {
+						OR = {
+							tag = ARC
+							tag = ARG
+							tag = LPL
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = -75 }
+				}
+
+				ai_chance = {
+					factor = 65
+					modifier = {
+						factor = 0
+						badboy = 0.52
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+					modifier = { # Will not claim Central Chaco if good relations with Argentina who has cores there
+						factor = 0
+						NOT = {
+							AND = {
+								exists = ARC
+								OR = {
+									2369 = { is_core = ARC }
+									2367 = { is_core = ARC }
+									2366 = { is_core = ARC }
+								}
+								relation = { who = ARC value = 150 }
+							}
+							AND = {
+								exists = ARG
+								OR = {
+									2369 = { is_core = ARG }
+									2367 = { is_core = ARG }
+									2366 = { is_core = ARG }
+								}
+								relation = { who = ARG value = 150 }
+							}
+							AND = {
+								exists = LPL
+								OR = {
+									2369 = { is_core = LPL }
+									2367 = { is_core = LPL }
+									2366 = { is_core = LPL }
+								}
+								relation = { who = LPL value = 150 }
+							}
+						}
+					}
+				}
+			}
+
+			# Claim only North Chaco
+			option = {
+				name = "EVTOPTB24606"
+
+				badboy = 8
+				relation = { who = PRG value = -150 }
+
+				random_owned = {
+					limit = { owner = { tag = BOL } }
+					2318 = { add_core = BOL }
+					PRG_2338 = { add_core = THIS }
+				}
+				random_owned = {
+					limit = { owner = { tag = PBC } }
+					2318 = { add_core = BOL add_core = PBC }
+					PRG_2338 = { add_core = BOL add_core = PBC }
+				}
+
+				random_country = {
+					limit = {
+						OR = {
+							tag = ARC
+							tag = ARG
+							tag = LPL
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = 35 }
+				}
+
+				ai_chance = {
+					factor = 30
+					modifier = {
+						factor = 0
+						badboy = 0.68
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+					modifier = { # Will probably not only claim Northern Chaco if bad relations with Argentina
+						factor = 0.1
+						NOT = {
+							AND = {
+								exists = ARC
+								NOT = { relation = { who = ARC value = 0 } }
+							}
+							AND = {
+								exists = ARG
+								NOT = { relation = { who = ARG value = 0 } }
+							}
+							AND = {
+								exists = LPL
+								NOT = { relation = { who = LPL value = 0 } }
+							}
+						}
+					}
+				}
+			}
+
+			# Don't claim anything
+			option = {
+				name = "EVTOPTC24606"
+
+				badboy = -1
+				relation = { who = PRG value = 80 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 0
+						NOT = { war_policy = pacifism }
+					}
+				}
+			}
+		}
+
+		#Description: Argentina can choose whether to claim Central Chaco
+		country_event = {
+			id = 24607
+			title = "EVTNAME24607"
+			desc = "EVTDESC24607"
+			picture = "paraguayan_war"
+
+			trigger = {
+				OR = {
+					tag = ARC
+					tag = ARG
+					tag = LPL
+				}
+				neighbour = PRG
+				OR = { # At least one province in Central Chaco owned by Paraguay and not an Argentina core
+					AND = { NOT = { is_core = 2369 } PRG = { owns = 2369 } }
+					AND = { NOT = { is_core = 2367 } PRG = { owns = 2367 } }
+					AND = { NOT = { is_core = 2366 } PRG = { owns = 2366 } }
+				}
+				NOT = { # South Chaco is not owned by Paraguay
+					PRG = { owns = 2365 }
+					PRG = { owns = 2364 }
+					PRG = { owns = 2372 }
+					PRG = { owns = 2377 }
+					PRG = { owns = 2362 }
+				}
+				OR = {
+					BRZ = { has_country_flag = paraguay_is_ours }
+					KPB = { has_country_flag = paraguay_is_ours }
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 12
+				modifier = {
+					factor = 0.05
+					PRG = {
+						OR = {
+							war_with = BRZ
+							war_with = KPB
+						}
+					}
+				}
+			}
+
+			fire_only_once = yes
+
+			# Claim Central Chaco
+			option = {
+				name = "EVTOPTA24607"
+
+				badboy = 8
+				relation = { who = PRG value = -150 }
+
+				2369 = { add_core = THIS }
+				ARG_2366 = { add_core = THIS }
+
+				random_country = {
+					limit = {
+						OR = {
+							tag = BOL
+							tag = PBC
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = -75 }
+				}
+
+				ai_chance = {
+					factor = 95
+					modifier = {
+						factor = 0
+						badboy = 0.68
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+					modifier = { # Will probably not claim Central Chaco if on good terms with Bolivia who has cores there
+						factor = 0.1
+						NOT = {
+							AND = {
+								exists = BOL
+								OR = {
+									2369 = { is_core = BOL }
+									2367 = { is_core = BOL }
+									2366 = { is_core = BOL }
+								}
+								relation = { who = BOL value = 150 }
+							}
+							AND = {
+								exists = PBC
+								OR = {
+									2369 = { is_core = PBC }
+									2367 = { is_core = PBC }
+									2366 = { is_core = PBC }
+								}
+								relation = { who = PBC value = 150 }
+							}
+						}
+					}
+				}
+			}
+
+			# Don't claim anything
+			option = {
+				name = "EVTOPTB24607"
+
+				badboy = -1
+				relation = { who = PRG value = 80 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 0
+						NOT = { war_policy = pacifism }
+					}
+				}
+			}
+		}
+
+		#Description: Argentina can choose whether to claim South Chaco or South and Central Chaco
+		country_event = {
+			id = 24608
+			title = "EVTNAME24608"
+			desc = "EVTDESC24608"
+			picture = "paraguayan_war"
+
+			trigger = {
+				OR = {
+					tag = ARC
+					tag = ARG
+					tag = LPL
+				}
+				neighbour = PRG
+				OR = { # At least one province in Central Chaco owned by Paraguay and not an Argentina core
+					AND = { NOT = { is_core = 2369 } PRG = { owns = 2369 } }
+					AND = { NOT = { is_core = 2367 } PRG = { owns = 2367 } }
+					AND = { NOT = { is_core = 2366 } PRG = { owns = 2366 } }
+				}
+				OR = { # At least one province in South Chaco owned by Paraguay and not an Argentina core
+					AND = { NOT = { is_core = 2365 } PRG = { owns = 2365 } }
+					AND = { NOT = { is_core = 2364 } PRG = { owns = 2364 } }
+					AND = { NOT = { is_core = 2372 } PRG = { owns = 2372 } }
+					AND = { NOT = { is_core = 2377 } PRG = { owns = 2377 } }
+					AND = { NOT = { is_core = 2362 } PRG = { owns = 2362 } }
+				}
+				OR = {
+					BRZ = { has_country_flag = paraguay_is_ours }
+					KPB = { has_country_flag = paraguay_is_ours }
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 12
+				modifier = {
+					factor = 0.05
+					PRG = {
+						OR = {
+							war_with = BRZ
+							war_with = KPB
+						}
+					}
+				}
+			}
+
+			fire_only_once = yes
+
+			# Claim South and Central Chaco
+			option = {
+				name = "EVTOPTA24608"
+
+				badboy = 12
+				relation = { who = PRG value = -200 }
+
+				2362 = { add_core = THIS }
+				2377 = { add_core = THIS }
+				2372 = { add_core = THIS }
+				ARG_2377 = { add_core = THIS }
+				2369 = { add_core = THIS }
+				ARG_2366 = { add_core = THIS }
+
+				random_country = {
+					limit = {
+						OR = {
+							tag = BOL
+							tag = PBC
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = -75 }
+				}
+
+				ai_chance = {
+					factor = 65
+					modifier = {
+						factor = 0
+						badboy = 0.52
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+					modifier = { # Will probably not claim Central Chaco if on good terms with Bolivia who has cores there
+						factor = 0.1
+						NOT = {
+							AND = {
+								exists = BOL
+								OR = {
+									2369 = { is_core = BOL }
+									2367 = { is_core = BOL }
+									2366 = { is_core = BOL }
+								}
+								relation = { who = BOL value = 150 }
+							}
+							AND = {
+								exists = PBC
+								OR = {
+									2369 = { is_core = PBC }
+									2367 = { is_core = PBC }
+									2366 = { is_core = PBC }
+								}
+								relation = { who = PBC value = 150 }
+							}
+						}
+					}
+				}
+			}
+
+			# Claim only South Chaco
+			option = {
+				name = "EVTOPTB24608"
+
+				badboy = 8
+				relation = { who = PRG value = -150 }
+
+				2362 = { add_core = THIS }
+				2377 = { add_core = THIS }
+				2372 = { add_core = THIS }
+				ARG_2377 = { add_core = THIS }
+
+				random_country = {
+					limit = {
+						OR = {
+							tag = BOL
+							tag = PBC
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = 35 }
+				}
+
+				ai_chance = {
+					factor = 30
+					modifier = {
+						factor = 0
+						badboy = 0.68
+					}
+					modifier = {
+						factor = 0
+						war_policy = pacifism
+					}
+					modifier = { # Will probably not only claim Southern Chaco if bad relations with Bolivia
+						factor = 0.1
+						NOT = {
+							AND = {
+								exists = BOL
+								NOT = { relation = { who = BOL value = 0 } }
+							}
+							AND = {
+								exists = PBC
+								NOT = { relation = { who = PBC value = 0 } }
+							}
+						}
+					}
+				}
+			}
+
+			# Don't claim anything
+			option = {
+				name = "EVTOPTC24608"
+
+				badboy = -1
+				relation = { who = PRG value = 80 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 0
+						NOT = { war_policy = pacifism }
+					}
+				}
+			}
+		}
+
+	## Acre War ## TODO
+
+		#Description: Settling Tarauaca
+		country_event = {
+			id = 97076
+			title = "EVTNAME97076"
+			desc = "EVTDESC97076"
+			picture = "BurkeandWills"
+
+			trigger = {
+				war = no
+				2290 = { empty = no NOT = { owned_by = THIS } }
+				2549 = { empty = no NOT = { owned_by = THIS } }
+				3297 = { empty = no NOT = { owned_by = THIS } }
+				OR = {
+					owns = 2404 # Tefe
+					owns = 2321 # Cobija (South Peru)
+					owns = 2301 # Puerto Maldonaldo (South Peru)
+					owns = 2300 # Pucallpa (Peru)
+				}
+				OR = {
+					revolution_n_counterrevolution = 1
+					machine_guns = 1
+					year = 1890
+				}
+				NOT = { has_country_flag = ignoring_tarauaca }
+				NOT = { has_country_modifier = in_bankrupcy }
+			}
+
+			mean_time_to_happen = {
+				months = 60
+				modifier = {
+					factor = 2
+					NOT = { medicine = 1 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						machine_guns = 1
+						revolution_n_counterrevolution = 1
+					}
+				}
+				modifier = {
+					factor = 0.5
+					year = 1895
+				}
+				modifier = {
+					factor = 0.5
+					year = 1900
+				}
+			}
+
+			# We will settle the Amazon.
+			option = {
+				name = "EVTOPTA97076"
+
+				prestige = 5
+				treasury = -25000
+				2549 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+
+				ai_chance = { factor = 90 }
+			}
+
+			# Ignore Tarauaca. It's not worth it.
+			option = {
+				name = "EVTOPTB97076"
+
+				set_country_flag = ignoring_tarauaca
+				prestige = -2
+
+				ai_chance = {
+					factor = 10
+					modifier = {
+						factor = 0
+						tag = BRZ
+					}
+				}
+			}
+		}
+
+		#Description: Treaty of Petropolis - triggered for countries with a core in Acre to ask them to remove it
+		country_event = {
+			id = 46610101
+			title = "EVTNAME46610101"
+			desc = "EVTDESC46610101"
+			picture = "treaty_of_petropolis"
+
+			is_triggered_only = yes
+
+			# We agree
+			option = {
+				name = "EVTOPTA46610101"
+
+				set_country_flag = signed_treaty_of_petropolis
+				badboy = -2
+				BRZ_2549 = { remove_core = THIS }
+				relation = { who = FROM value = 300 }
+				treasury = 1000000
+				random_owned = {
+					limit = {
+						is_core = THIS
+						can_build_in_province = {
+							building = railroad
+							limit_to_world_greatest_level = yes
+						}
+					}
+					infrastructure = 1
+				}
+
+				ai_chance = { factor = 80 }
+			}
+
+			#No
+			option = {
+				name = "EVTOPTB46610101"
+
+				badboy = 1
+				relation = { who = BRZ value = -200 }
+
+				ai_chance = {
+					factor = 20
+					modifier = { factor = 1.5 is_greater_power = yes }
+					modifier = { factor = 1.8 tag = BRZ }
+					modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
+					modifier = { factor = 0 badboy = 0.95 }
+				}
+			}
+		}
 
 ## Dreadnought Race ##
 
