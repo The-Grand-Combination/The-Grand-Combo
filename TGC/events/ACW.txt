@@ -8963,7 +8963,10 @@
 				prestige = -25
 				USA_1 = { remove_core = USA }
 				random_owned = {
-					limit = { region = ENG_6 } # Yukon
+					limit = {
+						region = ENG_6 # Yukon
+						NOT = { has_global_flag = USA_CAN_achieved }
+					}
 					state_scope = {
 						remove_core = USA
 						add_core = LSK
@@ -10237,7 +10240,7 @@
 			}
 		}
 
-		#Description: The Ottawa Convention - Canada secedes
+		#Description: The Ottawa Convention - Canada secedes - if Treaty of New York
 		country_event = {
 			id = 95292
 			title = "EVTNAME95292"
@@ -10394,7 +10397,2901 @@
 			}
 		}
 
-		## TODO if All of Mexico, Mexico secedes, Mexican minors secede (OAX, TBS, YUC, ZAC)
+		#Description: The Ottawa Convention - Canada secedes - if Crusade for Canada
+		country_event = {
+			id = 95293
+			title = "EVTNAME95293"
+			desc = "EVTDESC95293"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_global_flag = USA_CAN_achieved
+				any_owned_province = {
+					province_id = 57 # Ottawa
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					CAN = { exists = yes }
+					has_country_flag = CAN_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					57 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					57 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					57 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					57 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					57 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = CAN_created
+				prestige = -25
+				CAN_46 = { add_core = CAN } # Southern Ontario
+				CAN_50 = { add_core = CAN } # Northern Ontario
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = CAN
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = CAN
+					}
+				}
+				CAN = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = anglo_canadian
+					add_accepted_culture = yankee
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 57
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = CAN value = -200 }
+				diplomatic_influence = { who = CAN value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Canada Republic
+		province_event = {
+			id = 95294
+			title = "EVTNAME95266"
+			desc = "EVTDESC95294"
+
+			trigger = {
+				owned_by = USA
+				is_core = CAN
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				CAN = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = CAN }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = CAN
+					}
+				}
+			}
+		}
+
+		#Description: The Halifax Convention - Maritime Union secedes - if Crusade for Canada
+		country_event = {
+			id = 95295
+			title = "EVTNAME95295"
+			desc = "EVTDESC95295"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_global_flag = USA_CAN_achieved
+				any_owned_province = {
+					province_id = 71 # Halifax
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					MRU = { exists = yes }
+					has_country_flag = MRU_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					71 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					71 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					71 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					71 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					71 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = MRU_created
+				prestige = -25
+				ENG_68 = { add_core = MRU } # New Brunswick
+				ENG_71 = { add_core = MRU } # Nova Scotia
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = MRU
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = MRU
+					}
+				}
+				MRU = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = anglo_canadian
+					add_accepted_culture = yankee
+					add_accepted_culture = acadian
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 71
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = MRU value = -200 }
+				diplomatic_influence = { who = MRU value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins the Maritime Union
+		province_event = {
+			id = 95296
+			title = "EVTNAME95266"
+			desc = "EVTDESC95296"
+
+			trigger = {
+				owned_by = USA
+				is_core = MRU
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				MRU = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = MRU }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = MRU
+					}
+				}
+			}
+		}
+
+		#Description: The Quebec City Convention - Quebec secedes - if Crusade for Canada
+		country_event = {
+			id = 95297
+			title = "EVTNAME95297"
+			desc = "EVTDESC95297"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_global_flag = USA_CAN_achieved
+				any_owned_province = {
+					province_id = 65 # Quebec City
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					QUE = { exists = yes }
+					has_country_flag = QUE_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					65 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					65 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					65 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					65 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					65 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = QUE_created
+				prestige = -25
+				CAN_58 = { add_core = QUE } # Southern Quebec
+				CAN_60 = { add_core = QUE } # Northern Quebec
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = QUE
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = QUE
+					}
+				}
+				QUE = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = french_canadian
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 65
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = QUE value = -200 }
+				diplomatic_influence = { who = QUE value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Quebec
+		province_event = {
+			id = 95298
+			title = "EVTNAME95266"
+			desc = "EVTDESC95298"
+
+			trigger = {
+				owned_by = USA
+				is_core = QUE
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				QUE = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = QUE }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = QUE
+					}
+				}
+			}
+		}
+
+		#Description: The Winnipeg Convention - Assiniboia secedes - if Crusade for Canada
+		country_event = {
+			id = 95299
+			title = "EVTNAME95299"
+			desc = "EVTDESC95299"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_global_flag = USA_CAN_achieved
+				any_owned_province = {
+					province_id = 42 # Winnipeg
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					MTC = { exists = yes }
+					has_country_flag = MTC_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					42 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					42 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					42 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					42 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					42 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = MTC_created
+				prestige = -25
+				ENG_22 = { add_core = MTC }
+				ENG_30 = { add_core = MTC } # Saskatchewan
+				ENG_36 = { add_core = MTC } # Manitoba
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = MTC
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = MTC
+					}
+				}
+				MTC = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = anglo_canadian
+					add_accepted_culture = yankee
+					add_accepted_culture = metis
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 42
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = MTC value = -200 }
+				diplomatic_influence = { who = MTC value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Assiniboia
+		province_event = {
+			id = 95300
+			title = "EVTNAME95266"
+			desc = "EVTDESC95300"
+
+			trigger = {
+				owned_by = USA
+				is_core = MTC
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				MTC = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = MTC }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = MTC
+					}
+				}
+			}
+		}
+
+		#Description: The St. John's Convention - Newfoundland secedes - if Crusade for Canada
+		country_event = {
+			id = 95301
+			title = "EVTNAME95301"
+			desc = "EVTDESC95301"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_global_flag = USA_CAN_achieved
+				any_owned_province = {
+					province_id = 74 # St. John's
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					NEW = { exists = yes }
+					has_country_flag = NEW_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					74 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					74 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					74 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					74 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					74 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = NEW_created
+				prestige = -25
+				ENG_74 = { add_core = NEW } # Newfoundland
+				ENG_75 = { add_core = NEW } # Labrador
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = NEW
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = NEW
+					}
+				}
+				NEW = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = anglo_canadian
+					add_accepted_culture = yankee
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 74
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = NEW value = -200 }
+				diplomatic_influence = { who = NEW value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Newfoundland
+		province_event = {
+			id = 95302
+			title = "EVTNAME95266"
+			desc = "EVTDESC95302"
+
+			trigger = {
+				owned_by = USA
+				is_core = NEW
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				NEW = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = NEW }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = NEW
+					}
+				}
+			}
+		}
+
+		#Description: The Whitehorse Convention - Stickeen secedes - if Crusade for Canada
+		country_event = {
+			id = 95303
+			title = "EVTNAME95303"
+			desc = "EVTDESC95303"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_global_flag = USA_CAN_achieved
+				any_owned_province = {
+					province_id = 6 # Whitehorse
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					STK = { exists = yes }
+					has_country_flag = STK_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.1
+					6 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					6 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					6 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					6 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					6 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = STK_created
+				prestige = -25
+				ENG_6 = { add_core = STK } # Yukon
+				ENG_9 = { add_core = STK } # Northwest Territories
+				ENG_28 = { add_core = STK } # Arctic Archipelago
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = STK
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = STK
+					}
+				}
+				STK = {
+					set_country_flag = usstatehood_we_have_applied
+					primary_culture = anglo_canadian
+					add_accepted_culture = yankee
+					add_accepted_culture = inuit
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 6
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = STK value = -200 }
+				diplomatic_influence = { who = STK value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Stickeen
+		province_event = {
+			id = 95304
+			title = "EVTNAME95266"
+			desc = "EVTDESC95304"
+
+			trigger = {
+				owned_by = USA
+				is_core = STK
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				STK = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = STK }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = STK
+					}
+				}
+			}
+		}
+
+		#Description: The Mexico City Convention - Mexico secedes - if All of Mexico
+		country_event = {
+			id = 95305
+			title = "EVTNAME95305"
+			desc = "EVTDESC95305"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_country_flag = mexico_integration_succeeded
+				any_owned_province = {
+					province_id = 2172 # Mexico City
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					MEX = { exists = yes }
+					has_country_flag = MEX_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 15
+				modifier = {
+					factor = 0.1
+					2172 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					2172 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					2172 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					2172 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					2172 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						RGR = { exists = yes }
+						SON = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = MEX_created
+				prestige = -25
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = MEX
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = MEX
+					}
+				}
+				MEX = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 2172
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = MEX value = -200 }
+				diplomatic_influence = { who = MEX value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Mexico
+		province_event = {
+			id = 95306
+			title = "EVTNAME95266"
+			desc = "EVTDESC95306"
+
+			trigger = {
+				owned_by = USA
+				is_core = MEX
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				MEX = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						RGR = { exists = yes }
+						SON = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = MEX }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = MEX
+					}
+				}
+			}
+		}
+
+		#Description: The Oaxaca Convention - Oaxaca secedes - if All of Mexico
+		country_event = {
+			id = 95307
+			title = "EVTNAME95307"
+			desc = "EVTDESC95307"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_country_flag = mexico_integration_succeeded
+				any_owned_province = {
+					province_id = 2177 # Oacaxa
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					OAX = { exists = yes }
+					has_country_flag = OAX_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 15
+				modifier = {
+					factor = 0.1
+					2177 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					2177 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					2177 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					2177 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					2177 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = OAX_created
+				prestige = -25
+				MEX_2177 = { add_core = OAX } # Oaxaca
+				MEX_2170 = { add_core = OAX } # Michoacán & Guerrero
+				MEX_2175 = { add_core = OAX } # Puebla & Tlaxcala
+				MEX_2159 = { add_core = OAX } # Veracruz
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = OAX
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = OAX
+					}
+				}
+				OAX = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					primary_culture = nahua
+					add_accepted_culture = mixtec
+					add_accepted_culture = mexican
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 2172
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = OAX value = -200 }
+				diplomatic_influence = { who = OAX value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Oaxaca
+		province_event = {
+			id = 95308
+			title = "EVTNAME95266"
+			desc = "EVTDESC95308"
+
+			trigger = {
+				owned_by = USA
+				is_core = OAX
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				OAX = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = OAX }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = OAX
+					}
+				}
+			}
+		}
+
+		#Description: The Zacatecas Convention - Zacatecas secedes - if All of Mexico
+		country_event = {
+			id = 95309
+			title = "EVTNAME95309"
+			desc = "EVTDESC95309"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_country_flag = mexico_integration_succeeded
+				any_owned_province = {
+					province_id = 2158 # Zacatecas
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					ZAC = { exists = yes }
+					has_country_flag = ZAC_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 15
+				modifier = {
+					factor = 0.1
+					2158 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					2158 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					2158 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					2158 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					2158 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = ZAC_created
+				prestige = -25
+				MEX_2158 = { add_core = ZAC } # Zacatecas
+				MEX_2161 = { add_core = ZAC } # Jalisco & Tepic / Nayarit
+				MEX_2151 = { add_core = ZAC } # Durango
+				MEX_2167 = { add_core = ZAC } # San Luis Potosí, Guanajuato & Querétaro
+				MEX_2156 = { add_core = ZAC } # Sinaloa
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = ZAC
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = ZAC
+					}
+				}
+				ZAC = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 2158
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = ZAC value = -200 }
+				diplomatic_influence = { who = ZAC value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: Congress of $STATENAME$ - state joins Zacatecas
+		province_event = {
+			id = 95310
+			title = "EVTNAME95266"
+			desc = "EVTDESC95310"
+
+			trigger = {
+				owned_by = USA
+				is_core = ZAC
+				is_colonial = no
+				OR = {
+					AND = {
+						controlled_by = REB
+						province_control_days = 120
+						NOT = { country_units_in_province = USA }
+					}
+					AND = {
+						has_province_modifier = sons_of_liberty
+						OR = {
+							controlled_by = REB
+							average_militancy = 8
+						}
+						state_scope = {
+							OR = {
+								liberal = 30
+								anarcho_liberal = 20
+							}
+							average_militancy = 4
+						}
+					}
+				}
+				ZAC = {
+					exists = yes
+					NOT = {
+						num_of_revolts = 1
+						is_disarmed = yes
+						truce_with = USA
+					}
+					OR = {
+						war = no
+						NOT = { national_provinces_occupied = .25 }
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 40
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 5 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 6 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 7 }
+				}
+				modifier = {
+					factor = 0.8
+					state_scope = { average_militancy = 8 }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						CSA = { exists = yes }
+						FSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						UNM = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					owner = { government = democracy }
+				}
+				modifier = {
+					factor = 1.5
+					owner = { government = hms_government }
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95266"
+
+				state_scope = {
+					any_owned = {
+						limit = { is_core = ZAC }
+						any_pop = {
+							scaled_militancy = {
+								ideology = liberal
+								factor = -8
+							}
+						}
+						change_controller = THIS
+						secede_province = ZAC
+					}
+				}
+			}
+		}
+
+		#Description: The Yucatan Convention - Yucatan secedes - if All of Mexico
+		country_event = {
+			id = 95311
+			title = "EVTNAME95311"
+			desc = "EVTDESC95311"
+			major = yes
+
+			trigger = {
+				tag = USA
+				OR = {
+					has_country_flag = mexico_integration_succeeded
+					has_global_flag = yucatan_is_a_state
+				}
+				any_owned_province = {
+					province_id = 2183 # Merida
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					YUC = { exists = yes }
+					has_country_flag = YUC_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 15
+				modifier = {
+					factor = 0.1
+					2183 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					2183 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					2183 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					2183 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					2183 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = YUC_created
+				prestige = -25
+				MEX_2183 = { add_core = YUC } # Zacatecas
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = YUC
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						change_controller = THIS
+						secede_province = YUC
+					}
+				}
+				YUC = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					primary_culture = mayan
+					add_accepted_culture = mexican
+					add_accepted_culture = yankee
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 2183
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = YUC value = -200 }
+				diplomatic_influence = { who = YUC value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: The Tabasco Convention - Tabasco secedes - if All of Mexico
+		country_event = {
+			id = 95312
+			title = "EVTNAME95312"
+			desc = "EVTDESC95312"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_country_flag = mexico_integration_succeeded
+				any_owned_province = {
+					province_id = 2165 # Villahermosa
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					TBS = { exists = yes }
+					has_country_flag = TBS_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 15
+				modifier = {
+					factor = 0.1
+					2165 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					2165 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					2165 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					2165 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					2165 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = TBS_created
+				prestige = -25
+				2165 = { add_core = TBS } # Villahermosa
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = TBS
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						limit = { is_core = TBS }
+						change_controller = THIS
+						secede_province = TBS
+					}
+				}
+				TBS = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 2165
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = TBS value = -200 }
+				diplomatic_influence = { who = TBS value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
+
+		#Description: The Chiapas Convention - Chiapas secedes - if All of Mexico
+		country_event = {
+			id = 95313
+			title = "EVTNAME95313"
+			desc = "EVTDESC95313"
+			major = yes
+
+			trigger = {
+				tag = USA
+				has_country_flag = mexico_integration_succeeded
+				any_owned_province = {
+					province_id = 2181 # San Marcos Tuxtla
+					is_colonial = no
+					OR = {
+						AND = {
+							controlled_by = REB
+							province_control_days = 120
+							NOT = { country_units_in_province = USA }
+						}
+						AND = {
+							has_province_modifier = sons_of_liberty
+							OR = {
+								controlled_by = REB
+								average_militancy = 8
+							}
+							state_scope = {
+								OR = {
+									liberal = 30
+									anarcho_liberal = 20
+								}
+								average_militancy = 4
+							}
+						}
+					}
+				}
+				NOT = {
+					CHP = { exists = yes }
+					has_country_flag = CHP_created
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 15
+				modifier = {
+					factor = 0.1
+					2181 = { controlled_by = REB }
+				}
+				modifier = {
+					factor = 0.8
+					2181 = { state_scope = { average_militancy = 5 } }
+				}
+				modifier = {
+					factor = 0.8
+					2181 = { state_scope = { average_militancy = 6 } }
+				}
+				modifier = {
+					factor = 0.8
+					2181 = { state_scope = { average_militancy = 7 } }
+				}
+				modifier = {
+					factor = 0.8
+					2181 = { state_scope = { average_militancy = 8 } }
+				}
+				modifier = {
+					factor = 0.5
+					OR = {
+						FSA = { exists = yes }
+						CSA = { exists = yes }
+						UNB = { exists = yes }
+						NEN = { exists = yes }
+						UIL = { exists = yes }
+						UOR = { exists = yes }
+						CAL = { exists = yes }
+						TEX = { exists = yes }
+						DAK = { exists = yes }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					exists = MEX
+				}
+				modifier = {
+					factor = 2
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					government = hms_government
+				}
+			}
+
+			option = {
+				name = "EVTOPTA95260"
+
+				set_country_flag = CHP_created
+				prestige = -25
+				2181 = { add_core = CHP } # Tuxtla
+				2182 = { add_core = CHP } # Soconusco
+				any_state = {
+					limit = {
+						any_owned_province = {
+							is_core = CHP
+							OR = {
+								AND = {
+									controlled_by = REB
+									province_control_days = 120
+									NOT = { country_units_in_province = USA }
+								}
+								AND = {
+									has_province_modifier = sons_of_liberty
+									OR = {
+										controlled_by = REB
+										average_militancy = 8
+									}
+									state_scope = {
+										OR = {
+											liberal = 30
+											anarcho_liberal = 20
+										}
+										average_militancy = 4
+									}
+								}
+							}
+						}
+					}
+					any_owned = {
+						limit = { is_core = CHP }
+						change_controller = THIS
+						secede_province = CHP
+					}
+				}
+				CHP = {
+					set_country_flag = usstatehood_we_have_applied
+					government = democracy
+					ruling_party_ideology = liberal
+					political_reform = universal_voting
+					political_reform = population_equal_weight
+					political_reform = yes_meeting
+					political_reform = free_press
+					political_reform = non_socialist
+					political_reform = secret_ballots
+					capital = 2181
+					leadership = 40
+					any_pop = {
+						scaled_militancy = {
+							ideology = liberal
+							factor = -8
+						}
+					}
+				}
+				relation = { who = CHP value = -200 }
+				diplomatic_influence = { who = CHP value = -200 }
+				any_pop = {
+					scaled_militancy = {
+						ideology = liberal
+						factor = 3
+					}
+				}
+			}
+		}
 
 		#Description: Join the Canadian Confederation? - American minors can choose whether to ask to join Canada
 		country_event = {

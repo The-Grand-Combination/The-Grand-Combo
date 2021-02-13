@@ -218,82 +218,61 @@ political_decisions = {
 
 ## Territory ##
 
-	#Description: Occupy the Yukon territory if Alaska is already occupied.
-	claim_the_north = {
-		picture = whistlestop_tour
-		potential = {
-			owns = 17
-			OR = {
-				tag = ENG
-				tag = CAN
-				primary_culture = anglo_canadian
-				accepted_culture = anglo_canadian
-			}
-			6 = { empty = yes }
-			7 = { empty = yes }
-			OR = {
-				3408 = { empty = no }
-				3395 = { empty = no }
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			ENG_6 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-			random_owned = {
-				limit = { 17 = { is_core = CAN } }
-				ENG_6 = { add_core = CAN }
-			}
-			random_owned = {
-				limit = { 17 = { is_core = RPL } }
-				ENG_6 = { add_core = RPL }
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Occupy Yukon # TODO unite with above.
+	#Description: Occupy and settle Yukon
 	alaskan_frontier = {
 		picture = fort_selkirk
 		potential = {
-			tag = ENG
+			owns = 16
 			OR = {
-				owns = 17
-				17 = { owner = { vassal_of = THIS } }
+				invention = mission_to_civilize
+				overlord = { invention = mission_to_civilize }
+				3408 = { empty = no }
+				3395 = { empty = no }
 			}
-			6 = { empty = yes }
-			7 = { empty = yes }
+			NOT = { # Every STK core is either empty or 2 (part of Alaska state)
+				STK = {
+					any_core = {
+						OR = {
+							NOT = { empty = yes }
+							NOT = { province_id = 2 }
+						}
+					}
+				}
+			}
 		}
 
 		allow = {
 			war = no
-			invention = mission_to_civilize
+			money = 25000
 		}
 
 		effect = {
-			6 = {
-				secede_province = THIS
-				add_core = RPL
+			treasury = -25000
+			STK = {
+				all_core = {
+					limit = { empty = yes }
+					secede_province = THIS
+					add_core = THIS
+				}
+			}
+			random_owned = {
+				limit = { province_id = 7 }
 				change_province_name = "Fort Selkirk"
 			}
-			7 = {
-				secede_province = THIS
-				add_core = RPL
-			}
-			18 = {
-				secede_province = THIS
-				add_core = RPL
-			}
-			any_owned = {
-				limit = { is_core = RPL }
-				secede_province = RPL
+			random_owned = {
+				limit = { province_id = 6 }
+				change_province_name = "Whitehorse"
+				add_province_modifier = { name =  recently_built_city duration = 365 }
 			}
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { money = 50000 }
+			}
+		}
 	}
 
 ## Canada National Railway ##
