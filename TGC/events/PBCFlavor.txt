@@ -136,6 +136,8 @@
 		option = {
 			name = "EVTOPTA97043"
 
+			set_global_flag = salaverry_shot
+
 			badboy = 2
 			PEU = { any_pop = { militancy = 4 } }
 			any_pop = { militancy = 4 }
@@ -145,12 +147,16 @@
 		option = {
 			name = "EVTOPTB97043"
 
+			set_global_flag = salaverry_imprisoned
+
 			add_country_modifier = { name = salaverry_in_prison duration = -1 }
 		}
 
 		# Spare him
 		option = {
 			name = "EVTOPTC97043"
+
+			set_global_flag = salaverry_spared
 
 			any_pop = { consciousness = 4 }
 			PEU = {
@@ -166,6 +172,8 @@
 		# Exile him
 		option = {
 			name = "EVTOPTD97043"
+
+			set_global_flag = salaverry_exiled
 
 			random_country = {
 				limit = {
@@ -549,7 +557,17 @@
 			}
 			BOL = { country_event = 97048 }
 
-			ai_chance = { factor = 90 } # TODO make this affected by what Santa Cruz decides to do with Salaverry
+			ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 1.5
+					has_global_flag = salaverry_shot
+				}
+				modifier = {
+					factor = 0.9
+					has_global_flag = salaverry_exiled
+				}
+			}
 		}
 
 		# Refuse the confederation
@@ -564,6 +582,14 @@
 				modifier = {
 					factor = 0.5
 					BOL = { military_score = THIS }
+				}
+				modifier = {
+					factor = 1.5
+					has_global_flag = salaverry_imprisoned
+				}
+				modifier = {
+					factor = 2
+					has_global_flag = salaverry_spared
 				}
 			}
 		}
@@ -1003,42 +1029,11 @@
 		}
 
 		# Let it go
-		option = { # TODO crashing
+		option = { # DEVNOTE anzu-3278: This crashes in some situations and I have no idea why
 			name = "EVTOPTA97055"
 
 			prestige = -5
 			badboy = -2
-
-			## Component states ##
-				random_country = {
-					limit = {
-						tag = PEU
-						vassal_of = PBC
-					}
-					set_global_flag = first_pbc_fell
-					THIS = { release_vassal = PEU }
-				}
-				random_country = {
-					limit = {
-						tag = SPU
-						vassal_of = PBC
-					}
-					THIS = { release_vassal = SPU }
-				}
-				random_owned = {
-					limit = {
-						province_id = 2295
-						NOT = { exists = PEU }
-					}
-					owner = { release = PEU }
-				}
-				random_owned = {
-					limit = {
-						province_id = 2304
-						NOT = { exists = SPU }
-					}
-					owner = { release = SPU }
-				}
 
 			## This ##
 				random_owned = {
@@ -1053,6 +1048,39 @@
 				random_owned = {
 					limit = { owner = { centralization = federalism } }
 					owner = { political_reform = unitary }
+				}
+
+			## Component states ##
+				random_country = {
+					limit = {
+						tag = SPU
+						exists = yes
+						vassal_of = THIS
+					}
+					THIS = { release_vassal = SPU }
+				}
+				random_country = {
+					limit = {
+						tag = PEU
+						exists = yes
+						vassal_of = THIS
+					}
+					set_global_flag = first_pbc_fell
+					THIS = { release_vassal = PEU }
+				}
+				random_owned = {
+					limit = {
+						province_id = 2304
+						NOT = { exists = SPU }
+					}
+					owner = { release = SPU }
+				}
+				random_owned = {
+					limit = {
+						province_id = 2295
+						NOT = { exists = PEU }
+					}
+					owner = { release = PEU }
 				}
 
 			## Neighbors ##
