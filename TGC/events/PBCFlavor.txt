@@ -1119,7 +1119,7 @@
 				}
 
 			ai_chance = {
-				factor = 50
+				factor = 40
 				modifier = {
 					factor = 1.5
 					NOT = { owns = 2295 }
@@ -1127,23 +1127,116 @@
 			}
 		}
 
-		#TODO option to claim just northern Atacama and Tacna
-
-		# Go to war
+		# Propose to leave Peru if they concede northern Atacama and Tacna
 		option = {
 			name = "EVTOPTB97055"
 
-			badboy = 2
+			badboy = -1
+
+			random_country = {
+				limit = {
+					tag = PEU
+					exists = yes
+					vassal_of = THIS
+				}
+				set_global_flag = first_pbc_fell
+				THIS = { release_vassal = PEU }
+			}
+			random_owned = {
+				limit = {
+					province_id = 2295
+					NOT = { exists = PEU }
+				}
+				owner = { release = PEU }
+			}
+
+			random_owned = {
+				limit = {
+					province_id = 2313
+					NOT = { owner = { capital = 2313 } }
+				}
+				owner = { capital = 2313 }
+			}
+			all_core = { remove_core = PBC }
+			change_tag = BOL
+			random_owned = {
+				limit = { owner = { centralization = federalism } }
+				owner = { political_reform = unitary }
+			}
+
+			PEU = { country_event = 97056 }
+
+			## Neighbors ##
+				random_country = {
+					limit = { tag = PRG exists = yes }
+					relation = { who = THIS value = -200 }
+				}
+				random_country = {
+					limit = { tag = CHL exists = yes }
+					relation = { who = THIS value = 200 }
+				}
+				random_country = {
+					limit = {
+						OR = {
+							tag = ARC
+							tag = ARG
+							tag = LPL
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = 200 }
+				}
+				random_country = {
+					limit = { tag = PEU exists = yes }
+					relation = { who = THIS value = 200 }
+				}
+				random_country = {
+					limit = {
+						OR = {
+							tag = BRZ
+							tag = KPB
+						}
+						exists = yes
+					}
+					relation = { who = THIS value = 200 }
+				}
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					NOT = {
+						SPU = {
+							vassal_of = THIS
+							owns = 2578
+							owns = 2307
+							owns = 2308
+						}
+					}
+				}
+			}
+		}
+
+		# Go to war
+		option = {
+			name = "EVTOPTC97055"
+
+			badboy = 6
 			all_core = {
 				limit = { is_core = PEU }
 				remove_core = PBC
 			}
-			any_owned = {
+			random_owned = {
 				limit = { is_core = PEU }
-				any_pop = { militancy = 6 }
-				add_province_modifier = {
-					name = nationalist_agitation
-					duration = 1095
+				owner = {
+					any_owned = {
+						limit = { is_core = PEU }
+						any_pop = { militancy = 6 }
+						add_province_modifier = {
+							name = nationalist_agitation
+							duration = 1095
+						}
+					}
 				}
 			}
 			random_country = {
@@ -1178,7 +1271,7 @@
 			}
 
 			ai_chance = {
-				factor = 50
+				factor = 40
 				modifier = {
 					factor = 1.5
 					owns = 2295
@@ -1186,6 +1279,185 @@
 				modifier = {
 					factor = 0
 					NOT = { total_amount_of_divisions = 1 }
+				}
+			}
+		}
+	}
+
+	#Description: Triggered for Peru if Bolivia wants northern Atacama and Tacna
+	country_event = {
+		id = 97056
+		title = "EVTNAME97056"
+		desc = "EVTDESC97056"
+		picture = "pbc_end"
+
+		is_triggered_only = yes
+
+		# Accept
+		option = {
+			name = "EVTOPTA97056"
+
+			prestige = -5
+			badboy = -1
+
+			## Unite Peru ##
+				random_country = {
+					limit = {
+						tag = SPU
+						exists = yes
+						vassal_of = FROM
+					}
+					FROM = { release_vassal = SPU }
+				}
+				set_country_flag = peru_reunited
+				random_country = {
+					limit = {
+						tag = SPU
+						ai = yes
+						exists = yes
+					}
+					THIS = { inherit = SPU }
+				}
+				# If not AI, South Peru will become Peru
+				random_country = {
+					limit = {
+						tag = SPU
+						ai = no
+						exists = yes
+					}
+					set_country_flag = peru_reunited
+					prestige = 5
+					inherit = THIS
+					random_owned = {
+						limit = { province_id = 2295 } # Lima
+						owner = { capital = 2295 }
+					}
+					change_tag = PEU
+				}
+
+			2307 = { add_core = FROM secede_province = FROM remove_core = SPU remove_core = PEU }
+			2308 = { add_core = FROM secede_province = FROM remove_core = SPU remove_core = PEU }
+			2578 = { add_core = FROM secede_province = FROM remove_core = SPU remove_core = PEU }
+
+			ai_chance = {
+				factor = 40
+			}
+		}
+
+		# Refuse
+		option = {
+			name = "EVTOPTB97056"
+
+			prestige = 5
+
+			FROM = { country_event = 97057 }
+
+			ai_chance = { factor = 60 }
+		}
+	}
+
+	#Description: Triggered for Bolivia if Peru refuses to give up northern Atacama and Tacna
+	country_event = {
+		id = 97057
+		title = "EVTNAME97057"
+		desc = "EVTDESC97057"
+		picture = "deliberation"
+
+		is_triggered_only = yes
+
+		# Fight for it
+		option = {
+			name = "EVTOPTA97057"
+
+			badboy = 4
+
+			2307 = { add_core = FROM }
+			2308 = { add_core = FROM }
+			2578 = { add_core = FROM }
+
+			random_owned = {
+				limit = { is_core = PEU }
+				owner = {
+					any_owned = {
+						limit = { is_core = PEU }
+						any_pop = { militancy = 6 }
+						add_province_modifier = {
+							name = nationalist_agitation
+							duration = 1095
+						}
+					}
+				}
+			}
+
+			## Unite Peru ##
+				PEU = {
+					set_country_flag = peru_reunited
+					random_country = {
+						limit = {
+							tag = SPU
+							ai = yes
+							exists = yes
+						}
+						PEU = { inherit = SPU }
+					}
+					# If not AI, South Peru will become Peru
+					random_country = {
+						limit = {
+							tag = SPU
+							ai = no
+							exists = yes
+						}
+						set_country_flag = peru_reunited
+						prestige = 5
+						inherit = PEU
+						random_owned = {
+							limit = { province_id = 2295 } # Lima
+							owner = { capital = 2295 }
+						}
+						change_tag = PEU
+					}
+				}
+
+			leave_alliance = PEU
+			war = {
+				target = PEU
+				attacker_goal = { casus_belli = acquire_all_cores }
+				call_ally = yes
+			}
+
+			ai_chance = {
+				factor = 80
+				modifier = {
+					factor = 0.1
+					is_disarmed = yes
+				}
+			}
+		}
+
+		# Back down
+		option = {
+			name = "EVTOPTB97057"
+
+			prestige = -10
+
+			rich_strata = { militancy = 4 consciousness = 4 }
+			scaled_militancy = { issue = jingoism factor = 4 }
+			scaled_consciousness = { issue = jingoism factor = 4 }
+
+			random_country = {
+				limit = {
+					tag = SPU
+					exists = yes
+					vassal_of = THIS
+				}
+				THIS = { release_vassal = SPU }
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.25
+					NOT = { PEU = { military_score = THIS } }
 				}
 			}
 		}
