@@ -12,6 +12,10 @@ political_decisions = {
 					tag = PBC
 					CHL = { exists = no }
 				}
+				AND = {
+					tag = USS
+					CHL = { exists = no }
+				}
 			}
 			OR = {
 				2328 = { empty = yes } # Valdivia
@@ -56,6 +60,10 @@ political_decisions = {
 				tag = CHL
 				AND = {
 					tag = PBC
+					CHL = { exists = no }
+				}
+				AND = {
+					tag = USS
 					CHL = { exists = no }
 				}
 			}
@@ -104,6 +112,8 @@ political_decisions = {
 			prestige = 3
 			2336 = {
 				secede_province = THIS
+				add_core = CHL
+				add_core = THIS
 				any_pop = { reduce_pop = 0.50 }
 				any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
 			}
@@ -172,39 +182,39 @@ valparaiso_harbor = {
 	}
 }
 
-#Description: If the PBC is at war with Peru and has recently lost a war, Chile can go to war with them to release South Peru.
+#Description: If the PBC is at war with Peru and has recently lost a war (PBC in Chaos decision was taken), Chile can go to war with them to release South Peru.
 repudiate_the_treaty_of_paucarpata = {
 	picture = peru_bolivia
 	potential = {
 		tag = CHL
-		truce_with = PBC
 		PBC = {
 			exists = yes
 			war_with = PEU
 			has_recently_lost_war = yes
+			NOT = { truce_with = THIS }
 		}
 		SPU = { vassal_of = PBC }
-		NOT = { has_country_flag = treaty_of_paucarpata_repudiated }
-	}
-
-	allow = {
 		NOT = {
+			has_country_flag = treaty_of_paucarpata_repudiated
 			has_recently_lost_war = yes
 			PBC = { military_score = THIS }
 		}
 	}
 
+	allow = {
+		war = no
+		is_disarmed = no
+	}
+
 	effect = {
-		casus_belli = {
-			target = PBC
-			type = release_puppet
-			months = 24
-		}
+		set_country_flag = treaty_of_paucarpata_repudiated
+		prestige = 5
+		badboy = 2
 		war = {
 			target = PBC
 			attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
 		}
-		set_country_flag = treaty_of_paucarpata_repudiated
+		any_pop = { dominant_issue = { value = jingoism factor = 0.05 } }
 	}
 }
 
