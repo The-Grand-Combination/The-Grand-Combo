@@ -386,14 +386,12 @@
 							region = USA_111	# Wyoming
 							region = USA_126	# Kansas
 							region = USA_129	# Oklahoma
-							province_id = 100	# Arizona
-							province_id = 101
-							province_id = 3367
-							province_id = 38	# New Mexico
-							province_id = 105
-							province_id = 109
-							province_id = 2148
-							province_id = 2631
+							region = MEX_100	# Arizona
+							region = MEX_103	# New Mexico
+						}
+						NOT = { # Gadsden purchase territories
+							province_id = 102
+							province_id = 2662
 						}
 					}
 					remove_core = MEX
@@ -410,14 +408,12 @@
 							region = USA_111	# Wyoming
 							region = USA_126	# Kansas
 							region = USA_129	# Oklahoma
-							province_id = 100	# Arizona
-							province_id = 101
-							province_id = 3367
-							province_id = 38	# New Mexico
-							province_id = 105
-							province_id = 109
-							province_id = 2148
-							province_id = 2631
+							region = MEX_100	# Arizona
+							region = MEX_103	# New Mexico
+						}
+						NOT = { # Gadsden purchase territories
+							province_id = 102
+							province_id = 2662
 						}
 					}
 					secede_province = USA
@@ -425,7 +421,7 @@
 				USA = { country_event = 44826 }
 
 				random_owned = {
-					limit = { exists = CAL }
+					limit = { war_with = CAL }
 					owner = { end_war = CAL }
 				}
 
@@ -458,7 +454,8 @@
 			option = {
 				name = EVTOPTB44825
 
-				war_exhaustion = 20
+				prestige = 10
+				war_exhaustion = -10
 				USA = { country_event = 44827 }
 
 				ai_chance = { factor = 10 }
@@ -518,32 +515,7 @@
 				name = "EVTOPTA44827"
 
 				set_country_flag = mexico_refused_treaty
-				random_owned = {
-					limit = {
-						owner = { ai = yes }
-						OR = {
-							is_core = USA
-							region = TEX_132	# Texas
-							region = MEX_94		# Nevada
-							region = MEX_97		# Utah
-							region = MEX_85		# California
-							region = USA_106	# Colorado
-							region = USA_111	# Wyoming
-							region = USA_126	# Kansas
-							region = USA_129	# Oklahoma
-							province_id = 100	# Arizona
-							province_id = 101
-							province_id = 3367
-							province_id = 38	# New Mexico
-							province_id = 105
-							province_id = 109
-							province_id = 2148
-							province_id = 2631
-						}
-					}
-					secede_province = USA
-				}
-				war_exhaustion = -20
+				war_exhaustion = 20
 			}
 		}
 
@@ -1145,7 +1117,7 @@
 				name = EVTOPTA44853
 
 				set_country_flag = mexico_all_states_all_slave
-				country_event = 44852
+				country_event = 44854
 
 				any_state = {
 					limit = { is_slave = no }
@@ -1164,7 +1136,7 @@
 				name = EVTOPTB44853
 
 				set_country_flag = mexico_all_states_all_free
-				country_event = 44852
+				country_event = 44854
 
 				any_state = {
 					limit = { is_slave = yes }
@@ -1175,7 +1147,6 @@
 					any_pop = { consciousness = -3 }
 				}
 
-
 				ai_chance = { factor = 10 }
 			}
 
@@ -1184,7 +1155,7 @@
 				name = EVTOPTC44853
 
 				set_country_flag = mexico_all_states_balanced
-				country_event = 44852
+				country_event = 44854
 				any_pop = { consciousness = 3 }
 
 				ai_chance = { factor = 80 }
@@ -1246,6 +1217,71 @@
 			}
 		}
 
+		#Description: If the USA succeeded in annexing northern Mexico, remove Mexico cores from the original Mexican cession (leaving Mexico with cores in its modern borders) - sanity check event if Mexico cores are not removed
+		country_event = {
+
+			id = 993885
+			title = "EVTNAME993885"
+			desc = "EVTDESC993885"
+			picture = "mexico_soldiers"
+
+			trigger = {
+				tag = USA
+				has_global_flag = mexican_american_war
+				war = no
+				has_recently_lost_war = no
+				MEX = {
+					truce_with = THIS
+					has_recently_lost_war = yes
+				}
+				any_owned_province = {
+					is_core = USA
+					is_core = MEX
+					OR = {
+						region = TEX_132	# Texas
+						region = MEX_94		# Nevada
+						region = MEX_97		# Utah
+						region = MEX_85		# California
+						region = USA_106	# Colorado
+						region = USA_111	# Wyoming
+						region = USA_126	# Kansas
+						region = USA_129	# Oklahoma
+						region = MEX_100	# Arizona
+						region = MEX_103	# New Mexico
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				days = 14
+			}
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA993887"
+
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = USA
+							region = TEX_132	# Texas
+							region = MEX_94		# Nevada
+							region = MEX_97		# Utah
+							region = MEX_85		# California
+							region = USA_106	# Colorado
+							region = USA_111	# Wyoming
+							region = USA_126	# Kansas
+							region = USA_129	# Oklahoma
+							region = MEX_100	# Arizona
+							region = MEX_103	# New Mexico
+						}
+					}
+					remove_core = MEX
+				}
+			}
+		}
+
 		#Description: If the USA succeeded in annexing all of Mexico, they can choose whether to keep them fully occupied or grant limited autonomy
 		country_event = {
 
@@ -1261,11 +1297,11 @@
 				NOT = { has_country_flag = mexico_resistance }
 			}
 
-			fire_only_once = yes
-
 			mean_time_to_happen = {
 				days = 14
 			}
+
+			fire_only_once = yes
 
 			immediate = {
 				set_country_flag = mexico_resistance
