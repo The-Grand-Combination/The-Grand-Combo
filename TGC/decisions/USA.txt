@@ -2480,7 +2480,6 @@ political_decisions = {
 	#Description: The USA or any Great Power which owns the Panama Canal can propose to Denmark to buy the Danish Virgin Islands.
 	selling_danish_virgin_islands = {
 		picture = map_caribbean
-		alert = no
 		potential = {
 			is_greater_power = yes
 			OR = {
@@ -2632,7 +2631,74 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	# TODO buy Greenland
+	#Description: If the USA has achieved the Crusade for Canada, they can offer to buy Greenland.
+	usa_offer_to_buy_greenland = {
+		picture = map_greenland
+		potential = {
+			tag = USA
+			has_global_flag = USA_CAN_achieved
+			owns = 74 # Newfoundland
+			251 = { owner = { NOT = { capital_scope = { continent = north_america } } } }
+			NOT = {
+				exists = GRN
+				any_owned_province = {
+					OR = {
+						region = DEN_251 # South Greenland
+						region = DEN_3434 # North Greenland
+					}
+				}
+				has_country_flag = offered_to_buy_greenland
+			}
+		}
+
+		allow = {
+			war = no
+			money = 400100
+			251 = {
+				owner = {
+					war = no
+					is_greater_power = no
+					NOT = { truce_with = THIS }
+					relation = { who = THIS value = 0 }
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { money = 1000000 }
+					NOT = { war_policy = jingoism }
+					OR = {
+						AND = {
+							ruling_party_ideology = liberal
+							upper_house = { ideology = liberal value = 0.4 }
+						}
+						AND = {
+							in_sphere = THIS
+							economic_policy = laissez_faire
+							upper_house = { ideology = liberal value = 0.2 }
+							relation = { who = THIS value = 150 }
+						}
+						vassal_of = THIS
+						is_disarmed = yes
+						has_country_modifier = in_bankrupcy
+						has_country_modifier = generalised_debt_default
+						has_country_modifier = emergency_tax_measures1
+						has_country_modifier = emergency_tax_measures2
+						NOT = { money = 10000 }
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = offered_to_buy_greenland
+			random_country = {
+				limit = { owns = 251 }
+				country_event = 36226
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 
 ## Crusade for Canada ##
 
