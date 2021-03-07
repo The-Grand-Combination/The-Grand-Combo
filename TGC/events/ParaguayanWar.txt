@@ -86,7 +86,7 @@
 		fire_only_once = yes
 
 		trigger = {
-			has_country_flag = solano_lopez # TODO maybe a modifier instead?
+			has_country_flag = solano_lopez
 			war = no
 			URU = {
 				ruling_party_ideology = liberal
@@ -546,7 +546,10 @@
 
 		fire_only_once = yes
 
-		immediate = { set_variable = { which = supported_paraguay_partition value = 0 } }
+		immediate = {
+			PRG = { set_variable = { which = supported_paraguay_partition value = 0 } }
+			PRG = { clr_country_flag = solano_lopez }
+		}
 
 		# Reduce Paraguay
 		option = {
@@ -563,11 +566,11 @@
 				factor = 85
 				modifier = {
 					factor = 0.5
-					check_variable = { which = supported_paraguay_partition value = 1 }
+					PRG = { check_variable = { which = supported_paraguay_partition value = 1 } }
 				}
 				modifier = {
 					factor = 0.5
-					check_variable = { which = supported_paraguay_partition value = 2 }
+					PRG = { check_variable = { which = supported_paraguay_partition value = 2 } }
 				}
 			}
 		}
@@ -577,7 +580,7 @@
 			name = "EVTOPTB46622"
 
 			set_country_flag = supported_paraguay_partition
-			change_variable = { which = supported_paraguay_partition value = 1 }
+			PRG = { change_variable = { which = supported_paraguay_partition value = 1 } }
 
 			prestige = 20
 			badboy = 15
@@ -615,7 +618,7 @@
 				factor = 65
 				modifier = {
 					factor = 0.5
-					check_variable = { which = supported_paraguay_partition value = 2 }
+					PRG = { check_variable = { which = supported_paraguay_partition value = 2 } }
 				}
 				modifier = {
 					factor = 0
@@ -630,7 +633,7 @@
 
 			set_country_flag = supported_paraguay_partition
 			clr_country_flag = supported_paraguay_reduction
-			change_variable = { which = supported_paraguay_partition value = 1 }
+			PRG = { change_variable = { which = supported_paraguay_partition value = 1 } }
 
 			prestige = 10
 			badboy = 10
@@ -859,6 +862,130 @@
 						}
 					}
 				}
+
+			# If the USA intervened on behalf of Paraguay rename Villa Occidental in honor of their president
+			random_owned = {
+				limit = {
+					province_id = 2337
+					has_global_flag = argentina_changed_their_mind_regarding_prg_annexation
+				}
+				change_province_name = "Villa Hayes"
+				USA = {
+					relation = { who = THIS value = 200 }
+					diplomatic_influence = { who = THIS value = 200 }
+				}
+			}
+		}
+	}
+
+	#Description: The USA has a chance to dissuade Argentina from the annexation (if successful rename Villa Occidental to Villa Hayes)
+	country_event = {
+		id = 46628
+		title = "EVTNAME46628"
+		desc = "EVTDESC46628"
+		picture = "avay"
+
+		trigger = {
+			tag = USA
+			has_global_flag = paraguayan_war
+			PRG = {
+				war = no
+				has_recently_lost_war = yes
+				NOT = { # Every neighboring country has either decided the above event or was not part of the war
+					any_neighbor_country = {
+						NOT = {
+							NOT = { has_country_flag = will_support_uruguay }
+							has_country_flag = supported_paraguay_reduction
+							has_country_flag = supported_paraguay_partition
+						}
+					}
+				}
+				check_variable = { which = supported_paraguay_partition value = 2 }
+				NOT = { check_variable = { which = supported_paraguay_partition value = 3 } }
+			}
+			OR = {
+				ARC = { exists = yes has_country_flag = supported_paraguay_partition }
+				ARG = { exists = yes has_country_flag = supported_paraguay_partition }
+				LPL = { exists = yes has_country_flag = supported_paraguay_partition }
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+
+		fire_only_once = yes
+
+		immediate = {
+			set_global_flag = usa_paraguay_independence_last_chance
+		}
+
+		# Urge the Argentinians to reconsider
+		option = {
+			name = "EVTOPTA46628"
+
+			random_country = {
+				limit = {
+					OR = {
+						tag = ARC
+						tag = ARG
+						tag = LPL
+					}
+					has_country_flag = supported_paraguay_partition
+				}
+				country_event = 46629
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Leave Paraguay to its fate
+		option = {
+			name = "EVTOPTB46628"
+
+			ai_chance = { factor = 20 }
+		}
+	}
+
+	#Description: Triggered for Argentina when the USA asks them to reconsider the partition of Paraguay.
+	country_event = {
+		id = 46629
+		title = "EVTNAME46629"
+		desc = "EVTDESC46629"
+		picture = "deliberation"
+
+		is_triggered_only = yes
+
+		# Change your mind
+		option = {
+			name = "EVTOPTA46629"
+
+			clr_country_flag = supported_paraguay_partition
+			set_country_flag = supported_paraguay_reduction
+			PRG = { change_variable = { which = supported_paraguay_partition value = -1 } }
+
+			set_global_flag = argentina_changed_their_mind_regarding_prg_annexation
+
+			ai_chance = { factor = 45 }
+		}
+
+		# Go ahead with the annexation
+		option = {
+			name = "EVTOPTB46629"
+
+			ai_chance = { factor = 50 }
+		}
+
+		# Go ahead with the annexation and insult the ambassador
+		option = {
+			name = "EVTOPTC46629"
+
+			FROM = {
+				relation = { who = THIS value = -150 }
+				diplomatic_influence = { who = THIS value = -150 }
+			}
+
+			ai_chance = { factor = 5 }
 		}
 	}
 
@@ -887,7 +1014,11 @@
 		}
 
 		mean_time_to_happen = {
-			days = 10
+			days = 25
+			modifier = {
+				factor = 0.7
+				check_variable = { which = supported_paraguay_partition value = 3 }
+			}
 		}
 
 		fire_only_once = yes
