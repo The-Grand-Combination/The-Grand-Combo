@@ -807,7 +807,11 @@
 				}
 			## Bolivia ##
 				random_country = {
-					limit = { tag = BOL exists = yes }
+					limit = {
+						tag = BOL
+						exists = yes
+						has_country_flag = will_support_uruguay
+					}
 					all_core = { remove_core = THIS }
 					THIS = {
 						any_owned = {
@@ -818,7 +822,11 @@
 					}
 				}
 				random_country = {
-					limit = { tag = PBC exists = yes }
+					limit = {
+						tag = PBC
+						exists = yes
+						has_country_flag = will_support_uruguay
+					}
 					all_core = { remove_core = THIS }
 					THIS = {
 						any_owned = {
@@ -878,116 +886,120 @@
 		}
 	}
 
-	#Description: The USA has a chance to dissuade Argentina from the annexation (if successful rename Villa Occidental to Villa Hayes)
-	country_event = {
-		id = 46628
-		title = "EVTNAME46628"
-		desc = "EVTDESC46628"
-		picture = "avay"
+	## USA Intervention ##
 
-		trigger = {
-			tag = USA
-			has_global_flag = paraguayan_war
-			PRG = {
+		#Description: The USA has a chance to dissuade Argentina from the annexation (if successful rename Villa Occidental to Villa Hayes)
+		country_event = {
+			id = 46628
+			title = "EVTNAME46628"
+			desc = "EVTDESC46628"
+			picture = "avay"
+
+			trigger = {
+				tag = USA
 				war = no
-				has_recently_lost_war = yes
-				NOT = { # Every neighboring country has either decided the above event or was not part of the war
-					any_neighbor_country = {
-						NOT = {
-							NOT = { has_country_flag = will_support_uruguay }
-							has_country_flag = supported_paraguay_reduction
-							has_country_flag = supported_paraguay_partition
+				is_greater_power = yes
+				has_global_flag = paraguayan_war
+				PRG = {
+					war = no
+					has_recently_lost_war = yes
+					NOT = { # Every neighboring country has either decided the above event or was not part of the war
+						any_neighbor_country = {
+							NOT = {
+								NOT = { has_country_flag = will_support_uruguay }
+								has_country_flag = supported_paraguay_reduction
+								has_country_flag = supported_paraguay_partition
+							}
 						}
 					}
+					check_variable = { which = supported_paraguay_partition value = 2 }
+					NOT = { check_variable = { which = supported_paraguay_partition value = 3 } }
 				}
-				check_variable = { which = supported_paraguay_partition value = 2 }
-				NOT = { check_variable = { which = supported_paraguay_partition value = 3 } }
+				OR = {
+					ARC = { exists = yes has_country_flag = supported_paraguay_partition }
+					ARG = { exists = yes has_country_flag = supported_paraguay_partition }
+					LPL = { exists = yes has_country_flag = supported_paraguay_partition }
+				}
 			}
-			OR = {
-				ARC = { exists = yes has_country_flag = supported_paraguay_partition }
-				ARG = { exists = yes has_country_flag = supported_paraguay_partition }
-				LPL = { exists = yes has_country_flag = supported_paraguay_partition }
+
+			mean_time_to_happen = {
+				days = 5
 			}
-		}
 
-		mean_time_to_happen = {
-			days = 5
-		}
+			fire_only_once = yes
 
-		fire_only_once = yes
+			immediate = {
+				set_global_flag = usa_paraguay_independence_last_chance
+			}
 
-		immediate = {
-			set_global_flag = usa_paraguay_independence_last_chance
-		}
+			# Urge the Argentinians to reconsider
+			option = {
+				name = "EVTOPTA46628"
 
-		# Urge the Argentinians to reconsider
-		option = {
-			name = "EVTOPTA46628"
-
-			random_country = {
-				limit = {
-					OR = {
-						tag = ARC
-						tag = ARG
-						tag = LPL
+				random_country = {
+					limit = {
+						OR = {
+							tag = ARC
+							tag = ARG
+							tag = LPL
+						}
+						has_country_flag = supported_paraguay_partition
 					}
-					has_country_flag = supported_paraguay_partition
+					country_event = 46629
 				}
-				country_event = 46629
+
+				ai_chance = { factor = 80 }
 			}
 
-			ai_chance = { factor = 80 }
+			# Leave Paraguay to its fate
+			option = {
+				name = "EVTOPTB46628"
+
+				ai_chance = { factor = 20 }
+			}
 		}
 
-		# Leave Paraguay to its fate
-		option = {
-			name = "EVTOPTB46628"
+		#Description: Triggered for Argentina when the USA asks them to reconsider the partition of Paraguay.
+		country_event = {
+			id = 46629
+			title = "EVTNAME46629"
+			desc = "EVTDESC46629"
+			picture = "deliberation"
 
-			ai_chance = { factor = 20 }
-		}
-	}
+			is_triggered_only = yes
 
-	#Description: Triggered for Argentina when the USA asks them to reconsider the partition of Paraguay.
-	country_event = {
-		id = 46629
-		title = "EVTNAME46629"
-		desc = "EVTDESC46629"
-		picture = "deliberation"
+			# Change your mind
+			option = {
+				name = "EVTOPTA46629"
 
-		is_triggered_only = yes
+				clr_country_flag = supported_paraguay_partition
+				set_country_flag = supported_paraguay_reduction
+				PRG = { change_variable = { which = supported_paraguay_partition value = -1 } }
 
-		# Change your mind
-		option = {
-			name = "EVTOPTA46629"
+				set_global_flag = argentina_changed_their_mind_regarding_prg_annexation
 
-			clr_country_flag = supported_paraguay_partition
-			set_country_flag = supported_paraguay_reduction
-			PRG = { change_variable = { which = supported_paraguay_partition value = -1 } }
-
-			set_global_flag = argentina_changed_their_mind_regarding_prg_annexation
-
-			ai_chance = { factor = 45 }
-		}
-
-		# Go ahead with the annexation
-		option = {
-			name = "EVTOPTB46629"
-
-			ai_chance = { factor = 50 }
-		}
-
-		# Go ahead with the annexation and insult the ambassador
-		option = {
-			name = "EVTOPTC46629"
-
-			FROM = {
-				relation = { who = THIS value = -150 }
-				diplomatic_influence = { who = THIS value = -150 }
+				ai_chance = { factor = 45 }
 			}
 
-			ai_chance = { factor = 5 }
+			# Go ahead with the annexation
+			option = {
+				name = "EVTOPTB46629"
+
+				ai_chance = { factor = 50 }
+			}
+
+			# Go ahead with the annexation and insult the ambassador
+			option = {
+				name = "EVTOPTC46629"
+
+				FROM = {
+					relation = { who = THIS value = -150 }
+					diplomatic_influence = { who = THIS value = -150 }
+				}
+
+				ai_chance = { factor = 5 }
+			}
 		}
-	}
 
 	#Description: Triple Alliance Victorious - Paraguay annexation event - if 2 or more countries support partition
 	country_event = {
