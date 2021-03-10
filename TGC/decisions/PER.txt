@@ -1,40 +1,5 @@
 political_decisions = {
 #from PER.txt
-	reclaim_herat = {
-		picture = form_the_ikhwan
-		alert = yes
-		potential = {
-			tag = PER
-			is_vassal = no
-			NOT = { owns = 1212 }
-			NOT = { has_country_flag = herat }
-			war = no
-		}
-		allow = {
-			military_score = 50
-		}
-		effect = {
-			1212 = {
-				add_core = PER
-			}
-			prestige = 10
-			random_country = {
-				limit = { owns = 1212 }
-				relation = {
-					who = PER
-					value = -50
-				}
-			}
-			relation = {
-				who = ENG
-				value = -50
-			}
-			set_country_flag = herat
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
 	herat_expedition = {
 		picture = "herat"
 		potential = {
@@ -49,12 +14,12 @@ political_decisions = {
 				has_global_flag = herat_expedition
 			}
 		}
-		
+
 		allow = {
 			war = no
 			1212 = {
 				owner = {
-					war = no 
+					war = no
 					is_vassal = no
 					primary_culture = pashtun
 				}
@@ -70,18 +35,18 @@ political_decisions = {
 			prestige = 5
 			1212 = { add_core = PER }
 			random_country = {
-				limit = { 
-					tag = ENG 
+				limit = {
+					tag = ENG
 					is_greater_power = yes
 					is_disarmed = no
 				}
 				country_event = 99200
 			}
 		}
-		
+
 		ai_will_do = { factor = 1 }
 	}
-	
+
 	second_herat_expedition = {
 		picture = "herat"
 		potential = {
@@ -99,18 +64,18 @@ political_decisions = {
 			}
 			has_global_flag = herat_expedition
 			NOT = { exists = HRT }
-			NOT = { 
+			NOT = {
 				owns = 1212
-				has_global_flag = anglo_persian_war  
-				has_global_flag = second_herat_expedition 
+				has_global_flag = anglo_persian_war
+				has_global_flag = second_herat_expedition
 			}
 		}
-		
+
 		allow = {
 			war = no
 			1212 = {
-				owner = { 
-					war = no 
+				owner = {
+					war = no
 					is_vassal = no
 					primary_culture = pashtun
 					NOT = { truce_with = THIS }
@@ -118,61 +83,554 @@ political_decisions = {
 				NOT = { is_core = THIS }
 			}
 		}
-		
+
 		effect = {
 			set_global_flag = second_herat_expedition
 			prestige = 10
 			1212 = {
-				add_core = PER 
+				add_core = PER
 				secede_province = PER
 			}
 			random_country = {
-				limit = { 
-					tag = ENG 
+				limit = {
+					tag = ENG
 					is_greater_power = yes
 					is_disarmed = no
 				}
 				country_event = 99202
 			}
 		}
-		
+
 		ai_will_do = { factor = 1 }
 	}
-	
+	establish_the_dar_al_funun = {
+			potential = {
+				tag = PER
+				NOT = { has_country_flag = dar_al_funun_built }
+			}
+
+			allow = {
+				OR = {
+					literacy = 0.12
+					AND = {
+						has_country_modifier = great_reformer
+						literacy = 0.08
+					}
+					AND = {
+						has_country_modifier = visionary_thinker
+						literacy = 0.05
+					}
+					AND = {
+						has_country_modifier = visionary_thinker
+						ai = yes
+					}
+				}
+				war = no
+			}
+
+			effect = {
+				set_country_flag = dar_al_funun_built
+				random_owned = {
+					limit = {
+						owner = {
+							civilized = no
+							NOT = { research_reform = yes_research_reform }
+						}
+					}
+					owner = {
+						economic_reform = yes_research_reform
+						any_pop = {
+							ideology = {
+								value = liberal
+								factor = 0.03
+							}
+							consciousness = 0.5
+							scaled_militancy = {
+								ideology = liberal
+								factor = -10
+							}
+							scaled_militancy = {
+								ideology = reactionary
+								factor = 3
+							}
+						}
+					}
+				}
+				capital_scope = {
+					add_province_modifier = {
+						name = dar_al_funun
+						duration = -1
+					}
+					any_pop = {
+						literacy = 0.05
+					}
+				}
+				any_greater_power = {
+					limit = {
+						capital_scope = {
+							continent = europe
+						}
+						NOT = {
+							tag = ENG
+							tag = RUS
+							tag = TUR
+						}
+						relation = {
+							who = PER
+							value = -20
+						}
+					}
+					relation = {
+						who = PER
+						value = 25
+					}
+					random_owned = {
+						limit = { is_capital = yes }
+						province_event = { id = 190370 }
+					}
+				}
+			}
+	}
+	# Decision - Naser al-Din's expedition to Europe, 1870s, increases prestige + adds research
+	per_expedition_to_europe = {
+			picture = "decision_eurotrip"
+			potential = {
+				tag = PER
+				NOT = { has_country_flag = naser_in_europe }
+				has_country_flag = naser_al_din
+				OR = {
+					government = absolute_monarchy
+					government = prussian_constitutionalism
+					government = hms_government
+				}
+			}
+			allow = {
+				war = no
+			}
+			effect = {
+				years_of_research = 0.05
+				money = -25000
+				random_country = {
+					limit = {
+						capital_scope = { continent = europe }
+						greater_power = yes
+					}
+					relation = {
+						who = PER
+						value = 100
+					}
+				}
+				set_country_flag = naser_in_europe
+				prestige = 7
+				any_pop = { consciousness = 1 }
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					NOT = {
+					 money = 30000
+					}
+				}
+			}
+	}
+	# Decision - build the Niavaran Palace - if the Pahlavi dynasty is in power
+	build_niavaran = {
+			picture = "decision_niavaran"
+			potential = {
+				tag = PER
+				has_country_flag = pahlavis_usurped
+				NOT = { has_country_flag = niavaran_palace_built }
+			}
+			allow = {
+				war = no
+				money = 50000
+			}
+			effect = {
+				money = -50000
+				prestige = 10
+				set_country_flag = niavaran_palace_built
+				capital_scope = {
+					life_rating = 1
+					add_province_modifier = {
+						name = new_fancy_palace_modifier
+						duration = 3650
+					}
+					any_pop = {
+						consciousness = -3
+						militancy = -2
+						ideology = {
+							factor = 0.1
+							value = conservative
+						}
+					}
+				}
+			}
+	}
+
+	# Decision - if Persia is not Absolute Monarchy, bombard the Majles (as done by Mohammad Ali Shah) and reign in the constitution, +Prestige, +MIL/CON, +GP relations
+	bombard_the_majles = {
+			picture = "decision_majles"
+			potential = {
+				tag = PER
+				government = hms_government
+				NOT = { has_country_flag = bombarded_majles }
+				has_country_flag = persian_constitution_flag
+			}
+			allow = {
+				average_consciousness = 2
+			}
+			effect = {
+				prestige = 7.5
+				set_country_flag = bombarded_majles
+				any_greater_power = {
+					relation = {
+						who = PER
+						value = 25
+					}
+				}
+				RUS = {
+					diplomatic_influence = {
+						who = PER
+						value = 15
+					}
+				}
+				ENG = {
+					diplomatic_influence = {
+						who = PER
+						value = 10
+					}
+				}
+				any_pop = {
+					ideology = {
+						factor = 0.05
+						value = liberal
+					}
+				}
+				scaled_consciousness = {
+					factor = 6
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = 6
+					ideology = liberal
+				}
+				scaled_consciousness = {
+					factor = -4
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = -4
+					ideology = conservative
+				}
+				scaled_consciousness = {
+					factor = -8
+					ideology = reactionary
+				}
+				scaled_militancy = {
+					factor = -8
+					ideology = reactionary
+				}
+				ruling_party_ideology = reactionary
+				political_reform = harassment
+				political_reform = censored_press
+				political_reform = no_meeting
+				political_reform = appointed
+				political_reform = landed_voting
+			}
+
+			ai_will_do = {
+				factor = 1
+			}
+	}
+
+		Decision - claim the title of Shahanshah, if Great Power/secondary power with Pahlavi dynasty ruling, +Prestige, -MIL/CON, increases reactionary ideology
+		become_shahanshah = {
+			picture = "decision_shahanshah"
+			potential = {
+				tag = PER
+				NOT = { has_country_flag = true_king_of_kings }
+				OR = {
+					is_greater_power = yes
+					AND = {
+						is_secondary_power = yes
+						has_country_flag = pahlavis_usurped
+					}
+				}
+			}
+			allow = {
+				prestige = 25
+				war = no
+			}
+			effect = {
+				prestige = 25
+				set_country_flag = true_king_of_kings
+				any_pop = {
+					consciousness = -3
+					militancy = -3
+					ideology = {
+						factor = 0.1
+						value = conservative
+					}
+				}
+				scaled_militancy = {
+					factor = 6
+					value = communist
+				}
+				scaled_militancy = {
+					factor = 6
+					value = anarcho_liberal
+				}
+			}
+
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+		second_treaty_of_erzurum = {
+			picture = treaty_erzurum
+			potential = {
+				tag = PER
+			}
+
+			allow = {
+				OR = {
+					NOT = {
+						relation = {
+							who = TUR
+							value = 50
+						}
+					}
+					war_with = TUR
+				}
+			}
+
+			effect = {
+				random_country = {
+					limit = {
+						OR = {
+							tag = PER
+							tag = TUR
+						}
+						NOT = {
+							tag = THIS
+						}
+					}
+					country_event = 300983
+				}
+			}
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					NOT = { year = 1847 }
+				}
+			}
+		}
+
+		the_reuter_concession = {
+			picture = decision_reuter_concession
+			potential = {
+				tag = PER
+				NOT = { has_country_flag = reuter_concession }
+				has_country_flag = naser_al_din
+			}
+
+			allow = {
+				war = no
+				OR = {
+					ENG = { is_sphere_leader_of = PER }
+					part_of_sphere = no
+				}
+				OR = {
+					civilized = yes
+					AND = {
+						NOT = { finance_reform = no_finance_reform }
+						pre_indust = yes_pre_indust
+					}
+				}
+			}
+
+			effect = {
+				set_country_flag = reuter_concession
+				money = 30000
+				years_of_research = 0.1
+				ENG = {
+					diplomatic_influence = {
+						who = PER
+						value = 20
+					}
+				}
+			}
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					war = yes
+				}
+			}
+		}
+
+		the_treaty_of_paris_persia = {
+			picture = decision_paris_treaty
+			potential = {
+				tag = PER
+				has_country_flag = anglo_persian_war
+			}
+
+			allow = {
+				war_exhaustion = 10
+				war = yes
+			}
+
+			effect = {
+				clr_country_flag = anglo_persian_war
+				prestige = -15
+				war_exhaustion = 5
+				release = HRT
+				any_owned = {
+					limit = {
+						is_core = HRT
+					}
+					secede_province = HRT
+				}
+				HRT = {
+					end_war = PER
+					country_event = 190357
+					any_owned = {
+						remove_core = PER
+					}
+				}
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = TAJ
+							is_core = KUN
+							is_core = AFG
+						}
+						NOT = { is_core = HRT }
+					}
+					secede_province = AFG
+				}
+				any_country = {
+					limit = {
+						war_with = PER
+						has_country_flag = intervened_herat
+					}
+					country_event = 190357
+					relation = {
+						who = PER
+						value = 100
+					}
+					influence = {
+						who = PER
+						value = 50
+					}
+				}
+				AFG = {
+					any_owned = {
+						remove_core = PER
+					}
+				}
+				KUN = {
+					any_owned = {
+						remove_core = PER
+					}
+				}
+			}
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+		the_sublime_threshold = {
+			picture = decision_sublime_threshold
+			potential = {
+				tag = PER
+				NOT = { has_country_flag = the_sublime_threshold_flag }
+			}
+
+			allow = {
+				OR = {
+					government = theocracy
+					AND = {
+						owns = 929
+						owns = 933
+						religious_policy = moralism
+					}
+				}
+			}
+
+			effect = {
+				set_country_flag = the_sublime_threshold_flag
+				prestige = 5
+				badboy = 5
+				any_pop = {
+					limit = {
+						has_pop_religion = shiite
+					}
+					militancy = -5
+					consciousness = -5
+				}
+				TUR_923 = {
+					add_core = PER
+					remove_core = TUR
+				}
+				TUR_931 = {
+					add_core = PER
+					remove_core = TUR
+				}
+				TUR_935 = {
+					add_core = PER
+					remove_core = TUR
+				}
+			}
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					badboy = 0.6
+				}
+			}
+		}
+		#TODO: Add decision to claim Kurdistan
+
 #from Setup.txt
-	
+
 	persia_1836_setup = {
 		picture = constantinople
 		potential = {
 			tag = PER
 			always = no
 		}
-		
+
 		allow = {
 			tag = PER
 		}
-		
+
 		effect = {
 			any_pop = {
 				limit = { OR = { has_pop_culture = turkish has_pop_culture = circassian has_pop_culture = chechen } }
 				literacy = 0.02
 			}
-			
+
 			any_pop = {
-				limit = { 
-					NOT = { has_pop_religion = sunni } 
+				limit = {
+					NOT = { has_pop_religion = sunni }
 					OR = { has_pop_culture = ashkenazi has_pop_culture = sephardic }
 				}
 				literacy = 0.1
 			}
-			
+
 			any_pop = { limit = { has_pop_culture = baluchi } literacy = -0.02 }
-			
+
 			any_pop = { limit = { OR = { has_pop_culture = georgian has_pop_culture = armenian } } literacy = 0.03 }
-			
+
 			any_pop = { limit = { is_culture_group = arab } literacy = 0.01 }
 			any_pop = { limit = { has_pop_religion = catholic NOT = { has_pop_culture = assyrian } } literacy = 0.01 }
 			any_pop = { limit = { has_pop_culture = greek } literacy = 0.07 }
 		}
-	}	
+	}
 }
