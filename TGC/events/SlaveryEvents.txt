@@ -1,0 +1,1215 @@
+# We probably don't need this since the abolished_slavery flags aren't really used anywhere else so far, keeping this in case we end up needing them again.
+#Description: Clears abolished_slavery flags and reinstates the slavery modifier for countries who have slavery.
+#country_event = {
+#	id = 203769
+#	title = "EVTNAME203769"
+#	desc = "EVTDESC203769"
+#	picture = "Slaves"
+#
+#	trigger = {
+#		civilized = yes
+#		slavery = yes_slavery
+#		has_country_flag = abolished_slavery
+#	}
+#
+#	mean_time_to_happen = {
+#		days = 7
+#	}
+#
+#	option = {
+#		name = "EVTOPTA203769"
+#
+#		clr_country_flag = abolished_slavery
+#		random_owned = {
+#			limit = { owner = { NOT = { has_country_modifier = slavery_timer } } }
+#			add_country_modifier = { name = slavery_timer duration = 2920 } # 8 Years
+#		}
+#	}
+#}
+
+#Description: Slave pop growth.
+country_event = {
+	id = 203770
+	title = "EVTNAME203770"
+	desc = "EVTDESC203770"
+	picture = "Slaves"
+
+	trigger = {
+		slavery = yes_slavery
+		NOT = { has_country_modifier = slavery_timer }
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = "EVTOPTA203770"
+
+		slaves = { reduce_pop = 1.08 }
+		add_country_modifier = { name = slavery_timer duration = 2920 } # 8 Years
+	}
+}
+
+## Slave Trade ##
+
+	#Description: The Slave Trade - buy slaves?
+	country_event = {
+		id = 184000
+		title = "EVTNAME184000"
+		desc = "EVTDESC184000"
+		picture = "slaves_traded"
+
+		trigger = {
+			OR = {
+				has_country_flag = slave_trade_leader
+				has_country_flag = slave_trader
+			}
+			NOT = { has_country_modifier = slave_trade_cooldown_country }
+			money = 21000
+		}
+
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		# Buy more slaves
+		option = {
+			name = "EVTOPTA184000"
+
+			any_pop = {
+				limit = { type = slaves }
+				reduce_pop = 1.04
+			}
+			money = -10000
+			add_country_modifier = { name = slave_trade_cooldown_country duration = 1825 } # 5 Years
+
+			ai_chance = {
+				factor = 70
+				modifier = {
+					factor = 0
+					NOT = { money = 200000 }
+				}
+			}
+		}
+
+		# Don't buy any more slaves
+		option = {
+			name = "EVTOPTB184000"
+
+			add_country_modifier = { name = slave_trade_cooldown_country duration = 365 }
+
+			ai_chance = { factor = 30 }
+		}
+	}
+
+	#Description: Slave Trade Ended - if there is no leader of the slave trade
+	country_event = {
+		id = 185000
+		title = "EVTNAME185000"
+		desc = "EVTDESC185000"
+		picture = "slaves_freed"
+
+		trigger = {
+			has_country_flag = slave_trader
+			OR = {
+				NOT = { has_global_flag = slave_trade_reinstated }
+				has_country_flag = slave_trade_ended
+			}
+			slavery = yes_slavery
+		}
+
+		option = {
+			name = "EVTOPTA185000"
+
+			clr_country_flag = slave_trader
+			clr_country_flag = the_slavery_debate
+			clr_global_flag = slave_trade_reinstated
+
+			prestige = -3
+			any_pop = {
+				militancy = -3
+				consciousness = 3
+			}
+			remove_country_modifier = the_slavery_debate
+			remove_country_modifier = atlantic_slave_trade
+			add_country_modifier = {
+				name = national_confusion
+				duration = 2860
+			}
+		}
+	}
+
+	#Description: If the Slave Trade leader abolishes slavery, the Slave Trade will be dismantled
+	country_event = {
+		id = 186500
+		title = "EVTNAME186500"
+		desc = "EVTDESC186500"
+		picture = "slaves_freed"
+
+		trigger = {
+			slavery = no_slavery
+			has_country_flag = slave_trade_leader
+			has_country_modifier = atlantic_slave_trade
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "EVTOPTA186500"
+
+			clr_country_flag = slave_trade_leader
+			clr_country_flag = the_slavery_debate
+			clr_country_flag = slave_trade_reinstated
+			clr_country_flag = slavery_still_stands
+
+			prestige = 10
+			badboy = -4
+			any_pop = {
+				militancy = -2
+				consciousness = -1.5
+			}
+			remove_country_modifier = mass_labour
+			remove_country_modifier = atlantic_slave_trade
+			remove_country_modifier = the_slavery_debate
+		}
+	}
+
+	#Description: If a Slave Trader abolishes slavery, clear all modifiers
+	country_event = {
+		id = 186501
+		title = "EVTNAME186501"
+		desc = "EVTDESC186501"
+		picture = "slaves_freed"
+
+		trigger = {
+			slavery = no_slavery
+			has_country_flag = slave_trader
+			has_country_modifier = atlantic_slave_trade
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "EVTOPTA186501"
+
+			clr_country_flag = slave_trader
+			clr_country_flag = the_slavery_debate
+			clr_country_flag = slave_trade_reinstated
+
+			prestige = 4
+			badboy = -1
+			any_pop = {
+				militancy = -2
+				consciousness = -1.5
+			}
+			remove_country_modifier = mass_labour
+			remove_country_modifier = atlantic_slave_trade
+			remove_country_modifier = the_slavery_debate
+		}
+	}
+
+## Enslaving the Serfs - triggered by enslave_the_serfs decision ##
+
+	#Description: Enslaving the Serfs - country only, colonial only or both?
+	country_event = {
+		id = 443035
+		title = "EVTNAME443035"
+		desc = "EVTDESC443035"
+		picture = "convict_labor"
+
+		is_triggered_only = yes
+
+		# Country Only
+		option = {
+			name = "EVTOPTA443035"
+			country_event = 443036
+		}
+
+		# Colonial Only
+		option = {
+			name = "EVTOPTB443035"
+			country_event = 443037
+		}
+
+		# Both
+		option = {
+			name = "EVTOPTC443035"
+			country_event = 443038
+		}
+	}
+
+	#Description: Country Only - everyone or just minorities?
+	country_event = {
+		id = 443036
+		title = "EVTNAME443036"
+		desc = "EVTDESC443036"
+		picture = "convict_labor"
+
+		is_triggered_only = yes
+
+		# Everyone
+		option = {
+			name = "EVTOPTA443036"
+
+			political_reform = peonage
+			any_owned = {
+				limit = {
+					is_colonial = no
+					is_overseas = no
+					has_pop_type = serfs
+				}
+				serfs = {
+					militancy = 9
+					consciousness = 9
+					pop_type = slaves
+				}
+				state_scope = { is_slave = yes }
+			}
+		}
+
+		# Minorities only
+		option = {
+			name = "EVTOPTB443036"
+
+			political_reform = peonage
+			## Minority serfs become slaves ##
+				any_owned = {
+					limit = {
+						is_colonial = no
+						is_overseas = no
+						has_pop_type = serfs
+					}
+					any_pop = {
+						limit = {
+							type = serfs
+							is_primary_culture = no
+							is_accepted_culture = no
+						}
+						militancy = 9
+						consciousness = 9
+						pop_type = slaves
+					}
+					state_scope = { is_slave = yes }
+				}
+			## Other serfs are freed ##
+				any_owned = {
+					limit = {
+						has_pop_type = labourers
+						has_pop_type = serfs
+					}
+					serfs = { pop_type = labourers }
+				}
+				any_owned = {
+					limit = {
+						has_pop_type = farmers
+						has_pop_type = serfs
+					}
+					serfs = { pop_type = farmers }
+				}
+		}
+	}
+
+	#Description: Colonial Only - everyone or just minorities?
+	country_event = {
+		id = 443037
+		title = "EVTNAME443037"
+		desc = "EVTDESC443037"
+		picture = "convict_labor"
+
+		is_triggered_only = yes
+
+		# Everyone
+		option = {
+			name = "EVTOPTA443036"
+
+			political_reform = peonage
+			any_owned = {
+				limit = {
+					is_colonial = yes
+					is_overseas = yes
+					has_pop_type = serfs
+				}
+				serfs = {
+					militancy = 9
+					consciousness = 9
+					pop_type = slaves
+				}
+				state_scope = { is_slave = yes }
+			}
+		}
+
+		# Minorities only
+		option = {
+			name = "EVTOPTB443036"
+
+			political_reform = peonage
+			## Minority serfs become slaves ##
+				any_owned = {
+					limit = {
+						is_colonial = yes
+						is_overseas = yes
+						has_pop_type = serfs
+					}
+					any_pop = {
+						limit = {
+							type = serfs
+							is_primary_culture = no
+							is_accepted_culture = no
+						}
+						militancy = 9
+						consciousness = 9
+						pop_type = slaves
+					}
+					state_scope = { is_slave = yes }
+				}
+			## Other serfs are freed ##
+				any_owned = {
+					limit = {
+						has_pop_type = labourers
+						has_pop_type = serfs
+					}
+					serfs = { pop_type = labourers }
+				}
+				any_owned = {
+					limit = {
+						has_pop_type = farmers
+						has_pop_type = serfs
+					}
+					serfs = { pop_type = farmers }
+				}
+		}
+	}
+
+	#Description: Everywhere - everyone or just minorities?
+	country_event = {
+		id = 443038
+		title = "EVTNAME443038"
+		desc = "EVTDESC443038"
+		picture = "convict_labor"
+
+		is_triggered_only = yes
+
+		# Everyone
+		option = {
+			name = "EVTOPTA443036"
+
+			political_reform = peonage
+			any_owned = {
+				limit = { has_pop_type = serfs }
+				serfs = {
+					militancy = 9
+					consciousness = 9
+					pop_type = slaves
+				}
+				state_scope = { is_slave = yes }
+			}
+		}
+
+		# Minorities only
+		option = {
+			name = "EVTOPTB443036"
+
+			political_reform = peonage
+			## Minority serfs become slaves ##
+				any_owned = {
+					limit = { has_pop_type = serfs }
+					any_pop = {
+						limit = {
+							type = serfs
+							is_primary_culture = no
+							is_accepted_culture = no
+						}
+						militancy = 9
+						consciousness = 9
+						pop_type = slaves
+					}
+					state_scope = { is_slave = yes }
+				}
+			## Other serfs are freed ##
+				any_owned = {
+					limit = {
+						has_pop_type = labourers
+						has_pop_type = serfs
+					}
+					serfs = { pop_type = labourers }
+				}
+				any_owned = {
+					limit = {
+						has_pop_type = farmers
+						has_pop_type = serfs
+					}
+					serfs = { pop_type = farmers }
+				}
+		}
+	}
+
+## Mass Labour ##
+
+	#Description: The Obsolescence of slavery - keep slavery or industrialize?
+	country_event = {
+		id = 181000
+		title = "EVTNAME181000"
+		desc = "EVTDESC181000"
+		major = yes
+
+		trigger = {
+			slavery = yes_slavery
+			civilized = yes
+			year = 1890
+			OR = {
+				average_consciousness = 4
+				mass_politics = 1
+			}
+			NOT = { has_country_flag = slavery_still_stands }
+		}
+
+		mean_time_to_happen = {
+			months = 36
+			modifier = {
+				factor = 0.9
+				average_consciousness = 6
+			}
+			modifier = {
+				factor = 0.5
+				synthetic_polymers = 1
+			}
+			modifier = {
+				factor = 2
+				NOT = { tag = CSA }
+			}
+		}
+
+		fire_only_once = yes
+
+		# Abolish slavery
+		option = {
+			name = "EVTOPTA181000"
+
+			political_reform = no_slavery
+			add_country_modifier = {
+				name = onward_to_progress
+				duration = 3650
+			}
+			clr_country_flag = the_slavery_debate
+			remove_country_modifier = the_slavery_debate
+			remove_country_modifier = slavery_timer
+			set_country_flag = slavery_ended_event
+			nationalvalue = nv_liberty
+			add_country_modifier = {
+				name = national_confusion
+				duration = 3650
+			}
+			prestige = 10
+			badboy = -6
+			any_pop = {
+				militancy = -3
+				consciousness = -1
+			}
+
+			ai_chance = {
+				factor = 70
+				modifier = {
+					factor = 0.2
+					NOT = { badboy = 0.1 }
+				}
+			}
+		}
+
+		# Keep slavery
+		option = {
+			name = "EVTOPTB181000"
+
+			remove_country_modifier = the_slavery_debate
+			set_country_flag = slavery_still_stands
+			badboy = 3
+			any_pop = {
+				militancy = 2
+				consciousness = 2
+			}
+			add_country_modifier = { name = mass_labour duration = -1 }
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 0.5
+					average_militancy = 7
+				}
+			}
+		}
+	}
+
+	#Description: Mass Labour Outlawed
+	country_event = {
+		id = 186000
+		title = "EVTNAME186000"
+		desc = "EVTDESC186000"
+		picture = "slaves_freed"
+
+		trigger = {
+			slavery = no_slavery
+			OR = {
+				has_country_modifier = mass_labour
+				has_country_modifier = atlantic_slave_trade
+			}
+			NOT = { has_country_flag = slave_trade_leader }
+		}
+
+		mean_time_to_happen = {
+			days = 6
+		}
+
+		option = {
+			name = "EVTOPTA186000"
+
+			clr_country_flag = slave_trader
+			clr_country_flag = slavery_still_stands
+			clr_country_flag = the_slavery_debate
+
+			prestige = 5
+			badboy = -1
+
+			any_pop = {
+				militancy = -2
+				consciousness = -2
+			}
+			remove_country_modifier = mass_labour
+			remove_country_modifier = atlantic_slave_trade
+			remove_country_modifier = the_slavery_debate
+		}
+	}
+
+## UK enforcement ##
+
+	#Description: If the UK disarms a country that has slavery, they will be forced to abolish it.
+	country_event = {
+		id = 187800
+		title = "EVTNAME187800"
+		desc = "EVTDESC187800"
+		picture = "slaves_freed"
+
+		trigger = {
+			slavery = yes_slavery
+			war = no
+			truce_with = ENG
+			has_recently_lost_war = yes
+			is_disarmed = yes
+			ENG = {
+				is_greater_power = yes
+				has_recently_lost_war = no
+				is_disarmed = no
+			}
+			NOT = {	has_global_flag = capital_slavery_conference }
+			year = 1850
+		}
+
+		mean_time_to_happen = {
+			months = 3
+		}
+
+		option = {
+			name = "EVTOPTA187800"
+
+			clr_country_flag = slave_trade_leader
+			clr_country_flag = slave_trader
+
+			political_reform = no_slavery
+			remove_country_modifier = the_slavery_debate
+			remove_country_modifier = atlantic_slave_trade
+			nationalvalue = nv_liberty
+			add_country_modifier = {
+				name = national_confusion
+				duration = 2860
+			}
+
+			ENG = { country_event = 187810 }
+		}
+	}
+
+	#Description: UK notification when a country they disarmed is forced to abolish slavery.
+	country_event = {
+		id = 187810
+		title = "EVTNAME187810"
+		desc = "EVTDESC187810"
+		picture = "slaves_freed"
+
+		is_triggered_only = yes
+
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		option = {
+			name = "EVTOPTA187810"
+
+			prestige = 20
+		}
+	}
+
+## Quilombos ##
+
+	#Description: Quilombo appears
+	province_event = {
+		id = 187913
+		title = "EVTNAME187913"
+		desc = "EVTDESC187913"
+
+		trigger = {
+			owner = {
+				is_culture_group = latin_american_cultures
+				capital_scope = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+				}
+				number_of_states = 2
+				slavery = yes_slavery
+			}
+			is_state_capital = no
+			# state_scope = { is_capital = no }
+			OR = {
+				terrain = hills
+				terrain = mountain
+				terrain = woods
+				terrain = marsh
+				terrain = desert
+				terrain = jungle
+			}
+			NOT = { has_province_modifier = quilombo_presence }
+		}
+
+		mean_time_to_happen = {
+			months = 240
+			modifier = {
+				factor = 0.9
+				state_scope = { is_slave = yes }
+			}
+			modifier = {
+				factor = 0.9
+				average_consciousness = 4
+			}
+			modifier = {
+				factor = 0.85
+				average_consciousness = 6
+			}
+			modifier = {
+				factor = 0.8
+				average_consciousness = 8
+			}
+			modifier = {
+				factor = 0.9
+				average_militancy = 2
+			}
+			modifier = {
+				factor = 0.85
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 0.75
+				average_militancy = 8
+			}
+		}
+
+		option = {
+			name = "EVTOPTA187913"
+
+			add_province_modifier = { name = quilombo_presence duration = 1825 }
+		}
+	}
+
+	#Description: Quilombo found
+	province_event = {
+		id = 187908
+		title = "EVTNAME187908"
+		desc = "EVTDESC187908"
+
+		trigger = {
+			owner = {
+				is_culture_group = latin_american_cultures
+				capital_scope = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+				}
+				slavery = yes_slavery
+			}
+			has_province_modifier = quilombo_presence
+			country_units_in_province = THIS
+		}
+
+		mean_time_to_happen = {
+			months = 60
+			modifier = {
+				factor = 1.1
+				average_consciousness = 4
+			}
+			modifier = {
+				factor = 1.15
+				average_consciousness = 6
+			}
+			modifier = {
+				factor = 1.2
+				average_consciousness = 8
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 8
+			}
+		}
+
+		option = {
+			name = "EVTOPTA187908"
+
+			remove_province_modifier = quilombo_presence
+		}
+	}
+
+## Lategame ## DEVNOTE anzu-3278: Partly commented until we add slaves_factory
+
+	#Description: Black Abolitionist
+	province_event = {
+		id = 187925
+		title = "EVTNAME187925"
+		desc = "EVTDESC187925"
+
+		trigger = {
+			owner = {
+				is_culture_group = american_cultures
+				slavery = yes_slavery
+				war = no
+			}
+			has_global_flag = american_civil_war_has_happened
+			state_scope = {
+				is_slave = yes
+				is_colonial = no
+				NOT = {
+					OR = {
+						average_militancy = 4
+						average_consciousness = 8
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 14400
+			modifier = {
+				factor = 1.1
+				NOT = { average_consciousness = 5 }
+			}
+			modifier = {
+				factor = 1.1
+				NOT = { average_consciousness = 3 }
+			}
+		}
+
+		# Let him talk
+		option = {
+			name = "EVTOPTA187925"
+
+			any_pop = {
+				dominant_issue = {
+					value = no_slavery
+					factor = 0.05
+				}
+			}
+			any_pop = {
+				limit = {
+					#NOT = {
+						type = slaves
+						#slaves_factory
+					#}
+				}
+				consciousness = 0.5
+			}
+			owner = { prestige = 2 }
+		}
+
+		# Denounce him
+		option = {
+			name = "EVTOPTB187925"
+
+			any_pop = {
+				ideology = {
+					value = reactionary
+					factor = 0.05
+				}
+				scaled_militancy = {
+					ideology = liberal
+					factor = 0.5
+				}
+				scaled_consciousness = {
+					ideology = liberal
+					factor = 0.5
+				}
+			}
+			owner = { plurality = -2 }
+		}
+	}
+
+	#Description: Progressive Society - militancy and consciousness modifier
+	province_event = {
+		id = 187926
+		title = "EVTNAME187926"
+		desc = "EVTDESC187926"
+
+		trigger = {
+			owner = {
+				is_culture_group = american_cultures
+				slavery = yes_slavery
+				NOT = { industrial_score = 150 }
+				semi_automatization = 1
+			}
+			state_scope = { is_slave = yes }
+			is_colonial = no
+			average_consciousness = 4
+			NOT = { has_province_modifier = progressive_society_csa }
+		}
+
+		mean_time_to_happen = {
+			months = 240
+			modifier = {
+				factor = 1.1
+				NOT = { average_consciousness = 5 }
+			}
+			modifier = {
+				factor = 0.9
+				owner = { ruling_party_ideology = liberal }
+			}
+			modifier = {
+				factor = 1.1
+				owner = { ruling_party_ideology = conservative }
+			}
+		}
+
+		option = {
+			name = "EVTOPTA187926"
+
+			owner = { prestige = -2 }
+			add_province_modifier = { name = progressive_society_csa duration = 1825 }
+		}
+	}
+
+	#Description: Marxist slaves
+	province_event = {
+		id = 187930
+		title = "EVTNAME187930"
+		desc = "EVTDESC187930"
+
+		trigger = {
+			owner = {
+				is_culture_group = american_cultures
+				slavery = yes_slavery
+				NOT = { government = proletarian_dictatorship }
+			}
+			state_scope = {
+				is_slave = yes
+				is_colonial = no
+			}
+			owner = { is_ideology_enabled = communist }
+			literacy = 0.3
+			NOT = { has_province_modifier = marxist_slaves }
+		}
+
+		mean_time_to_happen = {
+			months = 14400
+			modifier = {
+				factor = 1.5
+				NOT = { socialist = 10 }
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { communist = 5 }
+			}
+			modifier = {
+				factor = 0.9
+				socialist = 25
+			}
+			modifier = {
+				factor = 0.9
+				socialist = 30
+			}
+			modifier = {
+				factor = 0.9
+				communist = 15
+			}
+			modifier = {
+				factor = 0.9
+				communist = 20
+			}
+			modifier = {
+				factor = 0.8
+				communist = 25
+			}
+			modifier = {
+				factor = 2
+				NOT = { any_pop = { social_reform_want = 0.05 } }
+			}
+			modifier = {
+				factor = 0.9
+				any_pop = { social_reform_want = 0.1 }
+			}
+			modifier = {
+				factor = 0.9
+				any_pop = { social_reform_want = 0.2 }
+			}
+			modifier = {
+				factor = 0.9
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 0.9
+				average_militancy = 5
+			}
+			modifier = {
+				factor = 0.9
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { average_consciousness = 3 }
+			}
+			modifier = {
+				factor = 0.9
+				average_consciousness = 5
+			}
+			modifier = {
+				factor = 0.9
+				average_consciousness = 7
+			}
+			modifier = {
+				factor = 1.2
+				owner = { economic_policy = laissez_faire }
+			}
+			modifier = {
+				factor = 2
+				owner = { war = yes }
+			}
+			modifier = {
+				factor = 1.5
+				owner = {
+					check_variable = {
+						which = successful_communist_rebellions
+						value = 10
+					}
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_neighbor_province = { owner = { government = proletarian_dictatorship } }
+			}
+			modifier = {
+				factor = 1.5
+				owner = { num_of_cities = 50 }
+			}
+		}
+
+		# Crack down on this
+		option = {
+			name = "EVTOPTA187930"
+
+			any_pop = {
+				limit = {
+					#OR = {
+						type = slaves
+						#slaves_factory
+					#}
+				}
+				consciousness = -1
+				militancy = 3
+				ideology = {
+					factor = 0.15
+					value = communist
+				}
+				ideology = {
+					factor = 0.15
+					value = socialist
+				}
+			}
+			add_province_modifier = { name = marxist_slaves duration = 365 }
+			owner = { prestige = -2 }
+		}
+
+		# Ignore them
+		option = {
+			name = "EVTOPTB187930"
+
+			any_pop = {
+				limit = {
+					#OR = {
+						type = slaves
+						#slaves_factory
+					#}
+				}
+				literacy = 0.01
+				consciousness = 1
+			}
+			add_province_modifier = { name = marxist_slaves duration = 1825 }
+		}
+	}
+
+	#Description: Lategame, factory and farm owners start hiring immigrant workers as slaves cost too much to maintain
+	province_event = {
+		id = 187935
+		title = "EVTNAME187935"
+		desc = "EVTDESC187935"
+
+		trigger = {
+			owner = {
+				is_culture_group = american_cultures
+				slavery = yes_slavery
+				assembly_line = 1
+			}
+			state_scope = { is_slave = yes }
+			is_colonial = no
+			any_pop = {
+				is_primary_culture = no
+				is_accepted_culture = no
+				NOT = {
+					OR = {
+						is_culture_group = oceanic
+						is_culture_group = native_american
+						is_culture_group = american_cultures
+						is_culture_group = neo_european_cultures
+						is_culture_group = latin_american_cultures
+						is_culture_group = african_diaspora_cultures
+					}
+				}
+			}
+			NOT = { has_province_modifier = immigrant_workers_csa }
+		}
+
+		mean_time_to_happen = {
+			months = 14400
+			modifier = {
+				factor = 0.9
+				NOT = { poor_strata_life_needs = 0.9 }
+			}
+			modifier = {
+				factor = 1.5
+				average_militancy = 5
+			}
+			modifier = {
+				factor = 1.5
+				average_consciousness = 5
+			}
+		}
+
+		# Don't interfere - anger the slaves
+		option = {
+			name = "EVTOPTA187935"
+
+			add_province_modifier = { name = immigrant_workers_csa duration = 1825 }
+			any_pop = {
+				limit = {
+					#OR = {
+						type = slaves
+						#slaves_factory
+					#}
+				}
+				consciousness = 3
+				militancy = 3
+			}
+		}
+
+		# Set quotas - anger the rich
+		option = {
+			name = "EVTOPTB187935"
+
+			any_pop = {
+				limit = { type = capitalists }
+				consciousness = 3
+				militancy = 3
+			}
+			any_pop = {
+				limit = { type = aristocrats }
+				consciousness = 3
+				militancy = 3
+			}
+			any_pop = {
+				limit = {
+					is_primary_culture = no
+					is_accepted_culture = no
+					NOT = {
+						OR = {
+							is_culture_group = oceanic
+							is_culture_group = native_american
+							is_culture_group = american_cultures
+							is_culture_group = neo_european_cultures
+							is_culture_group = latin_american_cultures
+							is_culture_group = african_diaspora_cultures
+						}
+					}
+					type = craftsmen
+				}
+				consciousness = 3
+				militancy = 3
+			}
+		}
+	}
+
+	#Description: The End of Slavery - change slave pops and remove all slavery related modifiers and flags
+	country_event = {
+		id = 188110
+		title = "EVTNAME188110"
+		desc = "EVTDESC188110"
+		picture = "slaves_freed"
+
+		trigger = {
+			slavery = no_slavery
+			OR = {
+				has_country_modifier = slavery_timer
+				has_country_modifier = mulatto_modifier
+				any_owned_province = {
+					OR = {
+						has_province_modifier = quilombo_presence
+						has_province_modifier = progressive_society_csa
+						has_province_modifier = marxist_slaves
+						has_province_modifier = immigrant_workers_csa
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 14
+		}
+
+		option = {
+			name = "EVTOPTA188110"
+
+			# set_country_flag = abolished_slavery
+			clr_country_flag = the_slavery_debate
+
+			prestige = 1
+			badboy = -1
+			# slaves_factory = { pop_type = craftsmen }
+			remove_country_modifier = slavery_timer
+			remove_country_modifier = mulatto_modifier
+			remove_country_modifier = the_slavery_debate
+			any_owned = {
+				remove_province_modifier = quilombo_presence
+				remove_province_modifier = progressive_society_csa
+				remove_province_modifier = marxist_slaves
+				remove_province_modifier = immigrant_workers_csa
+			}
+		}
+	}

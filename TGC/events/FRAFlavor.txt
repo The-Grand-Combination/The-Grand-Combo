@@ -1972,157 +1972,159 @@ country_event = {
 	}
 }
 
-country_event = {
+## France demands Quebec ##
 
-	id = 7790003 #Demand Quebec - Main event
-	title = "EVTNAME7790003"
-	desc = "EVTDESC7790003"
-	picture = "Administration"
+	country_event = {
 
-	is_triggered_only = yes
+		id = 7790003 #Demand Quebec - Main event
+		title = "EVTNAME7790003"
+		desc = "EVTDESC7790003"
+		picture = "Administration"
 
-	option = {
-		name = "EVTOPTA7790001"
-		FROM = { country_event = 7790004 }
-		prestige = 5
-		any_pop = {
-			limit = {
-				is_primary_culture = yes
-				is_accepted_culture = yes
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA7790001"
+			FROM = { country_event = 7790004 }
+			prestige = 5
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+				consciousness = -1
+				militancy = -1
 			}
-			consciousness = -1
-			militancy = -1
+			any_pop = {
+				limit = { culture = french_canadian }
+				consciousness = 5
+				militancy = 5
+			}
+			ai_chance = { factor = 85 }
 		}
-		any_pop = {
-			limit = { culture = french_canadian }
-			consciousness = 5
-			militancy = 5
+
+		option = {
+			name = "EVTOPTB7790001"
+			badboy = -2
+			prestige = -15
+			any_pop = {
+				limit = {
+					OR = {
+						culture = anglo_canadian
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+				}
+				consciousness = 5
+				militancy = 5
+			}
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+				consciousness = 1
+				militancy = 1
+			}
+			FROM = { country_event = 7790005 }
+
+			ai_chance = { factor = 15 }
 		}
-		ai_chance = { factor = 85 }
 	}
 
-	option = {
-		name = "EVTOPTB7790001"
-		badboy = -2
-		prestige = -15
-		any_pop = {
-			limit = {
-				OR = {
-					culture = anglo_canadian
-					type = aristocrats
-					type = officers
-					type = soldiers
+	country_event = {
+
+		id = 7790004 #Demand Quebec - UK says no
+		title = "EVTNAME7790004"
+		desc = "EVTDESC7790004"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA7790004"
+			set_country_flag = war_for_quebec
+			relation = { who = ENG value = -400 }
+			CAN_60 = { add_core = QUE }
+			badboy = 5
+			casus_belli = {
+				target = ENG
+				type = cut_down_to_size
+				months = 12
+			}
+			war = {
+				target = ENG
+				attacker_goal = { casus_belli = cut_down_to_size }
+				defender_goal = { casus_belli = cut_down_to_size }
+				call_ally = yes
+			}
+		}
+
+		option = {
+			name = "EVTOPTB7790004"
+			prestige = -25
+			badboy = -5
+			set_country_flag = no_french_america
+			FRA = { remove_accepted_culture = french_canadian remove_accepted_culture = cajun }
+			BOR = { remove_accepted_culture = french_canadian remove_accepted_culture = cajun }
+			ACA = { all_core = { remove_core = ACA } }
+			ULA = { all_core = { remove_core = ULA } }
+		}
+	}
+
+	country_event = {
+		id = 7790005 #Demand Quebec - UK says yes
+		title = "EVTNAME7790005"
+		desc = "EVTDESC36625"
+		picture = "election_polls"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA7790005"
+			badboy = 5
+			CAN_60 = { add_core = QUE }
+			2625 = { add_core = QUE }
+			76 = { add_core = QUE }
+			77 = { add_core = QUE }
+			QUE = { all_core = { add_core = THIS } }
+			ENG = {
+				badboy = -8
+				any_owned = {
+					limit = { is_core = THIS }
+					secede_province = THIS
 				}
 			}
-			consciousness = 5
-			militancy = 5
-		}
-		any_pop = {
-			limit = {
-				is_primary_culture = yes
-				is_accepted_culture = yes
+			RPL = {
+				any_owned = {
+					limit = { is_core = QUE }
+					secede_province = THIS
+				}
 			}
-			consciousness = 1
-			militancy = 1
-		}
-		FROM = { country_event = 7790005 }
+			release = QUE
+			UTI = { inherit = QUE }
+			THIS = { inherit = UTI }
+			relation = { who = FROM value = 200 }
+			treasury = -200000
+			FROM = { treasury = 200000 }
+			QUE = {
+				all_core = {
+					remove_core = THIS
+					remove_core = CAN
+					remove_core = RPL
+					remove_core = NEW
+				}
+			}
 
-		ai_chance = { factor = 15 }
-	}
-}
-
-country_event = {
-
-	id = 7790004 #Demand Quebec - UK says no
-	title = "EVTNAME7790004"
-	desc = "EVTDESC7790004"
-	picture = "Administration"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA7790004"
-		set_country_flag = war_for_quebec
-		relation = { who = ENG value = -400 }
-		CAN_60 = { add_core = QUE }
-		badboy = 5
-		casus_belli = {
-			target = ENG
-			type = cut_down_to_size
-			months = 12
-		}
-		war = {
-			target = ENG
-			attacker_goal = { casus_belli = cut_down_to_size }
-			defender_goal = { casus_belli = cut_down_to_size }
-			call_ally = yes
-		}
-	}
-
-	option = {
-		name = "EVTOPTB7790004"
-		prestige = -25
-		badboy = -5
-		set_country_flag = no_french_america
-		FRA = { remove_accepted_culture = french_canadian remove_accepted_culture = cajun }
-		BOR = { remove_accepted_culture = french_canadian remove_accepted_culture = cajun }
-		ACA = { all_core = { remove_core = ACA } }
-		ULA = { all_core = { remove_core = ULA } }
-	}
-}
-
-country_event = {
-	id = 7790005 #Demand Quebec - UK says yes
-	title = "EVTNAME7790005"
-	desc = "EVTDESC36625"
-	picture = "election_polls"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA7790005"
-		badboy = 5
-		CAN_60 = { add_core = QUE }
-		2625 = { add_core = QUE }
-		76 = { add_core = QUE }
-		77 = { add_core = QUE }
-		QUE = { all_core = { add_core = THIS } }
-		ENG = {
-			badboy = -8
-			any_owned = {
-				limit = { is_core = THIS }
-				secede_province = THIS
+			any_pop = {
+				limit = {
+				has_pop_culture = british
+				location = { is_core = QUE } }
+				move_pop = 57
 			}
 		}
-		RPL = {
-			any_owned = {
-				limit = { is_core = QUE }
-				secede_province = THIS
-			}
-		}
-		release = QUE
-		UTI = { inherit = QUE }
-		THIS = { inherit = UTI }
-		relation = { who = FROM value = 200 }
-		treasury = -200000
-		FROM = { treasury = 200000 }
-		QUE = {
-			all_core = {
-				remove_core = THIS
-				remove_core = CAN
-				remove_core = RPL
-				remove_core = NEW
-			}
-		}
-
-		any_pop = {
-			limit = {
-			has_pop_culture = british
-			location = { is_core = QUE } }
-			move_pop = 57
-		}
 	}
-}
 
 #French Tonkin Campaign
 country_event = {
@@ -2566,6 +2568,14 @@ country_event = {
 		3397 = { add_core = RHI }
 		3426 = { add_core = RHI }
 		remove_country_modifier = rhine_crisis
+
+		any_country = {
+			limit = {
+				owns = 570
+				truce_with = THIS
+			}
+			country_event = 99995
+		}
 
 		any_country = {
 			limit = {

@@ -1,118 +1,161 @@
-country_event = {
+## Flavor ##
 
-	id = 46400
-	news = yes
-	news_desc_long = "EVTDESC46400_NEWS_LONG"
-	news_desc_medium = "EVTDESC46400_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC46400_NEWS_SHORT"
+	#Description: Jose Batlle y Ordonez - gain plurality, working pops gain consciousness and lose militancy
+	country_event = {
 
-	trigger = {
-		tag = URU
-		year = 1911
-		government = democracy
-		NOT = {
-			year = 1916
-		}
-	}
-	
-	fire_only_once = yes
- 
-	mean_time_to_happen =  {
-		months = 5
+		id = 46400
+		news = yes
+		news_desc_long = "EVTDESC46400_NEWS_LONG"
+		news_desc_medium = "EVTDESC46400_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC46400_NEWS_SHORT"
 
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1912
+		trigger = {
+			tag = URU
+			year = 1911
+			government = democracy
+			NOT = { year = 1916 }
 		}
-		
-		modifier = {
-			factor = 0.95 #increase likelihood to happen
-			year = 1913
-		}
-	}
 
-	title = "EVTNAME46400"
-	desc = "EVTDESC46400"
-	picture = "Prosper"
+		fire_only_once = yes
 
-	option = {
-		name = "EVTOPTA46400"
-		plurality = 5 
-		farmers = {
-			consciousness = 1
-		}
-		labourers = {
-			consciousness = 1
-		}
-		craftsmen = {
-			consciousness = 1
-		}
-		artisans = {
-			consciousness = 1
-		}		
-		farmers = {
-			militancy = -1
-		}
-		labourers = {
-			militancy = -1
-		}
-		craftsmen = {
-			militancy = -1
-		}
-		artisans = {
-			militancy = -1
-		}		
-	}
+		mean_time_to_happen =  {
+			months = 5
 
-}
-
-country_event = {
-	id = 97066
-	title = "EVTNAME97066" #The Blancos Have Surrendered
-	desc = "EVTDESC97066"
-	picture = "unite"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA97066"
-		prestige = 10
-		end_war = URU
-		create_alliance = URU
-		relation = {
-			who = URU
-			value = 400
-		}
-		random_owned = {
-			limit = {
-				owner = { is_greater_power = yes }
+			modifier = {
+				factor = 0.75 #increase likelihood to happen
+				year = 1912
 			}
-			owner = {
-				diplomatic_influence = {
-					who = URU
-					value = 200
+
+			modifier = {
+				factor = 0.95 #increase likelihood to happen
+				year = 1913
+			}
+		}
+
+		title = "EVTNAME46400"
+		desc = "EVTDESC46400"
+		picture = "Prosper"
+
+		option = {
+			name = "EVTOPTA46400"
+
+			plurality = 5
+			farmers = { consciousness = 1 }
+			labourers = { consciousness = 1 }
+			craftsmen = { consciousness = 1 }
+			artisans = { consciousness = 1 }
+			farmers = { militancy = -1 }
+			labourers = { militancy = -1 }
+			craftsmen = { militancy = -1 }
+			artisans = { militancy = -1 }
+		}
+	}
+
+
+	#Description: World Cup of Football - gain prestige
+	country_event = {
+		title = "EVTNAME5001"
+		desc = "EVTDESC5001"
+		news = yes
+		news_desc_long = "EVTDESC5001_NEWS_LONG"
+		news_desc_medium = "EVTDESC5001_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC5001_NEWS_SHORT"
+		id = 5001
+		picture = "football"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			year = 1930
+			month = 6
+			exists = ARG
+		}
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "EVTOPTA5001"
+
+			prestige = 5
+			poor_strata = {
+				consciousness = -1
+				militancy = -1
+			}
+		}
+	}
+
+## Political ##
+
+	#Description: The Uruguayan Civil War - setup event
+	country_event = {
+
+		id = 188174
+		title = "EVTNAME188174"
+		desc = "EVTDESC188174"
+		picture = "uruguay"
+
+		trigger = {
+			tag = URU
+			OR = {
+				ruling_party_ideology = reactionary
+				ruling_party_ideology = conservative
+			}
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		option = {
+			name = "EVTOPTA188174"
+
+			add_country_modifier = { name = fight_the_power duration = 3650 }
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					location = { NOT = { province_id = 2344 } }
 				}
+				ideology = { value = reactionary factor = 0.3 }
+				ideology = { value = conservative factor = 0.7 }
+			}
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					location = { province_id = 2344 }
+				}
+				ideology = { value = liberal factor = 0.6 }
+				consciousness = 3
+			}
+			random_owned = {
+				limit = { province_id = 2344 }
+				add_province_modifier = { name = peasant_revolt duration = 1095 }
 			}
 		}
 	}
-}
 
-country_event = {
-	id = 600057
-	title = "EVTNAME600057" #Colorados won
-	desc = "EVTDESC600057"
-	picture = "33orientals"
+	#Description: Colorados won - triggered if liberal rebels enforce demands
+	country_event = {
+		id = 600057
+		title = "EVTNAME600057"
+		desc = "EVTDESC600057"
+		picture = "33orientals"
 
-	is_triggered_only = yes
+		is_triggered_only = yes
 
-	option = {
-		name = "EVTOPTA600057"
+		option = {
+			name = "EVTOPTA600057"
+
 			set_country_flag = colorado_victory
 			political_reform = wealth_weighted_voting
 			political_reform = population_equal_weight
 			ruling_party_ideology = liberal
 			ARC = { country_event = 600058 }
-			2344 = {
+			2344 = { # Montevideo
 				remove_province_modifier = colorado_sympathies
 				add_province_modifier = { name = rivera_reforms duration = 365 }
 				any_pop = {
@@ -136,11 +179,11 @@ country_event = {
 			random_owned = {
 				limit = { exists = FRA }
 				owner = { relation = { who = FRA value = 100 } }
-			}	
+			}
 			random_owned = {
 				limit = { exists = BOR }
 				owner = { relation = { who = BOR value = 100 } }
-			}		
+			}
 			treasury = 1500
 			small_arms = 20
 			ammunition = 20
@@ -149,1345 +192,1712 @@ country_event = {
 			neutrality = yes
 		}
 	}
-	
-country_event = {
-	id = 600058
-	title = "EVTNAME600058" #Rosas Answer
-	desc = "EVTDESC600058"
-	picture = "33orientals"
 
-	is_triggered_only = yes
+	#Description: Rosas Answer - triggered for ARC if liberals take over in Urugay
+	country_event = {
+		id = 600058
+		title = "EVTNAME600058"
+		desc = "EVTDESC600058"
+		picture = "33orientals"
 
-	option = {
-		name = "EVTOPTA600058" #Rivera is a usurper
-		URU = { set_country_flag = oribe_is_true_president }
-			ai_chance = {
-				factor = 100
-			}
-	}
-	
-	option = {
-		name = "EVTOPTB600058" #Rivera is the legitimate president
-		URU = { set_country_flag = rivera_is_true_president }
-		any_pop = {
-			scaled_consciousness = {
-				factor = 6
-				ideology = liberal
-					}
-			scaled_militancy = {
-				factor = 4
-				ideology = liberal
-				}
-			}
-		ai_chance = {
-			factor = 0
-			}
-		}
-}
+		is_triggered_only = yes
 
-country_event = {
-	id = 600059
-	title = "EVTNAME600059" #Colorado Agitation
-	desc = "EVTDESC600059"
-	picture = "33orientals"
-	
-	trigger = {
-		NOT = { year = 1860 }
-		tag = URU
-		year = 1835
-			OR = {
-				ruling_party_ideology = conservative
-				ruling_party_ideology = reactionary
-			}
-			OR = {
-				upper_house_composition = party_appointed
-				upper_house_composition = appointed
-				voting_system = first_past_the_post
-			}
-		NOT = {
-			OR = {
-				any_owned_province = { has_province_modifier = colorado_sympathies }
-				has_country_flag = colorado_rule
-				ruling_party_ideology = liberal
-			}
-		}
-	}
-	
-	mean_time_to_happen = { days = 15 }
-
-	option = {
-		name = "EVTOPTA600059"
-			2344 = { add_province_modifier = { name = colorado_sympathies duration = 1000 } }
-		}
-	}
-
-country_event = {
-	id = 600060
-	title = "EVTNAME600060" #Blanco Agitation
-	desc = "EVTDESC600060"
-	picture = "gritoasencio"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		NOT = { year = 1860 }
-		tag = URU
-		year = 1840
-		ruling_party_ideology = liberal
-		election = no
-			OR = {
-				upper_house_composition = party_appointed
-				upper_house_composition = appointed
-				voting_system = first_past_the_post
-				}
-		NOT = {
-			OR = {
-				any_owned_province = { has_province_modifier = blanco_sympathies }
-				has_country_flag = blanco_rule
-				has_country_flag = blanco_struggle
-				ruling_party_ideology = conservative
-				ruling_party_ideology = reactionary
-			}
-		}
-	}
-	
-	mean_time_to_happen = { days = 15 }
-
-	option = {
-		name = "EVTOPTA600060"
-		set_country_flag = blanco_struggle
-			random_list = {
-				70 = {
-					2346 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 3285
-								}
-							}
-						}
-			
-				15 = {
-					2346 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 2920
-								}
-							}
-						}
-				15 = {
-					2346 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 4015
-							}
-						}
-					}
-				}
-				
-			random_list = {
-				70 = {
-					2347 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 3285
-								}
-							}
-						}
-			
-				15 = {
-					2347 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 2920
-								}
-							}
-						}
-				15 = {
-					2347 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 4015
-							}
-						}
-					}
-				}
-				
-			random_list = {
-				70 = {
-					2345 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 3285
-								}
-							}
-						}
-			
-				15 = {
-					2345 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 2920
-								}
-							}
-						}
-				15 = {
-					2345 = {
-			add_province_modifier = {
-			name = blanco_sympathies
-			duration = 4015
-							}
-						}
-					}
-				}
-		}
-	}
-
-country_event = {
-	id = 6000061
-	title = "EVTNAME6000061" #Incite Corrientes rebellion
-	desc = "EVTDESC6000061"
-	picture = "rosistas"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		CRT = { exists = yes war = no }
-		NOT = { year = 1860 }
-		tag = URU
-		OR = {
-			has_country_flag = oribe_is_true_president
-			has_country_flag = rivera_is_true_president
-		}
-		NOT = {
-			has_country_flag = incite_rebellion
-			has_country_flag = rivera_backed_down	
-		}
-	}
-	
-	mean_time_to_happen = { days = 15 }
-
-	option = {
-		name = "EVTOPTA6000061"
-		CRT = { country_event = 600062 }
-		set_country_flag = incite_rebellion
-		ai_chance = {
-			factor = 0.99
-		}
-	}
-	option = {
-		name = "EVTOPTB600061"
-		set_country_flag = rivera_backed_down
-		ARC = { set_country_flag = rivera_backed_down }
-		ai_chance = {
-			factor = 0.01
-		}
-	}
-}
-
-country_event = {
-	id = 600062
-	title = "EVTNAME600062" #Corrientes gets Uruguay support
-	desc = "EVTDESC600062"
-	picture = "rosistas"
-	
-	
-	is_triggered_only = yes
-
-	mean_time_to_happen = { days = 5 }
-
-	option = {
-		name = "EVTOPTA600062"
-		any_country = {
-			limit = {
-				war_with = THIS
-			}
-			end_war = THIS
-		}
-		add_country_modifier = { name = small_country_draft duration = 365 }
-		add_country_modifier = { name = unrecognized_country duration = 3650 }
-		relation = { who = ARC value = -400 }
-		relation = { who = ENT value = -400 }
-		ARC = {
-			release_vassal = CRT 
-			war = {
-				target = CRT
-				attacker_goal = { casus_belli = annex_core_country }
-				defender_goal = { casus_belli = status_quo }
-				call_ally = no
-			}
-		}
-		URU = { set_country_flag = corrientes_is_ready_for_war clr_country_flag = incite_rebellion }
-	}
-}
-
-country_event = {
-	id = 600063
-	title = "EVTNAME600063" #Rivera declares war on Rosas
-	desc = "EVTDESC600063"
-	picture = "guerra_grande"
-	
-	fire_only_once = yes
-	
-	trigger = {
-	NOT = { year = 1860 }
-	ARC = { exists = yes }
-	tag = URU
-	election = no
-	ruling_party_ideology = liberal
-		OR = {	
-			has_country_flag = corrientes_is_ready_for_war
-			has_country_flag = rivera_is_true_president
-			has_country_flag = oribe_is_true_president
-		}
-	}
-		
-	mean_time_to_happen = { months = 6 }
-
-	
-	option = {
-		name = "EVTOPTA600063"      #TO WAR
-		random_country = { 
-		limit = {
-			exists = yes
-			tag = CRT
-		}
-		create_alliance = URU
-		relation = {
-			who = URU
-			value = 400
-			}
-		}
-		ARC = { country_event = 600065 	}
-		set_country_flag = war_on_rosas
-		clr_country_flag = corrientes_is_ready_for_war
-		clr_country_flag = oribe_is_true_president
-		
-		
-		add_country_modifier = {
-			name = small_country_draft
-			duration = 365
-				}
-		war = {
-			target = ARC
-			attacker_goal = { casus_belli = humiliate }
-			defender_goal = { casus_belli = humiliate }
-			call_ally = yes
-		}
-			
-		ENG = {
-			casus_belli = {
-				target = ARC
-				type = humiliate
-				months = 6
-			}
-		}
-		random_owned = {
-			limit = { exists = FRA }
-			FRA = {
-				casus_belli = {
-					target = ARC
-					type = humiliate
-					months = 6
-				}
-			}
-		}	
-		random_owned = {
-			limit = { exists = BOR }
-			BOR = {
-				casus_belli = {
-					target = ARC
-					type = humiliate
-					months = 6
-				}
-			}
-		}	
-		
-		ai_chance = { factor = 0.5 }
-	}
-	
-	option = {
-		name = "EVTOPTB600063"		#back down from war
-		random_country = { limit = { exists = yes tag = CRT } country_event = 600064 }
-		clr_country_flag = corrientes_is_ready_for_war
-		clr_country_flag = rivera_is_true_president
-		clr_country_flag = oribe_is_true_president
-		prestige = -10
-		any_pop = {
-			scaled_militancy = {
-				ideology = conservative
-				factor = 9
-			}
-			scaled_militancy = {
-				ideology = reactionary
-				factor = 9
-			}
-			scaled_militancy = {
-				ideology = liberal
-				factor = 2
-			}
-		}
-		CRT = { set_country_flag = rivera_backed_down }
-		ai_chance = { factor = 0.01 }
-	}
-		
-	option = {
-		name = "EVTOPTC600063"		#bid our time
-		random_country = { 
-			limit = { 
-				exists = yes
-				tag = CRT
-			}
-			create_alliance = URU
-			relation = { who = URU value = 400 }
-		}
-		clr_country_flag = corrientes_is_ready_for_war
-		clr_country_flag = rivera_is_true_president
-		clr_country_flag = oribe_is_true_president
-		set_country_flag = war_on_rosas
-		any_pop = {
-			scaled_militancy = {
-				ideology = conservative
-				factor = 2
-			}
-			scaled_militancy = {
-				ideology = reactionary
-				factor = 3
-			}
-			scaled_militancy = {
-				ideology = liberal
-				factor = 1
-			}
-			}	
-		 casus_belli = { target = ARC type = humiliate months = 36 }
-		ai_chance = { factor = 0.4 }
-	}
-}
-	
-country_event = {
-	id = 600064
-	title = "EVTNAME600064" #Rivera backs down
-	desc = "EVTDESC600064"
-	picture = "rosistas"
-	
-	is_triggered_only = yes
-		
-	fire_only_once = yes
-	mean_time_to_happen = { days = 5 }
-
-	option = {
-		name = "EVTOPTA600064"
-		any_country = {
-			limit = {
-				war_with = THIS
-			}
-			end_war = THIS
-		}
-		ARC = { release_vassal = CRT }
-		war = {
-			target = ARC
-				attacker_goal = { casus_belli = cut_down_to_size }
-				defender_goal = { casus_belli = annex_core_country }
-		}
-		ai_chance = { factor = 0.6 }
-	}
+		# Rivera is a usurper
 		option = {
-			name = "EVTOPTB600064"
-			any_country = {
-			limit = {
-				war_with = THIS
-			}
-			end_war = THIS
-		}
-			ARC = { inherit = THIS }
-		ai_chance = {
-			factor = 0.4
-				}
-			}
-	}
-	
-country_event = {
-	id = 600065
-	title = "EVTNAME600065" #Rosas receives the declaration of war
-	desc = "EVTDESC600065"
-	picture = "guerra_grande"
-	
-	is_triggered_only = yes
-		
-	fire_only_once = yes
-	mean_time_to_happen = { days = 5 }
+			name = "EVTOPTA600058"
 
-	option = {
-		name = "EVTOPTA600065"
-		add_country_modifier = {
-			name = small_country_draft
-			duration = 365
-			}
-		}
-	}
-	
-country_event = {
-	id = 600066
-	title = "EVTNAME600066" #Italians offer help
-	desc = "EVTDESC600066"
-	picture = "garibaldi_montevideo"
-	
-	fire_only_once = yes
-	
-	trigger = {
-	NOT = { year = 1860 }
-	tag = URU
-	ruling_party_ideology = liberal
-	has_country_flag = war_on_rosas
-	war_with = ARC
-	ARC = { government = presidential_dictatorship }
-		}
-	
-	mean_time_to_happen = { days = 10 }
-	
-	option = {
-		name = "EVTOPTA600066"
-		political_reform = no_slavery
-		set_country_flag = garibaldi_italian_legion
-		ai_chance = {
-			factor = 0.99
-				}
-		}
-		
-	option = {
-		name = "EVTOPTB600066"
-		set_country_flag = refused_garibaldi
-		ai_chance = {
-			factor = 0
-				}
-		}
-	}
-	
-country_event = {
-	id = 600067
-	title = "EVTNAME600067" #Montevideo fort is built
-	desc = "EVTDESC600067"
-	picture = "garibaldi_montevideo"
-	
-	fire_only_once = yes
-	
-	trigger = {
-	NOT = { year = 1860 }
-	tag = URU
-	ruling_party_ideology = liberal
-	has_country_flag = colorado_rule
-	has_country_flag = war_on_rosas
-	has_country_flag = garibaldi_italian_legion
-	NOT = { has_country_flag = fort_built_garibaldi }
-	NOT = { has_country_flag = refused_garibaldi }
-	war_with = ARC
-		}
-	
-	mean_time_to_happen = { months = 3 }
+			URU = { set_country_flag = oribe_is_true_president }
 
-	option = {
-		name = "EVTOPTA600067"
-		2344 = { fort = 2 }
-		set_country_flag = fort_built_garibaldi
-		}
-	}
-	
-country_event = {
-	id = 600068
-	title = "EVTNAME600068" #Garibaldi raids a province
-	desc = "EVTDESC600068"
-	picture = "garibaldi_raid"
-	
-	trigger = {
-	NOT = { year = 1860 }
-	tag = URU
-	ruling_party_ideology = liberal
-	has_country_flag = colorado_rule
-	has_country_flag = war_on_rosas
-	has_country_flag = garibaldi_italian_legion
-	war_with = ARC
-	any_owned_province = { NOT = { controlled_by = URU } }
-	NOT = { has_country_flag = refused_garibaldi }
-		}
-	
-	mean_time_to_happen = { months = 6 }
-
-	option = {
-		name = "EVTOPTA600068"
-		random_owned = {
-			limit = { NOT = { controlled_by = URU } }
-			change_controller = URU
-			}
-		}
-	}
-
-country_event = {
-	id = 600069
-	title = "EVTNAME600069" #The fall of the Blancos
-	desc = "EVTDESC600069"
-	picture = "gritoasencio"
-	
-	fire_only_once = yes
-	
-	trigger = {
-	NOT = { year = 1860 }
-	tag = URU
-	year = 1844
-	ruling_party_ideology = liberal
-	has_country_flag = blanco_struggle
-	has_country_flag = colorado_rule
-	NOT = { any_owned_province = { has_province_modifier = blanco_sympathies } }
-		}
-	
-	mean_time_to_happen = { months = 6 }
-
-	option = {
-		name = "EVTOPTA600069"
-		clr_country_flag = blanco_struggle
-		URU = { any_pop = { militancy = -1 } }
-		}
-	}
-	
-country_event = {
-	id = 600070
-	title = "EVTNAME600070" #Ask brazil help
-	desc = "EVTDESC600070"
-	picture = "guerra_grande"
-	
-	fire_only_once = yes
-	
-	trigger = {
-	NOT = { year = 1860 }
-	tag = URU
-	year = 1848
-	BRZ = { war = no
-			neighbour = URU }
-	ruling_party_ideology = liberal
-	has_country_flag = colorado_rule
-	has_country_flag = war_on_rosas
-	war_with = ARC
-	URU = { relation = { who = BRZ value = 50 } }
-		NOT = { total_amount_of_divisions = 2 }
-			}
-	
-	mean_time_to_happen = { days = 5 }
-
-	option = {
-		name = "EVTOPTA600070"
-		BRZ = { country_event = 600071
-		set_country_flag = interfere_with_uruguay }
-		ai_chance = {
-			factor = 0.99
-				}
-		}
-		
-	option = {
-		name = "EVTOPTB600070"
-		war_exhaustion = 20
-			any_pop = { 
-			consciousness = 2 
-			militancy = 1
-			}
-		ai_chance = {
-			factor = 0
-				}
-			}
+			ai_chance = { factor = 100 }
 		}
 
-country_event = {
-	id = 600071
-	title = "EVTNAME600071" #Brazil answers for the uruguayan call
-	desc = "EVTDESC600071"
-	picture = "guerra_grande"
-	
-	is_triggered_only = yes
-	
-	mean_time_to_happen = { days = 5 }
+		# Rivera is the legitimate president
+		option = {
+			name = "EVTOPTB600058"
 
-	option = {
-		name = "EVTOPTA600071"
-		BRZ = { set_country_flag = interfere_with_uruguay }
-		create_alliance = URU
-			relation = {
-				who = FROM
-				value = 200
+			URU = { set_country_flag = rivera_is_true_president }
+			any_pop = {
+				scaled_consciousness = {
+					factor = 6
+					ideology = liberal
 						}
-		ai_chance = {
-			factor = 0.99
-				}
-		}
-		
-	option = {
-		name = "EVTOPTB600071"
-		clr_country_flag = interfere_with_uruguay
-			relation = {
-				who = FROM
-				value = -50
-						}
-		ai_chance = {
-			factor = 0
+				scaled_militancy = {
+					factor = 4
+					ideology = liberal
 				}
 			}
-		}
 
-		
-country_event = {
-	id = 600072
-	title = "EVTNAME600072" #Uruguay parties share power
-	desc = "EVTDESC600072"
-	picture = "33orientals"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		tag = URU
-		government = democracy
-		year = 1870
-		OR = {
-			voting_system = first_past_the_post
-			voting_system = jefferson_method
+			ai_chance = { factor = 0 }
 		}
-		NOT = {
+	}
+
+	#Description: Colorado Agitation - liberal agitation
+	country_event = {
+		id = 600059
+		title = "EVTNAME600059"
+		desc = "EVTDESC600059"
+		picture = "33orientals"
+
+		trigger = {
+			tag = URU
+			NOT = { year = 1860 }
+			year = 1835
 			OR = {
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+			}
+			OR = {
+				upper_house_composition = party_appointed
+				upper_house_composition = appointed
+				voting_system = first_past_the_post
+			}
+			NOT = {
+				OR = {
+					any_owned_province = { has_province_modifier = colorado_sympathies }
+					has_country_flag = colorado_rule
+					ruling_party_ideology = liberal
+				}
+			}
+		}
+
+		mean_time_to_happen = { days = 15 }
+
+		option = {
+			name = "EVTOPTA600059"
+
+			2344 = { add_province_modifier = { name = colorado_sympathies duration = 1000 } } # Montevideo
+		}
+	}
+
+	#Description: Blanco Agitation - conservative agitation
+	country_event = {
+		id = 600060
+		title = "EVTNAME600060"
+		desc = "EVTDESC600060"
+		picture = "gritoasencio"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			NOT = { year = 1860 }
+			year = 1840
+			ruling_party_ideology = liberal
+			election = no
+			OR = {
+				upper_house_composition = party_appointed
+				upper_house_composition = appointed
+				voting_system = first_past_the_post
+			}
+			NOT = {
+				OR = {
+					any_owned_province = { has_province_modifier = blanco_sympathies }
+					has_country_flag = blanco_rule
+					has_country_flag = blanco_struggle
+					ruling_party_ideology = conservative
+					ruling_party_ideology = reactionary
+				}
+			}
+		}
+
+		mean_time_to_happen = { days = 15 }
+
+		option = {
+			name = "EVTOPTA600060"
+
+			set_country_flag = blanco_struggle
+			random_list = { # Santa Rosa del Cuarem
+				70 = { 2346 = { add_province_modifier = { name = blanco_sympathies duration = 3285 } } }
+				15 = { 2346 = { add_province_modifier = { name = blanco_sympathies duration = 2920 } } }
+				15 = { 2346 = { add_province_modifier = { name = blanco_sympathies duration = 4015 } } }
+			}
+			random_list = { # Melo
+				70 = { 2347 = { add_province_modifier = { name = blanco_sympathies duration = 3285 } } }
+				15 = { 2347 = { add_province_modifier = { name = blanco_sympathies duration = 2920 } } }
+				15 = { 2347 = { add_province_modifier = { name = blanco_sympathies duration = 4015 } } }
+			}
+			random_list = { # Salto Oriental
+				70 = { 2345 = { add_province_modifier = { name = blanco_sympathies duration = 3285 } } }
+				15 = { 2345 = { add_province_modifier = { name = blanco_sympathies duration = 2920 } } }
+				15 = { 2345 = { add_province_modifier = { name = blanco_sympathies duration = 4015 } } }
+			}
+		}
+	}
+
+	#Description: The fall of the Blancos - if no owned province have Blanco sympathies, they will become irrelevant
+	country_event = {
+		id = 600069
+		title = "EVTNAME600069"
+		desc = "EVTDESC600069"
+		picture = "gritoasencio"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			year = 1844
+			NOT = { year = 1860 }
+			ruling_party_ideology = liberal
+			has_country_flag = blanco_struggle
+			has_country_flag = colorado_rule
+			NOT = { any_owned_province = { has_province_modifier = blanco_sympathies } }
+		}
+
+		mean_time_to_happen = { months = 6 }
+
+		option = {
+			name = "EVTOPTA600069"
+
+			clr_country_flag = blanco_struggle
+			URU = { any_pop = { militancy = -1 } }
+		}
+	}
+
+	#Description: Colorados and Blancos share the power in Uruguay
+	country_event = {
+		id = 600072
+		title = "EVTNAME600072"
+		desc = "EVTDESC600072"
+		picture = "33orientals"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			year = 1870
+			government = democracy
+			OR = {
+				voting_system = first_past_the_post
+				voting_system = jefferson_method
+			}
+			NOT = {
 				has_country_flag = sharing_power
 				has_country_flag = refuse_to_share_power
 			}
 		}
-	}
-	
-	mean_time_to_happen = { months = 5 }
 
-	option = {
-		name = "EVTOPTA600072"
-		any_pop = {
-			militancy = -9
-			consciousness = -9
-			ideology = {
-				factor = 0.4
-				value = liberal
-					}
-			ideology = {
+		mean_time_to_happen = { months = 5 }
+
+		# Share power
+		option = {
+			name = "EVTOPTA600072"
+
+			any_pop = {
+				militancy = -9
+				consciousness = -9
+				ideology = {
+					factor = 0.4
+					value = liberal
+				}
+				ideology = {
 					factor = -0.3
 					value = reactionary
-					}
-				}
-		treasury = -1500
-		2345 = { rich_strata = { money = 500 } }
-		2346 = { rich_strata = { money = 500 } }
-		2347 = { rich_strata = { money = 500 } }
-		2344 = { rich_strata = { ideology = { factor = 0.3 value = liberal } } }
-		clr_country_flag = colorado_rule
-		clr_country_flag = blanco_rule
-		clr_country_flag = war_on_rosas
-		clr_country_flag = garibaldi_italian_legion
-		set_country_flag = sharing_power
-		political_reform = proportional_representation
-		political_reform = secret_ballots
-		political_reform = population_equal_weight
-		ai_chance = {
-			factor = 0.99
-				}
-		}
-		
-	option = {
-		name = "EVTOPTB600072"
-		set_country_flag = uruguay_refuse_to_share_power
-		clr_country_flag = garibaldi_italian_legion
-		any_pop = {
-			consciousness = 6
-			militancy = 4
-			}
-		
-		ai_chance = {
-			factor = 0
 				}
 			}
+			treasury = -1500
+			2345 = { rich_strata = { money = 500 } }
+			2346 = { rich_strata = { money = 500 } }
+			2347 = { rich_strata = { money = 500 } }
+			2344 = { rich_strata = { ideology = { factor = 0.3 value = liberal } } }
+			clr_country_flag = colorado_rule
+			clr_country_flag = blanco_rule
+			clr_country_flag = war_on_rosas
+			clr_country_flag = garibaldi_italian_legion
+			set_country_flag = sharing_power
+			political_reform = proportional_representation
+			political_reform = secret_ballots
+			political_reform = population_equal_weight
+
+			ai_chance = { factor = 0.99 }
 		}
-		
-country_event = {
-	id = 600073
-	title = "EVTNAME600073" #Uruguay parties share power without event
-	desc = "EVTDESC600073"
-	picture = "33orientals"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		tag = URU
-		government = democracy
-		voting_system = proportional_representation
+
+		# Don't share power
+		option = {
+			name = "EVTOPTB600072"
+
+			set_country_flag = uruguay_refuse_to_share_power
+			clr_country_flag = garibaldi_italian_legion
+			any_pop = {
+				consciousness = 6
+				militancy = 4
+			}
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: If Uruguay can get proportional representation, the Colorados and Blancos will share power
+	country_event = {
+		id = 600073
+		title = "EVTNAME600073"
+		desc = "EVTDESC600073"
+		picture = "33orientals"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			government = democracy
+			voting_system = proportional_representation
 			NOT = {
 				AND = {
 					OR = {
-					upper_house_composition = party_appointed
-					upper_house_composition = appointed
+						upper_house_composition = party_appointed
+						upper_house_composition = appointed
+					}
+					OR = {
+						political_parties = underground_parties
+						political_parties = harassment
+						political_parties = gerrymandering
 						}
 					OR = {
-					political_parties = underground_parties
-					political_parties = harassment
-					political_parties = gerrymandering
-						}
-					OR = {
-					has_country_flag = sharing_power
-					has_country_flag = refuse_to_share_power
-						}
+						has_country_flag = sharing_power
+						has_country_flag = refuse_to_share_power
 					}
 				}
 			}
-	
-	mean_time_to_happen = { days = 10 }
+		}
 
-	option = {
-		name = "EVTOPTA600073"
-		any_pop = {
-			militancy = -9
-			consciousness = -9
-			ideology = {
-				factor = 0.4
-				value = liberal
-					}
-			ideology = {
+		mean_time_to_happen = { days = 10 }
+
+		option = {
+			name = "EVTOPTA600073"
+
+			any_pop = {
+				militancy = -9
+				consciousness = -9
+				ideology = {
+					factor = 0.4
+					value = liberal
+				}
+				ideology = {
 					factor = -0.3
 					value = reactionary
-					}
 				}
-		clr_country_flag = colorado_rule
-		clr_country_flag = blanco_rule
-		clr_country_flag = war_on_rosas
-		clr_country_flag = garibaldi_italian_legion
-		set_country_flag = sharing_power
-		}
-	}
-	
-country_event = {
-	id = 600074
-	title = "EVTNAME600074" #Argentina defeats Uruguay
-	desc = "EVTDESC600074"
-	picture = "montevideo_uruguay"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		war = no
-		tag = ARC
-		truce_with = URU
-		NOT = { war_with = URU }
-		URU = {
-			has_recently_lost_war = yes
-			has_country_flag = oribe_is_true_president
-			has_country_flag = war_on_rosas
-			has_country_flag = garibaldi_italian_legion
 			}
-		}
-	
-	mean_time_to_happen = { days = 5 }
-
-	option = {
-		name = "EVTOPTA600074"
-		#prestige = 1
-		URU = {
-			any_country = { leave_alliance = URU }
-			set_country_flag = blanco_rule
-			clr_country_flag = oribe_is_true_president
+			clr_country_flag = colorado_rule
+			clr_country_flag = blanco_rule
 			clr_country_flag = war_on_rosas
 			clr_country_flag = garibaldi_italian_legion
-			ruling_party_ideology = conservative
-		relation = { who = THIS value = 400 }
-		relation = { who = BRZ value = -400 }
-		any_pop = {	
-			scaled_consciousness = {
-				factor = 9
-				ideology = liberal
-				}
-			scaled_militancy = {
-				factor = 5
-				ideology = liberal
-				}
-			scaled_consciousness = {
-				factor = -9
-				ideology = conservative
-				}
-			scaled_militancy = {
-				factor = -5
-				ideology = conservative
-				}
-			}
-		}
-		ai_chance = {
-			factor = 0.99
+			set_country_flag = sharing_power
 		}
 	}
-	
-	option = {
-		name = "EVTOPTB600074"
-		#prestige = 3
-		URU = {
-		any_country = { leave_alliance = URU }
-		set_country_flag = blanco_rule
-		clr_country_flag = garibaldi_italian_legion
-		clr_country_flag = oribe_is_true_president
-		clr_country_flag = war_on_rosas
-		government = presidential_dictatorship
-		ruling_party_ideology = conservative
-		political_reform = none_voting
-		political_reform = party_appointed
-		political_reform = no_meeting
-		political_reform = state_press
-		political_reform = no_trade_unions
-		political_reform = underground_parties
-		create_alliance = THIS
-		relation = {
-			who = THIS
-			value = 400
-				}
-		relation = {
-			who = BRZ
-			value = -400
-				}
-		any_pop = {	
-			scaled_consciousness = {
-				factor = 9
-				ideology = liberal
-				}
-			scaled_militancy = {
-				factor = 8
-				ideology = liberal
-				}
-			scaled_consciousness = {
-				factor = 4
-				ideology = conservative
-				}
-			scaled_militancy = {
-				factor = 1
-				ideology = conservative
-				}
+
+## War with Argentina ##
+
+	#Description: Incite Corrientes rebellion
+	country_event = {
+		id = 600061
+		title = "EVTNAME600061"
+		desc = "EVTDESC600061"
+		picture = "rosistas"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			CRT = { exists = yes war = no }
+			NOT = { year = 1860 }
+			OR = {
+				has_country_flag = oribe_is_true_president
+				has_country_flag = rivera_is_true_president
+			}
+			NOT = {
+				has_country_flag = incite_rebellion
+				has_country_flag = rivera_backed_down
 			}
 		}
-		ai_chance = {
-			factor = 0.01
-		}
-	}
-		
-	option = {
-		name = "EVTOPTC600074"
-		badboy = 3
-		#prestige = 5
-		any_country = {
-		relation = {
-			who = THIS
-			value = -100
-				}
-			}
-		casus_belli ={
-			target = URU
-			type = make_puppet
-			months = 72
-			}
-		URU = {
-		relation = {
-			who = BRZ
-			value = -400
-				}
-		any_country = {
-			leave_alliance = URU
-		relation = {
-			who = URU
-			value = -200
-				}
-			}
-		set_country_flag = blanco_rule
-		clr_country_flag = garibaldi_italian_legion
-		clr_country_flag = oribe_is_true_president
-		clr_country_flag = war_on_rosas
-		government = presidential_dictatorship
-		ruling_party_ideology = conservative
-		political_reform = none_voting
-		political_reform = party_appointed
-		political_reform = no_meeting
-		political_reform = state_press
-		political_reform = no_trade_unions
-		political_reform = underground_parties
-		any_pop = {
-			scaled_consciousness = {
-				factor = 9
-				ideology = liberal
-					}
-			scaled_militancy = {
-				factor = 5
-				ideology = liberal
-					}
-			scaled_consciousness = {
-				factor = 8
-				ideology = conservative
-					}
-			scaled_militancy = {
-				factor = 3
-				ideology = conservative
-					}
-				}
-			}
-		ai_chance = {
-			factor = 0
-			}
-		}
+
+		mean_time_to_happen = { days = 15 }
+
+		# Incide rebellion
 		option = {
-		name = "EVTOPTD600074"
-		#prestige = 3
-		badboy = -1
-		clr_country_flag = garibaldi_italian_legion
-		clr_country_flag = oribe_is_true_president
-		clr_country_flag = rivera_is_true_president
-		clr_country_flag = war_on_rosas
+			name = "EVTOPTA600061"
+
+			CRT = { country_event = 600062 }
+			set_country_flag = incite_rebellion
+
+			ai_chance = { factor = 0.99 }
+		}
+
+		# Do nothing
+		option = {
+			name = "EVTOPTB600061"
+
+			set_country_flag = rivera_backed_down
+			ARC = { set_country_flag = rivera_backed_down }
+
+			ai_chance = { factor = 0.01 }
 		}
 	}
 
-country_event = {
-	id = 600075
-	title = "EVTNAME600075" #Uruguay defeats Argentina
-	desc = "EVTDESC600075"
-	picture = "montevideo_uruguay"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		war = no
-		tag = URU
-		truce_with = ARC
-		has_country_flag = war_on_rosas
-		has_country_flag = garibaldi_italian_legion
-		OR = {
-			has_country_flag = oribe_is_true_president
-			has_country_flag = rivera_is_true_president
-		}
-		NOT = { war_with = ARC }
-		ARC = {
-			exists = yes
-			has_recently_lost_war = yes		
-		}
-		NOT = { year = 1860 }
-	}
-	
-	mean_time_to_happen = { days = 5 }
-	
-	immediate = {
-	any_country = {
-		end_war = ARC
-		}
-		any_pop = {
-			ideology = {
-				factor = 0.3
-				value = liberal
+	#Description: Corrientes gets Uruguay support
+	country_event = {
+		id = 600062
+		title = "EVTNAME600062"
+		desc = "EVTDESC600062"
+		picture = "rosistas"
+
+		is_triggered_only = yes
+
+		mean_time_to_happen = { days = 5 }
+
+		option = {
+			name = "EVTOPTA600062"
+			any_country = {
+				limit = { war_with = THIS }
+				end_war = THIS
+			}
+			add_country_modifier = { name = small_country_draft duration = 365 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 3650 }
+					set_country_flag = recognized_country
+				}
+			}
+			relation = { who = ARC value = -400 }
+			relation = { who = ENT value = -400 }
+			ARC = {
+				release_vassal = CRT
+				war = {
+					target = CRT
+					attacker_goal = { casus_belli = annex_core_country }
+					defender_goal = { casus_belli = status_quo }
+					call_ally = no
+				}
+			}
+			URU = {
+				set_country_flag = corrientes_is_ready_for_war
+				clr_country_flag = incite_rebellion
 			}
 		}
 	}
 
-	option = {
-		name = "EVTOPTA600075"
-		prestige = 20
-		treasury = 10000
-		clr_country_flag = garibaldi_italian_legion
-		clr_country_flag = oribe_is_true_president
-		clr_country_flag = rivera_is_true_president
-		clr_country_flag = war_on_rosas
-		relation = {
-			who = ARC
-			value = 400
-				}
-		any_pop = {	
-			scaled_consciousness = {
-				factor = -4
-				ideology = liberal
-				}
-			scaled_militancy = {
-				factor = -6
-				ideology = liberal
-				}
-			scaled_consciousness = {
-				factor = -4
-				ideology = conservative
-				}
-			scaled_militancy = {
-				factor = -2
-				ideology = conservative
-				}
-			}
-	ARC = {
-		treasury = -10000
-		prestige = -20
-		inherit = CRT
-		inherit = ENT
-		government = democracy
-		ruling_party_ideology = liberal
-		political_reform = no_slavery
-		political_reform = landed_voting
-		political_reform = population_equal_weight
-		political_reform = yes_meeting
-		political_reform = free_press
-		political_reform = state_controlled
-		political_reform = gerrymandering
-		any_owned = { limit = { is_core = SBA }
-			any_pop = { 
-			consciousness = 9
-			militancy = 9
+	#Description: The Big War - choose whether to go to war with Argentina now, later, or never
+	country_event = {
+		id = 600063
+		title = "EVTNAME600063"
+		desc = "EVTDESC600063"
+		picture = "guerra_grande"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			NOT = { year = 1860 }
+			ARC = { exists = yes }
+			election = no
+			ruling_party_ideology = liberal
+			OR = {
+				has_country_flag = corrientes_is_ready_for_war
+				has_country_flag = rivera_is_true_president
+				has_country_flag = oribe_is_true_president
 			}
 		}
-		all_core = {
-			remove_core = ARC
-			remove_core = CRT
-			remove_core = ENT
-			remove_core = SBA
-			add_core = ARG
+
+		mean_time_to_happen = { months = 6 }
+
+		# Go to war
+		option = {
+			name = "EVTOPTA600063"
+			random_country = {
+				limit = {
+					tag = CRT
+					exists = yes
+				}
+				create_alliance = URU
+				relation = {
+					who = URU
+					value = 400
+				}
+			}
+			ARC = { country_event = 600065 }
+			set_country_flag = war_on_rosas
+			clr_country_flag = corrientes_is_ready_for_war
+			clr_country_flag = oribe_is_true_president
+
+
+			add_country_modifier = { name = small_country_draft duration = 365 }
+			war = {
+				target = ARC
+				attacker_goal = { casus_belli = humiliate }
+				defender_goal = { casus_belli = humiliate }
+				call_ally = yes
+			}
+
+			ENG = {
+				casus_belli = {
+					target = ARC
+					type = humiliate
+					months = 6
+				}
+			}
+			random_owned = {
+				limit = { exists = FRA }
+				FRA = {
+					casus_belli = {
+						target = ARC
+						type = humiliate
+						months = 6
+					}
+				}
+			}
+			random_owned = {
+				limit = { exists = BOR }
+				BOR = {
+					casus_belli = {
+						target = ARC
+						type = humiliate
+						months = 6
+					}
+				}
+			}
+
+			ai_chance = { factor = 0.5 }
 		}
-		change_tag = ARG
-		ARG = { nationalvalue = nv_liberty }
+
+		# Back down from war
+		option = {
+			name = "EVTOPTB600063"
+
+			random_country = {
+				limit = {
+					tag = CRT
+					exists = yes
+				}
+				country_event = 600064
+			}
+			clr_country_flag = corrientes_is_ready_for_war
+			clr_country_flag = rivera_is_true_president
+			clr_country_flag = oribe_is_true_president
+			prestige = -10
+			any_pop = {
+				scaled_militancy = {
+					ideology = conservative
+					factor = 9
+				}
+				scaled_militancy = {
+					ideology = reactionary
+					factor = 9
+				}
+				scaled_militancy = {
+					ideology = liberal
+					factor = 2
+				}
+			}
+			CRT = { set_country_flag = rivera_backed_down }
+
+			ai_chance = { factor = 0.01 }
 		}
-		ai_chance = { factor = 0.9 }
+
+		# Bide our time
+		option = {
+			name = "EVTOPTC600063"
+
+			random_country = {
+				limit = {
+					exists = yes
+					tag = CRT
+				}
+				create_alliance = URU
+				relation = { who = URU value = 400 }
+			}
+			clr_country_flag = corrientes_is_ready_for_war
+			clr_country_flag = rivera_is_true_president
+			clr_country_flag = oribe_is_true_president
+			set_country_flag = war_on_rosas
+			any_pop = {
+				scaled_militancy = {
+					ideology = conservative
+					factor = 2
+				}
+				scaled_militancy = {
+					ideology = reactionary
+					factor = 3
+				}
+				scaled_militancy = {
+					ideology = liberal
+					factor = 1
+				}
+			}
+			casus_belli = { target = ARC type = humiliate months = 36 }
+
+			ai_chance = { factor = 0.4 }
+		}
 	}
-	
-	option = {
-		name = "EVTOPTB600075"
-		clr_country_flag = garibaldi_italian_legion
-		clr_country_flag = oribe_is_true_president
-		clr_country_flag = rivera_is_true_president
-		clr_country_flag = war_on_rosas
-		ai_chance = {
-			factor = 0.1
+
+	#Description: Rivera backs down - triggered for Corrientes if Urugay backs down from war
+	country_event = {
+		id = 600064
+		title = "EVTNAME600064"
+		desc = "EVTDESC600064"
+		picture = "rosistas"
+
+		is_triggered_only = yes
+
+		fire_only_once = yes
+		mean_time_to_happen = { days = 5 }
+
+		# Fight for independence
+		option = {
+			name = "EVTOPTA600064"
+
+			any_country = {
+				limit = { war_with = THIS }
+				end_war = THIS
+			}
+			ARC = { release_vassal = CRT }
+			war = {
+				target = ARC
+				attacker_goal = { casus_belli = cut_down_to_size }
+				defender_goal = { casus_belli = annex_core_country }
+			}
+
+			ai_chance = { factor = 0.6 }
+		}
+
+		# Be annexed into Argentina
+		option = {
+			name = "EVTOPTB600064"
+
+			any_country = {
+				limit = { war_with = THIS }
+				end_war = THIS
+			}
+			ARC = { inherit = THIS }
+
+			ai_chance = { factor = 0.4 }
+		}
+	}
+
+	#Description: Rosas receives the declaration of war - triggered for Argentina if Uruguay decides to support Corrientes
+	country_event = {
+		id = 600065
+		title = "EVTNAME600065"
+		desc = "EVTDESC600065"
+		picture = "guerra_grande"
+
+		is_triggered_only = yes
+
+		fire_only_once = yes
+		mean_time_to_happen = { days = 5 }
+
+		option = {
+			name = "EVTOPTA600065"
+
+			add_country_modifier = { name = small_country_draft duration = 365 }
+		}
+	}
+
+	#Description: Italians offer help - if Uruguay is at war with Argentina, Garibaldi will offer his services if they abolish slavery
+	country_event = {
+		id = 600066
+		title = "EVTNAME600066"
+		desc = "EVTDESC600066"
+		picture = "garibaldi_montevideo"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			NOT = { year = 1860 }
+			ruling_party_ideology = liberal
+			has_country_flag = war_on_rosas
+			war_with = ARC
+			ARC = { government = presidential_dictatorship }
+		}
+
+		mean_time_to_happen = { days = 10 }
+
+		option = {
+			name = "EVTOPTA600066"
+
+			political_reform = no_slavery
+			set_country_flag = garibaldi_italian_legion
+
+			ai_chance = { factor = 0.99 }
+		}
+
+		option = {
+			name = "EVTOPTB600066"
+
+			set_country_flag = refused_garibaldi
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: Montevideo fort is built - gain a level 2 fort
+	country_event = {
+		id = 600067
+		title = "EVTNAME600067"
+		desc = "EVTDESC600067"
+		picture = "garibaldi_montevideo"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			owns = 2344 # Montevideo
+			war_with = ARC
+			NOT = { year = 1860 }
+			ruling_party_ideology = liberal
+			has_country_flag = colorado_rule
+			has_country_flag = war_on_rosas
+			has_country_flag = garibaldi_italian_legion
+			NOT = { has_country_flag = fort_built_garibaldi }
+			NOT = { has_country_flag = refused_garibaldi }
+		}
+
+		mean_time_to_happen = { months = 3 }
+
+		option = {
+			name = "EVTOPTA600067"
+
+			2344 = { fort = 2 }
+			set_country_flag = fort_built_garibaldi
+		}
+	}
+
+	#Description: Garibaldi raids a province - regain control of random occupied province
+	country_event = {
+		id = 600068
+		title = "EVTNAME600068"
+		desc = "EVTDESC600068"
+		picture = "garibaldi_raid"
+
+		trigger = {
+			tag = URU
+			war_with = ARC
+			NOT = { year = 1860 }
+			ruling_party_ideology = liberal
+			has_country_flag = colorado_rule
+			has_country_flag = war_on_rosas
+			has_country_flag = garibaldi_italian_legion
+			any_owned_province = { NOT = { controlled_by = URU } }
+			NOT = { has_country_flag = refused_garibaldi }
+		}
+
+		mean_time_to_happen = { months = 6 }
+
+		option = {
+			name = "EVTOPTA600068"
+
+			random_owned = {
+				limit = { NOT = { controlled_by = URU } }
+				change_controller = URU
 			}
 		}
 	}
-	
-country_event = {
-	id = 600076
-	title = "EVTNAME600076" #The War between argentina and uruguay ends in a stalemate
-	desc = "EVTDESC600076"
-	picture = "montevideo_uruguay"
-	
-	fire_only_once = yes
-	
-	trigger = {
-		war = no
-		tag = URU
-		truce_with = ARC
-		has_country_flag = war_on_rosas
-		has_country_flag = garibaldi_italian_legion
-		OR = {
-			has_country_flag = oribe_is_true_president
-			has_country_flag = rivera_is_true_president
+
+	#Description: Ask Brazil for help in the war against Argentina
+	country_event = {
+		id = 600070
+		title = "EVTNAME600070"
+		desc = "EVTDESC600070"
+		picture = "guerra_grande"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			war_with = ARC
+			NOT = { year = 1860 }
+			year = 1848
+			BRZ = { war = no neighbour = URU }
+			ruling_party_ideology = liberal
+			has_country_flag = colorado_rule
+			has_country_flag = war_on_rosas
+			URU = { relation = { who = BRZ value = 50 } }
+			NOT = { total_amount_of_divisions = 2 }
 		}
-		NOT = { war_with = ARC }
-		NOT = {
-			has_recently_lost_war = yes
-			ARC = { has_recently_lost_war = yes }
+
+		mean_time_to_happen = { days = 5 }
+
+		# Ask them for help
+		option = {
+			name = "EVTOPTA600070"
+
+			BRZ = {
+				country_event = 600071
+				set_country_flag = interfere_with_uruguay
+			}
+
+			ai_chance = { factor = 0.99 }
 		}
-		NOT = { year = 1860 }
+
+		# Don't ask
+		option = {
+			name = "EVTOPTB600070"
+
+			war_exhaustion = 20
+			any_pop = {
+				consciousness = 2
+				militancy = 1
+			}
+
+			ai_chance = { factor = 0 }
+		}
 	}
-	
-	mean_time_to_happen = { days = 5 }
 
-	option = {
-		name = "EVTOPTA600076"
-		clr_country_flag = garibaldi_italian_legion
-		clr_country_flag = oribe_is_true_president
-		clr_country_flag = rivera_is_true_president
-		clr_country_flag = war_on_rosas
+	#Description: Brazil answers for the Uruguayan call for help
+	country_event = {
+		id = 600071
+		title = "EVTNAME600071"
+		desc = "EVTDESC600071"
+		picture = "guerra_grande"
+
+		is_triggered_only = yes
+
+		mean_time_to_happen = { days = 5 }
+
+		# Help Uruguay
+		option = {
+			name = "EVTOPTA600071"
+
+			BRZ = { set_country_flag = interfere_with_uruguay }
+			create_alliance = URU
+				relation = {
+				who = FROM
+				value = 200
+			}
+
+			ai_chance = { factor = 0.99 }
+		}
+
+		# Don't help them
+		option = {
+			name = "EVTOPTB600071"
+
+			clr_country_flag = interfere_with_uruguay
+				relation = {
+				who = FROM
+				value = -50
+			}
+
+			ai_chance = { factor = 0 }
+		}
 	}
-}
-	
-	
-country_event = {
-	id = 97060
-	title = "EVTNAME97060" #The Uruguayan Crisis
-	desc = "EVTDESC97060"
-	news = yes
-	news_desc_long = "EVTDESC97060_NEWS_LONG"
-	news_desc_medium = "EVTDESC97060_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC97060_NEWS_SHORT"
-	picture = "brazil_court"
 
-	fire_only_once = yes
+	#Description: Argentina defeats Uruguay - choose how much to interfere
+	country_event = {
+		id = 600074
+		title = "EVTNAME600074"
+		desc = "EVTDESC600074"
+		picture = "montevideo_uruguay"
 
-	trigger = {
-		tag = BRZ
-		war = no
-		neighbour = URU
-		year = 1864
-		has_country_flag = interfere_with_uruguay
-		URU = { ruling_party_ideology = conservative }
-		NOT = {
+		fire_only_once = yes
+
+		trigger = {
+			tag = ARC
 			truce_with = URU
-			num_of_revolts = 1
+			NOT = { war_with = URU }
+			URU = {
+				has_recently_lost_war = yes
+				has_country_flag = oribe_is_true_president
+				has_country_flag = war_on_rosas
+				has_country_flag = garibaldi_italian_legion
+			}
+		}
+
+		mean_time_to_happen = { days = 5 }
+
+		# Install Oribe as president
+		option = {
+			name = "EVTOPTA600074"
+
+			prestige = 1
+			URU = {
+				any_country = { leave_alliance = URU }
+				set_country_flag = blanco_rule
+				clr_country_flag = oribe_is_true_president
+				clr_country_flag = war_on_rosas
+				clr_country_flag = garibaldi_italian_legion
+				ruling_party_ideology = conservative
+				relation = { who = THIS value = 400 }
+				relation = { who = BRZ value = -400 }
+				any_pop = {
+					scaled_consciousness = {
+						factor = 9
+						ideology = liberal
+					}
+					scaled_militancy = {
+						factor = 5
+						ideology = liberal
+					}
+					scaled_consciousness = {
+						factor = -9
+						ideology = conservative
+					}
+					scaled_militancy = {
+						factor = -5
+						ideology = conservative
+					}
+				}
+			}
+
+			ai_chance = { factor = 0.99 }
+		}
+
+		# Install Oribe as president and reduce political reform
+		option = {
+			name = "EVTOPTB600074"
+			prestige = 3
+			badboy = 1
+			URU = {
+				any_country = { leave_alliance = URU }
+				set_country_flag = blanco_rule
+				clr_country_flag = garibaldi_italian_legion
+				clr_country_flag = oribe_is_true_president
+				clr_country_flag = war_on_rosas
+				government = presidential_dictatorship
+				ruling_party_ideology = conservative
+				political_reform = none_voting
+				political_reform = party_appointed
+				political_reform = no_meeting
+				political_reform = state_press
+				political_reform = no_trade_unions
+				political_reform = underground_parties
+				create_alliance = THIS
+				relation = { who = THIS value = 400 }
+				relation = { who = BRZ value = -400 }
+				any_pop = {
+					scaled_consciousness = {
+						factor = 9
+						ideology = liberal
+					}
+					scaled_militancy = {
+						factor = 8
+						ideology = liberal
+					}
+					scaled_consciousness = {
+						factor = 4
+						ideology = conservative
+					}
+					scaled_militancy = {
+						factor = 1
+						ideology = conservative
+					}
+				}
+			}
+
+			ai_chance = { factor = 0.01 }
+		}
+
+		# Install Oribe as president, reduce political reform and get puppet CB
+		option = {
+			name = "EVTOPTC600074"
+
+			prestige = 5
+			badboy = 3
+			any_country = { relation = { who = THIS value = -100 } }
+			casus_belli ={
+				target = URU
+				type = make_puppet
+				months = 72
+			}
+			URU = {
+				relation = { who = BRZ value = -400 }
+				any_country = {
+					leave_alliance = URU
+					relation = { who = URU value = -200 }
+				}
+				set_country_flag = blanco_rule
+				clr_country_flag = garibaldi_italian_legion
+				clr_country_flag = oribe_is_true_president
+				clr_country_flag = war_on_rosas
+				government = presidential_dictatorship
+				ruling_party_ideology = conservative
+				political_reform = none_voting
+				political_reform = party_appointed
+				political_reform = no_meeting
+				political_reform = state_press
+				political_reform = no_trade_unions
+				political_reform = underground_parties
+				any_pop = {
+					scaled_consciousness = {
+						factor = 9
+						ideology = liberal
+					}
+					scaled_militancy = {
+						factor = 5
+						ideology = liberal
+					}
+					scaled_consciousness = {
+						factor = 8
+						ideology = conservative
+					}
+					scaled_militancy = {
+						factor = 3
+						ideology = conservative
+					}
+				}
+			}
+
+			ai_chance = { factor = 0 }
+		}
+
+		# Don't interfere
+		option = {
+			name = "EVTOPTD600074"
+
+			prestige = 3
+			badboy = -1
+			clr_country_flag = garibaldi_italian_legion
+			clr_country_flag = oribe_is_true_president
+			clr_country_flag = rivera_is_true_president
+			clr_country_flag = war_on_rosas
 		}
 	}
 
-	mean_time_to_happen = {
-		months = 6
-		modifier = {
-			factor = 0.8
-			year = 1865
+	#Description: Uruguay defeats Argentina - choose how much to interfere
+	country_event = {
+		id = 600075
+		title = "EVTNAME600075"
+		desc = "EVTDESC600075"
+		picture = "montevideo_uruguay"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			truce_with = ARC
+			NOT = { war_with = ARC }
+			has_country_flag = war_on_rosas
+			has_country_flag = garibaldi_italian_legion
+			OR = {
+				has_country_flag = oribe_is_true_president
+				has_country_flag = rivera_is_true_president
+			}
+			ARC = {
+				exists = yes
+				has_recently_lost_war = yes
+			}
+			NOT = { year = 1860 }
 		}
-		modifier = {
-			factor = 0.8
-			year = 1866
+
+		mean_time_to_happen = { days = 5 }
+
+		immediate = {
+			any_country = { end_war = ARC }
+			any_pop = {
+				ideology = {
+					factor = 0.3
+					value = liberal
+				}
+			}
 		}
-		modifier = {
-			factor = 0.5
-			year = 1868
+
+		# Help the unitarians organize Argentina
+		option = {
+			name = "EVTOPTA600075"
+
+			prestige = 20
+			treasury = 10000
+			clr_country_flag = garibaldi_italian_legion
+			clr_country_flag = oribe_is_true_president
+			clr_country_flag = rivera_is_true_president
+			clr_country_flag = war_on_rosas
+			relation = { who = ARC value = 400 }
+			any_pop = {
+				scaled_consciousness = {
+					factor = -4
+					ideology = liberal
+				}
+				scaled_militancy = {
+					factor = -6
+					ideology = liberal
+				}
+				scaled_consciousness = {
+					factor = -4
+					ideology = conservative
+				}
+				scaled_militancy = {
+					factor = -2
+					ideology = conservative
+				}
+			}
+			ARC = { # Argentina will unify into a liberal democracy
+				treasury = -10000
+				prestige = -20
+				inherit = CRT
+				inherit = ENT
+				government = democracy
+				ruling_party_ideology = liberal
+				political_reform = no_slavery
+				political_reform = landed_voting
+				political_reform = population_equal_weight
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = state_controlled
+				political_reform = gerrymandering
+				any_owned = {
+					limit = { is_core = SBA }
+					any_pop = {
+						consciousness = 9
+						militancy = 9
+					}
+				}
+				all_core = {
+					remove_core = ARC
+					remove_core = CRT
+					remove_core = ENT
+					remove_core = SBA
+					add_core = ARG
+				}
+				change_tag = ARG
+				ARG = { nationalvalue = nv_liberty }
+			}
+
+			ai_chance = { factor = 0.9 }
+		}
+
+		# Don't interfere
+		option = {
+			name = "EVTOPTB600075"
+
+			clr_country_flag = garibaldi_italian_legion
+			clr_country_flag = oribe_is_true_president
+			clr_country_flag = rivera_is_true_president
+			clr_country_flag = war_on_rosas
+
+			ai_chance = { factor = 0.1 }
 		}
 	}
 
-	option = {
-		name = "EVTOPTA97060"
-		set_country_flag = sent_uruguayan_ultimatum
-		badboy = 2
-		URU = { country_event = 97061 }
-		ai_chance = {
-			factor = 80
+	#Description: The War between Argentina and Uruguay ends in a stalemate
+	country_event = {
+		id = 600076
+		title = "EVTNAME600076"
+		desc = "EVTDESC600076"
+		picture = "montevideo_uruguay"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = URU
+			truce_with = ARC
+			NOT = { war_with = ARC }
+			has_recently_lost_war = no
+			ARC = { has_recently_lost_war = no }
+			has_country_flag = war_on_rosas
+			has_country_flag = garibaldi_italian_legion
+			OR = {
+				has_country_flag = oribe_is_true_president
+				has_country_flag = rivera_is_true_president
+			}
+			NOT = { year = 1860 }
+		}
+
+		mean_time_to_happen = { days = 5 }
+
+		option = {
+			name = "EVTOPTA600076"
+
+			clr_country_flag = garibaldi_italian_legion
+			clr_country_flag = oribe_is_true_president
+			clr_country_flag = rivera_is_true_president
+			clr_country_flag = war_on_rosas
 		}
 	}
-	option = {
-		name = "EVTOPTB97060"
-		prestige = -5
-		badboy = -2
-		ai_chance = {
-			factor = 20
+
+## The Uruguayan Crisis - Brazil ##
+
+	#Description: The Uruguayan Crisis - Brazil
+	country_event = {
+		id = 97060
+		title = "EVTNAME97060"
+		desc = "EVTDESC97060"
+		news = yes
+		news_desc_long = "EVTDESC97060_NEWS_LONG"
+		news_desc_medium = "EVTDESC97060_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC97060_NEWS_SHORT"
+		picture = "brazil_court"
+
+		fire_only_once = yes
+
+		trigger = {
+			OR = {
+				tag = BRZ
+				tag = KPB
+			}
+			war = no
+			neighbour = URU
+			year = 1864
+			has_country_flag = interfere_with_uruguay
+			URU = { ruling_party_ideology = conservative }
+			NOT = {
+				alliance_with = URU
+				truce_with = URU
+				num_of_revolts = 1
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = {
+				factor = 0.8
+				year = 1865
+			}
+			modifier = {
+				factor = 0.8
+				year = 1866
+			}
 			modifier = {
 				factor = 0.5
-				is_secondary_power = yes
+				year = 1868
+			}
+		}
+
+		# Intervene in Uruguay to install the Colorados
+		option = {
+			name = "EVTOPTA97060"
+
+			set_country_flag = sent_uruguayan_ultimatum
+			badboy = 2
+			URU = { country_event = 97061 }
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Don't get involved
+		option = {
+			name = "EVTOPTB97060"
+
+			prestige = -5
+			badboy = -2
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.5
+					is_secondary_power = yes
+				}
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
+			}
+		}
+	}
+
+	#Description: The Brazilian Ultimatum
+	country_event = {
+		id = 97061
+		title = "EVTNAME97061"
+		desc = "EVTDESC97061"
+		picture = "brazil_court"
+
+		is_triggered_only = yes
+
+		# Reject the ultimatum
+		option = {
+			name = "EVTOPTA97061"
+
+			BRZ = { country_event = 97062 }
+			relation = {
+				who = BRZ
+				value = -100
+			}
+			leave_alliance = BRZ
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Place the liberals in charge
+		option = {
+			name = "EVTOPTB97061"
+
+			prestige = -5
+			ruling_party_ideology = liberal
+			set_country_flag = liberal_election_win
+			clr_country_flag = socialist_election_win
+			clr_country_flag = tory_election_win
+			clr_country_flag = communist_election_win
+			clr_country_flag = fascist_election_win
+			clr_country_flag = reactionary_election_win
+			clr_country_flag = anarcho_liberal_election_win
+			#remove_country_modifier = expert_diplomat
+			#remove_country_modifier = successful_industrialist
+			#remove_country_modifier = ivory_tower_intellectual
+			#remove_country_modifier = man_of_the_people
+			#remove_country_modifier = landed_gentleman
+			#remove_country_modifier = military_man
+			#remove_country_modifier = lord_admiral
+			#remove_country_modifier = raving_loon
+			#remove_country_modifier = luddite
+			#remove_country_modifier = great_statesman
+			#remove_country_modifier = backroom_boy
+			#remove_country_modifier = great_reformer
+			#remove_country_modifier = gauche_buffoon
+			#remove_country_modifier = administrative_genius
+			#remove_country_modifier = visionary_thinker
+			#remove_country_modifier = competent_placeholder
+			#remove_country_modifier = imperious_autocrat
+			#remove_country_modifier = prince_of_terror
+			#remove_country_modifier = efficient_sociopath
+			#remove_country_modifier = pig_headed_isolationist
+			#remove_country_modifier = ambitious_union_boss
+			#remove_country_modifier = dour_economist
+			any_pop = {
+				ideology = {
+					value = liberal
+					factor = 0.05
+				}
+				scaled_militancy = {
+					ideology = conservative
+					factor = 4
+				}
+			}
+			create_alliance = BRZ
+			relation = {
+				who = BRZ
+				value = 400
+			}
+
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	#Description: Uruguay Rejects the Ultimatum - Brazil's response
+	country_event = {
+		id = 97062
+		title = "EVTNAME97062"
+		desc = "EVTDESC97062"
+		picture = "brazil_court"
+
+		is_triggered_only = yes
+
+		# Go to war
+		option = {
+			name = "EVTOPTA97062"
+
+			badboy = 2
+			casus_belli = {
+				target = URU
+				type = humiliate
+				months = 12
+			}
+			war = {
+				target = URU
+				attacker_goal = { casus_belli = humiliate }
+			}
+			URU = { set_country_flag = war_with_brazil }
+
+			ai_chance = { factor = 0.95 }
+		}
+
+		# Back down
+		option = {
+			name = "EVTOPTB97062"
+
+			prestige = -10
+
+			ai_chance = { factor = 0.05 }
+		}
+	}
+
+	#Description: Uruguay Submits - triggered after Uruguay loses the war against Brazil
+	country_event = {
+		id = 97065
+		title = "EVTNAME97065"
+		desc = "EVTDESC97065"
+		picture = "brazil_court"
+
+		trigger = {
+			tag = URU
+			has_country_flag = war_with_brazil
+			ruling_party_ideology = conservative
+			OR = {
+				AND = {
+					has_recently_lost_war = yes
+					truce_with = BRZ
+				}
+				any_owned_province = {
+					is_capital = yes
+					controlled_by = BRZ
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		# Install the liberals
+		option = {
+			name = "EVTOPTA97065"
+
+			clr_country_flag = war_with_brazil
+			random_country = {
+				limit = {
+					tag = BRZ
+					war_with = URU
+				}
+				country_event = 97066
+			}
+			ruling_party_ideology = liberal
+			any_pop = {
+				ideology = {
+					value = liberal
+					factor = 0.05
+				}
+				scaled_militancy = {
+					ideology = conservative
+					factor = 4
+				}
+			}
+		}
+	}
+
+	#Description: The Blancos Have Surrendered - end the war with Uruguay
+	country_event = {
+		id = 97066
+		title = "EVTNAME97066"
+		desc = "EVTDESC97066"
+		picture = "unite"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA97066"
+
+			prestige = 10
+			end_war = URU
+			create_alliance = URU
+			relation = {
+				who = URU
+				value = 400
+			}
+			random_owned = {
+				limit = { owner = { is_greater_power = yes } }
+				owner = {
+					diplomatic_influence = {
+						who = URU
+						value = 200
+					}
+				}
+			}
+		}
+	}
+
+## The Uruguayan Crisis - Argentina ##
+
+	#Description: The Uruguayan Crisis - Argentina
+	country_event = {
+		id = 188175
+		title = "EVTNAME188175"
+		desc = "EVTDESC188175"
+		news = yes
+		news_desc_long = "EVTDESC188175_NEWS_LONG"
+		news_desc_medium = "EVTDESC188175_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC188175_NEWS_SHORT"
+		picture = "rosas_victory"
+
+		fire_only_once = yes
+
+		trigger = {
+			OR = {
+				tag = ARG
+				tag = ARC
+				tag = LPL
+			}
+			war = no
+			year = 1840
+			URU = {
+				OR = {
+					neighbour = THIS
+					any_neighbor_country = { substate_of = THIS }
+				}
+			}
+			OR = {
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+			}
+			URU = { ruling_party_ideology = liberal }
+			NOT = {
+				truce_with = URU
+				num_of_revolts = 1
+				has_global_flag = entre_rios_rebellion
+			}
+			ARG = {
+				NOT = { has_country_flag = entre_rios_has_happened }
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = {
+				factor = 0.8
+				year = 1845
 			}
 			modifier = {
-				factor = 0
-				is_greater_power = yes
+				factor = 0.5
+				year = 1850
 			}
 		}
-	}
-}
 
-country_event = {
-	id = 97061
-	title = "EVTNAME97061" #The Brazilian Ultimatum
-	desc = "EVTDESC97061"
-	picture = "brazil_court"
+		# Send an ultimatum to put the conservatives in power
+		option = {
+			name = "EVTOPTA188175"
 
-	is_triggered_only = yes
+			set_country_flag = sent_uruguayan_ultimatum
+			badboy = 2
+			URU = { country_event = 188176 }
 
-	option = {
-		name = "EVTOPTA97061"
-		BRZ = { country_event = 97062 }
-		relation = {
-			who = BRZ
-			value = -100
+			ai_chance = { factor = 80 }
 		}
-		leave_alliance = BRZ
-		ai_chance = {
-			factor = 90
-		}
-	}
-	option = {
-		name = "EVTOPTB97061"
-		prestige = -5
-		ruling_party_ideology = liberal
-		any_pop = {
-			ideology = {
-				value = liberal
-				factor = 0.05
-			}
-			scaled_militancy = {
-				ideology = conservative
-				factor = 4
-			}
-		}
-		create_alliance = BRZ
-		relation = {
-			who = BRZ
-			value = 400
-		}		
-		ai_chance = {
-			factor = 10
-		}
-	}
-}
 
-country_event = {
-	id = 97062
-	title = "EVTNAME97062" #Uruguay Rejects the Ultimatum
-	desc = "EVTDESC97062"
-	picture = "brazil_court"
+		# Don't send an ultimatum
+		option = {
+			name = "EVTOPTB188175"
 
-	is_triggered_only = yes
+			prestige = -5
+			badboy = -2
 
-	option = {
-		name = "EVTOPTA97062"
-		badboy = 2
-		casus_belli = {
-			target = URU
-			type = humiliate
-			months = 12
-		}
-		war = {
-			target = URU
-			attacker_goal = {
-				casus_belli = humiliate
-			}
-		}
-		URU = { set_country_flag = war_with_brazil }
-		ai_chance = {
-			factor = 0.95
-		}
-	}
-	option = {
-		name = "EVTOPTB97062"
-		prestige = -10
-		ai_chance = {
-			factor = 0.05
-		}
-	}
-}
-
-country_event = {
-	id = 97065
-	title = "EVTNAME97065" #Uruguay Submits
-	desc = "EVTDESC97065"
-	picture = "brazil_court"
-
-	trigger = {
-		tag = URU
-		has_country_flag = war_with_brazil
-		ruling_party_ideology = conservative
-		OR = {
-			AND = {
-				has_recently_lost_war = yes 
-				truce_with = BRZ
-			}
-			any_owned_province = {
-				is_capital = yes
-				controlled_by = BRZ
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.5
+					is_secondary_power = yes
+				}
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
 			}
 		}
 	}
 
-	mean_time_to_happen = {
-		days = 1
+	#Description: The Argentine Ultimatum - Uruguay can choose whether to accept and get a conservative government or refuse and risk war
+	country_event = {
+		id = 188176
+		title = "EVTNAME188176"
+		desc = "EVTDESC188176"
+		picture = "rosas_victory"
+
+		is_triggered_only = yes
+
+		# Reject the ultimatum
+		option = {
+			name = "EVTOPTA188176"
+
+			FROM = { country_event = 188177 }
+			relation = { who = FROM value = -100 }
+			leave_alliance = FROM
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Put the conservatives in charge
+		option = {
+			name = "EVTOPTB188176"
+
+			prestige = -5
+			ruling_party_ideology = conservative
+			## Government Flags ##
+				set_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				clr_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+			any_pop = {
+				ideology = { value = conservative factor = 0.15 }
+				scaled_militancy = { ideology = liberal factor = 4 }
+			}
+			create_alliance = FROM
+			relation = { who = FROM value = 400 }
+
+			ai_chance = { factor = 10 }
+		}
 	}
 
-	option = {
-		name = "EVTOPTA97065"
-		clr_country_flag = war_with_brazil
-		random_country = {
-			limit = {
-				tag = BRZ
-				war_with = URU
+	#Description: Uruguay Rejects the Ultimatum - Argentina can choose whether to go to war
+	country_event = {
+		id = 188177
+		title = "EVTNAME188177"
+		desc = "EVTDESC188177"
+		picture = "rosas_victory"
+
+		is_triggered_only = yes
+
+		# Go to war
+		option = {
+			name = "EVTOPTA188177"
+
+			badboy = 2
+			war = {
+				target = URU
+				attacker_goal = { casus_belli = cut_down_to_size }
 			}
-			country_event = 97066
+			URU = { set_country_flag = war_with_argentina }
+
+			ai_chance = { factor = 90 }
 		}
-		ruling_party_ideology = liberal
-		any_pop = {
-			ideology = {
-				value = liberal
-				factor = 0.05
+
+		# Don't go to war
+		option = {
+			name = "EVTOPTB188177"
+
+			prestige = -10
+
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	#Description: Uruguay Submits - if Uruguay refuses and loses the war, they get a conservative government
+	country_event = {
+		id = 188178
+		title = "EVTNAME188178"
+		desc = "EVTDESC188178"
+		picture = "rosas_victory"
+
+		trigger = {
+			tag = URU
+			has_country_flag = war_with_argentina
+			ruling_party_ideology = liberal
+			OR = {
+				AND = {
+					is_disarmed = yes
+					truce_with = ARC
+				}
+				any_owned_province = {
+					is_capital = yes
+					controlled_by = ARC
+				}
+				AND = {
+					is_disarmed = yes
+					truce_with = ARG
+				}
+				any_owned_province = {
+					is_capital = yes
+					controlled_by = ARG
+				}
+				AND = {
+					is_disarmed = yes
+					truce_with = LPL
+				}
+				any_owned_province = {
+					is_capital = yes
+					controlled_by = LPL
+				}
 			}
-			scaled_militancy = {
-				ideology = conservative
-				factor = 4
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		immediate = { clr_country_flag = war_with_argentina }
+
+		option = {
+			name = "EVTOPTA188178"
+
+			random_country = {
+				limit = {
+					tag = ARC
+					war_with = URU
+				}
+				country_event = 188179
+			}
+			random_country = {
+				limit = {
+					tag = ARG
+					war_with = URU
+				}
+				country_event = 188179
+			}
+			random_country = {
+				limit = {
+					tag = LPL
+					war_with = URU
+				}
+				country_event = 188179
+			}
+			ruling_party_ideology = conservative
+			## Government Flags ##
+				set_country_flag = tory_election_win
+				clr_country_flag = socialist_election_win
+				clr_country_flag = liberal_election_win
+				clr_country_flag = communist_election_win
+				clr_country_flag = fascist_election_win
+				clr_country_flag = reactionary_election_win
+				clr_country_flag = anarcho_liberal_election_win
+			## Prime Ministers ##
+				remove_country_modifier = expert_diplomat
+				remove_country_modifier = successful_industrialist
+				remove_country_modifier = ivory_tower_intellectual
+				remove_country_modifier = man_of_the_people
+				remove_country_modifier = landed_gentleman
+				remove_country_modifier = military_man
+				remove_country_modifier = lord_admiral
+				remove_country_modifier = raving_loon
+				remove_country_modifier = luddite
+				remove_country_modifier = great_statesman
+				remove_country_modifier = backroom_boy
+				remove_country_modifier = great_reformer
+				remove_country_modifier = gauche_buffoon
+				remove_country_modifier = administrative_genius
+				remove_country_modifier = visionary_thinker
+				remove_country_modifier = competent_placeholder
+				remove_country_modifier = imperious_autocrat
+				remove_country_modifier = prince_of_terror
+				remove_country_modifier = efficient_sociopath
+				remove_country_modifier = pig_headed_isolationist
+				remove_country_modifier = ambitious_union_boss
+				remove_country_modifier = dour_economist
+			any_pop = {
+				ideology = { value = conservative factor = 0.15 }
+				scaled_militancy = { ideology = liberal	factor = 4 }
 			}
 		}
 	}
-}
+
+	#Description: The Colorados Have Surrendered - cleanup event if Argentina remains at war with Uruguay
+	country_event = {
+		id = 188179
+		title = "EVTNAME188179"
+		desc = "EVTDESC188179"
+		picture = "unite"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA188179"
+
+			prestige = 10
+			end_war = URU
+			create_alliance = URU
+			relation = { who = URU value = 400 }
+			random_owned = {
+				limit = { owner = { is_greater_power = yes } }
+				owner = { diplomatic_influence = { who = URU value = 200 } }
+			}
+		}
+	}

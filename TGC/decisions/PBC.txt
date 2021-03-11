@@ -1,5 +1,8 @@
 political_decisions = {
-#from Peru-Bolivia Confederation
+
+## Dissolution ##
+
+	#Description: If the PBC has recently lost a war, been disarmed, or has provinces occupied, Peru can rise up and go to war to free South Peru.
 	pbc_in_chaos = {
 		picture = peru_bolivia
 		potential = {
@@ -8,16 +11,16 @@ political_decisions = {
 			vassal_of = PBC
 			SPU = { vassal_of = PBC }
 			NOT = { has_global_flag = first_pbc_fell }
-		}
-	
-		allow = {
 			OR = {
 				PBC = { has_recently_lost_war = yes }
 				national_provinces_occupied = 0.01
 				is_disarmed = yes
 			}
 		}
-	
+
+		allow = {
+		}
+
 		effect = {
 			set_global_flag = first_pbc_fell
 			leave_alliance = PBC
@@ -28,70 +31,55 @@ political_decisions = {
 			any_country = {
 				limit = { war_with = PBC }
 				end_war = PEU
-				relation = { who = PEU value = 100 }			
+				relation = { who = PEU value = 100 }
 			}
 			any_pop = {
 				dominant_issue = {
 					factor = 0.02
 					value = jingoism
 				}
-			}	
+			}
 			war = {
 				target = PBC
-				attacker_goal = {
-					casus_belli = release_puppet
-					country = SPU
-				}
-				defender_goal = {
-					casus_belli = conquest_any
-				}
-			}					
+				attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
+				defender_goal = { casus_belli = make_puppet country = PEU }
+			}
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the PBC ends up not owning La Paz or Sucre or if Bolivia exists, they will become just Peru.
 	end_of_confederation_PEU = {
 		picture = peru_bolivia
 		potential = {
 			tag = PBC
-			owns = 2295
+			owns = 2295 # Lima
 			OR = {
 				AND = {
-					NOT = { owns = 2313 }
-					NOT = { owns = 2310 }
+					NOT = { owns = 2313 } # Nueva Toledo / Sucre
+					NOT = { owns = 2310 } # La Paz
 				}
-				exists = BOL
+				BOL = {
+					exists = yes
+					NOT = { vassal_of = PBC }
+				}
 			}
+			NOT = { exists = PEU }
 		}
-	
+
 		allow = {
 			war = no
-			NOT = { exists = PEU }
-			BOL = {
-				NOT = { vassal_of = PBC }
-			}
 		}
-	
+
 		effect = {
+			all_core = { remove_core = PBC }
 			capital = 2295
-			PBC = {
-				all_core = { remove_core = PBC }
-			}
+			remove_accepted_culture = bolivian
+			change_tag = PEU
 			random_owned = {
-				limit = { exists = PEU }
-				owner = {
-					change_tag_no_core_switch = PEU
-					any_owned = { secede_province = PEU }
-				}
-			}
-			random_owned = {
-				limit = { NOT = { exists = PEU } }
-				owner = {
-					change_tag = PEU
-				}
+				limit = { owner = { NOT = { centralization = unitary } } }
+				owner = { political_reform = unitary }
 			}
 			any_country = {
 				limit = {
@@ -105,54 +93,48 @@ political_decisions = {
 				relation = { who = PEU value = 300 }
 			}
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the PBC ends up not owning La Paz or Sucre or if Bolivia exists, and not owning Lima or Peru exists, they will become South Peru.
 	end_of_confederation_SPU = {
 		picture = peru_bolivia
 		potential = {
 			tag = PBC
-			owns = 2304
-			NOT = { owns = 2295 }
+			owns = 2304 # Arequipa
+			OR = {
+				NOT = { owns = 2295 } # Lima
+				PEU = {
+					exists = yes
+					NOT = { vassal_of = PBC }
+				}
+			}
 			OR = {
 				AND = {
-					NOT = { owns = 2313 }
-					NOT = { owns = 2310 }
+					NOT = { owns = 2313 } # Nuevo Toledo / Sucre
+					NOT = { owns = 2310 } # La Paz
 				}
-				exists = BOL
+				BOL = {
+					exists = yes
+					NOT = { vassal_of = PBC }
+				}
 			}
+			NOT = { exists = SPU }
 		}
-	
+
 		allow = {
 			war = no
-			NOT = { exists = SPU }
-			BOL = {
-				NOT = { vassal_of = PBC }
-			}
-			PEU = {
-				NOT = { vassal_of = PBC }
-			}
 		}
-	
+
 		effect = {
+			all_core = { remove_core = PBC }
 			capital = 2304
-			PBC = {
-				all_core = { remove_core = PBC }
-			}
+			remove_accepted_culture = bolivian
+			change_tag = SPU
 			random_owned = {
-				limit = { exists = SPU }
-				owner = {
-					change_tag_no_core_switch = SPU
-					any_owned = { secede_province = SPU }
-				}
-			}
-			random_owned = {
-				limit = { NOT = { exists = SPU } }
-				owner = {
-					change_tag = SPU
-				}
+				limit = { owner = { NOT = { centralization = unitary } } }
+				owner = { political_reform = unitary }
 			}
 			any_country = {
 				limit = {
@@ -166,54 +148,44 @@ political_decisions = {
 				relation = { who = SPU value = 300 }
 			}
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
 
-
+	#Description: If the PBC ends up not owning Lima or Arequipa and Peru and South Peru are not its vassals, they will become just Bolivia.
 	end_of_confederation_BOL = {
 		picture = peru_bolivia
 		potential = {
 			tag = PBC
-			NOT = { owns = 2295 }
-			NOT = { owns = 2304 }
-			OR = {
-				owns = 2313
-				owns = 2310
+			NOT = {
+				owns = 2295 # Lima
+				owns = 2304 # Arequipa
+				exists = BOL
 			}
+			OR = {
+				owns = 2313 # Nueva Toledo / Sucre
+				owns = 2310 # La Paz
+			}
+			SPU = { NOT = { vassal_of = PBC } }
+			PEU = { NOT = { vassal_of = PBC } }
+			NOT = { has_country_flag = PBC_administration }
 		}
-	
+
 		allow = {
 			war = no
-			SPU = {
-				NOT = { vassal_of = PBC }
-			}
-			PEU = {
-				NOT = { vassal_of = PBC }
-			}			 
 		}
-	
+
 		effect = {
+			all_core = { remove_core = PBC }
 			random_owned = {
 				limit = { province_id = 2313 }
 				owner = { capital = 2313 }
 			}
-			PBC = {
-				all_core = { remove_core = PBC }
-			}
+			remove_accepted_culture = peruvian
+			change_tag = BOL
 			random_owned = {
-				limit = { exists = BOL }
-				owner = {
-					change_tag_no_core_switch = BOL
-					any_owned = { secede_province = BOL }
-				}
-			}
-			random_owned = {
-				limit = { NOT = { exists = BOL } }
-				owner = {
-					change_tag = BOL
-				}
+				limit = { owner = { NOT = { centralization = unitary } } }
+				owner = { political_reform = unitary }
 			}
 			any_country = {
 				limit = {
@@ -227,71 +199,61 @@ political_decisions = {
 				}
 				relation = { who = BOL value = 300 }
 			}
-
-		BOL = { country_event = 34625 }
-		PEU = { country_event = 34626 }
-
+			BOL = { country_event = 34625 }
+			PEU = { country_event = 34626 }
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
 
+## Centralization ##
+
+	#Description: It the PBC can survive at peace until 1840, they will gain cores on Peru and South Peru.
 	treaty_of_la_paz = {
 		picture = peru_bolivia
 		potential = {
 			tag = PBC
+			exists = yes
+			NOT = { has_country_modifier = pbc_is_unstable } # Survived for 5 years
 			NOT = { has_country_flag = the_confederation_is_legitime }
 			NOT = { has_country_flag = pbc_reunited }
+			OR = {
+				NOT = { has_country_flag = end_of_the_confederation }
+				AND = { # End of the Confederation happened and PBC won
+					NOT = { exists = PEU }
+					NOT = { exists = SPU }
+				}
+			}
 		}
-	
+
 		allow = {
 			war = no
-			year = 1840
 		}
-	
+
 		effect = {
 			set_country_flag = the_confederation_is_legitime
+			# Allows PBC centralization, prevents Salaverry returning, the War of the Confederation, or End of the Confederation
 			prestige = 5
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = end_of_the_confederation } } }
-				PEU = { all_core = { add_core = PBC } }
-				SPU = { all_core = { add_core = PBC } }
-				SPU = { all_core = { remove_core = SPU } }
-			}
+			PEU = { all_core = { add_core = PBC } }
+			SPU = { all_core = { add_core = PBC } }
 			BOL = { all_core = { add_core = PBC } }
 		}
 
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Once the Confederation is legitimate, it can be centralized (annex Peru/South Peru/Bolivia).
 	centralizer_act_huayna_capac = {
 		picture = treaty_signing
 		potential = {
 			tag = PBC
 			has_country_flag = the_confederation_is_legitime
 			NOT = { has_country_flag = pbc_united }
-			OR = {
-				any_neighbor_country = {
-					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
-					}
-					OR = {
-						in_sphere = PBC
-						vassal_of = PBC
-					}
-				}
-				PEU = {
-					any_core = {
-						owned_by = THIS
-						NOT = { is_core = THIS }
-					}
-				}
-			}
+			PEU = { OR = { exists = no vassal_of = THIS } }
+			SPU = { OR = { exists = no vassal_of = THIS } }
+			BOL = { OR = { exists = no vassal_of = THIS } }
 		}
-	
+
 		allow = {
 			prestige = 20
 			war = no
@@ -300,54 +262,38 @@ political_decisions = {
 				is_greater_power = yes
 			}
 		}
-	
+
 		effect = {
 			set_country_flag = pbc_united
 			prestige = 5
-			random_owned = {
-				limit = {
-					is_core = PEU
-					NOT = { is_core = THIS }
-				}
-				PEU = { all_core = { add_core = PBC } }
-			}
-			random_owned = {
-				limit = {
-					is_core = BOL
-					NOT = { is_core = THIS }
-				}
-				BOL = { all_core = { add_core = PBC } }
-			}
-			any_country = {
-				limit = {
-					OR = {
-					 tag = SPU
-					 tag = PEU
-					 tag = BOL
-					}
-					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
-					}
-					OR = {
-						in_sphere = PBC
-						vassal_of = PBC
-					}
-				}
+			random_country = {
+				limit = { tag = PEU vassal_of = THIS }
 				all_core = { add_core = PBC }
-				annex_to = PBC
+				annex_to = THIS
 			}
 			random_country = {
-				limit = { tag = SPU exists = no }
-				SPU = { all_core = { remove_core = SPU } }
+				limit = { tag = SPU vassal_of = THIS }
+				all_core = { add_core = PBC remove_core = SPU }
+				annex_to = THIS
+			}
+			random_country = {
+				limit = { tag = BOL vassal_of = THIS }
+				all_core = { add_core = PBC }
+				annex_to = THIS
+			}
+			random_owned = {
+				limit = { owner = { NOT = { centralization = unitary } } }
+				owner = { political_reform = unitary }
 			}
 		}
 
 		ai_will_do = { factor = 1 }
 	}
 
+## Unification ##
 
+	#Description: If the Confederation was not abandoned and either Peru, South Peru or Bolivia becomes a Great or Secondary power and spheres the other two or owns their capital, they can become the PBC.
+	#Note: Unlike the PBC that can form shortly after game start, this PBC will immediately be unitary.
 	the_new_pbc = {
 		picture = peru_bolivia
 		potential = {
@@ -356,209 +302,785 @@ political_decisions = {
 				tag = SPU
 				tag = BOL
 			}
-			NOT = { exists = PBC }
+			OR = {
+				is_greater_power = yes
+				is_secondary_power = yes
+			}
+			NOT = {
+				exists = PBC
+				has_global_flag = PBC_abandoned
+			}
 		}
-		
+
 		allow = {
 			war = no
+			nationalism_n_imperialism = 1
 			OR = {
-				is_sphere_leader_of = PEU
 				tag = PEU
 				owns = 2295
+				is_sphere_leader_of = PEU
+				is_our_vassal = PEU
 			}
 			OR = {
-				is_sphere_leader_of = SPU
 				tag = SPU
 				owns = 2304
+				is_sphere_leader_of = SPU
+				is_our_vassal = SPU
 			}
 			OR = {
-				is_sphere_leader_of = BOL
 				tag = BOL
 				owns = 2313
+				is_sphere_leader_of = BOL
+				is_our_vassal = BOL
 			}
-			nationalism_n_imperialism = 1
-			is_greater_power = yes
 		}
-		
+
 		effect = {
 			set_country_flag = pbc_reunited
 			prestige = 10
 			badboy = 5
-			any_country = {
-				limit = {
-					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
-					}
-					OR = {
-						in_sphere = THIS
-						vassal_of = THIS
-					}
-					NOT = { tag = THIS }
-					NOT = { tag = CHL }
+			random_owned = {
+				limit = { THIS = { NOT = { tag = PEU } } }
+				PEU = {
+					all_core = { add_core = PBC }
+					annex_to = THIS
 				}
-				all_core = { add_core = PBC }
-				annex_to = THIS
 			}
+			random_owned = {
+				limit = { THIS = { NOT = { tag = SPU } } }
+				SPU = {
+					all_core = { add_core = PBC }
+					annex_to = THIS
+				}
+			}
+			random_owned = {
+				limit = { THIS = { NOT = { tag = BOL } } }
+				BOL = {
+					all_core = { add_core = PBC }
+					annex_to = THIS
+				}
+			}
+			add_accepted_culture = peruvian
+			add_accepted_culture = bolivian
 			all_core = { add_core = PBC }
 			change_tag = PBC
+			random_owned = {
+				limit = { owner = { NOT = { centralization = unitary } } }
+				owner = { political_reform = unitary }
+			}
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
 
-	reunite_peru = {
-	picture = reunite_peru
+## Other ##
+
+	#Description: If Salaverry is being kept in prison, he can be released.
+	release_salaverry = {
+		picture = salaverry
+		alert = no
 		potential = {
-			tag = PEU
-			SPU = {
-				exists = yes
-				NOT = {
-					any_owned_province = {
-						NOT = { is_core = SPU }
-					}
-				}
-			}
-			has_global_flag = first_pbc_fell
-			NOT = { has_country_flag = peru_reunited }
+			has_country_modifier = salaverry_in_prison
 		}
 
 		allow = {
-			war = no
-			is_vassal = no
-			SPU = {
-				war = no
-				is_vassal = no
-				neighbour = PEU
-			}
 		}
 
 		effect = {
-			set_country_flag = peru_reunited
-			prestige = 5
-			relation = { who = CHL value = -50 }
-			random_country = {
-				limit = {
-					tag = SPU
-					ai = yes
-				}
-				all_core = { remove_core = SPU }
-				PEU = { inherit = SPU }
-			}
-			random_country = {
-				limit = {
-					tag = SPU
-					ai = no
-				}
-				set_country_flag = peru_reunited
-				prestige = 5
-				all_core = { remove_core = SPU }
-				inherit = PEU
-				random_owned = {
-					limit = { province_id = 2295 }
-					owner = { capital = 2295 }
-				}
-				change_tag = PEU	
+			remove_country_modifier = salaverry_in_prison
+			badboy = -1
+			any_pop = {
+				militancy = -1
+				consciousness = 1
 			}
 		}
 
 		ai_will_do = {
 			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { # AI will not do unless one of these is satisfied
+					ruling_party_ideology = liberal
+					badboy = 0.99
+					AND = {
+						year = 1845
+						NOT = { tag = PBC }
+					}
+				}
+			}
 		}
 	}
-	
+
+## Bolivia ##
+
+	#Description: After 1898 Bolivia can make La Paz its capital.
 	declare_la_paz_capital = {
 		picture = la_paz_capital
 		potential = {
 			tag = BOL
 			year = 1898
-			2310 = { is_capital = no }
-			owns = 2310
 		}
-	
+
 		allow = {
-			year = 1898
-			owns = 2310
 			war = no
+			owns = 2310
 			2310 = { is_capital = no }
 		}
-	
+
 		effect = {
 			capital = 2310
 			BOL_2321 = {
-				rich_strata = { militancy = -3}
+				rich_strata = { militancy = -3 }
 				middle_strata = { militancy = -1 }
 			}
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
-	
-	remove_spu_cores = {
-		picture = la_paz_capital
+
+	#Description: Sell Corumba (Amazon) to Brazil.
+	corumba_sale = {
+		picture = pbc_argentina_border_treaty
 		potential = {
-			tag = PEU
-			any_owned_province = { is_core = SPU }
-			SPU = { exists = no }
+			OR = {
+				tag = BOL
+				tag = PBC
+			}
+			owns = 3298 # Corumba
+			owns = 2407 # Rio Jurua
+			owns = 3296 # Rio Purus
+			OR = {
+				exists = BRZ
+				exists = KPB
+			}
+			year = 1865
 		}
-	
+
 		allow = {
 			war = no
+			owns = 3298
+			owns = 2407
+			owns = 3296
 		}
-	
+
 		effect = {
-			any_owned = { remove_core = SPU }
+			random_country = {
+				limit = {
+					OR = {
+						tag = BRZ
+						tag = KPB
+					}
+					exists = yes
+				}
+				country_event = 24602
+			}
 		}
 
 		ai_will_do = {
 			factor = 1
+			modifier = { # Bolivia will not sell if Brazil lost the Paraguayan War and Bolivia didn't
+				factor = 0
+				has_global_flag = paraguayan_war_won
+				OR = {
+					BRZ = { exists = yes has_country_flag = will_support_uruguay }
+					KPB = { exists = yes has_country_flag = will_support_uruguay }
+				}
+				owns = 2318
+			}
+			modifier = {
+				factor = 0
+				money = 300000
+				NOT = { year = 1890 }
+			}
+			modifier = { # Bolivia won't sell if bad relations with Brazil
+				factor = 0
+				OR = {
+					AND = { exists = BRZ NOT = { relation = { who = BRZ value = 0 } } }
+					AND = { exists = KPB NOT = { relation = { who = KPB value = 0 } } }
+				}
+			}
+			modifier = {
+				factor = 0
+				is_greater_power = yes
+			}
 		}
 	}
-#from SouthAmerica.txt
-	spu_applies_for_statehood = {
+
+	#Description: Sell the Outer Chaco (Lagunillas) to Paraguay.
+	outer_chaco_sale = {
+		picture = pbc_argentina_border_treaty
 		potential = {
-			tag = SPU
-			neighbour = PEU
-			exists = yes
-			ai = yes
+			OR = {
+				tag = BOL
+				tag = PBC
+			}
+			owns = 2318 # Lagunillas
+			PRG = { owns = 2338 } # Fuerte Olimpo
+			OR = {
+				year = 1865
+				has_global_flag = paraguayan_war_won
+			}
 		}
-		
+
+		allow = {
+			war = no
+			owns = 2318
+		}
+
+		effect = {
+			PRG = { country_event = 24601 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = { # Bolivia will not sell if Paraguay lost the war
+				factor = 0
+				has_global_flag = paraguayan_war_lost
+			}
+			modifier = { # Bolivia will not sell if there are significant pops in Lagunillas unless desparate for money
+				factor = 0
+				2318 = { total_pops = 20000 }
+				money = 10000
+			}
+			modifier = { # Bolivia will not sell if they are comfortable with money
+				factor = 0
+				money = 60000
+			}
+			modifier = { # Bolivia won't sell if bad relations with PRG
+				factor = 0
+				NOT = { relation = { who = PRG value = 0 } }
+			}
+			modifier = {
+				factor = 0
+				is_greater_power = yes
+			}
+		}
+	}
+
+	#Description: Occupation of the empty provinces in the Chaco.
+	conquest_of_the_chaco_bolivia = {
+		picture = conquest_of_the_chaco
+		potential = {
+			OR = {
+				tag = BOL
+				tag = PBC
+			}
+			OR = {
+				PRG_2338 = { empty = yes } # Northern Chaco
+				ARG_2366 = { empty = yes } # Central Chaco
+			}
+			owns = 2318
+			owns = 2315
+		}
+
 		allow = {
 			war = no
 			OR = {
-				vassal_of = PEU
-				is_vassal = no
+				nationalism_n_imperialism = 1
+				iron_railroad = 1
 			}
-			PEU = { war = no }
 		}
-		
+
 		effect = {
-			annex_to = PEU
+			prestige = 3
+			PRG_2338 = { add_core = THIS }
+			ARG_2366 = { add_core = THIS }
+			2369 = { add_core = THIS }
+
+			random_owned = {
+				limit = { 2369 = { empty = yes } }
+				2369 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2369 = { NOT = { life_rating = 30 } } }
+				2369 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2367 = { empty = yes } }
+				2367 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2367 = { NOT = { life_rating = 30 } } }
+				2367 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2366 = { empty = yes } }
+				2366 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2366 = { NOT = { life_rating = 30 } } }
+				2366 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2338 = { empty = yes } }
+				2338 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2338 = { NOT = { life_rating = 30 } } }
+				2338 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2337 = { empty = yes } }
+				2337 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2337 = { NOT = { life_rating = 30 } } }
+				2337 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2343 = { empty = yes } }
+				2343 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2343 = { NOT = { life_rating = 30 } } }
+				2343 = { life_rating = 20 }
+			}
 		}
-		
+
 		ai_will_do = { factor = 1 }
 	}
-	
-	
+
+	#Description: Bolivia or a legitimate PBC can claim southern Araucania.
+	claim_bolivia_southern_araucania = {
+		picture = conquest_of_the_desert
+		potential = {
+			OR = {
+				tag = BOL
+				AND = {
+					tag = PBC
+					OR = {
+						has_country_flag = the_confederation_is_legitime
+						has_country_flag = pbc_reunited
+					}
+				}
+			}
+			is_vassal = no
+			2305 = { owned_by = THIS is_core = THIS }
+			state_n_government = 1
+			OR = {
+				NOT = { 3299 = { is_core = THIS } }
+				NOT = { 2322 = { is_core = THIS } }
+			}
+		}
+
+		allow = {
+			war = no
+			is_disarmed = no
+			is_secondary_power = yes
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			badboy = 3
+			random_owned = {
+				limit = { owner = { tag = BOL } }
+				3299 = { add_core = BOL }
+				2322 = { add_core = BOL }
+			}
+			random_owned = {
+				limit = { owner = { tag = PBC } }
+				3299 = { add_core = BOL add_core = PBC }
+				2322 = { add_core = BOL add_core = PBC }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.88
+			}
+		}
+	}
+
+	#Description: Bolivia or a legitimate PBC can claim southern Salta.
+	claim_bolivia_salta = {
+		picture = conquest_of_the_south
+		potential = {
+			OR = {
+				tag = BOL
+				AND = {
+					tag = PBC
+					OR = {
+						has_country_flag = the_confederation_is_legitime
+						has_country_flag = pbc_reunited
+					}
+				}
+			}
+			is_vassal = no
+			2370 = { owned_by = THIS is_core = THIS }
+			3353 = { owned_by = THIS is_core = THIS }
+			state_n_government = 1
+			OR = {
+				NOT = { 2371 = { is_core = THIS } }
+				NOT = { 3400 = { is_core = THIS } }
+				NOT = { 2368 = { is_core = THIS } }
+				NOT = { 2373 = { is_core = THIS } }
+				NOT = { 1714 = { is_core = THIS } }
+			}
+		}
+
+		allow = {
+			war = no
+			is_disarmed = no
+			is_secondary_power = yes
+			OR = {
+				year = 1878
+				revolution_n_counterrevolution = 1
+			}
+		}
+
+		effect = {
+			badboy = 6
+			random_owned = {
+				limit = { owner = { tag = BOL } }
+				2371 = { add_core = BOL }
+				3400 = { add_core = BOL }
+				2368 = { add_core = BOL }
+				2373 = { add_core = BOL }
+				1714 = { add_core = BOL }
+			}
+			random_owned = {
+				limit = { owner = { tag = PBC } }
+				2371 = { add_core = BOL add_core = PBC }
+				3400 = { add_core = BOL add_core = PBC }
+				2368 = { add_core = BOL add_core = PBC }
+				2373 = { add_core = BOL add_core = PBC }
+				1714 = { add_core = BOL add_core = PBC }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.76
+			}
+		}
+	}
+
+	#Description: Bolivia or a legitimate PBC can claim southern Chaco.
+	claim_bolivia_south_chaco = {
+		picture = conquest_of_the_chaco
+		potential = {
+			OR = {
+				tag = BOL
+				AND = {
+					tag = PBC
+					OR = {
+						has_country_flag = the_confederation_is_legitime
+						has_country_flag = pbc_reunited
+					}
+				}
+			}
+			is_vassal = no
+			2366 = { owned_by = THIS is_core = THIS }
+			2367 = { owned_by = THIS is_core = THIS }
+			state_n_government = 1
+			OR = {
+				NOT = { 2372 = { is_core = THIS } }
+				NOT = { 2365 = { is_core = THIS } }
+				NOT = { 2364 = { is_core = THIS } }
+				NOT = { 2377 = { is_core = THIS } }
+				NOT = { 2362 = { is_core = THIS } }
+			}
+		}
+
+		allow = {
+			war = no
+			is_disarmed = no
+			is_secondary_power = yes
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			badboy = 7
+			random_owned = {
+				limit = { owner = { tag = BOL } }
+				2372 = { add_core = BOL }
+				2365 = { add_core = BOL }
+				2364 = { add_core = BOL }
+				2377 = { add_core = BOL }
+				2362 = { add_core = BOL }
+			}
+			random_owned = {
+				limit = { owner = { tag = PBC } }
+				2372 = { add_core = BOL add_core = PBC }
+				2365 = { add_core = BOL add_core = PBC }
+				2364 = { add_core = BOL add_core = PBC }
+				2377 = { add_core = BOL add_core = PBC }
+				2362 = { add_core = BOL add_core = PBC }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.72
+			}
+		}
+	}
+
+	# TODO Final Amazon rearrangement 1903
+	# Brazil gets 2549, 3297, 2290
+	# Peru gets 2302, 2301, 2300, 2298
+
+## Peru ##
+
+	## Reunification ##
+
+		#Description: If Orbegoso won, first PBC formed and has dissolved, Peru revolted to free South Peru and succeeded.
+		reunite_peru = {
+			picture = reunite_peru
+			potential = {
+				tag = PEU
+				SPU = {
+					exists = yes
+					is_vassal = no
+					neighbour = PEU
+					NOT = { any_owned_province = { NOT = { is_core = SPU } } } # Sanity check, this should never be false immediately after SPU is freed from PBC
+				}
+				has_global_flag = first_pbc_fell # Peru revolted against the PBC and is trying to free South Peru or PBC willingly dissolved
+				NOT = { has_country_flag = peru_reunited }
+			}
+
+			allow = {
+				war = no
+				is_vassal = no
+				SPU = {
+					war = no
+					relation = { who = THIS value = 0 }
+				}
+			}
+
+			effect = {
+				set_country_flag = peru_reunited
+				prestige = 5
+				relation = { who = CHL value = -50 }
+				SPU = { all_core = { remove_core = SPU } }
+				# If AI, South Peru will be annexed
+				random_country = {
+					limit = {
+						tag = SPU
+						ai = yes
+					}
+					PEU = { inherit = SPU }
+				}
+				# If not AI, South Peru will become Peru
+				random_country = {
+					limit = {
+						tag = SPU
+						ai = no
+					}
+					set_country_flag = peru_reunited
+					prestige = 5
+					inherit = PEU
+					random_owned = {
+						limit = { province_id = 2295 } # Lima
+						owner = { capital = 2295 }
+					}
+					change_tag = PEU
+				}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+		#Description: If the civil war ended in a stalemate (PBC didn't form), Peru can be united if one of the Perus doesn't own any of its cores anymore.
+		unite_peru = {
+			picture = la_paz_capital
+			potential = {
+				owns = 2299
+				owns = 2295
+				OR = {
+					AND = {
+						tag = PEU
+						NOT = { SPU = { any_core = { owned_by = SPU } } }
+					}
+					AND = {
+						tag = SPU
+						NOT = { PEU = { any_core = { owned_by = PEU } } }
+					}
+				}
+				has_global_flag = peru_civil_war_stalemate
+			}
+
+			allow = {
+				war = no
+			}
+
+			effect = {
+				prestige = 5
+				any_pop = { militancy = -1 }
+				SPU = { all_core = { remove_core = SPU } }
+				random_owned = {
+					limit = { owner = { tag = SPU } }
+					owner = {
+						random_owned = {
+							limit = { province_id = 2295 }
+							owner = { capital = 2295 }
+						}
+						change_tag = PEU
+					}
+				}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+		#Description: If Salaverry won, South Peru will immediately apply for unification with Peru
+		#Note: This is a sanity check, and should not happen as Salaverry winning removes SPU cores
+		spu_applies_for_statehood = {
+			potential = {
+				tag = SPU
+				OR = { # Not puppet of PBC or another country
+					vassal_of = PEU
+					is_vassal = no
+				}
+				exists = yes
+				neighbour = PEU
+				NOT = { war_with = PEU }
+				PEU = { has_country_flag = salaverry_victorious }	# The Peruvian Civil war of 1835 has been resolved - Salaverry won
+			}
+
+			allow = {
+				war = no
+				PEU = { war = no }
+			}
+
+			effect = {
+				all_core = { remove_core = SPU }
+				random_country = {
+					limit = {
+						tag = PEU
+						THIS = { ai = yes }
+					}
+					inherit = THIS
+				}
+				random_country = {
+					limit = {
+						tag = PEU
+						ai = yes
+						THIS = { ai = no }
+					}
+					THIS = {
+						inherit = PEU
+						random_owned = {
+							limit = { province_id = 2295 }
+							owner = { capital = 2295 }
+						}
+						change_tag = PEU
+					}
+				}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+	#Description: Peru or a legitimate PBC can claim Ecuador.
+	claim_peru_ecuador = {
+		picture = conquest_of_the_chaco
+		potential = {
+			OR = {
+				tag = PEU
+				AND = {
+					tag = PBC
+					OR = {
+						has_country_flag = the_confederation_is_legitime
+						has_country_flag = pbc_reunited
+					}
+				}
+			}
+			exists = ECU
+			is_vassal = no
+			2279 = { owned_by = THIS is_core = THIS }
+			2287 = { owned_by = THIS is_core = THIS }
+			2288 = { owned_by = THIS is_core = THIS }
+			state_n_government = 1
+			# Audax Validator "." Ignore_NEXT
+			ECU_2280 = { NOT = { is_core = THIS } }
+		}
+
+		allow = {
+			war = no
+			is_disarmed = no
+			is_secondary_power = yes
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			badboy = 10
+			random_owned = {
+				limit = { owner = { tag = PEU } }
+				ECU_2280 = { add_core = PEU }
+				ECU = { all_core = { add_core = PEU } }
+			}
+			random_owned = {
+				limit = { owner = { tag = PBC } }
+				ECU_2280 = { add_core = PEU add_core = PBC }
+				ECU = { all_core = { add_core = PEU add_core = PBC } }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.6
+			}
+		}
+	}
+
+	# TODO deal with CLM to split their claims over ECU
+
+## War of the Pacific ##
+
+	#Description: The winner of the War of the Pacific (who ends up owning all of Antofagasta) can start negotiating the claims in the region.
 	chile_treaty_of_peace_and_friendship = {
 		picture = chile_bolivia_peru_borders
 		potential = {
-			OR = {
-				tag = CHL
-				tag = SPU
-				tag = PBC
-				tag = BOL
-			}
-			owns = 2308
-			owns = 2307
-			owns = 2309
-			owns = 2305
-			NOT = { has_country_flag = tacna_arica_compromise }
+			owns = 2308 # Arica
+			owns = 2307 # Iquique
+			owns = 2309 # Calama
+			owns = 2305 # Antofagasta
+			owns = 3299 # Taltal
 			OR = {
 				AND = {
 					tag = CHL
@@ -591,11 +1113,11 @@ political_decisions = {
 					}
 				}
 			}
+			NOT = { has_country_flag = tacna_arica_compromise }
 		}
-		
+
 		allow = {
 			war = no
-			all_core = { owned_by = THIS }
 			OR = {
 				mass_politics = 1
 				sphere_owner = { mass_politics = 1 }
@@ -618,141 +1140,123 @@ political_decisions = {
 					owned_by = THIS
 					any_core = { NOT = { tag = THIS } }
 				}
+				3299 = {
+					owned_by = THIS
+					any_core = { NOT = { tag = THIS } }
+				}
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = tacna_arica_compromise
+
+			# Regarding central Antofagasta
 			any_country = {
 				limit = {
-					exists = yes
-					NOT = { tag = THIS }
-					OR = { 
+					OR = {
 						tag = BOL
 						tag = PBC
 						tag = CHL
 					}
+					exists = yes
+					NOT = { tag = THIS }
 					OR = {
 						2309 = { is_core = THIS }
 						2305 = { is_core = THIS }
 					}
 				}
 				set_country_flag = treaty_of_peace_and_friendship_bolivia
-				country_event = 46610102
 			}
-			
+
+			# Regarding northern Antofagasta
 			any_country = {
 				limit = {
-					exists = yes
-					NOT = { tag = THIS }
 					OR = {
 						tag = CHL
 						tag = PEU
 						tag = PBC
 					}
+					exists = yes
+					NOT = { tag = THIS }
 					OR = {
 						2308 = { is_core = THIS }
 						2307 = { is_core = THIS }
 					}
 				}
 				set_country_flag = treaty_of_lima_1929
+			}
+
+			random_country = {
+				limit = {
+					tag = CHL
+					OR = {
+						has_country_flag = treaty_of_peace_and_friendship_bolivia
+						has_country_flag = treaty_of_lima_1929
+					}
+				}
 				country_event = 46610102
 			}
-			
+			random_country = {
+				limit = {
+					tag = PBC
+					OR = {
+						has_country_flag = treaty_of_peace_and_friendship_bolivia
+						has_country_flag = treaty_of_lima_1929
+					}
+				}
+				country_event = 46610102
+			}
+			random_country = {
+				limit = {
+					tag = PEU
+					has_country_flag = treaty_of_lima_1929
+				}
+				country_event = 46610102
+			}
+			random_country = {
+				limit = {
+					tag = BOL
+					has_country_flag = treaty_of_peace_and_friendship_bolivia
+				}
+				country_event = 46610102
+			}
+
+			# If Chile owns Tacna - A Great Power can arbitrate on whether Tacna belongs to Peru or Chile
 			random_owned = {
 				limit = {
 					owner = {
 						tag = CHL
-						owns = 2578
+						owns = 2578 # Tacna
 						neighbour = PEU
-					} 
+					}
 				}
-				random_country = { 
-					limit = { is_greater_power = yes has_country_flag = new_world_nation NOT = { tag = THIS } }
+				random_country = {
+					limit = {
+						is_greater_power = yes
+						has_country_flag = new_world_nation
+						NOT = { tag = THIS }
+					}
 					country_event = 46610103
 				}
 			}
 		}
-		
+
 		ai_will_do = { factor = 1 }
 	}
-#from new_south_america_dcs.txt
 
-# sell Corumba
-    corumba_sale = {
-        picture = pbc_argentina_border_treaty
-        alert = yes
-        potential = {
-            OR = {
-                exists = BRZ
-				exists = KPB
-            }
-	
-                exists = BOL
-                tag = BOL
-	
-            year = 1865
-            3298 = {
-                NOT = {
-                    OR = {
-                        owned_by = BRZ 
-						owned_by = KPB
-                    }
-                }
-            }
-            2407 = {
-                NOT = {
-                    OR = {
-                        owned_by = BRZ 
-						owned_by = KPB
-                    }
-                }
-            }
-            3296 = {
-                NOT = {
-                    OR = {
-                        owned_by = BRZ 
- 						owned_by = KPB
-                    }
-                }
-            }
-        }
-        allow = {
-	
-                owns = 3298
-                owns = 2407
-                owns = 3296
-	
-            war = no
-        }
-        effect = {
-            set_country_flag = corumba_sale
-			any_country = {
-				limit = {
-					exists = yes
-					OR = {
-						tag = BRZ
-						tag = KPB
-					}
-				}
-				country_event = 24602
-			}
-        }
-        ai_will_do = { factor = 1 }
-    }
-	
-#from Literacy.txt
+## Setup ##
+
 	literacy_all = {
 		potential = {
 			tag = PBC
 			always = no
 			NOT = { has_global_flag = literacy_fixed }
 		}
-		
+
 		allow = {
 			tag = PBC
 		}
-		
+
 		effect = {
 			set_global_flag = literacy_fixed
 			any_country = {
@@ -766,9 +1270,7 @@ political_decisions = {
 				}
 			}
 			any_country = {
-				limit = {
-					NOT = { is_culture_group = germanic }
-				}
+				limit = { NOT = { is_culture_group = germanic } }
 				any_pop = {
 					limit = {
 						OR = {
@@ -780,12 +1282,8 @@ political_decisions = {
 				}
 			}
 			any_country = {
-				slaves = {
-					literacy = -0.05
-				}
-				slaves = {
-					literacy = -0.05
-				}
+				slaves = { literacy = -0.05 }
+				slaves = { literacy = -0.05 }
 			}
 			any_country = {
 				any_pop = {
@@ -800,18 +1298,18 @@ political_decisions = {
 			}
 		}
 	}
-#from Setup.txt	
+
 	PEU_1836_setup = {
 		picture = constantinople
 		potential = {
 			tag = PEU
 			always = no
 		}
-		
+
 		allow = {
 			tag = PEU
 		}
-		
+
 		effect = {
 			add_country_modifier = {
 				name = america_new_world
@@ -823,12 +1321,12 @@ political_decisions = {
 					limit = { is_primary_culture = yes }
 					literacy = 0.18
 				}
-				
+
 				any_pop = {
 					limit = { is_primary_culture = no NOT = { has_pop_culture = afro_caribeno } }
 					literacy = 0.08
 				}
-				
+
 				any_pop = {
 					limit = { has_pop_culture = afro_caribeno }
 					literacy = 0.02
@@ -877,7 +1375,7 @@ political_decisions = {
 			2293 = { add_province_modifier = { name = silver_mine duration = -1 } }
 			2296 = { add_province_modifier = { name = silver_mine duration = -1 } }
 			312 = { add_province_modifier = { name = silver_mine duration = -1 } }
-			
+
 			add_country_modifier = { name = relutanct_figher duration = 3650 }
 			activate_technology = flintlock_rifles
 			activate_technology = post_napoleonic_thought
@@ -893,16 +1391,13 @@ political_decisions = {
 
 	BOL_1836_setup = {
 		potential = {
-			OR = {
-				tag = PBC
-				tag = BOL
-			}
+			tag = BOL
 			always = no
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			2310 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } } #La Paz - Bolivia
 			2313 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } } #Chuquisaca/Sucre - Bolivia

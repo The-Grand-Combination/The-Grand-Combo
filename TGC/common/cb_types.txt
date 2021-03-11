@@ -69,11 +69,13 @@ install_fascism
 install_communism
 unification_humiliate_cb
 take_from_sphere
+free_allied_cores
 liberate_country
 free_peoples
-free_allied_cores
 free_balkans
+monroe2
 monroe_doctrine
+USS_monroe
 oriental_crisis
 unification_release_puppet_cb
 release_puppet
@@ -2624,7 +2626,6 @@ monroe_doctrine = {
 			government = democracy
 			is_greater_power = yes
 		}
-		is_vassal = no
 		OR = {
 			capital_scope = { continent = europe }
 			capital_scope = { continent = africa }
@@ -7058,6 +7059,28 @@ war_reparations = {
 			value = 0.25
 		}
 	}
+
+	on_po_accepted = {
+        random_owned = {
+            limit = {
+                owner = {
+                    tag = HAI
+                    FRA = { is_greater_power = yes }
+                    NOT = { has_country_flag = agreed_to_pay_debt }
+                }
+            }
+            owner = { country_event = 45108 }
+        }
+        random_owned = {
+            limit = {
+                owner = {
+                    tag = MEX
+                    has_country_flag = pay_1st_pastry_war
+                }
+            }
+            owner = { country_event = 45108 }
+        }
+    }
 }
 
 # Dismantle factories -- no valid targets.
@@ -7667,4 +7690,210 @@ take_capital = {
 			value = 0.25
 		}
 	}
+}
+monroe2 = {
+	sprite_index = 19
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 15
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = yes
+
+	can_use = {
+		THIS = {
+			tag = USA
+			government = democracy
+			is_greater_power = yes
+			has_country_flag = shield_NW
+		}
+		OR = {
+			capital_scope = { continent = europe }
+			capital_scope = { continent = africa }
+			capital_scope = { continent = west_africa }
+			capital_scope = { continent = east_africa }
+			capital_scope = { continent = south_west_africa }
+			capital_scope = { continent = central_africa }
+			capital_scope = { continent = asia }
+			capital_scope = { continent = oceania }
+			capital_scope = { continent = australia_new_zealand }
+			capital_scope = { continent = polynesia }
+		}
+		any_owned_province = {
+			OR = {
+				continent = south_america
+				continent = north_america
+			}
+		}
+		OR = {
+			war_with = THIS
+			THIS = { NOT = { has_country_modifier = no_more_war } }
+		}
+		NOT = { has_country_flag = dismantle_declared }
+	}
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		country_event =	111979
+	}
+
+	war_name = WAR_MONROE_DOCTRINE_NAME
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.25
+		}
+	}
+}
+USS_monroe = {
+	sprite_index = 19
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	always = yes
+
+
+	badboy_factor = 0.5
+	prestige_factor = 2
+	peace_cost_factor = 0.5
+	penalty_factor = 0.5
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+	always = yes
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = {
+		THIS = {
+			tag = USS
+			is_greater_power = yes
+			has_country_flag = USS_miranda
+		}
+		OR = {
+			is_culture_group = american_cultures
+			is_culture_group = neo_european_cultures
+			capital_scope = { continent = europe }
+			capital_scope = { continent = africa }
+			capital_scope = { continent = west_africa }
+			capital_scope = { continent = east_africa }
+			capital_scope = { continent = south_west_africa }
+			capital_scope = { continent = asia }
+			capital_scope = { continent = oceania }
+			capital_scope = { continent = australia_new_zealand }
+			capital_scope = { continent = polynesia }
+		}
+		any_owned_province = {
+			OR = {
+				continent = south_america
+				continent = north_america
+			}
+			any_core = {
+				OR = {
+					primary_culture = mexican
+					primary_culture = central_american
+					primary_culture = colombian
+					primary_culture = ecuadorian
+					primary_culture = venezuelan
+					primary_culture = bolivian
+					primary_culture = chilean
+					primary_culture = peruvian
+					primary_culture = argentinian
+					primary_culture = paraguayan
+					primary_culture = uruguayan
+					primary_culture = brazilian
+					primary_culture = caribeno
+					primary_culture = afro_caribeno
+					primary_culture = afro_brazilian
+				}
+			}
+			NOT = {
+				is_core = USS
+			}
+		}
+		OR = {
+			war_with = THIS
+			THIS = { NOT = { has_country_modifier = no_more_war } }
+		}
+		OR = {
+			NOT = { has_country_flag = dismantle_declared }
+			THIS = { NOT = { has_country_flag = in_great_war } }
+			THIS = { ai = no }
+		}
+	}
+
+	# THIS - us
+	# FROM - country scope is possible match?
+	# war target country of goal is scope
+	allowed_countries = {
+		NOT = { tag = FROM }
+		any_owned_province = {
+			is_core = FROM
+			NOT = { is_core = USS }
+		}
+		FROM = {
+			OR = {
+				primary_culture = mexican
+				primary_culture = central_american
+				primary_culture = colombian
+				primary_culture = ecuadorian
+				primary_culture = venezuelan
+				primary_culture = bolivian
+				primary_culture = chilean
+				primary_culture = peruvian
+				primary_culture = argentinian
+				primary_culture = paraguayan
+				primary_culture = uruguayan
+				primary_culture = brazilian
+				primary_culture = caribeno
+				primary_culture = afro_caribeno
+				primary_culture = afro_brazilian
+			}
+		}
+	}
+
+	# THIS - us
+	# FROM - country scope is possible match?
+	# war target country of goal's state
+
+	war_name = WAR_LIBERATE_NAME
+
+	allowed_states = {
+		any_owned_province = {
+			is_core = FROM
+			OR = {
+				continent = north_america
+				continent = south_america
+			}
+		}
+	}
+	on_po_accepted = {
+		country_event =	2651	# Territorial Loss event
+	}
+	all_allowed_states = yes
+	po_transfer_provinces = yes
+	po_release_puppet = yes
 }

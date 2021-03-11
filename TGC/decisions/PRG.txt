@@ -1,99 +1,423 @@
 political_decisions = {
-#from PRGhist.txt
+
+	#Description: If Argentina is at war (with someone other than Paraguay), Paraguay can occupy the province of Misiones.
 	occupy_misiones = {
 		picture = occupy_misiones
 		potential = {
-				tag = PRG
-				government = presidential_dictatorship
-				year = 1838
-				NOT = { has_country_flag = misiones_occupied }
-				NOT = { year = 1860 }
-				NOT = { owns = 2554 }
-					}
-					
-		allow = {
+			tag = PRG
+			owns = 2341
+			year = 1838
+			NOT = { year = 1860 }
+			NOT = { owns = 2554 } # Misiones
 			war = no
 			ARC = { war = yes }
+			2554 = { owner = { vassal_of = ARC } }
+			NOT = { has_country_flag = misiones_occupied }
 		}
-		
+
+		allow = {
+		}
+
 		effect = {
 			set_country_flag = misiones_occupied
 			prestige = 2
-			2554 = { secede_province = PRG 
-			add_core = PRG
-			remove_core = CRT
+			2554 = {
+				secede_province = PRG
+				add_core = PRG
+				remove_core = CRT
+				# all_core = { limit = { exists = yes } country_event = 700010 }
 			}
-			ARC = { country_event = 700010 }
-			SBA = { country_event = 700010 }
-			CRT = { country_event = 700010 }
+			random_country = {
+				limit = {
+					tag = ARC
+					exists = yes
+					2554 = { is_core = ARC }
+				}
+				country_event = 700010
+			}
 		}
-		ai_will_do = {
-			factor = 100
-			}
+
+		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Paraguay can formally declare independence from Argentina.
 	paraguay_independence = {
 		picture = paraguay_independence
 		potential = {
-				tag = PRG
-				is_vassal = no
-				year = 1842
-				NOT = { year = 1860 }
-				NOT = { has_country_flag = paraguay_declared_independence }
-			}
+			owns = 2339 # Asuncion
+			tag = PRG
+			year = 1842
+			NOT = { year = 1860 }
+			NOT = { has_country_flag = paraguay_declared_independence }
+		}
 
 		allow = {
-			owns = 2337
-			owns = 2339
-			is_vassal = no
 			war = no
+			is_vassal = no
 			NOT = { has_country_modifier = francia_utopia }
 			NOT = { has_country_modifier = national_confusion }
 		}
-		
+
 		effect = {
-		set_country_flag = paraguay_declared_independence
+			set_country_flag = paraguay_declared_independence
 			prestige = 2
+			random_owned = {
+				limit = {
+					owner = {
+						OR = {
+							government = dominion
+							government = colonial_company
+						}
+					}
+				}
+				owner = { government = presidential_dictatorship }
+			}
 			random_country = {
 				limit = {
-					primary_culture = paraguayan
-					exists = yes
-#					is_core = PRG ## This doesn't work, not sure why. ##
 					OR = {
 						tag = ARC
 						tag = ARG
 						AND = {
-							owns = 2379
+							owns = 2379 # Cordoba de Argentina
 							NOT = { exists = ARC }
 							NOT = { exists = ARG }
 						}
 						AND = {
-							owns = 2348
+							owns = 2348 # Buenos Aires
 							NOT = { exists = ARC }
 							NOT = { exists = ARG }
 						}
 					}
+					any_owned_province = { is_core = PRG }
 				}
 				country_event = 4661010
 			}
-						
-			any_neighbor_country = { 
-				limit = { 
-				NOT = {
-					OR = {
+			any_neighbor_country = {
+				limit = {
+					NOT = {
 						tag = CRT
 						tag = ENT
 						tag = ARC
 						tag = ARG
 						tag = SBA
-						}
 					}
 				}
-			country_event =	700013
+				country_event =	700013
 			}
 		}
-		ai_will_do = {
-			factor = 100
-			}
+
+		ai_will_do = { factor = 1 }
 	}
-}	
+
+    #Description: Occupation of the empty provinces in the Chaco.
+	conquest_of_the_chaco_paraguay = {
+		picture = conquest_of_the_chaco
+		potential = {
+			tag = PRG
+			OR = {
+				PRG_2338 = { empty = yes } # Northern Chaco
+				ARG_2366 = { empty = yes } # Central Chaco
+			}
+			owns = 2340
+			owns = 2342
+		}
+
+		allow = {
+			war = no
+			OR = {
+				AND = {
+					state_n_government = 1
+					has_country_modifier = solano_lopez_industrialization
+				}
+				iron_railroad = 1
+			}
+		}
+
+		effect = {
+			prestige = 3
+			PRG_2338 = { add_core = THIS }
+			ARG_2366 = { add_core = THIS }
+			2369 = { add_core = THIS }
+
+			random_owned = {
+				limit = { 2369 = { empty = yes } }
+				2369 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2369 = { NOT = { life_rating = 30 } } }
+				2369 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2367 = { empty = yes } }
+				2367 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2367 = { NOT = { life_rating = 30 } } }
+				2367 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2366 = { empty = yes } }
+				2366 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2366 = { NOT = { life_rating = 30 } } }
+				2366 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2338 = { empty = yes } }
+				2338 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2338 = { NOT = { life_rating = 30 } } }
+				2338 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2337 = { empty = yes } }
+				2337 = {
+					secede_province = THIS
+					change_province_name = "Villa Occidental"
+					add_province_modifier = { name = recently_built_city duration = 180 }
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2337 = { NOT = { life_rating = 30 } } }
+				2337 = { life_rating = 20 }
+			}
+			random_owned = {
+				limit = { 2343 = { empty = yes } }
+				2343 = {
+					secede_province = THIS
+					any_pop = {
+						limit = { NOT = { is_culture_group = latin_american_cultures } }
+						literacy = -0.99
+					}
+				}
+			}
+			random_owned = {
+				limit = { 2343 = { NOT = { life_rating = 30 } } }
+				2343 = { life_rating = 20 }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If Paraguay loses their claims on the Chaco by losing the Paraguayan War, they can reclaim it
+	reclaim_the_chaco = {
+		picture = conquest_of_the_chaco
+		potential = {
+			tag = PRG
+			owns = 2340
+			NOT = { PRG_2338 = { empty = yes } } # Northern Chaco
+			NOT = { ARG_2366 = { empty = yes } } # Central Chaco
+			PRG_2338 = { NOT = { is_core = THIS } }
+			ARG_2366 = { NOT = { is_core = THIS } }
+		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			is_disarmed = no
+			prestige = 25
+			military_score = 25
+		}
+
+		effect = {
+			badboy = 6
+			PRG_2338 = { add_core = THIS }
+			ARG_2366 = { add_core = THIS }
+			any_neighbor_country = { relation = { who = THIS value = -100} }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Flavor ##
+
+	#Description: Get Freedom of Womb reform.
+	paraguayan_law_of_the_free_womb = { #original VIP event by PMLF
+		picture = enslave_the_serfs_image
+		potential = {
+			tag = PRG
+    		exists = yes
+			OR = {
+				has_country_flag = carlos_lopez_elected
+				has_country_flag = carlos_lopez_dictator
+			}
+			slavery = yes_slavery
+			NOT = { has_country_flag = paraguayan_law_of_the_free_womb }
+		}
+
+		allow = {
+			OR = {
+				year = 1842
+				state_n_government = 1
+			}
+		}
+
+		effect = {
+			prestige = 5
+			political_reform = freedom_of_womb
+			slaves = {
+				militancy = -1
+				dominant_issue = { value = no_slavery factor = 0.35 }
+			}
+			any_pop = { dominant_issue = { value = no_slavery factor = 0.15 } }
+			upper_house = { ideology = conservative value = 0.15 }
+
+			set_country_flag = paraguayan_law_of_the_free_womb
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Exploit the Guaranis.
+	start_the_campaign_against_the_guaranis = { #original VIP event by PMLF
+		picture = occupy_misiones
+		potential = {
+			tag = PRG
+    		exists = yes
+			OR = {
+				has_country_flag = carlos_lopez_elected
+				has_country_flag = carlos_lopez_dictator
+			}
+			NOT = { accepted_culture = guarani }
+			any_owned_province = { has_pop_culture = guarani }
+			NOT = { has_country_flag = start_the_campaign_against_the_guaranis }
+		}
+
+		allow = {
+			OR = {
+				economic_policy = state_capitalism
+				economic_policy = planned_economy
+			}
+		}
+
+		effect = {
+			treasury = 200
+			any_pop = {
+				limit = { culture = guarani }
+				consciousness = 1
+				militancy = 2
+			}
+			any_owned = {
+				limit = {
+					culture = guarani
+					OR = {
+						trade_goods = timber
+						trade_goods = tropical_wood
+					}
+				}
+				add_province_modifier = {
+					name = colonial_exploitation
+					duration = 3650
+				}
+			}
+			set_country_flag = start_the_campaign_against_the_guaranis
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				average_militancy = 1
+			}
+		}
+	}
+
+	#Description: Get research points.
+	student_exchange_and_importation_of_technicians = { #original VIP event by Pimparel
+		picture = dreams_of_empire
+		potential = {
+			tag = PRG
+    		exists = yes
+			OR = {
+				has_country_flag = carlos_lopez_elected
+				has_country_flag = carlos_lopez_dictator
+			}
+			NOT = { has_country_flag = student_exchange_and_importation_of_technicians }
+		}
+
+		allow = {
+			prestige = 5
+			money = 1600
+		}
+
+		effect = {
+			any_pop = {
+				random = {
+					chance = 25
+					consciousness = 1
+				}
+			}
+			research_points = 200
+			treasury = -1550
+			set_country_flag = student_exchange_and_importation_of_technicians
+		}
+	}
+
+	#Description: Get prestige, small arms and relations with France.
+	send_solano_lopez_to_europe = { #original VIP event by PMLF
+		picture = solano_lopez
+		potential = {
+			tag = PRG
+    		exists = yes
+			OR = {
+				has_country_flag = carlos_lopez_elected
+				has_country_flag = carlos_lopez_dictator
+			}
+			government = presidential_dictatorship
+			NOT = { has_country_flag = send_solano_lopez_to_europe }
+		}
+
+		allow = {
+			money = 1100
+		}
+
+		effect = {
+			prestige = 3
+			small_arms = 25
+			random_country = {
+				limit = {
+					OR = {
+						tag = FRA
+						tag = BOR
+					}
+					exists = yes
+				}
+				relation = { who = THIS value = 25 }
+			}
+			treasury = -1000
+
+			set_country_flag = send_solano_lopez_to_europe
+		}
+	}
+}

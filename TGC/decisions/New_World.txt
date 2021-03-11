@@ -1,5 +1,6 @@
 political_decisions = {
-#from SouthAmerica.txt
+
+	#Description: New world independent non-GPs can invest in a one-time immigration bonus.
 	new_life_in_the_new_world = {
 		picture = new_life
 		potential = {
@@ -13,20 +14,21 @@ political_decisions = {
 				primary_culture = french_canadian
 			}
 			OR = {
-				continent = north_america
-				continent = south_america
-				primary_culture = australian
+				capital_scope = { continent = north_america }
+				capital_scope = { continent = south_america }
+				capital_scope = { continent = australia_new_zealand }
 			}
+			NOT = { tag = KPB }
 			is_greater_power = no
 			NOT = { has_country_flag = come_to_the_new_world }
 			number_of_states = 2
 			num_of_ports = 1
 		}
-		
+
 		allow = {
 			war = no
+			money = 60000
 			is_vassal = no
-			is_greater_power = no
 			state_n_government = 1
 			slavery = no_slavery
 			public_meetings = yes_meeting
@@ -38,34 +40,24 @@ political_decisions = {
 				government = democracy
 				government = hms_government
 			}
-			money = 60000
 		}
-		
+
 		effect = {
 			set_country_flag = come_to_the_new_world
 			treasury = -50000
-			add_country_modifier = { name = small_immigration_boom duration = 730 }
+			add_country_modifier = { name = small_immigration_boom_country duration = 730 }
 		}
-		
-		ai_will_do = {
-			factor = 0
-			modifier = {
-				factor = 100
-				OR  = { tag = BRZ tag = CHL }
-			}
-		}
+
+		ai_will_do = { factor = 1 }
 	}
 
-#from Segregation.txt
-		native_integration_status_on = {
+## Native Integration Decisions ##
+
+	#Description: Open the Native integration decisions.
+	native_integration_status_on = {
 		picture = native_integration_status
 		alert = no
 		potential = {
-			is_substate = no
-			NOT = { has_country_flag = native_integration_status_on }
-			NOT = { has_country_flag = native_protection_act_enacted }
-			NOT = { has_country_flag = native_assimilation_enacted }
-			NOT = { has_country_modifier = native_removal_act_policy }
 			OR = {
 				capital_scope = { continent = north_america }
 				capital_scope = { continent = south_america }
@@ -88,49 +80,58 @@ political_decisions = {
 					continent = australia_new_zealand
 				}
 				any_pop = {
-					OR = { is_culture_group = oceanic is_culture_group = native_american }
+					OR = {
+						is_culture_group = oceanic
+						is_culture_group = native_american
+					}
 				}
 			}
+			is_substate = no
+			NOT = { has_country_flag = native_integration_status_on }
+			NOT = { has_country_flag = native_protection_act_enacted }
+			NOT = { has_country_flag = native_assimilation_enacted }
+			NOT = { has_country_modifier = native_removal_act_policy }
 		}
-	
+
 		allow = {
-			
 		}
-		
+
 		effect = {
 			set_country_flag = native_integration_status_on
 		}
-		
+
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Close the native integration decisions.
 	native_integration_status_off = {
 		picture = native_integration_status
 		alert = no
 		potential = {
 			has_country_flag = native_integration_status_on
 		}
-	
+
 		allow = {
-			
 		}
-		
+
 		effect = {
 			clr_country_flag = native_integration_status_on
 		}
-		
+
 		ai_will_do = { factor = 0 }
 	}
-	
+
+	#Description: Accept the native population as equals
 	native_protection_act = {
 		picture = native_protection_act
 		potential = {
 			has_country_flag = native_integration_status_on
 			NOT = { has_country_flag = native_protection_act_enacted }
 		}
-	
+
 		allow = {
 			war = no
+			money = 10000
 			NOT = { ruling_party_ideology = reactionary }
 			NOT = { ruling_party_ideology = fascist }
 			NOT = { citizens_rights = primary_culture_only }
@@ -153,7 +154,6 @@ political_decisions = {
 					biologism = 1
 				}
 			}
-			money = 10000
 			OR = {
 				government = proletarian_dictatorship
 				upper_house = { ideology = socialist value = 0.3 }
@@ -164,133 +164,134 @@ political_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			treasury = -10000
 			badboy = -5
 			set_country_flag = native_protection_act_enacted
 			clr_country_flag = native_integration_status_on
-			random_owned = {
-				limit = { OR = { continent = south_america continent = north_america } }
-				owner = {
-					any_pop = { limit = { NOT = { is_culture_group = native_american } }
-						scaled_militancy = { factor = 3 ideology = reactionary }
-						scaled_consciousness = { factor = 3 ideology = conservative }
-					}
-					
-					any_pop = { limit = { is_culture_group = native_american }
-						consciousness = 4
-						militancy = -2
-						dominant_issue = { factor = 0.5 value = full_citizenship }
-					}
-				}
-			}
-			
-			random_owned = {
-				limit = { OR = { continent = australia_new_zealand continent = polynesia } }
-				owner = {
-					any_pop = { limit = { NOT = { is_culture_group = oceanic } }
-						scaled_militancy = { factor = 3 ideology = reactionary }
-						scaled_consciousness = { factor = 3 ideology = conservative }
-					}
-					
-					any_pop = { limit = { is_culture_group = oceanic }
-						consciousness = 4
-						militancy = -2
-						dominant_issue = { factor = 0.5 value = full_citizenship }
+
+			# Non-natives go conservative, natives lose militancy, gain consciousness and favor full citizenship
+				random_owned = {
+					limit = { OR = { continent = south_america continent = north_america } }
+					owner = {
+						any_pop = { limit = { NOT = { is_culture_group = native_american } }
+							scaled_militancy = { factor = 3 ideology = reactionary }
+							scaled_consciousness = { factor = 3 ideology = conservative }
+						}
+						any_pop = { limit = { is_culture_group = native_american }
+							consciousness = 4
+							militancy = -2
+							dominant_issue = { factor = 0.5 value = full_citizenship }
+						}
 					}
 				}
-			}
-				
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = mayan } NOT = { owner = { accepted_culture = mayan } } }
-				owner = { add_accepted_culture = mayan }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = nahua } NOT = { owner = { accepted_culture = nahua } } }
-				owner = { add_accepted_culture = nahua } 
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = quechua } NOT = { owner = { accepted_culture = quechua } } }
-				owner = { add_accepted_culture = quechua } 
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = guarani } NOT = { owner = { accepted_culture = guarani } } }
-				owner = { add_accepted_culture = guarani } 
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = aimara } NOT = { owner = { accepted_culture = aimara } } }
-				owner = { add_accepted_culture = aimara }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = amazonian } NOT = { owner = { accepted_culture = amazonian } } }
-				owner = { add_accepted_culture = amazonian }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = patagonian } NOT = { owner = { accepted_culture = patagonian } } }
-				owner = { add_accepted_culture = patagonian }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = tupinamba } NOT = { owner = { accepted_culture = tupinamba } } }
-				owner = { add_accepted_culture = tupinamba }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = metis } NOT = { owner = { accepted_culture = metis } } }
-				owner = { add_accepted_culture = metis }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = dakota } NOT = { owner = { accepted_culture = dakota } } }
-				owner = { add_accepted_culture = dakota }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = cherokee } NOT = { owner = { accepted_culture = cherokee } } }
-				owner = { add_accepted_culture = cherokee }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = pueblo } NOT = { owner = { accepted_culture = pueblo } } }
-				owner = { add_accepted_culture = pueblo }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = inuit } NOT = { owner = { accepted_culture = inuit } } }
-				owner = { add_accepted_culture = inuit }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = cree } NOT = { owner = { accepted_culture = cree } } }
-				owner = { add_accepted_culture = cree }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = navajo } NOT = { owner = { accepted_culture = navajo } } }
-				owner = { add_accepted_culture = navajo }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = native_american_minor } NOT = { owner = { accepted_culture = native_american_minor } } }
-				owner = { add_accepted_culture = native_american_minor }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = aborigine } NOT = { owner = { accepted_culture = aborigine } } }
-				owner = { add_accepted_culture = aborigine }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = maori } NOT = { owner = { accepted_culture = maori } } }
-				owner = { add_accepted_culture = maori }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = polynesian } NOT = { owner = { accepted_culture = polynesian } } }
-				owner = { add_accepted_culture = polynesian }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = hawaiian } NOT = { owner = { accepted_culture = hawaiian } } }
-				owner = { add_accepted_culture = hawaiian }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = melanesian } NOT = { owner = { accepted_culture = melanesian } } }
-				owner = { add_accepted_culture = melanesian }
-			}
-			random_owned = {
-				limit = { is_core = THIS any_pop = { has_pop_culture = micronesian } NOT = { owner = { accepted_culture = micronesian } } }
-				owner = { add_accepted_culture = micronesian }
-			}
+				random_owned = {
+					limit = { OR = { continent = australia_new_zealand continent = polynesia } }
+					owner = {
+						any_pop = { limit = { NOT = { is_culture_group = oceanic } }
+							scaled_militancy = { factor = 3 ideology = reactionary }
+							scaled_consciousness = { factor = 3 ideology = conservative }
+						}
+						any_pop = { limit = { is_culture_group = oceanic }
+							consciousness = 4
+							militancy = -2
+							dominant_issue = { factor = 0.5 value = full_citizenship }
+						}
+					}
+				}
+
+			## Accept any native culture that you don't already accept ##
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = mayan } NOT = { owner = { accepted_culture = mayan } } }
+					owner = { add_accepted_culture = mayan }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = nahua } NOT = { owner = { accepted_culture = nahua } } }
+					owner = { add_accepted_culture = nahua }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = quechua } NOT = { owner = { accepted_culture = quechua } } }
+					owner = { add_accepted_culture = quechua }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = guarani } NOT = { owner = { accepted_culture = guarani } } }
+					owner = { add_accepted_culture = guarani }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = aimara } NOT = { owner = { accepted_culture = aimara } } }
+					owner = { add_accepted_culture = aimara }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = amazonian } NOT = { owner = { accepted_culture = amazonian } } }
+					owner = { add_accepted_culture = amazonian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = patagonian } NOT = { owner = { accepted_culture = patagonian } } }
+					owner = { add_accepted_culture = patagonian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = tupinamba } NOT = { owner = { accepted_culture = tupinamba } } }
+					owner = { add_accepted_culture = tupinamba }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = metis } NOT = { owner = { accepted_culture = metis } } }
+					owner = { add_accepted_culture = metis }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = dakota } NOT = { owner = { accepted_culture = dakota } } }
+					owner = { add_accepted_culture = dakota }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = cherokee } NOT = { owner = { accepted_culture = cherokee } } }
+					owner = { add_accepted_culture = cherokee }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = pueblo } NOT = { owner = { accepted_culture = pueblo } } }
+					owner = { add_accepted_culture = pueblo }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = inuit } NOT = { owner = { accepted_culture = inuit } } }
+					owner = { add_accepted_culture = inuit }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = cree } NOT = { owner = { accepted_culture = cree } } }
+					owner = { add_accepted_culture = cree }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = navajo } NOT = { owner = { accepted_culture = navajo } } }
+					owner = { add_accepted_culture = navajo }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = native_american_minor } NOT = { owner = { accepted_culture = native_american_minor } } }
+					owner = { add_accepted_culture = native_american_minor }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = aborigine } NOT = { owner = { accepted_culture = aborigine } } }
+					owner = { add_accepted_culture = aborigine }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = maori } NOT = { owner = { accepted_culture = maori } } }
+					owner = { add_accepted_culture = maori }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = polynesian } NOT = { owner = { accepted_culture = polynesian } } }
+					owner = { add_accepted_culture = polynesian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = hawaiian } NOT = { owner = { accepted_culture = hawaiian } } }
+					owner = { add_accepted_culture = hawaiian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = melanesian } NOT = { owner = { accepted_culture = melanesian } } }
+					owner = { add_accepted_culture = melanesian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = micronesian } NOT = { owner = { accepted_culture = micronesian } } }
+					owner = { add_accepted_culture = micronesian }
+				}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -303,20 +304,21 @@ political_decisions = {
 			}
 		}
 	}
-		
+
+	#Description: Attempt to assimilate the native population
 	native_assimilation_act = {
 		picture = native_assimilation_act
 		potential = {
 			has_country_flag = native_integration_status_on
 			NOT = { has_country_flag = native_assimilation_enacted }
 		}
-	
+
 		allow = {
 			war = no
+			money = 100000
 			NOT = { citizens_rights = all_voting_pops }
 			citizenship_policy = limited_citizenship
 			experimental_psychology = 1
-			money = 100000
 			all_core = {
 				owned_by = THIS
 				is_colonial = no
@@ -334,7 +336,7 @@ political_decisions = {
 				school_reforms = acceptable_schools
 				school_reforms = good_schools
 			}
-			OR = {
+			OR = { # Majority culture is primary culture
 				AND	= {
 					pop_majority_culture = yankee
 					primary_culture = yankee
@@ -359,24 +361,12 @@ political_decisions = {
 					pop_majority_culture = mexican
 					primary_culture = mexican
 				}
-				AND	= {
-					pop_majority_culture = argentinian
+				AND	= { # Old Platinean
 					OR = {
-						primary_culture = argentinian
-						primary_culture = paraguayan
-						primary_culture = uruguayan
+						pop_majority_culture = argentinian
+						pop_majority_culture = paraguayan
+						pop_majority_culture = uruguayan
 					}
-				}
-				AND	= {
-					pop_majority_culture = paraguayan
-					OR = {
-						primary_culture = argentinian
-						primary_culture = paraguayan
-						primary_culture = uruguayan
-					}
-				}
-				AND	= {
-					pop_majority_culture = uruguayan
 					OR = {
 						primary_culture = argentinian
 						primary_culture = paraguayan
@@ -387,48 +377,24 @@ political_decisions = {
 					pop_majority_culture = central_american
 					primary_culture = central_american
 				}
-				AND	= {
-					pop_majority_culture = colombian
+				AND	= { # Old North Andean
+					OR = {
+						pop_majority_culture = colombian
+						pop_majority_culture = ecuadorian
+						pop_majority_culture = venezuelan
+					}
 					OR = {
 						primary_culture = colombian
 						primary_culture = ecuadorian
 						primary_culture = venezuelan
-					}					
-				}
-				AND	= {
-					pop_majority_culture = ecuadorian
-					OR = {
-						primary_culture = colombian
-						primary_culture = ecuadorian
-						primary_culture = venezuelan
-					}					
-				}
-				AND	= {
-					pop_majority_culture = venezuelan
-					OR = {
-						primary_culture = colombian
-						primary_culture = ecuadorian
-						primary_culture = venezuelan
-					}					
-				}
-				AND	= {
-					pop_majority_culture = bolivian
-					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
 					}
 				}
-				AND	= {
-					pop_majority_culture = chilean
+				AND	= { # Old South Andean
 					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
+						pop_majority_culture = bolivian
+						pop_majority_culture = chilean
+						pop_majority_culture = peruvian
 					}
-				}
-				AND	= {
-					pop_majority_culture = peruvian
 					OR = {
 						primary_culture = bolivian
 						primary_culture = chilean
@@ -453,7 +419,7 @@ political_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			treasury = -100000
 			badboy = 2
@@ -470,28 +436,118 @@ political_decisions = {
 				consciousness = 9
 				militancy = 3
 			}
+
+			## Remove from accepted cultures ##
+				random_owned = {
+					limit = { owner = { accepted_culture = mayan } }
+					owner = { remove_accepted_culture = mayan }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = nahua } }
+					owner = { remove_accepted_culture = nahua }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = quechua } }
+					owner = { remove_accepted_culture = quechua }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = guarani } }
+					owner = { remove_accepted_culture = guarani }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = aimara } }
+					owner = { remove_accepted_culture = aimara }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = amazonian } }
+					owner = { remove_accepted_culture = amazonian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = patagonian } }
+					owner = { remove_accepted_culture = patagonian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = tupinamba } }
+					owner = { remove_accepted_culture = tupinamba }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = metis } }
+					owner = { remove_accepted_culture = metis }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = dakota } }
+					owner = { remove_accepted_culture = dakota }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = cherokee } }
+					owner = { remove_accepted_culture = cherokee }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = pueblo } }
+					owner = { remove_accepted_culture = pueblo }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = inuit } }
+					owner = { remove_accepted_culture = inuit }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = cree } }
+					owner = { remove_accepted_culture = cree }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = navajo } }
+					owner = { remove_accepted_culture = navajo }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = native_american_minor } }
+					owner = { remove_accepted_culture = native_american_minor }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = aborigine } }
+					owner = { remove_accepted_culture = aborigine }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = maori } }
+					owner = { remove_accepted_culture = maori }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = polynesian } }
+					owner = { remove_accepted_culture = polynesian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = hawaiian } }
+					owner = { remove_accepted_culture = hawaiian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = melanesian } }
+					owner = { remove_accepted_culture = melanesian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = micronesian } }
+					owner = { remove_accepted_culture = micronesian }
+				}
 		}
-		
+
 		ai_will_do = { factor = 1 }
-		
 	}
-	
+
+	#Description: Aggressively remove the native population
 	native_removal_act = {
 		picture = native_removal_act
 		potential = {
 			has_country_flag = native_integration_status_on
 			NOT = { has_country_modifier = native_removal_act_policy }
 		}
-	
+
 		allow = {
 			war = no
+			money = 50000
 			citizens_rights = primary_culture_only
 			NOT = { government = democracy }
 			NOT = { government = hms_government }
 			war_policy = jingoism
 			citizenship_policy = residency
 			experimental_psychology = 1
-			money = 50000
 			average_militancy = 5
 			all_core = {
 				owned_by = THIS
@@ -506,7 +562,7 @@ political_decisions = {
 				ruling_party_ideology = reactionary
 				ruling_party_ideology = fascist
 			}
-			OR = {
+			OR = { # Majority culture is primary culture
 				AND	= {
 					pop_majority_culture = yankee
 					primary_culture = yankee
@@ -531,24 +587,12 @@ political_decisions = {
 					pop_majority_culture = mexican
 					primary_culture = mexican
 				}
-				AND	= {
-					pop_majority_culture = argentinian
+				AND	= { # Old Platinean
 					OR = {
-						primary_culture = argentinian
-						primary_culture = paraguayan
-						primary_culture = uruguayan
+						pop_majority_culture = argentinian
+						pop_majority_culture = paraguayan
+						pop_majority_culture = uruguayan
 					}
-				}
-				AND	= {
-					pop_majority_culture = paraguayan
-					OR = {
-						primary_culture = argentinian
-						primary_culture = paraguayan
-						primary_culture = uruguayan
-					}
-				}
-				AND	= {
-					pop_majority_culture = uruguayan
 					OR = {
 						primary_culture = argentinian
 						primary_culture = paraguayan
@@ -559,48 +603,24 @@ political_decisions = {
 					pop_majority_culture = central_american
 					primary_culture = central_american
 				}
-				AND	= {
-					pop_majority_culture = colombian
+				AND	= { # Old North Andean
+					OR = {
+						pop_majority_culture = colombian
+						pop_majority_culture = ecuadorian
+						pop_majority_culture = venezuelan
+					}
 					OR = {
 						primary_culture = colombian
 						primary_culture = ecuadorian
 						primary_culture = venezuelan
-					}					
-				}
-				AND	= {
-					pop_majority_culture = ecuadorian
-					OR = {
-						primary_culture = colombian
-						primary_culture = ecuadorian
-						primary_culture = venezuelan
-					}					
-				}
-				AND	= {
-					pop_majority_culture = venezuelan
-					OR = {
-						primary_culture = colombian
-						primary_culture = ecuadorian
-						primary_culture = venezuelan
-					}					
-				}
-				AND	= {
-					pop_majority_culture = bolivian
-					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
 					}
 				}
-				AND	= {
-					pop_majority_culture = chilean
+				AND	= { # Old South Andean
 					OR = {
-						primary_culture = bolivian
-						primary_culture = chilean
-						primary_culture = peruvian
+						pop_majority_culture = bolivian
+						pop_majority_culture = chilean
+						pop_majority_culture = peruvian
 					}
-				}
-				AND	= {
-					pop_majority_culture = peruvian
 					OR = {
 						primary_culture = bolivian
 						primary_culture = chilean
@@ -625,7 +645,7 @@ political_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			treasury = -50000
 			badboy = 6
@@ -656,10 +676,286 @@ political_decisions = {
 					20 = { reduce_pop = 0.2 }
 				}
 			}
+
+			## Remove from accepted cultures ##
+				random_owned = {
+					limit = { owner = { accepted_culture = mayan } }
+					owner = { remove_accepted_culture = mayan }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = nahua } }
+					owner = { remove_accepted_culture = nahua }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = quechua } }
+					owner = { remove_accepted_culture = quechua }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = guarani } }
+					owner = { remove_accepted_culture = guarani }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = aimara } }
+					owner = { remove_accepted_culture = aimara }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = amazonian } }
+					owner = { remove_accepted_culture = amazonian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = patagonian } }
+					owner = { remove_accepted_culture = patagonian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = tupinamba } }
+					owner = { remove_accepted_culture = tupinamba }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = metis } }
+					owner = { remove_accepted_culture = metis }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = dakota } }
+					owner = { remove_accepted_culture = dakota }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = cherokee } }
+					owner = { remove_accepted_culture = cherokee }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = pueblo } }
+					owner = { remove_accepted_culture = pueblo }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = inuit } }
+					owner = { remove_accepted_culture = inuit }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = cree } }
+					owner = { remove_accepted_culture = cree }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = navajo } }
+					owner = { remove_accepted_culture = navajo }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = native_american_minor } }
+					owner = { remove_accepted_culture = native_american_minor }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = aborigine } }
+					owner = { remove_accepted_culture = aborigine }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = maori } }
+					owner = { remove_accepted_culture = maori }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = polynesian } }
+					owner = { remove_accepted_culture = polynesian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = hawaiian } }
+					owner = { remove_accepted_culture = hawaiian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = melanesian } }
+					owner = { remove_accepted_culture = melanesian }
+				}
+				random_owned = {
+					limit = { owner = { accepted_culture = micronesian } }
+					owner = { remove_accepted_culture = micronesian }
+				}
 		}
-		
+
 		ai_will_do = { factor = 1 }
-		
+	}
+
+## Back to Africa Act ##
+
+	#Description: Establish the Back to Africa act, enabling events that will move African Diaspora pops to Liberia.
+	back_to_africa_act = {
+		picture = going_to_liberia
+		potential = {
+			has_country_flag = new_world_nation
+			exists = yes
+			NOT = { is_culture_group = african_diaspora_cultures }
+			any_owned_province = {
+				is_core = THIS
+				NOT = { continent = africa }
+				any_pop = { is_culture_group = african_diaspora_cultures }
+			}
+			NOT = {
+				has_country_modifier = forceful_back_to_africa
+				has_country_modifier = the_slavery_debate
+			}
+			OR = {
+				government = absolute_monarchy
+				government = bourgeois_dictatorship
+				government = fascist_dictatorship
+				government = presidential_dictatorship
+			}
+			LIB = {
+				OR = {
+					AND = { # If Liberia is independent, countries other than the USA can do this as well.
+						exists = yes
+						is_vassal = no
+						relation = { who = THIS value = 10 }
+					}
+					any_core = {
+						OR = {
+							is_colonial = yes
+							NOT = { owned_by = THIS }
+						}
+						OR = {
+							owned_by = THIS
+							owner = { in_sphere = THIS }
+							owner = { vassal_of = THIS }
+						}
+					}
+				}
+			}
+		}
+
+		allow = {
+			war = no
+			money = 250000
+			phenomenalism = 1
+			NOT = { ruling_party_ideology = liberal }
+			NOT = { ruling_party_ideology = communist }
+			NOT = { citizenship_policy = full_citizenship }
+			NOT = { citizens_rights = all_voting_pops }
+			NOT = { has_country_modifier = law_changed_by_force }
+		}
+
+		effect = {
+			treasury = -250000
+
+			random_owned = {
+				limit = { is_core = LIB NOT = { has_province_modifier = plantation } }
+				owner = {
+					any_owned = {
+						limit = { is_core = LIB }
+						add_province_modifier = { name = plantation duration = -1 }
+					}
+				}
+			}
+
+			add_country_modifier = { name = forceful_back_to_africa duration = -1 }
+
+			any_pop = {
+				limit = { is_culture_group = african_diaspora_cultures }
+				consciousness = 7
+				militancy = 9
+			}
+			any_pop = {
+				limit = { NOT = { is_culture_group = african_diaspora_cultures } }
+				scaled_militancy = {
+					factor = 7
+					ideology = liberal
+				}
+			}
+			random_owned = {
+				limit = { owner = { is_ideology_enabled = communist } }
+				owner = {
+					any_pop = {
+						limit = { NOT = { is_culture_group = african_diaspora_cultures } }
+						scaled_militancy = {
+							factor = 7
+							ideology = communist
+						}
+					}
+				}
+			}
+			random_owned = {
+				limit = { owner = { is_ideology_enabled = socialist } }
+				owner = {
+					any_pop = {
+						limit = { NOT = { is_culture_group = african_diaspora_cultures } }
+						scaled_militancy = {
+							factor = 7
+							ideology = socialist
+						}
+					}
+				}
+			}
+			random_owned = {
+				limit = { has_pop_type = slaves }
+				owner = {
+					any_pop = {
+						limit = { NOT = { is_culture_group = african_diaspora_cultures } }
+						scaled_militancy = {
+							factor = 7
+							issue = no_slavery
+						}
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { money = 1000000 }
+			}
+			modifier = {
+				factor = 0
+				NOT = { war_policy = jingoism }
+			}
+			modifier = {
+				factor = 0
+				NOT = { citizenship_policy = residency }
+			}
+			modifier = {
+				factor = 0
+				slavery = yes_slavery
+			}
+		}
+	}
+
+	#Description: The Back to Africa Act can be revoked at any time, but doing so in spite of the Law Changed cooldown will cause militancy for conservative non-African Diaspora pops.
+	revoke_back_to_africa_act = {
+		picture = going_to_liberia
+		potential = {
+			has_country_modifier = forceful_back_to_africa
+		}
+
+		allow = {
+		}
+
+		effect = {
+			random_owned = {
+				limit = { owner = { has_country_modifier = law_changed_by_force } }
+				# This is a situation where Victoria 2 could really use a tyranny stat like in Imperator Rome
+				any_pop = {
+					limit = { NOT = { is_culture_group = african_diaspora_cultures } }
+					scaled_militancy = {
+						ideology = conservative
+						factor = 3
+					}
+					scaled_militancy = {
+						ideology = reactionary
+						factor = 3
+					}
+				}
+			}
+			remove_country_modifier = forceful_back_to_africa
+			add_country_modifier = { name = law_changed_by_force duration = 1825 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { badboy = 0.4 }
+			}
+			modifier = {
+				factor = 0
+				vote_franschise = none_voting
+				political_parties = underground_parties
+			}
+		}
 	}
 }
-	
+
