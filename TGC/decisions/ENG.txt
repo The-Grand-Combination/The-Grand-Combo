@@ -3320,21 +3320,17 @@ political_decisions = {
 		picture = "pax_britannica"
 		potential = {
 			tag = ENG
-			year = 1836
-			OR = {
-				has_country_flag = show_options_singleplayer
-				has_country_flag = show_options_multiplayer_host
-				has_country_flag = show_options_multiplayer_standard
-			}
-			NOT = {
-				has_global_flag = uk_isolation_disabled
-			}
 			NOT = {
 				has_country_flag = pax_britannica
 			}
 		}
 		allow = {
-			rank = 1
+			NOT = {
+				AND = {
+					any_greater_power = {	military_score = THIS NOT = { tag = THIS } }
+					any_greater_power = { industrial_score = THIS NOT = { tag = THIS } }
+				}
+			}
 		}
 		effect = {
 			add_country_modifier = {
@@ -3486,18 +3482,21 @@ political_decisions = {
 		picture = "pax_britannica"
 		potential = {
 			tag = ENG
+			NOT = { has_global_flag = uk_isolation_disabled	}
 			NOT = { exists = IRE }
 			ai = yes
 			has_country_modifier = pax_britannica
 		}
 		allow = {
-			tag = ENG
-			any_greater_power = { alliance_with = ENG }
-			NOT = { exists = IRE }
-			has_country_modifier = pax_britannica
+			any_greater_power = { alliance_with = THIS }
 			NOT = { exists = GER }
 			NOT = { exists = GCF }
-			rank = 1
+			NOT = {
+				AND = {
+					any_greater_power = {	military_score = THIS NOT = { tag = THIS } }
+					any_greater_power = { industrial_score = THIS NOT = { tag = THIS } }
+				}
+			}
 			NOT = { year = 1870 }
 			NOT = {
 				AND = {
@@ -4583,20 +4582,45 @@ political_decisions = {
 					who = NET
 					value = 60
 				}
+				NET = {
+					OR = {
+						NOT = {	has_country_modifier = willem_i_absolutism }
+						has_country_flag = PRU_willem_i_alliance
+						has_country_flag = FRA_willem_i_alliance
+					}
+				}
 			}
 		}
 
 		effect = {
 			set_country_flag = mediated_belgian_independence
 			prestige = 10
-			NET = { country_event = 36709 }
+			random_country = {
+				limit = {
+					tag = NET
+					has_country_modifier = willem_i_absolutism
+				 }
+				country_event = 36709
+			}
+			random_country = {
+				limit = {
+					tag = NET
+					NOT = { has_country_modifier = willem_i_absolutism }
+				}
+				country_event = 36710
+			}
 		}
 
 		ai_will_do = {
 			factor = 1
 			modifier = {
 				factor = 0
-				NOT = { year = 1839 }
+				AND = {
+					NOT = { year = 1839 }
+					NET = { has_country_flag = willem_i }
+					NOT = { has_global_flag = PRU_willem_i_alliance }
+					NOT = { has_global_flag = FRA_willem_i_alliance }
+				}
 			}
 		}
 	}
