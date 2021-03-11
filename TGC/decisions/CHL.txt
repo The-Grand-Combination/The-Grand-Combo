@@ -1,5 +1,8 @@
 political_decisions = {
-#from Chile.txt
+
+## Occupation of empty provinces ##
+
+	#Description: Occupation of the provinces in southern Chile which are empty at game start.
 	occupation_of_araucania = {
 		picture = conquest_of_the_desert
 		potential = {
@@ -9,16 +12,19 @@ political_decisions = {
 					tag = PBC
 					CHL = { exists = no }
 				}
+				AND = {
+					tag = USS
+					CHL = { exists = no }
+				}
 			}
 			OR = {
-				2332 = { empty = yes }
-				2333 = { empty = yes }
-				2334 = { empty = yes }
-				2335 = { empty = yes }
+				2328 = { empty = yes } # Valdivia
+				2334 = { empty = yes } # Araucania
 			}
-			owns = 2328
+			owns = 2332 # Osorno
 			NOT = { has_country_flag = occupation_of_araucania }
 		}
+
 		allow = {
 			OR = {
 				is_greater_power = yes
@@ -26,146 +32,207 @@ political_decisions = {
 				year = 1861
 			}
 		}
+
 		effect = {
 			set_country_flag = occupation_of_araucania
 			prestige = 5
 			random_owned = {
-				limit = {
-					2335 = { empty = yes }
-					2333 = { empty = no }
-					2334 = { empty = no }
-					2332 = { empty = no }
-				}
-				2335 = { secede_province = THIS }
-			}
-			random_owned = {
-				limit = {
-					2332 = { empty = yes }
-					2333 = { empty = yes }
-					2334 = { empty = no }
-				}
-				2332 = { secede_province = THIS }
-			}
-			random_owned = {
-				limit = {
-					2333 = { empty = yes }
-					2334 = { empty = no }
-				}
-				2333 = { secede_province = THIS }
-			}
-			random_owned = {
-				limit = {
-					2334 = { empty = yes }
-				}
+				limit = { 2334 = { empty = yes } }
 				2334 = { secede_province = THIS }
 			}
+			random_owned = {
+				limit = { 2328 = { empty = yes } }
+				2328 = { secede_province = THIS }
+			}
 		}
-		ai_will_do = {
-			factor = 1
-		}
+
+		ai_will_do = { factor = 1 }
 	}
-	
+
+	#Description: Chile can occupy the whole of Tierra del Fuego
+	# split with Argentina after War of the Pacific
+	# split gives Chile Magallanes and Argentina southern Patagonia 2398 2399
+	occupation_of_tierra_del_fuego = {
+		picture = dreams_of_empire
+		potential = {
+			owns = 2332 # Osorno
+			OR = {
+				tag = CHL
+				AND = {
+					tag = PBC
+					CHL = { exists = no }
+				}
+				AND = {
+					tag = USS
+					CHL = { exists = no }
+				}
+			}
+			OR = {
+				2397 = { empty = yes }
+				2400 = { empty = yes }
+			}
+			year = 1848
+		}
+
+		allow = {
+			steamers = 1
+			is_disarmed = no
+		}
+
+		effect = {
+			prestige = 5
+			random_owned = {
+				limit = { 2397 = { empty = yes } }
+				2397 = { secede_province = THIS }
+			}
+			random_owned = {
+				limit = { 2400 = { empty = yes } }
+				2400 = { secede_province = THIS }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Occupation of the Easter Island province.
 	annex_easter_island = {
 		picture = annex_easter_island
 		potential = {
+			owns = 2332 # Osorno
 			civilized = yes
-			owns = 2332
-			2336 = { empty = yes }
+			2336 = { empty = yes } # Easter Island
 		}
-		
+
 		allow = {
 			war = no
 			breech_loaded_rifles = 1
 		}
-		
+
 		effect = {
 			prestige = 3
 			2336 = {
 				secede_province = THIS
+				add_core = CHL
+				add_core = THIS
 				any_pop = { reduce_pop = 0.50 }
 				any_pop = { limit = { is_primary_culture = no } literacy = -0.99 }
 			}
 		}
 	}
-	
-	valparaiso_harbor = {
-		picture = valparaiso_harbor
-			potential = {
-				NOT = { is_canal_enabled = 3 }
-				NOT = { has_country_flag = valpariasoharbor_built }
-			OR = {
-				tag = CHL
-				tag = PBC
-			}
-				owns = 2325
+
+	#Description: If Argentina decides not to formalize their claims in Patagonia, Chile can.
+	argentina_chile_border_not_determined = {
+		picture = argentina_chile_border_treaty
+		potential = {
+			has_country_flag = argentina_chile_border_not_determined
 		}
-		
+
 		allow = {
-			battleship_column_doctrine = 1
 			war = no
-		}
-		
-		effect = {
-			2325 = {
-				life_rating = 7
-				add_province_modifier = {
-					name = gateway_to_harbor
-					duration = 3650
+			OR = {
+				ARC = {
+					exists = yes
+					war = no
+					NOT = { truce_with = THIS }
+				}
+				ARG = {
+					exists = yes
+					war = no
+					NOT = { truce_with = THIS }
+				}
+				LPL = {
+					exists = yes
+					war = no
+					NOT = { truce_with = THIS }
 				}
 			}
-			add_country_modifier = { name = small_immigration_boom duration = 730 }
-			prestige = 5
-			set_country_flag = valpariasoharbor_built
 		}
-	}
-	
-	repudiate_the_treaty_of_paucarpata = {
-		picture = peru_bolivia
-		potential = {
-			tag = CHL
-			truce_with = PBC
-			PBC = { exists = yes war_with = PEU has_recently_lost_war = yes }
-			SPU = { vassal_of = PBC }
-			NOT = { has_country_flag = treaty_of_paucarpata_repudiated }
-		}
-		
-		allow = {
-			NOT = { has_recently_lost_war = yes }
-			NOT = { PBC = { military_score = THIS } }
-		}
-		
+
 		effect = {
-			casus_belli = {
-				target = PBC
-				type = release_puppet
-				months = 24
-			}
-			war = {
-				target = PBC
-				attacker_goal = {
-					casus_belli = release_puppet
-					country = SPU
-				 }
-			}
-			set_country_flag = treaty_of_paucarpata_repudiated
+			country_event = 97099
 		}
 	}
-#from Setup.txt	
+
+#Description: Valparaiso gains liferating and immigrant attraction.
+valparaiso_harbor = {
+	picture = valparaiso_harbor
+	potential = {
+		owns = 2325 # Valparaiso
+		OR = {
+			tag = CHL
+			tag = PBC
+		}
+		NOT = { is_canal_enabled = 3 }
+		NOT = { has_country_flag = valpariasoharbor_built }
+	}
+
+	allow = {
+		war = no
+		battleship_column_doctrine = 1
+	}
+
+	effect = {
+		prestige = 5
+		2325 = {
+			life_rating = 7
+			add_province_modifier = { name = gateway_to_harbor duration = 3650 }
+		}
+		add_country_modifier = { name = small_immigration_boom_country duration = 730 }
+		set_country_flag = valpariasoharbor_built
+	}
+}
+
+#Description: If the PBC is at war with Peru and has recently lost a war (PBC in Chaos decision was taken), Chile can go to war with them to release South Peru.
+repudiate_the_treaty_of_paucarpata = {
+	picture = peru_bolivia
+	potential = {
+		tag = CHL
+		PBC = {
+			exists = yes
+			war_with = PEU
+			has_recently_lost_war = yes
+			NOT = { truce_with = THIS }
+		}
+		SPU = { vassal_of = PBC }
+		NOT = {
+			has_country_flag = treaty_of_paucarpata_repudiated
+			has_recently_lost_war = yes
+			PBC = { military_score = THIS }
+		}
+	}
+
+	allow = {
+		war = no
+		is_disarmed = no
+	}
+
+	effect = {
+		set_country_flag = treaty_of_paucarpata_repudiated
+		prestige = 5
+		badboy = 2
+		war = {
+			target = PBC
+			attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
+		}
+		any_pop = { dominant_issue = { value = jingoism factor = 0.05 } }
+	}
+}
+
+## Other ##
+
 	CHL_1836_setup = {
 		potential = {
 			tag = CHL
 			always = no
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			2324 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } }
 			2322 = { trade_goods = precious_metal add_province_modifier = { name = silver_mine duration = -1 } }
 			2323 = { trade_goods = precious_metal add_province_modifier = { name = silver_mine duration = -1 } }
 		}
 	}
-
-	
 }

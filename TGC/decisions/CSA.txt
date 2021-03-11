@@ -1,0 +1,1026 @@
+political_decisions = {
+
+	#Description: The CSA can purchase Chihuahua, Sinaloa, Sonora and Baja California from Mexico.
+	#Note: This is just an alternative way for the CSA to acquire these lands early if Mexico agrees, but they can also get them via the Golden Circle
+	mexican_purchase = {
+		picture = csa_purchase
+		potential = {
+			tag = CSA
+			owns = 136
+			exists = yes
+			war = no
+			MEX = {
+				war = no
+				is_vassal = no
+				neighbour = THIS
+				is_greater_power = no
+			}
+			NOT = {
+				has_country_flag = golden_circle_1
+				any_core = { owned_by = MEX }
+				owns = 87
+				owns = 89
+				owns = 90
+				MEX = { owns = 100 }
+				MEX = { owns = 38 }
+				has_global_flag = csa_bought_pacific
+			}
+		}
+
+		allow = {
+			money = 300000
+			relation = { who = MEX value = 100 }
+			USA = {
+				NOT = {
+					alliance_with = MEX
+					is_sphere_leader_of = MEX
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = csa_bought_pacific
+
+			MEX = { country_event = 44377 }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { money = 600000 }
+			}
+		}
+	}
+
+## Golden Circle ##
+
+    #Description: The CSA can claim Rio Grande, Hispaniola, and Puerto Rico.
+	#Note: To start the Golden Circle decision chain the CSA needs to own Cuba and Texas, but they can acquire them by any means.
+	golden_circle_1 = {
+		picture = golden_circle
+		potential = {
+			tag = CSA
+			is_greater_power = yes
+			NOT = { has_country_flag = golden_circle_1 }
+		}
+
+		allow = {
+			prestige = 100
+			war = no
+			nationalism_n_imperialism = 1
+			has_unclaimed_cores = no
+			owns = 2209 # Havana
+			OR = { # Texas
+				owns = 138
+				owns = 136
+			}
+		}
+
+		effect = {
+			set_country_flag = golden_circle_1
+			plurality = -5
+			prestige_factor = -0.05
+			badboy = 6
+			any_pop = { consciousness = 1 }
+			RGR = { all_core = { add_core = CSA	} }
+			HAI_2213 = { add_core = CSA } # Hispanola
+			2222 = { add_core = CSA } # Puerto Rico
+			any_pop = {
+				limit = {
+					#OR = {
+						is_culture_group = african_diaspora_cultures
+						# has_pop_culture = african_minor
+					#}
+				}
+				consciousness = 2
+				militancy = 1
+			}
+			any_country = {
+				limit = { any_owned_province = { is_core = CSA } }
+				relation = { who = CSA value = -100 }
+			}
+			any_greater_power = { relation = { who = THIS value = -25 } }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.7
+			}
+		}
+	}
+
+    #Description: The CSA can claim the east coast of Mexico, Chiapas, Yucatan, Belize, Guatemala, El Salvador and Jamaica
+	golden_circle_2 = {
+		picture = golden_circle
+		potential = {
+			tag = CSA
+			has_country_flag = golden_circle_1
+			NOT = { has_country_flag = golden_circle_2 }
+		}
+
+		allow = {
+			prestige = 150
+			war = no
+			is_greater_power = yes
+			nationalism_n_imperialism = 1
+			has_unclaimed_cores = no
+		}
+
+		effect = {
+			set_country_flag = golden_circle_2
+			plurality = -10
+			prestige_factor = -0.1
+			badboy = 10
+			any_pop = { consciousness = 1 }
+			MEX_2159 = { add_core = THIS } # Veracruz
+			MEX_2181 = { add_core = THIS } # Chiapas
+			MEX_2183 = { add_core = THIS } # Yucatan
+            ENG_2187 = { add_core = THIS } # Belize
+			UCA_2186 = { add_core = THIS } # Guatemala
+			UCA_2191 = { add_core = THIS } # El Salvador
+			2217 = { add_core = THIS } # Jamaica
+            2218 = { add_core = THIS } # Cayman Islands
+			add_accepted_culture = central_american # Maybe move this to event?
+			any_pop = {
+				limit = {
+					OR = {
+						has_pop_culture = afro_american
+						has_pop_culture = afro_brazilian
+						# has_pop_culture = african_minor
+						has_pop_culture = afro_caribeno
+						has_pop_culture = afro_caribbean
+						has_pop_culture = afro_antillean
+					}
+				}
+				consciousness = 4
+				militancy = 2
+			}
+			any_country = {
+				limit = { any_owned_province = { is_core = CSA } }
+				relation = { who = CSA value = -100 }
+			}
+			any_greater_power = {
+				leave_alliance = THIS
+				relation = { who = THIS value = -25 }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.6
+			}
+		}
+	}
+
+    #Description: The CSA can claim more of Mexico, the rest of Central America and the Bahamas and Turks and Caicos Islands
+	golden_circle_3 = {
+		picture = golden_circle
+		potential = {
+			tag = CSA
+			has_country_flag = golden_circle_2
+			NOT = { has_country_flag = golden_circle_3 }
+		}
+
+		allow = {
+			prestige = 200
+			war = no
+			is_greater_power = yes
+			nationalism_n_imperialism = 1
+			has_unclaimed_cores = no
+		}
+
+		effect = {
+			set_country_flag = golden_circle_3
+			plurality = -15
+			prestige_factor = -0.15
+			badboy = 15
+			any_pop = { consciousness = 1 }
+			MEX_2175 = { add_core = CSA } # Puebla & Tlaxcala
+			MEX_2177 = { add_core = CSA } # Oaxaca
+			UCA_2193 = { add_core = CSA } # Honduras
+			UCA_2197 = { add_core = CSA } # Nicaragua
+			UCA_2201 = { add_core = CSA } # Costa Rica
+			CLM_1723 = { add_core = CSA } # Panama
+			2219 = { add_core = CSA } # Bahamas
+			2220 = { add_core = CSA } # Turks and Caicos
+			any_pop = {
+				limit = {
+					OR = {
+						has_pop_culture = afro_american
+						has_pop_culture = afro_brazilian
+						# has_pop_culture = african_minor
+						has_pop_culture = afro_caribeno
+						has_pop_culture = afro_caribbean
+						has_pop_culture = afro_antillean
+					}
+				}
+				consciousness = 6
+				militancy = 4
+			}
+			any_country = {
+				limit = { any_owned_province = { is_core = CSA } }
+				relation = { who = CSA value = -100 }
+			}
+			any_greater_power = {
+				leave_alliance = THIS
+				relation = { who = THIS value = -50 }
+				casus_belli = {
+					target = THIS
+					type = humiliate
+					months = 60
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.4
+			}
+		}
+	}
+
+    #Description: The CSA can claim the rest of Mexico, the Caribbean coasts of Columbia and Venezuela, and the rest of the Caribbean islands.
+	golden_circle_4 = {
+		picture = golden_circle
+		potential = {
+			tag = CSA
+			has_country_flag = golden_circle_3
+			NOT = { has_country_flag = golden_circle_4 }
+		}
+
+		allow = {
+			prestige = 300
+			war = no
+			is_greater_power = yes
+			nationalism_n_imperialism = 1
+			has_unclaimed_cores = no
+		}
+
+		effect = {
+			set_country_flag = golden_circle_4
+			plurality = -20
+			prestige_factor = -0.2
+			badboy = 20
+			any_pop = { consciousness = 1 }
+			MEX = { all_core = { add_core = CSA } }
+			2253 = { add_core = CSA } # Quibdo
+			CLM_2251 = { add_core = CSA } # Magdalena
+			VNZ_2234 = { add_core = CSA } # Lago de Maracaibo
+			2273 = { add_core = CSA } # Guanare
+			VNZ_2264 = { add_core = CSA } # Caracas
+			VNZ_2269 = { add_core = CSA } # Orinoco
+			ENG_2224 = { add_core = CSA } # Leeward Islands
+			ENG_2228 = { add_core = CSA } # Windward Islands
+			NET_2235 = { add_core = CSA } # Leeward Antilles
+			any_pop = {
+				limit = {
+					OR = {
+						has_pop_culture = afro_american
+						has_pop_culture = afro_brazilian
+						# has_pop_culture = african_minor
+						has_pop_culture = afro_caribeno
+						has_pop_culture = afro_caribbean
+						has_pop_culture = afro_antillean
+					}
+				}
+				consciousness = 8
+				militancy = 6
+			}
+			any_country = {
+				limit = { any_owned_province = { is_core = CSA } }
+				relation = { who = CSA value = -100 }
+			}
+			any_greater_power = {
+				leave_alliance = THIS
+				relation = { who = THIS value = -100 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.2
+			}
+		}
+	}
+
+## Caribbean Expansion ##
+
+    #Description: The CSA can buy Cuba and Puerto Rico from Spain.
+	# TODO turn this into event chain so that Spain can refuse and be non-AI
+	# TODO work this into the wider caribbean purchase event series
+	cuba_pri_purchase = {
+		picture = golden_hispania
+		potential = {
+			tag = CSA
+			OR = {
+				SPA = {
+					exists = yes
+					ai = yes
+					OR = {
+						any_owned_province = { is_core = CUB }
+						any_owned_province = { is_core = PRI }
+						is_sphere_leader_of = PRI
+						is_sphere_leader_of = CUB
+					}
+				}
+				SPC = {
+					exists = yes
+					ai = yes
+					OR = {
+						any_owned_province = { is_core = CUB }
+						any_owned_province = { is_core = PRI }
+						is_sphere_leader_of = PRI
+						is_sphere_leader_of = CUB
+					}
+				}
+				IBR = {
+					exists = yes
+					ai = yes
+					OR = {
+						any_owned_province = { is_core = CUB }
+						any_owned_province = { is_core = PRI }
+						is_sphere_leader_of = PRI
+						is_sphere_leader_of = CUB
+					}
+				}
+			}
+			NOT = { has_country_flag = cuba_pri_purchase }
+		}
+
+		allow = {
+			war = no
+			money = 250000
+			OR = {
+				SPA = {
+					war = no
+					NOT = { truce_with = CSA }
+					is_greater_power = no
+				}
+				SPC = {
+					war = no
+					NOT = { truce_with = CSA }
+					is_greater_power = no
+				}
+				IBR = {
+					war = no
+					NOT = { truce_with = CSA }
+					is_greater_power = no
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = cuba_pri_purchase
+			random_country = {
+				limit = {
+					OR = {
+						tag = SPA
+						tag = SPC
+						tag = IBR
+					}
+					exists = yes
+					OR = {
+						any_owned_province = { is_core = CUB }
+						any_owned_province = { is_core = PRI }
+						is_sphere_leader_of = PRI
+						is_sphere_leader_of = CUB
+					}
+				}
+
+				## Cuba is owned ##
+				random_owned = {
+					limit = { is_core = CUB }
+					owner = {
+						any_owned = {
+							limit = { is_core = CUB }
+							add_core = CSA
+							secede_province = CSA
+						}
+						treasury = 200000
+					}
+					THIS = { treasury = -200000 }
+				}
+				## Cuba is sphered ##
+				random_owned = {
+					limit = { owner = { is_sphere_leader_of = CUB } }
+					owner = {
+						diplomatic_influence = { who = CUB value = -200 }
+						treasury = 200000
+					}
+					CUB = {
+						any_owned = {
+							add_core = CSA
+							secede_province = CSA
+						}
+					}
+					THIS = { treasury = -200000 }
+				}
+				## Puerto Rico is owned ##
+				random_owned = {
+					limit = { is_core = PRI }
+					owner = {
+						any_owned = {
+							limit = { is_core = PRI }
+							add_core = CSA
+							secede_province = CSA
+						}
+						treasury = 50000
+					}
+					THIS = { treasury = -50000 }
+				}
+				## Puerto Rico is sphered ##
+				random_owned = {
+					limit = { owner = { is_sphere_leader_of = PRI } }
+					owner = {
+						diplomatic_influence = { who = PRI value = -200 }
+						treasury = 200000
+					}
+					CUB = {
+						any_owned = {
+							add_core = PRI
+							secede_province = PRI
+						}
+					}
+					THIS = { treasury = -200000 }
+				}
+				relation = { who = CSA value = 50 }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { money = 500000 }
+			}
+		}
+	}
+
+	#Description: The CSA can claim Cuba if it is a slave state.
+	golden_cuba = {
+		picture = golden_cuba
+		potential = {
+			tag = CSA
+			slavery = yes_slavery
+			SPA_2209 = { is_slave = yes }
+			NOT = { has_country_flag = golden_cuba }
+		}
+
+		allow = {
+			prestige = 75
+			war = no
+			is_greater_power = yes
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			set_country_flag = golden_cuba
+			badboy = 3
+			SPA_2209 = { add_core = CSA }
+			add_accepted_culture = caribeno
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
+		}
+	}
+
+	#Description: If the CSA has Cuba in their sphere, they can annex it.
+	annex_cuba = {
+		picture = golden_cuba
+		potential = {
+			tag = CSA
+			exists = CUB
+			is_sphere_leader_of = CUB
+			CUB = { ai = yes }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			CUB = {
+				war = no
+				NOT = { average_militancy = 4 }
+			}
+		}
+
+		effect = {
+			plurality = -2
+			badboy = 2
+			inherit = CUB
+			CUB = { all_core = { add_core = CSA } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If the CSA has Puerto Rico in their sphere, they can annex it.
+	annex_puerto_rico = {
+		picture = golden_pri
+		potential = {
+			tag = CSA
+			exists = PRI
+			is_sphere_leader_of = PRI
+			PRI = { ai = yes }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			PRI = {
+				war = no
+				NOT = { average_militancy = 4 }
+			}
+		}
+
+		effect = {
+			plurality = -1
+			badboy = 1
+			inherit = PRI
+			PRI = { all_core = { add_core = CSA } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If the CSA has Haiti in their sphere, they can annex it.
+	annex_haiti = {
+		picture = golden_haiti
+		potential = {
+			tag = CSA
+			exists = HAI
+			is_sphere_leader_of = HAI
+			HAI = { ai = yes }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			HAI = {
+				war = no
+				NOT = { average_militancy = 4 }
+			}
+		}
+
+		effect = {
+			plurality = -3
+			badboy = 3
+			inherit = HAI
+			HAI = { all_core = { add_core = CSA } }
+		}
+	}
+
+	# TODO everything
+	#caribean_purchase_offer = {
+	#	potential = {
+	#		tag = CSA
+	#		exists = no
+	#		is_greater_power = yes
+	#		NOT = { has_global_flag = c_p_flag }
+	#	}
+
+	#	allow = {
+	#		war = no
+	#		prestige = 50
+	#		money = 300000
+	#	}
+
+	#	effect = {
+	#		ENG_2228 = { add_core = CSA }
+	#		ENG_2224 = { add_core = CSA	}
+	#		ENG_203 = { add_core = CSA }
+	#		SPA_2209 = { add_core = CSA }
+	#		2190 = { add_core = CSA }
+	#		2234 = { add_core = CSA }
+	#		2235 = { add_core = CSA }
+	#		any_country = {
+	#			limit = { any_owned_province = { region = ENG_203 } }
+	#			country_event = 1500003
+	#		}
+	#		any_country = {
+	#			limit = { any_owned_province = { region = SPA_2209 } }
+	#			country_event = 1500004
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2222 }
+	#			country_event = 1500007
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2223 }
+	#			country_event = 1500009
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2224 }
+	#			country_event = 1500002
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2230 }
+	#			country_event = 1500005
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2236 }
+	#			country_event = 1500008
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2228 }
+	#			country_event = 1500006
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2229 }
+	#			country_event = 1500001
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2234 }
+	#			country_event = 1500010
+	#		}
+	#		random_country = {
+	#			limit = { owns = 2190 }
+	#			country_event = 1500000
+	#		}
+	#		set_global_flag = c_p_flag
+	#	}
+
+	#	ai_will_do = { factor = 1 }
+	#}
+
+## Northern Expansion ##
+
+    #Description: The CSA can, if it asserts its independence, demand all USA territories south of the 36th parallel.
+	demand_36_parallel = {
+		picture = CSA_36_parallel
+		potential = {
+			tag = CSA
+			is_vassal = no
+			NOT = { has_country_flag = 36_or_fight }
+			any_neighbor_country = { has_country_flag = hasmanifestdestiny }
+			MEX = {
+				OR = {
+					NOT = { has_country_flag = manifest_destiny_refuted }
+					NOT = { is_greater_power = yes }
+				}
+			}
+		}
+
+		allow = {
+			prestige = 40
+			war = no
+			is_vassal = no
+			NOT = {
+                truce_with = USA
+                in_sphere = USA
+                truce_with = MEX
+                in_sphere = MEX
+			}
+			invention = manifest_destiny
+			has_unclaimed_cores = no
+		}
+
+		effect = {
+			set_country_flag = 36_or_fight
+			badboy = 5
+			87 = { add_core = CSA } # Monterey
+			88 = { add_core = CSA } # Mojave Desert
+			89 = { add_core = CSA } # Los Angeles
+			90 = { add_core = CSA } # San Diego
+
+			96 = { add_core = CSA } # Las Vegas
+
+			random_country = {
+				limit = { tag = USA owns = 102 }
+				MEX_100 = { add_core = CSA } # Arizona
+			}
+			random_country = {
+				limit = { tag = USA NOT = { owns = 102 } }
+				100 = { add_core = CSA } # Gilenos
+				101 = { add_core = CSA } # Grand Canyon
+				3367 = { add_core = CSA } # Havasupai
+			}
+
+			random_country = {
+				limit = { tag = USA owns = 2662 }
+				MEX_103 = { add_core = CSA } # New Mexico
+			}
+			random_country = {
+				limit = { tag = USA NOT = { owns = 2662 } }
+				38 = { add_core = CSA } # Fuerte Santa Maria
+				105 = { add_core = CSA } # Santa Fe
+				109 = { add_core = CSA } # Zuni
+				2148 = { add_core = CSA } # Albuquerque
+				2631 = { add_core = CSA } # Apacheria del Norte
+			}
+
+			TEX_132 = { add_core = CSA } # Texas
+			USA_129 = { add_core = CSA } # Oklahoma
+			USA_144 = { add_core = CSA } # Arkansas
+			USA_139 = { add_core = CSA } # Louisiana
+			USA_194 = { add_core = CSA } # Mississippi
+			USA_188 = { add_core = CSA } # Tennessee
+			USA_196 = { add_core = CSA } # Alabama
+			USA_200 = { add_core = CSA } # Florida
+			USA_201 = { add_core = CSA } # Georgia
+			USA_2556 = { add_core = CSA } # North Carolina
+			USA_205 = { add_core = CSA } # South Carolina
+			any_neighbor_country = {
+                limit = { any_owned_province = { is_core = THIS } }
+                country_event = 441268
+            }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: The CSA can, if they defeat the USA and own or sphere all of their cores, declare the new Articles of Confederation, taking all of their cores, dismantling and puppeting the rest.
+	CSA_aoc = {
+		picture = reform_csa
+		potential = {
+			tag = CSA
+			is_greater_power = yes
+			government = democracy
+			has_country_flag = 36_or_fight
+			has_unclaimed_cores = no
+			NOT = {
+				has_global_flag = treaty_of_new_york
+				has_global_flag = USA_CAN_denied
+				has_global_flag = CSA_aoc
+			}
+			USA = {
+				OR = {
+					is_greater_power = no
+					exists = no
+				}
+			}
+		}
+
+		allow = {
+			war = no
+			mass_politics = 1
+			USA = {
+				all_core = {
+					OR = {
+						owner = { in_sphere = THIS }
+						owned_by = THIS
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = CSA_aoc
+			prestige = 20
+			badboy = 15
+			add_accepted_culture = yankee
+			any_country = {
+				limit = {
+					in_sphere = THIS
+					is_culture_group = american_cultures
+				}
+				annex_to = THIS
+			}
+			any_pop = {
+				limit = {
+					is_accepted_culture = yes
+					is_primary_culture = yes
+				}
+				consciousness = -6
+				militancy = -6
+			}
+			capital = 2146
+			2146 = { change_province_name = "Washington-Davis" }
+			country_event = 5985065
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #Description: If the CSA ends up owning British Columbia after declaring the new Articles of Confederation, they can add these territories to their puppet.
+	CSA_columbia = {
+		potential = {
+			tag = CSA
+			CAN_13 = { owned_by = CSA }
+			has_global_flag = CSA_aoc
+			UOR = { vassal_of = THIS }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			badboy = -1
+			CAN_13 = {
+				secede_province = UOR
+				add_core = UOR
+				add_core = CSA
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Capital ##
+
+    #Description: The CSA can restore Richmond as their capital if they own it (unless the CSA declares the Articles of Confederation)
+	restore_richmond_capital = {
+		potential = {
+			tag = CSA
+			owns = 60 # Richmond
+			NOT = { capital = 60 }
+			NOT = { has_global_flag = CSA_aoc }
+		}
+
+		allow = {
+			controls = 60
+		}
+
+		effect = {
+			capital = 60
+			prestige = 5
+		}
+	}
+
+    #Description: The CSA can move their capital to Atlanta if they don't own Richmond.
+	move_capital_to_atlanta = {
+		picture = restore_richmond_capital
+		potential = {
+			tag = CSA
+			owns = 201
+			NOT = {
+				owns = 60
+				capital = 201
+			}
+		}
+
+		allow = {
+			controls = 201
+		}
+
+		effect = {
+			capital = 201
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Description: The CSA can move the capital to Havana if they own it, giving it a buff to liferating and immigrant attraction.
+	move_capital_to_havana = {
+		picture = golden_havana
+		alert = no
+		potential = {
+			tag = CSA
+			owns = 2209
+			2209 = { is_colonial = no }
+			NOT = { capital = 2209 }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			capital = 2209
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = capital_moved_csa } } }
+				owner = {
+					plurality = -10
+					set_country_flag = capital_moved_csa
+				}
+				2209 = {
+					life_rating = 5
+					add_province_modifier = { name = new_capital_modifier duration = 3650 }
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## CSA-Brazil Friendship - events in BRZFlavor.txt ##
+
+	#Description: Brazillian farmers move to the CSA, Brazillian becomes accepted
+	csa_brazilian_culture = {
+		picture = brazil_csa_flag
+		potential = {
+			tag = CSA
+			exists = yes
+			slavery = yes_slavery
+			BRZ = {
+				exists = yes
+				slavery = yes_slavery
+			}
+			NOT = { has_country_flag = brazilian_accepted }
+			has_global_flag = csa_brz_friendship
+		}
+
+		allow = {
+			war = no
+			alliance_with = BRZ
+		}
+
+		effect = {
+			plurality = -5
+			prestige = 10
+			set_country_flag = brazilian_accepted
+			add_accepted_culture = brazilian
+			BRZ = {
+				random_pop = {
+					limit = {
+						has_pop_culture = brazilian
+						type = farmers
+					}
+					move_pop = 211
+				}
+			}
+			any_pop = {
+				limit = { has_pop_culture = brazilian }
+				reduce_pop = 10
+			}
+		}
+	}
+
+	#Description: Confederate farmers move to Brazil, Dixie becomes accepted
+	brazil_dixie_culture = {
+		picture = raise_the_bonnie_blue_flag
+		potential = {
+			tag = BRZ
+			slavery = yes_slavery
+			exists = yes
+			CSA = {
+				exists = yes
+				slavery = yes_slavery
+			}
+			NOT = { has_country_flag = dixie_accepted }
+			has_global_flag = csa_brz_friendship
+		}
+
+		allow = {
+			war = no
+			alliance_with = CSA
+		}
+
+		effect = {
+			plurality = -5
+			prestige = 10
+			set_country_flag = dixie_accepted
+			add_accepted_culture = dixie
+			CSA = {
+				random_pop = {
+					limit = {
+						has_pop_culture = dixie
+						type = farmers
+					}
+					move_pop = 2450
+				}
+			}
+			any_pop = {
+				limit = { has_pop_culture = dixie }
+				reduce_pop = 10
+			}
+		}
+	}
+
+## Other ##
+
+    #Description: If the French take back Louisiana, the CSA can recognize the independence of Texas.
+	recognize_texan_independence_csa = {
+		picture = all_texas
+		potential = {
+			tag = CSA
+			exists = TEX
+			has_global_flag = treaty_of_new_york
+			TEX = { any_core = { is_core = CSA } }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			relation = {
+				who = TEX
+				value = 100
+			}
+			TEX = { all_core = { remove_core = CSA } }
+			badboy = -5
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+}

@@ -12,19 +12,13 @@ country_event = {
 	fire_only_once = yes
 
 	trigger = {
-		OR = {
-			AND = {
-				CPL = { exists = no }
-				owns = 706
-			}
-			CPL = { substate_of = THIS owns = 706}
-		}
 		NOT = { has_global_flag = january_uprising_happened }
 		OR = {
 			year = 1860
 			has_global_flag = treaty_of_paris_1856
 			has_global_flag = treaty_of_paris_russia
 		}
+		owns = 706
 		NOT = { is_culture_group = polish_culture_group }
 		NOT = {
 			tag = POL
@@ -33,6 +27,10 @@ country_event = {
 			tag = CPL
 		}
 		NOT = { accepted_culture = polish }
+		OR = {
+			CPL = { exists = no }
+			is_our_vassal = CPL
+		}
 		OR = {
 			war_exhaustion = 40
 			AND = {
@@ -64,20 +62,7 @@ country_event = {
 		name = "EVTOPTA500001"
 		set_global_flag = january_uprising_happened
 		set_country_flag = through_january_uprising
-		random_country = {
-			limit = {
-				tag = CPL
-				OR = {
-					substate_of = THIS
-					vassal_of = THIS
-				}
-			}
-			THIS = { release_vassal = CPL }
-		}
 		release = CPL
-		diplomatic_influence = { who = CPL value = -200 }
-		relation = { who = CPL value = -400 }
-		leave_alliance = CPL
 		any_owned = {
 			limit = {
 				OR = {
@@ -90,7 +75,7 @@ country_event = {
 			}
 			secede_province = CPL
 		}
-		CPL = { all_core = { add_core = THIS } }
+		CPL = { all_core = { add_core = RUS } }
 		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 365 } }
 		CPL = {
 			government = presidential_dictatorship
@@ -120,7 +105,13 @@ country_event = {
 			}
 
 			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
-			add_country_modifier = { name = unrecognized_country duration = 1095 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1095 }
+					set_country_flag = recognized_country
+				}
+			}
 
 			any_pop = {
 				limit = {
@@ -187,7 +178,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTC500001"
-		CPL = { any_owned = { remove_core = THIS } }
+		CPL = { any_owned = { remove_core = RUS } }
 		release = CPL
 		prestige = -50
 		ai_chance = { factor = 0 }
@@ -197,33 +188,17 @@ country_event = {
 		name = "EVTOPTD500001"
 		set_global_flag = january_uprising_happened
 		set_country_flag = through_january_uprising
-		random_country = {
-			limit = {
-				tag = CPL
-				OR = {
-					substate_of = THIS
-					vassal_of = THIS
-				}
-			}
-			THIS = { release_vassal = CPL }
-		}
 		release = CPL
-		diplomatic_influence = { who = CPL value = -200 }
-		relation = { who = CPL value = -400 }
-		leave_alliance = CPL
 		any_owned = {
 			limit = {
 				OR = {
 					is_core = CPL
-					is_core = PZN
-					is_core = SLS
-					is_core = GLM
-					is_core = PML
+					pop_majority_culture = polish
 				}
 			}
 			secede_province = CPL
 		}
-		CPL = { all_core = { add_core = THIS } }
+		CPL = { all_core = { add_core = RUS } }
 		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 365 } }
 		CPL = {
 			government = presidential_dictatorship
@@ -252,8 +227,14 @@ country_event = {
 				background = nationalist
 			}
 
-			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
-			add_country_modifier = { name = unrecognized_country duration = 1095 }
+			add_country_modifier = { name = small_country_draft duration = 720 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1095 }
+					set_country_flag = recognized_country
+				}
+			}
 
 			any_pop = {
 				limit = {

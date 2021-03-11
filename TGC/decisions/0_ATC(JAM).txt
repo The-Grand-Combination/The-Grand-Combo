@@ -1,113 +1,9 @@
 political_decisions = {
 
-### Antillean Confederation ###
-
-	#Create the confederation
-	form_antillean_confederation = {
-		picture = form_antillean_confederation
-		
-		potential = {
-			primary_culture = caribeno
-			ATC = { exists = no }
-			2222 = { NOT = { is_core = ATC } }
-		}
-		
-		allow = {
-			war = no
-			is_vassal = no
-			nationalism_n_imperialism = 1
-			CUB = {
-				all_core = {
-					OR = {
-						owned_by = THIS
-						owner = { in_sphere = THIS }
-						owner = { vassal_of = THIS }
-					}
-				}
-			}
-			DOM = {
-				all_core = {
-					OR = {
-						owned_by = THIS
-						owner = { in_sphere = THIS }
-						owner = { vassal_of = THIS }
-					}
-				}
-			}
-			2222 = {
-				OR = {
-					owned_by = THIS
-					owner = { in_sphere = THIS }
-					owner = { vassal_of = THIS }
-				}
-			}
-		}
-		
-		effect = {
-			prestige = 20
-			2222 = { add_core = ATC }
-			CUB = { all_core = { add_core = ATC } }
-			DOM = { all_core = { add_core = ATC } }
-			change_tag = ATC
-		}
-		
-		ai_will_do = { 
-			factor = 1 
-		}
-	}	
-
-	#Confederation expansion claims
-	claim_the_caribbean = {
-		picture = claim_the_caribbean
-		
-		potential = {
-			tag = ATC
-			NOT = { has_country_flag = claimed_the_caribbean }
-			is_vassal = no
-		}
-		
-		allow = {
-			war = no
-			war_policy = jingoism
-			is_greater_power = yes
-		}
-		
-		effect = {
-			set_country_flag = claimed_the_caribbean
-			badboy = 5
-			HAI_2213 = { add_core = ATC }
-			ENG_203 = { add_core = ATC }
-			ENG_2224 = { add_core = ATC }
-			ENG_2228 = { add_core = ATC }
-			any_country = {
-				limit = {
-					any_owned_province = {
-						OR = {
-							region = HAI_2213
-							region = ENG_203
-							region = ENG_2224
-							region = ENG_2228
-						}
-					}
-				}
-				relation = { who = ATC value = -400 }
-				diplomatic_influence = { who = ATC value = -400 }
-				leave_alliance = ATC
-				end_military_access = ATC
-			}
-		}
-		
-		ai_will_do = { 
-			factor = 1 
-		}
-	}
-
-### Jamaica ###
-
-	#Jamaica accepts minorities
+	#Description: Jamaica can accept Afro Caribbean and Kreol minorities if they have the appropriate reform and enough militancy.
 	jamaican_accept_miniorities = {
 		picture = embrace_minority
-		
+
 		potential = {
 			tag = JAM
 			primary_culture = british
@@ -126,18 +22,309 @@ political_decisions = {
 		effect = {
 			2217 = {
 				any_pop = {
-					limit = { has_pop_culture = afro_caribbean }		
+					limit = { has_pop_culture = afro_caribbean }
 					militancy = -5
 				}
 			}
-			primary_culture = british
 			add_accepted_culture = kreol
 			add_accepted_culture = afro_caribbean
 			set_country_flag = jamaican_accept_miniorities
 		}
-		
-		ai_will_do = { 
-			factor = 1 
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Antillean Federation (Caribeno) ##
+
+	#Description: A Caribeno nation that owns all of Cuba, Santo Domingo and Puerto Rico can form the Antillean Confederation.
+	form_antillean_confederation = {
+		picture = form_antillean_confederation
+		potential = {
+			primary_culture = caribeno
+			ATC = { exists = no }
+			2222 = { NOT = { is_core = ATC } } # Puerto Rico
 		}
+
+		allow = {
+			war = no
+			is_vassal = no
+			nationalism_n_imperialism = 1
+			CUB = { # Cuba
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = { in_sphere = THIS }
+						owner = { vassal_of = THIS }
+					}
+				}
+			}
+			DOM = { # Dominican Republic
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = { in_sphere = THIS }
+						owner = { vassal_of = THIS }
+					}
+				}
+			}
+			2222 = { # Puerto Rico
+				OR = {
+					owned_by = THIS
+					owner = { in_sphere = THIS }
+					owner = { vassal_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			prestige = 20
+			2222 = { add_core = ATC }
+			CUB = { all_core = { add_core = ATC } }
+			DOM = { all_core = { add_core = ATC } }
+			change_tag = ATC
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Antillean Confederatin Great Power can claim the rest of the Caribbean.
+	claim_the_caribbean = {
+		picture = claim_the_caribbean
+		potential = {
+			tag = ATC
+			NOT = { has_country_flag = claimed_the_caribbean }
+			is_vassal = no
+		}
+
+		allow = {
+			war = no
+			OR = {
+				is_greater_power = yes
+				AND = {
+					war_policy = jingoism
+					is_secondary_power = yes
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = claimed_the_caribbean
+			badboy = 5
+			HAI_2213 = { add_core = ATC } # Hispaniola
+			ENG_203 = { add_core = ATC } # Lucayan Islands
+			ENG_2224 = { add_core = ATC } # Leeward Islands
+			ENG_2228 = { add_core = ATC } # Windward Islands
+			any_country = {
+				limit = {
+					any_owned_province = {
+						OR = {
+							region = HAI_2213
+							region = ENG_203
+							region = ENG_2224
+							region = ENG_2228
+						}
+					}
+				}
+				relation = { who = ATC value = -400 }
+				diplomatic_influence = { who = ATC value = -400 }
+				leave_alliance = ATC
+				end_military_access = ATC
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Caribbean Federation (British) ##
+
+	#Description: Any of the Caribbean minors that manages to own or sphere the rest can form the Caribbean Federation.
+	form_caribbean_federation = {
+		picture = west_indies
+		potential = {
+			OR = {
+				tag = TTB
+				tag = JAM
+				tag = PRI
+				tag = DOM
+				tag = HAI
+				tag = CUB
+				tag = BLZ
+				tag = GUY
+			}
+			NOT = {
+				exists = CRB
+				has_global_flag = formed_west_indies
+				has_global_flag = west_indies_organized
+			}
+		}
+
+		allow = {
+			war = no
+			prestige = 25
+			state_n_government = 1
+			is_vassal = no
+			2237 = { # Trinidad and Tobago
+				OR = {
+					owned_by = THIS
+					owner = {
+						tag = TTB
+						OR = {
+							vassal_of = THIS
+							in_sphere = THIS
+						}
+						war = no
+					}
+				}
+			}
+			2217 = { # Jamaica
+				OR = {
+					owned_by = THIS
+					owner = {
+						tag = JAM
+						OR = {
+							vassal_of = THIS
+							in_sphere = THIS
+						}
+						war = no
+					}
+				}
+			}
+			owns = 2218 # Cayman Islands
+			owns = 2219 # The Bahamas
+			owns = 2220 # Turks and Caicos Islands
+			owns = 2224 # Antigua and Barbuda
+			owns = 2225 # Montserrat
+			owns = 2227 # St. Kitts and Nevis
+			owns = 2229 # Barbados
+			owns = 2231 # Saint Lucia
+			owns = 2232 # Dominica
+			owns = 2233 # Grenada
+			owns = 2409 # St. Vincent and the Grenadines
+		}
+
+		effect = {
+			prestige = 10
+			2217 = { add_core = CRB } # Jamaica
+			2218 = { add_core = CRB } # Cayman Islands
+			2219 = { add_core = CRB } # Bahamas
+			2220 = { add_core = CRB } # Turks and Caicos Islands
+			ENG_2224 = { add_core = CRB } # Leeward Islands
+			ENG_2228 = { add_core = CRB } # Windward Islands
+			NET_2235 = { add_core = CRB } # Leeward Antilles
+			set_global_flag = formed_west_indies
+			random_owned = {
+				limit = { region = ENG_1979 } # Guyana
+				state_scope = { add_core = CRB }
+			}
+			random_owned = {
+				limit = { region = ENG_2187 } # Belize
+				state_scope = { add_core = CRB }
+			}
+			random_country = {
+				limit = {
+					tag = TTB
+					exists = yes
+				}
+				all_core = { add_core = CRB }
+				annex_to = THIS
+			}
+			random_country = {
+				limit = {
+					tag = JAM
+					exists = yes
+				}
+				all_core = { add_core = CRB }
+				annex_to = THIS
+			}
+			random_country = {
+				limit = {
+					tag = BLZ
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						in_sphere = THIS
+					}
+				}
+				all_core = { add_core = CRB }
+				annex_to = THIS
+			}
+			random_country = {
+				limit = {
+					tag = GUY
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						in_sphere = THIS
+					}
+				}
+				all_core = { add_core = CRB }
+				annex_to = THIS
+			}
+			change_tag = CRB
+			random_owned = {
+				limit = { owner = { government = dominion } }
+				owner = { government = democracy }
+			}
+			add_accepted_culture = afro_caribbean
+			add_accepted_culture = afro_antillean
+			clr_country_flag = post_colonial_country
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Belize and Guyana can apply for statehood in the Caribbean Federation if it exists.
+	apply_for_crb_statehood = {
+		picture = west_indies
+		potential = {
+			OR = {
+				tag = BLZ
+				tag = GUY
+			}
+			exists = CRB
+			OR = {
+				is_vassal = no
+				vassal_of = CRB
+			}
+			NOT = { has_country_flag = crbstatehood_we_have_applied }
+		}
+
+		allow = {
+			war = no
+			CRB = { war = no }
+			OR = {
+				in_sphere = CRB
+				sphere_owner = { is_sphere_leader_of = CRB }
+				relation = { who = CRB value = 50 }
+			}
+			NOT = { truce_with = CRB }
+		}
+
+		effect = {
+			random_country = {
+				limit = {
+					tag = CRB
+					THIS = { ai = yes }
+				}
+				country_event = 188153
+			}
+			random_country = {
+				limit = {
+					tag = CRB
+					THIS = { ai = no }
+					ai = yes
+				}
+				any_owned = { secede_province = THIS }
+				THIS = {
+					random_owned = {
+						limit = { province_id = 2237 }
+						owner = { capital = 2237 }
+					}
+					change_tag = CRB
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
 	}
 }

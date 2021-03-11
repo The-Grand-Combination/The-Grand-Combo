@@ -2746,4 +2746,108 @@ political_decisions = {
 			}
 		}
 	}
+
+	#Description: If Russia no longer has Fort Ross, they can offer Alaska up for sale.
+	sell_alaska = {
+		picture = map_alaska
+		potential = {
+			tag = RUS
+			OR = {
+				any_owned_province = {
+					region = USA_1
+				}
+				LSK = {
+					vassal_of = RUS
+					substate_of = RUS
+				}
+			}
+    		exists = yes
+			NOT = { owns = 3366 } # Fort Ross
+			year = 1859
+			OR = {
+				has_global_flag = american_civil_war_has_happened
+				has_global_flag = alt_american_civil_war_has_happened
+				year = 1870
+			}
+			USA = { NOT = { war_with = CSA } }
+			NOT = { has_global_flag = alaska_purchase_completed }
+			NOT = { has_country_flag = alaska_purchase_started }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			set_country_flag = alaska_purchase_started
+			remove_accepted_culture = alaskan
+			prestige = 5
+			any_country = {
+				limit = {
+					NOT = {
+						tag = RUS
+						vassal_of = RUS
+						substate_of = RUS
+					}
+					OR = {
+						is_greater_power = yes
+						is_secondary_power = yes
+						owns = 104 # San Francisco
+					}
+					OR = {
+						any_owned_province = {
+							OR = {
+                            	region = MEX_85
+								region = USA_78
+								region = USA_81
+								region = CAN_13
+								region = JAP_1088
+							}
+						}
+						AND = {
+							tag = ENG
+							ENG = { is_our_vassal = RPL }
+							RPL = {
+								owns = 78
+								owns = 83
+							}
+						}
+					}
+				}
+				prestige = 1
+				set_country_flag = alaska_purchase_interest
+			}
+			random_country = {
+				limit = { tag = USA }
+				relation = { who = THIS value = 50 }
+			}
+			random_owned = { # Deciding to sell Alaska will also renounce any remaining claims to Fort Ross
+				limit = { 3366 = { is_core = LSK } }
+				3366 = { remove_core = LSK }
+			}
+			random_owned = {
+				limit = { 3366 = { is_core = THIS } }
+				3366 = { remove_core = THIS }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				has_recently_lost_war = no
+			}
+			modifier = {
+				factor = 0
+				NOT = {
+					any_greater_power = { war_with = THIS }
+					any_greater_power = { truce_with = THIS }
+				}
+			}
+			modifier = {
+				factor = 0
+				money = 400000
+			}
+		}
+	}
 }

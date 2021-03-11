@@ -1,2441 +1,3924 @@
-#############################################################
-#															#
-#                  	Pre-Independence Events					#
-#															#
-#############################################################
+### Pre-Independence Events	###
 
-#Rebellions of 1837
-country_event = {
-	id = 44305
-	title = "EVTNAME44305"
-	desc = "EVTDESC44305"
-	news = yes
-	news_title = "EVTNAME44305_NEWS_TITLE"
-	news_desc_long = "EVTDESC44305_NEWS_LONG"
-	news_desc_medium = "EVTDESC44305_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC44305_NEWS_SHORT"
-	picture = "rebellion"
-	
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
+	#Description: Rebellions of 1837 - Canadian pops get militancy and consciousness, nationalist agitation
+	country_event = {
+		id = 44305
+		title = "EVTNAME44305"
+		desc = "EVTDESC44305"
+		news = yes
+		news_title = "EVTNAME44305_NEWS_TITLE"
+		news_desc_long = "EVTDESC44305_NEWS_LONG"
+		news_desc_medium = "EVTDESC44305_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC44305_NEWS_SHORT"
+		picture = "rebellion"
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			owns = 57 # Bytown / Ottawa
+			NOT = {
+				exists = CAN
+				has_country_flag = rebellion_1837_begun
+				has_country_flag = lord_durhams_report
+			}
+			year = 1837
 		}
-		owns = 57
-		NOT = {
-			exists = CAN
+
+		mean_time_to_happen = {
+			months = 6
+		}
+
+		option = {
+			name = "EVTOPTA44305"
+
+			set_country_flag = rebellion_1837_begun
+			any_pop = {
+				limit = {
+					has_pop_culture = anglo_canadian
+					location = { is_core = CAN }
+				}
+				consciousness = 6
+				militancy = 8
+				ideology = {
+					value = liberal
+					factor = 0.30
+				}
+			}
+			any_pop = {
+				limit = {
+					has_pop_culture = french_canadian
+					location = { is_core = QUE }
+				}
+				consciousness = 6
+				militancy = 8
+				ideology = {
+					value = liberal
+					factor = 0.30
+				}
+			}
+			any_owned = {
+				limit = {
+					OR = {
+						is_core = CAN
+						is_core = QUE
+					}
+				}
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 365
+				}
+			}
+		}
+	}
+
+	#Description: Lord Durham's Report
+	country_event = {
+		id = 44306
+		title = "EVTNAME44306"
+		desc = "EVTDESC44306"
+		picture = "deliberation"
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			owns = 57 # Bytown / Ottawa
+			owns = 65 # Quebec City
 			has_country_flag = rebellion_1837_begun
-			has_country_flag = lord_durhams_report
-		}
-		year = 1837
-	}
-	
-	mean_time_to_happen = {
-		months = 6
-	}
-	
-	option = {
-		name = "EVTOPTA44305"
-		set_country_flag = rebellion_1837_begun
-		any_pop = {
-			limit = {
-				has_pop_culture = anglo_canadian
-				location = { is_core = CAN }
-			}
-			consciousness = 6
-			militancy = 8
-			ideology = {
-				value = liberal
-				factor = 0.30
-			}
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = french_canadian
-				location = { is_core = QUE }
-			}
-			consciousness = 6
-			militancy = 8
-			ideology = {
-				value = liberal
-				factor = 0.30
-			}
-		}
-		any_owned = {
-			limit = {
-				OR = {
-					is_core = CAN
-					is_core = QUE
-				}
-			}
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 365
-			}
-		}
-	}
-}
-
-#Lord Durham's Report
-country_event = {
-	id = 44306
-	title = "EVTNAME44306"
-	desc = "EVTDESC44306"
-	picture = "deliberation"
-	
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		owns = 57
-		owns = 65
-		has_country_flag = rebellion_1837_begun
-		OR = {
-			government = democracy
-			government = hms_government
-		}
-		NOT = {
-			has_country_flag = lord_durhams_report
-			any_owned_province = {
-				OR = {
-					is_core = CAN
-					is_core = QUE
-				}
-				NOT = { controlled_by = ENG }
-			}
-		}
-	}
-	
-	mean_time_to_happen = {
-		months = 30
-	}
-	
-	option = {
-		name = "EVTOPTA44306"
-		set_country_flag = lord_durhams_report
-		prestige = -10
-		CAN_58 = {
-			add_core = CAN
-			remove_core = RPL
-		}
-		any_pop = {
-			limit = {
-				location = { is_core = CAN }
-			}
-			consciousness = -4
-			militancy = -4
-			ideology = {
-				value = liberal
-				factor = 0.10
-			}
-		}
-		ai_chance = {
-			factor = 90
-			modifier = {
-				factor = 1.5
-				ruling_party_ideology = liberal
-			}
-			modifier = {
-				factor = 0.5
-				ruling_party_ideology = reactionary
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44306"
-		set_country_flag = lord_durhams_report
-		prestige = 10
-		any_owned = {
-			limit = {
-				OR = {
-					is_core = CAN
-					is_core = QUE
-				}
-			}
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 1095
-			}
-		}
-		USA = {
-			relation = { who = ENG value = -50 }
-			leave_alliance = ENG
-			casus_belli = {
-				target = ENG
-				type = free_peoples
-				months = 600
-			}
-		}
-		ai_chance = {
-			factor = 10
-			modifier = {
-				factor = 0.5
-				ruling_party_ideology = liberal
-			}
-			modifier = {
-				factor = 2
-				ruling_party_ideology = reactionary
-			}
-			modifier = {
-				factor = 2
-				has_country_modifier = global_liberal_agitation
-			}
-			modifier = {
-				factor = 0
-				OR = {
-					num_of_revolts = 1
-					average_militancy = 4
-					war = yes
-				}
-			}
-		}
-	}
-}
-
-#Charlottetown Conference
-country_event = {
-	id = 44310
-	title = "EVTNAME44310"
-	desc = "EVTDESC44310"
-	news = yes
-	news_desc_long = "EVTDESC44310_NEWS_LONG"
-	news_desc_medium = "EVTDESC44310_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC44310_NEWS_SHORT"
-	picture = "confederation"
-	
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		owns = 57
-		owns = 71
-		65 = { is_core = CAN }
-		nationalism_n_imperialism = 1
-		year = 1860
-		NOT = {
-			exists = CAN
-			exists = QUE
-			has_country_flag = charlottetown_conference
-		}
-	}
-	
-	mean_time_to_happen = {
-		months = 36
-		modifier = {
-			factor = 0.5
-			year = 1864
-		}
-		modifier = {
-			factor = 0.5
-			year = 1865
-		}
-	}
-	
-	option = {
-		name = "EVTOPTA44310"
-		prestige = -5
-		set_country_flag = charlottetown_conference
-		MRU = {
-			all_core = { add_core = CAN }
-		}
-		any_pop = {
-			limit = {
-				location = { is_core = CAN }
-			}
-			consciousness = -4
-			militancy = -4
-			ideology = {
-				value = liberal
-				factor = 0.10
-			}
-		}
-		ai_chance = {
-			factor = 90
-			modifier = {
-				factor = 1.5
-				ruling_party_ideology = liberal
-			}
-			modifier = {
-				factor = 0.75
-				ruling_party_ideology = reactionary
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44310"
-		prestige = 5
-		set_country_flag = charlottetown_conference
-		any_owned = {
-			limit = {
-				OR = {
-					is_core = CAN
-					is_core = MRU
-				}
-			}
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 1095
-			}
-		}
-		USA = {
-			relation = { who = ENG value = -50 }
-			leave_alliance = ENG
-			casus_belli = {
-				target = ENG
-				type = free_allied_cores
-				months = 600
-			}
-		}
-		ai_chance = {
-			factor = 10
-			modifier = {
-				factor = 0.5
-				ruling_party_ideology = liberal
-			}
-			modifier = {
-				factor = 2
-				ruling_party_ideology = reactionary
-			}
-		}
-	}
-}
-
-#############################################################
-#															#
-#                  	Independence Events						#
-#															#
-#############################################################	
-
-#The Canadian Dominion
-country_event = {
-	id = 44315
-	title = "EVTNAME44315"
-	desc = "EVTDESC44315"
-	picture = "confederation"
-
-	major = yes
-
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		war = no
-		year = 1867
-		any_owned_province = { is_core = CAN }
-		NOT = { exists = CAN }
-		is_possible_vassal = CAN
-	}
-
-	mean_time_to_happen = {
-		months = 6
-		modifier = {
-			factor = 15
-			has_country_flag = CAN_independence_refused
-		}
-		modifier = {
-			factor = 3
-			NOT = { has_country_flag = charlottetown_conference }
-		}
-		modifier = {
-			factor = 0.8
-			any_state = {
-				any_owned_province = { is_core = CAN }
-				average_militancy = 3
-			}
-		}
-		modifier = {
-			factor = 0.5
-			year = 1870
-			NOT = { has_country_flag = CAN_independence_refused }
-		}
-	}
-
-	option = {
-		name = "EVTOPTA44315"
-		clr_country_flag = CAN_independence_refused
-		prestige = -25
-		badboy = -5
-		any_pop = {
-			limit = { location = { is_core = CAN } }
-			militancy = -10
-		}
-		CAN = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
-			}
-		}
-		any_owned = { 
-			limit = { is_core = CAN }
-			secede_province = CAN
-		}
-		create_vassal = CAN
-		CAN = {
-			prestige = -100
-			relation = { who = USA value = 200 }
-			government = dominion
-		}
-		13 = {
-			add_province_modifier = {
-				name = vancouver_boom
-				duration = 365
-			}
-		}
-		14 = {
-			add_province_modifier = {
-				name = vancouver_boom
-				duration = 365
-			}
-		}
-		relation = {
-			who = CAN
-			value = 200
-		}
-		diplomatic_influence = {
-			who = CAN
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		ai_chance = {
-			factor = 85
-			modifier = {
-				factor = 0
-				OR = {
-					government = proletarian_dictatorship
-					government = bourgeois_dictatorship
-					government = fascist_dictatorship
-					government = presidential_dictatorship
-				}
-			}
-			modifier = {
-				factor = 0.25
-				government = absolute_monarchy
-			}
-			modifier = {
-				factor = 1.5
+			OR = {
 				government = democracy
+				government = hms_government
 			}
-			modifier = {
-				factor = 0.75
-				war_policy = jingoism
+			NOT = {
+				has_country_flag = lord_durhams_report
+				any_owned_province = {
+					OR = {
+						is_core = CAN
+						is_core = QUE
+					}
+					NOT = { controlled_by = ENG }
+				}
 			}
-			modifier = {
-				factor = 1.25
-				war_policy = anti_military
-			}
-			modifier = {
-				factor = 1.5
-				war_policy = pacifism
-			}
-			modifier = {
-				factor = 1.2
-				militancy = 3
-			}
-			modifier = {
-				factor = 1.2
-				militancy = 5
-			}
-			
-		}	
-	}
-	option = {
-		name = "EVTOPTB44315"
-		set_country_flag = CAN_independence_refused
-		any_owned = {
-			limit = { is_core = CAN }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 1095
+		}
+
+		mean_time_to_happen = {
+			months = 30
+		}
+
+		# Pass the Act of Union - unite upper and lower Canada
+		option = {
+			name = "EVTOPTA44306"
+
+			set_country_flag = lord_durhams_report
+			prestige = -10
+			CAN_58 = { # Southern Quebec
+				add_core = CAN
+				remove_core = RPL
 			}
 			any_pop = {
-				limit = { has_pop_culture = anglo_canadian }
-				militancy = 3
-				consciousness = 5
+				limit = { location = { is_core = CAN } }
+				consciousness = -4
+				militancy = -4
+				ideology = {
+					value = liberal
+					factor = 0.10
+				}
+			}
+
+			ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 1.5
+					ruling_party_ideology = liberal
+				}
+				modifier = {
+					factor = 0.5
+					ruling_party_ideology = reactionary
+				}
 			}
 		}
-		ai_chance = {
-			factor = 15
-			modifier = {
-				factor = 1.75
-				government = absolute_monarchy
+
+		# Don't pass the Act of Union - nationalist agitation and USA gets CB to free peoples
+		option = {
+			name = "EVTOPTB44306"
+
+			set_country_flag = lord_durhams_report
+			prestige = 10
+			any_owned = {
+				limit = {
+					OR = {
+						is_core = CAN
+						is_core = QUE
+					}
+				}
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
 			}
-			modifier = {
-				factor = 0.5
-				government = democracy
+			USA = {
+				relation = { who = ENG value = -50 }
+				leave_alliance = ENG
+				casus_belli = {
+					target = ENG
+					type = free_peoples
+					months = 600
+				}
 			}
-			modifier = {
-				factor = 1.5
-				war_policy = jingoism
-			}
-			modifier = {
-				factor = 1.25
-				war_policy = pro_military
-			}
-			modifier = {
-				factor = 0.75
-				war_policy = anti_military
-			}
-			modifier = {
-				factor = 0.5
-				war_policy = pacifism
-			}
-			modifier = {
-				factor = 0.8
-				militancy = 3
-			}
-			modifier = {
-				factor = 0.8
-				militancy = 5
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.5
+					ruling_party_ideology = liberal
+				}
+				modifier = {
+					factor = 2
+					ruling_party_ideology = reactionary
+				}
+				modifier = {
+					factor = 2
+					has_country_modifier = global_liberal_agitation
+				}
+				modifier = {
+					factor = 0
+					OR = {
+						num_of_revolts = 1
+						average_militancy = 4
+						war = yes
+					}
+				}
 			}
 		}
 	}
-	
-	option = {
-		name = "EVTOPTC44315"
-		clr_country_flag = CAN_independence_refused
-		prestige = -25
-		badboy = -5
-		any_pop = {
-			limit = { location = { is_core = CAN } }
-			militancy = -10
-		}
-		CAN = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
+
+	#Description: Charlottetown Conference
+	country_event = {
+		id = 44310
+		title = "EVTNAME44310"
+		desc = "EVTDESC44310"
+		news = yes
+		news_desc_long = "EVTDESC44310_NEWS_LONG"
+		news_desc_medium = "EVTDESC44310_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC44310_NEWS_SHORT"
+		picture = "confederation"
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			owns = 57 # Bytown / Ottawa
+			owns = 71 # Halifax
+			65 = { is_core = CAN } # Quebec City
+			nationalism_n_imperialism = 1
+			year = 1860
+			NOT = {
+				exists = CAN
+				exists = QUE
+				has_country_flag = charlottetown_conference
 			}
 		}
-		release_vassal = CAN
-		CAN = {
-			prestige = -100
-			government = dominion
-			relation = { who = USA value = 200 }
+
+		mean_time_to_happen = {
+			months = 36
+			modifier = {
+				factor = 0.5
+				year = 1864
+			}
+			modifier = {
+				factor = 0.5
+				year = 1865
+			}
 		}
-		relation = {
-			who = CAN
-			value = 200
+
+		#Description: Unite the Maritimes into Canada
+		option = {
+			name = "EVTOPTA44310"
+
+			prestige = -5
+			set_country_flag = charlottetown_conference
+			MRU = { all_core = { add_core = CAN } }
+			any_pop = {
+				limit = { location = { is_core = CAN } }
+				consciousness = -4
+				militancy = -4
+				ideology = {
+					value = liberal
+					factor = 0.10
+				}
+			}
+
+			ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 1.5
+					ruling_party_ideology = liberal
+				}
+				modifier = {
+					factor = 0.75
+					ruling_party_ideology = reactionary
+				}
+			}
 		}
-		diplomatic_influence = {
-			who = CAN
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		change_tag_no_core_switch = CAN
-		ai_chance = {
-			factor = 0
+
+		# Don't unite the Maritimes - nationalist agitation and USA will get CB to free allied cores
+		option = {
+			name = "EVTOPTB44310"
+
+			prestige = 5
+			set_country_flag = charlottetown_conference
+			any_owned = {
+				limit = {
+					OR = {
+						is_core = CAN
+						is_core = MRU
+					}
+				}
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+			}
+			USA = {
+				relation = { who = ENG value = -50 }
+				leave_alliance = ENG
+				casus_belli = {
+					target = ENG
+					type = free_allied_cores
+					months = 600
+				}
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.5
+					ruling_party_ideology = liberal
+				}
+				modifier = {
+					factor = 2
+					ruling_party_ideology = reactionary
+				}
+			}
 		}
 	}
-}
 
-#The Dominion of Quebec
-country_event = {
-	id = 44316
-	title = "EVTNAME44316"
-	desc = "EVTDESC44316"
-	picture = "danishgovernment"
+### Independence Events	###
 
-	major = yes
+	#Description: The Canadian Dominion - release Canada as a dominion or not?
+	country_event = {
+		id = 44315
+		title = "EVTNAME44315"
+		desc = "EVTDESC44315"
+		picture = "confederation"
 
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
+		major = yes
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			war = no
+			year = 1867
+			any_owned_province = { is_core = CAN }
+			NOT = { exists = CAN }
+			is_possible_vassal = CAN
 		}
-		war = no
-		OR = {
-			exists = CAN
-			AND = {
-				NOT = { 65 = { is_core = CAN } }
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = {
+				factor = 15
+				has_country_flag = CAN_independence_refused
+			}
+			modifier = {
+				factor = 3
+				NOT = { has_country_flag = charlottetown_conference }
+			}
+			modifier = {
+				factor = 0.8
+				any_state = {
+					any_owned_province = { is_core = CAN }
+					average_militancy = 3
+				}
+			}
+			modifier = {
+				factor = 0.5
 				year = 1870
+				NOT = { has_country_flag = CAN_independence_refused }
 			}
 		}
-		any_owned_province = { is_core = QUE }
-		NOT = { exists = QUE }
-		is_possible_vassal = QUE
+
+		# Release Canada as a dominion
+		option = {
+			name = "EVTOPTA44315"
+
+			clr_country_flag = CAN_independence_refused
+			prestige = -25
+			badboy = -5
+			any_pop = {
+				limit = { location = { is_core = CAN } }
+				militancy = -10
+			}
+			CAN = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
+			}
+			any_owned = {
+				limit = { is_core = CAN }
+				secede_province = CAN
+			}
+			create_vassal = CAN
+			CAN = {
+				prestige = -100
+				relation = { who = USA value = 200 }
+				government = dominion
+			}
+			13 = { # Vancouver
+				add_province_modifier = {
+					name = vancouver_boom
+					duration = 365
+				}
+			}
+			14 = { # Vancouver Island
+				add_province_modifier = {
+					name = vancouver_boom
+					duration = 365
+				}
+			}
+			relation = {
+				who = CAN
+				value = 200
+			}
+			diplomatic_influence = {
+				who = CAN
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+
+			ai_chance = {
+				factor = 85
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+			}
+		}
+
+		# Refuse independence - get nationalist agitation
+		option = {
+			name = "EVTOPTB44315"
+
+			set_country_flag = CAN_independence_refused
+			any_owned = {
+				limit = { is_core = CAN }
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+				any_pop = {
+					limit = { has_pop_culture = anglo_canadian }
+					militancy = 3
+					consciousness = 5
+				}
+			}
+
+			ai_chance = {
+				factor = 15
+				modifier = {
+					factor = 1.75
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 0.5
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 3
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 5
+				}
+			}
+		}
+
+		# Play as Canada
+		option = {
+			name = "EVTOPTC44315"
+
+			clr_country_flag = CAN_independence_refused
+			prestige = -25
+			badboy = -5
+			any_pop = {
+				limit = { location = { is_core = CAN } }
+				militancy = -10
+			}
+			CAN = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
+			}
+			release_vassal = CAN
+			CAN = {
+				prestige = -100
+				government = dominion
+				relation = { who = USA value = 200 }
+			}
+			relation = {
+				who = CAN
+				value = 200
+			}
+			diplomatic_influence = {
+				who = CAN
+				value = 200
+			}
+			any_pop = {	consciousness = 1 }
+			change_tag_no_core_switch = CAN
+
+			ai_chance = { factor = 0 }
+		}
 	}
 
-	mean_time_to_happen = {
-		months = 12
-		modifier = {
-			factor = 10
-			has_country_flag = QUE_independence_refused
-		}
-		modifier = {
-			factor = 0.8
-			any_state = {
-				any_owned_province = { is_core = QUE }
-				average_militancy = 3
-			}
-		}
-		modifier = {
-			factor = 0.5
-			year = 1875
-			NOT = { has_country_flag = QUE_independence_refused }
-		}
-	}
+	#Description: The Dominion of Quebec - release Quebec as a dominion or not?
+	country_event = {
+		id = 44316
+		title = "EVTNAME44316"
+		desc = "EVTDESC44316"
+		picture = "danishgovernment"
 
-	option = {
-		name = "EVTOPTA44315"
-		clr_country_flag = QUE_independence_refused
-		prestige = -10
-		badboy = -3
-		any_pop = {
-			limit = { location = { is_core = QUE } }
-			militancy = -10
-		}
-		CAN_60 = {
-			add_core = QUE
-			remove_core = RPL
-		}
-		QUE = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
+		major = yes
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
 			}
+			war = no
+			OR = {
+				exists = CAN
+				AND = {
+					NOT = { 65 = { is_core = CAN } } # Quebec City
+					year = 1870
+				}
+			}
+			any_owned_province = { is_core = QUE }
+			NOT = { exists = QUE }
+			is_possible_vassal = QUE
 		}
-		release_vassal = QUE
-		QUE = {
-			prestige = -100
-			relation = { who = USA value = 200 }
-		}
-		relation = {
-			who = QUE
-			value = 200
-		}
-		diplomatic_influence = {
-			who = QUE
-			value = 200
-		}
-		any_pop = { consciousness = 1 }
-		ai_chance = {
-			factor = 80
+
+		mean_time_to_happen = {
+			months = 12
 			modifier = {
-				factor = 0
-				OR = {
-					government = proletarian_dictatorship
-					government = bourgeois_dictatorship
-					government = fascist_dictatorship
-					government = presidential_dictatorship
+				factor = 10
+				has_country_flag = QUE_independence_refused
+			}
+			modifier = {
+				factor = 0.8
+				any_state = {
+					any_owned_province = { is_core = QUE }
+					average_militancy = 3
 				}
 			}
 			modifier = {
-				factor = 0.25
-				government = absolute_monarchy
-			}
-			modifier = {
-				factor = 1.5
-				government = democracy
-			}
-			modifier = {
 				factor = 0.5
-				war_policy = jingoism
+				year = 1875
+				NOT = { has_country_flag = QUE_independence_refused }
 			}
-			modifier = {
-				factor = 0.75
-				war_policy = pro_military
+		}
+
+		# Join it to Canada
+		option = {
+			name = "EVTOPTD44316"
+
+			QUE = {
+				all_core = {
+					remove_core = THIS
+					add_core = CAN
+				}
 			}
-			modifier = {
-				factor = 1.25
-				war_policy = anti_military
+			random_owned = {
+				limit = { CAN = { exists = yes } }
+				owner = {
+					any_owned = {
+						limit = { is_core = QUE }
+						secede_province = CAN
+					}
+				}
 			}
-			modifier = {
-				factor = 1.5
-				war_policy = pacifism
+			random_country = {
+				limit = {
+					is_sphere_leader_of = CAN
+					NOT = { tag = THIS }
+				}
+				diplomatic_influence = { who = CAN value = -100 }
 			}
-			modifier = {
-				factor = 1.2
-				militancy = 3
+			diplomatic_influence = { who = CAN value = 100 }
+			relation = { who = CAN value = 50 }
+
+			ai_chance = {
+				factor = 60
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
 			}
-			modifier = {
-				factor = 1.2
-				militancy = 5
-			}
-			
-		}	
-	}
-	option = {
-		name = "EVTOPTB44315"
-		set_country_flag = QUE_independence_refused
-		any_owned = {
-			limit = { is_core = QUE }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 1095
-			}
+		}
+
+		# Release Quebec as a dominion
+		option = {
+			name = "EVTOPTA44315"
+
+			clr_country_flag = QUE_independence_refused
+			prestige = -10
+			badboy = -3
 			any_pop = {
-				limit = { has_pop_culture = french_canadian }
-				militancy = 6
-				consciousness = 6
+				limit = { location = { is_core = QUE } }
+				militancy = -10
+			}
+			CAN_60 = { # Northern Quebec
+				add_core = QUE
+				remove_core = RPL
+			}
+			QUE = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
+			}
+			release_vassal = QUE
+			QUE = {
+				prestige = -100
+				relation = { who = USA value = 200 }
+			}
+			relation = {
+				who = QUE
+				value = 200
+			}
+			diplomatic_influence = {
+				who = QUE
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+
 			}
 		}
-		ai_chance = {
-			factor = 20
-			modifier = {
-				factor = 1.75
-				government = absolute_monarchy
+
+		# Refuse independence - get nationalist agitation
+		option = {
+			name = "EVTOPTB44315"
+
+			set_country_flag = QUE_independence_refused
+			any_owned = {
+				limit = { is_core = QUE }
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+				any_pop = {
+					limit = { has_pop_culture = french_canadian }
+					militancy = 6
+					consciousness = 6
+				}
 			}
-			modifier = {
-				factor = 0.5
-				government = democracy
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 1.75
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 0.5
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 3
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 5
+				}
 			}
-			modifier = {
-				factor = 1.5
-				war_policy = jingoism
+		}
+
+		# Play as Quebec
+		option = {
+			name = "EVTOPTC44316"
+
+			clr_country_flag = QUE_independence_refused
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = QUE } }
+				militancy = -10
 			}
-			modifier = {
-				factor = 1.25
-				war_policy = pro_military
+			CAN_60 = { # Northern Quebec
+				add_core = QUE
+				remove_core = RPL
 			}
-			modifier = {
-				factor = 0.75
-				war_policy = anti_military
+			QUE = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
 			}
+			release_vassal = QUE
+			QUE = {
+				prestige = -100
+				relation = { who = USA value = 200 }
+			}
+			relation = {
+				who = QUE
+				value = 200
+			}
+			diplomatic_influence = {
+				who = QUE
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+			change_tag_no_core_switch = QUE
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: The Maritime Dominion - release Maritime Union as dominion or not?
+	country_event = {
+		id = 44317
+		title = "EVTNAME44317"
+		desc = "EVTDESC44317"
+		picture = "danishgovernment"
+
+		major = yes
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			war = no
+			OR = {
+				exists = CAN
+				AND = {
+					NOT = { 71 = { is_core = CAN } } # Halifax
+					year = 1880
+				}
+			}
+			any_owned_province = { is_core = MRU }
+			NOT = { exists = MRU }
+			is_possible_vassal = MRU
+		}
+
+		mean_time_to_happen = {
+			months = 24
 			modifier = {
-				factor = 0.5
-				war_policy = pacifism
+				factor = 10
+				has_country_flag = MRU_independence_refused
 			}
 			modifier = {
 				factor = 0.8
-				militancy = 3
-			}
-			modifier = {
-				factor = 0.8
-				militancy = 5
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTC44316"
-		clr_country_flag = QUE_independence_refused
-		prestige = -10
-		badboy = -3
-		any_pop = {
-			limit = { location = { is_core = QUE } }
-			militancy = -10
-		}
-		CAN_60 = {
-			add_core = QUE
-			remove_core = RPL
-		}
-		QUE = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
-			}
-		}
-		release_vassal = QUE
-		QUE = {
-			prestige = -100
-			relation = { who = USA value = 200 }
-		}
-		relation = {
-			who = QUE
-			value = 200
-		}
-		diplomatic_influence = {
-			who = QUE
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		change_tag_no_core_switch = QUE
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
-
-#The Maritime Dominion
-country_event = {
-	id = 44317
-	title = "EVTNAME44317"
-	desc = "EVTDESC44317"
-	picture = "danishgovernment"
-
-	major = yes
-
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		war = no
-		OR = {
-			exists = CAN
-			AND = {
-				NOT = { 71 = { is_core = CAN } }
-				year = 1880
-			}
-		}
-		any_owned_province = { is_core = MRU }
-		NOT = { exists = MRU }
-		is_possible_vassal = MRU
-	}
-
-	mean_time_to_happen = {
-		months = 24
-		modifier = {
-			factor = 10
-			has_country_flag = MRU_independence_refused
-		}
-		modifier = {
-			factor = 0.8
-			any_state = {
-				any_owned_province = { is_core = MRU }
-				average_militancy = 3
-			}
-		}
-		modifier = {
-			factor = 0.5
-			year = 1885
-			NOT = { has_country_flag = MRU_independence_refused }
-		}
-	}
-
-	option = {
-		name = "EVTOPTA44315"
-		clr_country_flag = MRU_independence_refused
-		prestige = -10
-		badboy = -3
-		any_pop = {
-			limit = { location = { is_core = MRU } }
-			militancy = -10
-		}
-		MRU = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
-			}
-		}
-		any_owned = { 
-			limit = { 
-				is_core = MRU
-			}
-			secede_province = MRU
-		}
-		create_vassal = MRU
-		MRU = {
-			government = dominion
-			prestige = -100
-			relation = { who = USA value = 200 }
-		}
-		relation = {
-			who = MRU
-			value = 200
-		}
-		diplomatic_influence = {
-			who = MRU
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		ai_chance = {
-			factor = 80
-			modifier = {
-				factor = 0
-				OR = {
-					government = proletarian_dictatorship
-					government = bourgeois_dictatorship
-					government = fascist_dictatorship
-					government = presidential_dictatorship
+				any_state = {
+					any_owned_province = { is_core = MRU }
+					average_militancy = 3
 				}
 			}
 			modifier = {
-				factor = 0.25
-				government = absolute_monarchy
-			}
-			modifier = {
-				factor = 1.5
-				government = democracy
-			}
-			modifier = {
 				factor = 0.5
-				war_policy = jingoism
+				year = 1885
+				NOT = { has_country_flag = MRU_independence_refused }
 			}
-			modifier = {
-				factor = 0.75
-				war_policy = pro_military
+		}
+
+		# Join it to Canada
+		option = {
+			name = "EVTOPTD44316"
+
+			MRU = {
+				all_core = {
+					remove_core = THIS
+					add_core = CAN
+				}
 			}
-			modifier = {
-				factor = 1.25
-				war_policy = anti_military
+			random_owned = {
+				limit = { CAN = { exists = yes } }
+				owner = {
+					any_owned = {
+						limit = { is_core = MRU }
+						secede_province = CAN
+					}
+				}
 			}
-			modifier = {
-				factor = 1.5
-				war_policy = pacifism
+			random_country = {
+				limit = {
+					is_sphere_leader_of = CAN
+					NOT = { tag = THIS }
+				}
+				diplomatic_influence = { who = CAN value = -100 }
 			}
-			modifier = {
-				factor = 1.2
-				militancy = 3
+			diplomatic_influence = { who = CAN value = 100 }
+			relation = { who = CAN value = 50 }
+
+			ai_chance = {
+				factor = 60
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
 			}
-			modifier = {
-				factor = 1.2
-				militancy = 5
-			}
-			
-		}	
-	}
-	option = {
-		name = "EVTOPTB44315"
-		set_country_flag = MRU_independence_refused
-		any_owned = {
-			limit = { is_core = MRU }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 1095
-			}
+		}
+
+		# Release Maritime Union as dominon
+		option = {
+			name = "EVTOPTA44315"
+
+			clr_country_flag = MRU_independence_refused
+			prestige = -10
+			badboy = -3
 			any_pop = {
-				limit = { has_pop_culture = anglo_canadian }
-				militancy = 6
-				consciousness = 6
+				limit = { location = { is_core = MRU } }
+				militancy = -10
+			}
+			MRU = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
+			}
+			any_owned = {
+				limit = { is_core = MRU }
+				secede_province = MRU
+			}
+			create_vassal = MRU
+			MRU = {
+				government = dominion
+				prestige = -100
+				relation = { who = USA value = 200 }
+			}
+			relation = {
+				who = MRU
+				value = 200
+			}
+			diplomatic_influence = {
+				who = MRU
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
 			}
 		}
-		ai_chance = {
-			factor = 20
-			modifier = {
-				factor = 1.75
-				government = absolute_monarchy
+
+		# Refuse independence - get nationalist agitation
+		option = {
+			name = "EVTOPTB44315"
+
+			set_country_flag = MRU_independence_refused
+			any_owned = {
+				limit = { is_core = MRU }
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+				any_pop = {
+					limit = { has_pop_culture = anglo_canadian }
+					militancy = 6
+					consciousness = 6
+				}
 			}
-			modifier = {
-				factor = 0.5
-				government = democracy
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 1.75
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 0.5
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 3
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 5
+				}
 			}
-			modifier = {
-				factor = 1.5
-				war_policy = jingoism
+		}
+
+		# Play as Maritime Union
+		option = {
+			name = "EVTOPTC44317"
+
+			clr_country_flag = MRU_independence_refused
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = MRU } }
+				militancy = -10
 			}
-			modifier = {
-				factor = 1.25
-				war_policy = pro_military
+			MRU = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
 			}
-			modifier = {
-				factor = 0.75
-				war_policy = anti_military
+			release_vassal = MRU
+			MRU = {
+				government = dominion
+				prestige = -100
+				relation = { who = USA value = 200 }
 			}
+			relation = {
+				who = MRU
+				value = 200
+			}
+			diplomatic_influence = {
+				who = MRU
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+			change_tag_no_core_switch = MRU
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: The Columbian Dominion - release British Columbia as dominion or not?
+	country_event = {
+		id = 44318
+		title = "EVTNAME44318"
+		desc = "EVTDESC44318"
+		picture = "danishgovernment"
+
+		major = yes
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			war = no
+			has_country_flag = british_columbia_organized
+			OR = {
+				CAN = { has_country_flag = refused_ruperts_land }
+				CAN = { has_country_flag = refused_columbia }
+				AND = {
+					year = 1900
+					CAN = { exists = no }
+				}
+			}
+			OR = {
+				any_owned_province = { is_core = COL }
+				is_possible_vassal = COL
+				COL = {
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								in_sphere = THIS
+								vassal_of = THIS
+								war = no
+							}
+						}
+					}
+				}
+			}
+			NOT = { exists = COL }
+		}
+
+		mean_time_to_happen = {
+			months = 36
 			modifier = {
-				factor = 0.5
-				war_policy = pacifism
+				factor = 10
+				has_country_flag = COL_independence_refused
 			}
 			modifier = {
 				factor = 0.8
-				militancy = 3
+				any_state = {
+					any_owned_province = { is_core = COL }
+					average_militancy = 3
+				}
 			}
 			modifier = {
-				factor = 0.8
-				militancy = 5
+				factor = 0.5
+				year = 1910
+				NOT = { has_country_flag = COL_independence_refused }
+			}
+			modifier = {
+				factor = 0.5
+				has_country_flag = CAN_independence_refused
 			}
 		}
-	}
-	
-	option = {
-		name = "EVTOPTC44317"
-		clr_country_flag = MRU_independence_refused
-		prestige = -10
-		badboy = -3
-		any_pop = {
-			limit = { location = { is_core = MRU } }
-			militancy = -10
-		}
-		MRU = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
-			}
-		}
-		release_vassal = MRU
-		MRU = {
-			government = dominion
-			prestige = -100
-			relation = { who = USA value = 200 }
-		}
-		relation = {
-			who = MRU
-			value = 200
-		}
-		diplomatic_influence = {
-			who = MRU
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		change_tag_no_core_switch = MRU
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
 
-#The Columbian Dominion
-country_event = {
-	id = 44318
-	title = "EVTNAME44318"
-	desc = "EVTDESC44318"
-	picture = "danishgovernment"
+		# Join it to Canada
+		option = {
+			name = "EVTOPTD44316"
 
-	major = yes
-
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		war = no
-		has_country_flag = british_columbia_organized
-		OR = {
-			CAN = { has_country_flag = refused_ruperts_land }
-			CAN = { has_country_flag = refused_columbia }
-			AND = {
-				year = 1900
-				CAN = { exists = no }
-			}
-		}
-		OR = {
-			any_owned_province = { is_core = COL }
-			is_possible_vassal = COL
 			COL = {
 				all_core = {
+					remove_core = THIS
+					add_core = CAN
+				}
+			}
+			random_owned = {
+				limit = { CAN = { exists = yes } }
+				owner = {
+					any_owned = {
+						limit = { is_core = COL }
+						secede_province = CAN
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_sphere_leader_of = CAN
+					NOT = { tag = THIS }
+				}
+				diplomatic_influence = { who = CAN value = -100 }
+			}
+			diplomatic_influence = { who = CAN value = 100 }
+			relation = { who = CAN value = 50 }
+
+			ai_chance = {
+				factor = 60
+				modifier = {
+					factor = 0
 					OR = {
-						owned_by = THIS
-						owner = {
-							in_sphere = THIS
-							vassal_of = THIS
-							war = no
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
+			}
+		}
+
+		# Release British Columbia as a dominion
+		option = {
+			name = "EVTOPTA44315"
+
+			clr_country_flag = COL_independence_refused
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = COL } }
+				militancy = -10
+			}
+			RPL = {
+				any_owned = {
+					limit = { is_core = COL }
+					secede_province = ENG
+				}
+			}
+			COL = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
+			}
+			any_owned = {
+				limit = { is_core = COL }
+				secede_province = COL
+			}
+			create_vassal = COL
+			COL = {
+				government = dominion
+				prestige = -100
+				relation = { who = USA value = 200 }
+			}
+			relation = {
+				who = COL
+				value = 200
+			}
+			diplomatic_influence = {
+				who = COL
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+			COL = { capital = 13 } # Vancouver
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+
+			}
+		}
+
+		# Refuse independence - get nationalist agitation
+		option = {
+			name = "EVTOPTB44315"
+
+			set_country_flag = COL_independence_refused
+			any_owned = {
+				limit = { is_core = COL }
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+				any_pop = {
+					limit = { has_pop_culture = anglo_canadian }
+					militancy = 6
+					consciousness = 6
+				}
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 1.75
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 0.5
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 3
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 5
+				}
+			}
+		}
+
+		# Play as British Columbia
+		option = {
+			name = "EVTOPTA44318"
+
+			clr_country_flag = COL_independence_refused
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = COL } }
+				militancy = -10
+			}
+			COL = {
+				all_core = {
+					change_controller = ENG
+					remove_core = ENG
+				}
+			}
+			release_vassal = COL
+			COL = {
+				government = dominion
+				prestige = -100
+				relation = { who = USA value = 200 }
+			}
+			relation = {
+				who = COL
+				value = 200
+			}
+			diplomatic_influence = {
+				who = COL
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+			change_tag_no_core_switch = COL
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: The Newfoundland Dominion - release Newfoundland as dominion or not?
+	country_event = {
+
+		id = 44330
+
+		title = "EVTNAME44330"
+		desc = "EVTDESC44330"
+		picture = "danishgovernment"
+
+		major = yes
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			war = no
+			OR = {
+				exists = CAN
+				AND = {
+					NOT = { 74 = { is_core = CAN } } # Halifax
+					year = 1907
+				}
+			}
+			any_owned_province = { is_core = NEW }
+			NOT = { exists = NEW }
+			is_possible_vassal = NEW
+			NOT = { capital_scope = { continent = north_america } }
+		}
+
+		mean_time_to_happen = {
+			months = 6
+			modifier = {
+				factor = 10
+				has_country_flag = NEW_independence_refused
+			}
+			modifier = {
+				factor = 0.8
+				any_state = {
+					any_owned_province = { is_core = NEW }
+					average_militancy = 3
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_state = {
+					any_owned_province = { is_core = NEW }
+					average_militancy = 4
+				}
+			}
+			modifier = {
+				factor = 0.5
+				year = 1912
+				NOT = { has_country_flag = NEW_independence_refused }
+			}
+			modifier = {
+				factor = 0.01
+				exists = NZL
+			}
+		}
+
+		# Join it to Canada
+		option = {
+			name = "EVTOPTD44316"
+
+			NEW = {
+				all_core = {
+					remove_core = THIS
+					add_core = CAN
+				}
+			}
+			random_owned = {
+				limit = { CAN = { exists = yes } }
+				owner = {
+					any_owned = {
+						limit = { is_core = NEW }
+						secede_province = CAN
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_sphere_leader_of = CAN
+					NOT = { tag = THIS }
+				}
+				diplomatic_influence = { who = CAN value = -100 }
+			}
+			diplomatic_influence = { who = CAN value = 100 }
+			relation = { who = CAN value = 50 }
+
+			ai_chance = {
+				factor = 60
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
+			}
+		}
+
+		# Release Newfoundland as dominon
+		option = {
+			name = "EVTOPTA44315"
+
+			clr_country_flag = NEW_independence_refused
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = NEW } }
+				militancy = -10
+			}
+			NEW = { all_core = { remove_core = THIS remove_core = ENG } }
+			any_owned = {
+				limit = { is_core = NEW }
+				secede_province = NEW
+			}
+			create_vassal = NEW
+			NEW = {
+				prestige = -80
+				government = dominion
+			}
+			relation = {
+				who = NEW
+				value = 200
+			}
+			diplomatic_influence = {
+				who = NEW
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
+			}
+		}
+
+		# Refuse independence - get nationalist agitation
+		option = {
+			name = "EVTOPTB44315"
+
+			set_country_flag = NEW_independence_refused
+			any_owned = {
+				limit = { is_core = NEW }
+				add_province_modifier = {
+					name = nationalist_agitation
+					duration = 1095
+				}
+				any_pop = { militancy = 3 }
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 1.75
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 0.5
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 3
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 5
+				}
+			}
+		}
+
+		# Play as Newfoundland
+		option = {
+			name = "EVTOPTA44330"
+
+			clr_country_flag = NEW_independence_refused
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = NEW } }
+				militancy = -10
+			}
+			NEW = { all_core = { remove_core = THIS remove_core = ENG } }
+			release_vassal = NEW
+			NEW = {
+				prestige = -80
+			}
+			relation = {
+				who = NEW
+				value = 200
+			}
+			diplomatic_influence = {
+				who = NEW
+				value = 200
+			}
+			any_pop = { consciousness = 1 }
+			change_tag_no_core_switch = NEW
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: The Alaska Dominion - release Alaska as dominion or not?
+	country_event = {
+		id = 44340
+		title = "EVTNAME44340"
+		desc = "EVTDESC44340"
+		picture = "alaska"
+
+		trigger = {
+			OR = {
+				tag = ENG
+				tag = ENL
+			}
+			OR = {
+				exists = CAN
+				AND = {
+					NOT = { 1 = { is_core = CAN } } # Sitka
+					year = 1880
+				}
+			}
+			any_owned_province = {
+				region = USA_1
+				controlled_by = THIS
+				any_neighbor_province = { owned_by = CAN }
+			}
+			NOT = { exists = LSK }
+			is_possible_vassal = LSK
+			NOT = { capital_scope = { continent = north_america } }
+		}
+
+		mean_time_to_happen = {
+			months = 6
+		}
+
+		# Join it to Canada
+		option = {
+			name = "EVTOPTD44316"
+
+			USA_1 = {
+				remove_core = THIS
+				add_core = CAN
+			}
+			random_owned = {
+				limit = { CAN = { exists = yes } }
+				owner = {
+					any_owned = {
+						limit = { region = USA_1 }
+						secede_province = CAN
+					}
+				}
+			}
+			random_country = {
+				limit = {
+					is_sphere_leader_of = CAN
+					NOT = { tag = THIS }
+				}
+				diplomatic_influence = { who = CAN value = -100 }
+			}
+			diplomatic_influence = { who = CAN value = 100 }
+			relation = { who = CAN value = 50 }
+
+			ai_chance = {
+				factor = 70
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
+			}
+		}
+
+		# Release Alaska as dominon
+		option = {
+			name = "EVTOPTA44315"
+
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = LSK } }
+				militancy = -10
+			}
+			LSK = { all_core = { remove_core = ENG remove_core = THIS } }
+			release_vassal = LSK
+			LSK = {
+				prestige = -100
+				primary_culture = anglo_canadian
+				add_accepted_culture = british
+				relation = { who = CAN value = 200 }
+			}
+			relation = {
+				who = LSK
+				value = 200
+			}
+			diplomatic_influence = {
+				who = LSK
+				value = 200
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					OR = {
+						government = proletarian_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = presidential_dictatorship
+					}
+				}
+				modifier = {
+					factor = 0.25
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 1.5
+					government = democracy
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 3
+				}
+				modifier = {
+					factor = 1.2
+					militancy = 5
+				}
+				modifier = {
+					factor = 2.0
+					exists = CAN
+				}
+			}
+		}
+
+		# Keep it as a colony
+		option = {
+			name = "EVTOPTB44315"
+
+			USA_1 = { remove_core = THIS }
+			any_owned = {
+				limit = { is_core = LSK }
+				add_province_modifier = { name = nationalist_agitation duration = 1095 }
+				any_pop = { militancy = 3 }
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 1.75
+					government = absolute_monarchy
+				}
+				modifier = {
+					factor = 0.5
+					government = democracy
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.25
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0.75
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = pacifism
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 3
+				}
+				modifier = {
+					factor = 0.8
+					militancy = 5
+				}
+			}
+		}
+
+		# Play as Alaska
+		option = {
+			name = "EVTOPTA44340"
+
+			prestige = -10
+			badboy = -3
+			any_pop = {
+				limit = { location = { is_core = LSK } }
+				militancy = -10
+			}
+			LSK = { all_core = { remove_core = ENG remove_core = THIS } }
+			release_vassal = LSK
+			LSK = {
+				prestige = -100
+				add_accepted_culture = anglo_canadian
+				relation = { who = CAN value = 200 }
+			}
+			relation = {
+				who = LSK
+				value = 200
+			}
+			diplomatic_influence = {
+				who = LSK
+				value = 200
+			}
+			change_tag_no_core_switch = LSK
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+### Post-Independence Events ###
+
+	#Description: The Pacific Scandal
+	country_event = {
+		id = 44300
+		title = "EVTNAME44300"
+		desc = "EVTDESC44300"
+		picture = "train"
+
+		trigger = {
+			tag = CAN
+			year = 1872
+			has_country_flag = build_the_cnr
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen =  {
+			months = 12
+			modifier = {
+				factor = 0.75 #increase likelihood to happen
+				year = 1873
+			}
+			modifier = {
+				factor = 0.95 #increase likelihood to happen
+				year = 1875
+			}
+		}
+
+		# MacDonald resigns, pops become liberal and gain consciousness
+		option = {
+			name = "EVTOPTA44300"
+
+			any_pop = {
+				ideology = {
+					factor = 0.1
+					value = liberal
+				}
+				scaled_consciousness = {
+					factor = 3
+					ideology = liberal
+				}
+			}
+		}
+
+		# MacDonald stays, pops become liberal and gain militancy
+		option = {
+			name = "EVTOPTB44300"
+
+			any_pop = {
+				ideology = {
+					factor = 0.1
+					value = liberal
+				}
+				scaled_militancy = {
+					factor = 3
+					ideology = liberal
+				}
+			}
+		}
+	}
+
+	#Description: Joining Confederation - Triggered for Canada when Canadian minors ask to join
+	country_event = {
+		id = 44325
+		title = "EVTNAME44325"
+		desc = "EVTDESC44325"
+		picture = "confederation"
+
+		is_triggered_only = yes
+
+		# Accept
+		option = {
+			name = "EVTOPTA44325"
+
+			prestige = 5
+			FROM = { all_core = { add_core = CAN } }
+			random_country = {
+				limit = {
+					OR = {
+						tag = FROM
+						tag = RPL
+					}
+				}
+				all_core = { remove_core = RPL }
+			}
+			inherit = FROM
+
+			ai_chance = { factor = 100 }
+		}
+
+		# Reject
+		option = {
+			name = "EVTOPTB44325"
+
+			prestige = -10
+			relation = { who = FROM value = -50 }
+			any_pop = { militancy = 1 }
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	## The Rupert's Land Act ##
+
+		#Description: The Rupert's Land Act 1/3 - choose whether to add the Rupert's Land territories to Canada
+		country_event = {
+			id = 44320
+			title = "EVTNAME44320"
+			desc = "EVTDESC44320"
+			picture = "deliberation"
+
+			trigger = {
+				OR = {
+					tag = ENG
+					tag = ENL
+				}
+				war = no
+				money = 101000
+				OR = {
+					government = hms_government
+					government = democracy
+				}
+				OR = {
+					any_owned_province = {
+						OR = {
+							region = USA_1
+							region = ENG_6
+							region = ENG_9
+							region = ENG_22
+							region = ENG_30
+							region = ENG_36
+							region = CAN_50
+							region = CAN_60
+						}
+					}
+					RPL = {
+						exists = yes
+						vassal_of = THIS
+					}
+				}
+				NOT = { has_country_flag = refused_ruperts_land }
+				CAN = {
+					war = no
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						in_sphere = THIS
+						AND = {
+							relation = { who = THIS value = 100 }
+							OR = {
+								government = dominion
+								government = hms_government
+								government = democracy
+							}
+						}
+					}
+					NOT = { has_country_flag = refused_ruperts_land }
+					NOT = { has_country_flag = agreed_ruperts_land }
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 36
+				modifier = {
+					factor = 0.2
+					year = 1870
+				}
+			}
+
+			# Incorporate them
+			option = {
+				name = "EVTOPTA44320"
+
+				badboy = -3
+				ENG_6 = { remove_core = THIS }	# Yukon
+				ENG_9 = { remove_core = THIS }	# Northwest Territories
+				ENG_22 = { remove_core = THIS }	# Alberta
+				ENG_30 = { remove_core = THIS }	# Saskatchewan
+				ENG_36 = { remove_core = THIS }	# Manitoba
+				CAN_50 = { remove_core = THIS }	# Northern Ontario
+				CAN_60 = { remove_core = THIS }	# Northern Quebec
+				random_owned = {
+					limit = { region = USA_1 }	# Alaska
+					USA_1 = {
+						remove_core = THIS
+						remove_core = RUS
+					}
+				}
+				random_owned = {
+					limit = { owner = { NOT = { has_country_flag = british_columbia_organized } } }
+					CAN_13 = { remove_core = THIS }	# Columbia
+					COL = { all_core = { remove_core = THIS } }
+				}
+				CAN = { country_event = 44321 }
+
+				ai_chance = {
+					factor = 100
+					modifier = {
+						factor = 1.5
+						ruling_party_ideology = liberal
+					}
+					modifier = {
+						factor = 0.5
+						ruling_party_ideology = reactionary
+					}
+				}
+			}
+
+			# Don't incorporate them
+			option = {
+				name = "EVTOPTB44320"
+
+				set_country_flag = refused_ruperts_land
+				ENG_6 = { remove_core = THIS }	# Yukon
+				ENG_9 = { remove_core = THIS }	# Northwest Territories
+				ENG_22 = { remove_core = THIS }	# Alberta
+				ENG_30 = { remove_core = THIS }	# Saskatchewan
+				ENG_36 = { remove_core = THIS }	# Manitoba
+				CAN_50 = { remove_core = THIS }	# Northern Ontario
+				CAN_60 = { remove_core = THIS }	# Northern Quebec
+				random_owned = {
+					limit = { region = USA_1 }	# Alaska
+					USA_1 = {
+						remove_core = THIS
+						remove_core = RUS
+					}
+				}
+				random_owned = {
+					limit = { owner = { NOT = { has_country_flag = british_columbia_organized } } }
+					CAN_13 = { remove_core = THIS }	# Columbia
+					COL = { all_core = { remove_core = THIS } }
+				}
+				CAN = { country_event = 44322 }
+
+				ai_chance = {
+					factor = 0
+					modifier = {
+						factor = 0.5
+						ruling_party_ideology = liberal
+					}
+					modifier = {
+						factor = 2
+						ruling_party_ideology = reactionary
+					}
+				}
+			}
+		}
+
+		#Description: The Rupert's Land Act 2/3 - Triggered for Canada if the UK offers them the Rupert's Land territories
+		country_event = {
+			id = 44321
+			title = "EVTNAME44320"
+			desc = "EVTDESC44321"
+			news = yes
+			news_title = "EVTNAME44320_NEWS_TITLE"
+			news_desc_long = "EVTDESC44320_NEWS_LONG"
+			news_desc_medium = "EVTDESC44320_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44320_NEWS_SHORT"
+			picture = "deliberation"
+
+			is_triggered_only = yes
+			major = yes
+
+			# Accept the offer
+			option = {
+				name = "EVTOPTA44321"
+
+				set_country_flag = agreed_ruperts_land
+				prestige = 10
+				FROM = { treasury = -100000 }
+				random_country = {
+					limit = { tag = FROM any_owned_province = { region = USA_1 } } # Alaska
+					USA_1 = { add_core = CAN }
+				}
+				ENG_6 = { remove_core = RPL add_core = CAN } # Yukon
+				ENG_9 = {  remove_core = RPL add_core = CAN } # Northwest Territories
+				random_country = {
+					limit = { tag = FROM NOT = { has_country_flag = british_columbia_organized } }
+					CAN_13 = { remove_core = RPL add_core = CAN } # Columbia
+					COL = { all_core = { add_core = CAN } }
+					set_country_flag = british_columbia_organized
+				}
+				ENG_22 = { remove_core = RPL add_core = CAN } # Alberta
+				ENG_30 = { remove_core = RPL add_core = CAN } # Saskatchewan
+				ENG_36 = { remove_core = RPL add_core = CAN } # Manitoba
+				CAN_50 = { remove_core = RPL add_core = CAN } # Northern Ontario
+				random_owned = {
+					limit = { province_id = 65 }
+					CAN_60 = { remove_core = RPL add_core = CAN } # Northern Quebec
+				}
+				RPL = { all_core = { remove_core = RPL } }
+				random_country = { # If RPL is a player and Canada is not, RPL will become Canada
+					limit = {
+						tag = RPL
+						ai = no
+						THIS = { ai = yes }
+						exists = yes
+						vassal_of = FROM
+					}
+					all_core = { remove_core = RPL }
+					inherit = CAN
+					change_tag = CAN
+					random_owned = {
+						limit = { province_id = 46 }
+						owner = { capital = 46 }
+					}
+				}
+				random_country = { # Else annex RPL to Canada
+					limit = {
+						tag = RPL
+						OR = {
+							ai = yes
+							THIS = { ai = no }
+						}
+						exists = yes
+						vassal_of = FROM
+					}
+					all_core = { remove_core = RPL }
+					annex_to = CAN
+				}
+				random_country = { # Unless RPL is independent, then re-add cores for them on all owned CAN cores
+					limit = {
+						tag = RPL
+						exists = yes
+						NOT = { vassal_of = FROM }
+					}
+					any_owned = {
+						limit = { is_core = CAN }
+						add_core = RPL
+					}
+				}
+				FROM = {
+					any_owned = {
+						limit = { is_core = CAN }
+						any_pop = { militancy = -6 }
+						secede_province = CAN
+					}
+				}
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Reject the offer
+			option = {
+				name = "EVTOPTB44321"
+
+				set_country_flag = refused_ruperts_land
+				FROM = { set_country_flag = refused_ruperts_land }
+				prestige = -20
+				ENG_6 = { add_core = CAN }	# Yukon
+				ENG_9 = { add_core = CAN }	# Northwest Territories
+				ENG_22 = { add_core = CAN }	# Alberta
+				ENG_30 = { add_core = CAN }	# Saskatchewan
+				ENG_36 = { add_core = CAN }	# Manitoba
+				CAN_50 = { add_core = CAN }	# Northern Ontario
+				random_owned = {
+					limit = { owner = { owns = 65 } }
+					CAN_60 = { add_core = CAN }	# Northern Quebec
+				}
+				FROM = {
+					random_owned = {
+						limit = { region = USA_1 }	# Alaska
+						USA_1 = { add_core = CAN }
+					}
+					random_owned = {
+						limit = { owner = { NOT = { has_country_flag = british_columbia_organized } } }
+						CAN_13 = { add_core = CAN }	# Columbia
+						COL = { all_core = { add_core = CAN } }
+						owner = { set_country_flag = british_columbia_organized }
+					}
+				}
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Rupert's Land Act 3/3 - Triggered for Canada if the UK doesn't offer them the Rupert's Land territories
+		country_event = {
+			id = 44322
+			title = "EVTNAME44322"
+			desc = "EVTDESC44322"
+			news = yes
+			news_desc_long = "EVTDESC44322_NEWS_LONG"
+			news_desc_medium = "EVTDESC44322_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44322_NEWS_SHORT"
+			picture = "deliberation"
+
+			is_triggered_only = yes
+			major = yes
+
+			option = {
+				name = "EVTOPTA44322"
+
+				set_country_flag = refused_ruperts_land
+				prestige = -20
+				ENG_6 = { add_core = CAN }	# Yukon
+				ENG_9 = { add_core = CAN }	# Northwest Territories
+				ENG_22 = { add_core = CAN }	# Alberta
+				ENG_30 = { add_core = CAN }	# Saskatchewan
+				ENG_36 = { add_core = CAN }	# Manitoba
+				CAN_50 = { add_core = CAN }	# Northern Ontario
+				relation = { who = FROM value = -100 }
+				random_owned = {
+					limit = { owner = { owns = 65 } }
+					CAN_60 = { add_core = CAN }	# Northern Quebec
+				}
+				FROM = {
+					random_owned = {
+						limit = { region = USA_1 }	# Alaska
+						USA_1 = { add_core = CAN }
+					}
+					random_owned = {
+						limit = { owner = { NOT = { has_country_flag = british_columbia_organized } } }
+						CAN_13 = { add_core = CAN }
+						COL = { all_core = { add_core = CAN } }
+						owner = { set_country_flag = british_columbia_organized }
+					}
+				}
+				random_owned = {
+					limit = { owner = { vassal_of = FROM } }
+					owner = {
+						any_pop = {
+							limit = {
+								has_pop_culture = anglo_canadian
+								location = { is_core = CAN }
+							}
+							militancy = 8
 						}
 					}
 				}
 			}
 		}
-		NOT = { exists = COL }
-	}
 
-	mean_time_to_happen = {
-		months = 36
-		modifier = {
-			factor = 10
-			has_country_flag = COL_independence_refused
-		}
-		modifier = {
-			factor = 0.8
-			any_state = {
-				any_owned_province = { is_core = COL }
-				average_militancy = 3
-			}
-		}
-		modifier = {
-			factor = 0.5
-			year = 1910
-			NOT = { has_country_flag = COL_independence_refused }
-		}
-		modifier = {
-			factor = 0.5
-			has_country_flag = CAN_independence_refused
-		}
-	}
+	## British Columbia asks to join Canada ##
 
-	option = {
-		name = "EVTOPTA44315"
-		clr_country_flag = COL_independence_refused
-		prestige = -10
-		badboy = -3
-		any_pop = {
-			limit = { location = { is_core = COL } }
-			militancy = -10
-		}
-		RPL = {
-			any_owned = {
-				limit = {
+		#Description: British Columbia asks to join Canada 1/2 - the UK can approve or disapprove
+		country_event = {
+			id = 44350
+			title = "EVTNAME44350"
+			desc = "EVTDESC44350"
+			picture = "deliberation"
+
+			trigger = {
+				war = no
+				OR = {
+					tag = ENG
+					tag = ENL
+				}
+				OR = {
+					government = hms_government
+					government = democracy
+				}
+				has_country_flag = british_columbia_organized
+				any_owned_province = {
 					is_core = COL
+					any_neighbor_province = { owned_by = CAN }
 				}
-				secede_province = ENG
-			}
-		}
-		COL = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
-			}
-		}
-		any_owned = { 
-			limit = { 
-				is_core = COL
-			}
-			secede_province = COL
-		}
-		create_vassal = COL
-		COL = {
-			government = dominion
-			prestige = -100
-			relation = { who = USA value = 200 }
-		}
-		relation = {
-			who = COL
-			value = 200
-		}
-		diplomatic_influence = {
-			who = COL
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		COL = { capital = 13 }
-		ai_chance = {
-			factor = 80
-			modifier = {
-				factor = 0
-				OR = {
-					government = proletarian_dictatorship
-					government = bourgeois_dictatorship
-					government = fascist_dictatorship
-					government = presidential_dictatorship
-				}
-			}
-			modifier = {
-				factor = 0.25
-				government = absolute_monarchy
-			}
-			modifier = {
-				factor = 1.5
-				government = democracy
-			}
-			modifier = {
-				factor = 0.5
-				war_policy = jingoism
-			}
-			modifier = {
-				factor = 0.75
-				war_policy = pro_military
-			}
-			modifier = {
-				factor = 1.25
-				war_policy = anti_military
-			}
-			modifier = {
-				factor = 1.5
-				war_policy = pacifism
-			}
-			modifier = {
-				factor = 1.2
-				militancy = 3
-			}
-			modifier = {
-				factor = 1.2
-				militancy = 5
-			}
-			
-		}	
-	}
-	option = {
-		name = "EVTOPTB44315"
-		set_country_flag = COL_independence_refused
-		any_owned = {
-			limit = { is_core = COL }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 1095
-			}
-			any_pop = {
-				limit = { has_pop_culture = anglo_canadian }
-				militancy = 6
-				consciousness = 6
-			}
-		}
-		ai_chance = {
-			factor = 20
-			modifier = {
-				factor = 1.75
-				government = absolute_monarchy
-			}
-			modifier = {
-				factor = 0.5
-				government = democracy
-			}
-			modifier = {
-				factor = 1.5
-				war_policy = jingoism
-			}
-			modifier = {
-				factor = 1.25
-				war_policy = pro_military
-			}
-			modifier = {
-				factor = 0.75
-				war_policy = anti_military
-			}
-			modifier = {
-				factor = 0.5
-				war_policy = pacifism
-			}
-			modifier = {
-				factor = 0.8
-				militancy = 3
-			}
-			modifier = {
-				factor = 0.8
-				militancy = 5
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTA44318"
-		clr_country_flag = COL_independence_refused
-		prestige = -10
-		badboy = -3
-		any_pop = {
-			limit = { location = { is_core = COL } }
-			militancy = -10
-		}
-		COL = {
-			all_core = {
-				change_controller = ENG
-				remove_core = ENG
-			}
-		}
-		release_vassal = COL
-		COL = {
-			government = dominion
-			prestige = -100
-			relation = { who = USA value = 200 }
-		}
-		relation = {
-			who = COL
-			value = 200
-		}
-		diplomatic_influence = {
-			who = COL
-			value = 200
-		}
-		any_pop = {
-			consciousness = 1
-		}
-		change_tag_no_core_switch = COL
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
-
-#############################################################
-#															#
-#               	Post-Independence Events				#
-#															#
-#############################################################
-
-#The Rupert's Land Act
-country_event = {
-	id = 44320
-	title = "EVTNAME44320"
-	desc = "EVTDESC44320"
-	picture = "deliberation"
-	
-	trigger = {
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		war = no
-		money = 101000
-		OR = {
-			government = hms_government
-			government = democracy
-		}
-		OR = {
-			any_owned_province = {
-				OR = {
-					region = ENG_6
-					region = ENG_9
-					region = ENG_22
-					region = ENG_30
-					region = ENG_36
-					region = CAN_50
-					region = CAN_60
-				}
-			}
-			RPL = {
-				exists = yes
-				vassal_of = THIS
-			}
-		}
-		NOT = { has_country_flag = refused_ruperts_land }
-		CAN = {
-			war = no
-			exists = yes
-			OR = {
-				vassal_of = THIS
-				in_sphere = THIS
-				AND = {
-					relation = { who = THIS value = 100 }
+				CAN = {
+					war = no
 					OR = {
-						government = dominion
-						government = hms_government
-						government = democracy
+						in_sphere = THIS
+						vassal_of = THIS
+						AND = {
+							government = dominion
+							relation = { who = THIS value = 100 }
+						}
+						AND = {
+							government = hms_government
+							relation = { who = THIS value = 100 }
+						}
+						AND = {
+							government = democracy
+							relation = { who = THIS value = 100 }
+						}
+					}
+				}
+				NOT = { has_country_flag = british_columbia_confederation }
+			}
+
+			mean_time_to_happen = {
+				months = 36
+				modifier = {
+					factor = 0.7
+					year = 1875
+				}
+				modifier = {
+					factor = 0.7
+					year = 1880
+				}
+				modifier = {
+					factor = 0.7
+					year = 1885
+				}
+			}
+
+			# Accept
+			option = {
+				name = "EVTOPTA44350"
+
+				set_country_flag = british_columbia_confederation
+				COL = { all_core = { remove_core = THIS } }
+				CAN = { country_event = 44351 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Refuse
+			option = {
+				name = "EVTOPTB44350"
+
+				set_country_flag = british_columbia_confederation
+				any_pop = {
+					limit = { has_pop_culture = anglo_canadian }
+					militancy = 4
+				}
+				any_owned = {
+					limit = { is_core = COL }
+					add_province_modifier = {
+						name = nationalist_agitation
+						duration = 730
+					}
+				}
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: British Columbia asks to join Canada 2/2 - Canada can accept or reject
+		country_event = {
+			id = 44351
+			title = "EVTNAME44351"
+			desc = "EVTDESC44351"
+			picture = "confederation"
+
+			is_triggered_only = yes
+
+			# Accept
+			option = {
+				name = "EVTOPTA44351"
+
+				set_country_flag = promised_national_railway
+				prestige = 5
+				COL = { all_core = { add_core = CAN } }
+				FROM = {
+					any_owned = {
+						limit = { is_core = COL }
+						secede_province = CAN
+					}
+				}
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Reject
+			option = {
+				name = "EVTOPTB44351"
+
+				set_country_flag = refused_columbia
+				prestige = -10
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+	## Canada National Railway ##
+
+		#Description: Second stage of the CNR - triggers after the first stage is complete and is necessary for the CNR to be finished
+		country_event = {
+			id = 44356
+			title = "EVTNAME44356"
+			desc = "EVTDESC44356"
+			picture = "bagdadrailway"
+
+			trigger = {
+				tag = CAN
+				war = no
+				has_country_flag = build_the_cnr1
+				owns = 36
+				owns = 26
+				money = 200000
+				NOT = {
+					has_country_flag = build_the_cnr2
+					has_country_modifier = in_bankrupcy
+					has_country_modifier = generalised_debt_default
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 18
+			}
+
+			option = {
+				name = "EVTOPTA44356"
+
+				set_country_flag = build_the_cnr2
+				treasury = -200000
+				any_owned = {
+					limit = {
+						OR = {
+							province_id = 41
+							province_id = 30
+							province_id = 35
+							province_id = 29
+							province_id = 26
+						}
+						can_build_in_province = { building = railroad }
+					}
+					infrastructure = 1
+				}
+				26 = {
+					change_province_name = "Calgary"
+					add_province_modifier = {
+						name = gateway_to_harbor
+						duration = 365
 					}
 				}
 			}
-			NOT = { has_country_flag = refused_ruperts_land }
-			NOT = { has_country_flag = agreed_ruperts_land }
 		}
-	}
-	
-	mean_time_to_happen = {
-		months = 36
-		modifier = {
-			factor = 0.2
-			year = 1870
-		}
-	}
-	
-	option = {
-		name = "EVTOPTA44320"
-		badboy = -3
-		ENG_6 = { remove_core = THIS }
-		ENG_9 = { remove_core = THIS }
-		ENG_22 = { remove_core = THIS }
-		ENG_30 = { remove_core = THIS }
-		ENG_36 = { remove_core = THIS }
-		CAN_50 = { remove_core = THIS }
-		CAN_60 = { remove_core = THIS }
-		random_owned = {
-			limit = { region = USA_1 }
-			USA_1 = {
-				remove_core = THIS
-				remove_core = RUS
-			}
-		}
-		random_owned = {
-			limit = {
-				owner = {
-					NOT = { has_country_flag = british_columbia_organized }
-				}
-			}
-			CAN_13 = { remove_core = THIS }
-			COL = { all_core = { remove_core = THIS } }
-		}
-		CAN = { country_event = 44321 }
-		ai_chance = {
-			factor = 100
-			modifier = {
-				factor = 1.5
-				ruling_party_ideology = liberal
-			}
-			modifier = {
-				factor = 0.5
-				ruling_party_ideology = reactionary
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44320"
-		set_country_flag = refused_ruperts_land
-		ENG_6 = { remove_core = THIS }
-		ENG_9 = { remove_core = THIS }
-		ENG_22 = { remove_core = THIS }
-		ENG_30 = { remove_core = THIS }
-		ENG_36 = { remove_core = THIS }
-		CAN_50 = { remove_core = THIS }
-		CAN_60 = { remove_core = THIS }
-		random_owned = {
-			limit = { region = USA_1 }
-			USA_1 = {
-				remove_core = THIS
-				remove_core = RUS
-			}
-		}
-		random_owned = {
-			limit = {
-				owner = {
-					NOT = { has_country_flag = british_columbia_organized }
-				}
-			}
-			CAN_13 = { remove_core = THIS }
-			COL = { all_core = { remove_core = THIS } }
-		}
-		CAN = { country_event = 44322 }
-		ai_chance = {
-			factor = 0
-			modifier = {
-				factor = 0.5
-				ruling_party_ideology = liberal
-			}
-			modifier = {
-				factor = 2
-				ruling_party_ideology = reactionary
-			}
-		}
-		
-	}
-}
 
-country_event = {
-	id = 44321
-	title = "EVTNAME44320"
-	desc = "EVTDESC44321"
-	news = yes
-	news_title = "EVTNAME44320_NEWS_TITLE"
-	news_desc_long = "EVTDESC44320_NEWS_LONG"
-	news_desc_medium = "EVTDESC44320_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC44320_NEWS_SHORT"
-	picture = "deliberation"
-	
-	is_triggered_only = yes
-	major = yes
-	
-	option = {
-		name = "EVTOPTA44321"
-		set_country_flag = agreed_ruperts_land
-		prestige = 10
-		FROM = {
-			treasury = -100000
-		}
-		ENG_6 = {
-			remove_core = RPL
-			add_core = CAN
-		}
-		ENG_9 = {
-			remove_core = RPL
-			add_core = CAN
-		}
-		ENG_22 = {
-			remove_core = RPL
-			add_core = CAN
-		}
-		ENG_30 = {
-			remove_core = RPL
-			add_core = CAN
-		}
-		ENG_36 = {
-			remove_core = RPL
-			add_core = CAN
-		}
-		CAN_50 = {
-			remove_core = RPL
-			add_core = CAN
-		}
-		random_owned = {
-			limit = {
-				owner = { owns = 65 }
-			}
-			CAN_60 = {
-				remove_core = RPL
-				add_core = CAN
-			}
-		}
-		RPL = {
-			all_core = { remove_core = RPL }
-		}
-		random_country = {
-			limit = {
-				tag = RPL
-				exists = yes
-				vassal_of = FROM
-			}
-			all_core = { remove_core = RPL }
-			annex_to = CAN
-		}
-		random_country = {
-			limit = {
-				tag = RPL
-				exists = yes
-				NOT = { vassal_of = FROM }
-			}
-			any_owned = {
-				limit = { is_core = CAN }
-				add_core = RPL
-			}
-		}
-		FROM = {
-			random_owned = {
-				limit = { region = USA_1 }
-				USA_1 = { add_core = CAN }
-			}
-			random_owned = {
-				limit = {
-					owner = { NOT = { has_country_flag = british_columbia_organized } }
-				}
-				CAN_13 = {
-					add_core = CAN
-					remove_core = RPL
-				}
-				COL = { all_core = { add_core = CAN } }
-				owner = { set_country_flag = british_columbia_organized }
-			}
-			any_owned = {
-				limit = { is_core = CAN }
-				any_pop = { militancy = -6 }
-				secede_province = CAN
-			}
-		}
-		ai_chance = {
-			factor = 100
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44321"
-		set_country_flag = refused_ruperts_land
-		FROM = { set_country_flag = refused_ruperts_land }
-		prestige = -20
-		ENG_6 = { add_core = CAN }
-		ENG_9 = { add_core = CAN }
-		ENG_22 = { add_core = CAN }
-		ENG_30 = { add_core = CAN }
-		ENG_36 = { add_core = CAN }
-		CAN_50 = { add_core = CAN }
-		random_owned = {
-			limit = {
-				owner = { owns = 65 }
-			}
-			CAN_60 = { add_core = CAN }
-		}
-		FROM = {
-			random_owned = {
-				limit = { region = USA_1 }
-				USA_1 = { add_core = CAN }
-			}
-			random_owned = {
-				limit = {
-					owner = { NOT = { has_country_flag = british_columbia_organized } }
-				}
-				CAN_13 = { add_core = CAN }
-				COL = { all_core = { add_core = CAN } }
-				owner = { set_country_flag = british_columbia_organized }
-			}
-		}
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
+		#Description: Completion of the CNR
+		country_event = {
+			id = 44357
+			title = "EVTNAME44357"
+			desc = "EVTDESC44357"
+			picture = "bagdadrailway"
 
-country_event = {
-	id = 44322
-	title = "EVTNAME44322"
-	desc = "EVTDESC44322"
-	news = yes
-	news_desc_long = "EVTDESC44322_NEWS_LONG"
-	news_desc_medium = "EVTDESC44322_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC44322_NEWS_SHORT"
-	picture = "deliberation"
-	
-	is_triggered_only = yes
-	major = yes
-	
-	option = {
-		name = "EVTOPTA44322"
-		set_country_flag = refused_ruperts_land
-		prestige = -20
-		ENG_6 = { add_core = CAN }
-		ENG_9 = { add_core = CAN }
-		ENG_22 = { add_core = CAN }
-		ENG_30 = { add_core = CAN }
-		ENG_36 = { add_core = CAN }
-		CAN_50 = { add_core = CAN }
-		relation = { who = FROM value = -100 }
-		random_owned = {
-			limit = {
-				owner = { owns = 65 }
-			}
-			CAN_60 = { add_core = CAN }
-		}
-		FROM = {
-			random_owned = {
-				limit = { region = USA_1 }
-				USA_1 = { add_core = CAN }
-			}
-			random_owned = {
-				limit = {
-					owner = { NOT = { has_country_flag = british_columbia_organized } }
+			trigger = {
+				tag = CAN
+				war = no
+				has_country_flag = build_the_cnr2
+				owns = 26
+				owns = 13
+				money = 300000
+				NOT = {
+					has_country_flag = build_the_cnr3
+					has_country_modifier = in_bankrupcy
+					has_country_modifier = generalised_debt_default
 				}
-				#CAN_18 = { add_core = CAN }
-				COL = { all_core = { add_core = CAN } }
-				owner = { set_country_flag = british_columbia_organized }
+			}
+
+			mean_time_to_happen = {
+				months = 24
+			}
+
+			option = {
+				name = "EVTOPTA44356"
+
+				set_country_flag = build_the_cnr3
+				prestige = 10
+				treasury = -300000
+				any_owned = {
+					limit = {
+						OR = {
+							province_id = 28
+							province_id = 21
+							province_id = 20
+							province_id = 13
+						}
+						can_build_in_province = { building = railroad }
+					}
+					infrastructure = 1
+				}
+				13 = {
+					change_province_name = "Vancouver"
+					add_province_modifier = {
+						name = gateway_to_harbor
+						duration = 720
+					}
+				}
 			}
 		}
-		random_owned = {
-			limit = {
-				owner = { vassal_of = FROM }
+
+	## Metis ##
+
+		#Description: Louis Riel and the 1st Métis Rebellion
+		country_event = {
+			id = 44301
+			title = "EVTNAME44301"
+			desc = "EVTDESC44301"
+			picture = "Metis"
+
+			trigger = {
+				tag = CAN
+				year = 1868
+				owns = 42 # Winnipeg MB
+				owns = 57 # Ottawa ON
+				NOT = {
+					has_country_flag = RielRebellion
+					has_country_flag = RielRebellionIgnored
+				}
 			}
-			owner = {
+
+			mean_time_to_happen =  {
+				months = 8
+				modifier = {
+					factor = 0.75 #increase likelihood to happen
+					year = 1869
+				}
+				modifier = {
+					factor = 0.95 #increase likelihood to happen
+					year = 1871
+				}
+			}
+
+			# Listen to the Metis demands
+			option = {
+				name = "EVTOPTA44301"
+
+				set_country_flag = RielRebellion
+				set_country_flag = RielRebellionIgnored
+				any_pop = {
+					limit = { has_pop_culture = french_canadian }
+					militancy = 5
+					consciousness = 3
+				}
+				any_pop = {
+					limit = { has_pop_culture = metis }
+					militancy = -3
+					consciousness = 2
+				}
+				any_pop = {
+					limit = { has_pop_culture = anglo_canadian }
+					consciousness = 2
+				}
+
+				ai_chance = { factor = 20 }
+			}
+
+			# Ignore the Metis demands
+			option = {
+				name = "EVTOPTB44301"
+
+				set_country_flag = RielRebellion
+				any_pop = {
+					limit = { has_pop_culture = french_canadian }
+					militancy = 1
+					consciousness = 3
+				}
+				any_pop = {
+					limit = { has_pop_culture = metis }
+					militancy = 10
+					consciousness = 5
+				}
+				any_pop = {
+					limit = { has_pop_culture = anglo_canadian }
+					militancy = -1
+					consciousness = 1
+				}
+				any_owned = {
+					limit = { is_core = MTC }
+					add_province_modifier = {
+						name = nationalist_agitation
+						duration = 365
+					}
+				}
+
+				ai_chance = { factor = 80 }
+			}
+		}
+
+		#Description: The Northwest Rebellion
+		country_event = {
+			id = 44302
+			title = "EVTNAME44302"
+			desc = "EVTDESC44302"
+			news = yes
+			news_desc_long = "EVTDESC44302_NEWS_LONG"
+			news_desc_medium = "EVTDESC44302_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44302_NEWS_SHORT"
+			picture = "Rebellion"
+
+			trigger = {
+				tag = CAN
+				year = 1884
+				owns = 57 # Ottawa ON
+				has_country_flag = RielRebellion
+				NOT = { has_country_flag = RielRebellionIgnored }
+				OR = {
+					owns = 30 # Saskatchewan
+					owns = 32
+					owns = 34
+					owns = 37 # Western Manitoba
+					owns = 41
+					owns = 42
+				}
+				NOT = {
+					year = 1888
+					has_country_flag = NorthwestRebellion
+				}
+			}
+
+			mean_time_to_happen =  {
+				months = 8
+				modifier = {
+					factor = 0.75 #increase likelihood to happen
+					year = 1885
+				}
+				modifier = {
+					factor = 0.95 #increase likelihood to happen
+					year = 1886
+				}
+			}
+
+			option = {
+				name = "EVTOPTA44302"
+
+				set_country_flag = NorthwestRebellion
+				any_pop = {
+					limit = { has_pop_culture = metis }
+					militancy = 7
+					consciousness = 5
+				}
+				any_pop = {
+					limit = { has_pop_culture = cree }
+					militancy = 3
+					consciousness = 3
+				}
 				any_pop = {
 					limit = {
-						has_pop_culture = anglo_canadian
-						location = { is_core = CAN }
+						is_culture_group = native_american
+						NOT = {
+							has_pop_culture = metis
+							has_pop_culture = cree
+						}
 					}
-					militancy = 8
+					militancy = 1
+					consciousness = 2
+				}
+				any_owned = {
+					limit = { is_core = MTC }
+					add_province_modifier = {
+						name = nationalist_agitation
+						duration = 730
+					}
 				}
 			}
 		}
-	}
-}
 
-#Joining Confederation
-country_event = {
-	id = 44325
-	title = "EVTNAME44325"
-	desc = "EVTDESC44325"
-	picture = "confederation"
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA44325"
-		prestige = 5
-		FROM = {
-			all_core = { add_core = CAN }
-		}
-		random_country = {
-			limit = {
+		#Description: Pacification of the Metis
+		country_event = {
+			id = 44303
+			title = "EVTNAME44303"
+			desc = "EVTDESC44303"
+			picture = "Metis"
+
+			trigger = {
+				tag = CAN
+				owns = 41
+				owns = 42
+				revolution_n_counterrevolution = 1
 				OR = {
-				tag = FROM
-				tag = RPL
+					has_country_flag = RielRebellionIgnored
+					has_country_flag = NorthwestRebellion
+				}
+				NOT = {
+					has_country_flag = metis_pacification
+					any_owned_province = {
+						is_core = MTC
+						average_militancy = 1
+					}
 				}
 			}
-			all_core = { remove_core = RPL }
-		}
-		inherit = FROM
-		ai_chance = {
-			factor = 100
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44325"
-		prestige = -10
-		relation = { who = FROM value = -50 }
-		any_pop = {
-			militancy = 1
-		}
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
 
+			mean_time_to_happen = {
+				months = 36
+			}
 
-#British Columbia Joins Confederation
-country_event = {
-	id = 44350
-	title = "EVTNAME44350"
-	desc = "EVTDESC44350"
-	picture = "deliberation"
-	
-	trigger = {
-		war = no
-		OR = {
-			tag = ENG
-			tag = ENL
-		}
-		OR = {
-			government = hms_government
-			government = democracy
-		}
-		has_country_flag = british_columbia_organized
-		any_owned_province = {
-			is_core = COL
-			any_neighbor_province = { owned_by = CAN }
-		}
-		CAN = {
-			war = no
-			OR = {
-				in_sphere = THIS
-				vassal_of = THIS
-				AND = {
-					government = dominion
-					relation = { who = THIS value = 100 }
-				}
-				AND = {
-					government = hms_government
-					relation = { who = THIS value = 100 }
-				}
-				AND = {
-					government = democracy
-					relation = { who = THIS value = 100 }
+			option = {
+				name = "EVTOPTA44303"
+
+				set_country_flag = metis_pacification
+				MTC = { all_core = { remove_core = MTC } }
+				any_pop = {
+					ideology = {
+						value = liberal
+						factor = 0.10
+					}
 				}
 			}
 		}
-		NOT = { has_country_flag = british_columbia_confederation }
-	}
-	
-	mean_time_to_happen = {
-		months = 36
-		modifier = {
-			factor = 0.7
-			year = 1875
+
+	## Expansion ##
+
+		#Description: The Status of Alaska - the UK can choose whether to add Alaska to Canada if they own it
+		country_event = {
+			id = 1234121
+
+			trigger = {
+				tag = ENG
+				war = no
+				CAN = { war = no }
+				any_owned_province = {
+					region = USA_1 # Alaska
+					controlled_by = THIS
+					any_neighbor_province = { owned_by = CAN }
+				}
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen =  {
+				months = 12
+			}
+
+			title = "EVTNAME1234121"
+			desc = "EVTDESC1234121"
+
+			# Accept
+			option = {
+				name = "EVTOPTA1234121"
+
+				USA_1 = {
+					remove_core = THIS
+					add_core = CAN
+				}
+				any_owned = {
+					limit = { region = USA_1 }
+					secede_province = CAN
+				}
+				random_country = {
+					limit = {
+						is_sphere_leader_of = CAN
+						NOT = { tag = THIS }
+					}
+					diplomatic_influence = { who = CAN value = -100 }
+				}
+				diplomatic_influence = { who = CAN value = 100 }
+				relation = { who = CAN value = 50 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Refuse
+			option = {
+				name = "EVTOPTB1234121"
+
+				ai_chance = { factor = 0 }
+			}
 		}
-		modifier = {
-			factor = 0.7
+
+		#Description: The Status of Washington - the UK can choose whether to add Washington to Canada if they own it
+		country_event = {
+			id = 1234122
+
+			trigger = {
+				tag = ENG
+				war = no
+				CAN = { war = no }
+				any_owned_province = {
+					region = USA_78 # Washington
+					controlled_by = THIS
+					any_neighbor_province = { owned_by = CAN }
+				}
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen =  {
+				months = 12
+			}
+
+			title = "EVTNAME1234122"
+			desc = "EVTDESC1234122"
+
+			# Accept
+			option = {
+				name = "EVTOPTA1234122"
+
+				USA_78 = {
+					remove_core = THIS
+					add_core = CAN
+				}
+				any_owned = {
+					limit = { region = USA_78 }
+					secede_province = CAN
+				}
+				random_country = {
+					limit = {
+						is_sphere_leader_of = CAN
+						NOT = { tag = THIS }
+					}
+					diplomatic_influence = { who = CAN value = -100 }
+				}
+				diplomatic_influence = { who = CAN value = 100 }
+				relation = { who = CAN value = 50 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Refuse
+			option = {
+				name = "EVTOPTB1234121"
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Status of Oregon - the UK can choose whether to add Oregon to Canada if they own it
+		country_event = {
+			id = 1234123
+
+			trigger = {
+				tag = ENG
+				war = no
+				CAN = { war = no }
+				any_owned_province = {
+					region = USA_81 # Oregon
+					controlled_by = THIS
+					any_neighbor_province = { owned_by = CAN }
+				}
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen =  {
+				months = 12
+			}
+
+			title = "EVTNAME1234123"
+			desc = "EVTDESC1234123"
+
+			# Accept
+			option = {
+				name = "EVTOPTA1234123"
+
+				USA_81 = {
+					remove_core = THIS
+					add_core = CAN
+				}
+				any_owned = {
+					limit = { region = USA_81 }
+					secede_province = CAN
+				}
+				random_country = {
+					limit = {
+						is_sphere_leader_of = CAN
+						NOT = { tag = THIS }
+					}
+					diplomatic_influence = { who = CAN value = -100 }
+				}
+				diplomatic_influence = { who = CAN value = 100 }
+				relation = { who = CAN value = 50 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Refuse
+			option = {
+				name = "EVTOPTB1234121"
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Status of Idaho - the UK can choose whether to add Idaho to Canada if they own it
+		country_event = {
+			id = 1234124
+
+			trigger = {
+				tag = ENG
+				war = no
+				CAN = { war = no }
+				any_owned_province = {
+					region = USA_91 # Idaho
+					controlled_by = THIS
+					any_neighbor_province = { owned_by = CAN }
+				}
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen =  {
+				months = 12
+			}
+
+			title = "EVTNAME1234124"
+			desc = "EVTDESC1234124"
+
+			# Accept
+			option = {
+				name = "EVTOPTA1234124"
+
+				USA_91 = {
+					remove_core = THIS
+					add_core = CAN
+				}
+				any_owned = {
+					limit = { region = USA_91 }
+					secede_province = CAN
+				}
+				random_country = {
+					limit = {
+						is_sphere_leader_of = CAN
+						NOT = { tag = THIS }
+					}
+					diplomatic_influence = { who = CAN value = -100 }
+				}
+				diplomatic_influence = { who = CAN value = 100 }
+				relation = { who = CAN value = 50 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Reject
+			option = {
+				name = "EVTOPTB1234121"
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Status of New England - the UK can choose whether to add New England to Canada if they own it
+		country_event = {
+			id = 1234125
+
+			trigger = {
+				tag = ENG
+				war = no
+				CAN = { war = no }
+				any_owned_province = {
+					region = USA_247 # New England
+					controlled_by = THIS
+					any_neighbor_province = { owned_by = CAN }
+				}
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen =  {
+				months = 12
+			}
+
+			title = "EVTNAME1234125"
+			desc = "EVTDESC1234125"
+
+			# Accept
+			option = {
+				name = "EVTOPTA1234125"
+
+				USA_247 = {
+					remove_core = THIS
+					add_core = CAN
+				}
+				any_owned = {
+					limit = { region = USA_247 }
+					secede_province = CAN
+				}
+				random_country = {
+					limit = {
+						is_sphere_leader_of = CAN
+						NOT = { tag = THIS }
+					}
+					diplomatic_influence = { who = CAN value = -100 }
+				}
+				diplomatic_influence = { who = CAN value = 100 }
+				relation = { who = CAN value = 50 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Reject
+			option = {
+				name = "EVTOPTB1234121"
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Status of Montana - the UK can choose whether to add Montana to Canada if they own it
+		country_event = {
+			id = 1234126
+
+			trigger = {
+				tag = ENG
+				war = no
+				CAN = { war = no }
+				any_owned_province = {
+					region = USA_116 # Montana
+					controlled_by = THIS
+					any_neighbor_province = { owned_by = CAN }
+				}
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen =  {
+				months = 12
+			}
+
+			title = "EVTNAME1234126"
+			desc = "EVTDESC1234126"
+
+			# Accept
+			option = {
+				name = "EVTOPTA1234126"
+
+				USA_116 = {
+					remove_core = THIS
+					add_core = CAN
+				}
+				any_owned = {
+					limit = { region = USA_116 }
+					secede_province = CAN
+				}
+				random_country = {
+					limit = {
+						is_sphere_leader_of = CAN
+						NOT = { tag = THIS }
+					}
+					diplomatic_influence = { who = CAN value = -100 }
+				}
+				diplomatic_influence = { who = CAN value = 100 }
+				relation = { who = CAN value = 50 }
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Reject
+			option = {
+				name = "EVTOPTB1234121"
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
+		#Description: The Northwest Territories - occupation of empty provinces
+		country_event = {
+
+			id = 44339
+			title = "EVTNAME44339"
+			desc = "EVTDESC44339"
+			picture = "Southpole3"
+
+			trigger = {
+				OR = {
+					## Arctic territories ##
+						AND = { 2596 = { empty = yes } owns = 3442 owns = 35 } # Cambridge Bay
+						AND = { 3440 = { empty = yes } owns = 3438 owns = 2595 } # Clyde River
+						AND = { 2595 = { empty = yes } owns = 3438 } # Frobisher Bay
+						AND = { 3442 = { empty = yes } owns = 33 owns = 40 owns = 3393 } # King William Island
+					## Northwest territories ##
+						AND = { 3452 = { empty = yes } owns = 33 owns = 27 } # Pelly Bay
+						AND = { 33 = { empty = yes } owns = 35 owns = 27 } # Spence Bay
+						AND = { 35 = { empty = yes } owns = 3393 owns = 3439 } # Fort Reliance
+						AND = { 40 = { empty = yes } owns = 3393 owns = 36 } # Fort Confidence
+						AND = { 36 = { empty = yes } owns = 3441 owns = 3443 } # Fort Good Hope
+						AND = { 3441 = { empty = yes } owns = 3392 owns = 6 owns = 7 } # Fort Liard
+						AND = { 3393 = { empty = yes } owns = 3392 owns = 11 } # Fort Rae
+						AND = { 3392 = { empty = yes } owns = 11 } # Fort Simpson
+						AND = { 11 = { empty = yes } owns = 18 owns = 3446 owns = 31 } # Fort Resolution
+					## Columbia ##
+						AND = { 18 = { empty = yes } owns = 23 owns = 3446 } # Fort St. John
+					## Alberta ##
+						AND = { 3446 = { empty = yes } owns = 23 } # Fort Chipewyan
+						AND = { 23 = { empty = yes } owns = 25 } # Fort Assinboine
+					## Saskatchewan ##
+						AND = { 31 = { empty = yes } owns = 32 } # Fort Fond du Lac
+					## Northern Quebec ##
+						AND = { 3450 = { empty = yes } owns = 3449 owns = 2626 owns = 2592 } # Michikamau House
+						AND = { 2626 = { empty = yes } owns = 3449 owns = 2592 } # Ungava Peninsula
+						AND = { 3449 = { empty = yes } owns = 9 } # Great Whale River House
+					## Labrador ##
+						AND = { 3451 = { empty = yes } owns = 75 } # Michikamau House
+						AND = { 76 = { empty = yes } owns = 2625 } # Rigolet Post
+				}
+				war = no
+				money = 1100
+				OR = {
+					revolution_n_counterrevolution = 1
+					year = 1880
+				}
+				OR = { # The idea here is that if this is not true, the provinces can be colonized the old fashioned way
+					NOT = { has_global_flag = berlin_conference }
+					NOT = { invention = mission_to_civilize }
+					NOT = { invention = colonial_negotiations }
+					AND = {
+						is_greater_power = no
+						is_secondary_power = no
+					}
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 120
+				modifier = {
+					factor = 0.9
+					administration_spending = 0.9
+				}
+				modifier = {
+					factor = 0.9
+					administration_spending = 0.8
+				}
+				modifier = {
+					factor = 0.9
+					administration_spending = 0.7
+				}
+				modifier = {
+					factor = 0.9
+					administration_spending = 0.6
+				}
+				modifier = {
+					factor = 0.9
+					administration_spending = 0.5
+				}
+			}
+
+			option = {
+				name = "EVTOPTA44339"
+
+				treasury = -1000
+				prestige = 1
+				## Arctic territories ##
+					random_owned = {
+						limit = {
+							3442 = { owned_by = THIS }
+							35 = { owned_by = THIS }
+							2596 = { empty = yes }
+						}
+						2596 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							2595 = { owned_by = THIS }
+							3438 = { owned_by = THIS }
+							3440 = { empty = yes }
+						}
+						3440 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							3438 = { owned_by = THIS }
+							2595 = { empty = yes }
+						}
+						2595 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							33 = { owned_by = THIS }
+							40 = { owned_by = THIS }
+							3393 = { owned_by = THIS }
+							3442 = { empty = yes }
+						}
+						3442 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+				## Northwest territories ##
+					random_owned = {
+						limit = {
+							27 = { owned_by = THIS }
+							33 = { owned_by = THIS }
+							3452 = { empty = yes }
+						}
+						3452 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							27 = { owned_by = THIS }
+							35 = { owned_by = THIS }
+							33 = { empty = yes }
+						}
+						33 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							3439 = { owned_by = THIS }
+							3393 = { owned_by = THIS }
+							35 = { empty = yes }
+						}
+						35 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							36 = { owned_by = THIS }
+							3393 = { owned_by = THIS }
+							40 = { empty = yes }
+						}
+						40 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							3443 = { owned_by = THIS }
+							3441 = { owned_by = THIS }
+							36 = { empty = yes }
+						}
+						36 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							7 = { owned_by = THIS }
+							6 = { owned_by = THIS }
+							3392 = { owned_by = THIS }
+							3441 = { empty = yes }
+						}
+						3441 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							11 = { owned_by = THIS }
+							3392 = { owned_by = THIS }
+							3393 = { empty = yes }
+						}
+						3393 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							11 = { owned_by = THIS }
+							3392 = { empty = yes }
+						}
+						3392 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							31 = { owned_by = THIS }
+							3446 = { owned_by = THIS }
+							18 = { owned_by = THIS }
+							11 = { empty = yes }
+						}
+						11 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+				## Columbia ##
+					random_owned = {
+						limit = {
+							23 = { owned_by = THIS }
+							3446 = { owned_by = THIS }
+							18 = { empty = yes }
+						}
+						18 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+				## Alberta ##
+					random_owned = {
+						limit = {
+							23 = { owned_by = THIS }
+							3446 = { empty = yes }
+						}
+						3446 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							25 = { owned_by = THIS }
+							23 = { empty = yes }
+						}
+						23 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+				## Saskatchewan ##
+					random_owned = {
+						limit = {
+							32 = { owned_by = THIS }
+							31 = { empty = yes }
+						}
+						31 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+				## Northern Quebec ##
+					random_owned = {
+						limit = {
+							3449 = { owned_by = THIS }
+							2626 = { owned_by = THIS }
+							2592 = { owned_by = THIS }
+							3450 = { empty = yes }
+						}
+						3450 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							3449 = { owned_by = THIS }
+							2592 = { owned_by = THIS }
+							2626 = { empty = yes }
+						}
+						2626 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							9 = { owned_by = THIS }
+							3449 = { empty = yes }
+						}
+						3449 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+				## Labrador ##
+					random_owned = {
+						limit = {
+							75 = { owned_by = THIS }
+							3451 = { empty = yes }
+						}
+						3451 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+					random_owned = {
+						limit = {
+							2625 = { owned_by = THIS }
+							76 = { empty = yes }
+						}
+						76 = { secede_province = THIS add_core = RPL any_pop = { literacy = -0.99 } }
+					}
+			}
+		}
+
+	## Minors ##
+
+		#Description: If Newfoundland is broke, they can ask to become part of the UK again.
+		country_event = {
+
+			id = 44331
+
+			title = "EVTNAME44331"
+			desc = "EVTDESC44331"
+			picture = "danishgovernment"
+			major = yes
+
+			trigger = {
+				tag = NEW
+				war = no
+				OR = {
+					has_country_modifier = great_depression
+					has_country_modifier = in_bankrupcy
+					has_country_modifier = generalised_debt_default
+				}
+				OR = {
+					vassal_of = ENG
+					vassal_of = ENL
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 6
+			}
+
+			# Ask UK to rejoin
+			option = {
+				name = "EVTOPTA44331"
+
+				overlord = { country_event = 60130 }
+			}
+
+			# Remain independent and broke
+			option = {
+				name = "EVTOPTB44331"
+
+				prestige = -20
+
+				any_pop = { consciousness = 4 }
+			}
+		}
+
+## Flavor ##
+
+	#Description: Stanley Cup - gain prestige
+	country_event = {
+		title = "EVTNAME5002"
+		desc = "EVTDESC5002"
+		news = yes
+		news_desc_long = "EVTDESC5002_NEWS_LONG"
+		news_desc_medium = "EVTDESC5002_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC5002_NEWS_SHORT"
+		id = 5002
+		picture = "stanley_cup"
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = CAN
+			year = 1892
+		}
+
+		mean_time_to_happen = {
+			months = 12
+		}
+
+		option = {
+			name = "EVTOPTA5002"
+
+			prestige = 2
+		}
+	}
+
+	#Description: The Assassination of D'Arcy McGee
+	country_event = {
+		id = 44304
+		title = "EVTNAME44304"
+		desc = "EVTDESC44304"
+		picture = "mcgeefuneral"
+
+		trigger = {
+			tag = CAN
+			year = 1866
+			owns = 57
+			NOT = { year = 1890 }
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen =  {
+			months = 24
+		}
+
+		# Mourn his passing
+		option = {
+			name = "EVTOPTA44304"
+
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				consciousness = 1
+			}
+		}
+
+		# Arrest the murderers
+		option = {
+			name = "EVTOPTB44304"
+
+			any_pop = {
+				limit = { has_pop_religion = protestant }
+				ideology = {
+					factor = 0.05
+					value = conservative
+				}
+			}
+			plurality = -1
+		}
+	}
+
+	#Description: Klondike Gold Rush - get gold and immigration to Yukon
+	country_event = {
+		id = 44307
+		title = "EVTNAME44307"
+		desc = "EVTDESC44307"
+		picture = "diamonds_in_kimberley"
+
+		trigger = {
+			owns = 17
+			any_owned_province = { region = ENG_6 }
 			year = 1880
 		}
-		modifier = {
-			factor = 0.7
-			year = 1885
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 120
 		}
-	}
-	
-	option = {
-		name = "EVTOPTA44350"
-		set_country_flag = british_columbia_confederation
-		COL = { all_core = { remove_core = THIS } }
-		CAN = { country_event = 44351 }
-		ai_chance = {
-			factor = 100
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44350"
-		set_country_flag = british_columbia_confederation
-		any_pop = {
-			limit = { has_pop_culture = anglo_canadian }
-			militancy = 4
-		}
-		any_owned = {
-			limit = { is_core = COL }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 730
+
+		option = {
+			name = "EVTOPTA44307"
+
+			set_global_flag = klondike_gold_rush
+			ENG_6 = {
+				trade_goods = precious_metal
+				add_province_modifier = { name = "gold_rush" duration = 730 }
 			}
 		}
-		ai_chance = {
-			factor = 0
+	}
+
+	#Description: Robert Service - get prestige
+	country_event = {
+		id = 44308
+		title = "EVTNAME44308"
+		desc = "EVTDESC44308"
+		picture = "diamonds_in_kimberley"
+
+		trigger = {
+			tag = CAN
+			owns = 7
+			has_global_flag = klondike_gold_rush
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = {
+			months = 36
+		}
+
+		option = {
+			name = "EVTOPTA44308"
+
+			prestige = 5
 		}
 	}
-}
 
-country_event = {
-	id = 44351
-	title = "EVTNAME44351"
-	desc = "EVTDESC44351"
-	picture = "confederation"
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA44351"
-		set_country_flag = promised_national_railway
-		prestige = 5
-		COL = {
-			all_core = { add_core = CAN }
-		}
-		FROM = {
-			any_owned = {
-				limit = { is_core = COL }
-				secede_province = CAN
+	## Gold Rush ## TODO localization
+
+		#Description: Fraser Gold Rush
+		province_event = {
+			id = 144300
+			title = "EVTNAME144300"
+			desc = "EVTDESC144300"
+			picture = "goldrush"
+
+			trigger = {
+				province_id = 13 # Vancouver
+				year = 1853
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = fraser_gold_rush }
+
+			option = {
+				name = "EVTOPTA144300"
+
+				trade_goods = precious_metal
+				add_province_modifier = { name = gold_rush duration = 730 }
 			}
 		}
-		ai_chance = {
-			factor = 95
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB44351"
-		set_country_flag = refused_columbia
-		prestige = -10
-		ai_chance = {
-			factor = 5
-		}
-	}
-}
 
-country_event = {
-	id = 44356
-	title = "EVTNAME44356"
-	desc = "EVTDESC44356"
-	picture = "bagdadrailway"
-	
-	trigger = {
-		tag = CAN
-		war = no
-		has_country_flag = build_the_cnr1
-		owns = 36
-		owns = 26
-		NOT = {
-			has_country_flag = build_the_cnr2
-			has_country_modifier = in_bankrupcy
-			has_country_modifier = generalised_debt_default
-		}
-	}
-	
-	mean_time_to_happen = {
-		months = 18
-	}
-	
-	option = {
-		name = "EVTOPT44356"
-		set_country_flag = build_the_cnr2
-		treasury = -200000
-		any_owned = {
-			limit = {
-				OR = {
-					province_id = 41
-					province_id = 30
-					province_id = 35
-					province_id = 29
-					province_id = 26
+		#Description: Cariboo Gold Rush
+		country_event = {
+			id = 144400
+			title = "EVTNAME144400"
+			desc = "EVTDESC144400"
+			picture = "goldrush"
+
+			trigger = {
+				owns = 13 # Vancouver
+				owns = 19
+				owns = 20
+				year = 1856
+				has_global_flag = fraser_gold_rush
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = cariboo_gold_rush }
+
+			option = {
+				name = "EVTOPTA144400"
+
+				19 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
 				}
-				can_build_in_province = {
-					building = railroad
+				20 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
 				}
 			}
-			infrastructure = 1
 		}
-		26 = { 
-			change_province_name = "Calgary"
-			add_province_modifier = {
-				name = gateway_to_harbor
-				duration = 365
+
+		#Description: Omineca Gold Rush
+		country_event = {
+			id = 144500
+			title = "EVTNAME144500"
+			desc = "EVTDESC144500"
+			picture = "goldrush"
+
+			trigger = {
+				owns = 13 # Vancouver
+				owns = 15
+				owns = 16
+				year = 1859
+				has_global_flag = cariboo_gold_rush
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = omineca_gold_rush }
+
+			option = {
+				name = "EVTOPTA144500"
+
+				15 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
+				16 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
 			}
 		}
-	}
-}
 
-country_event = {
-	id = 44357
-	title = "EVTNAME44357"
-	desc = "EVTDESC44357"
-	picture = "bagdadrailway"
-	
-	trigger = {
-		tag = CAN
-		war = no
-		has_country_flag = build_the_cnr2
-		owns = 26
-		owns = 13
-		NOT = {
-			has_country_flag = build_the_cnr3
-			has_country_modifier = in_bankrupcy
-			has_country_modifier = generalised_debt_default
+		#Description: Stikine Gold Rush
+		country_event = {
+			id = 144600
+			title = "EVTNAME144600"
+			desc = "EVTDESC144600"
+			picture = "goldrush"
+
+			trigger = {
+				owns = 13 # Vancouver
+				owns = 17
+				year = 1864
+				has_global_flag = omineca_gold_rush
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 60
+			}
+
+			immediate = { set_global_flag = stikine_gold_rush }
+
+			option = {
+				name = "EVTOPTA144600"
+
+				#Atlin
+				17 = {
+					trade_goods = precious_metal
+					add_province_modifier = { name = gold_rush duration = 730 }
+				}
+			}
 		}
-	}
-	
-	mean_time_to_happen = {
-		months = 24
-	}
-	
-	option = {
-		name = "EVTOPT44356"
-		set_country_flag = build_the_cnr3
-		prestige = 10
-		treasury = -300000
-		any_owned = {
-			limit = {
+
+		#Description: Gold Rush Ends
+		province_event = {
+			id = 144700
+			title = "EVTNAME144700"
+			desc = "EVTDESC144700"
+
+			trigger = {
 				OR = {
-					province_id = 28
-					province_id = 21
-					province_id = 20
 					province_id = 13
+					province_id = 15
+					province_id = 16
+					province_id = 17
+					province_id = 19
 				}
-				can_build_in_province = {
-					building = railroad
+				trade_goods = precious_metal
+			}
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 24
+				modifier = {
+					factor = 4
+					has_province_modifier = gold_rush
 				}
 			}
-			infrastructure = 1
-		}
-		13 = { 
-			change_province_name = "Vancouver"
-			add_province_modifier = {
-				name = gateway_to_harbor
-				duration = 720
+
+			option = {
+				name = "EVTOPTA144700"
+
+				trade_goods = timber
+				remove_province_modifier = gold_rush
 			}
 		}
-	}
-}
 
-#The Pacific Scandal
-country_event = {
-	id = 44300
-	title = "EVTNAME44300"
-	desc = "EVTDESC44300"
-	picture = "train"
+		#Description: Gold Rush ends, specific to Kelowna
+		province_event = {
+			id = 144900
+			title = "EVTNAME144900"
+			desc = "EVTDESC144900"
 
-	trigger = {
-		tag = CAN 
-		year = 1872
-		has_country_flag = build_the_cnr
-	}
- 
-	fire_only_once = yes
- 
-	mean_time_to_happen =  {
-		months = 12
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1873
-		}
-		modifier = {
-			factor = 0.95 #increase likelihood to happen
-			year = 1875
-		}
-	}
-
-	option = {
-		name = "EVTOPTA44300" 
-		any_pop = {
-			ideology = {
-				factor = 0.1
-				value = liberal
+			trigger = {
+				province_id = 20
+				trade_goods = precious_metal
 			}
-			scaled_consciousness = {
-				factor = 3
-				ideology = liberal
+
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 24
+				modifier = {
+					factor = 4
+					has_province_modifier = gold_rush
+				}
+			}
+
+			option = {
+				name = "EVTOPTA144900"
+
+				trade_goods = grain
+				remove_province_modifier = gold_rush
 			}
 		}
-	}
-
-	option = {
-		name = "EVTOPTB44300" 
-		any_pop = {
-			ideology = {
-				factor = 0.1
-				value = liberal
-			}
-			scaled_militancy = {
-				factor = 3
-				ideology = liberal
-			}
-		}
-	}
-}
-
-#Louis Riel and the 1st Métis Rebellion
-country_event = {
-	id = 44301
-	title = "EVTNAME44301"
-	desc = "EVTDESC44301"
-	picture = "Metis"
-
-	trigger = {
-		tag = CAN 
-		year = 1868
-		owns = 36 #Winnipeg MB
-		owns = 57 #Ottawa ON
-		NOT = {
-			has_country_flag = RielRebellion
-			has_country_flag = RielRebellionIgnored
-		}
-	}
- 
-	mean_time_to_happen =  {
-		months = 8
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1869
-		}
-		modifier = {
-			factor = 0.95 #increase likelihood to happen
-			year = 1871
-		}
-	}
-
-	option = {
-		name = "EVTOPTA44301" 
-		set_country_flag = RielRebellion
-		set_country_flag = RielRebellionIgnored
-		any_pop = {
-			limit = {
-				has_pop_culture = french_canadian
-			}
-			militancy = 5
-			consciousness = 3
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = metis
-			}
-			militancy = -3
-			consciousness = 2
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = anglo_canadian
-			}
-			consciousness = 2
-		}
-		ai_chance = {
-			factor = 20
-		}
-	}
-
-	option = {
-		name = "EVTOPTB44301" 
-		set_country_flag = RielRebellion
-		any_pop = {
-			limit = {
-				has_pop_culture = french_canadian
-			}
-			militancy = 1
-			consciousness = 3
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = metis
-			}
-			militancy = 10
-			consciousness = 5
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = anglo_canadian
-			}
-			militancy = -1
-			consciousness = 1
-		}
-		any_owned = {
-			limit = { is_core = MTC }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 365
-			}
-		}
-		ai_chance = {
-			factor = 80
-		}
-	}
-}
-
-#The Northwest Rebellion
-country_event = {
-	id = 44302
-	title = "EVTNAME44302"
-	desc = "EVTDESC44302"
-	news = yes
-	news_desc_long = "EVTDESC44302_NEWS_LONG"
-	news_desc_medium = "EVTDESC44302_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC44302_NEWS_SHORT"
-	picture = "Rebellion"	
-	
-	trigger = {
-		tag = CAN 
-		year = 1884
-		owns = 57 #Ottawa ON
-		has_country_flag = RielRebellion
-		NOT = { has_country_flag = RielRebellionIgnored }
-		OR = {
-			owns = 30 #Saskatchewan 
-			owns = 34  
-			owns = 38 #Western Manitoba 
-			owns = 39  
-			owns = 40 
-			owns = 41
-		} 
-		NOT = {
-			year = 1888
-			has_country_flag = NorthwestRebellion
-		}
-	}
- 
-	mean_time_to_happen =  {
-		months = 8
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1885
-		}
-		modifier = {
-			factor = 0.95 #increase likelihood to happen
-			year = 1886
-		}
-	}
-
-	option = {
-		name = "EVTOPTA44302" 
-		set_country_flag = NorthwestRebellion
-		any_pop = {
-			limit = {
-				has_pop_culture = metis
-			}
-			militancy = 7
-			consciousness = 5
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = cree
-			}
-			militancy = 3
-			consciousness = 3
-		}
-		any_pop = {
-			limit = {
-				has_pop_culture = native_american_minor
-			}
-			militancy = 1
-			consciousness = 2
-		}
-		any_owned = {
-			limit = { is_core = MTC }
-			add_province_modifier = {
-				name = nationalist_agitation
-				duration = 730
-			}
-		}
-	}
-}
-
-#Pacification of the Metis
-country_event = {
-	id = 44303
-	title = "EVTNAME44303"
-	desc = "EVTDESC44303"
-	picture = "Metis"
-	
-	trigger = {
-		tag = CAN
-		owns = 36
-		owns = 30
-		revolution_n_counterrevolution = 1
-		OR = {
-			has_country_flag = RielRebellionIgnored
-			has_country_flag = NorthwestRebellion
-		}
-		NOT = {
-			has_country_flag = metis_pacification
-			any_owned_province = {
-				is_core = MTC
-				average_militancy = 1
-			}
-		}
-	}
-	
-	mean_time_to_happen = {
-		months = 36
-	}
-	
-	option = {
-		name = "EVTOPTA44303"
-		set_country_flag = metis_pacification
-		MTC = {
-			all_core = { remove_core = MTC }
-		}
-		any_pop = {
-			ideology = {
-				value = liberal
-				factor = 0.10
-			}
-		}
-	}
-}
-	
-#Land Transfers from Britain to independent Canada
-country_event = {
-	id = 1234121
-
-	trigger = {
-		tag = ENG
-		war = no
-		CAN = { war = no }
-		any_owned_province = {
-			region = USA_1 #Alaska
-			controlled_by = THIS
-			any_neighbor_province = { owned_by = CAN }
-		}
-	}
-
-	fire_only_once = yes
-	
-	mean_time_to_happen =  {
-		months = 12
-	}
-
-	title = "EVTNAME1234121"
-	desc = "EVTDESC1234121"
-
-	option = {
-		name = "EVTOPTA1234121"
-		USA_1 = {
-			remove_core = THIS
-			add_core = CAN
-		}
-		any_owned = {
-			limit = { region = USA_1 }
-			secede_province = CAN
-		}
-		random_country = {
-			limit = {
-				is_sphere_leader_of = CAN
-				NOT = { tag = THIS }
-			}
-			diplomatic_influence = { who = CAN value = -100 }
-		}
-		diplomatic_influence = { who = CAN value = 100 }
-		relation = { who = CAN value = 50 }
-		ai_chance = { factor = 90 }
-
-	}
-	option = {
-		name = "EVTOPTB1234121"
-		ai_chance = { factor = 10 }
-	}
-}
-
-country_event = {
-	id = 1234122
-
-	trigger = {
-		tag = ENG
-		war = no
-		CAN = { war = no }
-		any_owned_province = {
-			region = USA_78 #Washington
-			controlled_by = THIS
-			any_neighbor_province = { owned_by = CAN }
-		}
-	}
-
-	fire_only_once = yes
-	
-	mean_time_to_happen =  {
-		months = 12
-	}
-
-	title = "EVTNAME1234122"
-	desc = "EVTDESC1234122"
-
-	option = {
-		name = "EVTOPTA1234122"
-		USA_78 = {
-			remove_core = THIS
-			add_core = CAN
-		}
-		any_owned = {
-			limit = { region = USA_78 }
-			secede_province = CAN
-		}
-		random_country = {
-			limit = {
-				is_sphere_leader_of = CAN
-				NOT = { tag = THIS }
-			}
-			diplomatic_influence = { who = CAN value = -100 }
-		}
-		diplomatic_influence = { who = CAN value = 100 }
-		relation = { who = CAN value = 50 }
-		ai_chance = { factor = 90 }
-
-	}
-	option = {
-		name = "EVTOPTB1234121"
-		ai_chance = { factor = 10 }
-	}
-}
-
-country_event = {
-	id = 1234123
-
-	trigger = {
-		tag = ENG
-		war = no
-		CAN = { war = no }
-		any_owned_province = {
-			region = USA_81 #Oregon
-			controlled_by = THIS
-			any_neighbor_province = { owned_by = CAN }
-		}
-	}
-	
-	fire_only_once = yes
-
-	mean_time_to_happen =  {
-		months = 12
-	}
-
-	title = "EVTNAME1234123"
-	desc = "EVTDESC1234123"
-
-	option = {
-		name = "EVTOPTA1234123"
-		USA_81 = {
-			remove_core = THIS
-			add_core = CAN
-		}
-		any_owned = {
-			limit = { region = USA_81 }
-			secede_province = CAN
-		}
-		random_country = {
-			limit = {
-				is_sphere_leader_of = CAN
-				NOT = { tag = THIS }
-			}
-			diplomatic_influence = { who = CAN value = -100 }
-		}
-		diplomatic_influence = { who = CAN value = 100 }
-		relation = { who = CAN value = 50 }
-		ai_chance = { factor = 90 }
-
-	}
-	option = {
-		name = "EVTOPTB1234121"
-		ai_chance = { factor = 10 }
-	}
-}
-
-country_event = {
-	id = 1234124
-
-	trigger = {
-		tag = ENG
-		war = no
-		CAN = { war = no }
-		any_owned_province = {
-			region = USA_91 #Idaho
-			controlled_by = THIS
-			any_neighbor_province = { owned_by = CAN }
-		}
-	}
-	
-	fire_only_once = yes
-
-	mean_time_to_happen =  {
-		months = 12
-	}
-
-	title = "EVTNAME1234124"
-	desc = "EVTDESC1234124"
-
-	option = {
-		name = "EVTOPTA1234124"
-		USA_91 = {
-			remove_core = THIS
-			add_core = CAN
-		}
-		any_owned = {
-			limit = { region = USA_91 }
-			secede_province = CAN
-		}
-		random_country = {
-			limit = {
-				is_sphere_leader_of = CAN
-				NOT = { tag = THIS }
-			}
-			diplomatic_influence = { who = CAN value = -100 }
-		}
-		diplomatic_influence = { who = CAN value = 100 }
-		relation = { who = CAN value = 50 }
-		ai_chance = { factor = 90 }
-
-	}
-	option = {
-		name = "EVTOPTB1234121"
-		ai_chance = { factor = 10 }
-	}
-}
-
-country_event = {
-	id = 1234125
-
-	trigger = {
-		tag = ENG
-		war = no
-		CAN = { war = no }
-		any_owned_province = {
-			region = USA_247 #New England
-			controlled_by = THIS
-			any_neighbor_province = { owned_by = CAN }
-		}
-	}
-
-	fire_only_once = yes
-
-	mean_time_to_happen =  {
-		months = 12
-	}
-
-	title = "EVTNAME1234125"
-	desc = "EVTDESC1234125"
-
-	option = {
-		name = "EVTOPTA1234125"
-		USA_247 = {
-			remove_core = THIS
-			add_core = CAN
-		}
-		any_owned = {
-			limit = { region = USA_247 }
-			secede_province = CAN
-		}
-		random_country = {
-			limit = {
-				is_sphere_leader_of = CAN
-				NOT = { tag = THIS }
-			}
-			diplomatic_influence = { who = CAN value = -100 }
-		}
-		diplomatic_influence = { who = CAN value = 100 }
-		relation = { who = CAN value = 50 }
-		ai_chance = { factor = 90 }
-
-	}
-	option = {
-		name = "EVTOPTB1234121"
-		ai_chance = { factor = 10 }
-	}
-}
-
-country_event = {
-	id = 1234126
-
-	trigger = {
-		tag = ENG
-		war = no
-		CAN = { war = no }
-		any_owned_province = {
-			region = USA_116 #Alaska
-			controlled_by = THIS
-			any_neighbor_province = { owned_by = CAN }
-		}
-	}
-
-	fire_only_once = yes
-	
-	mean_time_to_happen =  {
-		months = 12
-	}
-
-	title = "EVTNAME1234126"
-	desc = "EVTDESC1234126"
-
-	option = {
-		name = "EVTOPTA1234126"
-		USA_116 = {
-			remove_core = THIS
-			add_core = CAN
-		}
-		any_owned = {
-			limit = { region = USA_116 }
-			secede_province = CAN
-		}
-		random_country = {
-			limit = {
-				is_sphere_leader_of = CAN
-				NOT = { tag = THIS }
-			}
-			diplomatic_influence = { who = CAN value = -100 }
-		}
-		diplomatic_influence = { who = CAN value = 100 }
-		relation = { who = CAN value = 50 }
-		ai_chance = { factor = 90 }
-
-	}
-	option = {
-		name = "EVTOPTB1234121"
-		ai_chance = { factor = 10 }
-	}
-}
-
-
-		

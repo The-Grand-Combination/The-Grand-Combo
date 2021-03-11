@@ -1,0 +1,817 @@
+## Arosemena-Guzmán Treaty (Border between Colombia and Venezuela) ##
+
+	#Description: Fires for Colombia in order to settle the border between Venezuela and them
+	country_event = {
+
+		id = 50033
+		title = "EVTNAME50033"
+		desc = "EVTDESC50033"
+		picture = "map_of_colombia"
+
+		trigger = {
+			tag = CLM
+			owns = 2254
+			owns = 2251
+			owns = 2262
+			VNZ = {
+				owns = 2271
+				owns = 2265
+				owns = 2274
+			}
+			OR = {
+				revolution_n_counterrevolution = 1
+				VNZ = { revolution_n_counterrevolution = 1 }
+			}
+			USA = { is_greater_power = yes }
+			OR = {
+				exists = SPA
+				exists = SPC
+				exists = IBR
+			}
+			NOT = { has_country_flag = we_shall_unite_by_sword }
+			NOT = { VNZ = { has_country_flag = we_shall_unite_by_sword } }
+			NOT = { has_global_flag = colombia_venezuela_border }
+		}
+
+		mean_time_to_happen = {
+			months = 120
+		}
+
+		fire_only_once = yes
+
+		immediate = { set_global_flag = colombia_venezuela_border }
+
+		# Recognize their claim
+		option = {
+			name = "EVTOPTA50033"
+
+			badboy = -2
+			relation = { who = VNZ value = 100 }
+			random_owned = {
+				limit = { owner = { is_greater_power = yes } }
+				owner = { diplomatic_influence = { who = VNZ value = 100 } }
+			}
+			random_owned = {
+				limit = { province_id = 2270 }
+				remove_core = THIS
+				add_core = VNZ
+				secede_province = VNZ
+			}
+			random_owned = {
+				limit = { province_id = 2249 }
+				remove_core = THIS
+				add_core = VNZ
+				secede_province = VNZ
+			}
+			random_owned = {
+				limit = { province_id = 2278 }
+				remove_core = THIS
+				add_core = VNZ
+				secede_province = VNZ
+			}
+			random_owned = {
+				limit = { province_id = 2277 }
+				remove_core = THIS
+				add_core = VNZ
+				secede_province = VNZ
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 3
+					OR = {
+						war_policy = pacifism
+						war_policy = anti_military
+					}
+				}
+				modifier = {
+					factor = 4
+					sphere_owner = { is_sphere_leader_of = VNZ }
+				}
+				modifier = {
+					factor = 4
+					badboy = 1
+				}
+			}
+		}
+
+		# Seek Arbitration from Spain
+		option = {
+			name = "EVTOPTB50033"
+
+			random_country = {
+				limit = {
+					tag = USA
+					is_greater_power = yes
+				}
+				country_event = 50034
+			}
+
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0.5
+					NOT = { relation = { who = USA value = 100 } }
+				}
+				modifier = {
+					factor = 0
+					NOT = { relation = { who = USA value = 0 } }
+				}
+				modifier = {
+					factor = 2
+					alliance_with = USA
+					NOT = { VNZ = { alliance_with = USA } }
+				}
+			}
+		}
+
+		# Seek Arbitration from the USA
+		option = {
+			name = "EVTOPTC50033"
+
+			random_country = {
+				limit = {
+					OR = {
+						tag = SPA
+						tag = SPC
+						tag = IBR
+					}
+					exists = yes
+				}
+				country_event = 50034
+			}
+
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0.5
+					OR = {
+						AND = { exists = SPA NOT = { relation = { who = SPA value = 100 } } }
+						AND = { exists = SPC NOT = { relation = { who = SPC value = 100 } } }
+						AND = { exists = IBR NOT = { relation = { who = IBR value = 100 } } }
+					}
+				}
+				modifier = {
+					factor = 0
+					OR = {
+						AND = { exists = SPA NOT = { relation = { who = SPA value = 0 } } }
+						AND = { exists = SPC NOT = { relation = { who = SPC value = 0 } } }
+						AND = { exists = IBR NOT = { relation = { who = IBR value = 0 } } }
+					}
+				}
+				modifier = {
+					factor = 2
+					OR = {
+						AND = { exists = SPA alliance_with = SPA NOT = { VNZ = { alliance_with = SPA } } }
+						AND = { exists = SPC alliance_with = SPC NOT = { VNZ = { alliance_with = SPC } } }
+						AND = { exists = IBR alliance_with = IBR NOT = { VNZ = { alliance_with = IBR } } }
+					}
+				}
+			}
+		}
+
+		# Assert our claim
+		option = {
+			name = "EVTOPTD50033"
+
+			badboy = 4
+			relation = { who = VNZ value = -150 }
+			VNZ = { country_event = 50035 }
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 3
+					OR = {
+						war_policy = jingoism
+						war_policy = pro_military
+					}
+				}
+				modifier = {
+					factor = 0
+					NOT = {
+						AND = {
+							owns = 2270
+							owns = 2249
+							owns = 2278
+						}
+					}
+				}
+				modifier = {
+					factor = 0
+					badboy = 0.84
+				}
+			}
+		}
+	}
+
+	#Description: Fired for Spain / USA if they are asked to arbitrate
+	country_event = {
+
+		id = 50034
+		title = "EVTNAME50034"
+		desc = "EVTDESC50034"
+		picture = "map_of_colombia"
+
+		is_triggered_only = yes
+
+		# Favor Colombia
+		option = {
+			name = "EVTOPTA50034"
+
+			relation = { who = CLM value = 100 }
+			diplomatic_influence = { who = CLM value = 100 }
+			CLM = {
+				prestige = 5
+				random_owned = {
+					limit = { province_id = 2270 is_core = VNZ }
+					remove_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2249 is_core = VNZ }
+					remove_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2278 is_core = VNZ }
+					remove_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2277 is_core = VNZ }
+					remove_core = VNZ
+				}
+			}
+
+			relation = { who = VNZ value = -100 }
+			diplomatic_influence = { who = VNZ value = -100 }
+			VNZ = {
+				prestige = -5
+				random_owned = {
+					limit = { province_id = 2270 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2249 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2278 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2277 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+			}
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 3
+					alliance_with = CLM
+				}
+				modifier = {
+					factor = 2
+					relation = { who = CLM value = 100 }
+				}
+				modifier = {
+					factor = 2
+					NOT = { relation = { who = VNZ value = 0 } }
+				}
+			}
+		}
+
+		# Balanced solution - Venezuela gets Maracaibo, Colombia gets the rest
+		option = {
+			name = "EVTOPTB50034"
+
+			relation = { who = CLM value = 25 }
+			diplomatic_influence = { who = CLM value = 25 }
+			CLM = {
+				random_owned = {
+					limit = { province_id = 2270 is_core = CLM }
+					remove_core = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2270 }
+					add_core = VNZ
+					secede_province = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2249 is_core = VNZ }
+					remove_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2278 is_core = VNZ }
+					remove_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2277 is_core = VNZ }
+					remove_core = VNZ
+				}
+			}
+
+			relation = { who = VNZ value = 25 }
+			diplomatic_influence = { who = VNZ value = 25 }
+			VNZ = {
+				random_owned = {
+					limit = { province_id = 2270 }
+					remove_core = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2249 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2278 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2277 }
+					remove_core = VNZ
+					add_core = CLM
+					secede_province = CLM
+				}
+			}
+
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 3
+					alliance_with = VNZ
+				}
+				modifier = {
+					factor = 2
+					relation = { who = VNZ value = 100 }
+				}
+				modifier = {
+					factor = 3
+					alliance_with = CLM
+				}
+				modifier = {
+					factor = 2
+					relation = { who = CLM value = 100 }
+				}
+			}
+		}
+
+		# Favor Venezuela
+		option = {
+			name = "EVTOPTC50034"
+
+			relation = { who = VNZ value = 100 }
+			diplomatic_influence = { who = VNZ value = 100 }
+			VNZ = {
+				prestige = 5
+				random_owned = {
+					limit = { province_id = 2270 is_core = CLM }
+					remove_core = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2249 is_core = CLM }
+					remove_core = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2278 is_core = CLM }
+					remove_core = CLM
+				}
+				random_owned = {
+					limit = { province_id = 2277 is_core = CLM }
+					remove_core = CLM
+				}
+			}
+
+			relation = { who = CLM value = -100 }
+			diplomatic_influence = { who = CLM value = -100 }
+			CLM = {
+				prestige = -5
+				random_owned = {
+					limit = { province_id = 2270 }
+					remove_core = CLM
+					add_core = VNZ
+					secede_province = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2249 }
+					remove_core = CLM
+					add_core = VNZ
+					secede_province = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2278 }
+					remove_core = CLM
+					add_core = VNZ
+					secede_province = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2277 }
+					remove_core = CLM
+					add_core = VNZ
+					secede_province = VNZ
+				}
+			}
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 3
+					alliance_with = VNZ
+				}
+				modifier = {
+					factor = 2
+					relation = { who = VNZ value = 100 }
+				}
+				modifier = {
+					factor = 2
+					NOT = { relation = { who = CLM value = 0 } }
+				}
+			}
+		}
+	}
+
+	#Description: Triggered for Venezuela if Colombia refuses to negotiate.
+	country_event = {
+
+		id = 50035
+		title = "EVTNAME50035"
+		desc = "EVTDESC50035"
+		picture = "streetriot"
+
+		is_triggered_only = yes
+
+		# Go to war
+		option = {
+			name = "EVTOPTA50035"
+
+			badboy = 3
+			any_pop = {
+				dominant_issue = {
+					value = jingoism
+					factor = 0.1
+				}
+			}
+			FROM = {
+				random_owned = {
+					limit = { province_id = 2270 }
+					add_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2249 }
+					add_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2278 }
+					add_core = VNZ
+				}
+				random_owned = {
+					limit = { province_id = 2277 }
+					add_core = VNZ
+				}
+			}
+			war = {
+				target = CLM
+				attacker_goal = { casus_belli = acquire_all_cores }
+				call_ally = no
+			}
+
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0.6
+					OR = {
+						war_policy = jingoism
+						war_policy = pro_military
+					}
+				}
+				modifier = {
+					factor = 0
+					is_disarmed = yes
+				}
+			}
+		}
+
+		# Let the matter go
+		option = {
+			name = "EVTOPTB50035"
+
+			prestige = -5
+			badboy = -1
+
+			any_pop = {
+				scaled_militancy = { issue = jingoism factor = 5 }
+				scaled_militancy = { issue = pro_military factor = 3 }
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 1.5
+					CLM = { military_score = THIS }
+				}
+			}
+		}
+
+		# Renounce our claims
+		option = {
+			name = "EVTOPTC50035"
+
+			prestige = -10
+			badboy = -3
+
+			random_owned = {
+				limit = { 2270 = { is_core = THIS } }
+				2270 = { remove_core = THIS }
+			}
+			random_owned = {
+				limit = { province_id = 2270 }
+				secede_province = CLM
+			}
+			random_owned = {
+				limit = { 2249 = { is_core = VNZ } }
+				2249 = { remove_core = VNZ }
+			}
+			random_owned = {
+				limit = { province_id = 2249 }
+				secede_province = CLM
+			}
+			random_owned = {
+				limit = { 2278 = { is_core = VNZ } }
+				2278 = { remove_core = VNZ }
+			}
+			random_owned = {
+				limit = { province_id = 2278 }
+				secede_province = CLM
+			}
+			random_owned = {
+				limit = { 2277 = { is_core = VNZ } }
+				2277 = { remove_core = VNZ }
+			}
+			random_owned = {
+				limit = { province_id = 2277 }
+				secede_province = CLM
+			}
+
+			any_pop = {
+				scaled_militancy = { issue = jingoism factor = 6 }
+				scaled_militancy = { issue = pro_military factor = 4 }
+				scaled_consciousness = { issue = jingoism factor = 6 }
+				scaled_consciousness = { issue = pro_military factor = 4 }
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0
+					is_disarmed = no
+				}
+				modifier = {
+					factor = 2
+					NOT = {
+						owns = 2270
+						owns = 2249
+						owns = 2278
+						owns = 2277
+					}
+				}
+			}
+		}
+	}
+
+## Panamanian independence ##
+
+	#Description: The Hay-Herrán Treaty - if the USA is building the Panama canal but Colombia still owns Panama, the Colombian Senate can choose to not ratify the treaty.
+	country_event = {
+
+		id = 50030
+		title = "EVTNAME50030"
+		desc = "EVTDESC50030"
+		picture = "Panama4"
+
+		trigger = {
+			OR = {
+				tag = CLM
+				tag = GCO
+			}
+			owns = 2204
+			owns = 2208
+			1723 = {
+				owned_by = USA
+				has_province_modifier = panama_canal_construction
+			}
+			NOT = { exists = PNM }
+		}
+
+		mean_time_to_happen = {
+			days = 7
+		}
+
+		fire_only_once = yes
+
+		# Don't ratify the treaty - demand more money
+		option = {
+			name = "EVTOPTA50030"
+
+			random_country = {
+				limit = { owns = 1723 }
+				country_event = 50031
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0.1
+					is_disarmed = yes
+				}
+				modifier = {
+					factor = 1.2
+					is_secondary_power = yes
+				}
+				modifier = {
+					factor = 1.5
+					is_greater_power = yes
+				}
+			}
+		}
+
+		# We must not anger the Americans
+		option = {
+			name = "EVTOPTB50030"
+
+			prestige = -5
+			any_pop = {
+				limit = { NOT = { has_pop_culture = central_american } }
+				militancy = 6
+			}
+			any_pop = {
+				limit = { has_pop_culture = central_american }
+				militancy = 8
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0.1
+					average_militancy = 5
+				}
+			}
+		}
+	}
+
+	#Description: Triggered for the USA - Colombia demands more money for the Panama canal.
+	country_event = {
+
+		id = 50031
+		title = "EVTNAME50031"
+		desc = "EVTDESC50031"
+		picture = "panama_canal_construction"
+
+		is_triggered_only = yes
+
+		# Whatever, pay them
+		option = {
+			name = "EVTOPTA50031"
+
+			prestige = -10
+			treasury = -150000
+			diplomatic_influence = { who = FROM value = 100 }
+			FROM = { country_event = 50032 }
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 2
+					war = yes
+				}
+				modifier = {
+					factor = 1.5
+					relation = { who = FROM value = 150 }
+				}
+				modifier = {
+					factor = 1.5
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 0
+					NOT = { money = 500000 }
+				}
+			}
+		}
+
+		# Do nothing
+		option = {
+			name = "EVTOPTB50031"
+
+			badboy = 3
+			relation = { who = FROM value = -150 }
+			diplomatic_influence = { who = FROM value = -150 }
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0
+					badboy = 0.88
+				}
+			}
+		}
+
+		# Support Panamanian rebels
+		option = {
+			name = "EVTOPTC50031"
+
+			treasury = -100000
+			FROM = {
+				release = PNM
+				war = {
+					target = PNM
+					attacker_goal = { casus_belli = annex_core_country country = PNM }
+					call_ally = no
+				}
+			}
+			PNM = {
+				iron = 10
+				wool = 10
+				timber = 25
+				small_arms = 10
+				leadership = 20
+				treasury = 5000
+				add_country_modifier = { name = small_country_draft duration = 30 }
+				any_pop = { militancy = -10 }
+				any_owned = { remove_province_modifier = nationalist_agitation }
+			}
+			relation = { who = PNM value = 200 }
+			diplomatic_influence = { who = PNM value = 200 }
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					NOT = { money = 500000 }
+				}
+				modifier = {
+					factor = 1.5
+					OR = {
+						war_policy = pacifism
+						war_policy = anti_military
+					}
+				}
+			}
+		}
+
+		# If they will not agree, we can create a government that will
+		option = {
+			name = "EVTOPTD50031"
+
+			badboy = 6
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = liberate_puppet country = PNM }
+			}
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 1.5
+					OR = {
+						war_policy = jingoism
+						war_policy = pro_military
+					}
+				}
+				modifier = {
+					factor = 0
+					badboy = 0.76
+				}
+			}
+		}
+	}
+
+	#Description: Triggered for Colombia if the USA pays up
+	country_event = {
+
+		id = 50032
+		title = "EVTNAME50032"
+		desc = "EVTDESC50032"
+		picture = "Celebration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA50032"
+
+			prestige = 5
+			treasury = 150000
+			any_pop = { consciousness = -2 }
+			relation = { who = FROM value = 100 }
+		}
+	}
