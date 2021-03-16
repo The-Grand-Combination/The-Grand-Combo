@@ -940,15 +940,21 @@ country_event = {
 		# Remove cores
 		TUR_674 = { remove_core = TUR } # Dobrudja
 		TUR_788 = { remove_core = TUR } # Bosnia
+		TUR_789 = { remove_core = TUR } # Herzegovina
+        TUR_785 = { remove_core = TUR } # Western Bosnia
 		TUR_810 = { remove_core = TUR } # Bulgaria
+		TUR_811 = { remove_core = TUR } # Eastern Bulgaria
 		TUR_803 = { remove_core = TUR } # S.Serbia
+		TUR_802 = { remove_core = TUR } # Kosovo
+        TUR_804 = { remove_core = TUR } # Sandzak
 		MON_2582 = { remove_core = TUR } # Montenegro
 		TUR_853 = { remove_core = TUR } # Albania
 		TUR_832 = { remove_core = TUR } # Thessalia
 		847 = { remove_core = TUR } #Chania
 		848 = { remove_core = TUR } #Iraklion
+		2690 = { add_core = RUM } #Pre-Tophane Agreement
 		
-																	# Free Moldavia & Wallachia, and return Constanta and Tulcea to Wallachia
+		# Free Moldavia & Wallachia, and return Constanta and Tulcea to Wallachia
 		random_owned = {
 			limit = {
 				WAL = { exists = no }
@@ -1036,8 +1042,26 @@ country_event = {
 			secede_province = WAL
 			WAL = { set_country_flag = received_congress_benefit }
 		}
+		random_owned = {
+			limit = {
+				province_id = 3431 #Pangalia
+				owned_by = TUR
+				exists = ROM
+			}
+			secede_province = ROM
+			ROM = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 3431 #Pangalia
+				owned_by = TUR
+				NOT = { exists = ROM }
+			}
+			secede_province = WAL
+			ROM = { set_country_flag = received_congress_benefit }
+		}
 
-																	# Free Montenegro if it is owned, return Niksic and Ulcinj
+		# Free Montenegro if it is owned, return Niksic and Ulcinj
 		random_owned = {
 			limit = { MON = { exists = no } }
 			MON = { set_country_flag = congress_released_country }
@@ -1068,7 +1092,7 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 800
+				province_id = 3433 #Sutomore instead of Ulcinj
 				owned_by = TUR
 			}
 			secede_province = MON
@@ -1083,7 +1107,7 @@ country_event = {
 			TUR = { release_vassal = MON }
 		}
 
-																	# Give Bulgaria, Eastern Rumelia and Silestre to Bulgaria
+		# Give Bulgaria, Eastern Rumelia and Silestre to Bulgaria
 		random_owned = {
 			limit = { BUL = { exists = no } }
 			BUL = { set_country_flag = congress_released_country }
@@ -1101,7 +1125,9 @@ country_event = {
 					limit = {
 						NOT = {
 							region = TUR_810
+							region = TUR_811
 							province_id = 818
+							province_id = 3432
 						}
 					}
 					secede_province = TUR
@@ -1143,14 +1169,22 @@ country_event = {
 				any_owned = {
 					secede_province = RUM
 				}
+		    add_core = RUM
 			}
 			TUR = { create_vassal = RUM }
+		}
+		random_owned = {
+			limit = {
+				province_id = 2690
+				owned_by = TUR
+			}
+			secede_province = RUM
 		}
 		RUM = {
 			capital = 815
 		}
 
-																	# Release Bosnia
+		# Release Bosnia ## Sandzak provinces removed - lack of Osterreich event to give it back to Ottomans
 		random_owned = {
 			limit = {
 				province_id = 783
@@ -1170,6 +1204,44 @@ country_event = {
 			}
 			BOS = { set_country_flag = received_congress_benefit }
 		}
+		
+		random_owned = {
+			limit = {
+				province_id = 785
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+			BOS = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 804 #Representing the Austrian occupation of Sandzak region
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+			secede_province = BOS
+			BOS = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 789
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+			BOS = { set_country_flag = received_congress_benefit }
+		}
 		random_country = {
 			limit = {
 				tag = BOS
@@ -1179,7 +1251,7 @@ country_event = {
 			TUR = { release_vassal = BOS }
 		}
 		
-																	# Any Croatian lands given to Croatia, it is freed if vassaled
+		# Any Croatian lands given to Croatia, it is freed if vassaled
 		random_owned = {
 			limit = {
 				CRO = { exists = no }
@@ -1220,7 +1292,7 @@ country_event = {
 			TUR = { release_vassal = CRO }
 		}
 		
-																	# Any Dalmatian lands given to Dalmatia, it is freed if vassaled
+		# Any Dalmatian lands given to Dalmatia, it is freed if vassaled
 		random_owned = {
 			limit = {
 				DLM = { exists = no }
@@ -1250,7 +1322,7 @@ country_event = {
 			TUR = { release_vassal = DLM }
 		}
 		
-																	# Free Serbia if it is owned, return Nis and Leskovac
+		# Free Serbia if it is owned, return Nis and Leskovac
 		random_owned = {
 			limit = { SER = { exists = no } }
 			SER = { set_country_flag = congress_released_country }
@@ -1292,7 +1364,7 @@ country_event = {
 			TUR = { release_vassal = SER }
 		}
 		
-																	#Return Thessaly to Greece (less Janina)
+		#Return Thessaly to Greece (less Janina)
 		random_owned = {
 			limit = { GRE = { exists = no } }
 			GRE = { set_country_flag = congress_released_country }
@@ -1309,7 +1381,6 @@ country_event = {
 			limit = {
 				province_id = 834 #Athens
 				owned_by = TUR
-				NOT = { exists = GRE }
 			}
 			state_scope = {
 				any_owned = {
@@ -1330,16 +1401,30 @@ country_event = {
 			}
 			GRE = { set_country_flag = received_congress_benefit }
 		}
+		
 		random_owned = {
 			limit = {
-				province_id = 832 #Volos
+				province_id = 836
 				owned_by = TUR
 			}
-			state_scope = {
-				any_owned = {
-					secede_province = GRE
-				}
+			secede_province = GRE
+			GRE = { set_country_flag = received_congress_benefit }
+		}	
+		random_owned = {
+			limit = {
+				province_id = 832 #1881 Constantinople Conference border
+				owned_by = TUR
 			}
+			secede_province = GRE
+			GRE = { set_country_flag = received_congress_benefit }
+		}	
+		
+		random_owned = {
+			limit = {
+				province_id = 833 #1881 Constantinople Conference border
+				owned_by = TUR
+			}
+			secede_province = GRE
 			GRE = { set_country_flag = received_congress_benefit }
 		}	
 
@@ -1350,10 +1435,10 @@ country_event = {
 				NOT = { exists = GRE }
 			}
 			secede_province = GRE
-			WAL = { set_country_flag = received_congress_benefit }
-		}	
+		    GRE = { set_country_flag = received_congress_benefit }
+		}		
 		
-																	# If Greece is a GP and attending, give Crete and W. Macedonia
+		# If Greece is a GP and attending, give Crete and W. Macedonia
 		random_country = {
 			limit = {
 				tag = GRE
@@ -1364,10 +1449,11 @@ country_event = {
 				any_owned = {
 					limit = {
 						OR = {
-							region = TUR_823
-							region = TUR_824
-							region = TUR_830
-							region = TUR_832
+						    region = TUR_805 #Thessaloniki
+							region = TUR_820 #Southwestern Macedonia
+							province_id = 824 #Yanya
+							province_id = 841 #Micova
+							region = EGY_848 #Crete
 						}
 					}
 					remove_core = TUR
@@ -1376,7 +1462,7 @@ country_event = {
 			}
 		}
 		
-																	#Release Crete, if it's a vassal
+		#Release Crete, if it's a vassal
 		random_country = {
 			limit = {
 				tag = CRE
@@ -1386,7 +1472,7 @@ country_event = {
 			TUR = { release_vassal = CRE }
 		}
 		
-																	#If no country is receiving Cyprus, release it as a vassal
+		#If no country is receiving Cyprus, release it as a vassal
 		random_owned = {
 			limit = {
 				province_id = 855 #Nicosia
@@ -1397,7 +1483,7 @@ country_event = {
 			CYP = { set_country_flag = received_congress_benefit }
 		}
 
-																	# Send acknowledgement to attending countries
+		# Send acknowledgement to attending countries
 		any_greater_power = {
 			limit = { has_country_flag = attending_berlin_congress }
 			country_event = 90069
@@ -1556,24 +1642,32 @@ country_event = {
 		# Remove cores
 		TUR_674 = { remove_core = TUR } # Dobrudja
 		TUR_788 = { remove_core = TUR } # Bosnia
-		TUR_802 = { remove_core = TUR } # Kosovo
-		TUR_803 = { remove_core = TUR } # S.Serbia
-		TUR_805 = { remove_core = TUR } # S.Macedonia
-		TUR_806 = { remove_core = TUR } # N.Macedonia
-		TUR_809 = { remove_core = TUR }	# E.Rumelia
 		TUR_810 = { remove_core = TUR } # Bulgaria
-		TUR_823 = { remove_core = TUR } # C.Macedonia
-		TUR_824 = { remove_core = TUR } # Epirus
-		TUR_830 = { remove_core = TUR } # W.Thrace
-		TUR_832 = { remove_core = TUR } # Thessalia
-		TUR_853 = { remove_core = TUR } # Albania
-		TUR_855 = { remove_core = TUR } # Cyprus
+		TUR_809 = { remove_core = TUR }	# E.Rumelia
+		TUR_803 = { remove_core = TUR } # S.Serbia
 		MON_2582 = { remove_core = TUR } # Montenegro
+		TUR_853 = { remove_core = TUR } # Albania
+		TUR_832 = { remove_core = TUR } # Thessalia
+		TUR_806 = { remove_core = TUR } # N.Macedonia
+		TUR_805 = { remove_core = TUR } # W.Macedonia
+		TUR_855 = { remove_core = TUR } # Cyprus
+		TUR_789 = { remove_core = TUR } # Herzegovina
+        TUR_785 = { remove_core = TUR } # Western Bosnia
+		TUR_2690 = { remove_core = TUR } # Southeastern Rumelia 
+		TUR_830 = { remove_core = TUR } # Western Thrace
+		TUR_823 = { remove_core = TUR } # Southeastern Macedonia
+        TUR_820 = { remove_core = TUR } # Southwestern Macedonia
 		TUR_3365 = { remove_core = TUR } # Malo Prespa
+        MON_3433 = { remove_core = TUR } # Kotor
+		TUR_824 = { remove_core = TUR } # Epirus
+		TUR_811 = { remove_core = TUR } # Eastern Bulgaria
+		TUR_802 = { remove_core = TUR } # Kosovo
+        TUR_804 = { remove_core = TUR } # Sandzak
+		EGY_843 = { remove_core = TUR } # Aegean Islands
 		847 = { remove_core = TUR } #Chania
 		848 = { remove_core = TUR } #Iraklion
 
-																	# Free Moldavia & Wallachia, and return Constanta and Tulcea to Wallachia
+		# Free Moldavia & Wallachia, and return Constanta and Tulcea to Wallachia
 		random_owned = {
 			limit = {
 				WAL = { exists = no }
@@ -1649,74 +1743,25 @@ country_event = {
 			secede_province = ROM
 			ROM = { set_country_flag = received_congress_benefit }
 		}
-																	# Give Macedoniaa, North and Central Macedonia, free it if vassalised
-	random_owned = {
-			limit = { MCD = { exists = no } }
-			MCD = { set_country_flag = received_congress_benefit }
+		random_owned = {
+			limit = {
+				province_id = 3431 #Pangalia
+				owned_by = TUR
+				NOT = { exists = ROM }
+			}
+			secede_province = WAL
+			WAL = { set_country_flag = received_congress_benefit }
 		}
 		random_owned = {
 			limit = {
-				province_id = 806
+				province_id = 3431 #Pangalia
 				owned_by = TUR
-				NOT = { exists = MCD }
+				exists = ROM
 			}
-			owner = { release_vassal = MCD }
+			secede_province = ROM
+			ROM = { set_country_flag = received_congress_benefit }
 		}
-		random_owned = {
-			limit = {
-				province_id = 806 #Burgas
-				owned_by = TUR
-			}
-			state_scope = {
-				any_owned = {
-					secede_province = MCD
-				}
-			}
-			MCD = { set_country_flag = received_congress_benefit }
-		}
-		random_owned = {
-			limit = {
-				province_id = 805 #Yenice-i Vardar
-				owned_by = TUR
-			}
-			state_scope = {
-				any_owned = {
-					secede_province = MCD
-				}
-			}
-			MCD = { set_country_flag = received_congress_benefit }
-		}
-		random_owned = {
-			limit = {
-				province_id = 822 #Selanik
-				owned_by = TUR
-			}
-			state_scope = {
-				any_owned = {
-					secede_province = MCD
-				}
-			}
-			MCD = { set_country_flag = received_congress_benefit }
-		}
-		random_owned = {
-			limit = {
-				province_id = 3365 
-				owned_by = TUR
-			}
-			remove_core = TUR
-			secede_province = MCD
-			MCD = { set_country_flag = received_congress_benefit }
-		}
-		random_owned = {
-			limit = {
-				province_id = 3364 
-				owned_by = TUR
-			}
-			remove_core = TUR
-			secede_province = MCD
-			MCD = { set_country_flag = received_congress_benefit }
-		}
-																	# Give Bulgaria, Eastern Rumelia and Silestre to Bulgaria, free it if vassalised
+		#Give Bulgaria, Eastern Rumelia and Silestre to Bulgaria, free if its vassalised
 		random_owned = {
 			limit = { BUL = { exists = no } }
 			BUL = { set_country_flag = congress_released_country }
@@ -1755,7 +1800,67 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
+				province_id = 809 #Sofya
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BUL
+				}
+			}
+			BUL = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 829 #Sofya
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BUL
+				}
+			}
+			BUL = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 3356 #Rodopi
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BUL
+				}
+			}
+			BUL = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 808 #Petrich
+				owned_by = TUR
+			}
+			secede_province = BUL
+			BUL = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 3291 #Strumica
+				owned_by = TUR
+			}
+			secede_province = BUL
+			BUL = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
 				province_id = 818 #Silistre
+				owned_by = TUR
+			}
+			secede_province = BUL
+			BUL = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 3432 #Pazarcik
 				owned_by = TUR
 			}
 			secede_province = BUL
@@ -1789,7 +1894,7 @@ country_event = {
 			}
 			BUL = { set_country_flag = congress_released_country }
 		}
-																		# Any Bosnian lands given to Bosnia, it is freed if vassaled
+		# Any Bosnian lands given to Bosnia, it is freed if vassaled
 		random_owned = {
 			limit = {
 				province_id = 783
@@ -1818,11 +1923,27 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 804
-				BOS = { exists = yes }
+				province_id = 785
+				owned_by = TUR
 			}
-			secede_province = SER
-			SER = { set_country_flag = received_congress_benefit }
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+			BOS = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
+				province_id = 789
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+			BOS = { set_country_flag = received_congress_benefit }
 		}
 		random_country = {
 			limit = {
@@ -1832,7 +1953,16 @@ country_event = {
 			set_country_flag = received_congress_benefit
 			TUR = { release_vassal = BOS }
 		}
-																	# Any Serbian lands given to Serbia, it is freed if vassaled
+		random_owned = { #1913-1914 borders of Serbia and Montenegro
+			limit = {
+				province_id = 803
+				MON = { exists = yes }
+			}
+			803 = { remove_core = SER }
+			secede_province = MON
+			MON = { set_country_flag = received_congress_benefit }
+		}
+		#Any Serbian lands given to Serbia, it is freed if vassaled
 		random_owned = {
 			limit = { SER = { exists = no } }
 			SER = { set_country_flag = congress_released_country }
@@ -1845,6 +1975,24 @@ country_event = {
 			limit = { is_core = SER }
 			secede_province = SER
 		}
+		random_owned = {
+			limit = {
+				province_id = 806 #Skoplje, Vardar Macedonia minus Strumica
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = SER
+				}
+			}
+			SER = { set_country_flag = received_congress_benefit }
+			803 = { add_core = SER }
+			1780 = { add_core = SER }
+			807 = { add_core = SER }
+			3454 = { add_core = SER }
+			3291 = { add_core = SER }
+			806 = { add_core = SER }
+		}
 		random_country = {
 			limit = {
 				tag = SER
@@ -1853,7 +2001,15 @@ country_event = {
 			set_country_flag = received_congress_benefit
 			TUR = { release_vassal = SER }
 		}
-																	# Any Montenegran lands given to Montenegro, it is freed if vassaled
+		random_owned = {
+			limit = {
+				province_id = 804
+				SER = { exists = yes }
+			}
+			secede_province = SER
+			SER = { set_country_flag = received_congress_benefit }
+		}
+		# Any Montenegran lands given to Montenegro, it is freed if vassaled
 		random_owned = {
 			limit = { MON = { exists = no } }
 			MON = { set_country_flag = congress_released_country }
@@ -1874,7 +2030,7 @@ country_event = {
 			set_country_flag = received_congress_benefit
 			TUR = { release_vassal = MON }
 		}
-																	# Any Croatian lands given to Croatia, it is freed if vassaled
+		# Any Croatian lands given to Croatia, it is freed if vassaled
 		random_owned = {
 			limit = {
 				CRO = { exists = no }
@@ -1915,7 +2071,7 @@ country_event = {
 			TUR = { release_vassal = CRO }
 		}
 		
-																	# Any Dalmatian lands given to Dalmatia, it is freed if vassaled
+		# Any Dalmatian lands given to Dalmatia, it is freed if vassaled
 		random_owned = {
 			limit = {
 				DLM = { exists = no }
@@ -1944,7 +2100,7 @@ country_event = {
 			set_country_flag = received_congress_benefit
 			TUR = { release_vassal = DLM }
 		}
-																	# Thessalia & Dodecanese returned to Greece (W.Macedonia if Thessalia already owned)
+		# Thessalia & Dodecanese returned to Greece (W.Macedonia if Thessalia already owned)
 		random_owned = {
 			limit = { GRE = { exists = no } }
 			GRE = { set_country_flag = congress_released_country }
@@ -1968,6 +2124,19 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
+				province_id = 834 #Athens
+				owned_by = TUR
+				exists = GRE
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = GRE
+				}
+			}
+			GRE = { set_country_flag = received_congress_benefit }
+		}
+		random_owned = {
+			limit = {
 				province_id = 824 
 				owned_by = TUR
 			}
@@ -1986,7 +2155,7 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 832 #Quluz
+				province_id = 821 #Kafakerya
 				owned_by = TUR
 			}
 			state_scope = {
@@ -1999,6 +2168,45 @@ country_event = {
 		random_owned = {
 			limit = {
 				province_id = 842 #Patras
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = GRE
+				}
+			}
+			GRE = { set_country_flag = received_congress_benefit }
+		}
+
+        random_owned = {
+			limit = {
+				province_id = 805 #Southwestern Macedonia
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = GRE
+				}
+			}
+			GRE = { set_country_flag = received_congress_benefit }
+		}
+
+        random_owned = {
+			limit = {
+				province_id = 822 #Thessaloniki
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = GRE
+				}
+			}
+			GRE = { set_country_flag = received_congress_benefit }
+		}
+		
+		random_owned = {
+			limit = {
+				province_id = 823 #Southeastern Macedonia
 				owned_by = TUR
 			}
 			state_scope = {
@@ -2092,7 +2300,7 @@ country_event = {
 			set_country_flag = received_congress_benefit
 			TUR = { release_vassal = CYP }
 		}
-																	# Albania released as a vassal
+		#Albania released as a vassal
 		random_owned = {
 			limit = { is_core = ALB }
 			ALB = { set_country_flag = received_congress_benefit }
