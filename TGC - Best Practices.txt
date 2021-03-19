@@ -22,152 +22,254 @@ Victoria 2 TAG Creator: https://forum.paradoxplaza.com/forum/threads/victoria-2-
 - Any microstate TAGs added should also be added to the option_disable_microstates decision in Setup.txt
 
 ## Templates ##
-- Templates for /common/country, /history/country, and history/provinces are available in TGC - templates.zip, please use to build and update countries and provinces!
+	- Templates for /common/country, /history/country, and history/provinces are available in TGC - templates.zip, please use to build and update countries and provinces!
+
+## Conditions Best Practices ##
+
+	- This applies to both potential in decisions and trigger in events. The effect of allow on performance is irrelevant, so prioritize readability when writing it.
+
+	- First or first few conditions should be the ones that will most reduce the set of possible countries/provinces, if possible, just to one.
+		- For countries, these are conditions like tag, owns, controls, is_our_vassal, is_sphere_leader_of, capital, etc. that can only have one result
+		- For provinces, the only condition like this is province_id
+		- In both situations, flags or modifiers that will only be present in one or a few at any time are also usable here.
+		- DO NOT use primary_culture unless you are sure that the event requires that. Using primary_culture instead of tag will both catch more countries than is necessary and may allow the trigger to be true when it shouldn't.
+		- Once the trigger is scoped down to a single digit number of countries/provinces, condition order becomes irrelevant and you should prioritize code readability.
+
+	- If the above is not possible due to logic (event/decision is more generic), try to scope down the trigger as much as you can first.
+		- Good country conditions are those which will only be true for a limited number of countries, for example, in_sphere, vassal_of, substate_of, is_greater_power, is_secondary_power, rank (for small numbers), is_core (of a province), neighbour, primary_culture, accepted_culture, war_with, truce_with, ai = no...
+		- Okay conditions are those which will be true for some subset of all countries, for example, government, ideology, political/social_reform, is_vassal, is_substate, is_independant, is_disarmed, is_mobilized, ruling party policies, has_country_flag
+		- Conditions to avoid putting early in the conditions list are those that will be true for a large subset of all countries and are unlikely to change, such as exists (this is almost never useful outside of random_country), civilized, ai = yes, technology, invention, war
+
+	- Avoid unnecessary conditions (conditions that will always be true, given previous conditions) to reduce unnecessary checking and improve performance.
+	- Avoid checking for the same thing in multiple places in a AND/OR tree.
+	- NOT = { OR = { ... } } is redundant and will be false as soon as one of the inner conditions is satisfied, same as just NOT = { ... }. NOT = { AND = { ... } } requires all of the conditions to be satisfied to become false.
+	- Use region instead of state_id to check for state since region names changing will break this but a province changing state will silently do the wrong thing. Only use state_id to check whether two provinces are in the same state.
+	- Using a province condition inside a state trigger scope will return true if any province in that state satisfies the condition. Note that the Validator will complain about this.
+
+## Effects Best Practices #
+
+	- Prioritize readability.
+	- Prestige and infamy effects should go first.
+	- Don't use random_list for good stuff, only for bad stuff.
+	- Avoid using any_greater_power as it will display the individual effect up to 8 times, almost certainly using up all the available display space.
+	- The limit = { ... } command works with explicit scopes (state names, pop types...) as well as implicit ones (any_owned, any_pop...).
+	- Use explicit pop type/strata scopes instead of any_pop with limit.
+	- If effects are long, use grouping and indentation for code readability.
+	- If an effect will only potentially affect a limited number of countries/provinces, use random_country/random_owned instead of any_country/any_owned to display the exact effect.
+	- Use all_core rather than state scopes where applicable to prevent side effects of assuming where a country will have cores.
+	- If part of an effect is potentially not going to have an effect, use random_owned to not display it if this is the case (if not a great power, no need to display influence gains, if they don't have a core somewhere no need to display removing it)
+	- What random_owned and random_country display is determined before effect execution, but what they do is determined at that point in the execution - if at the beginning of an event you don't own province 232, random_owned = { limit = { province_id = 232 } ... } will not display. However, if by the time it comes to that line you do (from a previous effect), the effect from inside random_owned will still be executed.
+	- If an effect gives infamy or takes money, make sure the AI won't bankrupt itself or drive itself over the infamy limit.
 
 ## Event Best Practices ##
-- Use the most appropriate file in the mod/TGC/events/ folder
-- When appropriate, use cultures / culture groups as limits rather than TAGs.
-- Use localisation for event text rather than text in the code
-- Use the following formats for localising your events:
-	title = "EVTNAME#########"
-	desc = "EVTDESC#########"
-	option A = EVTOPTA##########"
-	option B = EVTOPTB##########", etc.
-- Keep events in each file either in numerical order or group order for event chains in each file
-- Use Audax Validator after any edits
-- Do not delete or rename any of the following event files:
-	ACW.txt
-	ANHFlavor.txt
-	Arabia event.txt
-	ARGFlavor.txt
-	Assimilation Troubles.txt
-	ASTFlavor.txt
-	AUSFlavor.txt
-	BADFlavor.txt
-	BAYFlavor.txt
-	BELFlavor.txt
-	BoerWar.txt
-	BRZFlavor.txt
-	CANFlavor.txt
-	CBGeneration.txt
-	CBsAndCores.txt
-	China.txt
-	CivilizationAndGunBoats.txt
-	CleanUp.txt
-	COBFlavor.txt
-	ColonialUprisings.txt
-	CrimeAndPunishment.txt
-	crises.txt
-	DANFlavor.txt
-	Diseases.txt
-	DOMFlavor.txt
-	EconomicalEvents.txt
-	ElectionEvents.txt
-	ENGFlavor.txt
-	EventIDs.txt
-	Exploration.txt
-	FRAFlavor.txt
-	FRMFlavor.txt
-	GERFlavor.txt
-	Goods.txt
-	GreatPowers.txt
-	HAIFlavor.txt
-	HAMFlavor.txt
-	HAWFlavor.txt
-	HEDFlavor.txt
-	HEKFlavor.txt
-	IdeologyEnabling.txt
-	IssueSuggestion.txt
-	ITAFlavor.txt
-	LiberalRevolutions.txt
-	LOMFlavor.txt
-	MEXFlavor.txt
-	MostlyHarmless.txt
-	NASFlavor.txt
-	NationalistMovements.txt
-	NationalUnification.txt
-	NationalValues.txt
-	NaturalDisasters.txt
-	NobelPrize.txt
-	NORFlavor.txt
-	OLDFlavor.txt
-	Olympics.txt
-	OMAFlavor.txt
-	OnAction.txt
-	PAPFlavor.txt
-	PEUFlavor.txt
-	PoliticalEvents.txt
-	PRUFlavor.txt
-	ReformJealousy.txt
-	RGOSpreadEvents.txt
-	RUSFlavor.txt
-	SAXFlavor.txt
-	Sepoy rebellion.txt
-	Socialism_Facism.txt
-	Socialism_Fascism.txt
-	SPAFlavor.txt
-	Sports.txt
-	SuffragetteMovements.txt
-	SWEFlavor.txt
-	SWIFlavor.txt
-	Taiping.txt
-	TemperanceLeague.txt
-	TURFlavor.txt
-	UpperHouse.txt
-	URUFlavor.txt
-	USAFlavor.txt
-	WorkPlaceEvents.txt
-	WorldFairs.txt
+
+	- Use the most appropriate file in the mod/TGC/events/ folder. As a general rule, self-contained mechanics go into their own files, common events go into common files and country/region specific events go into specific files.
+	- Use localisation for event text rather than text in the code.
+	- Event Localizations should be placed in the appropriate files. Each event localization file (that doesn't only hold localizations from a self-contained mechanic) has a number in it, representing the lower bound of ids to go into that file (with the upper bound being the next file). Place the localizations in that file, sorted by id (for easier indexing) and in the order of DESC, NAME, OPTA... (for easier readability). If your editor or some other tool sorts these, make sure that this functionality is turned off so as not to cause trouble (ideally, check the git diff for all files before committing anything).
+	- Write the title and a short one-line description of the event and options (if more than one) if not obvious (look at examples)
+	- For event chains, try to use consecutive numbers or at least numbers in a certain range for ids rather than just random 20 digit numbers.
+	- Use the following formats for localising your events:
+		title = "EVTNAME#########"
+		desc = "EVTDESC#########"
+		option A = EVTOPTA##########"
+		option B = EVTOPTB##########", etc.
+
+	- It's okay to reuse localizations from events in the same group, but don't reuse localizations from unrelated events.
+
+	- Event components should always come in the following order (optional in brackets):
+		- Id, Title, Description, Picture, (Major)
+		- Trigger, Mean Time To Happen, (Fire Only Once), (Allow Multiple Instances) / Is Triggered Only
+		- (Immediate), Options
+
+	- In Options, maintain one blank row between name, effect and ai_chance for readability
+	- Avoid unnecessary attributes (ai_chance for events with only one option, both mean_time_to_happen and is_triggered_only, major and picture) to reduce clutter.
+	- Keep events in each file grouped with indentation under a title where applicable, and in logical or chronological order where possible.
+	- Events with is_triggered_only = yes don't affect performance, so don't be cheap on notification events for countries that are affected.
+	- Use Audax Validator after any edits
+	- Do not delete or rename any of the following event files:
+		ACW.txt
+		ANHFlavor.txt
+		Arabia event.txt
+		ARGFlavor.txt
+		Assimilation Troubles.txt
+		ASTFlavor.txt
+		AUSFlavor.txt
+		BADFlavor.txt
+		BAYFlavor.txt
+		BELFlavor.txt
+		BoerWar.txt
+		BRZFlavor.txt
+		CANFlavor.txt
+		CBGeneration.txt
+		CBsAndCores.txt
+		China.txt
+		CivilizationAndGunBoats.txt
+		CleanUp.txt
+		COBFlavor.txt
+		ColonialUprisings.txt
+		CrimeAndPunishment.txt
+		crises.txt
+		DANFlavor.txt
+		Diseases.txt
+		DOMFlavor.txt
+		EconomicalEvents.txt
+		ElectionEvents.txt
+		ENGFlavor.txt
+		EventIDs.txt
+		Exploration.txt
+		FRAFlavor.txt
+		FRMFlavor.txt
+		GERFlavor.txt
+		Goods.txt
+		GreatPowers.txt
+		HAIFlavor.txt
+		HAMFlavor.txt
+		HAWFlavor.txt
+		HEDFlavor.txt
+		HEKFlavor.txt
+		IdeologyEnabling.txt
+		IssueSuggestion.txt
+		ITAFlavor.txt
+		LiberalRevolutions.txt
+		LOMFlavor.txt
+		MEXFlavor.txt
+		MostlyHarmless.txt
+		NASFlavor.txt
+		NationalistMovements.txt
+		NationalUnification.txt
+		NationalValues.txt
+		NaturalDisasters.txt
+		NobelPrize.txt
+		NORFlavor.txt
+		OLDFlavor.txt
+		Olympics.txt
+		OMAFlavor.txt
+		OnAction.txt
+		PAPFlavor.txt
+		PEUFlavor.txt
+		PoliticalEvents.txt
+		PRUFlavor.txt
+		ReformJealousy.txt
+		RGOSpreadEvents.txt
+		RUSFlavor.txt
+		SAXFlavor.txt
+		Sepoy rebellion.txt
+		Socialism_Facism.txt
+		Socialism_Fascism.txt
+		SPAFlavor.txt
+		Sports.txt
+		SuffragetteMovements.txt
+		SWEFlavor.txt
+		SWIFlavor.txt
+		Taiping.txt
+		TemperanceLeague.txt
+		TURFlavor.txt
+		UpperHouse.txt
+		URUFlavor.txt
+		USAFlavor.txt
+		WorkPlaceEvents.txt
+		WorldFairs.txt
+
+## Event Tips ##
+
+	- Note that country_event = { id = X days = Y } won't work with FROM.
+	- Options that don't have ai_chance set are equally likely. I'm not sure what the behavior is if one of the options has ai_chance set but another doesn't.
+	- If two events have the same trigger but only one should fire, use immediate instead of option to set the flag preventing the events from firing.
 
 ## Decision Best Practices ##
-- Use the decison template in the Templates folder
-- Use the most appropriate file in the mod/TGC/decisions/ folder
-- When appropriate, use cultures / culture groups as limits rather than TAGs.
-- Keep descisions in logical groups
-- Use Audax Validator after any edits
-- Do not delete or rename any of the following decision files:
-	ACW.txt
-	arabian formation.txt
-	AUS.txt
-	BEL.txt
-	BoerWar.txt
-	Canals.txt
-	DEN.txt
-	ENG.txt
-	France.txt
-	Germany.txt
-	GRE.txt
-	GreatPowers.txt
-	Italy.txt
-	LIB.txt
-	MEX.txt
-	MostlyHarmless.txt
-	NationalUnification.txt
-	NET.txt
-	Political.txt
-	RUS.txt
-	SAF.txt
-	SouthAmerica.txt
-	SPA.txt
-	SWE.txt
-	SWI.txt
-	Tech_School_Changes.txt
-	TUR.txt
-	UncivFlavor.txt
-	USCA.txt
+
+	- Use the decison template in the Templates folder
+	- Use the most appropriate file in the mod/TGC/decisions/ folder. As a general rule, self-contained mechanics go into their own files, common decisions go into common files and country/region specific decisions go into specific files.
+	- Write a short one-line description above each decision, for example roughly what it does and where it fits in with other decisions (look at examples)
+	- Decision names should be snake case, something_like_this, and lowercase so that if someone happens to sort a localization file they don't reorder it and create merge conflicts for everyone else.
+	- Decision components should always be structured like this:
+		- picture
+		- potential
+		- empty row
+		- allow
+		- empty row
+		- effect
+		- empty row
+		- ai_will_do
+	- Keep decisions in each file grouped with indentation under a title where applicable, and in logical or chronological order where possible.
+	- Use Audax Validator after any edits
+	- Localize all flags that appear in allow and will be displayed to the user (note: global flags can't be localized for some reason.)
+	- Avoid duplicating code where possible. One decision is better than two, if they would have the same localization, conditions and same / conditionally same effect.
+	- Give descriptions descriptive names - memory is cheap, developer attention is expensive.
+	- Do not delete or rename any of the following decision files:
+		ACW.txt
+		arabian formation.txt
+		AUS.txt
+		BEL.txt
+		BoerWar.txt
+		Canals.txt
+		DEN.txt
+		ENG.txt
+		France.txt
+		Germany.txt
+		GRE.txt
+		GreatPowers.txt
+		Italy.txt
+		LIB.txt
+		MEX.txt
+		MostlyHarmless.txt
+		NationalUnification.txt
+		NET.txt
+		Political.txt
+		RUS.txt
+		SAF.txt
+		SouthAmerica.txt
+		SPA.txt
+		SWE.txt
+		SWI.txt
+		Tech_School_Changes.txt
+		TUR.txt
+		UncivFlavor.txt
+		USCA.txt
+
+## Decision Tips ##
+
+	- The AI will take the decision if the ai_will_do factor is 1 or greater.
+	- If a decision triggers an event and is meant to be taken once, set the flag which blocks it from being clickable in the decision effect rather than the event effect, to prevent it being clickable for the rest of the day.
+
+## Formatting Best Practices ##
+
+	- Write free text comments with one space after the # sign for easier readability. #Description, #DEVNOTE etc are fine, however.
+	- When an object (something in brackets) contains one element (e.g. NOT = { exists = GER }) or can only contain a limited number of elements (e.g. relations = { who = FROM value = 10 }) write them inline.
+	- If you have a few similar lines of limited length in succession, write them inline each, for example:
+		scaled_consciousness = { ideology = conservative factor = 2 }
+		scaled_militancy = { ideology = conservative factor = 2 }
+		scaled_consciousness = { ideology = reactionary factor = 2 }
+		scaled_militancy = { ideology = reactionary factor = 2 }
+	takes 4 lines whereas expanding that would hamper readability by taking up 16.
+	- Write descriptions next to non-obvious literals (regions, province ids, modifier durations) - not everybody should have to look up that province 232 is New York and 1095 days is 3 years
+
+## General Best Practices ##
+
+	- Whenever changing something, assume that it was made like it is with good reason, and understand that reason before changing it. Changing stuff without checking how it interacts with other stuff is why bugs happen.
+	- Give flags descriptive names - memory is cheap, developer attention is expensive. Ideally, a flag would have a (who_)did_what or (this_is_)what format for easy understanding, e.g. offered_treaty_of_guadalupe_hidalgo or slave_trader.
+	- Use THIS and FROM instead of tags where appropriate. Note that remove_core doesn't work with FROM.
+	- If you have tested that a piece of code works, but the Validator keeps complaining about it, you can put the following line before it to reduce noise: # Audax Validator "." Ignore_NEXT
+	- If the event/decision makes an assumption, make sure to check for that assumption.
+		- For example, if the primary effect is to send an event to Mexico, you should check if Mexico exists in the prerequisite conditions. If sending an event to Mexico is a secondary effect, however, such as an event for their reaction for something you did, use random_country instead.
+		- If the effect does something to a set of provinces (say, builds railroads), either check to see that you own all of the provinces or limit the effect to those you own, or whether it makes sense for the event/decision to have an effect outside your country.
+	- Before adding an event/decision, check to see whether what you're trying to accomplish is already done somewhere else similarly. E.g. don't make a non-specific "accept natives" decision for Mexico, since Native Integration already exists. Rather, you can write something specific that would lead to the acceptance of a native culture
+	- Generic is better than specific, but a collection of special cases is not generic.
 
 ## Files Best Practices ##
-- Discuss with the lead developer(s) any additions or changes to common / inventions / poptypes / technologies / units files.
-
-## How to set up Excel to Edit Localisation Files ##
-# Mostly for Americans, Brits or those in other countries which use a period/full stop as a decimal separator #
-- On Windows, open Excel. Go to File -> Options -> Advanced. Under Editing options, uncheck Use system separators. and change the Decimal separator to a comma and something else as the Thousands separator (Derek uses a period/dot/full stop). This will allow you to open the .csv files directly into Excel, with the contents nicely in cells.
-- If you use a Mac, you can do this too, but you have to change the Decimal separator system-wide.
-- This way you can also avoid breaking localisation files which have commas in their text and/or non-curly quotation marks.
-- You can also hopefully avoid the stray cells which end up with a line in the files ending in x,,,,,, when viewed in a text editor, or something similar instead of just an x, which is how the lines should end. (Derek makes it a rule to delete all cells to the right of the x column when saving just in case).
+	- Discuss with the lead developer(s) any additions or changes to common / inventions / poptypes / technologies / units files.
+	- Don't forget to check what character set and line endings your editor is set to. If you make a mistake and mangle the files your commits will be reverted.
+	- Don't use Excel to edit localization files - this causes issues with quotation marks, line endings and typesets.
+	- We recommend using VS Code or Atom (and they both have addons for git integration).
+	- Don't bundle together nontrivial changes that don't need to be bundled together.
+	- For larger changes create a branch and pull request to monitor the difference between your branch and the main branch, rather than just committing.
+	- Give files descriptive names - memory is cheap, developer attention is expensive.
+	- Event localizations should generally go to the event files with the appropriate id range, in ascending id order, then going DESC, NAME, OPTA, OPTB etc. Exceptions can be made for self-contained mechanics with a lot of events (e.g. leader events).
+	- Decisions localizations should generally go into 00_decisions.csv. Self-contained mechanics with a lot of decisions (e.g. returning cores) can go into their own files.
+	- If you have time to research, make sure your localizations are well written. We want our mod to look good, don't we?
 
 ## Map Best Practices ##
-- Discuss with Hammonia (@Obstination#6820 on Discord) or lead developer(s) any province additions or changes. Ideally, we would like not to have to make any map boundary changes or additions after the next major update (0.2).
-- Province localisation files for provinces should only have place names that existed in 1836. If this is not possible, try to keep names from 1840 or earlier.
-- Use the current or 1936 names for provinces in the definition.csv. This is helpful for renaming decisions.
-
+	- Discuss with Hammonia (@Obstination#6820 on Discord) or lead developer(s) any province additions or changes. Ideally, we would like not to have to make any map boundary changes or additions after the next major update (0.2).
+	- Province localisation files for provinces should only have place names that existed in 1836. If this is not possible, try to keep names from 1840 or earlier.
+	- Use the current or 1936 names for provinces in the definition.csv. This is helpful for renaming decisions.
+	- When changing the map make sure to account for any code that used the changed provinces / states and fix it to account for the changes or new provinces. This includes renaming decisions as well as other content.

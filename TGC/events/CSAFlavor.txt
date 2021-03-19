@@ -380,7 +380,13 @@ country_event = {
 
 			badboy = 2
 
-			ai_chance = { factor = 50 }
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					badboy = 0.92
+				}
+			}
 		}
 	}
 
@@ -399,32 +405,36 @@ country_event = {
 		option = {
 			name = EVTOPTA44377
 
+			treasury = 300000
 			FROM = { treasury = -300000 }
 			relation = { who = FROM value = 50 }
 			relation = { who = USA value = -50 }
-			MEX_2138 = { add_core = FROM remove_core = THIS add_province_modifier = { name = nationalist_agitation duration = 1095 } } # Sonora
-			MEX_2139 = { add_core = FROM remove_core = THIS add_province_modifier = { name = nationalist_agitation duration = 1095 } } # Baja California
-			MEX_2142 = { add_core = FROM remove_core = THIS add_province_modifier = { name = nationalist_agitation duration = 1095 } } # Chihuahua
-			MEX_2156 = { add_core = FROM remove_core = THIS add_province_modifier = { name = nationalist_agitation duration = 1095 } } # Sinaloa
+			MEX_2138 = { add_core = FROM remove_core = THIS } # Sonora
+			MEX_2139 = { add_core = FROM remove_core = THIS } # Baja California
+			MEX_2142 = { add_core = FROM remove_core = THIS } # Chihuahua
+			MEX_2156 = { add_core = FROM remove_core = THIS } # Sinaloa
 			random_owned = {
 				limit = { province_id = 102 }
 				add_core = FROM
 				remove_core = THIS
-				add_province_modifier = { name = nationalist_agitation duration = 1095 }
 			}
 			random_owned = {
 				limit = { province_id = 2662 }
 				add_core = FROM
 				remove_core = THIS
-				add_province_modifier = { name = nationalist_agitation duration = 1095 }
 			}
-			treasury = 300000
 			any_owned = {
 				limit = { is_core = FROM }
 				secede_province = FROM
+				add_province_modifier = { name = nationalist_agitation duration = 1095 }
+			}
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				militancy = 2.5
+				consciousness = 3
 			}
 
-			ai_chance = { factor = 80 }
+			ai_chance = { factor = 60 }
 		}
 
 		# Refuse
@@ -436,7 +446,21 @@ country_event = {
 
 			FROM = { country_event = 44378 }
 
-			ai_chance = { factor = 20 }
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0.5
+					in_sphere = FROM
+				}
+				modifier = {
+					factor = 0.8
+					alliance_with = FROm
+				}
+				modifier = {
+					factor = 0.1
+					NOT = { money = 100000 }
+				}
+			}
 		}
 	}
 
@@ -454,18 +478,20 @@ country_event = {
 			name = EVTOPTA44378
 
 			badboy = 8
-			MEX_2138 = { add_core = CSA } # Sonora
-			MEX_2139 = { add_core = CSA } # Baja California
-			MEX_2142 = { add_core = CSA } # Chihuahua
-			MEX_2156 = { add_core = CSA } # Sinaloa
+			MEX_2138 = { add_core = THIS } # Sonora
+			MEX_2139 = { add_core = THIS } # Baja California
+			MEX_2142 = { add_core = THIS } # Chihuahua
+			MEX_2156 = { add_core = THIS } # Sinaloa
 			random_country = {
 				limit = { tag = MEX owns = 102 NOT = { owns = 100 } }
-				102 = { add_core = CSA }
+				102 = { add_core = THIS }
 			}
 			random_country = {
 				limit = { tag = MEX owns = 2662 NOT = { owns = 38 } }
-				2662 = { add_core = CSA }
+				2662 = { add_core = THIS }
 			}
+			relation = { who = MEX value = -200 }
+			diplomatic_influence = { who = MEX value = -200 }
 			war = {
 				target = MEX
 				attacker_goal = { casus_belli = acquire_all_cores }
