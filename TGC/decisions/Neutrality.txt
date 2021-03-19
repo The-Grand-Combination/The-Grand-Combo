@@ -1,0 +1,520 @@
+political_decisions = {
+	declare_neutrality = {
+		potential = {
+			has_country_flag = neutrality_candidate
+			NOT = {
+				has_country_modifier = neutrality
+				has_country_flag = neutrality_violated
+			}
+		}
+		allow = {
+			any_owned_province = { NOT = { is_core = THIS } }
+			NOT = { badboy = 1 }
+		}
+
+		effect = {
+			add_country_modifier = {
+				name = neutrality
+				duration = -1
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 0 government = fascist_dictatorship }
+			modifier = { factor = 0 government = proletarian_dictatorship }
+		}
+	}
+
+	abandon_neutrality = {
+		picture = declare_neutrality
+		potential = {
+			has_country_modifier = neutrality
+		}
+
+		allow = {
+			prestige = 20
+		}
+
+		effect = {
+			clr_country_flag = neutrality_candidate
+			prestige = -20
+			badboy = 5
+			remove_country_modifier = neutrality
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						badboy = 0.75
+						government = fascist_dictatorship
+						government = proletarian_dictatorship
+					}
+				}
+			}
+		}
+	}
+
+	enforce_neutrality = {
+		picture = declare_neutrality
+		potential = {
+			has_country_modifier = neutrality
+			ai = yes
+		}
+
+		allow = {
+			OR = {
+				any_greater_power = { military_access = THIS }
+				any_neighbor_country = { NOT = { vassal_of = THIS } military_access = THIS }
+				sphere_owner = { military_access = THIS }
+				AND = {
+					num_of_allies = 1
+					NOT = { NCT = { alliance_with = THIS } }
+				}
+				AND = {
+					num_of_allies = 2
+					NCT = { exists = yes alliance_with = THIS }
+				}
+				war = yes
+			}
+		}
+
+		effect = {
+			any_country = {
+				limit = { NOT = { vassal_of = THIS } OR = { military_access = THIS alliance_with = THIS } }
+				relation = { who = THIS value = -125 }
+			}
+			any_country = { limit = { alliance_with = THIS NOT = { vassal_of = THIS } } leave_alliance = THIS }
+			any_country = { limit = { war_with = THIS } end_war = THIS }
+			any_country = { limit = { military_access = THIS NOT = { vassal_of = THIS } } end_military_access = THIS }
+		}
+	}
+
+	enforce_neutrality_on_player = {
+		picture = declare_neutrality
+		potential = {
+			ai = yes
+			exists = yes
+			SWI = {
+				has_country_modifier = neutrality
+				ai = no
+				OR = {
+					any_greater_power = { military_access = SWI }
+					any_neighbor_country = { NOT = { vassal_of = SWI } military_access = SWI }
+					sphere_owner = { military_access = SWI }
+					AND = {
+						num_of_allies = 1
+						NOT = { NCT = { alliance_with = SWI } }
+					}
+					AND = {
+						num_of_allies = 2
+						NCT = { exists = yes alliance_with = SWI }
+					}
+					war = yes
+				}
+			}
+		}
+
+		allow = {
+
+		}
+
+		effect = {
+			any_country = {
+				limit = { NOT = { vassal_of = SWI } OR = { military_access = SWI alliance_with = SWI } }
+				relation = { who = SWI value = -125 }
+			}
+			any_country = { limit = { alliance_with = SWI NOT = { vassal_of = SWI } } leave_alliance = SWI }
+			any_country = { limit = { war_with = SWI } end_war = SWI }
+			any_country = { limit = { military_access = SWI NOT = { vassal_of = SWI } } end_military_access = SWI }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+#Andorra starts with de-facto neutrality due to both of its neighbours being sovereigns over them
+	violate_neutrality_ADO = {
+		picture = declare_neutrality
+		alert = no
+		potential = {
+			NOT = {
+				tag = BOR
+				tag = FRA
+				tag = SPA
+				tag = SPC
+			}
+			ADO = {
+				neighbour = THIS
+				has_country_modifier = neutrality
+			}
+		}
+
+		allow = {
+			ADO = { has_country_modifier = neutrality }
+			war_policy = jingoism
+			NOT = {
+				is_sphere_leader_of = ADO
+				truce_with = ADO
+				alliance_with = ADO
+			}
+		}
+
+		effect = {
+			badboy = 5
+			set_country_flag = andorra_neutrality_violator
+			ADO = {
+				set_country_flag = neutrality_violated
+				remove_country_modifier = neutrality
+				relation = { who = THIS value = -200 }
+			}
+			diplomatic_influence = { who = ADO value = -200 }
+			any_country = {
+				limit = {
+					OR = {
+						alliance_with = ADO
+						is_sphere_leader_of = ADO
+						relation = { who = ADO value = 50 }
+					}
+				}
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+			casus_belli = {
+				target = ADO
+				type = conquest
+				months = 60
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#Athos starts with neutrality
+	violate_neutrality_ATH = {
+		picture = declare_neutrality
+		alert = no
+		potential = {
+			ai = no
+			ATH = {
+				neighbour = THIS
+				has_country_modifier = neutrality
+			}
+		}
+
+		allow = {
+			ATH = { has_country_modifier = neutrality }
+			war_policy = jingoism
+			NOT = {
+				is_sphere_leader_of = ATH
+				truce_with = ATH
+				alliance_with = ATH
+			}
+		}
+
+		effect = {
+			badboy = 5
+			set_country_flag = athos_neutrality_violator
+			ATH = {
+				set_country_flag = neutrality_violated
+				remove_country_modifier = neutrality
+				relation = { who = THIS value = -200 }
+			}
+			diplomatic_influence = { who = ATH value = -200 }
+			any_country = {
+				limit = {
+					OR = {
+						alliance_with = ATH
+						is_sphere_leader_of = ATH
+						relation = { who = ATH value = 50 }
+					}
+				}
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+			casus_belli = {
+				target = ATH
+				type = conquest
+				months = 60
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#Belgium gets neutrality after historical treaty of London
+	violate_neutrality_BEL = {
+		picture = declare_neutrality
+		alert = no
+		potential = {
+			BEL = {
+				neighbour = THIS
+				has_country_modifier = neutrality
+			}
+		}
+
+		allow = {
+			BEL = { has_country_modifier = neutrality }
+			war_policy = jingoism
+			NOT = {
+				is_sphere_leader_of = BEL
+				truce_with = BEL
+				alliance_with = BEL
+			}
+		}
+
+		effect = {
+			badboy = 10
+			set_country_flag = belgian_neutrality_violator
+			BEL = {
+				set_country_flag = neutrality_violated
+				remove_country_modifier = neutrality
+				relation = { who = THIS value = -200 }
+			}
+			diplomatic_influence = { who = BEL value = -200 }
+			any_country = {
+				limit = {
+					OR = {
+						alliance_with = BEL
+						is_sphere_leader_of = BEL
+						relation = { who = BEL value = 50 }
+					}
+				}
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+			casus_belli = {
+				target = BEL
+				type = conquest
+				months = 60
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					AND = {
+						tag = GER
+						year = 1900
+						OR = {
+							war_with = BOR
+							war_with = FRA
+						}
+					}
+				}
+			}
+		}
+	}
+#Liechtenstein declares neutrality after brother's war if Austria loses
+	violate_neutrality_LIE = {
+		picture = declare_neutrality
+		alert = no
+		potential = {
+			ai = no
+			LIE = {
+				neighbour = THIS
+				has_country_modifier = neutrality
+			}
+		}
+
+		allow = {
+			LIE = { has_country_modifier = neutrality }
+			war_policy = jingoism
+			NOT = {
+				is_sphere_leader_of = LIE
+				truce_with = LIE
+				alliance_with = LIE
+			}
+		}
+
+		effect = {
+			badboy = 4
+			set_country_flag = liechtenstein_neutrality_violator
+			LIE = {
+				set_country_flag = neutrality_violated
+				remove_country_modifier = neutrality
+				relation = { who = THIS value = -200 }
+			}
+			diplomatic_influence = { who = LIE value = -200 }
+			any_country = {
+				limit = {
+					OR = {
+						alliance_with = LIE
+						is_sphere_leader_of = LIE
+						relation = { who = LIE value = 50 }
+					}
+				}
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+			casus_belli = {
+				target = LIE
+				type = conquest
+				months = 60
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#San Marino starts with de-facto neutrality for gameplay purposes
+	violate_neutrality_SMR = {
+		picture = declare_neutrality
+		alert = no
+		potential = {
+			ai = no
+			SMR = {
+				neighbour = THIS
+				has_country_modifier = neutrality
+			}
+		}
+
+		allow = {
+			SMR = { has_country_modifier = neutrality }
+			war_policy = jingoism
+			NOT = {
+				is_sphere_leader_of = SMR
+				truce_with = SMR
+				alliance_with = SMR
+			}
+		}
+
+		effect = {
+			badboy = 5
+			set_country_flag = sanmarinese_neutrality_violator
+			SMR = {
+				set_country_flag = neutrality_violated
+				remove_country_modifier = neutrality
+				relation = { who = THIS value = -200 }
+			}
+			diplomatic_influence = { who = SMR value = -200 }
+			any_country = {
+				limit = {
+					OR = {
+						alliance_with = SMR
+						is_sphere_leader_of = SMR
+						relation = { who = SMR value = 50 }
+					}
+				}
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+			casus_belli = {
+				target = SMR
+				type = conquest
+				months = 60
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#Switzerland starts with neutrality
+	violate_neutrality_SWI = {
+		picture = declare_neutrality
+		alert = no
+		potential = {
+			SWI = {
+				neighbour = THIS
+				has_country_modifier = neutrality
+			}
+		}
+
+		allow = {
+			SWI = { has_country_modifier = neutrality }
+			war_policy = jingoism
+			NOT = {
+				is_sphere_leader_of = SWI
+				truce_with = SWI
+				alliance_with = SWI
+			}
+		}
+
+		effect = {
+			badboy = 15
+			set_country_flag = swiss_neutrality_violator
+			SWI = {
+				set_country_flag = neutrality_violated
+				remove_country_modifier = neutrality
+				relation = { who = THIS value = -200 }
+			}
+			diplomatic_influence = { who = SWI value = -200 }
+			any_country = {
+				limit = {
+					OR = {
+						alliance_with = SWI
+						is_sphere_leader_of = SWI
+						relation = { who = SWI value = 50 }
+					}
+				}
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				casus_belli = {
+					target = THIS
+					type = cut_down_to_size
+					months = 60
+				}
+			}
+			casus_belli = {
+				target = SWI
+				type = conquest
+				months = 60
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = {
+						tag = FRA
+						owns = 574
+						owns = 392
+						owns = 397
+						owns = 466
+					}
+					NOT = {
+						tag = BOR
+						owns = 574
+						owns = 392
+						owns = 397
+						owns = 466
+					}
+				}
+			}
+		}
+	}
+}
