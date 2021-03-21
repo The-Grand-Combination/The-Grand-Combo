@@ -2,81 +2,66 @@
 
 	country_event = {
 		id = 909999
-		title = "Collectivization is working!"
-		desc = "Collectivisation is boosting the returns of our peasants on mass, fueling the revolution!"
+		title = "EVTNAME909999"
+		desc = "EVTDESC909999"
 
 		picture = "Revolution"
 
 		trigger = {
 			has_country_modifier = agrarian_reform_beginning
-			NOT = {
-				has_country_flag = agrar_dec
-			}
+			NOT = { has_country_flag = agrar_dec }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
 		mean_time_to_happen = {
 			months = 9
-
 			modifier = {
 				factor = 0.5
 				industrial_score = 200
 			}
 		}
 
+		immediate = { set_country_flag = agrar_dec }
+
 		option = {
-			name = "The proccess must go faster!"
+			name = "EVTOPTA909999"
+
 			treasury = -30000    # to balance out
-			any_pop = {
-				reduce_pop = 0.95   #losing 15% of your population, cmon bruv
-			}
+			any_pop = { reduce_pop = 0.95 }  #losing 15% of your population, cmon bruv
 			remove_country_modifier = agrarian_reform_beginning
-			add_country_modifier = {
-				name = agrarian_reform
-				duration = -1
-			}
-			set_country_flag = agrar_dec
+			add_country_modifier = { name = agrarian_reform duration = -1 }
+
 		}
 
 		option = {
-			name = "Allow it to continue at present rates"
-			any_pop = {
-				reduce_pop = 0.975
-			}
-			set_country_flag = agrar_dec
+			name = "EVTOPTB909999"
+
+			any_pop = { reduce_pop = 0.975 }
 		}
 
 		option = {
-			name = "End this silly proccess!"
+			name = "EVTOPTC909999"
+
 			remove_country_modifier = agrarian_reform_beginning
-			any_pop = {
-				limit = {
-					strata = poor
-				}
-				militancy = 3
-			}
-			set_country_flag = agrar_dec
+			poor_strata = { militancy = 3 }
 		}
 	}
 
 	country_event = {
 		id = 910000
-		title = "The revolution has begun!"
-		desc = "From the mouthes of guns, the flames of the proletariat shall scorch onto this Earth their fiery proposal!"
-
+		title = "EVTNAME910000"
+		desc = "EVTDESC910000"
 		picture = "Revolution"
 
 		trigger = {
-			NOT = {
-				has_country_flag = rev_spread
-				government = proletarian_dictatorship
-			}
 			OR = {
 				pop_majority_ideology = communist
 				pop_majority_ideology = socialist
-				any_neighbor_country = {
-					government = proletarian_dictatorship
-				}
+				any_neighbor_country = { government = proletarian_dictatorship }
+			}
+			NOT = {
+				has_country_flag = rev_spread
+				government = proletarian_dictatorship
 			}
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
@@ -85,8 +70,11 @@
 			months = 3
 		}
 
+		immediate = { set_country_flag = rev_spread }
+
 		option = {
-			name = "We cannot step backwards."
+			name = "EVTOPTA910000"
+
 			any_pop = {
 				ideology = {
 					value = communist
@@ -98,21 +86,16 @@
 				name = commies_have_succeeded_o
 				duration = 499
 			}
-			set_country_flag = rev_spread
 		}
+
 		option = {
-			name = "Over our dead bodies!"
-			any_pop = {
-				limit = {
-					strata = poor
-				}
+			name = "EVTOPTB910000"
+
+			poor_strata = {
 				militancy = 3
 				consciousness = 3
 			}
-			any_pop = {
-				limit = {
-					strata = rich
-				}
+			rich_strata = {
 				consciousness = -6
 				militancy = -3
 			}
@@ -120,20 +103,18 @@
 				name = commies_have_succeeded_o
 				duration = 499
 			}
-		set_country_flag = Rev_Spread
 		}
 	}
 
 	country_event = {
 		id = 910010
-		title = "The revolution has spread to us!"
-		desc = "It was inevitable; the poor have risen!"
+		title = "EVTNAME910010"
+		desc = "EVTDESC910010"
+		picture = "Revolution"
 
 		trigger = {
-			NOT = {
-				has_country_flag = rev_spread2
-			}
 			has_country_flag = rev_spread
+			NOT = { has_country_flag = rev_spread2 }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
@@ -141,61 +122,41 @@
 			months = 3
 		}
 
-		picture = "Revolution"
+		immediate = { set_country_flag = rev_spread2 }
 
 		option = {
-			name = "We must fight this!"
+			name = "EVTOPTA910010"
+
 			any_pop = {
-				ideology = {
-					value = communist
-					factor = 0.05
-				}
-				scaled_militancy = {
-					ideology = communist
-					factor = 5
-				}
-				scaled_militancy = {
-					ideology = socialist
-					factor = 4
-				}
-				scaled_consciousness = {
-					ideology = liberal
-					factor = 9
-				}
+				ideology = { value = communist factor = 0.05 }
+				scaled_militancy = { ideology = communist factor = 5 }
+				scaled_militancy = { ideology = socialist factor = 4 }
+				scaled_consciousness = { ideology = liberal factor = 9 }
 			}
-			set_country_flag = rev_spread2
+
 			ai_chance = {
 				factor = 92
 				modifier = {
-					factor = 1
-					NOT = {
-						average_militancy = 7
-					}
+					factor = 0.9
+					NOT = { average_militancy = 7 }
 				}
 			}
 		}
+
 		option = {
-			name = "We must ride this tide into the future"
+			name = "EVTOPTB910010"
+
 			consciousness = 3
 			any_neighbor_country = {
-				limit = {
-					NOT = {
-						government = proletarian_dictatorship
-					}
-				}
+				limit = { NOT = { government = proletarian_dictatorship } }
 				any_pop = {
 					consciousness = 2     #the extreme CON values likely contribute to the easy internal collapse of communists
-					scaled_militancy = {
-						ideology = communist
-						factor = 5
-					}
-					scaled_militancy = {
-						ideology = socialist
-						factor = 2
-					}
+					scaled_militancy = { ideology = communist factor = 5 }
+					scaled_militancy = { ideology = socialist factor = 2 }
 				}
 			}
 			country_event = 60000
+
 			ai_chance = {
 				factor = 8
 				modifier = {
@@ -203,23 +164,19 @@
 					average_militancy = 8
 				}
 			}
-			set_country_flag = rev_spread2
 		}
 	}
 
 	country_event = {
 		id = 910020
-		title = "The Negotiation of the Internationale"
-		desc = "The Revolution has begun here, but in the rest of the world it is only through unity that it shall succeed."
+		title = "EVTNAME910020"
+		desc = "EVTDESC910020"
+		picture = "deliberation"
 
 		trigger = {
 			government = proletarian_dictatorship
-			any_neighbor_country = {
-				government = proletarian_dictatorship
-			}
-			NOT = {
-				has_country_flag = negotiate_international
-			}
+			any_neighbor_country = { government = proletarian_dictatorship }
+			NOT = { has_country_flag = negotiate_international }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
@@ -227,27 +184,22 @@
 			months = 2
 		}
 
-		picture = "deliberation"
+		immediate = { set_country_flag = negotiate_international }
 
 		option = {
-			name = "We fully agreed at the congress meeting."
-			set_country_flag = negotiate_international
+			name = "EVTOPTA910020"
+
 			set_country_flag = agree_international
 			any_neighbor_country = {
-				limit = {
-						government = proletarian_dictatorship
-					}
+				limit = { government = proletarian_dictatorship }
 				create_alliance = THIS
 			}
 			any_neighbor_country = {
 				limit = {
-						government = proletarian_dictatorship
-						is_greater_power = yes
-					}
-				diplomatic_influence = {
-						who = FROM
-						value = 300
-					}
+					government = proletarian_dictatorship
+					is_greater_power = yes
+				}
+				diplomatic_influence = { who = THIS value = 300 }
 			}
 
 			ai_chance = {
@@ -260,34 +212,27 @@
 		}
 
 		option = {
-			name = "There were some disagreements..."
+			name = "EVTOPTB910020"
+
 			set_country_flag = negotiate_international
 			set_country_flag = disagree_international
 			random_country = {
-				limit = {
-					government = proletarian_dictatorship
-				}
-				relation = {
-					who = THIS
-					value = -50
-				}
+				limit = { government = proletarian_dictatorship }
+				relation = { who = THIS value = -50 }
 			}
-			ai_chance = {
-				factor = 0.35
-			}
+
+			ai_chance = { factor = 0.35 }
 		}
 	}
 
 	country_event = {
 		id = 910030
-		title = "Reconvene the International"
-		desc = "Since the last International, the world, and the inhabitants of it, have changed. The far left needs to reconvene to continue the struggle."
+		title = "EVTNAME910030"
+		desc = "EVTDESC910030"
 
 		trigger = {
 			government = proletarian_dictatorship
-			any_neighbor_country = {
-				government = proletarian_dictatorship
-			}
+			any_neighbor_country = { government = proletarian_dictatorship }
 			has_country_flag = negotiate_international
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
@@ -297,15 +242,16 @@
 		}
 
 		option = {
-			name = "Let it begin!"
+			name = "EVTOPTA910030"
+
 			clr_country_flag = negotiate_international
 		}
 	}
 
 	country_event = {
 		id = 920010
-		title = "The Party is Split!"
-		desc = "It is becoming ever more obvious that the revolutionaries had separate views as they took to the streets, and as the galvinizing fight moves behind them, old wounds reopen."
+		title = "EVTNAME920010"
+		desc = "EVTDESC920010"
 
 		trigger = {
 			government = proletarian_dictatorship
@@ -320,7 +266,8 @@
 		}
 
 		option = {
-			name = "We side with the Interantionalist Left; with them we form a united Interantional!"
+			name = "EVTOPTA920010"
+
 			ruling_party_ideology = socialist
 			upper_house = {
 				ideology = socialist
@@ -332,15 +279,15 @@
 			remove_country_modifier = maoist
 			remove_country_modifier = 3rd_international
 			any_neighbor_country = {
-				limit = {
-					government = proletarian_dictatorship
-				}
+				limit = { government = proletarian_dictatorship }
 				create_alliance = THIS
-				create_vassal = FROM
+				# create_vassal = FROM # DEVNOTE anzu-3278: Not sure what the intent here was
 			}
 		}
+
 		option = {
-			name = "We must focus on building our state. The world shall see the power of the revolution through us and join."
+			name = "EVTOPTB920010"
+
 			ruling_party_ideology = communist
 			upper_house = {
 				ideology = communist
@@ -356,8 +303,10 @@
 			clr_country_flag = maoist
 			remove_country_modifier = maoist
 		}
+
 		option = {
-			name = "For our state, raped by Imperialism, we must forge a path of Unity, Democracy, and Socialism."
+			name = "EVTOPTC920010"
+
 			ruling_party_ideology = communist
 			upper_house = {
 				ideology = communist
@@ -376,42 +325,38 @@
 
 	country_event = {
 		id = 920020
-		title = "The revolution Succeeds!"
-		desc = "We have seen the victory of Socialism in our state. Great states of the bourgeoisie fall to the power of the people."
+		title = "EVTNAME920020"
+		desc = "EVTDESC920020"
 
 		trigger = {
 			government = proletarian_dictatorship
-			NOT = {
-				has_country_flag = revolution_succeeds
-			}
+			NOT = { has_country_flag = revolution_succeeds }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
+		immediate = { set_country_flag = revolution_succeeds }
+
 		option = {
-			name = "A victory for all mankind."
+			name = "EVTOPTA920020"
+
 			any_country = {
-				limit = {
-					government = proletarian_dictatorship
-				}
+				limit = { government = proletarian_dictatorship }
 				prestige = 15
 			}
-			set_country_flag = revolution_succeeds
 		}
 	}
 
 	country_event = {
 		id = 920030
-		title = "The Communist Movement finds a country to stand behind"
-		desc = "As the revolution spreads, its image is clear--the banner of the Red revolution flies high!"
+		title = "EVTNAME920030"
+		desc = "EVTDESC920030"
 
 		trigger = {
 			is_greater_power = no
 			part_of_sphere = no
 			any_greater_power = {
 				government = proletarian_dictatorship
-				NOT = {
-					has_country_modifier = banner_of_the_red
-				}
+				NOT = { has_country_modifier = banner_of_the_red }
 			}
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
@@ -421,53 +366,44 @@
 		}
 
 		option = {
-			name = "With them we stand"
+			name = "EVTOPTA920030"
+
 			random_country = {
 				limit = {
 					is_greater_power = yes
 					government = proletarian_dictatorship
-					NOT = {
-						has_country_modifier = banner_of_the_red
-					}
+					NOT = { has_country_modifier = banner_of_the_red }
 				}
 				any_country = {
-					limit = {
-						has_country_modifier = banner_of_the_red
-					}
-					create_vassal = FROM
+					limit = { has_country_modifier = banner_of_the_red }
+					# create_vassal = FROM # This was probably meant to make the any_country a vassal of THIS but it doens't work
 				}
-				diplomatic_influence = 	{
-					who = FROM
-					value = 500
-				}
+				diplomatic_influence = 	{ who = THIS value = 500 }
 				add_country_modifier = {
 					name = banner_of_the_red
 					duration = -1
 				}
 			}
 		}
+
 		option = {
-			name = "We move forward without their influence"
+			name = "EVTOPTB920030"
+
 			random_country = {
 				limit = {
 					is_greater_power = yes
 					government = proletarian_dictatorship
-					NOT = {
-						has_country_modifier = banner_of_the_red
-					}
+					NOT = { has_country_modifier = banner_of_the_red }
 				}
-				relation = {
-					who = FROM
-					value = -100
-				}
+				relation = { who = THIS value = -100 }
 			}
 		}
 	}
 
 	country_event = {
 		id = 930090
-		title = "The Counter revolution aligns against you!"
-		desc = "With the encroaching forces of counter-revolution, you find yourself increasingly isolated."
+		title = "EVTNAME930090"
+		desc = "EVTDESC930090"
 
 		trigger = {
 			government = proletarian_dictatorship
@@ -477,9 +413,7 @@
 					government = fascist_dictatorship
 				}
 			}
-			NOT = {
-				has_country_flag = target_of_counterrEVT
-			}
+			NOT = { has_country_flag = target_of_counterrEVT }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
@@ -487,8 +421,11 @@
 			months = 4
 		}
 
+		immediate = { set_country_flag = target_of_counterrEVT }
+
 		option = {
-			name = "Then we shall make our stand alone."
+			name = "EVTOPTA930090"
+
 			any_neighbor_country = {
 				limit = {
 					OR = {
@@ -496,30 +433,24 @@
 						government = fascist_dictatorship
 					}
 				}
-				relation = {
-					who = FROM
-					value = -400
-				}
+				relation = { who = THIS value = -400 }
 				casus_belli = {
-					target = FROM
+					target = THIS
 					type = uninstall_communist_gov_cb
 					months = 48
 				}
 			}
-			set_country_flag = target_of_counterrEVT
 		}
 	}
 
 	country_event = {
 		id = 940000
-		title = "The far right joins into a Counter-revolutionary Bund!"
-		desc = "With the success of the proletariat, every body of the propertied classes moves in mass action against us."
+		title = "EVTNAME940000"
+		desc = "EVTDESC940000"
 
 		trigger = {
 			government = proletarian_dictatorship
-			NOT = {
-				has_country_flag = committee_salv_1
-			}
+			NOT = { has_country_flag = committee_salv_1 }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
@@ -527,8 +458,11 @@
 			months = 1
 		}
 
+		immediate = { set_country_flag = committee_salv_1 }
+
 		option = {
-			name = "We must drive them underground."
+			name = "EVTOPTA940000"
+
 			any_pop = {
 				limit = {
 					OR = {
@@ -539,25 +473,18 @@
 				reduce_pop = 0.7
 			}
 			any_pop = {
-				scaled_militancy = {
-					factor = 6    
-					ideology = reactionary
-				}
-				scaled_militancy = {
-					factor = 6
-					ideology = fascist
-				}
+				scaled_militancy = { factor = 6 ideology = reactionary }
+				scaled_militancy = { factor = 6 ideology = fascist }
 			}
 			rich_strata = { militancy = 5 }
 			middle_strata = { militancy = 3 }
-			set_country_flag = committee_salv_1
 		}
 	}
 
 	country_event = {
 		id = 940010
-		title = "The enemies are upon us!"
-		desc = "The many nations of the propertied classes have allied with our own to forge our internal enemy."
+		title = "EVTNAME940010"
+		desc = "EVTDESC940010"
 
 		trigger = {
 			any_neighbor_country = {
@@ -571,9 +498,7 @@
 				}
 			}
 			has_country_flag = committee_salv_1
-			NOT = {
-				has_country_flag = committee_salv_2
-			}
+			NOT = { has_country_flag = committee_salv_2 }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
@@ -581,8 +506,11 @@
 			months = 1
 		}
 
+		immediate = { set_country_flag = committee_salv_2 }
+
 		option = {
-			name = "This is affront to sovreignity and liberation!"
+			name = "EVTOPTA940010"
+
 			any_pop = {
 				limit = {
 					OR = {
@@ -594,10 +522,7 @@
 				militancy = 6
 				money = 100
 			}
-			any_pop = {
-				limit = {
-					strata = rich
-				}
+			rich_strata = {
 				militancy = 10
 				consciousness = 10
 				money = 1000
@@ -606,23 +531,20 @@
 					factor = 0.6
 				}
 			}
-			set_country_flag = committee_salv_2
 		}
 	}
 
 	country_event = {
 		id = 950000
-		title = "'Socialism in One State' has taken a new found presidence!"
-		desc = "With the growing isolation of our country, the concept that a thorough buildup of here to spread to the world is gaining traction."
+		title = "EVTNAME950000"
+		desc = "EVTDESC950000"
 
 		trigger = {
 			government = proletarian_dictatorship
 			is_greater_power = yes
 			has_country_flag = target_of_counterrEVT
 			NOT = {
-				any_greater_power = {
-					alliance_with = THIS
-				}
+				any_greater_power = { alliance_with = THIS }
 				has_country_flag = Stalinborn
 			}
 			NOT = { has_global_flag = disabled_commie_mod }
@@ -634,41 +556,37 @@
 			months = 56
 		}
 
+		immediate = { set_country_flag = Stalinborn }
+
 		option = {
-			name = "And with this we shall see Socialism in our time..."
-			set_country_flag = Stalinborn
-			add_country_modifier = {
-				name = 3rd_international
-				duration = -1
-			}
+			name = "EVTOPTA950000"
+
+			add_country_modifier = { name = 3rd_international duration = -1 }
 		}
 	}
 
 	country_event = {
 		id = 950010
-		title = "Socialism in One State!"
-		desc = "New ideas of Socialism have been spreading, placing Industrialization a top priority."
+		title = "EVTNAME950010"
+		desc = "EVTDESC950010"
 
 		trigger = {
-			any_neighbor_country = {
-				has_country_flag = Stalinborn
-			}
-			NOT = {
-				has_country_flag = Stalinborn
-			}
+			any_neighbor_country = { has_country_flag = Stalinborn }
+			NOT = { has_country_flag = Stalinborn }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
+		immediate = { set_country_flag = Stalinborn }
+
 		option = {
-			name = "Interesting..."
-			set_country_flag = Stalinborn
+			name = "EVTOPTA950010"
 		}
 	}
 
 	country_event = {
 		id = 950020
-		title = "Socialism for the Peasants--the Anti-Imperialist cause marches on!"
-		desc = "With the state of our country being as it is, it has become necessary to reevaluate our state dialectically, and we came up with this."
+		title = "EVTNAME950020"
+		desc = "EVTDESC950020"
 
 		trigger = {
 			government = proletarian_dictatorship
@@ -684,54 +602,50 @@
 			months = 12
 		}
 
+		immediate = { set_country_flag = Maoborn }
+
 		option = {
-			name = "And our cause gathers strength."
-			set_country_flag = Maoborn
+			name = "EVTOPTA950020"
+
 			remove_country_modifier = 3rd_international
-			add_country_modifier = {
-				name = maoist
-				duration = -1
-			}
+			add_country_modifier = { name = maoist duration = -1 }
 		}
 	}
 
 	country_event = {
 		id = 950030
-		title = "Anti-Imperialism!"
-		desc = "It is spreading."
+		title = "EVTNAME950030"
+		desc = "EVTDESC950030"
 
 		trigger = {
-			any_neighbor_country = {
-				has_country_flag = Maoborn
-			}
-			NOT = {
-				has_country_flag = Maoborn
-			}
+			any_neighbor_country = { has_country_flag = Maoborn }
+			NOT = { has_country_flag = Maoborn }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
+		immediate = { set_country_flag = Maoborn }
+
 		option = {
-			name = "Interesting."
-			set_country_flag = Maoborn
+			name = "EVTOPTA950030"
 		}
 	}
 
 	country_event = {
 		id = 960000
-		title = "We chart our own course"
-		desc = "Unsatisfied with our options for an ideology for our state, we endevoured to create one."
+		title = "EVTNAME960000"
+		desc = "EVTDESC960000"
 
 		trigger = {
 			has_country_flag = chart_own_course
-			NOT = {
-				has_country_flag = making_the_commie_choice
-			}
+			NOT = { has_country_flag = making_the_commie_choice }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
+		immediate = { set_country_flag = making_the_commie_choice }
+
 		option = {
-			name = "So be it."
-			set_country_flag = making_the_commie_choice
+			name = "EVTOPTA960000"
+
 			country_event = 960010
 			country_event = 960020
 		}
@@ -739,25 +653,24 @@
 
 	country_event = {
 		id = 960010
-		title = "First part of our new policies: Foreign"
-		desc = "With our advances into the realm of Socialism, we find that we could understand the path of Foreign policy in many ways."
+		title = "EVTNAME960010"
+		desc = "EVTDESC960010"
 
 		trigger = {
 			has_country_flag = making_the_commie_choice
-			NOT = {
-				has_country_flag = foreign_policy_chosen
-			}
+			NOT = { has_country_flag = foreign_policy_chosen }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
+		immediate = { set_country_flag = foreign_policy_chosen }
+
 		option = {
-			name = "A Permanent revolution"
+			name = "EVTOPTA960010"
+
 			any_country = {
 				limit = {
 					rank = 10
-					NOT = {
-						government = proletarian_dictatorship
-					}
+					NOT = { government = proletarian_dictatorship }
 				}
 				casus_belli = {
 					target = THIS
@@ -766,56 +679,41 @@
 				}
 			}
 			any_neighbor_country = {
-				limit = {
-					NOT = {
-						government = proletarian_dictatorship
-					}
-				}
+				limit = { NOT = { government = proletarian_dictatorship } }
 				add_casus_belli = {
 					target = THIS
 					type = install_communism
 					months = 400
 				}
 			}
-			set_country_flag = foreign_policy_chosen
 		}
+
 		option = {
-			name = "Socialism in One Country"
-			add_country_modifier = {
-				name = socialism_in_1
-				duration = -1
-			}
-			set_country_flag = foreign_policy_chosen
+			name = "EVTOPTB960010"
+
+			add_country_modifier = { name = socialism_in_1 duration = -1 }
 		}
+
 		option = {
-			name = "Firm International Brotherhood"
+			name = "EVTOPTC960010"
+
 			plurality = 100
 			any_neighbor_country = {
 				any_pop = {
-					ideology = {
-						factor = 0.02
-						value = communist
-					}
-					scaled_militancy = {
-						ideology = communist
-						factor = 5
-					}
+					ideology = { factor = 0.02 value = communist }
+					scaled_militancy = { ideology = communist factor = 5 }
 				}
 				any_pop = {
-					limit = {
-						pop_majority_ideology = communist
-					}
+					limit = { pop_majority_ideology = communist }
 					money = 1000
 				}
-				relation = {
-					who = THIS
-					value = 100
-				}
+				relation = { who = THIS value = 100 }
 			}
-			set_country_flag = foreign_policy_chosen
 		}
+
 		option = {
-			name = "Anti-Imperialism"
+			name = "EVTOPTD960010"
+
 			any_neighbor_country = {
 				limit = {
 					NOT = {
@@ -823,73 +721,58 @@
 						is_greater_power = yes
 					}
 				}
-				any_pop = {
-					limit = {
-						type = craftsmen
-					}
-					ideology = {
-						value = communist
-						factor = 0.3
-					}
-				}
+				craftsmen = { ideology = { value = communist factor = 0.3 } }
 				country_event = 910010
 			}
-			set_country_flag = foreign_policy_chosen
 		}
 	}
 
 	country_event = {
 		id = 960020
-		title = "Economic Policy"
-		desc = "Our country looks to you for their development."
+		title = "EVTNAME960020"
+		desc = "EVTDESC960020"
 
 		trigger = {
 			has_country_flag = making_the_commie_choice
-			NOT = {
-				has_country_flag = economic_chosen
-			}
+			NOT = { has_country_flag = economic_chosen }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
+		immediate = { set_country_flag = economic_chosen }
+
 		option = {
-			name = "A New Economic Policy"
-			any_pop = {
-				limit = {
-					type = post_revolt_bureau
-				}
+			name = "EVTOPTA960020"
+
+			post_revolt_bureau = {
 				reduce_pop = 1.2
 				money = 1500
 			}
-			set_country_flag = economic_chosen
 		}
+
 		option = {
-			name = "Five Year Plans"
+			name = "EVTOPTB960020"
+
 			set_country_flag = five_year_plans_choose
-			set_country_flag = economic_chosen
 			country_event = 970000
 		}
+
 		option = {
-			name = "Agrarian Reform, for the Peasants"
-			add_country_modifier = {
-				name = agrarian_reform_beginning
-				duration = -1
-			}
-			set_country_flag = economic_chosen
+			name = "EVTOPTC960020"
+
+			add_country_modifier = { name = agrarian_reform_beginning duration = -1 }
 		}
 	}
 
 	country_event = {
 		id = 980001
-		title = "We demand: PEACE, BREAD, LAND!"
-		desc = "The war has been dragging on for a long time now, and the Communists are rallying around it!"
+		title = "EVTNAME980001"
+		desc = "EVTDESC980001"
 
 		trigger = {
+			war_exhaustion = 50 # More extreme
 			war = yes
-			war_exhaustion = 50 #More extreme
 			is_ideology_enabled = communist
-			NOT = {
-				government = proletarian_dictatorship
-			}
+			NOT = { government = proletarian_dictatorship }
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
@@ -898,64 +781,51 @@
 		}
 
 		option = {
-			name = "Damn those who oppose us!"
+			name = "EVTOPTA980001"
+
 			any_pop = {
 				limit = {
-					has_pop_ideology = communist
-					NOT = {
-						strata = rich
-					}
+					pop_majority_ideology = communist
+					NOT = { strata = rich }
 				}
 				militancy = 4
 				consciousness = 2
 			}
 			any_pop = {
-				limit = {
-					NOT = {
-						strata = rich
-					}
-				}
+				limit = { NOT = { strata = rich } }
 				ideology = {
 					value = communist
 					factor = 0.05
 				}
 			}
-			add_country_modifier = {
-				name = peacebreadland
-				duration = 181
-			}
+			add_country_modifier = { name = peacebreadland duration = 181 }
 		}
 	}
 
 	country_event = {
 		id = 980010
-		title = "PEACE~BREAD~LAND!"
-		desc = "At war, exhausted, the people rose to remove the old habits and break from the war destroying our country. We must defeat those who oppose this abroad. Declare immediate, democratic peace."
+		title = "EVTNAME980010"
+		desc = "EVTDESC980010"
 
 		trigger = {
-			government = proletarian_dictatorship
-			war = yes
-			war_exhaustion = 30
 			has_country_modifier = peacebreadland
+			government = proletarian_dictatorship
+			war_exhaustion = 30
+			war = yes
 			NOT = { has_global_flag = disabled_commie_mod }
 		}
 
 		option = {
-			name = "We will do as the people demand!"
+			name = "EVTOPTA980010"
+
 			any_country = {
 				limit = {
-					war_with = FROM
-					NOT = {
-						government = proletarian_dictatorship
-					}
+					war_with = THIS
+					NOT = { government = proletarian_dictatorship }
 				}
 				country_event = 980020
 				any_pop = {
-					limit = {
-						NOT = {
-							strata = rich
-						}
-					}
+					limit = { NOT = { strata = rich } }
 					militancy = 3
 					consciousness = 3
 					ideology = {
@@ -966,11 +836,7 @@
 				war_exhaustion = 20
 			}
 			any_pop = {
-				limit = {
-					NOT = {
-						strata = rich
-					}
-				}
+				limit = { NOT = { strata = rich } }
 				militancy = -4
 				consciousness = -3
 			}
@@ -980,13 +846,14 @@
 
 	country_event = {
 		id = 980020
-		title = "Our Enemies Demand Peace!"
-		desc = "They have demanded democratic peace! How do we respond?"
+		title = "EVTNAME980020"
+		desc = "EVTDESC980020"
 
 		is_triggered_only = yes
 
 		option = {
-			name = "We do not accept!"
+			name = "EVTOPTA980020"
+
 			any_pop = {
 				limit = {
 					OR = {
@@ -1018,21 +885,19 @@
 			}
 			war_exhaustion = 10
 		}
+
 		option = {
-			name = "Perhaps this is for the best."
-			any_pop = {
-				limit = {
-					NOT = {
-						strata = rich
-					}
-				}
+			name = "EVTOPTB980020"
+
+			poor_strata = {
 				militancy = -3
 				consciousness = -3
 			}
-			any_pop = {
-				limit = {
-					strata = rich
-				}
+			middle_strata = {
+				militancy = -3
+				consciousness = -3
+			}
+			rich_strata = {
 				militancy = 3
 				consciousness = 3
 				ideology = {
@@ -1041,9 +906,7 @@
 				}
 			}
 			any_country = {
-				limit = {
-					war_with = FROM
-				}
+				limit = { war_with = FROM }
 				end_war = FROM
 			}
 		}
@@ -1059,61 +922,41 @@
 
 		fire_only_once = yes
 
-		immediate = {
-			set_country_flag = pop_growth_for_infamy_chooser
-		}
+		immediate = { set_country_flag = pop_growth_for_infamy_chooser }
 
 		option = {
-			name = "Basic Growth Incentives."
+			name = "EVTOPTA1998001"
 
-			add_country_modifier = {
-			name = birthrate_push_low
-			duration = -1
-			}
+			add_country_modifier = { name = birthrate_push_low duration = -1 }
 
-			add_country_modifier = {
-			name = recently_selected_birthrate
-			duration = 365
-			}
+			add_country_modifier = { name = recently_selected_birthrate duration = 365 }
 
 			clr_country_flag = pop_growth_for_infamy_chooser
 		}
 
 		option = {
-			name = "Aggressive Pop-growth Campaign."
+			name = "EVTOPTB1998001"
 
-			add_country_modifier = {
-			name = birthrate_push_medium
-			duration = -1
-			}
+			add_country_modifier = { name = birthrate_push_medium duration = -1 }
 
-			add_country_modifier = {
-			name = recently_selected_birthrate
-			duration = 365
-			}
+			add_country_modifier = { name = recently_selected_birthrate duration = 365 }
 
 			clr_country_flag = pop_growth_for_infamy_chooser
 
 		}
 
 		option = {
-			name = "State Enforced Birthing Campaign."
+			name = "EVTOPTC1998001"
 
-			add_country_modifier = {
-			name = birthrate_push_high
-			duration = -1
-			}
+			add_country_modifier = { name = birthrate_push_high duration = -1 }
 
-			add_country_modifier = {
-			name = recently_selected_birthrate
-			duration = 365
-			}
+			add_country_modifier = { name = recently_selected_birthrate duration = 365 }
 
 			clr_country_flag = pop_growth_for_infamy_chooser
 		}
 
 		option = {
-			name = "We are fine with our current Natality."
+			name = "EVTOPTD1998001"
 
 			clr_country_flag = pop_growth_for_infamy_chooser
 		}
