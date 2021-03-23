@@ -43,6 +43,8 @@ Victoria 2 TAG Creator: https://forum.paradoxplaza.com/forum/threads/victoria-2-
 	- Avoid unnecessary conditions (conditions that will always be true, given previous conditions) to reduce unnecessary checking and improve performance.
 	- Avoid checking for the same thing in multiple places in a AND/OR tree.
 	- NOT = { OR = { ... } } is redundant and will be false as soon as one of the inner conditions is satisfied, same as just NOT = { ... }. NOT = { AND = { ... } } requires all of the conditions to be satisfied to become false.
+	- exists = yes is redundant if owns, is_greater_power, is_secondary_power, war_with, has_country_modifier, and anything else that cannot be true if the country doesn't exist.
+	- Despite the above, checking for a country's administrative, education, or military spending without determining that the country exists will crash the game, so if none of the above alternatives can apply, use exists = yes
 	- Use region instead of state_id to check for state since region names changing will break this but a province changing state will silently do the wrong thing. Only use state_id to check whether two provinces are in the same state.
 	- Using a province condition inside a state trigger scope will return true if any province in that state satisfies the condition. Note that the Validator will complain about this.
 
@@ -196,6 +198,7 @@ Victoria 2 TAG Creator: https://forum.paradoxplaza.com/forum/threads/victoria-2-
 	- Localize all flags that appear in allow and will be displayed to the user (note: global flags can't be localized for some reason.)
 	- Avoid duplicating code where possible. One decision is better than two, if they would have the same localization, conditions and same / conditionally same effect.
 	- Give descriptions descriptive names - memory is cheap, developer attention is expensive.
+	- (work in progress) ai cleanup decisions should have names starting with ai_ and have localizations in a separate file from the regular decisions.
 	- Do not delete or rename any of the following decision files:
 		ACW.txt
 		arabian formation.txt

@@ -8,17 +8,19 @@ country_event = {
 	picture = "Waitangi"
 
 	trigger = {
-		has_global_flag = treaty_of_waitangi
 		OR = {
 			tag = FRA
 			tag = BOR
 		}
+		war = no
+		money = 75000
+		has_global_flag = treaty_of_waitangi
 		ENG = {
 			owns = 2509
 			owns = 2516
 		}
 		NOT = { exists = NZL }
-		war = no
+		NOT = { year = 1855 }
 	}
 
 	fire_only_once = yes
@@ -26,19 +28,23 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA7790011"
+
 		prestige = 10
 		relation = { who = ENG value = 50 }
 		any_pop = {
 			limit = { has_pop_culture = french }
 			militancy = 0.5
 		}
+
 		ai_chance = { factor = 100 }
 	}
 
 	option = {
 		name = "EVTOPTB7790011"
+
 		prestige = 5
 		ENG = { country_event = 7790012 }
+
 		ai_chance = { factor = 0 }
 	}
 }
@@ -54,15 +60,29 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA7790012"
+
 		prestige = 5
 		FROM = { country_event = 7790013 }
+
 		ai_chance = { factor = 70 }
 	}
 
 	option = {
 		name = "EVTOPTB7790012"
+
+		prestige = -25
+		badboy = -10
 		FROM = { country_event = 7790014 }
-		ai_chance = { factor = 30 }
+
+		ai_chance = { factor = 0 }
+	}
+
+	option = {
+		name = "EVTOPTC7790012"
+
+		FROM = { country_event = 7790015 }
+
+		ai_chance = { factor = 5 }
 	}
 }
 
@@ -77,6 +97,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA7790013"
+
 		relation = { who = ENG value = -400 }
 		badboy = 4
 		NZL = { all_core = { add_core = THIS } }
@@ -87,20 +108,22 @@ country_event = {
 				months = 36
 			}
 		}
+
 		ai_chance = { factor = 0 }
 	}
 
 	option = {
 		name = "EVTOPTB7790013"
+
 		prestige = -5
 		relation = { who = ENG value = 20 }
+
 		ai_chance = { factor = 100 }
 	}
 }
 
-#UK offers to sell NZ
 country_event = {
-	id = 7790014
+	id = 7790014 #UK says Australia is enough for them
 	title = "EVTNAME7790014"
 	desc = "EVTDESC7790014"
 	picture = "election_polls"
@@ -109,17 +132,29 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA7790014"
+		prestige = 10
+		NZL = { all_core = { remove_core = ENG } }
+		NZL = { all_core = { add_core = THIS } }
+		ENG = { any_owned = { limit = { is_core = THIS } secede_province = THIS } }
+		relation = { who = FROM value = 150 }
+	}
+}
+
+#UK offers to sell NZ
+country_event = {
+	id = 7790015
+	title = "EVTNAME7790015"
+	desc = "EVTDESC7790015"
+	picture = "election_polls"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA7790015"
 		badboy = 2
-		NZL = {
-			all_core = {
-				remove_core = ENG
-			}
-		}
-		NZL = {
-			all_core = {
-				add_core = THIS
-			}
-		}
+		NZL = { all_core = { remove_core = ENG } }
+		NZL = { all_core = { add_core = THIS } }
+		# ENG = { any_owned = { limit = { is_core = THIS } secede_province = THIS } } # NZL maybe?
 		2509 = { secede_province = THIS }
 		2510 = { secede_province = THIS }
 		2511 = { secede_province = THIS }
@@ -133,8 +168,9 @@ country_event = {
 		treasury = -250000
 		FROM = { treasury = 250000 }
 	}
+
 	option = {
-		name = "EVTOPTB7790014"
+		name = "EVTOPTB7790015"
 		relation = { who = ENG value = -400 }
 		badboy = 4
 		NZL = { all_core = { add_core = THIS } }
