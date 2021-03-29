@@ -117,8 +117,8 @@ status_quo
 take_puppet
 # acquire_vassal_core_region
 liberate_puppet
-take_capital
-conquest_low
+#take_capital
+#conquest_low
 negotiated_transfer
 great_war_penalty_cb
 }
@@ -431,21 +431,23 @@ acquire_core_state = {
 			}
 			any_owned_province = { any_neighbor_province = { owned_by = THIS } }
 		}
-		# DEVNOTE anzu-3278: Temporary hacky fix so that the USA AI doesn't just add individual state core cbs and win the Mex-Am war with ugly borders. Will probably be deprecated when the Mex-Am war is changed to have a scripted peace (or stay so that AI USA doesn't justify for Wyoming in 1836)
+		# DEVNOTE anzu-3278: Temporary hacky fix so that the USA AI doesn't just add individual state core cbs and win the Mex-Am war with ugly borders. Will probably be deprecated when the Mex-Am war is changed to have a scripted peace.
 		NOT = {
 			AND = {
 				THIS = { tag = USA }
-				OR = {
-					region = TEX_132	# Texas
-					region = MEX_94		# Nevada
-					region = MEX_97		# Utah
-					region = MEX_85		# California
-					region = USA_106	# Colorado
-					region = USA_111	# Wyoming
-					region = USA_126	# Kansas
-					region = USA_129	# Oklahoma
-					region = MEX_100	# Arizona
-					region = MEX_103	# New Mexico
+				any_owned_province = {
+					OR = {
+						region = TEX_132	# Texas
+						region = MEX_94		# Nevada
+						region = MEX_97		# Utah
+						region = MEX_85		# California
+						region = USA_106	# Colorado
+						region = USA_111	# Wyoming
+						region = USA_126	# Kansas
+						region = USA_129	# Oklahoma
+						region = MEX_100	# Arizona
+						region = MEX_103	# New Mexico
+					}
 				}
 			}
 		}
@@ -3565,10 +3567,8 @@ place_in_the_sun = {
 		OR = {
 			any_owned_province = {
 				NOT = {
-					OR = {
 					any_core = { exists = yes }
 					any_core = { exists = no }
-					}
 				}
 			}
 			any_owned_province = {
@@ -3583,6 +3583,18 @@ place_in_the_sun = {
 			AND = {
 				any_owned_province = { port = yes }
 				THIS = { any_owned_province = { port = yes } }
+			}
+			AND = { # AI USA can't use place in the sun to take states off Mexico until they Manifest Destiny
+				THIS = {
+					tag = USA
+					has_country_flag = hasmanifestdestiny
+				}
+				any_owned_province = {
+					OR = {
+						is_core = USA
+						NOT = { is_core = MEX }
+					}
+				}
 			}
 		}
 	}
