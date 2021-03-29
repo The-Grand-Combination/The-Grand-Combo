@@ -1,6 +1,6 @@
 texture tex0 < string name = "sdf"; >;	// Base texture
 
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float4	 FlagCoords;
 
 sampler BaseTexture  =
@@ -34,7 +34,7 @@ VS_OUTPUT VertexShader(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 
-	Out.vPosition  = mul(v.vPosition, WorldViewProjectionMatrix );
+	Out.vPosition = mul(v.vPosition, WorldViewProjectionMatrix );
 
 	Out.vTexCoord0.x = v.vTexCoord.x/FlagCoords.x;
 	Out.vTexCoord0.x = Out.vTexCoord0.x + FlagCoords.z;
@@ -51,7 +51,7 @@ float4 PixelShader( VS_OUTPUT v ) : COLOR
 {
 	float4 OutColor = tex2D( BaseTexture, v.vTexCoord0.xy );
 	OutColor.a *= v.vDiffuse.a;
-	
+
 	return OutColor;
 }
 
@@ -72,7 +72,7 @@ technique tec0
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 
