@@ -15,6 +15,25 @@ political_decisions = {
 				ai = no
 				NOT = { has_country_flag = looking_through_options }
 				NOT = { year = 1837 }
+				# If all the options decisions are taken no need to display the show/hide decisions
+				# Add to this list of conditions when adding new options decisions
+				OR = {
+					NOT = { has_global_flag = extra_flavour_disabled }
+					NOT = { has_global_flag = colonial_railroading_disabled }
+					NOT = { has_global_flag = uk_isolation_disabled }
+					NOT = { has_global_flag = usa_gtfo_africa }
+					NOT = { has_country_flag = bankruptcy_events_disabled }
+					NOT = { has_global_flag = workplace_events_disabled }
+					NOT = { has_global_flag = leader_events_disabled }
+					NOT = { has_global_flag = party_loyalty_eliminated }
+					NOT = { has_global_flag = disable_microstates }
+					NOT = { has_global_flag = disable_unite_as_puppet }
+					NOT = { has_global_flag = revolution_n_counter_researched }
+					NOT = { has_global_flag = lucky_nations_on }
+					NOT = { has_country_flag = spectator }
+					NOT = { has_global_flag = disabled_commie_mod }
+					NOT = { has_global_flag = enable_overrides }
+				}
 			}
 
 			allow = {
@@ -33,6 +52,25 @@ political_decisions = {
 				ai = no
 				has_country_flag = looking_through_options
 				NOT = { year = 1837 }
+				# If all the options decisions are taken no need to display the show/hide decisions
+				# Add to this list of conditions when adding new options decisions
+				OR = {
+					NOT = { has_global_flag = extra_flavour_disabled }
+					NOT = { has_global_flag = colonial_railroading_disabled }
+					NOT = { has_global_flag = uk_isolation_disabled }
+					NOT = { has_global_flag = usa_gtfo_africa }
+					NOT = { has_country_flag = bankruptcy_events_disabled }
+					NOT = { has_global_flag = workplace_events_disabled }
+					NOT = { has_global_flag = leader_events_disabled }
+					NOT = { has_global_flag = party_loyalty_eliminated }
+					NOT = { has_global_flag = disable_microstates }
+					NOT = { has_global_flag = disable_unite_as_puppet }
+					NOT = { has_global_flag = revolution_n_counter_researched }
+					NOT = { has_global_flag = lucky_nations_on }
+					NOT = { has_country_flag = spectator }
+					NOT = { has_global_flag = disabled_commie_mod }
+					NOT = { has_global_flag = enable_overrides }
+				}
 			}
 
 			allow = {
@@ -151,7 +189,10 @@ political_decisions = {
 
 			effect = {
 				set_country_flag = bankruptcy_events_disabled
-				any_country = { limit = { ai = no } set_country_flag = bankruptcy_events_disabled }
+				any_country = {
+					limit = { ai = no }
+					set_country_flag = bankruptcy_events_disabled
+				}
 			}
 		}
 
@@ -467,6 +508,29 @@ political_decisions = {
 				}
 				ai = no
 				NOT = { has_country_flag = looking_through_utilities }
+				# If all the one-time utilities are used up and the conditions are not satisfied for any of the multi-use ones, don't display the show/hide decisions
+				# Add to this list of conditions when adding new utilities decisions
+				OR = {
+					has_country_flag = show_options_multiplayer_host
+					has_country_flag = show_options_multiplayer_standard
+					AND = { # Has not disabled Return Cores and at least one country for whom it would be displayed
+						NOT = { has_country_flag = return_core_disabled }
+						any_owned_province = {
+							NOT = { is_core = THIS }
+							any_core = {
+								OR = {
+									in_sphere = THIS
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+					#AND = { # Not disabled GTFO and has at least one vassal for whom it would be displayed
+					#	NOT = { has_country_flag = gtfo_disabled }
+					#	num_of_vassals_no_substates = 1
+					#} # Logically irrelevant because of below but keeping for completeness sake
+					num_of_vassals_no_substates = 1
+				}
 			}
 
 			allow = {
@@ -484,6 +548,35 @@ political_decisions = {
 			potential = {
 				ai = no
 				has_country_flag = looking_through_utilities
+				OR = {
+					has_country_flag = show_options_multiplayer_host
+					has_country_flag = show_options_multiplayer_standard
+					NOT = { has_country_flag = return_core_disabled }
+					NOT = { has_country_flag = gtfo_disabled }
+				}
+				# If all the one-time utilities are used up and the conditions are not satisfied for any of the multi-use ones, don't display the show/hide decisions
+				# Add to this list of conditions when adding new utilities decisions
+				OR = {
+					has_country_flag = show_options_multiplayer_host
+					has_country_flag = show_options_multiplayer_standard
+					AND = { # Has not disabled Return Cores and at least one country for whom it would be displayed
+						NOT = { has_country_flag = return_core_disabled }
+						any_owned_province = {
+							NOT = { is_core = THIS }
+							any_core = {
+								OR = {
+									in_sphere = THIS
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+					#AND = { # Not disabled GTFO and has at least one vassal for whom it would be displayed
+					#	NOT = { has_country_flag = gtfo_disabled }
+					#	num_of_vassals_no_substates = 1
+					#} # Logically irrelevant because of below but keeping for completeness sake
+					num_of_vassals_no_substates = 1
+				}
 			}
 
 			allow = {
@@ -512,7 +605,7 @@ political_decisions = {
 			}
 
 			effect = {
-				country_event = {id = 100000 days = 0}
+				country_event = { id = 100000 days = 0 }
 			}
 		}
 
@@ -620,7 +713,15 @@ political_decisions = {
 					has_country_flag = return_cores_decision
 					has_country_flag = return_core_disabled
 				}
-				any_owned_province = { NOT = { is_core = THIS } any_core = { OR = { in_sphere = THIS vassal_of = THIS } } }
+				any_owned_province = {
+					NOT = { is_core = THIS }
+					any_core = {
+						OR = {
+							in_sphere = THIS
+							vassal_of = THIS
+						}
+					}
+				}
 			}
 
 			allow = {
