@@ -33,6 +33,7 @@ political_decisions = {
 					NOT = { has_country_flag = spectator }
 					NOT = { has_global_flag = disabled_commie_mod }
 					NOT = { has_global_flag = assimilation_events_disabled }
+					NOT = { has_global_flag = trade_policy_choosing_disabled_global }
 					NOT = { has_global_flag = enable_overrides }
 				}
 			}
@@ -71,6 +72,7 @@ political_decisions = {
 					NOT = { has_country_flag = spectator }
 					NOT = { has_global_flag = disabled_commie_mod }
 					NOT = { has_global_flag = assimilation_events_disabled }
+					NOT = { has_global_flag = trade_policy_choosing_disabled_global }
 					NOT = { has_global_flag = enable_overrides }
 				}
 			}
@@ -493,6 +495,41 @@ political_decisions = {
 
 			effect = {
 				set_global_flag = assimilation_events_disabled
+			}
+		}
+
+		#Disables Trade Policy decisions globally
+		option_disable_trade_policy = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				OR = {
+					has_country_flag = show_options_singleplayer
+					has_country_flag = show_options_multiplayer_host
+				}
+				ai = no
+				has_country_flag = looking_through_options
+				NOT = { year = 1837 }
+				NOT = { has_global_flag = trade_policy_choosing_disabled_global }
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_global_flag = trade_policy_choosing_disabled_global
+				remove_country_modifier = mercantilism
+				remove_country_modifier = economic_nationalism
+				remove_country_modifier = french_liberal_school
+				remove_country_modifier = smithian_school
+				remove_country_modifier = no_trade_policy_set
+				any_country = {
+					remove_country_modifier = mercantilism
+					remove_country_modifier = economic_nationalism
+					remove_country_modifier = french_liberal_school
+					remove_country_modifier = smithian_school
+					remove_country_modifier = no_trade_policy_set
+				}
 			}
 		}
 
@@ -1017,7 +1054,10 @@ political_decisions = {
 						ai = yes
 						exists = yes
 					}
-					capital_scope = { immigrator = 1 }
+					capital_scope = {
+						# Audax Validator "." Ignore_NEXT
+						immigrator = 1
+					}
 				}
 			}
 		}
