@@ -33,19 +33,11 @@ political_decisions = {
 					ai = no
 				}
 			}
-			OR = {
-				FRA = {
-					exists = yes
-					OR = { is_mobilised = no war = no }
-					NOT = { truce_with = THIS }
-					NOT = { relation = { who = THIS value = 100 } }
-				}
-				BOR = {
-					exists = yes
-					OR = { is_mobilised = no war = no }
-					NOT = { truce_with = THIS }
-					NOT = { relation = { who = THIS value = 100 } }
-				}
+			FRA = {
+				exists = yes
+				OR = { is_mobilised = no war = no }
+				NOT = { truce_with = THIS }
+				NOT = { relation = { who = THIS value = 100 } }
 			}
 			OR = {
 				AND = {
@@ -97,7 +89,6 @@ political_decisions = {
 					num_of_revolts = 1
 					is_disarmed = yes
 					FRA = { exists = yes brigades_compare = 2 }
-					BOR = { exists = yes brigades_compare = 2 }
 				}
 			}
 			modifier = {
@@ -242,7 +233,6 @@ political_decisions = {
 			OR = {
 				has_country_flag = french_claimed_the_rhine
 				FRA = { exists = yes NOT = { relation = { who = FRA value = 0 } } }
-				BOR = { exists = yes NOT = { relation = { who = BOR value = 0 } } }
 				575 = { owner = { NOT = { is_culture_group = germanic } } }
 				576 = { owner = { NOT = { is_culture_group = germanic } } }
 				577 = { owner = { NOT = { is_culture_group = germanic } } }
@@ -1174,29 +1164,16 @@ political_decisions = {
 			}
 			1455 = {
 				NOT = { owned_by = SPA }
-				NOT = { owned_by = SPC }
 				owner = {
-					NOT = { vassal_of = SPC }
 					NOT = { vassal_of = SPA }
 				}
 			}
-			OR = {
-				SPA = {
-					is_greater_power = no
-					any_owned_province = {
-						OR = {
-							region = SPA_610
-							region = SPA_2517
-						}
-					}
-				}
-				SPC = {
-					is_greater_power = no
-					any_owned_province = {
-						OR = {
-							region = SPA_610
-							region = SPA_2517
-						}
+			SPA = {
+				is_greater_power = no
+				any_owned_province = {
+					OR = {
+						region = SPA_610
+						region = SPA_2517
 					}
 				}
 			}
@@ -1216,8 +1193,6 @@ political_decisions = {
 			NOT = {
 				truce_with = SPA
 				SPA = { war = yes }
-				truce_with = SPC
-				SPC = { war = yes }
 			}
 		}
 
@@ -1225,10 +1200,7 @@ political_decisions = {
 			set_global_flag = tried_to_buy_spanish_pacific
 			random_country = {
 				limit = {
-					OR = {
-						tag = SPA
-						tag = SPC
-					}
+					tag = SPA
 					exists = yes
 					any_owned_province = {
 						OR = {
@@ -2102,7 +2074,6 @@ political_decisions = {
 				NOT = {
 					alliance_with = ENG
 					alliance_with = FRA
-					alliance_with = BOR
 					alliance_with = RUS
 				}
 			}
@@ -2137,15 +2108,9 @@ political_decisions = {
 		}
 		allow = {
 			war = no
-			OR = {
-				AND = {
-					truce_with = FRA
-					FRA = { has_recently_lost_war = yes }
-				}
-				AND = {
-					truce_with = BOR
-					BOR = { has_recently_lost_war = yes }
-				}
+			AND = {
+				truce_with = FRA
+				FRA = { has_recently_lost_war = yes }
 			}
 		}
 		effect = {
@@ -2186,16 +2151,12 @@ political_decisions = {
 					}
 					NOT = {
 						vassal_of = FRA
-						vassal_of = BOR
 					}
 					war = no
 					is_greater_power = no
 				}
 			}
-			OR = {
-				FRA = { exists = yes truce_with = THIS }
-				BOR = { exists = yes truce_with = THIS }
-			}
+			FRA = { exists = yes truce_with = THIS }
 		}
 
 		effect = {
@@ -2681,14 +2642,14 @@ political_decisions = {
 			OR = {
 				AND = {
 					owns = 412 #Metz
-					RHI = { OR = { vassal_of = FRA vassal_of = BOR } }
+					RHI = { vassal_of = FRA }
 				}
 				RHI = {
 					is_vassal = no
 					in_sphere = THIS
 				}
 			}
-			OR = { truce_with = FRA truce_with = BOR }
+			truce_with = FRA
 		}
 
 		effect = {
@@ -4272,28 +4233,13 @@ political_decisions = {
 			410 = { add_core = THIS }
 			412 = { add_core = THIS }
 			3322 = { add_core = THIS }
-			random_owned = {
-				limit = { exists = FRA }
-				owner = {
-					war = {
-						target = FRA
-						attacker_goal = { casus_belli = conquest }
-						defender_goal = { casus_belli = install_democracy }
-					}
-				}
+			war = {
+				target = FRA
+				attacker_goal = { casus_belli = conquest }
+				defender_goal = { casus_belli = install_democracy }
 			}
-			random_owned = {
-				limit = { exists = BOR }
-				owner = {
-					war = {
-						target = BOR
-						attacker_goal = { casus_belli = conquest }
-						defender_goal = { casus_belli = install_democracy }
-					}
-				}
-			}
-
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 
@@ -4312,7 +4258,6 @@ political_decisions = {
 			NOT = { has_country_modifier = no_more_war }
 			government = fascist_dictatorship
 			FRA = { exists = no }
-			BOR = { exists = no }
 			425 = { owned_by = THIS }
 		}
 
@@ -4323,10 +4268,10 @@ political_decisions = {
 		effect = {
 			set_country_flag = vf_released
 			badboy = -10
-			409 = { remove_core = FRA remove_core = BOR }
-			410 = { remove_core = FRA remove_core = BOR }
-			412 = { remove_core = FRA remove_core = BOR }
-			3322 = { remove_core = FRA remove_core = BOR }
+			409 = { remove_core = FRA }
+			410 = { remove_core = FRA }
+			412 = { remove_core = FRA }
+			3322 = { remove_core = FRA }
 			448 = { add_core = VFR }
 			449 = { add_core = VFR }
 			450 = { add_core = VFR }
