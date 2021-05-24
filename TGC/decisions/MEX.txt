@@ -2,6 +2,40 @@ political_decisions = {
 
 ## Expansion ##
 
+	#Description: Mexico can demand Soconusco from Guatemala/USCA
+	soconusco_joins_mexico = { #by Tecno3000
+		picture = map_central_america
+		potential = {
+			tag = MEX
+			owns = 2181
+			2182 = {
+				NOT = { owned_by = THIS }
+				NOT = { is_core = THIS }
+				owner = { NOT = { truce_with = THIS } }
+			}
+			LOS = { exists = no }
+			NOT = { year = 1850 }
+			NOT = { has_country_flag = soconusco_joins_mexico }
+		}
+
+		allow = {
+			war = no
+			prestige = 10
+		}
+
+		effect = {
+			set_country_flag = soconusco_joins_mexico
+			badboy = 1
+			2182 = { add_core = MEX }
+			random_country = {
+				limit = { owns = 2182 }
+				country_event = 1904191430
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: If Mexico, Texas, Deseret or California wins a war against the USA or becomes a Great Power and owns all their cores, they can refute the American Manifest Destiny and remove their cores.
 	refute_manifest_destiny = {
 		picture = manifest_destiny
@@ -546,6 +580,612 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: A Great Power Mexico can remove Colombia cores from Panama once they own it.
+	reassurance_in_central_america = { #madebyFinnBroandAndJPADUN
+		picture = map_central_america
+		potential = {
+			tag = MEX
+			2208 = { # Panama City
+				owned_by = THIS
+				is_core = THIS
+			}
+			OR = {
+				CLM = { exists = yes is_greater_power = no }
+				GCO = { exists = yes is_greater_power = no }
+				VNG = { exists = yes is_greater_power = no }
+			}
+			NOT = { has_country_flag = reassurance_in_central_america }
+		}
+
+		allow = {
+			prestige = 25
+			is_greater_power = yes
+		}
+
+		effect = {
+			set_country_flag = reassurance_in_central_america
+			prestige = 5
+			CLM_1723 = { remove_core = CLM }
+			2205 = { remove_core = CLM }
+			random_owned = {
+				limit = { GCO = { exists = yes } }
+				CLM_1723 = { remove_core = GCO }
+				2205 = { remove_core = GCO }
+			}
+			random_owned = {
+				limit = { VNG = { exists = yes } }
+				CLM_1723 = { remove_core = VNG }
+				2205 = { remove_core = VNG }
+			}
+			1723 = { state_scope = { change_region_name = "Panama" } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Empire ##
+
+	#Description: If France is a monarchy, Mexico can choose to become one as well, with sufficient militancy and a conservative or reactionary ruling party.
+	restore_mexican_empire = {
+		potential = {
+			tag = MEX
+			OR = {
+				government = democracy
+				government = presidential_dictatorship
+			}
+			FRA = {
+				exists = yes
+				OR = {
+					government = absolute_monarchy
+					government = prussian_constitutionalism
+					government = hms_government
+				}
+			}
+			NOT = { has_country_flag = mexican_empire }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+			}
+			average_militancy = 3
+		}
+
+		effect = {
+			set_country_flag = mexican_empire
+			government = hms_government
+			any_pop = { scaled_militancy = { ideology = liberal factor = 8 } }
+			FRA = {
+				relation = { who = THIS value = 100 }
+				diplomatic_influence = { who = THIS value = 100 }
+			}
+		}
+	}
+
+	#Description: The Mexican Empire can accept natives by royal decree.
+	imperial_act = { #madebyFinnBroandAndJPADUN
+		picture = native_protection_act
+		potential = {
+			tag = MEX
+			has_country_flag = manifest_destiny_refuted_country
+			OR = {
+				government = absolute_monarchy
+				government = prussian_constitutionalism
+				government = hms_government
+			}
+			NOT = { has_country_flag = imperial_act }
+		}
+
+		allow = {
+			war = no
+			money = 10000
+			nationalism_n_imperialism = 1
+			NOT = { citizens_rights = primary_culture_only }
+		}
+
+		effect = {
+			badboy = -5
+			treasury = -10000
+
+			set_country_flag = imperial_act
+			clr_country_flag = native_integration_status_on
+			set_country_flag = native_protection_act_enacted # So that the other decisions don't show
+
+			any_pop = {
+				limit = {
+					NOT = {
+						is_culture_group = native_american
+						is_culture_group = oceanic
+					}
+				}
+				scaled_militancy = { factor = 3 ideology = reactionary }
+				scaled_consciousness = { factor = 2 ideology = conservative }
+			}
+
+			random_owned = {
+				limit = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+					any_pop = { is_culture_group = native_american }
+				}
+				owner = {
+					any_pop = {
+						limit = { is_culture_group = native_american }
+						consciousness = 2
+						militancy = -2
+						dominant_issue = { factor = 0.5 value = full_citizenship }
+					}
+				}
+			}
+
+			random_owned = {
+				limit = {
+					OR = {
+						continent = australia_new_zealand
+						continent = polynesia
+					}
+					any_pop = { is_culture_group = oceanic }
+				}
+				owner = {
+					any_pop = {
+						limit = { is_culture_group = oceanic }
+						consciousness = 4
+						militancy = -2
+						dominant_issue = { factor = 0.5 value = full_citizenship }
+					}
+				}
+			}
+
+			## Accept Natives ##
+
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = mayan } NOT = { owner = { accepted_culture = mayan } } }
+					owner = { add_accepted_culture = mayan }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = nahua } NOT = { owner = { accepted_culture = nahua } } }
+					owner = { add_accepted_culture = nahua }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = tupinamba } NOT = { owner = { accepted_culture = tupinamba } } }
+					owner = { add_accepted_culture = tupinamba }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = metis } NOT = { owner = { accepted_culture = metis } } }
+					owner = { add_accepted_culture = metis }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = dakota } NOT = { owner = { accepted_culture = dakota } } }
+					owner = { add_accepted_culture = dakota }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = cherokee } NOT = { owner = { accepted_culture = cherokee } } }
+					owner = { add_accepted_culture = cherokee }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = pueblo } NOT = { owner = { accepted_culture = pueblo } } }
+					owner = { add_accepted_culture = pueblo }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = inuit } NOT = { owner = { accepted_culture = inuit } } }
+					owner = { add_accepted_culture = inuit }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = cree } NOT = { owner = { accepted_culture = cree } } }
+					owner = { add_accepted_culture = cree }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = navajo } NOT = { owner = { accepted_culture = navajo } } }
+					owner = { add_accepted_culture = navajo }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = aborigine } NOT = { owner = { accepted_culture = aborigine } } }
+					owner = { add_accepted_culture = aborigine }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = maori } NOT = { owner = { accepted_culture = maori } } }
+					owner = { add_accepted_culture = maori }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = polynesian } NOT = { owner = { accepted_culture = polynesian } } }
+					owner = { add_accepted_culture = polynesian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = hawaiian } NOT = { owner = { accepted_culture = hawaiian } } }
+					owner = { add_accepted_culture = hawaiian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = melanesian } NOT = { owner = { accepted_culture = melanesian } } }
+					owner = { add_accepted_culture = melanesian }
+				}
+				random_owned = {
+					limit = { is_core = THIS any_pop = { has_pop_culture = micronesian } NOT = { owner = { accepted_culture = micronesian } } }
+					owner = { add_accepted_culture = micronesian }
+				}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Mexican Empire can propose change their national value to Equality.
+	the_imperial_house_wants_unity = { #madebyFinnBroandAndJPADUN
+		picture = switch_to_unity
+		potential = {
+			tag = MEX
+			NOT = { has_country_flag = the_imperial_house_wants_unity }
+			NOT = { nationalvalue = nv_equality }
+			OR = {
+				government = absolute_monarchy
+				government = prussian_constitutionalism
+				government = hms_government
+			}
+		}
+
+		allow = {
+			war = no
+			NOT = { has_country_modifier = national_confusion }
+			NOT = { num_of_revolts = 1 }
+		}
+
+		effect = {
+			set_country_flag = the_imperial_house_wants_unity
+			nationalvalue = nv_equality
+			add_country_modifier = {
+				name = national_confusion
+				duration = 825
+			}
+			any_pop = {
+				scaled_militancy = { ideology = reactionary factor = 4 }
+				scaled_militancy = { ideology = conservative factor = 2 }
+				scaled_militancy = { ideology = liberal factor = -2 }
+			}
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Description: Assimilation and immigration attraction buff for some Mexican provinces. # TODO maybe we should rethink this?
+	mexican_unity = { #madebyFinnBroandAndJPADUN
+		picture = mex_central_america
+		potential = {
+			tag = MEX
+			is_greater_power = yes
+			nationalvalue = nv_equality
+			year = 1860
+			NOT = { has_country_flag = mexican_unity }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			set_country_flag = mexican_unity
+			2172 = { add_province_modifier = { name = cultural_resurgence duration = 4300 } } # Mexico City
+			2173 = { add_province_modifier = { name = cultural_resurgence duration = 4300 } } # Tlaxcala de Xicohténcatl
+			2174 = { add_province_modifier = { name = cultural_resurgence duration = 4300 } } # Pachuca de Soto
+			2175 = { add_province_modifier = { name = cultural_resurgence duration = 4300 } } # Puebla de Zaragoza
+			2176 = { add_province_modifier = { name = cultural_resurgence duration = 4300 } } # Cuernavaca
+			2180 = { add_province_modifier = { name = cultural_resurgence duration = 4300 } } # Toluca de Lerdo
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Mexican Empire can accept Spanish-speaking and African diaspora pops and unlocks Habsburg puppets decisions in South America.
+	heredero_virreinal = { #madebyFinnBroandAndJPADUN
+		picture = spain_reconquest
+		potential = {
+			tag = MEX
+			is_greater_power = yes
+			nationalvalue = nv_equality
+			has_global_flag = mexican_louisiana
+			NOT = { has_global_flag = righful_heir }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				war_policy = jingoism
+				war_policy = pro_military
+			}
+		}
+
+		effect = {
+			set_global_flag = righful_heir
+			prestige = 5
+			badboy = 1
+			add_accepted_culture = spanish
+			add_accepted_culture = afro_american
+			add_accepted_culture = afro_caribeno
+			add_accepted_culture = afro_caribbean
+			add_accepted_culture = mullato
+			any_pop = {
+				limit = {
+					is_culture_group = latin_american_cultures
+					OR = {
+						pop_majority_ideology = reactionary
+						pop_majority_ideology = conservative
+						pop_majority_ideology = liberal
+					}
+				}
+				militancy = -3
+			}
+			random_country = {
+				limit = {
+					tag = SPA
+					exists = yes
+					has_global_flag = reconquista
+				}
+				relation = { who = THIS value = -150 }
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Mexican Empire can create the Viceroyalty of Peru as a puppet if they control Chile, Peru and Bolivia.
+	el_regreso_de_habsburgo_vop = { #madebyFinnBroandAndJPADUN
+		picture = spain_reconquest_vop
+		potential = {
+			tag = MEX
+			is_greater_power = yes
+			has_global_flag = righful_heir
+			VOP = { exists = no }
+			NOT = { has_country_flag = protecting_legacy_vop }
+		}
+
+		allow = {
+			war = no
+			PEU = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+			BOL = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+			CHL = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = protecting_legacy_vop
+			prestige = 5
+			PEU = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VOP } }
+			BOL = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VOP } }
+			CHL = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VOP } }
+			inherit = BOL
+			inherit = PEU
+			inherit = CHL
+			release_vassal = VOP
+			relation = { who = VOP value = 400 }
+			diplomatic_influence = { who = VOP value = 200 }
+			VOP = {
+				set_country_flag = post_colonial_country
+				government = colonial_company # TODO maybe dominion instead?
+			}
+			create_alliance = VOP
+			create_vassal = VOP
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Mexican Empire can create the Viceroyalty of New Grenada as a puppet if they control Colombia, Venezuela and Ecuador.
+	el_regreso_de_habsburgo_vng = { #madebyFinnBroandAndJPADUN
+		picture = spain_reconquest_vng
+		potential = {
+			tag = MEX
+			is_greater_power = yes
+			has_global_flag = righful_heir
+			VNG = { exists = no }
+			NOT = { has_country_flag = protecting_legacy_vng }
+		}
+
+		allow = {
+			war = no
+			CLM = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+			VNZ = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+			ECU = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = protecting_legacy_vng
+			prestige = 5
+			CLM = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VNG } }
+			VNZ = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VNG } }
+			ECU = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VNG } }
+			inherit = CLM
+			inherit = VNZ
+			inherit = ECU
+			release_vassal = VNG
+			relation = { who = VNG value = 400 }
+			diplomatic_influence = { who = VNG value = 200 }
+			VNG = {
+				set_country_flag = post_colonial_country
+				government = colonial_company
+			}
+			create_alliance = VNG
+			create_vassal = VNG
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: The Mexican Empire can create the Viceroyalty of La Plata as a puppet if they control Colombia, Venezuela and Ecuador.
+	el_regreso_de_habsburgo_vlp = { #madebyFinnBroandAndJPADUN
+		picture = spain_reconquest_vlp
+		potential = {
+			tag = MEX
+			is_greater_power = yes
+			has_global_flag = righful_heir
+			VLP = { exists = no }
+			NOT = { has_country_flag = protecting_legacy_vlp }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				ARG = {
+					OR = {
+						vassal_of = THIS
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									war = no
+									in_sphere = THIS
+								}
+							}
+						}
+					}
+				}
+				ARC = {
+					OR = {
+						vassal_of = THIS
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									war = no
+									in_sphere = THIS
+								}
+							}
+						}
+					}
+				}
+			}
+			URU = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+			PRG = {
+				OR = {
+					vassal_of = THIS
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								war = no
+								in_sphere = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = protecting_legacy_vlp
+			prestige = 5
+			ARG = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VLP } }
+			ARC = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VLP } }
+			URU = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VLP } }
+			PRG = { government = democracy all_core = { limit = { NOT = { is_core = THIS } } add_core = VLP } }
+			inherit = PRG
+			inherit = ARG
+			inherit = URU
+			inherit = ARC
+			release_vassal = VLP
+			relation = { who = VLP value = 400 }
+			diplomatic_influence = { who = VLP value = 200 }
+			VLP = {
+				set_country_flag = post_colonial_country
+				government = colonial_company
+			}
+			create_alliance = VLP
+			create_vassal = VLP
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 ## Flavor ##
 
 	#Description: Mexico can normalize relations with Spain which have been bad since the war for independence.
@@ -637,59 +1277,81 @@ political_decisions = {
 		}
 	}
 
-	#Description: If France is a monarchy, Mexico can choose to become one as well, with sufficient militancy and a conservative or reactionary ruling party.
-	restore_mexican_empire = {
+	#Description: Mexico can, if at war with the USA, gets the help of historical generals.
+	glory_in_battle_blood_in_the_field = { #madebyFinnBroandAndJPADUN
 		potential = {
 			tag = MEX
-			government = democracy
-			NOT = { has_country_flag = mexican_empire }
-			OR = {
-				FRA = {
-					exists = yes
-					OR = {
-						government = absolute_monarchy
-						government = prussian_constitutionalism
-						government = hms_government
-					}
-				}
-				BOR = {
-					exists = yes
-					OR = {
-						government = absolute_monarchy
-						government = prussian_constitutionalism
-						government = hms_government
-					}
-				}
-			}
+			war_with = USA
+			NOT = { year = 1850 }
+			NOT = { has_country_flag = glory_in_battle_blood_in_the_field }
 		}
 
 		allow = {
-			war = no
-			OR = {
-				ruling_party_ideology = conservative
-				ruling_party_ideology = reactionary
-			}
-			average_militancy = 3
 		}
 
 		effect = {
-			government = hms_government
-			any_pop = {
-				scaled_militancy = {
-					ideology = liberal
-					factor = 8
-				}
+			set_country_flag = glory_in_battle_blood_in_the_field
+
+			define_general = {
+				name = "Felipe Santiago Xicotencatl"
+				personality = au_fait
+				background = cartographer
 			}
-			random_country = {
-				limit = {
-					primary_culture = french
-					capital = 425
-				}
-				relation = { who = THIS value = 100 }
-				diplomatic_influence = { who = THIS value = 100 }
+			define_general = {
+				name = "John O'Riley"
+				# Audax Validator "." Ignore_NEXT
+				picture = european_general_5 # TODO check if this really works
+				personality = resolute
+				background = school_of_the_bayonet
 			}
-			set_country_flag = mexican_empire
+			define_general = {
+				name = "Mariano Paredes y Arrillaga"
+				personality = vainglorious
+				background = school_of_defense
+			}
+			define_general = {
+				name = "Pedro Maria Anaya"
+				personality = au_fait
+				background = cartographer
+			}
 		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Mexico can, if at war in early 60's, gets the help of historical generals.
+	earth_shall_shake_by_the_roar_of_our_cannons = { #madebyFinnBroandAndJPADUN
+		potential = {
+			tag = MEX
+			war = yes
+			# year = 1863
+			NOT = { has_country_flag = second_tricolour_flag }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = second_tricolour_flag
+
+			define_general = {
+				name = "Miguel Miramon"
+				personality = resolute
+				background = school_of_the_bayonet
+			}
+			define_general = {
+				name = "Porfirio Diaz"
+				personality = au_fait
+				background = cavalry_school
+			}
+			define_general = {
+				name = "Ignacio Zaragoza"
+				personality = defiant
+				background = school_of_defense
+			}
+		}
+
+		ai_will_do = { factor = 1 }
 	}
 
 	#Description: California or Mexico can implement the rancho system in California, sacrificing assimilation rate for farming efficiency, liferating and immigrant attraction.
@@ -871,6 +1533,295 @@ political_decisions = {
 
 		ai_will_do = { factor = 1 }
 	}
+
+	#Description: If Mexico refutes Manifest Destiny and is a Great Power, they can get a 5 year baby boom.
+	the_mexican_boom = { #madebyFinnBroandAndJPADUN
+		picture = trail_of_tears
+		potential = {
+			tag = MEX
+			is_greater_power = yes
+			has_country_flag = manifest_destiny_refuted_country
+			NOT = { has_country_flag = the_mexican_boom }
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			set_country_flag = the_mexican_boom
+			add_country_modifier = { name = global_baby_boom duration = 1825 } # 5 years
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If Mexico conquers the Louisiana Territory, they can rename the provinces and get liferating. # TODO turn this into a series of random_owned, separate buffs from renames
+	the_mexican_frontier = { #madebyFinnBroandAndJPADUN
+		picture = cowboy
+		potential = {
+			primary_culture = mexican
+			OR = {
+				owns = 130
+				owns = 131
+			}
+			has_global_flag = mexican_louisiana
+			NOT = { has_global_flag = mexican_frontier }
+		}
+
+		allow = {
+			war = no
+			owns = 149
+			OR = {
+				year = 1866
+				AND = {
+					invention = manifest_destiny
+					nationalism_n_imperialism = 1
+					central_bank_money_bill_printing = 1
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = mexican_frontier
+			prestige = 5
+			plurality = 5
+			## Colorado ##
+				103 = { change_province_name = "Pueblo" }
+				106 = { change_province_name = "Coatza" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				107 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+				108 = { change_province_name = "Pavon"  }
+				135 = { change_province_name = "Durango" }
+			## California ##
+				82 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+				83 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+				84 = {
+					change_province_name = "Sacramento"
+					state_scope = {
+						change_region_name = "Alta California"
+						# Audax Validator "." Ignore_NEXT
+						capital = 84 # TODO how would we even check if this does anything
+					}
+				}
+				85 = { change_province_name = "Santa Rosa" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				86 = { change_province_name = "Lagos Claros" }
+				88 = { change_province_name = "Josefa" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				89 = { change_province_name = "Los Angeles" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				90 = { change_province_name = "San Diego" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				104 = { change_province_name = "San Francisco" }
+				3366 = { change_province_name = "Sonoma" }
+			#Nevada
+				94 = { change_province_name = "Aztlan" state_scope = { change_region_name = "Sierra Nevada" } }
+				96 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			#Utah
+				97 = { add_province_modifier = { name = recently_built_city duration = 1825 } state_scope = { change_region_name = "Quintana" } }
+			#Florida
+				194 = { change_province_name = "Najacuta" }
+				197 = { change_province_name = "Almonte" }
+				199 = { change_province_name = "San Agustin" }
+				200 = { change_province_name = "Nueva Miramar" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				3407 = { change_province_name = "Fuerte Mejia" }
+			#Oregon
+				81 = { change_province_name = "Ciudad Iturbide" state_scope = { change_region_name = "Carlotta" } }
+				82 = { change_province_name = "Miralago" }
+				83 = { change_province_name = "Mondragon" }
+			#Arizona
+				100 = { change_province_name = "Fenix" state_scope = { change_region_name = "Arizona" } add_province_modifier = { name = recently_built_city duration = 1825 } }
+				101 = { change_province_name = "Nezahuac" }
+				102 = { change_province_name = "La Mesilla" }
+				3367 = { change_province_name = "Silla Real" }
+			#New Mexico
+				38 = { change_province_name = "Platina" }
+				109 = { change_province_name = "Guadalupe" }
+				2631 = { change_province_name = "Los Rios" state_scope = { change_region_name = "Nuevo Mexico" } }
+				2662 = { change_province_name = "Cerro Azul" }
+			## Texas ##
+				any_owned = { limit = { OR = {
+							province_id = 34
+							province_id = 43
+							province_id = 132
+							province_id = 136
+							province_id = 137
+						}
+					}
+					life_rating = 5
+				}
+				132 = { change_province_name = "Puerto Iturbide" }
+				134 = { life_rating = 5 }
+				136 = { change_province_name = "El Paso" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				138 = { change_province_name = "Alamo" }
+				3372 = { change_province_name = "Llano en Llamas" }
+			## Mexico ##
+				2168 = { change_province_name = "Autlan" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				2171 = { change_province_name = "Valladolid" add_province_modifier = { name = recently_built_city duration = 1825 } state_scope = { change_region_name = "Michoacan" } }
+				2187 = { change_province_name = "Belice" state_scope = { change_region_name = "Belice" } }
+				2163 = { change_province_name = "Orizaba-Xalapa" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				2154 = { change_province_name = "San Juan del Rio" }
+				2178 = { change_province_name = "Exutla" }
+				2144 = { change_province_name = "Ciudad Miramon" }
+				2143 = { change_province_name = "Ciudad Lorena" add_province_modifier = { name = recently_built_city duration = 1825 } }
+			## Cuba ##
+				2209 = { state_scope = { change_region_name = "Cuba Occidental" } }
+				2211 = { state_scope = { change_region_name = "Cuba Oriental" } }
+			## Hispaniola ##
+				2215 = { state_scope = { change_region_name = "Hispaniola" } }
+				2216 = { state_scope = { change_region_name = "Hispaniola del Sur" } }
+			## Washington ##
+				78 = { change_province_name = "Huatulco" state_scope = { change_region_name = "Aramburu" } }
+				79 = { change_province_name = "Nueva Aramburu" }
+				80 = { change_province_name = "Virreyes" }
+			## Wyoming ##
+				107 = { change_province_name = "Pangolin" }
+				110 = { change_province_name = "Verdad y Paz" state_scope = { change_region_name = "Marzan" } }
+				111 = { change_province_name = "Vertrina" }
+				112 = { change_province_name = "Ciudad Mendoza" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				113 = { change_province_name = "Leopolis" }
+			## Idaho ##
+				91 = { change_province_name = "Tudos" }
+				92 = { change_province_name = "Araujo" state_scope = { change_region_name = "Lothringen" } }
+				93 = { change_province_name = "Quiroge" }
+			## Montana ##
+				114 = { change_province_name = "Herzfeld" }
+				115 = { change_province_name = "Pies Negros" }
+				116 = { change_province_name = "Gran Cascada" }
+			## North Dakota ##
+				117 = { change_province_name = "Nueva Tervuren" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				118 = { change_province_name = "Der Smissen" }
+				119 = { change_province_name = "Union y Libertad" state_scope = { change_region_name = "Nor Dakota" } }
+			## South Dakota ##
+				120 = { change_province_name = "Ciudad Sioux" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				121 = { change_province_name = "Ciudad Rapida" }
+				122 = { change_province_name = "Almonte-Estrada" state_scope = { change_region_name = "Sud Dakota" } }
+			## Nebraska ##
+				123 = { change_province_name = "Bazaine" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				124 = { change_province_name = "Mariscal" }
+				125 = { change_province_name = "Foreyes" }
+			## Kansas ##
+				126 = { change_province_name = "Novara" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				128 = { change_province_name = "Linden" }
+			## Oklahoma ##
+				129 = { change_province_name = "Gotha" }
+				130 = { change_province_name = "Augusta Victoria" }
+				131 = { change_province_name = "Ciudad Oklahoma" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				2630 = { change_province_name = "Invicta" }
+				3389 = { change_province_name = "Villa Bonita" }
+				3406 = { change_province_name = "Heorica Andrea" }
+			## Louisiana ##
+				139 = { change_province_name = "Nueva Orleans" }
+				141 = { change_province_name = "Coburgo" state_scope = { change_region_name = "Luisiana" } add_province_modifier = { name = recently_built_city duration = 1825 } }
+				142 = { change_province_name = "Madele" }
+				157 = { change_province_name = "Ogden" }
+			## Arkansas ##
+				143 = { change_province_name = "Chevre" }
+				144 = { change_province_name = "Adaie" }
+				145 = { change_province_name = "Nueva Aguascalientes" add_province_modifier = { name = recently_built_city duration = 1825 } }
+			## Missouri ##
+				146 = { change_province_name = "San Luis" }
+				147 = { change_province_name = "Napomuceno" }
+				148 = { change_province_name = "Amalia" }
+				149 = { change_province_name = "Nuevo Habsburgo" state_scope = { change_region_name = "Missuri" } add_province_modifier = { name = recently_built_city duration = 1825 } }
+				150 = { change_province_name = "Kansas" }
+			## Iowa ##
+				151 = { change_province_name = "Owote" }
+				152 = { change_province_name = "Ciudad Iowa" }
+				153 = { change_province_name = "Manzanillo" }
+				154 = { change_province_name = "La Hueca" }
+			## Minnesota ##
+				155 = { change_province_name = "San Pablo" }
+				156 = { change_province_name = "Bedote" add_province_modifier = { name = recently_built_city duration = 1825 } }
+				157 = { change_province_name = "Ogden" }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Mexico can get Texan as an accepted culture if they refute Manifest Destiny.
+	integrate_texans = { #madebyFinnBroandAndJPADUN
+		picture = all_texas
+		potential = {
+			tag = MEX
+			has_country_flag = manifest_destiny_refuted_country
+			owns = 133 # Austin
+			NOT = { has_country_flag = integrated_texans }
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			add_accepted_culture = texan
+			set_country_flag = integrated_texans
+			any_pop = {
+				limit = { has_pop_culture = mexican }
+				consciousness = 2
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Various provinces get recently built city modifier. # DEVNOTE anzu-3278: Not sure what the intent here was since this doesn't check for ownership of these provinces
+	king_of_the_pacific = { #madebyFinnBroandAndJPADUN
+		picture = the_pacific_reclamation
+		potential = {
+			tag = MEX
+			ai = no
+			is_greater_power = yes
+			NOT = { has_country_flag = king_of_the_pacific }
+		}
+
+		allow = {
+			war = no
+			prestige = 75
+			money = 500000
+			num_of_ports = 10
+			total_amount_of_ships = 64
+		}
+
+		effect = {
+			set_country_flag = king_of_the_pacific
+
+			prestige = 10
+			badboy = 2
+			money = -500000
+			relation = { who = USA value = -20 }
+			2172 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			138  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			3368 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			2169 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			3372 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			128  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			2139 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			2138 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			129  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			135  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			103  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			108  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			103  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			94   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			96   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			95   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			99   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			97   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			98   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			102  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			100  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			101  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			3367 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			105  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			38   = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			109  = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			2148 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			2631 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			2662 = { add_province_modifier = { name = recently_built_city duration = 1825 } }
+			3366 = { add_core = MEX }
+			3366 = { remove_core = USA }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 
 ## Minors ##
 
