@@ -4518,6 +4518,44 @@
 
 	## Post-war ##
 
+		#Description: Neutral commonwealth of Kentucky joins USA/CSA after civilwar
+		country_event = {
+			id = 16402
+			title = EVTNAME16402
+			desc = EVTDESC16402
+			picture = "Administration"
+
+			is_triggered_only = yes
+			major = yes
+
+			# Accept them into the union
+			option = {
+				name = EVTOPTA16402
+
+				FROM = { all_core = { add_core = THIS remove_core = UKY } }
+				inherit = FROM
+				random_owned = {
+					limit = {
+						state_scope = { is_slave = no }
+						owner = { slavery = yes_slavery }
+					}
+					state_scope = { is_slave = yes }
+				}
+
+				ai_chance = { factor = 100 }
+			}
+
+			# Refuse them
+			option = {
+				name = EVTOPTB16402
+
+				relation = { who = FROM value = -100 }
+				set_country_flag = declined_kentucky
+
+				ai_chance = { factor = 0 }
+			}
+		}
+
 		## CSA Victory ##
 
 			#Description: If the USA is utterly defeated, the CSA will dismantle it, take all of its cores and puppet the rest as minor states.
@@ -6740,49 +6778,6 @@
 				who = FROM
 				value = -100
 			}
-
-			ai_chance = { factor = 0 }
-		}
-	}
-
-	#Neutral commonwealth of Kentucky joins USA/CSA after civilwar
-	country_event = {
-		id = 16402
-		title = EVTNAME16402
-		desc = EVTDESC16402
-		picture = "Administration"
-
-		is_triggered_only = yes
-		major = yes
-
-		# Accept them into the union
-		option = {
-			name = EVTOPTA16402
-
-			FROM = { all_core = { add_core = THIS remove_core = FROM } }
-			FROM = { remove_country_modifier = neutrality }
-			inherit = FROM
-			random_owned = {
-				limit = {
-					state_scope = { is_slave = no }
-					owner = { slavery = yes_slavery }
-				}
-				state_scope = { is_slave = yes }
-			}
-
-			ai_chance = { factor = 100 }
-		}
-
-		# Refuse them
-		option = {
-			name = EVTOPTB16402
-
-			relation = {
-				who = FROM
-				value = -100
-			}
-			FROM = { remove_country_modifier = neutrality }
-			set_country_flag = declined_kentucky
 
 			ai_chance = { factor = 0 }
 		}
