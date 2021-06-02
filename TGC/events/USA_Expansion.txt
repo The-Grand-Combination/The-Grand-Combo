@@ -286,7 +286,10 @@
 				leave_alliance = MEX
 				war = {
 					target = MEX
-					attacker_goal = { casus_belli = acquire_all_cores country = USA }
+					attacker_goal = { casus_belli = cut_down_to_size country = USA }
+					attacker_goal = { casus_belli = status_quo }
+					defender_goal = { casus_belli = cut_down_to_size country = MEX }
+					defender_goal = { casus_belli = status_quo }
 				}
 				any_pop = {
 					limit = { has_pop_culture = mexican }
@@ -515,6 +518,137 @@
 
 				set_country_flag = mexico_refused_treaty
 				war_exhaustion = 20
+			}
+		}
+
+	## Mexican-American War scripted peace deals ## TODO
+
+		#Description: Mexico Refuses
+		country_event = {
+
+			id = 44831
+			title = EVTNAME44831
+			desc = EVTDESC44831
+			picture = "treaty"
+
+			trigger = {
+				tag = USA
+				has_recently_lost_war = no
+				has_global_flag = mexican_american_war
+				MEX = { is_disarmed = yes }
+				MEX = { truce_with = THIS }
+				MEX = { has_recently_lost_war = yes }
+				MEX = { NOT = { has_country_flag = treaty_of_guadalupe_hidalgo_enforced } }
+			}
+
+			mean_time_to_happen = {
+				days = 10
+			}
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA44831"
+
+				MEX = {
+					all_core = {
+						limit = {
+							OR = {
+								region = TEX_132	# Texas
+								region = MEX_94		# Nevada
+								region = MEX_97		# Utah
+								region = MEX_85		# California
+								region = USA_106	# Colorado
+								region = USA_111	# Wyoming
+								region = USA_126	# Kansas
+								region = USA_129	# Oklahoma
+								region = MEX_100	# Arizona
+								region = MEX_103	# New Mexico
+							}
+							NOT = { # Gadsden purchase territories
+								province_id = 102
+								province_id = 2662
+							}
+						}
+						remove_core = MEX
+					}
+					any_owned = {
+						limit = {
+							OR = {
+								is_core = USA
+								region = TEX_132	# Texas
+								region = MEX_94		# Nevada
+								region = MEX_97		# Utah
+								region = MEX_85		# California
+								region = USA_106	# Colorado
+								region = USA_111	# Wyoming
+								region = USA_126	# Kansas
+								region = USA_129	# Oklahoma
+								region = MEX_100	# Arizona
+								region = MEX_103	# New Mexico
+							}
+							NOT = { # Gadsden purchase territories
+								province_id = 102
+								province_id = 2662
+							}
+						}
+						secede_province = USA
+					}
+				}
+			}
+		}
+
+		#Description: Mexico Refuses
+		country_event = {
+
+			id = 44832
+			title = EVTNAME44832
+			desc = EVTDESC44832
+			picture = "treaty"
+
+			trigger = {
+				tag = MEX
+				has_recently_lost_war = no
+				has_global_flag = mexican_american_war
+				USA = { is_disarmed = yes }
+				USA = { truce_with = THIS }
+				USA = { has_recently_lost_war = yes }
+			}
+
+			mean_time_to_happen = {
+				days = 10
+			}
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA44832"
+
+				all_core = { remove_core = USA }
+
+				USA = {
+					any_owned = {
+						limit = {
+							OR = {
+								is_core = MEX
+								region = TEX_132	# Texas
+								region = USA_1		# Alaska
+								region = ENG_6		# Yukon
+								region = CAN_13		# British Columbia
+								region = USA_78		# Washington
+								region = USA_81		# Oregon
+								region = USA_91		# Idaho
+								province_id = 111	# Wyoming
+								province_id = 113
+								province_id = 114	# Montana
+								province_id = 141	# Louisiana
+								province_id = 2630	# Oklahoma
+							}
+						}
+						add_core = MEX
+						secede_province = MEX
+					}
+				}
 			}
 		}
 
