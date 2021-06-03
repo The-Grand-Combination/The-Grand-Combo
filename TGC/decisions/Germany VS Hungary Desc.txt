@@ -1,44 +1,45 @@
 political_decisions = {
 
-##Treaty of Vienna##
+##Treaty of Vienna; Germany won against Hungary##
 
 treaty_of_Vienna_hungary = {
 		picture = treaty_signing
 		potential = {
-			
+
 			tag = GER
-                        has_global_flag = greatest_germany
                         has_global_flag = hungarian_ultimatum_sent
 			ai = no
 			NOT = { has_global_flag = treaty_of_vienna_hungary }
 		}
 
-		allow = {			
+		allow = {
 			controls = 641
 			controls = 652
 			controls = 633
 			controls = 624
-			controls = 657			
+			controls = 657
 		}
 
 		effect = {
-			
+
 			GER = { country_event = { id = 2000000000 days = 0 } }
-			
+
 		}
 		ai_will_do = { factor = 1 }
 }
 
-##Ultimatum to Hungary##
+##Send ultimatum to Hungary over German settlers##
 
 
-	
+
 ultimatum_to_hungary = {
 		picture = treaty_signing
 		potential = {
-			
+
 			tag = GER
-                        has_global_flag = greatest_germany
+                        owns = 619
+                        NOT = { exists = AUS }
+                        NOT = { exists = KUK }
                         NOT = { has_global_flag = hungarian_ultimatum_sent }
                         AUS_654 = { owned_by = HUN }
                         AUS_657 = { owned_by = HUN }
@@ -47,17 +48,84 @@ ultimatum_to_hungary = {
                         AUS_624 = { owned_by = HUN }
                 }
 
-                allow = { NOT = { has_global_flag = hungarian_ultimatum_sent } }
-                           
-          
+                allow = { war = no }
+
+
                 effect = {
-			
+
 			GER = { country_event = { id = 2000000007 days = 2} }
                         set_global_flag = hungarian_ultimatum_sent
-			
+
 		}
                 ai_will_do = { factor = 0.1 }
 
+}
+
+##Transylvania becomes normal again##
+
+return_to_independence_SIE = {
+                picture = treaty_signing
+		potential = {
+                        tag = SIE
+                        has_global_flag = Freistaat_Siebenbuergen
+                        is_vassal = no
+                }
+
+                allow = { war = no }
+
+                effect = {
+
+			SIE = { country_event = { id = 2000000017 days = 0} }
+                        remove_global_flag = Freistaat_Siebenbuergen
+
+		}
+                ai_will_do = { factor = 1 }
+}
+
+
+##Hungary becomes normal again when not a vassal anymore##
+
+return_to_independence_HUN = {
+                picture = treaty_signing
+		potential = {
+                        tag = HUN
+                        has_global_flag = slave_hungary
+                        is_vassal = no
+                }
+
+                allow = { war = no }
+
+                effect = {
+			                  remove_country_flag = slave_hungary
+			                  remove_country_flag = pol_reform_blocker
+                        remove_accepted_culture = south_german
+                        remove_global_flag = slave_hungary
+
+		}
+                ai_will_do = { factor = 1 }
+}
+
+##Hungary becomes normal again when not an absolute monarchy anymore##
+
+return_to_independence_HUN2 = {
+                picture = treaty_signing
+		potential = {
+                        tag = HUN
+                        has_global_flag = slave_hungary
+                        NOT = { government = absolute_monarchy }
+												is_vassal = yes
+                }
+
+                allow = { war = no }
+
+                effect = {
+			                  release_vassal = HUN
+			                  remove_country_flag = pol_reform_blocker
+                        remove_accepted_culture = south_german
+                        remove_global_flag = slave_hungary
+
+		}
+                ai_will_do = { factor = 1 }
 }
 
 }
