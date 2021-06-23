@@ -465,6 +465,98 @@ country_event = {
 	}
 }
 
+#Description: Join the United Provinces? - Yucatan, Tabasco or Chiapas can choose to join the USCA if they are a democracy with native protection act
+country_event = {
+
+	id = 44822
+	title = EVTNAME44822
+	desc = EVTDESC44822
+	picture = "mexico_soldiers"
+
+	fire_only_once = yes
+
+	trigger = {
+		OR = {
+			tag = YUC
+			tag = TBS
+			tag = CHP
+		}
+		government = democracy
+		is_vassal = no
+		war = no
+		UCA = {
+			war = no
+			neighbour = THIS
+			government = democracy
+			is_vassal = no
+			has_country_flag = native_protection_act_enacted
+			NOT = { citizens_rights = primary_culture_only }
+			relation = { who = THIS value = 50 }
+		}
+		year = 1837
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = EVTOPTA44822
+		all_core = { add_core = UCA }
+		random_country = {
+			limit = {
+				tag = UCA
+				THIS = { ai = yes }
+			}
+			country_event = 16401 # Ask to join
+		}
+		random_country = {
+			limit = {
+				tag = UCA
+				THIS = { ai = no }
+			}
+			any_owned = { secede_province = THIS }
+			THIS = {
+				random_owned = {
+					limit = { province_id = 2186 }
+					owner = { capital = 2186 }
+				}
+				change_tag = UCA
+				primary_culture = central_american
+				random_owned = {
+					limit = {
+						OR = {
+							province_id = 2183 # YUC is in the union
+							province_id = 2165 # TBS is in the union
+						}
+					}
+					owner = { add_accepted_culture = mayan }
+				}
+				random_owned = {
+					limit = { province_id = 2181 }
+					owner = { add_accepted_culture = mexican }
+				}
+			}
+		}
+
+		ai_chance = { factor = 95 }
+	}
+
+	option = {
+		name = EVTOPTB44822
+
+		prestige = 2
+
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 0
+				NOT = { neighbour = MEX }
+			}
+		}
+	}
+}
+
 ## Rebels declare Independence ##
 
 	#Description: Costa Rica Declares Independence - if rebels occupy its capital for long enough
