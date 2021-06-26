@@ -46,7 +46,9 @@ ultimatum_to_hungary = {
                         AUS_2538 = { owned_by = HUN }
                         AUS_652 = { owned_by = HUN }
                         AUS_624 = { owned_by = HUN }
+												has_country_modifier = german_chimpout
                 }
+
 
                 allow = { war = no }
 
@@ -76,7 +78,7 @@ return_to_independence_SIE = {
                 effect = {
 
 			SIE = { country_event = { id = 2000000017 days = 0} }
-                        remove_global_flag = Freistaat_Siebenbuergen
+                        clr_global_flag = Freistaat_Siebenbuergen
 
 		}
                 ai_will_do = { factor = 1 }
@@ -96,10 +98,9 @@ return_to_independence_HUN = {
                 allow = { war = no }
 
                 effect = {
-			                  remove_country_flag = slave_hungary
-			                  remove_country_flag = pol_reform_blocker
+			                  clr_country_flag = pol_reform_blocker
                         remove_accepted_culture = south_german
-                        remove_global_flag = slave_hungary
+                        clr_global_flag = slave_hungary
 
 		}
                 ai_will_do = { factor = 1 }
@@ -120,12 +121,547 @@ return_to_independence_HUN2 = {
 
                 effect = {
 			                  release_vassal = HUN
-			                  remove_country_flag = pol_reform_blocker
+			                  clr_country_flag = pol_reform_blocker
                         remove_accepted_culture = south_german
-                        remove_global_flag = slave_hungary
+                        clr_global_flage_global_flag = slave_hungary
 
 		}
                 ai_will_do = { factor = 1 }
+}
+
+##Begins Hungarian German eventchain##
+
+the_germans_in_hungary = {
+               picture = treaty_signing
+							 potential = {
+
+					 			                   tag = GER
+					                         owns = 619
+					                         NOT = { exists = AUS }
+					                         NOT = { exists = KUK }
+					                         NOT = { has_country_modifier = great_hungarian_game }
+																	 NOT = { has_country_modifier = german_chimpout }
+					                         AUS_654 = { owned_by = HUN }
+					                         AUS_657 = { owned_by = HUN }
+					                         AUS_2538 = { owned_by = HUN }
+					                         AUS_652 = { owned_by = HUN }
+					                         AUS_624 = { owned_by = HUN }
+
+               }
+							 allow = { war = no }
+							 effect = { GER = { country_event = { id = 2000000018 days = 0} }
+							 }
+
+##Starts the Great hungarian game##
+
+}
+talk_to_hungary = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+					                   has_country_modifier = great_hungarian_game
+                             NOT = { has_global_flag = great_hungarian_game_started }
+
+               }
+							 allow = { war = no }
+							 effect = { GER = { country_event = { id = 2000000019 days = 0} }
+							                    add_country_modifier = {
+																			                    name = talk_to_hungary1
+																		                      duration = -1
+																 }
+																 set_global_flag = great_hungarian_game_started
+							 }
+}
+
+##Peaceful negotiations over Burgenland##
+
+burgenland_just_talk = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+					                   has_country_modifier = talk_to_hungary1
+                             NOT = { has_global_flag = burgenland_move_made }
+
+               }
+							 allow = { war = no
+							           GER = { is_sphere_leader_of = HUN }
+							 }
+							 effect = { GER = { country_event = { id = 2000000020 days = 30} }
+							 set_global_flag = burgenland_move_made
+							 diplomatic_influence = {
+																				who = HUN
+																				value = -50
+		           }
+							 }
+}
+
+##Tense negotiations over Burgenland##
+
+burgenland_threats = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+					                   has_country_modifier = talk_to_hungary1
+                             NOT = { has_global_flag = burgenland_move_made }
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+               }
+
+							 effect = { GER = { country_event = { id = 2000000021 days = 60} }
+							            set_global_flag = burgenland_move_made
+												  diplomatic_influence = {
+			 	                                           who = HUN
+			 	                                           value = -200
+							            }
+               }
+
+
+}
+
+##Starting the Pressburg and Krain Theater##
+
+pressburg_and_krain_theater = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 has_global_flag = burgenland_resolved
+														 NOT = { has_global_flag = pressburg_resolved}
+														 NOT = { has_country_modifier = talk_to_hungary2 }
+
+               }
+							 allow = {
+											   war = no
+												 NOT = { has_country_modifier = talk_to_hungary3 }
+												 NOT = { has_country_modifier = talk_to_hungary4 }
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+					     effect = { add_country_modifier = { 
+																			 name = talk_to_hungary2
+																			 duration = -1
+												 }
+																			 diplomatic_influence = {
+						 			 	                                           who = HUN
+						 			 	                                           value = -200
+						 							            }
+
+               }
+
+}
+
+##Starting Banat Theater##
+
+banat_theater = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 has_global_flag = burgenland_resolved
+														 NOT = { has_global_flag = banat_resolved}
+														 NOT = { has_country_modifier = talk_to_hungary3 }
+
+               }
+							 allow = {
+											   war = no
+												 NOT = { has_country_modifier = talk_to_hungary2 }
+												 NOT = { has_country_modifier = talk_to_hungary4 }
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { add_country_modifier = {
+																			 name = talk_to_hungary3
+																			 duration = -1
+													}
+																			 diplomatic_influence = {
+						 			 	                                           who = HUN
+						 			 	                                           value = -200
+						 							            }
+
+               }
+
+}
+
+
+##Starting Transylvania Theater##
+
+transylvania_theater = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 has_global_flag = burgenland_resolved
+														 NOT = { has_global_flag = transylvania_resolved}
+														 NOT = { has_country_modifier = talk_to_hungary4 }
+
+               }
+							 allow = {
+											   war = no
+												 NOT = { has_country_modifier = talk_to_hungary3 }
+												 NOT = { has_country_modifier = talk_to_hungary2 }
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { add_country_modifier = {
+																			 name = talk_to_hungary4
+																			 duration = -1
+							            }
+													diplomatic_influence = {
+			 	                                           who = HUN
+			 	                                           value = -200
+							            }
+               }
+}
+
+pressburg_and_krain_just_talk = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = pressburg_resolved}
+														 has_country_modifier = talk_to_hungary2
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000035 days = 30} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -100
+						 							            }
+
+               }
+
+}
+
+pressburg_and_krain_medieval_maps = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = pressburg_resolved}
+														 has_country_modifier = talk_to_hungary2
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000036 days = 60} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -200
+						 							            }
+
+               }
+
+}
+
+pressburg_and_krain_nationalist_fervour = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = pressburg_resolved}
+														 has_country_modifier = talk_to_hungary2
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000037 days = 90} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -300
+						 							            }
+
+               }
+
+}
+
+
+banat_just_talk = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = banat_resolved }
+														 has_country_modifier = talk_to_hungary3
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000046 days = 30} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -100
+						 							            }
+
+               }
+
+}
+
+banat_coalition = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = banat_resolved }
+														 has_country_modifier = talk_to_hungary3
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000047 days = 90} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -200
+						 							            }
+
+               }
+
+}
+
+banat_arm_settlers = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = banat_resolved }
+														 has_country_modifier = talk_to_hungary3
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000048 days = 180} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -400
+						 							            }
+                          badboy = 2
+               }
+
+}
+
+transylvania_normal_talks = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = transylvania_resolved }
+														 has_country_modifier = talk_to_hungary4
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000061 days = 30} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -100
+						 							            }
+               }
+
+}
+
+transylvania_court_romanians = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = transylvania_resolved }
+														 has_country_modifier = talk_to_hungary4
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000062 days = 120} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -200
+						 							            }
+               }
+
+}
+
+transylvania_genocide_fears = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 NOT = { has_global_flag = transylvania_resolved }
+														 has_country_modifier = talk_to_hungary4
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+}
+
+							 effect = { GER = { country_event = { id = 2000000063 days = 240} }
+													diplomatic_influence = {
+						 			 	                              who = HUN
+						 			 	                              value = -400
+						 							            }
+               }
+
+}
+
+##The Habsburg Question##
+
+habsburg_restoration = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 has_global_flag = burgenland_resolved
+														 has_global_flag = pressburg_resolved
+														 has_global_flag = banat_resolved
+														 has_global_flag = transylvania_resolved
+														 NOT = { has_global_flag = habsburg_descision_made }
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = HUN }
+               }
+
+							 effect = {              GER = { country_event = { id = 2000000078 days = 0} }
+							                         set_global_flag = habsburg_descision_made
+																			 diplomatic_influence = {
+						 			 	                                           who = HUN
+						 			 	                                           value = -200
+						 							            }
+
+
+               }
+
+}
+
+##Provoke Incident in Banat with the aim causing war##
+
+provoke_incident_banat_habsburg = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_country_modifier = great_hungarian_game
+														 has_global_flag = burgenland_resolved
+														 has_global_flag = pressburg_resolved
+														 has_global_flag = banat_resolved
+														 has_global_flag = transylvania_resolved
+														 has_global_flag = habsburg_restoration_promised
+														 NOT = { has_global_flag = incident_provoked }
+														 HUN = { is_our_vassal = BAN }
+
+               }
+							 allow = {
+											   war = no
+												 GER = { is_sphere_leader_of = BAN }
+               }
+
+							 effect = {              HUN = { country_event = { id = 2000000079 days = 120} }
+							                         set_global_flag = incident_provoked
+																			 badboy = 3
+
+
+               }
+
+}
+
+
+##Peace between Germany and Hungary##
+
+habsburg_war_treaty = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_global_flag = german_hungarian_war1
+
+
+
+               }
+							 allow = { HUN = { war_exhaustion = 50 }
+							           controls = 641
+							 }
+
+							 effect = { HUN { end_war = GER }
+							            HUN { end_war = BAN }
+													HUN { end_war = SIE }
+							            GER = { country_event = { id = 2000000082 days = 0} }
+													clr_global_flag = german_hungarian_war1
+
+               }
+
+}
+
+the_final_treaty1 = {
+               picture = treaty_signing
+							 potential = {
+
+					 			             tag = GER
+														 has_global_flag = hungary_is_kill
+
+
+
+               }
+							 allow = { War = no	}
+
+							 effect = {
+							            GER = { country_event = { id = 2000000084 days = 0} }
+													clr_global_flag = german_hungarian_war1
+													clr_global_flag = burgenland_resolved
+													clr_global_flag = pressburg_resolved
+													clr_global_flag = banat_resolved
+													clr_global_flag = transylvania_resolved
+													clr_global_flag = habsburg_restoration_promised
+												  clr_global_flag = incident_provoked
+													clr_global_flag = hungary_is_kill
+													remove_country_modifier = great_hungarian_game
+               }
+
 }
 
 }
