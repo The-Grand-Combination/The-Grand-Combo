@@ -143,12 +143,12 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 2201
+				province_id = 2202
 				COS = { exists = no }
 			}
 			owner = { release = COS }
 			COS = {
-				capital = 2201
+				capital = 2202
 				random_owned = {
 					limit = { owner = { NOT = { has_country_flag = recognized_country } } }
 					owner = {
@@ -465,6 +465,98 @@ country_event = {
 	}
 }
 
+#Description: Join the United Provinces? - Yucatan, Tabasco or Chiapas can choose to join the USCA if they are a democracy with native protection act
+country_event = {
+
+	id = 44822
+	title = EVTNAME44822
+	desc = EVTDESC44822
+	picture = "mexico_soldiers"
+
+	fire_only_once = yes
+
+	trigger = {
+		OR = {
+			tag = YUC
+			tag = TBS
+			tag = CHP
+		}
+		government = democracy
+		is_vassal = no
+		war = no
+		UCA = {
+			war = no
+			neighbour = THIS
+			government = democracy
+			is_vassal = no
+			has_country_flag = native_protection_act_enacted
+			NOT = { citizens_rights = primary_culture_only }
+			relation = { who = THIS value = 50 }
+		}
+		year = 1837
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = EVTOPTA44822
+		all_core = { add_core = UCA }
+		random_country = {
+			limit = {
+				tag = UCA
+				THIS = { ai = yes }
+			}
+			country_event = 16401 # Ask to join
+		}
+		random_country = {
+			limit = {
+				tag = UCA
+				THIS = { ai = no }
+			}
+			any_owned = { secede_province = THIS }
+			THIS = {
+				random_owned = {
+					limit = { province_id = 2186 }
+					owner = { capital = 2186 }
+				}
+				change_tag = UCA
+				primary_culture = central_american
+				random_owned = {
+					limit = {
+						OR = {
+							province_id = 2183 # YUC is in the union
+							province_id = 2165 # TBS is in the union
+						}
+					}
+					owner = { add_accepted_culture = mayan }
+				}
+				random_owned = {
+					limit = { province_id = 2181 }
+					owner = { add_accepted_culture = mexican }
+				}
+			}
+		}
+
+		ai_chance = { factor = 95 }
+	}
+
+	option = {
+		name = EVTOPTB44822
+
+		prestige = 2
+
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 0
+				NOT = { neighbour = MEX }
+			}
+		}
+	}
+}
+
 ## Rebels declare Independence ##
 
 	#Description: Costa Rica Declares Independence - if rebels occupy its capital for long enough
@@ -479,7 +571,7 @@ country_event = {
 		trigger = {
 			tag = UCA
 			war = no
-			owns = 2201
+			owns = 2202
 			NOT = {
 				has_country_flag = costa_rica_independence
 				exists = COS
@@ -487,7 +579,7 @@ country_event = {
 			OR = {
 				exists = NIC
 				any_owned_province = {
-					province_id = 2201
+					province_id = 2202
 					controlled_by_rebels = yes
 					province_control_days = 60
 					NOT = { country_units_in_province = UCA }
@@ -518,7 +610,7 @@ country_event = {
 					type = free_peoples
 					months = 30
 				}
-				capital = 2201
+				capital = 2202
 				random_owned = {
 					limit = { owner = { NOT = { has_country_flag = recognized_country } } }
 					owner = {
@@ -1369,7 +1461,7 @@ country_event = {
 			name = "EVTOPTA32550"
 
 			money = 50000
-			ENG_2187 = { remove_core = THIS }
+			all_core = { limit = { region = ENG_2187 } remove_core = THIS }
 			FROM = { country_event = 32551 }
 
 			ai_chance = {
@@ -1430,34 +1522,40 @@ country_event = {
 
 			prestige = 5
 			money = -50000
-			2187 = { secede_province = THIS }
-			2190 = { secede_province = THIS }
+			relation = { who = FROM value = 50 }
+			any_pop = { consciousness = -1 }
+			random_owned = {
+				limit = {
+					OR = {
+						province_id = 2189
+						AND = {
+							province_id = 2185
+							2189 = { owner = { NOT = { vassal_of = THIS } } }
+						}
+					}
+				}
+				FROM = { any_owned = { limit = { region = ENG_2187 } secede_province = THIS } }
+			}
 			random_country = {
 				limit = {
-					exists = yes
 					owns = 2189
 					tag = GUA
 					vassal_of = THIS
 				}
-				2187 = { secede_province = GUA }
-				2190 = { secede_province = GUA }
+				FROM = { any_owned = { limit = { region = ENG_2187 } secede_province = GUA } }
 			}
 			random_country = {
 				limit = {
-					exists = yes
 					owns = 2189
 					tag = UCA
 					vassal_of = THIS
 				}
-				2187 = { secede_province = UCA }
-				2190 = { secede_province = UCA }
+				FROM = { any_owned = { limit = { region = ENG_2187 } secede_province = UCA } }
 			}
-			relation = { who = FROM value = 50 }
-			any_pop = { consciousness = -1 }
 		}
 	}
 
-	#Description: Belize Purchae 3/3 - the seller refuses
+	#Description: Belize Purchase 3/3 - the seller refuses
 	country_event = {
 		id = 32552
 		title = "EVTNAME32552"
