@@ -2513,11 +2513,17 @@
 			name = EVTOPTA1904191422
 
 			set_country_flag = mexico_refused_eng_once
-			2187 = { add_core = MEX } # Belize Town
+			ENG_2187 = { add_core = MEX } # Belize Town
 			ENG = { country_event = 1904191423 }
 			any_pop = { militancy = -1 }
 
-			ai_chance = { factor = 40 }
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0
+					NOT = { owns = 3472 }
+				}
+			}
 		}
 
 		# Accept
@@ -2525,11 +2531,25 @@
 			name = EVTOPTB1904191422
 
 			set_country_flag = spencer_treaty
-			2187 = {
-				remove_core = MEX
-				secede_province = ENG
+			3472 = { remove_core = MEX }
+			random_country = {
+				limit = {
+					owns = 2187
+					tag = ENG
+				}
+				3472 = { secede_province = ENG }
+			}
+			random_country = {
+				limit = {
+					owns = 2187
+					tag = BLZ
+					vassal_of = THIS
+				}
+				3472 = { secede_province = BLZ }
 			}
 			MEX = { research_points = 1000 }
+
+			# TODO stop recognizing mayan rebels
 
 			ai_chance = {
 				factor = 60
@@ -2576,9 +2596,10 @@
 			relation = { who = MEX value = -100 }
 			diplomatic_influence = { who = MEX value = -200 }
 			leave_alliance = MEX
+			ENG_2187 = { add_core = MEX } # Belize Town
 			war = {
 				target = MEX
-				attacker_goal = { casus_belli = acquire_state state_province_id = 2183 country = ENG }
+				attacker_goal = { casus_belli = acquire_state state_province_id = 3472 country = ENG } # TODO peace event where Mexico loses core
 				defender_goal = { casus_belli = acquire_all_cores country = MEX }
 			}
 			any_pop = {
