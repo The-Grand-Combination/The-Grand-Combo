@@ -256,20 +256,31 @@
 		desc = "EVTDESC10000000"
 		picture = "TGC_logo"
 
-		trigger = {
-			ai = no
-			year = 1836
-		}
-
-		fire_only_once = yes
-
-		mean_time_to_happen = { days = 1 }
+		is_triggered_only = yes
 
 		#Singleplayer
 		option = {
 			name = "EVTOPTA10000000"
 
-			set_country_flag = show_options_singleplayer
+			## If more than one country selects single-player the game will automatically become multi-player
+			clr_country_flag = single_player_already_set
+			random_country = {
+				limit = { has_global_flag = single_player_game }
+				THIS = { set_country_flag = single_player_already_set }
+			}
+			random_owned = {
+				limit = { owner = { has_country_flag = single_player_already_set } }
+				THIS = {
+					set_global_flag = multi_player_game
+					clr_global_flag = single_player_game
+				}
+			}
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = single_player_already_set} } }
+				THIS = { set_global_flag = single_player_game }
+			}
+
+			set_global_flag = single_player_game
 
 			ai_chance = { factor = 0 }
 		}
@@ -278,7 +289,18 @@
 		option = {
 			name = "EVTOPTB10000000"
 
-			set_country_flag = show_options_multiplayer_host
+			set_global_flag = multi_player_game
+
+			## If multiplayer host is already set this won't set another one
+			clr_country_flag = host_already_exists
+			random_country = {
+				limit = { has_country_flag = multi_player_host }
+				THIS = { set_country_flag = host_already_exists }
+			}
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = host_already_exists } } }
+				THIS = { set_country_flag = multi_player_host }
+			}
 
 			ai_chance = { factor = 0 }
 		}
@@ -287,7 +309,7 @@
 		option = {
 			name = "EVTOPTC10000000"
 
-			set_country_flag = show_options_multiplayer_standard
+			set_global_flag = multi_player_game
 
 			ai_chance = { factor = 1 }
 		}
