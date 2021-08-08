@@ -117,9 +117,9 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: Any Great Power can create Yugoslavia as a puppet.
+	#Description: Formation by a Great Power
 	create_yugoslavia = {
-		picture = form_yugoslavia
+		picture = create_yugoslavia
 		potential = {
 			is_greater_power = yes
 			NOT = {
@@ -128,62 +128,67 @@ political_decisions = {
 				has_global_flag = yugoslavia_formed
 				has_global_flag = disable_unite_as_puppet
 				tag = TUR
+				tag = AUS
+				tag = KUK
+				tag = DNB
+				tag = HUN
 			}
 			OR = {
-				any_owned_province = { is_core = ALB }
 				any_owned_province = { is_core = BOS }
-				any_owned_province = { is_core = BUL }
 				any_owned_province = { is_core = CRO }
-				any_owned_province = { is_core = MON }
 				any_owned_province = { is_core = SER }
-				any_owned_province = { is_core = SLO }
-				any_owned_province = { is_core = VOJ }
-				is_sphere_leader_of = ALB
-				is_sphere_leader_of = BUL
 				is_sphere_leader_of = BOS
 				is_sphere_leader_of = CRO
-				is_sphere_leader_of = MON
 				is_sphere_leader_of = SER
-				is_sphere_leader_of = SLO
-				is_sphere_leader_of = VOJ
 			}
-			783 = { NOT = { is_core = THIS } }
 		}
 
 		allow = {
 			war = no
-			is_greater_power = yes
-			SER = {
-				all_core = {
+			nationalism_n_imperialism = 1
+			794 = { #Belgrade
+				owner = {
 					OR = {
-						owned_by = THIS
-						owner = {
-							in_sphere = THIS
-							war = no
-						}
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
 					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
 				}
 			}
-			BOS = {
-				all_core = {
+			783 = { #Sarajevo
+				owner = {
 					OR = {
-						owned_by = THIS
-						owner = {
-							in_sphere = THIS
-							war = no
-						}
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
 					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
 				}
 			}
-			CRO = {
-				all_core = {
+			771 = { #Zagreb
+				owner = {
 					OR = {
-						owned_by = THIS
-						owner = {
-							in_sphere = THIS
-							war = no
-						}
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
 					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
 				}
 			}
 		}
@@ -191,23 +196,16 @@ political_decisions = {
 		effect = {
 			set_global_flag = yugoslavia_formed
 			prestige = 20
-			badboy = 2
+			badboy = 3
 			SER = { all_core = { add_core = YUG } }
-			MON = { all_core = { add_core = YUG } }
 			CRO = { all_core = { add_core = YUG } }
 			BOS = { all_core = { add_core = YUG } }
-			SLO = { all_core = { add_core = YUG } }
-			VOJ = { all_core = { add_core = YUG } }
 			any_country = {
 				limit = {
 					OR = {
 						tag = SER
-						tag = MON
 						tag = CRO
 						tag = BOS
-						tag = SLO
-						tag = ALB
-						tag = VOJ
 					}
 					ai = yes
 					in_sphere = THIS
@@ -218,6 +216,10 @@ political_decisions = {
 				limit = {
 					NOT = { is_culture_group = south_slavic }
 					in_sphere = THIS
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
 					war = no
 					any_owned_province = { is_core = YUG }
 				}
@@ -244,6 +246,7 @@ political_decisions = {
 					OR = {
 						tag = AUS
 						tag = KUK
+						tag = DNB
 						tag = HUN
 						tag = TUR
 					}
@@ -256,639 +259,434 @@ political_decisions = {
 			}
 		}
 
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				OR = {
-					tag = HUN
-					tag = TUR
-					tag = AUS
-					tag = KUK
-				}
-			}
-		}
+		ai_will_do = { factor = 1 }
 	}
 
-## Unification ##
+## Inviting Nations to Yugoslavia (Cleanup) ##
 
-	#Description: Yugoslavia can invite Slovenia to join.
-	invite_slovenia_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			SLO = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_slovenes_to_YUG }
-		}
+	#Group Description: Any nation from BOS, CRO, MCD, MON, SER and SLO can then be invited to YUG by an overlord or itself
+	#Firing the event grants YUG cores on the target regardless, the nation can accept the invite and be annexed or refuse and face war.
 
-		allow = {
-			war = no
-			NOT = { government = theocracy }
-			SLO = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-				OR = {
-					AND = {
-						part_of_sphere = no
-						relation = { who = THIS value = 150 }
-					}
-					in_sphere = THIS
-					sphere_owner = { is_sphere_leader_of = THIS }
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_slovenes_to_YUG
-			SLO = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				SLO = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							sphere_owner = { is_sphere_leader_of = THIS }
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Bosnia to join.
-	invite_bosnia_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			BOS = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_bosniaks_to_YUG }
-		}
-
-		allow = {
-			war = no
-			NOT = { government = theocracy }
-			BOS = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-				OR = {
-					AND = {
-						part_of_sphere = no
-						relation = { who = THIS value = 150 }
-					}
-					in_sphere = THIS
-					sphere_owner = { is_sphere_leader_of = THIS }
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_bosniaks_to_YUG
-			BOS = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				BOS = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							sphere_owner = { is_sphere_leader_of = THIS }
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Croatia to join.
-	invite_croatia_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			CRO = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_croats_to_YUG }
-		}
-
-		allow = {
-			war = no
-			NOT = { government = theocracy }
-			CRO = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-				OR = {
-					AND = {
-						part_of_sphere = no
-						relation = { who = THIS value = 150 }
-					}
-					in_sphere = THIS
-					sphere_owner = { is_sphere_leader_of = THIS }
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_croats_to_YUG
-			CRO = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				CRO = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							sphere_owner = { is_sphere_leader_of = THIS }
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Montenegro to join.
-	invite_montenegro_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			MON = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_montenegrins_to_YUG }
-		}
-
-		allow = {
-			war = no
-			MON = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-				OR = {
-					AND = {
-						part_of_sphere = no
-						relation = { who = THIS value = 150 }
-					}
-					in_sphere = THIS
-					sphere_owner = { is_sphere_leader_of = THIS }
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_montenegrins_to_YUG
-			MON = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				MON = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							sphere_owner = { is_sphere_leader_of = THIS }
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Serbia to join.
-	invite_serbia_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			SER = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_serbians_to_YUG }
-		}
-
-		allow = {
-			war = no
-			SER = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-				OR = {
-					AND = {
-						part_of_sphere = no
-						relation = { who = THIS value = 150 }
-					}
-					in_sphere = THIS
-					sphere_owner = { is_sphere_leader_of = THIS }
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_serbians_to_YUG
-			SER = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				SER = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							sphere_owner = { is_sphere_leader_of = THIS }
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Bulgaria to join.
-	invite_bulgaria_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			BUL = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_bulgarians_to_YUG }
-		}
-
-		allow = {
-			war = no
-			revolution_n_counterrevolution = 1
-			BUL = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					AND = {
-						is_vassal = no
-						in_sphere = THIS
-					}
-					vassal_of = THIS
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_bulgarians_to_YUG
-			BUL = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				BUL = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Macedonia to join.
-	invite_macedonia_to_YUG = {
-		picture = form_yugoslavia
-		potential = {
-			tag = YUG
-			MCD = {
-				exists = yes
-				NOT = { has_country_flag = not_join_yugoslavia }
-			}
-			NOT = { has_country_flag = invited_macedonians_to_YUG }
-		}
-
-		allow = {
-			war = no
-			revolution_n_counterrevolution = 1
-			MCD = {
-				war = no
-				neighbour = YUG
-				NOT = { truce_with = THIS }
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-				OR = {
-					AND = {
-						part_of_sphere = no
-						relation = { who = THIS value = 150 }
-					}
-					in_sphere = THIS
-				}
-			}
-		}
-
-		effect = {
-			set_country_flag = invited_macedonians_to_YUG
-			MCD = { country_event = 11120 }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				MCD = {
-					NOT = {
-						OR = {
-							AND = {
-								part_of_sphere = no
-								OR = {
-									has_country_flag = newly_released_nation
-									relation = { who = THIS value = 100 }
-								}
-							}
-							in_sphere = THIS
-							vassal_of = THIS
-						}
-					}
-				}
-			}
-		}
-	}
-
-	#Description: Yugoslavia can invite Macedonia to join.
-	#invite_greece_to_YUG = {
-		#picture = form_yugoslavia
-		#potential = {
-			#tag = YUG
-			#GRE = {
-				#exists = yes
-				#NOT = {
-					#has_country_flag = megali_idea_claimed
-					#has_country_flag = not_join_yugoslavia
-					#all_core = { owned_by = GRE }
-				#}
-			#}
-			#NOT = { has_country_flag = invited_greeks_to_YUG }
-		#}
-
-		#allow = {
-			#war = no
-			#is_greater_power = yes
-			#revolution_n_counterrevolution = 1
-			#GRE = {
-				#war = no
-				#neighbour = YUG
-				#NOT = { truce_with = THIS }
-				#OR = {
-					#is_vassal = no
-					#vassal_of = THIS
-				#}
-				#in_sphere = THIS
-			#}
-		#}
-
-		#effect = {
-			#set_country_flag = invited_greeks_to_YUG
-			#GRE = { country_event = 11120 }
-		#}
-
-		#ai_will_do = {
-			#factor = 1
-		#}
-	#}
-
-## Expansion ##
-
-	#Description: Yugoslavia or its overlord can invite Albania into Yugoslavia.
-	albania_in_yugoslavia = {
+	#Description: Bosnia
+	invite_BOS_to_YUG = {
 		picture = map_balkans
 		potential = {
 			OR = {
 				tag = YUG
-				YUG = { vassal_of = THIS }
-			}
-			ALB = {
-				any_core = {
-					OR = {
-						owned_by = THIS
-						owner = { in_sphere = THIS }
-						owner = { vassal_of = THIS }
-					}
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
 				}
 			}
-			NOT = { has_global_flag = albania_in_yugoslavia }
+			exists = BOS
+			NOT = { has_country_flag = invite_BOS_to_YUG }
 		}
 
 		allow = {
 			war = no
-			OR = {
-				ALB = { vassal_of = THIS }
-				ALB = {
-					all_core = {
-						OR = {
-							owned_by = THIS
-							owner = {
-								in_sphere = THIS
-								war = no
-							}
-						}
+			NOT = { government = theocracy }
+			BOS = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
 					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
 				}
 			}
 		}
 
 		effect = {
-			set_global_flag = albania_in_yugoslavia
-			prestige = 5
-			ALB = { all_core = { add_core = YUG } }
-			random_country = { limit = { exists = yes tag = ALB vassal_of = THIS } annex_to = YUG }
-			any_country = {
-				limit = {
-					in_sphere = THIS
-					war = no
-					any_owned_province = { is_core = ALB }
-				}
-				country_event = 111100
-			}
-			any_country = {
-				limit = {
-					vassal_of = THIS
-					war = no
-					any_owned_province = { is_core = ALB }
-				}
-				any_owned = {
-					limit = { is_core = ALB }
-					secede_province = THIS
-				}
-			}
-			THIS = {
-				any_owned = {
-					limit = {
-						is_core = ALB
-						is_core = THIS
-					}
-					remove_core = ALB
-				}
-				any_owned = {
-					limit = {
-						is_core = ALB
-						NOT = { is_core = THIS }
-					}
-					secede_province = YUG
-				}
-			}
+			set_country_flag = invite_BOS_to_YUG
+			BOS = { all_core = { add_core = YUG } }
+			BOS = { country_event = 11120 }
 		}
 
 		ai_will_do = { factor = 1 }
 	}
 
-	bulgaria_in_yugoslavia = {
+	#Description: Croatia
+	invite_CRO_to_YUG = {
 		picture = map_balkans
 		potential = {
 			OR = {
 				tag = YUG
-				YUG = { vassal_of = THIS }
-			}
-			BUL = {
-				any_core = {
-					OR = {
-						owned_by = THIS
-						owner = { in_sphere = THIS }
-						owner = { vassal_of = THIS }
-					}
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
 				}
 			}
-			NOT = { has_global_flag = bulgaria_in_yugoslavia }
+			exists = CRO
+			NOT = { has_country_flag = invite_CRO_to_YUG }
 		}
 
 		allow = {
 			war = no
-			OR = {
-				BUL = { vassal_of = THIS }
-				BUL = {
-					all_core = {
-						OR = {
-							owned_by = THIS
-							owner = {
-								in_sphere = THIS
-								war = no
-							}
-						}
+			NOT = { government = theocracy }
+			CRO = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
 					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
 				}
 			}
 		}
 
 		effect = {
-			prestige = 5
-			set_global_flag = bulgaria_in_yugoslavia
-			BUL = { all_core = { add_core = YUG } }
-			YUG = { inherit = BUL }
-			any_country = {
-				limit = {
+			set_country_flag = invite_CRO_to_YUG
+			CRO = { all_core = { add_core = YUG } }
+			CRO = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Macedonia
+	invite_MCD_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
 					in_sphere = THIS
-					war = no
-					any_owned_province = { is_core = BUL }
-				}
-				any_owned = {
-					limit = { is_core = BUL }
-					secede_province = THIS
 				}
 			}
-			THIS = {
-				any_owned = {
-					limit = { is_core = BUL }
-					secede_province = YUG
+			exists = MCD
+			NOT = { has_country_flag = invite_MCD_to_YUG }
+		}
+
+		allow = {
+			war = no
+			NOT = { government = theocracy }
+			MCD = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
 				}
 			}
+		}
+
+		effect = {
+			set_country_flag = invite_MCD_to_YUG
+			MCD = { all_core = { add_core = YUG } }
+			MCD = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Montenegro
+	invite_MON_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = MON
+			NOT = { has_country_flag = invite_MON_to_YUG }
+		}
+
+		allow = {
+			war = no
+			NOT = { government = theocracy }
+			MON = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_MON_to_YUG
+			MON = { all_core = { add_core = YUG } }
+			MON = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Serbia
+	invite_SER_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = SER
+			NOT = { has_country_flag = invite_SER_to_YUG }
+		}
+
+		allow = {
+			war = no
+			NOT = { government = theocracy }
+			SER = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_SER_to_YUG
+			SER = { all_core = { add_core = YUG } }
+			SER = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Slovenia
+	invite_SLO_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = SLO
+			NOT = { has_country_flag = invite_SLO_to_YUG }
+		}
+
+		allow = {
+			war = no
+			NOT = { government = theocracy }
+			SLO = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_SLO_to_YUG
+			SLO = { all_core = { add_core = YUG } }
+			SLO = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+## Expansion ##
+
+	#Group Description: ALB, BUL and GRE can be invited for higher infamy (4,10,15) and have lower chances of accepting annexation (50%, 25%, 0%).
+
+	#Description: Albania
+	invite_ALB_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = ALB
+			NOT = { has_country_flag = invite_ALB_to_YUG }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			NOT = { government = theocracy }
+			ALB = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_ALB_to_YUG
+			badboy = 4
+			ALB = { all_core = { add_core = YUG } }
+			ALB = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Bulgaria
+	invite_BUL_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = BUL
+			NOT = { has_country_flag = invite_BUL_to_YUG }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			NOT = { government = theocracy }
+			BUL = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_BUL_to_YUG
+			badboy = 10
+			BUL = { all_core = { add_core = YUG } }
+			BUL = { country_event = 11120 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Greece
+	invite_GRE_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = GRE
+			NOT = { has_country_flag = invite_GRE_to_YUG }
+		}
+
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			NOT = { government = theocracy }
+			GRE = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				NOT = { has_country_flag = megali_idea_claimed }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_GRE_to_YUG
+			badboy = 15
+			GRE = { all_core = { add_core = YUG } }
+			GRE = { country_event = 11120 }
 		}
 
 		ai_will_do = { factor = 1 }

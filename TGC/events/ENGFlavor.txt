@@ -3416,24 +3416,50 @@ country_event = {
 	}
 }
 
+#United Kingdowm wants to buy Southern Belize - triggered for UCA/GUA by ENG by decision if they own Belize
 country_event = {
 	id = 1904191419
-	title = "EVTNAME1904191419" #United Kingdowm claimed misiones
+	title = "EVTNAME1904191419"
 	desc = "EVTDESC1904191419"
 	picture = "wike_aycinena_convention"
 
-	fire_only_once = yes
-
 	is_triggered_only = yes
 
-	mean_time_to_happen = { days = 3 }
-
-
-	option = {
+	option = { # Accept
 		name = "EVTOPTA1904191419"
 
-		money = 10000
-		relation = { who = GUA value = -50 }
+		treasury = 10000
+		relation = { who = FROM value = 50 }
+		FROM = {
+			prestige = 2
+			treasury = -15000
+		}
+		random_country = {
+			limit = {
+				owns = 2187
+				tag = FROM
+			}
+			2190 = { secede_province = FROM }
+		}
+		random_country = {
+			limit = {
+				owns = 2187
+				tag = BLZ
+				vassal_of = FROM
+			}
+			2190 = { secede_province = BLZ }
+		}
+		2190 = { infrastructure = 1 }
+
+		ai_chance = { factor = 100 }
+	}
+
+	option = { # Refuse
+		name = "EVTOPTB1904191419"
+
+		relation = { who = FROM value = -50 }
+
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -3676,19 +3702,14 @@ country_event = {
 			OR = {
 				nationalism_n_imperialism = 1
 				has_country_flag = treaty_of_guadalupe_hidalgo_enforced
-				any_owned_province = {
-					OR = {
-						region = MEX_2183 # Yucatan
-						region = ENG_2187 # Belize
-						region = UCA_2186 # Guatemala
-						region = UCA_2191 # El Salvador
-						region = UCA_2193 # Honduras
-						region = UCA_2197 # Nicaragua
-						region = UCA_2201 # Costa Rica
-					}
-				}
 			}
 			ENG = {
+				is_greater_power = yes
+				relation = { who = THIS value = 50 }
+				NOT = {
+					war_with = THIS
+					truce_with = THIS
+				}
 				OR = {
 					any_owned_province = {
 						OR = {
@@ -3740,6 +3761,7 @@ country_event = {
 
 		fire_only_once = yes
 
+		# Offer the British the treaty
 		option = {
 			name = "EVTOPTA209704"
 
@@ -3776,6 +3798,7 @@ country_event = {
 			ai_chance = { factor = 90 }
 		}
 
+		# Don't offer them the treaty
 		option = {
 			name = "EVTOPTB209704"
 
@@ -3795,6 +3818,7 @@ country_event = {
 
 		is_triggered_only = yes
 
+		# Sign the treaty (Release BLZ, give up Miskito Coast and Bay Islands)
 		option = {
 			name = "EVTOPTA209705"
 
@@ -3804,7 +3828,7 @@ country_event = {
 			ENG_2187 = { add_core = BLZ remove_core = JAM }
 			release_vassal = BLZ
 
-			random_owned = { # Send event to secede 2196
+			random_owned = { # Send event to secede Bay Islands (2196)
 				limit = { province_id = 2196 }
 				remove_core = JAM
 				random_country = {
@@ -3852,6 +3876,7 @@ country_event = {
 			ai_chance = { factor = 95 }
 		}
 
+		# Refuse the treaty
 		option = {
 			name = "EVTOPTB209705"
 

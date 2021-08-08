@@ -734,11 +734,7 @@
 
 		fire_only_once = yes
 
-		immediate = {
-			clr_country_flag = PBC_administration
-			inherit = PEU
-			inherit = SPU # Sanity check, this shouldn't be necessary
-		}
+		immediate = { clr_country_flag = PBC_administration }
 
 		option = {
 			name = "EVTOPTA97038"
@@ -756,8 +752,18 @@
 			2321 = { add_core = SPU }
 			3296 = { add_core = SPU }
 			3297 = { add_core = SPU }
-			release_vassal = SPU
-			release_vassal = PEU
+			PEU = { release = SPU }
+			any_owned = {
+				limit = {
+					is_core = SPU
+					NOT = { is_core = THIS }
+				}
+				secede_province = SPU
+			}
+			create_vassal = SPU
+			SPU = { government = colonial_company }
+			create_vassal = PEU
+			PEU = { government = colonial_company }
 
 			2578 = { add_province_modifier = { name = new_capital_modifier duration = 365 } }
 
@@ -1029,26 +1035,13 @@
 		}
 
 		# Let it go
-		option = { # DEVNOTE anzu-3278: This crashes in some situations and I have no idea why
+		option = {
 			name = "EVTOPTA97055"
 
 			prestige = -5
 			badboy = -2
 
-			## This ##
-				random_owned = {
-					limit = {
-						province_id = 2313
-						NOT = { owner = { capital = 2313 } }
-					}
-					owner = { capital = 2313 }
-				}
-				all_core = { remove_core = PBC }
-				change_tag = BOL
-				random_owned = {
-					limit = { owner = { centralization = federalism } }
-					owner = { political_reform = unitary }
-				}
+			set_global_flag = first_pbc_fell
 
 			## Component states ##
 				random_country = {
@@ -1065,7 +1058,6 @@
 						exists = yes
 						vassal_of = THIS
 					}
-					set_global_flag = first_pbc_fell
 					THIS = { release_vassal = PEU }
 				}
 				random_owned = {
@@ -1118,6 +1110,21 @@
 					relation = { who = THIS value = 300 }
 				}
 
+			## This ##
+				random_owned = {
+					limit = {
+						province_id = 2313
+						NOT = { owner = { capital = 2313 } }
+					}
+					owner = { capital = 2313 }
+				}
+				all_core = { remove_core = PBC }
+				change_tag = BOL
+				random_owned = {
+					limit = { owner = { centralization = federalism } }
+					owner = { political_reform = unitary }
+				}
+
 			ai_chance = {
 				factor = 40
 				modifier = {
@@ -1133,13 +1140,14 @@
 
 			badboy = -1
 
+			set_global_flag = first_pbc_fell
+
 			random_country = {
 				limit = {
 					tag = PEU
 					exists = yes
 					vassal_of = THIS
 				}
-				set_global_flag = first_pbc_fell
 				THIS = { release_vassal = PEU }
 			}
 			random_owned = {
@@ -1150,23 +1158,6 @@
 				owner = { release = PEU }
 			}
 			SPU = { all_core = { remove_core = SPU } }
-
-			## Become Bolivia ##
-				random_owned = {
-					limit = {
-						province_id = 2313
-						NOT = { owner = { capital = 2313 } }
-					}
-					owner = { capital = 2313 }
-				}
-				all_core = { remove_core = PBC }
-				change_tag = BOL
-				random_owned = {
-					limit = { owner = { centralization = federalism } }
-					owner = { political_reform = unitary }
-				}
-
-			PEU = { country_event = 97056 }
 
 			## Neighbors ##
 				random_country = {
@@ -1202,6 +1193,23 @@
 					}
 					relation = { who = THIS value = 200 }
 				}
+
+			## Become Bolivia ##
+				random_owned = {
+					limit = {
+						province_id = 2313
+						NOT = { owner = { capital = 2313 } }
+					}
+					owner = { capital = 2313 }
+				}
+				all_core = { remove_core = PBC }
+				change_tag = BOL
+				random_owned = {
+					limit = { owner = { centralization = federalism } }
+					owner = { political_reform = unitary }
+				}
+
+			PEU = { country_event = 97056 }
 
 			ai_chance = {
 				factor = 20
@@ -1337,12 +1345,16 @@
 					change_tag = PEU
 				}
 
-			2307 = { add_core = FROM secede_province = FROM remove_core = SPU remove_core = PEU }
-			2308 = { add_core = FROM secede_province = FROM remove_core = SPU remove_core = PEU }
-			2578 = { add_core = FROM secede_province = FROM remove_core = SPU remove_core = PEU }
+			2307 = { add_core = BOL secede_province = FROM remove_core = SPU remove_core = PEU }
+			2308 = { add_core = BOL secede_province = FROM remove_core = SPU remove_core = PEU }
+			2578 = { add_core = BOL secede_province = FROM remove_core = SPU remove_core = PEU }
 
 			ai_chance = {
 				factor = 40
+				modifier = {
+					factor = 2
+					NOT = { military_score = 10 }
+				}
 			}
 		}
 
@@ -1354,7 +1366,13 @@
 
 			FROM = { country_event = 97057 }
 
-			ai_chance = { factor = 60 }
+			ai_chance = {
+				factor = 60
+				modifier = {
+					factor = 1.5
+					NOT = { BOL = { military_score = THIS } }
+				}
+			}
 		}
 	}
 

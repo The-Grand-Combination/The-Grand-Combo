@@ -824,6 +824,7 @@ political_decisions = {
 
     #Description: The CSA can restore Richmond as their capital if they own it (unless the CSA declares the Articles of Confederation)
 	restore_richmond_capital = {
+		picture = restore_richmond_capital
 		potential = {
 			tag = CSA
 			owns = 60 # Richmond
@@ -839,16 +840,18 @@ political_decisions = {
 			capital = 60
 			prestige = 5
 		}
+
+		ai_will_do = { factor = 1 }
 	}
 
-    #Description: The CSA can move their capital to Atlanta if they don't own Richmond.
+    #Description: The CSA can move their capital to Atlanta if they don't control Richmond.
 	move_capital_to_atlanta = {
 		picture = restore_richmond_capital
 		potential = {
 			tag = CSA
 			owns = 201
 			NOT = {
-				owns = 60
+				controls = 60
 				capital = 201
 			}
 		}
@@ -861,10 +864,10 @@ political_decisions = {
 			capital = 201
 		}
 
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 1 }
 	}
 
-	#Description: The CSA can move the capital to Havana if they own it, giving it a buff to liferating and immigrant attraction.
+	#Description: If the CSA owns Havana they can give it a buff to liferating and immigrant attraction (making it a spiritual capital) # DEVNOTE this is changed since moving the capital to Havana would make the entire continent overseas which can have unpredictable consequences.
 	move_capital_to_havana = {
 		picture = golden_havana
 		alert = no
@@ -873,6 +876,7 @@ political_decisions = {
 			owns = 2209
 			2209 = { is_colonial = no }
 			NOT = { capital = 2209 }
+			NOT = { has_country_flag = capital_moved_csa }
 		}
 
 		allow = {
@@ -880,17 +884,11 @@ political_decisions = {
 		}
 
 		effect = {
-			capital = 2209
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = capital_moved_csa } } }
-				owner = {
-					plurality = -10
-					set_country_flag = capital_moved_csa
-				}
-				2209 = {
-					life_rating = 5
-					add_province_modifier = { name = new_capital_modifier duration = 3650 }
-				}
+			plurality = -10
+			set_country_flag = capital_moved_csa
+			2209 = {
+				life_rating = 5
+				add_province_modifier = { name = new_capital_modifier duration = 3650 }
 			}
 		}
 
