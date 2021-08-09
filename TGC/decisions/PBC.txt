@@ -26,7 +26,6 @@ political_decisions = {
 			leave_alliance = PBC
 			relation = { who = PBC value = -200 }
 			political_reform = two_year_draft
-			remove_country_modifier = relutanct_figher
 			PBC = { release_vassal = PEU }
 			any_country = {
 				limit = { war_with = PBC }
@@ -974,7 +973,6 @@ political_decisions = {
 					vassal_of = PEU
 					is_vassal = no
 				}
-				exists = yes
 				neighbour = PEU
 				NOT = { war_with = PEU }
 				PEU = { has_country_flag = salaverry_victorious }	# The Peruvian Civil war of 1835 has been resolved - Salaverry won
@@ -1008,6 +1006,32 @@ political_decisions = {
 						}
 						change_tag = PEU
 					}
+				}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+		#Description: Cleanup decision for if South Peru exists and Peru doesn't and none of the above apply, South Peru will become Peru.
+		become_peru = {
+			picture = la_paz_capital
+			potential = {
+				tag = SPU
+				NOT = { exists = PEU }
+				NOT = { has_global_flag = peruvian_civil_war } # To prevent this from being done immediately if Orbegoso wins the war
+			}
+
+			allow = {
+				war = no
+			}
+
+			effect = {
+				prestige = 5
+				any_pop = { militancy = -1 }
+				SPU = { all_core = { remove_core = SPU add_core = PEU } }
+				random_owned = {
+					limit = { province_id = 2295 }
+					owner = { capital = 2295 }
 				}
 			}
 
@@ -1317,11 +1341,16 @@ political_decisions = {
 		}
 
 		effect = {
-			add_country_modifier = {
-				name = america_new_world
-				duration = 3650
-			}
+			set_global_flag = peruvian_civil_war
+
+			add_country_modifier = { name = america_new_world duration = 3650 }
 			any_pop = { limit = { OR = { has_pop_culture = afro_caribeno type = slaves } } literacy = -0.99 }
+
+			SPU = {
+				add_country_modifier = { name = america_new_world duration = 3650 }
+				any_pop = { limit = { OR = { has_pop_culture = afro_caribeno type = slaves } } literacy = -0.99 }
+			}
+
 			2295 = {
 				any_pop = {
 					limit = { is_primary_culture = yes }
@@ -1338,18 +1367,20 @@ political_decisions = {
 					literacy = 0.02
 				}
 			}
-			any_pop = {
-				limit = {
-					NOT = { has_pop_culture = afro_caribeno }
-					location = {
-						OR = {
-							province_id = 2307
-							province_id = 2308
-							province_id = 2578
+			SPU = {
+				any_pop = {
+					limit = {
+						NOT = { has_pop_culture = afro_caribeno }
+						location = {
+							OR = {
+								province_id = 2307
+								province_id = 2308
+								province_id = 2578
+							}
 						}
 					}
+					literacy = 0.07
 				}
-				literacy = 0.07
 			}
 			2302 = { any_pop = { literacy = -0.04 } }
 			2303 = { any_pop = { literacy = -0.06 } }
@@ -1381,17 +1412,6 @@ political_decisions = {
 			2293 = { add_province_modifier = { name = silver_mine duration = -1 } }
 			2296 = { add_province_modifier = { name = silver_mine duration = -1 } }
 			312 = { add_province_modifier = { name = silver_mine duration = -1 } }
-
-			add_country_modifier = { name = relutanct_figher duration = 3650 }
-			activate_technology = flintlock_rifles
-			activate_technology = post_napoleonic_thought
-			activate_technology = post_nelsonian_thought
-			SPU = {
-				add_country_modifier = { name = relutanct_figher duration = 3650 }
-				activate_technology = flintlock_rifles
-				activate_technology = post_napoleonic_thought
-				activate_technology = post_nelsonian_thought
-			}
 		}
 	}
 
@@ -1408,9 +1428,6 @@ political_decisions = {
 		effect = {
 			2310 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } } #La Paz - Bolivia
 			2313 = { any_pop = { limit = { is_primary_culture = yes } literacy = 0.05 } } #Chuquisaca/Sucre - Bolivia
-			activate_technology = flintlock_rifles
-			activate_technology = post_napoleonic_thought
-			activate_technology = post_nelsonian_thought
 		}
 	}
 }
