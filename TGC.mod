@@ -1,4 +1,4 @@
-name = "The Grand Combo 0.1.6 Dev-Build"
+name = "The Grand Combination"
 path = "mod/TGC"
 user_dir = "TGC"
 replace_path = "common"
