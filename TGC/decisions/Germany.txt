@@ -2832,13 +2832,12 @@ political_decisions = {
 		potential = {
 			OR = {
 				tag = GER
-				tag = GCF
+				tag = NGF
+				tag = PRU
 			}
+			is_greater_power = yes
 			ALS = { exists = no }
-			NOT = {
-				has_global_flag = franco_prussian_memorial
-				has_global_flag = franco_prussian_memorial2
-			}
+			NOT = { has_global_flag = franco_prussian_memorial }
 			412 = {
 				OR = {
 					owned_by = THIS
@@ -2878,25 +2877,27 @@ political_decisions = {
 		potential = {
 			is_greater_power = yes
 			is_culture_group = germanic
-			ALS = { exists = yes }
+			NOT = {
+				tag = GER
+				tag = NGF
+				tag = PRU
+			}
+			ALS = {
+				owns = 412
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				war = no
+				is_greater_power = no
+			}
 			NOT = { has_global_flag = franco_prussian_memorial }
 		}
+
 		allow = {
 			war = no
-			412 = {
-				owner = {
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-					NOT = {
-						vassal_of = FRA
-					}
-					war = no
-					is_greater_power = no
-				}
-			}
-			FRA = { exists = yes truce_with = THIS }
+			truce_with = FRA
+			FRA = { has_recently_lost_war = yes }
 		}
 
 		effect = {
@@ -2917,14 +2918,8 @@ political_decisions = {
 			ALS = {
 				any_pop = {
 					limit = {
-						location = {
-							OR = {
-								province_id = 412
-								province_id = 410
-								province_id = 409
-							}
-						}
-						has_pop_culture = french
+						location = { region = FRA_412 }
+						is_culture_group = pan_french
 						OR = {
 							strata = middle
 							strata = rich
