@@ -1,6 +1,3 @@
-# The-Grand-Combo
-Thank you for for downloading TGC.
-
 # The Grand Combination
 
 This mod is an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, with a goal to improve historical accuracy and detail and add plausible alt history paths and flavor to all nations.
@@ -8,6 +5,7 @@ This mod is an attempt to merge all the various disparate HFM and HPM based subm
 ## Installation Instructions
 
 1. To get the latest version, click the green button that says "Code" and click "Download ZIP", or click [here](https://github.com/rderekp/The-Grand-Combo/archive/refs/heads/master.zip)
+  * Alternatively, you can use the GitHub Desktop application. This is slightly more complicated but preferable since downloading the zip through the browser can lead to corrupted files being downloaded which can cause the game to crash. For instructions on this go to the #install-instructions channel on the Discord.
 2. Go to the mod folder in your Victoria 2 install directory.
   * If you got the Steam version on Windows this will look something like C:/Program Files (x86)/Steam/steamapps/common/Victoria 2/mod
   * If you got a non-Steam version on Windows it might be something like C:/Program Files (x86)/Paradox Interactive/Victoria 2/mod
