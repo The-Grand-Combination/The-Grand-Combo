@@ -251,96 +251,171 @@ country_event = {
 	}
 }
 
-# Santo Tomas Colony Events
-country_event = {
-	id = 1904191427
-	title = "EVTNAME1904191427"
-	desc = "EVTDESC1904191427"
+## Santo Tomas Colony Events ##
 
-	fire_only_once = yes
+	#Description: Triggered for Guatemala by decision from Belgium asking for the Santo Tomas territory
+	country_event = {
+		id = 1904191427
+		title = "EVTNAME1904191427"
+		desc = "EVTDESC1904191427"
 
-	is_triggered_only = yes
+		fire_only_once = yes
 
-	mean_time_to_happen = { days = 5 }
+		is_triggered_only = yes
 
-	option = {
-		name = "EVTOPTA1904191427"
+		mean_time_to_happen = { days = 5 }
 
-		BEL = { country_event = 1904191428 }
-		relation = { who = FROM value = 50 }
+		# Agree
+		option = {
+			name = "EVTOPTA1904191427"
 
-		ai_chance = {
-			factor = 70
-			modifier = {
-				factor = 0.5
-				is_greater_power = no
+			FROM = { country_event = 1904191428 }
+			relation = { who = FROM value = 50 }
+
+			ai_chance = {
+				factor = 70
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
+				modifier = {
+					factor = 1.7
+					alliance_with = FROM
+				}
+				modifier = {
+					factor = 1.8
+					relation = { who = FROM value = 50 }
+				}
 			}
-			modifier = {
-				factor = 0.7
-				alliance_with = FROM
-			}
-			modifier = {
-				factor = 0.8
-				relation = { who = FROM value = 50 }
+		}
+
+		# Decline
+		option = {
+			name = "EVTOPTB1904191427"
+
+			relation = { who = FROM value = -50 }
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 0.6
+					FROM = { is_greater_power = no }
+				}
 			}
 		}
 	}
 
-	option = {
-		name = "EVTOPTB1904191427"
+	#Description: Triggered for Belgium if Guatemala agrees, form a colony or no?
+	country_event = {
+		id = 1904191428
+		title = "EVTNAME1904191428"
+		desc = "EVTDESC1904191428"
+		picture = "treaty"
 
-		relation = { who = FROM value = -50 }
+		is_triggered_only = yes
 
-		ai_chance = {
-			factor = 30
+		# Form a colony
+		option = {
+			name = "EVTOPTA1904191428"
+
+			prestige = 5
+			money = -30000
+			FROM = { money = 30000 }
+			relation = { who = FROM value = 50 }
+			39 = { secede_province = THIS }
+
+			ai_chance = { factor = 100 }
+		}
+
+		# On second thought, no
+		option = {
+			name = "EVTOPTB1904191428"
+
+			prestige_factor = -0.15
+			any_pop = {
+				consciousness = 1
+				militancy = 1
+			}
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: Climatic Infestations in Santo Tomas - lose money or lose the colony
+	country_event = {
+		id = 1904191431
+		title = "EVTNAME1904191431"
+		desc = "EVTDESC1904191431"
+
+		picture = "inhospitable_climate"
+
+		trigger = {
+			owns = 39 # Santo Tomas
+			tag = BEL
+			year = 1848
+			NOT = { year = 1851 }
+		}
+
+		mean_time_to_happen = {
+			months = 5
 			modifier = {
-				factor = 0.2
-				is_greater_power = no
+				factor = 0.65 #increase likelihood to happen
+				year = 1849
 			}
 			modifier = {
-				factor = 0.6
-				FROM = { is_greater_power = no }
+				factor = 0.90 #increase likelihood to happen
+				year = 1850
 			}
-			modifier = {
-				factor = 0.1
-				NOT = { relation = { who = FROM value = 0 } }
+		}
+
+		fire_only_once = yes
+
+		immediate = { 39 = { infrastructure = -1 any_pop = { reduce_pop = 0.2 } } }
+
+		# Keep the colony. Restore the colony by investing a significant sum of money. We think it's worth it.
+		option = {
+			name = "EVTOPTA1904191431"
+
+			treasury = -90000
+
+			ai_chance = {
+				factor = 40
+				modifier = {
+					factor = 0
+					money = 100000
+				}
+			}
+		}
+
+		# Abandon colony. To much spending in a fruitless colony, there are better things to spend money on.
+		option = {
+			name = "EVTOPTB1904191431"
+
+			39 = { remove_core = THIS }
+
+			random_country = {
+				limit = { owns = 2186 }
+				country_event = 1904191432
+			}
+
+			ai_chance = { factor = 60 }
+		}
+	}
+
+	#Description: If the Belgians abandon the colony the territory is returned to Guatemala
+	country_event = {
+		id = 1904191432
+		title = "EVTNAME1904191432"
+		desc = "EVTDESC1904191432"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA1904191432"
+
+			39 = {
+				secede_province = THIS
+				add_core = THIS
 			}
 		}
 	}
-}
-
-country_event = {
-	id = 1904191428
-	title = "EVTNAME1904191428"
-	desc = "EVTDESC1904191428"
-	picture = "treaty"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA1904191428"
-
-		money = -30000
-		FROM = { money = 30000 }
-		relation = { who = FROM value = 50 }
-		39 = {
-			secede_province = THIS
-			remove_core = GUA
-			remove_core = UCA
-		}
-
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB1904191428"
-
-		prestige_factor = -0.15
-		any_pop = {
-			consciousness = 1
-			militancy = 1
-		}
-
-		ai_chance = { factor = 0 }
-	}
-}
