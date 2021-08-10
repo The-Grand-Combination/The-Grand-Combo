@@ -4744,31 +4744,36 @@ political_decisions = {
 	}
 
 #from NEW.txt
-	annex_kalisz = { # TODO this needs to be redone
+	annex_kalisz = {
 		picture = kalisch
 		potential = {
 			tag = GER
-			NOT = { has_country_flag = annexkalisch }
-			OR = {
-				exists = POL
-				exists = CPL
+			is_greater_power = yes
+			717 = {
+				owner = {
+					war = no
+					in_sphere = THIS
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
 			}
+			NOT = { has_country_flag = annexkalisch }
 		}
 
 		allow = {
-			is_greater_power = yes
-			OR = {
-				POL = { in_sphere = THIS }
-				CPL = { in_sphere = THIS }
-			}
 			war = no
+			717 = { owner = { relation = { who = THIS value = 50 } } }
 		}
 
 		effect = {
-			717 = { secede_province = GER }
-			717 = { change_province_name = "Kalisch" }
-			POL = { relation = { who = GER value = -50 } }
 			set_country_flag = annexkalisch
+			717 = { # TODO turn this into an event so that Poland can refuse
+				owner = { relation = { who = THIS value = -50 } }
+				add_core = THIS
+				secede_province = THIS
+			}
 		}
 	}
 
