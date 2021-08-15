@@ -1,34 +1,57 @@
 political_decisions = {
 	greater_afghanistan = {
 		picture = form_durrani_empire
-		
+
 		potential = {
-			ai = no
 			primary_culture = pashtun
 			NOT = { has_country_flag = greater_afghanistan }
 			NOT = { has_global_flag = extra_flavour_disabled }
 		}
-		
+
 		allow = {
 			war = no
-			state_n_government = 1
+			is_vassal = no
+			AFG = {
+				all_core = {
+					owned_by = THIS
+				}
+			}
 			OR = {
-				prestige = 45
+				prestige = 25
 				is_greater_power = yes
 				is_secondary_power = yes
 			}
-			military_score = 40
+			OR = {
+				tag = AFG
+				AFG = {	exists = no }
+			}
 		}
-		
+
 		effect = {
 			set_country_flag = greater_afghanistan
-			1218 = { add_core = THIS } # Peshawar
-			1219 = { add_core = THIS } # Quetta
-			1223 = { add_core = THIS } # Chitral
-			badboy = 2
+			AFG = {
+				all_core = {
+					add_core = THIS
+				}
+			}
+			KAL_1221 = { add_core = AFG } #Baluchistan
+			1218 = { add_core = AFG } # Peshawar
+			1219 = { add_core = AFG } # Quetta
+			1223 = { add_core = AFG } # Chitral
+			badboy = 4
+			prestige = 5
+			any_country = {
+				limit = {
+					tag = THIS
+					NOT = { tag = AFG }
+				}
+				change_tag = AFG
+				capital = 1209
+			}
 			any_country = {
 				limit = {
 					OR = {
+						owns = KAL_1221
 						owns = 1218
 						owns = 1219
 						owns = 1223
@@ -41,13 +64,13 @@ political_decisions = {
 			}
 		}
 	}
-  
+
 	form_durrani_empire = {
 		picture = form_durrani_empire
-		
+
 		potential = {
-			ai = no
 			primary_culture = pashtun
+			has_country_flag = greater_afghanistan
 			NOT = { has_global_flag = durrani_formed }
 			NOT = { tag = PAK }
 			NOT = { has_country_flag = post_colonial_country }
@@ -57,30 +80,53 @@ political_decisions = {
 		allow = {
 			war = no
 			is_vassal = no
+			all_core = {
+				owned_by = THIS
+			}
 			prestige = 50
-			owns = 1219 #Quetta
-			owns = 1218 #Peshawar
-			owns = 1223 #Chitral
-			owns = 1211 #Balkh
-			owns = 1209 #Kabul
-			owns = 1215 #Kandahar
 		}
 
 		effect = {
 			set_global_flag = durrani_formed
+			badboy = 8
 			prestige = 5
 			all_core = {
 				add_core = DUR
 				remove_core = THIS
 			}
 			change_tag = DUR
-			PER_1148 = { add_core = DUR } #Mashhad
 			SIN_1288 = { add_core = DUR } #Sindh
-			PAN_1227 = { add_core = DUR } #Lahore
-			1219 = { add_core = DUR } #Quetta
-			1220 = { add_core = DUR } #Dalbandin
-			1221 = { add_core = DUR } #Kalat
-			1222 = { add_core = DUR } #Makran
+			1147 = { add_core = DUR } #Mashad
+			1148 = { add_core = DUR } #Birjand
+			1227 = { add_core = DUR } #Lahore
+			1228 = { add_core = DUR } #Multan
+			1229 = { add_core = DUR } #Sialkot
+			1230 = { add_core = DUR } #Attock
+			1231 = { add_core = DUR } #Bahawalpur
+			1232 = { add_core = DUR } #Shahpur
+			1236 = { add_core = DUR } #Delhi
+			1237 = { add_core = DUR } #Panipat
+			any_country = {
+				limit = {
+					OR = {
+						owns = SIN_1288
+						owns = 1147
+						owns = 1148
+						owns = 1227
+						owns = 1228
+						owns = 1229
+						owns = 1230
+						owns = 1231
+						owns = 1232
+						owns = 1236
+						owns = 1237
+					}
+				}
+				relation = {
+					who = THIS
+					value = -100
+				}
+			}
 		}
 	}
 }
