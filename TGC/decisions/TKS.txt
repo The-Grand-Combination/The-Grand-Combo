@@ -17,12 +17,8 @@ political_decisions = {
 		effect = {
 			set_global_flag = uzbekistan_created
 			prestige = 10
-			BUK = {
-				all_core = { remove_core = BUK }
-			}
-			KHI = {
-				all_core = { remove_core = KHI add_core = UZB }
-			}
+			BUK = { all_core = { remove_core = BUK } }
+			KHI = { all_core = { remove_core = KHI add_core = UZB } }
 			1193 = { add_core = UZB } #Kyzylorda
 			1192 = { add_core = UZB } #Nukus
 			1191 = { add_core = UZB } #Khiva
@@ -37,9 +33,7 @@ political_decisions = {
 			capital = 1195
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
 
 	become_uzbekistan_bukkhara = {
@@ -60,12 +54,8 @@ political_decisions = {
 		effect = {
 			set_global_flag = uzbekistan_created
 			prestige = 10
-			BUK = {
-				all_core = { remove_core = BUK add_core = UZB }
-			}
-			KHI = {
-				all_core = { remove_core = KHI }
-			}
+			BUK = { all_core = { remove_core = BUK add_core = UZB } }
+			KHI = { all_core = { remove_core = KHI } }
 			1193 = { add_core = UZB } #Kyzylorda
 			1192 = { add_core = UZB } #Nukus
 			1191 = { add_core = UZB } #Khiva
@@ -80,9 +70,7 @@ political_decisions = {
 			capital = 1195
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
 
 	become_kyrgyzstan = {
@@ -101,9 +89,7 @@ political_decisions = {
 
 		effect = {
 			set_global_flag = kyrgyzstan_created
-			KOK = {
-				all_core = { remove_core = KOK add_core = KYR }
-			}
+			KOK = { all_core = { remove_core = KOK add_core = KYR } }
 			prestige = 10
 			1190 = { add_core = KYR } #Naryn
 			1195 = { add_core = KYR } #Tashkent
@@ -116,13 +102,11 @@ political_decisions = {
 			capital = 1189
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
 
 	unite_turkestan = {
-	picture = unite_turkestan
+		picture = unite_turkestan
 		potential = {
 			OR = {
 				tag = TKM
@@ -208,19 +192,24 @@ political_decisions = {
 			RUS_1196 = { add_core = TKS } #Turkmenia
 			KHI_1191 = { add_core = TKS } #Uzbekia
 			KOK_1190 = { add_core = TKS } #Alay-Kirghizia
-			any_owned = { limit = { is_core = BDK } add_core = TKS remove_core = BDK}
+			any_owned = { limit = { is_core = BDK } add_core = TKS remove_core = BDK }
 
 			any_country = {
 				limit = {
-					NOT = { tag = BDK }
 					OR = {
 						primary_culture = turkmen
 						primary_culture = uzbek
 						primary_culture = kirgiz
 						primary_culture = tajik
 						primary_culture = kazak
+						primary_culture = uighur
 					}
 					in_sphere = THIS
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { tag = BDK }
 					NOT = { tag = THIS }
 				}
 				annex_to = THIS
@@ -231,7 +220,7 @@ political_decisions = {
 	}
 
 	form_turkestan = {
-	picture = unite_turkestan
+		picture = unite_turkestan
 		potential = {
 			is_greater_power = yes
 			nationalism_n_imperialism = 1
@@ -242,6 +231,7 @@ political_decisions = {
 				primary_culture = kirgiz
 				primary_culture = tajik
 				primary_culture = kazak
+				primary_culture = uighur
 			}
 			NOT = {
 				exists = TKS
@@ -257,6 +247,7 @@ political_decisions = {
 							has_pop_culture = kirgiz
 							has_pop_culture = tajik
 							has_pop_culture = kazak
+							has_pop_culture = uighur
 						}
 					}
 				}
@@ -380,6 +371,7 @@ political_decisions = {
 						primary_culture = kirgiz
 						primary_culture = tajik
 						primary_culture = kazak
+						primary_culture = uighur
 					}
 					in_sphere = THIS
 					OR = {
@@ -425,7 +417,7 @@ political_decisions = {
 							is_core = KHI
 						}
 					}
-				secede_province = THIS
+					secede_province = THIS
 				}
 			}
 
@@ -492,5 +484,56 @@ political_decisions = {
 			factor = 1
 			modifier = { factor = 0 tag = RUS }
 		}
+	}
+
+	#Description: The creator/overlord of Turkestan can invite Uyghurstan to it if it's in their sphere
+	invite_UYG_to_TKS = {
+		picture = turkmen_tribesmen
+		potential = {
+			OR = {
+				tag = TKS
+				TKS = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = UYG
+			NOT = { has_country_flag = invite_UYG_to_TKS }
+		}
+
+		allow = {
+			war = no
+			UYG = {
+				war = no
+				neighbour = TKS
+				relation = { who = THIS value = 100 }
+				NOT = { truce_with = THIS }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_UYG_to_TKS
+			UYG = {
+				all_core = { add_core = TKS }
+				annex_to = TKS # TODO eventually make event for this
+			}
+			random_country = {
+				limit = {
+					tag = TKS
+					NOT = { accepted_culture = uighur }
+				}
+				add_accepted_culture = uighur
+			}
+		}
+
+		ai_will_do = { factor = 1 }
 	}
 }
