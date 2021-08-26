@@ -2437,11 +2437,68 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	drain_the_eastern_pinsk_marshes = {
+		picture = drain_the_pinsk_marshes
+		potential = {
+			NOT = { has_global_flag = eastern_pinsk_marshes_drained }
+			718 = {
+				owned_by = THIS
+				NOT = { life_rating = 40 }
+				}
+			1016 = {
+				owned_by = THIS
+				NOT = { life_rating = 35 }
+				}
+			949 = {
+				owned_by = THIS
+				NOT = { life_rating = 35 }
+				}
+		}
+
+		allow = {
+			steam_turbine = 1
+			money = 250000
+		}
+
+		effect = {
+			treasury = -250000
+			set_global_flag = eastern_pinsk_marshes_drained
+			any_owned = {
+				limit = {
+				NOT = { life_rating = 17 }
+					OR = {
+						province_id = 1016
+						province_id = 949
+						}
+					}
+				life_rating = 15
+				add_province_modifier = {
+					name = drained_marsh
+					duration = -1
+					}
+				remove_province_modifier = pinsk_marshes_terrain
+				}
+			any_owned = {
+				limit = {
+				NOT = { life_rating = 31 }
+					OR = {
+						province_id = 944
+						province_id = 946
+						province_id = 718
+						province_id = 962
+						}
+					}
+				life_rating = 5
+				}
+			}
+		ai_will_do = { factor = 1 }
+	}
+	
 	drain_the_pinsk_marshes = {
 		picture = drain_the_pinsk_marshes
 		potential = {
-			NOT = { has_country_flag = marshes_ready }
-			OR = {
+			NOT = { has_global_flag = western_pinsk_marshes_drained }
+			has_global_flag = eastern_pinsk_marshes_drained
 			941 = {
 				owned_by = THIS
 				NOT = { life_rating = 35 }
@@ -2450,35 +2507,50 @@ political_decisions = {
 				owned_by = THIS
 				NOT = { life_rating = 35 }
 				}
-			959 = {
+			957 = {
 				owned_by = THIS
 				NOT = { life_rating = 35 }
 				}
-			}
 		}
 
 		allow = {
-			steam_turbine = 1
-			money = 5500
+			combustion_engine = 1
+			money = 995000
 		}
 
 		effect = {
-			treasury = -5000
-			set_country_flag = marshes_ready
+			treasury = -995000
+			set_global_flag = western_pinsk_marshes_drained
 			any_owned = {
 				limit = {
-				NOT = { life_rating = 16 }
+				NOT = { life_rating = 17 }
 					OR = {
 						province_id = 941
 						province_id = 942
-						province_id = 959
+						province_id = 948
+						province_id = 957
+						province_id = 3498
 						}
 					}
-				life_rating = 20
+				life_rating = 15
 				add_province_modifier = {
 					name = drained_marsh
 					duration = -1
 					}
+			    remove_province_modifier = pinsk_marshes_terrain
+				}
+			any_owned = {
+				limit = {
+				NOT = { life_rating = 31 }
+					OR = {
+						province_id = 939
+						province_id = 959
+						province_id = 960
+						province_id = 940
+						province_id = 956
+						}
+					}
+				life_rating = 5
 				}
 			}
 		ai_will_do = { factor = 1 }
@@ -3015,9 +3087,17 @@ political_decisions = {
 						NOT = { terrain = steppe }
 						NOT = { terrain = montane_tundra }
 						NOT = { terrain = marsh }
+						NOT = { terrain = swamp_forest }
 					}
 				}
 				add_province_modifier = { name = small_baby_boom duration = 3650 }
+			}
+			
+			any_owned = {
+				limit = {
+			    terrain = swamp_forest 
+				}
+				add_province_modifier = { name = pinsk_marshes_terrain duration = -1 }
 			}
 			any_owned = { limit = { is_core = POL } add_province_modifier = { name = small_baby_boom duration = 1825 } }
 
