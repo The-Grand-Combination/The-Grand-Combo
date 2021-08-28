@@ -4,8 +4,8 @@ This mod is an attempt to merge all the various disparate HFM and HPM based subm
 
 ## Installation Instructions
 
-1. To get the latest version:
-  * ***BEWARE THAT: On account of increased chance that, due to the sheer number of files, Github Browser zipping process can corrupt your download and the mod might not work. To be safe, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
+1. To get the latest version, click the green button that says "Code" and click "Download ZIP". *warning: read below*
+  * ***BEWARE: There is a chance that due to the sheer number of files, Github Browser zipping process can corrupt your download, therefore the mod might not work for you. If that happens, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
   * Fresh off the press version: You can use the GitHub Desktop application. This is slightly more complicated but preferable since downloading the zip through the browser can lead to corrupted files being downloaded which can cause the game to crash. For instructions on this go to the #install-instructions channel on the Discord.
   * Slightly stale: Stable pre-packed zip releases: https://github.com/rderekp/The-Grand-Combo/releases
 2. Go to the mod folder in your Victoria 2 install directory.
