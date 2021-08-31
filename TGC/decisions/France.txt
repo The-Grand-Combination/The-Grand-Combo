@@ -854,9 +854,10 @@ devil_island = {
 	}
 
 #from East Indies.txt
-create_cambodian_protectorate = {
+	create_cambodian_protectorate = {
 		picture = unequal_treaty
 		potential = {
+			has_country_flag = created_my_indochina
 			owns = 1380
 			is_greater_power = yes
 			capital_scope = { continent = europe }
@@ -891,11 +892,14 @@ create_cambodian_protectorate = {
 			prestige = 10
 			inherit = CAM
 			CAM = { tech_school = unciv_tech_school }
+			country_event = 199071
 		}
 	}
+
 	create_laos_protectorate = {
 		picture = unequal_treaty
 		potential = {
+			has_country_flag = created_my_indochina
 			owns = 1369
 			is_greater_power = yes
 			capital_scope = { continent = europe }
@@ -983,9 +987,19 @@ create_cambodian_protectorate = {
 	siamese_border_treaty = {
 		picture = unequal_treaty
 		potential = {
+			has_country_flag = created_my_indochina
 			is_greater_power = yes
-			capital_scope = { continent = europe }
-			NOT = { tag = TUR }
+			OR = {
+				AND = {
+					capital_scope = { continent = europe }
+					NOT = {
+						tag = TUR
+						tag = RUS
+					}
+				}
+				primary_culture = japanese
+				tech_school = naval_tech_school
+			}
 			has_global_flag = berlin_conference
 			SIA = {
 				neighbour = THIS
@@ -1017,11 +1031,12 @@ create_cambodian_protectorate = {
 	annex_champasak = {
 		picture = unequal_treaty
 		potential = {
+			has_country_flag = created_my_indochina
+			owns = 1368
 			is_greater_power = yes
 			capital_scope = { continent = europe }
 			NOT = { tag = TUR }
 			has_global_flag = berlin_conference
-			owns = 1368
 			CHK = { exists = yes ai = yes vassal_of = SIA }
 			OR = {
 				AND = {
@@ -1097,6 +1112,7 @@ create_cambodian_protectorate = {
 	organize_laos = {
 		picture = unequal_treaty
 		potential = {
+			owns = 1356
 			civilized = yes
 			NOT = {
 				exists = LUA
@@ -1109,7 +1125,6 @@ create_cambodian_protectorate = {
 				primary_culture = khmer
 				primary_culture = thai
 			}
-			owns = 1356
 		}
 
 		allow = {
@@ -1155,6 +1170,10 @@ create_cambodian_protectorate = {
 				all_core = { remove_core = SIA }
 				tech_school = unciv_tech_school
 			}
+			random_owned = {
+				limit = { owner = { NOT = { has_global_flag = rgo_change_in_laos } } }
+				owner = { country_event = 199070 }
+			}
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -1162,17 +1181,17 @@ create_cambodian_protectorate = {
 	form_french_indochina = {
 		picture = map_east_indies
 		potential = {
-			primary_culture = french
-			1380 = {
-				owned_by = THIS
+			any_owned_province = {
+				is_core = DAI
 				is_colonial = yes
 			}
-			1369 = {
-				owned_by = THIS
-				is_colonial = yes
+			NOT = {
+				primary_culture = lao
+				primary_culture = khmer
+				primary_culture = vietnamese
 			}
-			DAI = { exists = no }
-			NOT = { has_country_flag = created_french_indochina }
+			is_vassal = no
+			NOT = { has_country_flag = created_my_indochina }
 		}
 
 		allow = {
@@ -1181,20 +1200,12 @@ create_cambodian_protectorate = {
 		}
 
 		effect = {
-			set_country_flag = created_french_indochina
+			set_country_flag = created_my_indochina # TODO port other occurrences from HPM related to imperialism CB
 			prestige = 10
-			1380 = {
-				add_province_modifier = {
-					name = colonial_recruitment
-					duration = 1825
-				}
-			}
+			1380 = { add_province_modifier = { name = colonial_recruitment duration = 1825 } }
 			any_owned = {
 				limit = { region = DAI_1380 }
-				add_province_modifier = {
-					name = colonial_exploitation
-					duration = 1825
-				}
+				add_province_modifier = { name = colonial_exploitation duration = 1825 }
 			}
 			any_neighbor_country = {
 				limit = {
@@ -1208,6 +1219,19 @@ create_cambodian_protectorate = {
 				}
 				relation = { who = THIS value = -100 }
 			}
+			random_country = {
+				limit = {
+					tag = DAI
+					OR = {
+						AND = {
+							in_sphere = THIS
+							relation = { who = THIS value = 190 }
+						}
+						vassal_of = THIS
+					}
+				}
+				annex_to = THIS
+			}
 			DAI = { government = colonial_company }
 		}
 
@@ -1215,51 +1239,264 @@ create_cambodian_protectorate = {
 	}
 
 #from MiniMod-General.txt
+	#form_laos = { # Old version, leaving for archival purposes until new version is stabilized
+	#	picture = unequal_treaty
+	#	potential = {
+	#		OR = {
+	#			tag = LUA
+	#			tag = WIA
+	#			tag = CHK
+	#		}
+	#		NOT = { exists = LXA }
+	#	}
+#
+	#	allow = {
+	#		owns = 1357
+	#		owns = 1362
+	#		owns = 1361
+	#		owns = 1356
+	#	}
+#
+	#	effect = {
+	#		prestige = 20
+	#		change_tag = LXA
+	#		LUA = {
+	#			all_core = {
+	#				add_core = LXA
+	#				remove_core = LUA
+	#			}
+	#		}
+	#		WIA = {
+	#			all_core = {
+	#				add_core = LXA
+	#				remove_core = WIA
+	#			}
+	#		}
+	#		CHK = {
+	#			all_core = {
+	#				add_core = LXA
+	#				remove_core = CHK
+	#			}
+	#		}
+	#		1358 = { add_core = LXA }
+	#		1359 = { add_core = LXA }
+	#		2572 = { add_core = LXA }
+	#		capital = 1357
+	#	}
+	#}
+
 	form_laos = {
-		picture = unequal_treaty
+		picture = form_laos
 		potential = {
-			OR = {
-				tag = LUA
-				tag = WIA
-				tag = CHK
-			}
+			primary_culture = lao
+			is_vassal = no
 			NOT = { exists = LXA }
+			NOT = { has_country_flag = laos_formed }
+			NOT = { has_country_flag = post_colonial_country }
 		}
 
 		allow = {
-			owns = 1357
-			owns = 1362
-			owns = 1361
-			owns = 1356
+			war = no
+			OR = {
+				AND = {
+					nationalism_n_imperialism = 1
+					OR = {
+						prestige = 30
+						is_secondary_power = yes
+					}
+				}
+				AND = {
+					military_score = 40
+					prestige = 150
+				}
+				AND = {
+					1356 = {
+						OR = {
+							owned_by = THIS
+							owner = { vassal_of = THIS }
+						}
+					}
+					1357 = {
+						OR = {
+							owned_by = THIS
+							owner = { vassal_of = THIS }
+						}
+					}
+					1361 = {
+						OR = {
+							owned_by = THIS
+							owner = { vassal_of = THIS }
+						}
+					}
+					1362 = {
+						OR = {
+							owned_by = THIS
+							owner = { vassal_of = THIS }
+						}
+					}
+					1363 = {
+						OR = {
+							owned_by = THIS
+							owner = { vassal_of = THIS }
+						}
+					}
+				}
+			}
 		}
 
 		effect = {
-			prestige = 20
+			set_country_flag = laos_formed
+			prestige = 10
 			change_tag = LXA
-			LUA = {
-				all_core = {
-					add_core = LXA
-					remove_core = LUA
+			LUA_1356 = { add_core = LXA }
+			any_owned = { remove_core = LUA }
+			any_owned = { remove_core = CHK }
+			any_owned = { remove_core = WIA }
+			any_owned = { limit = { region = LUA_1356 } remove_core = SIA }
+			random_owned = {
+				limit = {
+					owner = {
+						OR = {
+							ai = no
+							owns = 1358
+							owns = 1359
+						}
+					}
+				}
+				owner = {
+					1358 = { add_core = LXA }
+					1359 = { add_core = LXA }
 				}
 			}
-			WIA = {
-				all_core = {
-					add_core = LXA
-					remove_core = WIA
+			any_country = {
+				limit = {
+					ai = yes
+					exists = yes
+					primary_culture = lao
+					vassal_of = THIS
 				}
+				annex_to = THIS
 			}
-			CHK = {
-				all_core = {
-					add_core = LXA
-					remove_core = CHK
+			any_country = {
+				limit = {
+					ai = yes
+					exists = yes
+					primary_culture = lao
+					in_sphere = THIS
 				}
+				annex_to = THIS
 			}
-			1358 = { add_core = LXA }
-			1359 = { add_core = LXA }
-			2572 = { add_core = LXA }
-			capital = 1357
+			any_country = {
+				limit = {
+					exists = yes
+					primary_culture = lao
+					is_greater_power = no
+					is_vassal = no
+					relation = {
+						who = THIS
+						value = 5
+					}
+					NOT = {
+						tag = THIS
+						truce_with = THIS
+					}
+				}
+				country_event = 97120
+			}
+			random_owned = {
+				limit = { owner = { NOT = { has_global_flag = rgo_change_in_laos } } }
+				owner = { country_event = 199070 }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
 		}
 	}
+
+	organize_vietnam = {
+		picture = vietnam_coffee
+		potential = {
+			any_owned_province = { is_core = DAI }
+			civilized = yes
+			NOT = { has_country_flag = vietnam_organized }
+		}
+
+		allow = {
+			war = no
+			DAI = { all_core = { owned_by = THIS } }
+			OR = {
+				year = 1900
+				steam_turbine = 1
+			}
+		}
+
+		effect = {
+			prestige = 5
+			set_country_flag = vietnam_organized
+			DAI = { tech_school = unciv_tech_school }
+			country_event = 199072
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	create_vietnamese_protectorate = {
+		picture = unequal_treaty
+		potential = {
+			has_country_flag = created_my_indochina
+			is_greater_power = yes
+			OR = {
+				AND = {
+					capital_scope = { continent = europe }
+					NOT = {
+						tag = TUR
+						tag = RUS
+					}
+				}
+				primary_culture = japanese
+				tech_school = naval_tech_school
+			}
+			DAI = {
+				exists = yes
+				neighbour = THIS
+				civilized = no
+				ai = yes
+			}
+			NOT = { has_global_flag = created_vietnamese_protectorate }
+		}
+
+		allow = {
+			war = no
+			mass_politics = 1
+			DAI = {
+				war = no
+				OR = {
+					AND = {
+						in_sphere = THIS
+						is_vassal = no
+					}
+					vassal_of = THIS
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = created_vietnamese_protectorate
+			prestige = 10
+			random = {
+				chance = 50
+				badboy = 1
+			}
+			inherit = DAI
+			DAI = { tech_school = unciv_tech_school }
+		}
+	}
+
 #from MiniMod-Viet
 	annexation_of_cambodia = {
 		picture = force_vassal_freedom
