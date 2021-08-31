@@ -3276,4 +3276,332 @@ political_decisions = {
 			factor = 1
 		}
 	}
+### Russian Pacific Expansion
+
+	#Description: Russian Cali go brrrr
+	rus_californian_question = {
+		picture = vive_le_quebec #need new pic
+		potential = {
+			capital = 994
+			is_greater_power = yes
+			primary_culture = russian
+			NOT = {
+				exists = CAL
+			}
+			84 = { owned_by = MEX }
+			89 = { owned_by = MEX }
+			has_country_flag = russian_america_ambition
+			NOT = { has_country_flag = demanded_california }
+		}
+
+		allow = {
+			war = no
+			NOT = { truce_with = MEX }
+			money = 200000
+			owns = 3366
+			NOT = { year = 1846 }
+		}
+
+		effect = {
+			RUS = { set_country_flag = demanded_california }
+			MEX = { country_event = 500115 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Description: Treaty of San Francisco - Russian Victory
+	rus_treaty_of_san_fran = {
+		picture = establish_panfrenchism
+		potential = {
+			primary_culture = russian
+			is_greater_power = yes
+			capital = 994
+			has_country_flag = russian_america_ambition # Russia decided it wants to expand their North American Pacific
+			has_country_flag = war_for_california # Mexico said no to the ultimatum
+			NOT = { has_country_flag = rossiskiy_kalyforniya }
+		}
+
+		allow = {
+			has_recently_lost_war = no
+			truce_with = MEX
+			money = 50000
+			is_greater_power = yes
+			MEX = {
+				NOT = { war_with = THIS }
+				is_disarmed = yes
+			}
+		}
+
+		effect = { #set_country_flag = french_total_victory
+			RUS = { set_country_flag = rossiskiy_kalyforniya }
+			prestige = 15
+			badboy = 5
+			CAL = { primary_culture = russian religion = orthodox government = dominion }
+			CAL = { all_core = { add_core = THIS } }
+			treasury = -50000
+			MEX = {
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = CAL
+							is_core = MRU
+							is_core = NEW
+							is_core = QUE
+							is_core = COL
+							is_core = RPL
+						}
+					}
+					remove_core = MEX
+					secede_province = THIS
+				}
+			}
+			#random_country = {
+			#	limit = { tag = RPL exists = yes }
+			#	annex_to = THIS
+			#}
+			#random_owned = {
+			#	limit = { province_id = 74 }
+			#	secede_province = ENG
+			#}
+			#random_owned = {
+			#	limit = { province_id = 75 }
+			#	secede_province = ENG
+			#}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+		
+	initiate_mordvinov_plan = {
+		picture = constantinople
+		
+		potential = {
+			tag = RUS
+			has_country_flag = rossiskiy_kalyforniya
+			NOT = { has_country_flag = initiated_mordvinov_plan }
+		}
+		
+		allow = {
+			debt_law = serfdom
+			owns = 89
+			owns = 84
+			money = 50000
+		}
+
+		effect = {
+			set_country_flag = initiated_mordvinov_plan
+			treasury = -50000
+			political_reform = quota_immigration
+			any_pop = {
+					limit = {
+						location = { is_core = CAL }
+						has_pop_culture = mexican
+					}
+					move_pop = 2172 # Mexico City
+				}
+				any_pop = {
+					limit = {
+						location = { is_core = CAL }
+						has_pop_culture = yankee
+					}
+					move_pop = 103 # Denver
+				}
+			
+			#Russians, Malorussians, Byelorussians
+            any_pop = { limit = { location = { province_id = 2614 } type = serfs culture = russian } move_pop = 108 }
+	        any_pop = { limit = { location = { province_id = 1005 } type = serfs culture = russian } move_pop = 2148 }
+	        any_pop = { limit = { location = { province_id = 994 } type = serfs culture = russian } move_pop = 38 }
+	        any_pop = { limit = { location = { province_id = 1024 } type = serfs culture = russian } move_pop = 89 }
+	        any_pop = { limit = { location = { province_id = 999 } type = serfs culture = russian } move_pop = 104 }
+			any_pop = { limit = { location = { province_id = 1003 } type = serfs culture = russian } move_pop = 87 }
+	        any_pop = { limit = { location = { province_id = 943 } type = serfs culture = byelorussian } move_pop = 84 }
+	        any_pop = { limit = { location = { province_id = 1019 } type = serfs culture = ukrainian } move_pop = 85 }
+         	any_pop = { limit = { location = { province_id = 977 } type = serfs culture = ukrainian } move_pop = 86 }
+        	any_pop = { limit = { location = { province_id = 1018 } type = serfs culture = ukrainian } move_pop = 90 }
+	        any_pop = { limit = { location = { province_id = 971 } type = serfs culture = ukrainian } move_pop = 135 }
+	        any_pop = { limit = { location = { province_id = 970 } type = serfs culture = ukrainian } move_pop = 110 }
+        	any_pop = { limit = { location = { province_id = 974 } type = serfs culture = ukrainian } move_pop = 109 }
+        	#Poles
+	        any_pop = { limit = { location = { province_id = 719 } type = serfs culture = polish } move_pop = 89 }
+         	any_pop = { limit = { location = { province_id = 936 } type = serfs culture = polish } move_pop = 85 }
+         	any_pop = { limit = { location = { province_id = 937 } type = serfs culture = polish } move_pop = 104 }
+          	any_pop = { limit = { location = { province_id = 936 } type = serfs culture = lithuanian } move_pop = 99 }
+	        #Romanians
+	        any_pop = { limit = { location = { province_id = 676 } type = serfs culture = romanian } move_pop = 97 }
+	        any_pop = { limit = { location = { province_id = 677 } type = serfs culture = romanian } move_pop = 2137 }
+	        any_pop = { limit = { location = { province_id = 678 } type = serfs culture = romanian } move_pop = 3368 }
+			country_event = { id = 500122 days = 7 }
+        }
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	 
+	###TODO
+	initiate_mordvinov_plan_phase_2 = {
+		picture = constantinople
+		
+		potential = {
+			tag = RUS
+			has_country_flag = rossiskiy_kalyforniya
+			has_global_flag = RUS_pacific_achieved
+			NOT = { has_country_flag = initiated_mordvinov_plan2 }
+		}
+		
+		allow = {
+			debt_law = serfdom
+			owns = 89
+			owns = 84
+			money = 50000
+		}
+
+		effect = {
+			set_country_flag = initiated_mordvinov_plan2
+			treasury = -50000
+			political_reform = quota_immigration
+			any_pop = {
+					limit = {
+						location = { is_core = CAL }
+						has_pop_culture = mexican
+					}
+					move_pop = 2172 # Mexico City
+				}
+				any_pop = {
+					limit = {
+						location = { is_core = CAL }
+						has_pop_culture = yankee
+					}
+					move_pop = 103 # Denver
+				}
+			
+			#Russians, Malorussians, Byelorussians
+            any_pop = { limit = { location = { province_id = 2614 } type = serfs culture = russian } move_pop = 108 }
+	        any_pop = { limit = { location = { province_id = 1005 } type = serfs culture = russian } move_pop = 2148 }
+	        any_pop = { limit = { location = { province_id = 994 } type = serfs culture = russian } move_pop = 38 }
+	        any_pop = { limit = { location = { province_id = 1024 } type = serfs culture = russian } move_pop = 89 }
+	        any_pop = { limit = { location = { province_id = 999 } type = serfs culture = russian } move_pop = 104 }
+			any_pop = { limit = { location = { province_id = 1003 } type = serfs culture = russian } move_pop = 87 }
+	        any_pop = { limit = { location = { province_id = 943 } type = serfs culture = byelorussian } move_pop = 84 }
+	        any_pop = { limit = { location = { province_id = 1019 } type = serfs culture = ukrainian } move_pop = 85 }
+         	any_pop = { limit = { location = { province_id = 977 } type = serfs culture = ukrainian } move_pop = 86 }
+        	any_pop = { limit = { location = { province_id = 1018 } type = serfs culture = ukrainian } move_pop = 90 }
+	        any_pop = { limit = { location = { province_id = 971 } type = serfs culture = ukrainian } move_pop = 135 }
+	        any_pop = { limit = { location = { province_id = 970 } type = serfs culture = ukrainian } move_pop = 110 }
+        	any_pop = { limit = { location = { province_id = 974 } type = serfs culture = ukrainian } move_pop = 109 }
+        	#Poles
+	        any_pop = { limit = { location = { province_id = 719 } type = serfs culture = polish } move_pop = 89 }
+         	any_pop = { limit = { location = { province_id = 936 } type = serfs culture = polish } move_pop = 85 }
+         	any_pop = { limit = { location = { province_id = 937 } type = serfs culture = polish } move_pop = 104 }
+          	any_pop = { limit = { location = { province_id = 936 } type = serfs culture = lithuanian } move_pop = 99 }
+	        #Romanians
+	        any_pop = { limit = { location = { province_id = 676 } type = serfs culture = romanian } move_pop = 97 }
+	        any_pop = { limit = { location = { province_id = 677 } type = serfs culture = romanian } move_pop = 2137 }
+	        any_pop = { limit = { location = { province_id = 678 } type = serfs culture = romanian } move_pop = 3368 }
+			country_event = { id = 500122 days = 7 }
+        }
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	#Team up against Perfidious Albion
+	rus_propose_joint_op_with_usa = {
+		picture = vive_le_quebec #need new pic
+		potential = {
+			capital = 994
+			is_greater_power = yes
+			primary_culture = russian
+			NOT = {
+				exists = CAL
+			}
+			has_country_flag = russian_america_ambition
+			has_country_flag = rossiskiy_kalyforniya
+			NOT = { has_country_flag = proposed_us_alliance_rus }
+		}
+
+		allow = {
+			war = no
+			NOT = { truce_with = ENG }
+			money = 200000
+			owns = 3366
+			84 = { owned_by = RUS }
+			89 = { owned_by = RUS }
+			#NOT = { year = 1846 }
+		}
+
+		effect = {
+			RUS = { set_country_flag = proposed_us_alliance_rus }
+			USA = { country_event = 500118 days = 7 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+	
+	#ding dong the witch is dead
+	rus_split_north_america_successfully = {
+		picture = apply_for_USA_statehood
+		potential = {
+			tag = RUS
+			is_greater_power = yes
+			has_country_flag = USA_RUS_Canada_COOP
+			NOT = {
+				has_global_flag = RUS_pacific_achieved
+				has_global_flag = RUS_pacific_fail
+			}
+		}
+
+		allow = {
+			truce_with = ENG
+			has_recently_lost_war = no
+			ENG = {
+				truce_with = RUS
+				is_disarmed = yes
+			}
+		}
+
+		effect = {
+			prestige = 30
+			badboy = 10
+			set_global_flag = RUS_pacific_achieved
+			any_pop = {
+				limit = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -3
+				consciousness = -3
+			}
+			ENG = {
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = LSK
+							is_core = CAL
+						}
+					}
+					remove_core = ENG
+					secede_province = RUS
+				}
+				country_event = 500121
+			}
+			USA = {
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = LSK
+							is_core = CAL
+						}
+					}
+					remove_core = USA
+					add_core = RUS
+					secede_province = RUS
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 }

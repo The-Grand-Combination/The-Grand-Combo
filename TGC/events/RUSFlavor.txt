@@ -3245,6 +3245,7 @@ country_event = {
 			}
 
 			ai_chance = { factor = 0.95 }
+			TUR = { country_event = { id = 500125 days = 7 } }
 		}
 
 		option = {
@@ -3525,6 +3526,25 @@ country_event = {
 					25 = { reduce_pop = 0.3 }
 				}
 			}
+			
+			any_pop = {
+			limit = {
+				has_pop_religion = sunni
+				OR = {
+					has_pop_culture = lezgins
+					has_pop_culture = dargins
+					has_pop_culture = avars
+					
+				}
+			}
+			militancy = 9
+			random_list = {
+				25 = { reduce_pop = 0.55 }
+				25 = { reduce_pop = 0.65 }
+				25 = { reduce_pop = 0.75 }
+				25 = { reduce_pop = 0.76 }
+	 	    	}
+		    }
 			any_owned = {
 				limit = { OR = { is_core = DAG is_core = CHY } }
 				add_province_modifier = { name = population_resettlement duration = 1825 }
@@ -3533,6 +3553,15 @@ country_event = {
 				limit = { is_core = CIR }
 				add_province_modifier = { name = population_resettlement duration = 720 }
 			}
+			ai_chance = { factor = 0.95 }
+		}
+		
+		option = {
+			name = "EVTOPTB325104"
+			set_global_flag = dagestani_caucasian_war_ended
+			badboy = -3
+			#somethingsomething TODO
+			ai_chance = { factor = 0.05 }
 		}
 	}
 
@@ -4202,4 +4231,577 @@ country_event = {
 				add_province_modifier = { name = drained_marsh duration = -1 }
 			}
 		}
+    }
+	
+	#Russian Pacific Expansion Events
+	#Magnificent Tsar, would you like to hug the Pacific Ocean?
+    country_event = {
+	id = 500114
+	title = "EVTNAME500114"
+	desc = "EVTDESC500114"
+	picture = "russian_pacific_ambition"
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = RUS
+		war = no
+		NOT = {
+			has_country_flag = russian_america_ambition
+			has_country_flag = no_russian_america_ambition
+		}
+		year = 1838
+		NOT = { year = 1845 }
 	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	option = {
+		name = "EVTOPTA500114" #We should revive it
+		#badboy = 5 #redo infamy
+		prestige = 15
+		set_country_flag = russian_america_ambition
+		any_pop = { dominant_issue = { factor = 0.10 value = jingoism } }
+		relation = { who = MEX value = -75 }
+		relation = { who = USA value = -50 }
+		relation = { who = ENG value = -75 }
+		ai_chance = { factor = 0.1 }
+	}
+
+	option = {
+		name = "EVTOPTB500114" #Useless 
+        prestige = -5
+		badboy = -1
+		set_country_flag = no_russian_america_ambition
+		ai_chance = { factor = 99 }
+	}
+}
+
+## Demand California ##
+#Todo Localization
+	country_event = {
+
+		id = 500115
+		title = "EVTNAME7790003"
+		desc = "EVTDESC7790003"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA7790001"
+
+			FROM = { country_event = 500116 }
+			prestige = 10
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+				consciousness = -1
+				militancy = -1
+			}
+
+			ai_chance = { factor = 100 }
+		}
+
+		option = {
+			name = "EVTOPTB7790001"
+
+			badboy = -2
+			prestige = -15
+			any_pop = {
+				limit = {
+					OR = {
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+				}
+				consciousness = 5
+				militancy = 5
+			}
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+				consciousness = 3
+				militancy = 3
+			}
+			FROM = { country_event = 500117 } #TODO
+
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	country_event = {
+
+		id = 500116 #Mexico says no
+		title = "EVTNAME7790004"
+		desc = "EVTDESC7790004"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA7790004"
+
+			set_country_flag = war_for_california
+			relation = { who = MEX value = -400 }
+			MEX_94 = { add_core = CAL } # Nevada
+		MEX_97 = { add_core = CAL } # Utah
+		MEX_100 = { add_core = CAL }
+		#USA_111 = { add_core = CAL } # Wyoming
+		2137 = { add_core = CAL } # Sonora prov
+		MEX_2139 = { add_core = CAL } # Baja California
+		38 = { add_core = CAL }
+		108 = { add_core = CAL }
+		109 = { add_core = CAL }
+		110 = { add_core = CAL }
+		135 = { add_core = CAL }
+		2148 = { add_core = CAL }
+		2662 = { add_core = CAL }
+			casus_belli = {
+				target = MEX
+				type = cut_down_to_size
+				months = 12
+			}
+			war = {
+				target = MEX
+				attacker_goal = { casus_belli = cut_down_to_size }
+				defender_goal = { casus_belli = status_quo }
+				call_ally = yes
+			}
+		}
+
+		option = {
+			name = "EVTOPTB7790004"
+
+			prestige = -25
+			badboy = -5
+			set_country_flag = no_russian_america_ambition
+			clr_country_flag = russian_america_ambition
+		}
+	}
+
+	country_event = { #TODO
+		id = 500117 #Mexico says.. yes?
+		title = "EVTNAME7790005"
+		desc = "EVTDESC36625"
+		picture = "election_polls"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA7790005"
+
+			badboy = 5
+			#oh, madon'
+		}
+	}
+	
+	
+	#Russian offer to the US
+		country_event = {
+			id = 500118
+			title = EVTNAME72749
+			desc = EVTDESC72749
+			picture = "boer_war"
+			is_triggered_only = yes
+
+			option = {
+			name = EVTOPTA72749 #yes
+            RUS = { set_country_flag = USA_RUS_Canada_COOP }
+			create_alliance = RUS
+			relation = { who = RUS value = 200 }
+			badboy = 15
+			add_accepted_culture = anglo_canadian
+			CAN = { all_core = { add_core = USA } } # Canada
+			MRU = { all_core = { add_core = USA } } # Maritime Union
+			ENG_22 = { add_core = USA } # Alberta
+			ENG_30 = { add_core = USA } # Saskatchewan
+			ENG_36 = { add_core = USA } # Manitoba
+			CAN_46 = { add_core = USA } # Southern Ontario
+			CAN_50 = { add_core = USA } # Northern Ontario
+			CAN_58 = { add_core = USA } # Southern Quebec
+			CAN_60 = { add_core = USA } # Northern Quebec
+			ENG_68 = { add_core = USA } # New Brunswick
+			ENG_74 = { add_core = USA } # Newfoundland
+			ENG_75 = { add_core = USA } # Labrador
+			ENG_28 = { add_core = USA } # Arctic Archipelago
+			#RUS
+			ENG_6 = { add_core = LSK } # Yukon
+			#ENG_9 = { add_core = LSK } # Northwest Territories
+			USA_78 = { remove_core = USA add_core = LSK } # Washington
+			CAN_13 = { remove_core = USA add_core = LSK } # British Columbia
+			USA_81 = { remove_core = USA add_core = CAL } # Oregon
+		    USA_91 = { remove_core = USA add_core = CAL } # Idaho
+			115 = { remove_core = USA add_core = CAL }
+			114 = { remove_core = USA add_core = CAL }
+			113 = { remove_core = USA add_core = CAL }
+			111 = { remove_core = USA add_core = CAL }
+			77 = { remove_core = USA } # San Pierre et Miquelon
+			ENG = { country_event = { id = 500119 days = 10 } }
+			relation = { who = ENG value = -200 }
+		
+		ai_chance = { factor = 60 }
+			}
+			
+			option = {
+			name = "We will pass."
+            #set_country_flag = USA_RUS_Canada_COOP
+			relation = { who = RUS value = -100 }
+			relation = { who = ENG value = 100 }
+			RUS = { country_event = { id = 500120 days = 7 } }
+		
+		ai_chance = { factor = 40 }
+			}
+			
+		}
+		
+		#UK notified
+		country_event = {
+			id = 500119
+			title = "EVTNAME72749"
+			desc = "EVTDESC72749"
+			picture = "boer_war"
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA72749
+
+				any_country = {
+					limit = {
+						vassal_of = THIS
+						OR = {
+							tag = CAN # Canada
+							tag = COL # Columbia
+							tag = RPL # Rupert's Land
+							tag = MRU # Maritime Union
+							tag = QUE # Quebec
+							tag = NEW # Newfoundland
+							tag = MTC # Metis Confederacy
+						}
+					}
+					annex_to = THIS
+				}
+				MTC = { annex_to = ENG }
+				RPL = { all_core = { remove_core = RPL } }
+
+				any_owned = {
+					limit = {
+						OR = {
+							region = ENG_9
+							region = CAN_13
+							region = ENG_22
+							region = ENG_30
+							region = ENG_36
+							region = CAN_46
+							region = CAN_50
+							region = CAN_58
+							region = CAN_60
+							region = ENG_68
+							region = ENG_74
+						}
+					}
+					add_core = ENG add_core = CAN
+				}
+				war = {
+					target = RUS
+					attacker_goal = { casus_belli = cut_down_to_size }
+					defender_goal = { casus_belli = cut_down_to_size }
+					call_ally = yes
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
+		
+	#USA says no
+		country_event = {
+			id = 500120
+			title = "EVTNAME72740"
+			desc = "EVTDESC72740"
+			major = yes
+			is_triggered_only = yes
+
+			option = {
+				name = "They said no."
+				prestige = -5
+			}
+		}
+		
+		country_event = {
+			id = 500121
+			title = "EVTNAME72740"
+			desc = "EVTDESC72740"
+			major = yes
+			is_triggered_only = yes
+
+			option = {
+				name = "We have lost Canada!"
+				prestige = -30
+				any_owned = {
+					limit = {		
+							is_core = USA
+					}
+					remove_core = THIS
+					secede_province = USA
+				}
+			}
+		}
+		country_event = {
+			id = 500122
+			title = "EVTNAME72740"
+			desc = "EVTDESC72740"
+			is_triggered_only = yes
+
+			option = {
+				name = "Promises Made, Promises kept"
+				prestige = 2
+			any_owned = {
+				limit = {
+				    is_core = CAL
+					has_pop_type = serfs
+					has_pop_type = labourers
+				}
+				any_pop = { limit = { type = serfs } pop_type = labourers }
+			}
+			any_owned = {
+				limit = {
+				     is_core = CAL
+					has_pop_type = serfs
+					has_pop_type = farmers
+				}
+				any_pop = { limit = { type = serfs } pop_type = farmers }
+			}	
+		    any_pop = {
+				limit = {
+					location = { is_core = CAL }
+					OR = {
+					culture = russian
+					culture = byelorussian
+					culture = ukrainian
+					}
+				}
+				militancy = -10
+				consciousness = -10
+			}
+			}
+		}
+		
+		#Crimean Tatars migrate to Ottoman Empire after the Crimean War
+		country_event = {
+			id = 500123
+			title = "Tatar Exodus"
+            desc = "EVTDESC500123"
+			picture = "crimean_war_ships"
+			is_triggered_only = yes
+ 
+			option = {
+				name = "Peace upon you, Tatar akhis."
+				prestige = 2
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = TUR_806 # Northern Macedonia
+		             region = TUR_809 # Eastern Rumelia
+		             region = TUR_810 # Northern Bulgaria
+		             region = TUR_811 # Western Bulgaria
+		             region = TUR_674 # Dobrudja
+					 region = TUR_802 # Kosovo
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+				    OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+				}
+				reduce_pop = 1.15
+			    }
+				any_pop = {
+				limit = {
+					is_state_religion = no
+				     }
+				militancy = 2
+			    }
+		        }
+			
+			    any_owned = {
+			    limit = {
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+				}
+				reduce_pop = 1.05
+			    }
+		        }
+			 
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = TUR_806 # Northern Macedonia
+		             region = TUR_809 # Eastern Rumelia
+		             region = TUR_810 # Northern Bulgaria
+		             region = TUR_811 # Western Bulgaria
+		             region = TUR_674 # Dobrudja
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+					OR = {
+						pop_type = officers
+						pop_type = soldiers
+					}
+				}
+				reduce_pop = 1.5
+			    }
+		        }
+			
+			}
+		}
+		
+		#Tatar Emigration
+		country_event = {
+			id = 500124
+			title = "Crimean Tatars Flee"
+            desc = "EVTDESC500123"
+			picture = "crimean_war_ships"
+			
+			fire_only_once = yes
+			
+			trigger = {
+			tag = RUS
+			has_global_flag = crimea_has_happened
+			owns = 967
+			year = 1850
+		    }
+			
+			option = {
+				name = "Khorosho."
+				prestige = -2
+				badboy = 1
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = RUS_964 # Crimea
+		             region = RUS_968 # Kherson
+		             region = RUS_973 # Tavrida
+					}
+				}
+			    any_pop = {
+				limit = {
+					has_pop_culture = tatar
+				}
+				reduce_pop = 0.4
+			    }
+		        }
+			TUR = { country_event = { id = 500123 days = 7 } }
+			}
+		}
+	
+	#Circassian Emigration/Expulsion to OE triggered by Genocide in the Caucasus
+	#Represented by enlarging turkish culture numbers on account of game engine limitations (move_pop merging sucks)
+		country_event = {
+			id = 500125
+			title = "Circassian Refugees have reached our Shores"
+			desc = "EVTDESC500125"
+			picture = "crimean_war_ships"
+			is_triggered_only = yes
+ 
+			option = {
+				name = "Selamun aleykum, Circassian akhis."
+				prestige = 2
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = TUR_806 # Northern Macedonia
+		             region = TUR_809 # Eastern Rumelia
+		             region = TUR_810 # Northern Bulgaria
+		             region = TUR_811 # Western Bulgaria
+		             region = TUR_674 # Dobrudja
+					 region = TUR_802 # Kosovo
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					has_pop_culture = turkish
+				}
+				reduce_pop = 1.06
+			    }
+				any_pop = {
+				limit = {
+					is_state_religion = no
+				     }
+				militancy = 3
+			    }
+		        }
+			
+			    any_owned = {
+			    limit = {
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					 region = TUR_873 #konya
+					 province_id = 883
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					has_pop_culture = turkish
+				}
+				reduce_pop = 1.25
+			    }
+		        }
+				
+				any_owned = {
+			    limit = {
+			        OR = {
+					 #Middle East
+					 province_id = 923
+					 province_id = 909
+					 province_id = 908
+					 province_id = 902
+					 province_id = 897
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					has_pop_culture = turkish
+				}
+				reduce_pop = 2
+			    }
+		        }
+			
+			}
+		}
+	
