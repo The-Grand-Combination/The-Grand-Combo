@@ -27,6 +27,8 @@ political_decisions = {
 			set_country_flag = secularized_muslim_society
 			add_country_modifier = { name = tanzimat_land_reform duration = 365 }
 			remove_country_modifier = ottoman_oppression
+			remove_country_modifier = jizya
+			clr_country_flag = umar_pact
 			political_reform = open_borders
 			political_reform = unitary
 			political_reform = exploitation
@@ -1952,17 +1954,17 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-		secularize_society = {
+	secularize_society = {
 		picture = the_holy_city
 		potential = {
-			NOT = { has_country_flag = secularized_muslim_society }
-			civilized = yes
 			OR = {
 				has_country_flag = sunni_country
 				has_country_flag = shiite_country
 				has_country_flag = ibadi_country
 				has_country_flag = bektashi_country
 			}
+			civilized = yes
+			NOT = { has_country_flag = secularized_muslim_society }
 		}
 
 		allow = {
@@ -1987,6 +1989,8 @@ political_decisions = {
 		effect = {
 			set_country_flag = secularized_muslim_society
 			prestige_factor = -0.2
+			remove_country_modifier = jizya
+			clr_country_flag = umar_pact
 			any_pop = {
 				limit = { is_state_religion = yes }
 					consciousness = 3
@@ -2857,6 +2861,71 @@ claim_bahrain_qatar_peninsula = {
 				NOT = {
 					tag = POR
 				}
+			}
+		}
+	}
+
+	abolish_umar_pact = {
+		picture = pact_of_umar_picture
+		potential = {
+			has_country_flag = umar_pact
+			OR = {
+				has_country_flag = sunni_country
+				has_country_flag = shiite_country
+				has_country_flag = ibadi_country
+				has_country_flag = bektashi_country
+			}
+		}
+
+		allow = {
+			state_n_government = 1
+		}
+
+		effect = {
+			badboy = 5
+			remove_country_modifier = jizya
+			clr_country_flag = umar_pact
+			any_pop = {
+				limit = { is_state_religion = no }
+				militancy = 3
+				consciousness = 6
+			}
+			any_country = {
+				limit = {
+					exists = yes
+					NOT = {
+						has_country_flag = sunni_country
+						has_country_flag = shiite_country
+						has_country_flag = ibadi_country
+						has_country_flag = bektashi_country
+					}
+				}
+				relation = { who = THIS value = -50 }
+			}
+			any_country = {
+				limit = {
+					exists = yes
+					has_country_flag = umar_pact
+					OR = {
+						has_country_flag = sunni_country
+						has_country_flag = shiite_country
+						has_country_flag = ibadi_country
+						has_country_flag = bektashi_country
+					}
+				}
+				relation = { who = THIS value = -25 }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { has_country_modifier = malevolent_ai }
+			}
+			modifier = {
+				factor = 0
+				badboy = 0.5
 			}
 		}
 	}
