@@ -1,5 +1,42 @@
 political_decisions = {
 
+	## Multiplayer Setup ##
+
+		setup_claim_host = {
+			picture = cogs_red
+			potential = {
+				ai = no
+				has_global_flag = multi_player_game
+				NOT = { has_global_flag = host_already_set }
+			}
+
+			allow = { }
+
+			effect = {
+				set_global_flag = host_already_set
+				any_country = { clr_country_flag = multi_player_host }
+				set_country_flag = multi_player_host
+			}
+		}
+
+		setup_renounce_host = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				has_country_flag = multi_player_host
+				NOT = { year = 1837 } # Irrelevant after this since Options can only be taken in the first year
+			}
+
+			allow = { }
+
+			effect = {
+				clr_country_flag = multi_player_host
+				clr_global_flag = host_already_set
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
 	## Decisions relate to the startup options - All start 'option_'
 
 		#Shows Options
@@ -2167,35 +2204,24 @@ political_decisions = {
 					}
 
 					1493 = {
-						add_province_modifier = {
-							name = canton_system
-							duration = -1
-						}
-						add_province_modifier = {
-							name = "foreign_smugglers"
-							duration = -1
-						}
-						add_province_modifier = {
-							name = local_opium_habit
-							duration = -1
-						}
+						add_province_modifier = { name = canton_system duration = -1 }
+						add_province_modifier = { name = "foreign_smugglers" duration = -1 }
+						add_province_modifier = { name = local_opium_habit duration = -1 }
 					}
 
-					##Korea iron debuff
+				## Korea iron debuff ##
 					KOR = {
-					any_owned = {
+						any_owned = {
 							limit = {
 								OR = {
-								produces = iron
+									produces = iron
 									produces = coal
 								}
 							}
-							add_province_modifier = {
-								name = bad_iron
-								duration = 23000
-							}
+							add_province_modifier = { name = bad_iron duration = 23000 }
 						}
 					}
+
 				## Ethiopia Setup ##
 					any_country = {
 						limit = {
@@ -2643,10 +2669,22 @@ political_decisions = {
 				#	add_country_modifier = { name = jizya duration = -1 }
 				#}
 
-			any_country = {
-				limit = { ai = no }
-				country_event = 10000000
-			}
+			## Multiplayer Setup ##
+
+				random_country = {
+					limit = { ai = no }
+					set_country_flag = player
+				}
+
+				random_country = {
+					limit = { ai = no NOT = { has_country_flag = player } }
+					set_global_flag = multi_player_game
+				}
+
+				random_owned = {
+					limit = { NOT = { has_global_flag = multi_player_game } }
+					set_global_flag = single_player_game
+				}
 		}
 	}
 }
