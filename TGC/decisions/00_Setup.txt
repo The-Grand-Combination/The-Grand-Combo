@@ -1,5 +1,42 @@
 political_decisions = {
 
+	## Multiplayer Setup ##
+
+		setup_claim_host = {
+			picture = cogs_red
+			potential = {
+				ai = no
+				has_global_flag = multi_player_game
+				NOT = { has_global_flag = host_already_set }
+			}
+
+			allow = { }
+
+			effect = {
+				set_global_flag = host_already_set
+				any_country = { clr_country_flag = multi_player_host }
+				set_country_flag = multi_player_host
+			}
+		}
+
+		setup_renounce_host = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				has_country_flag = multi_player_host
+				NOT = { year = 1837 } # Irrelevant after this since Options can only be taken in the first year
+			}
+
+			allow = { }
+
+			effect = {
+				clr_country_flag = multi_player_host
+				clr_global_flag = host_already_set
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
 	## Decisions relate to the startup options - All start 'option_'
 
 		#Shows Options
@@ -2119,6 +2156,8 @@ political_decisions = {
 				## Qing Setup ##
 					QNG = {
 						add_country_modifier = { name = corrupt_army duration = 10950 }
+						add_country_modifier = { name = lean_stomachs duration = 8000 }
+						add_country_modifier = { name = inefficient_farming duration = 14600 }
 						add_country_modifier = { name = global_baby_boom duration = 1065 }
 						add_country_modifier = { name = uncivilized_isolationism duration = -1 }
 						remove_country_modifier = western_influences
@@ -2167,35 +2206,24 @@ political_decisions = {
 					}
 
 					1493 = {
-						add_province_modifier = {
-							name = canton_system
-							duration = -1
-						}
-						add_province_modifier = {
-							name = "foreign_smugglers"
-							duration = -1
-						}
-						add_province_modifier = {
-							name = local_opium_habit
-							duration = -1
-						}
+						add_province_modifier = { name = canton_system duration = -1 }
+						add_province_modifier = { name = "foreign_smugglers" duration = -1 }
+						add_province_modifier = { name = local_opium_habit duration = -1 }
 					}
 
-					##Korea iron debuff
+				## Korea iron debuff ##
 					KOR = {
-					any_owned = {
+						any_owned = {
 							limit = {
 								OR = {
-								produces = iron
+									produces = iron
 									produces = coal
 								}
 							}
-							add_province_modifier = {
-								name = bad_iron
-								duration = 23000
-							}
+							add_province_modifier = { name = bad_iron duration = 23000 }
 						}
 					}
+
 				## Ethiopia Setup ##
 					any_country = {
 						limit = {
@@ -2287,6 +2315,17 @@ political_decisions = {
 					any_greater_power = {
 						limit = { NOT = { tag = PRU } }
 						diplomatic_influence = { who = NCT value = -400 }
+					}
+
+				## African Minors Influence ##
+
+					any_country = {
+						limit = {
+							exists = yes
+							is_greater_power = yes
+						}
+						diplomatic_influence = { who = GAZ value = -400 }
+						diplomatic_influence = { who = AGC value = -400 }
 					}
 
 			### Uncivs ###
@@ -2541,15 +2580,6 @@ political_decisions = {
 
 			## To be implemented ##
 
-				#any_country = {
-				#	limit = {
-				#		exists = yes
-				#		is_greater_power = yes
-				#	}
-				#	diplomatic_influence = { who = GAZ value = -400 }
-				#	diplomatic_influence = { who = AGC value = -400 }
-				#}
-
 				## AI Personalities
 				#any_country = {
 				#	limit = {
@@ -2599,54 +2629,68 @@ political_decisions = {
 				#}
 
 				# HPM Muslim Mechanics
-				#any_country = {
-				#	limit = {
-				#		OR = {
-				#			has_country_flag = sunni_country
-				#			has_country_flag = shiite_country
-				#			has_country_flag = ibadi_country
-				#		}
-				#	}
-				#	set_country_flag = umar_pact
-				#}
+				any_country = {
+					limit = {
+						OR = {
+							has_country_flag = sunni_country
+							has_country_flag = shiite_country
+							has_country_flag = ibadi_country
+							has_country_flag = bektashi_country
+						}
+					}
+					set_country_flag = umar_pact
+				}
 
-				#any_country = {
-				#	limit = {
-				#		exists = yes
-				#		OR = {
-				#			has_country_flag = sunni_country
-				#			has_country_flag = shiite_country
-				#			has_country_flag = ibadi_country
-				#		}
-				#		any_owned_province = {
-				#			any_pop = {
-				#				OR = {
-				#					has_pop_religion = catholic
-				#					has_pop_religion = protestant
-				#					has_pop_religion = mormon
-				#					has_pop_religion = orthodox
-				#					has_pop_religion = coptic
-				#					has_pop_religion = druze
-				#					has_pop_religion = jewish
-				#					has_pop_religion = yazidi
-				#					has_pop_religion = mahayana
-				#					has_pop_religion = gelugpa
-				#					has_pop_religion = theravada
-				#					has_pop_religion = hindu
-				#					has_pop_religion = shinto
-				#					has_pop_religion = sikh
-				#					has_pop_religion = animist
-				#				}
-				#			}
-				#		}
-				#	}
-				#	add_country_modifier = { name = jizya duration = -1 }
-				#}
+				any_country = {
+					limit = {
+						OR = {
+							has_country_flag = sunni_country
+							has_country_flag = shiite_country
+							has_country_flag = ibadi_country
+							has_country_flag = bektashi_country
+						}
+						exists = yes
+						any_owned_province = {
+							any_pop = {
+								OR = { # TODO maybe exclusionary filter rather than inclusionary?
+									has_pop_religion = catholic
+									has_pop_religion = protestant
+									has_pop_religion = mormon
+									has_pop_religion = orthodox
+									has_pop_religion = coptic
+									has_pop_religion = druze
+									has_pop_religion = jewish
+									has_pop_religion = yazidi
+									has_pop_religion = mahayana
+									has_pop_religion = gelugpa
+									has_pop_religion = theravada
+									has_pop_religion = hindu
+									has_pop_religion = shinto
+									has_pop_religion = sikh
+									has_pop_religion = animist
+								}
+							}
+						}
+					}
+					add_country_modifier = { name = jizya duration = -1 }
+				}
 
-			any_country = {
-				limit = { ai = no }
-				country_event = 10000000
-			}
+			## Multiplayer Setup ##
+
+				random_country = {
+					limit = { ai = no }
+					set_country_flag = player
+				}
+
+				random_country = {
+					limit = { ai = no NOT = { has_country_flag = player } }
+					set_global_flag = multi_player_game
+				}
+
+				random_owned = {
+					limit = { NOT = { has_global_flag = multi_player_game } }
+					set_global_flag = single_player_game
+				}
 		}
 	}
 }
