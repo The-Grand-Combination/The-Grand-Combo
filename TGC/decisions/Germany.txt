@@ -769,9 +769,11 @@ political_decisions = {
 	ems_dispatch = {
 		picture = ems_dispatch
 		potential = {
-			NOT = { has_country_flag = ems_dispatch_sent }
+			OR = {
+				tag = PRU
+				tag = NGF
+			}
 			is_greater_power = yes
-			tag = NGF
 			OR = {
 				government = absolute_monarchy
 				government = prussian_constitutionalism
@@ -785,6 +787,7 @@ political_decisions = {
 					year = 1865
 				}
 			}
+			NOT = { has_country_flag = ems_dispatch_sent }
 		}
 
 		allow = {
@@ -867,14 +870,14 @@ political_decisions = {
 	construct_germania_werft = {
 		picture = construct_germania_werft
 		potential = {
-			NOT = { has_global_flag = germania_werft_has_been_built }
+			owns = 369
 			OR = {
 				tag = PRU
 				tag = GER
 				#tag = GCF
 				tag = NGF
 			}
-			owns = 369
+			NOT = { has_global_flag = germania_werft_has_been_built }
 		}
 
 		allow = {
@@ -889,9 +892,7 @@ political_decisions = {
 			random_owned = {
 				limit = {
 					province_id = 369
-					state_scope = {
-						NOT = { has_building = aeroplane_factory }
-					}
+					state_scope = { NOT = { has_building = aeroplane_factory } }
 				}
 				owner = {
 					capital = 369
@@ -899,10 +900,7 @@ political_decisions = {
 				}
 				369 = {
 					naval_base = 5
-					add_province_modifier = {
-						name = germania_werft
-						duration = -1
-					}
+					add_province_modifier = { name = germania_werft duration = -1 }
 				}
 			}
 			random_owned = {
@@ -1419,12 +1417,7 @@ political_decisions = {
 
 		effect = {
 			prestige = 5
-			602 = {
-				add_province_modifier = {
-					name = the_walhalla
-					duration = -1
-				}
-			}
+			602 = { add_province_modifier = { name = the_walhalla duration = -1 } } # TODO triggered modifier or repeatable
 			set_global_flag = the_walhalla_is_built
 		}
 	}
@@ -2501,6 +2494,34 @@ political_decisions = {
 			1962 = { secede_province = THIS any_pop = { literacy = -0.99 } }
 			1963 = { secede_province = THIS any_pop = { literacy = -0.99 } }
 			1964 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Core Heligoland
+	core_heligoland = {
+		picture = the_heligoland_question
+		potential = {
+			owns = 533
+			OR = {
+				primary_culture = north_german
+				primary_culture = south_german
+			}
+			533 = { NOT = { is_core = GER } }
+			NOT = { has_global_flag = heligoland_claimed }
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			set_global_flag = heligoland_claimed
+			533 = {
+				remove_core = ENG
+				add_core = GER
+			}
 		}
 
 		ai_will_do = { factor = 1 }
