@@ -42,6 +42,7 @@ TGC was made possible by the below developers and mods:
 * u/YLEK111 or kstar234 - Hearts of Ideologies
 * Kspeher - GEF
 * MaTi - GreenUI
+* Guy from the Land of Phillip II - Localized Country Endonyms Submod
 * many others
 
 TGC Developers:
@@ -62,6 +63,7 @@ TGC Developers:
 * Fraggy
 * champfish
 * ColdSlav
+* emprahtheodosius
 
 ## Discord
 

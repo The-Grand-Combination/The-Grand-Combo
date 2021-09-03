@@ -151,7 +151,13 @@ political_decisions = {
 		picture = sign_the_geneva_convention
 		potential = {
 			part_of_sphere = yes
-			is_vassal = no
+			OR = {
+				is_vassal = no
+				AND = {
+					ai = yes
+					has_country_flag = failed_unification_remove_from_sphere # TODO port other effects from HPM
+				}
+			}
 		}
 
 		allow = {
@@ -166,11 +172,25 @@ political_decisions = {
 						}
 					}
 				}
+				AND = {
+					ai = yes
+					has_country_flag = failed_unification_remove_from_sphere
+				}
 			}
 		}
 
 		effect = {
-			sphere_owner = { country_event = 13202 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = failed_unification_remove_from_sphere } } }
+				owner = { sphere_owner = { country_event = 13202 } }
+			}
+			random_owned = {
+				limit = { owner = { has_country_flag = failed_unification_remove_from_sphere } }
+				owner = {
+					clr_country_flag = failed_unification_remove_from_sphere
+					sphere_owner = { diplomatic_influence = { who = THIS value = -200 } }
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -179,7 +199,10 @@ political_decisions = {
 			# Ai will do, if sphere owner has LESS than thrice our brigades.
 			modifier = {
 				factor = 0
-				NOT = { total_pops = 50000000 }
+				NOT = {
+					total_pops = 50000000
+					has_country_flag = failed_unification_remove_from_sphere
+				}
 				sphere_owner = {
 					# Factor = (sphere_owner regiments) / (our regiments).
 					# Returns true if( factor >= x ).
@@ -196,6 +219,7 @@ political_decisions = {
 		potential = {
 			can_nationalize = yes
 			civilized = yes
+            NOT = { has_country_modifier = nationalization_in_progress }
 		}
 
 		allow = {
@@ -244,6 +268,7 @@ political_decisions = {
 		}
 
 		effect = {
+            add_country_modifier = { name = nationalization_in_progress duration = 365 }
 			nationalize = yes
 		}
 

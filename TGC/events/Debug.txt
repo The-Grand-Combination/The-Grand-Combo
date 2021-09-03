@@ -46,7 +46,6 @@
 			social_reform = good_health_care
 			social_reform = good_schools
 			nationalvalue = nv_liberty
-			add_country_modifier = { name = the_statue_of_liberty duration = -1 }
 			add_country_modifier = { name = the_homestead_act duration = -1 }
 		}
 	}
@@ -323,73 +322,5 @@
 					secede_province = QQQ
 				}
 			}
-		}
-	}
-
-## Setup ##
-
-	#Description: Setup Event - Sets flags for option decisions at game start
-	country_event = {
-		id = 10000000
-		title = "EVTNAME10000000"
-		desc = "EVTDESC10000000"
-		picture = "TGC_logo"
-
-		is_triggered_only = yes
-
-		#Singleplayer
-		option = {
-			name = "EVTOPTA10000000"
-
-			## If more than one country selects single-player the game will automatically become multi-player
-			clr_country_flag = single_player_already_set
-			random_country = {
-				limit = { has_global_flag = single_player_game }
-				THIS = { set_country_flag = single_player_already_set }
-			}
-			random_owned = {
-				limit = { owner = { has_country_flag = single_player_already_set } }
-				THIS = {
-					set_global_flag = multi_player_game
-					clr_global_flag = single_player_game
-				}
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = single_player_already_set } } }
-				THIS = { set_global_flag = single_player_game }
-			}
-
-			set_global_flag = single_player_game
-
-			ai_chance = { factor = 0 }
-		}
-
-		#Multiplayer - Host
-		option = {
-			name = "EVTOPTB10000000"
-
-			set_global_flag = multi_player_game
-
-			## If multiplayer host is already set this won't set another one
-			clr_country_flag = host_already_exists
-			random_country = {
-				limit = { has_country_flag = multi_player_host }
-				THIS = { set_country_flag = host_already_exists }
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = host_already_exists } } }
-				THIS = { set_country_flag = multi_player_host }
-			}
-
-			ai_chance = { factor = 0 }
-		}
-
-		#Multiplayer - Standard
-		option = {
-			name = "EVTOPTC10000000"
-
-			set_global_flag = multi_player_game
-
-			ai_chance = { factor = 1 }
 		}
 	}
