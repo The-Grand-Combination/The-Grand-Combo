@@ -304,7 +304,7 @@ country_event = {
 	}
 }
 
-#Tailor for Italy TODO
+#Tailor for Italy TODO localiz
 country_event = {
 	id = 97513 #Sardinia/Italy
 	title = "EVTNAME97505" #
@@ -318,7 +318,7 @@ country_event = {
 		tag = SAR
 		tag = ITA
 		}
-		#is_greater_power = yes
+		primary_culture = north_italian
 		has_global_flag = france_protector_of_eastern_christians
 		NOT = {
 			war_with = RUS
@@ -334,13 +334,13 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTA97506"
+		name = "Refuse to participate"
 		prestige = -10
 		diplomatic_influence = { who = TUR value = -50 }
 		diplomatic_influence = { who = FRA value = -50 }
 		relation = { who = RUS value = 50 }
 		ai_chance = {
-			factor = 25
+			factor = 15
 			modifier = {
 				factor = 2
 				NOT = {
@@ -355,22 +355,133 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTB97506"
+		name = "Simp for the French and join the Coalition"
 		set_country_flag = sardinia_joins_the_french
 		prestige = 5
 		diplomatic_influence = { who = TUR value = 100 }
-		relation = { who = TUR value = 100 }
+		relation = { who = TUR value = 200 }
 		relation = { who = FRA value = 200 }
 		relation = { who = ENG value = 100 }
 		relation = { who = RUS value = -100 }
 		leave_alliance = RUS
 		create_alliance = TUR
 		ai_chance = {
-			factor = 75
+			factor = 85
 			modifier = {
 				factor = 0.5
 				alliance_with = RUS
 			}
+		}
+	}
+}
+
+#Austria deliberates on the Crimean War
+country_event = {
+	id = 97514 #Sardinia/Italy
+	title = "EVTNAME97505" #
+	desc = "EVTDESC97506"
+	picture = "ottoman"
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = AUS
+		is_greater_power = yes
+		has_global_flag = france_protector_of_eastern_christians
+		NOT = {
+			war_with = RUS
+			war_with = TUR
+			has_global_flag = abandoned_holy_land
+			has_global_flag = treaty_of_paris_1856
+			has_global_flag = treaty_of_paris_russia
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 10
+	}
+
+	option = {
+		name = "Honour the Holy Alliance" #Honour the Holy Alliance
+		set_country_flag = austria_honours_the_holy_alliance
+		prestige = 10
+		diplomatic_influence = { who = TUR value = -100 }
+		diplomatic_influence = { who = FRA value = -50 }
+		diplomatic_influence = { who = ENG value = -50 }
+		relation = { who = RUS value = 200 }
+		create_alliance = RUS
+		RUS = { country_event = { id = 500129 days = 0 } }
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 2
+				NOT = {
+					relation = { who = TUR value = 0 }
+				}
+			}
+			#modifier = {
+			#	factor = 20
+			#	alliance_with = RUS
+			#}
+		}
+	}
+	
+	option = {
+		name = "Proclaim Neutrality" #Sit still and hope nobody notices us
+		set_country_flag = austria_stays_put
+		prestige = -5
+		diplomatic_influence = { who = TUR value = -50 }
+		relation = { who = RUS value = -50 }
+		leave_alliance = RUS
+		RUS = { country_event = { id = 500128 days = 0 } }
+		ai_chance = {
+			factor = 10
+			#modifier = { #They don't give a shit
+			#	factor = 0.5
+			#	alliance_with = RUS
+			#}
+		}
+	}
+
+	option = {
+		name = "Hostile Neutrality" #Hostile Neutrality
+		set_country_flag = austria_stays_put_but_warns_russia
+		prestige = 5
+		diplomatic_influence = { who = TUR value = 10 }
+		relation = { who = TUR value = 50 }
+		relation = { who = FRA value = 50 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -150 }
+		leave_alliance = RUS
+		RUS = { country_event = { id = 500127 days = 0 } }
+		ai_chance = {
+			factor = 80
+			#modifier = { #They don't give a shit
+			#	factor = 0.5
+			#	alliance_with = RUS
+			#}
+		}
+	}
+	
+	option = {
+		name = "Join the Coalition Outright" #Join the Coalition Outright
+		set_country_flag = austria_joins_the_allies
+		prestige = -10
+		badboy = 3
+		diplomatic_influence = { who = TUR value = 25 }
+		relation = { who = TUR value = 200 }
+		relation = { who = FRA value = 200 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -400 }
+		leave_alliance = RUS
+		create_alliance = TUR
+		RUS = { country_event = { id = 500126 days = 0 } }
+		ai_chance = {
+			factor = 10
+			#modifier = {
+			#	factor = 0.5
+			#	alliance_with = RUS
+			#}
 		}
 	}
 }
@@ -521,54 +632,27 @@ country_event = {
 		name = "EVTOPTA97512"
 		prestige = -20
 		treasury = -250000
+		#Dobruja to Russia
 		any_owned = {
 			limit = {
-				OR = {
-					province_id = 674 #Southern Dobruja to Romanians, Northern back to Russia (if they owned it)
-					province_id = 675
-					province_id = 3431
+			    OR = {
+				region = TUR_674
+				province_id = 3489
 				}
-				exists = ROM
 			}
-			secede_province = ROM
-
-				673 = { secede_province = RUS }
-				678 = { secede_province = RUS }
-
+			secede_province = RUS
 		}
+		#San Stefano desires in Caucasus/Pontus
 		any_owned = {
 			limit = {
-				OR = {
-					province_id = 674
-					province_id = 675
-					province_id = 3431
-				}
-				exists = URP
+			          OR = {
+			          region = TUR_885 
+					  province_id = 3383
+					  province_id = 856
+					  province_id = 884
+					  province_id = 882
+					  }
 			}
-			secede_province = URP
-
-				673 = { secede_province = RUS }
-				678 = { secede_province = RUS }
-
-		}
-		any_owned = {
-			limit = {
-				OR = {
-					province_id = 674
-					province_id = 675
-					province_id = 3431
-				}
-				NOT = { exists = ROM
-						exists = URP	}
-			}
-			secede_province = WAL
-
-				673 = { secede_province = RUS }
-				678 = { secede_province = RUS }
-
-		}
-		any_owned = {
-			limit = { region = TUR_885 }
 			secede_province = TCA
 		}
 
@@ -608,6 +692,51 @@ country_event = {
 			}
 			TUR = { release_vassal = MON }
 		}
+		
+		#Bosnia autonomous vilayet
+		release_vassal = BOS
+		random_owned = {
+			limit = {
+				province_id = 783
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 785
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 789
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+		}
+		BOS = {
+		primary_culture = serb
+		religion = orthodox
+		government = colonial_company
+		add_country_modifier = {
+				name = bosnian_question
+				duration = -1
+				}
+		}
 
 		# Give Bulgaria, Eastern Rumelia and Silestre to Bulgaria, free it if vassaled
 		random_country = {
@@ -617,20 +746,10 @@ country_event = {
 			}
 			TUR = { release_vassal = BUL }
 		}
+		#Creating a solution for Bulgaria a la Constantinople Conference (Western-Eastern, path to unite later) with a tablespoon of Russian dominance
 		random_owned = {
 			limit = {
-				province_id = 809 #Sofya
-				owned_by = TUR
-			}
-			state_scope = {
-				any_owned = {
-					secede_province = BUL
-				}
-			}
-		}
-		random_owned = {
-			limit = {
-				province_id = 817 #Burgas
+				province_id = 815 #Burgas
 				owned_by = TUR
 			}
 			state_scope = {
@@ -652,28 +771,66 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 818 #Silistre
+				province_id = 3387 #kirk kelisi
 				owned_by = TUR
 			}
 			secede_province = BUL
 		}
-
+		#Western Bulgaria
+		806 = { add_core = MCD }
+		813 = { remove_core = MCD }
+		822 = { remove_core = MCD }
+		release_vassal = MCD
 		random_owned = {
 			limit = {
-				province_id = 3432 #Pazarcik, southern Dobruja
+				province_id = 807 #Northern Macedonia
 				owned_by = TUR
 			}
-			secede_province = BUL
+			state_scope = {
+				any_owned = {
+					secede_province = MCD
+				}
+			}
 		}
-
+		
 		random_owned = {
 			limit = {
-				province_id = 2690 #Tophane Agreement alt-history: necessary to prevent spawning of RUM if Russia wins Crimea, but goes to the Congress that keeps OE strong
+				province_id = 809 #Sofya
 				owned_by = TUR
 			}
-			secede_province = BUL
+			state_scope = {
+				any_owned = {
+					secede_province = MCD
+				}
+			}
 		}
-
+		random_owned = {
+			limit = {
+				province_id = 805 #Southeastern Mac.
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = MCD
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 819 #kesriye
+				owned_by = TUR
+			}
+			secede_province = MCD
+		}
+		
+		random_owned = {
+			limit = {
+				province_id = 799 #Pirot
+				owned_by = TUR
+			}
+			secede_province = MCD
+		}
+		MCD = { primary_culture = bulgarian religion = orthodox government = colonial_company capital = 809 }
 		# Free Serbia if it is owned, return Nis, Leskovac
 		random_owned = {
 			limit = {
@@ -695,7 +852,21 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 799 #Leskovac
+				province_id = 347 #Mitrovica
+				owned_by = TUR
+			}
+			secede_province = SER
+		}
+		random_owned = {
+			limit = {
+				province_id = 3321 #Novi Pazar
+				owned_by = TUR
+			}
+			secede_province = SER
+		}
+		random_owned = {
+			limit = {
+				province_id = 804 #Sjenica
 				owned_by = TUR
 			}
 			secede_province = SER
@@ -755,7 +926,6 @@ country_event = {
 			limit = {
 				province_id = 824
 				owned_by = TUR
-				NOT = { exists = GRE }
 			}
 			secede_province = GRE
 		}
@@ -781,10 +951,65 @@ country_event = {
 			}
 			owner = { release_vassal = SAM }
 		}
+		
+		#Armenian 6 Vilayets - According to San Stefano treaty, there was a stipulation obliging the Ottomans to create an autonomous region with Armenian majority
+		random_owned = {
+				limit = {
+					province_id = 878
+					owned_by = TUR
+					NOT = { exists = ARM }
+				}
+				secede_province = ARM
+				TUR = { create_vassal = ARM }
+			}
+		random_owned = {
+				limit = {
+					province_id = 890
+					owned_by = TUR
+				}
+				state_scope = {
+				any_owned = {
+					secede_province = ARM
+				   }
+		    	}
+			}
+		random_owned = {
+			limit = {
+				province_id = 879 #Erzuzum
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = ARM
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 893 #Diyarbakir
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = ARM
+				}
+			}
+		}
+		
+		random_owned = {
+				limit = {
+					province_id = 878
+					owned_by = TUR
+				}
+				add_core = ARM
+				secede_province = ARM
+			}
 		FRA = {
-			prestige = -20
+			prestige = -50
 			relation = { who = RUS value = -100 }
-			leave_alliance = RUS
+			leave_alliance = TUR
+			diplomatic_influence = { who = TUR value = -200 }
+			relation = { who = TUR value = -400 }
 			casus_belli = {
 				target = RUS
 				type = take_from_sphere
@@ -802,9 +1027,12 @@ country_event = {
 				tag = ENG
 				has_country_flag = england_protecting_interests
 			}
-			prestige = -20
+			release_vassal = ION
+			prestige = -50
 			relation = { who = RUS value = -100 }
-			leave_alliance = RUS
+			leave_alliance = TUR
+			diplomatic_influence = { who = TUR value = -200 }
+			relation = { who = TUR value = -400 }
 			casus_belli = {
 				target = RUS
 				type = take_from_sphere
@@ -816,15 +1044,33 @@ country_event = {
 				months = 60
 			}
 		}
+		
+		any_country = {
+				limit = {
+				    OR = {
+					has_country_flag = sardinia_joins_the_french
+					has_country_flag = austria_joins_the_allies
+					is_greater_power = yes
+					}
+					NOT = { tag = RUS }
+				}
+				diplomatic_influence = { who = THIS value = -200 }
+				leave_alliance = TUR
+				relation = { who = TUR value = -400 }
+			}
 		RUS = {
-			military_access = TUR
-			diplomatic_influence = { who = TUR value = 100 }
-			relation = { who = TUR value = 200 }
+			diplomatic_influence = { who = TUR value = 200 }
+			relation = { who = TUR value = 400 }
 
 			relation = { who = SER value = 400 }
 			diplomatic_influence = { who = SER value = 200 }
 			create_alliance = SER
-
+			
+			relation = { who = BOS value = 400 }
+			diplomatic_influence = { who = BOS value = 200 }
+			create_alliance = BOS
+			
+            create_vassal = BUL
 			relation = { who = BUL value = 400 }
 			diplomatic_influence = { who = BUL value = 200 }
 			create_alliance = BUL
@@ -836,6 +1082,16 @@ country_event = {
 			relation = { who = ROM value = 400 }
 			diplomatic_influence = { who = ROM value = 200 }
 			create_alliance = ROM
+			
+			relation = { who = MCD value = 400 }
+			diplomatic_influence = { who = MCD value = 200 }
+			create_alliance = MCD
+			
+			relation = { who = ARM value = 400 }
+			diplomatic_influence = { who = ARM value = 200 }
+			create_alliance = ARM
+			
+			country_event = { id = 500132 days = 5 }
 		}
 		ROM = {
 			add_country_modifier = {
@@ -853,6 +1109,18 @@ country_event = {
 			}
 		}
 		GRE = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			}
+		}
+		SER = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			}
+		}
+		MON = {
 			add_country_modifier = {
 				name = nationalist_balkans
 				duration = -1

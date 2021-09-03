@@ -52,10 +52,38 @@ political_decisions = {
 			leave_alliance = FRA
 			random_country = {
 				limit = {
+					tag = AUS
+					has_country_flag = austria_honours_the_holy_alliance
+				}
+				create_alliance = THIS
+			}
+			random_country = {
+				limit = {
 					tag = ENG
 					has_country_flag = england_protecting_interests
 				}
 				diplomatic_influence = { who = TUR value = 100 }
+				create_alliance = TUR
+				leave_alliance = THIS
+			}
+			random_country = {
+				limit = {
+				    OR = {
+					tag = SAR
+					tag = ITA
+					}
+					has_country_flag = sardinia_joins_the_french
+				}
+				diplomatic_influence = { who = TUR value = 25 }
+				create_alliance = TUR
+				leave_alliance = THIS
+			}
+			random_country = {
+				limit = {
+				    tag = AUS
+					has_country_flag = austria_joins_the_allies
+				}
+				diplomatic_influence = { who = TUR value = 25 }
 				create_alliance = TUR
 				leave_alliance = THIS
 			}
@@ -80,6 +108,7 @@ political_decisions = {
 					NOT = { tag = THIS }
 					NOT = { tag = PRU }
 					NOT = { tag = NGF }
+					NOT = { tag = AUS }
 					NOT = { alliance_with = THIS }
 					capital_scope = { continent = europe }
 				}
@@ -133,7 +162,7 @@ political_decisions = {
 			prestige = 20
 			set_global_flag = treaty_of_paris_russia
 
-			badboy = 5
+			badboy = 10
 
 		#Removes Turkish Cores from the Balkans
 		TUR_674 = { remove_core = TUR } # Dobrudja
@@ -775,6 +804,41 @@ political_decisions = {
 			}
 		}
 	}
+	
+	integrate_legation_azb = {
+		picture = unite_turkestan
+		potential = {
+			primary_culture = russian
+			any_owned_province = { is_core = AZB }
+			NOT = { has_country_flag = legation_azb_integrated }
+			AZB = { civilized = no neighbour = THIS }
+			OR = {
+				has_global_flag = crimea_has_happened
+				year = 1870
+			}
+		}
+
+		allow = {
+			AZB = {
+				exists = yes
+				vassal_of = THIS
+			}
+		}
+
+		effect = {
+			set_country_flag = legation_azb_integrated 
+			inherit = AZB
+			badboy = 1.5
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.98
+			}
+		}
+	}
 
 	integrate_svaneti = {
 		picture = integrate_abkhazia
@@ -1025,6 +1089,11 @@ political_decisions = {
 				AND = {
 					consciousness = 1
 					year = 1870
+				}
+				AND = {
+					has_country_modifier = free_economic_society
+					consciousness = 2
+					has_global_flag = treaty_of_paris_russia
 				}
 			}
 		}
@@ -2688,6 +2757,14 @@ political_decisions = {
 					NOT = { industrial_score = 400 }
 					year = 1870
 				}
+				AND = {
+				    OR = {
+				    government = prussian_constitutionalism
+				    government = hms_government
+			        }
+					has_country_modifier = free_economic_society
+					year = 1860
+				}
 			}
 		}
 
@@ -2914,6 +2991,177 @@ political_decisions = {
 				owner = { 1208 = { remove_core = AFG } 208 = { remove_core = BUK } 208 = { remove_core = UZB } 1211 = { remove_core = BUK } }
 			}
 			random_owned = { limit = { owner = { NOT = { owns = 1210 } } } 1210 = { owner = { country_event = 325461 } } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	#rus domination in central asia
+	russian_ultimatum_afg = {
+		picture = george_eden
+		potential = {
+			tag = RUS
+			AFG = {
+				exists = yes
+				is_vassal = no
+				NOT = { vassal_of = ENG }
+				NOT = { vassal_of = RUS }
+			}
+			has_global_flag = russia_expands_the_great_game
+			NOT = { has_country_flag = russian_ultimatum_afg }
+		}
+
+		allow = {
+		   war = no
+		   has_recently_lost_war = no
+			ENG = {
+				war = no
+				OR = {
+				AND = {
+				has_global_flag = russia_expands_the_great_game
+				has_country_flag = british_retreat_from_persia
+				}
+				AND = {
+				has_global_flag = russia_expands_the_great_game
+				has_recently_lost_war = yes
+				truce_with = RUS 
+				}
+				}
+			}
+			AFG = {
+					neighbour = RUS
+					in_sphere = RUS
+			}
+			PER = {
+					neighbour = RUS
+					in_sphere = RUS
+			}
+		}
+
+		effect = {
+			set_country_flag = russian_ultimatum_afg
+			AFG = { country_event = { id = 500137 days = 5 } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	afgh_russian_dom = {
+		picture = treaty_of_turkmanchay
+		potential = {
+			has_country_flag = russian_ultimatum_afg
+			NOT = { has_country_flag = afg_rus_dom }
+		}
+
+		allow = {
+			war = no
+			AFG = {
+					neighbour = RUS
+					vassal_of = RUS
+					truce_with = RUS
+			}
+			AFG_1214 = { #Kunduz
+					owned_by = AFG
+			}
+			1212 = { #Kunduz
+					owned_by = AFG
+			}
+		}
+
+		effect = {
+			prestige = 5
+			badboy = 2
+			set_country_flag = afg_rus_dom
+			AFG_1214 = { secede_province = THIS }
+			1212 = { secede_province = THIS }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	russian_ultimatum_per = {
+		picture = george_eden
+		potential = {
+			tag = RUS
+			PER = {
+				exists = yes
+				is_vassal = no
+				NOT = { vassal_of = ENG }
+				NOT = { vassal_of = RUS }
+			}
+			has_country_flag = russia_expands_great_game
+			NOT = { has_country_flag = russian_ultimatum_per }
+		}
+
+		allow = {
+		   war = no
+		   has_recently_lost_war = no
+			ENG = {
+				war = no
+				OR = {
+				AND = {
+				has_global_flag = russia_expands_the_great_game
+				has_country_flag = british_retreat_from_persia
+				}
+				AND = {
+				has_global_flag = russia_expands_the_great_game
+				has_recently_lost_war = yes
+				truce_with = RUS 
+				}
+				}
+			}
+			AFG = {
+					neighbour = RUS
+					in_sphere = RUS
+			}
+			PER = {
+					neighbour = RUS
+					in_sphere = RUS
+			}
+		}
+
+		effect = {
+			set_country_flag = russian_ultimatum_per
+			PER = { country_event = { id = 500139 days = 5 } }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	per_russian_dom = {
+		picture = treaty_of_turkmanchay
+		potential = {
+			has_country_flag = russian_ultimatum_per
+			NOT = { has_country_flag = rus_per_dom }
+		}
+
+		allow = {
+			war = no
+			PER = {
+					neighbour = RUS
+					vassal_of = RUS
+					truce_with = RUS
+			}
+			PER_1116 = { #Kunduz
+			        OR = {
+					owned_by = PER
+					owned_by = RUS
+					}
+			}
+			PER_1112 = { #Kunduz
+					OR = {
+					owned_by = PER
+					owned_by = RUS
+					}
+			}
+		}
+
+		effect = {
+			prestige = 5
+			badboy = 6
+			set_country_flag = rus_per_dom
+			PER_1116 = { secede_province = THIS }
+			PER_1112 = { secede_province = THIS }
 		}
 
 		ai_will_do = { factor = 1 }
