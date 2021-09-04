@@ -2476,6 +2476,7 @@ country_event = {
 		name = "EVTOPTB9111113"
 
 		clr_country_flag = lowland_cry_for_help
+		set_country_flag = refused_to_help_lowlands
 		NET = {
 			country_event = {
 				id = 9111115
@@ -2566,20 +2567,43 @@ country_event = {
 				tag = BEL
 				exists = yes
 			}
-			GER = {
-				war = {
-					target = BEL
-					attacker_goal = { casus_belli = cut_down_to_size }
-					defender_goal = { casus_belli = cut_down_to_size }
-					call_ally = yes
-				}
-				set_country_flag = belgian_neutrality_violator
-			}
 			BEL = {
 				set_country_flag = neutrality_violated
 				remove_country_modifier = neutrality
 				relation = { who = THIS value = -200 }
 			}
+		}
+		any_country = {
+			limit = {
+				tag = BEL
+				exists = yes
+				NOT = { has_country_flag = refused_to_help_lowlands }
+			}
+			BEL = { create_alliance = NET }
+		}
+		any_country = {
+			limit = {
+				tag = ENG
+				exists = yes
+				NOT = { has_country_flag = refused_to_help_lowlands }
+			}
+			ENG = { create_alliance = NET }
+		}
+		any_country = {
+			limit = {
+				tag = FRA
+				exists = yes
+				NOT = { has_country_flag = refused_to_help_lowlands }
+			}
+			FRA = { create_alliance = NET }
+		}
+		any_country = {
+			limit = {
+				tag = RUS
+				exists = yes
+				NOT = { has_country_flag = refused_to_help_lowlands }
+			}
+			RUS = { create_alliance = NET }
 		}
 		war = {
 			target = NET
@@ -2587,13 +2611,7 @@ country_event = {
 			defender_goal = { casus_belli = cut_down_to_size }
 			call_ally = yes
 		}
-		war = {
-			target = FRA
-			attacker_goal = { casus_belli = cut_down_to_size }
-			defender_goal = { casus_belli = cut_down_to_size }
-			call_ally = yes
-		}
-		badboy = 5
+		badboy = 15
 
 		ai_chance = { factor = 0 }
 	}
@@ -2609,23 +2627,10 @@ country_event = {
 
 	trigger = {
 		tag = GER
-		OR = {
-			AND = {
-				NET = { is_disarmed = yes }
-				NET = { truce_with = GER }
-				FRA = { is_disarmed = yes }
-				FRA = { truce_with = GER }
-				BEL = { is_disarmed = yes }
-				BEL = { truce_with = GER }
-				BEL = { exists = yes }
-			}
-			AND = {
-				NET = { is_disarmed = yes }
-				NET = { truce_with = GER }
-				FRA = { is_disarmed = yes }
-				FRA = { truce_with = GER }
-				BEL = { exists = no }
-			}
+		AND = {
+			NET = { is_disarmed = yes }
+			NET = { truce_with = GER }
+			FRA = { truce_with = GER }
 		}
 		has_country_flag = german_invasion_of_lowlands
 
