@@ -769,9 +769,11 @@ political_decisions = {
 	ems_dispatch = {
 		picture = ems_dispatch
 		potential = {
-			NOT = { has_country_flag = ems_dispatch_sent }
+			OR = {
+				tag = PRU
+				tag = NGF
+			}
 			is_greater_power = yes
-			tag = NGF
 			OR = {
 				government = absolute_monarchy
 				government = prussian_constitutionalism
@@ -785,6 +787,7 @@ political_decisions = {
 					year = 1865
 				}
 			}
+			NOT = { has_country_flag = ems_dispatch_sent }
 		}
 
 		allow = {
@@ -867,14 +870,14 @@ political_decisions = {
 	construct_germania_werft = {
 		picture = construct_germania_werft
 		potential = {
-			NOT = { has_global_flag = germania_werft_has_been_built }
+			owns = 369
 			OR = {
 				tag = PRU
 				tag = GER
 				#tag = GCF
 				tag = NGF
 			}
-			owns = 369
+			NOT = { has_global_flag = germania_werft_has_been_built }
 		}
 
 		allow = {
@@ -889,9 +892,7 @@ political_decisions = {
 			random_owned = {
 				limit = {
 					province_id = 369
-					state_scope = {
-						NOT = { has_building = aeroplane_factory }
-					}
+					state_scope = { NOT = { has_building = aeroplane_factory } }
 				}
 				owner = {
 					capital = 369
@@ -899,10 +900,7 @@ political_decisions = {
 				}
 				369 = {
 					naval_base = 5
-					add_province_modifier = {
-						name = germania_werft
-						duration = -1
-					}
+					add_province_modifier = { name = germania_werft duration = -1 }
 				}
 			}
 			random_owned = {
@@ -1419,12 +1417,7 @@ political_decisions = {
 
 		effect = {
 			prestige = 5
-			602 = {
-				add_province_modifier = {
-					name = the_walhalla
-					duration = -1
-				}
-			}
+			602 = { add_province_modifier = { name = the_walhalla duration = -1 } } # TODO triggered modifier or repeatable
 			set_global_flag = the_walhalla_is_built
 		}
 	}
@@ -2506,6 +2499,34 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Core Heligoland
+	core_heligoland = {
+		picture = the_heligoland_question
+		potential = {
+			owns = 533
+			OR = {
+				primary_culture = north_german
+				primary_culture = south_german
+			}
+			533 = { NOT = { is_core = GER } }
+			NOT = { has_global_flag = heligoland_claimed }
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			set_global_flag = heligoland_claimed
+			533 = {
+				remove_core = ENG
+				add_core = GER
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Luderitz Expedition
 	luderitz_expedition = {
 		picture = luderitz_expedition
@@ -2872,7 +2893,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	franco_prussian_war_memorial2 = {  #Alternate Non-EMS Dispatch Unification Through an AI Freeing ALS, Allows AUS/BAV to use as well
+	franco_prussian_war_memorial2 = { #Alternate Non-EMS Dispatch Unification Through an AI Freeing ALS, Allows AUS/BAV to use as well
 		picture = "franco_prussian_memorial"
 		potential = {
 			is_greater_power = yes
@@ -3671,7 +3692,7 @@ political_decisions = {
 		effect = {
 			set_global_flag = wilhelmshaven_imperial_shipyard_built
 			treasury = -50000
-			3259 = { state_scope = {  any_owned = { naval_base = -6 } } }
+			3259 = { state_scope = { any_owned = { naval_base = -6 } } }
 			3259 = { naval_base = 3 }
 			random_owned = {
 				limit = {
@@ -3751,7 +3772,7 @@ political_decisions = {
 		effect = {
 			set_global_flag = danzig_imperial_shipyard_built
 			treasury = -50000
-			690 = { state_scope = {  any_owned = { naval_base = -6 } } }
+			690 = { state_scope = { any_owned = { naval_base = -6 } } }
 			690 = { naval_base = 3 }
 			random_owned = {
 				limit = {
@@ -4115,7 +4136,7 @@ political_decisions = {
 	}
 
 ######################
-# COLOGNE CATHEDRAL  #
+# COLOGNE CATHEDRAL #
 ######################
 
 	cologne_cathedral = {
@@ -4147,15 +4168,15 @@ political_decisions = {
 	}
 
 ##########
-# BADEN  #
+# BADEN #
 ##########
 
 	free_press_in_baden = {
 		picture = "free_press_in_baden"
 		potential = {
-		  tag = BAD
-		  NOT = { has_country_flag = free_press_in_baden }
-		  NOT = { has_country_flag = liberal_revolution_fired }
+		tag = BAD
+		NOT = { has_country_flag = free_press_in_baden }
+		NOT = { has_country_flag = liberal_revolution_fired }
 		}
 
 		allow = {
@@ -4178,14 +4199,14 @@ political_decisions = {
 	}
 
 ##############
-# Frankfurt  #
+# Frankfurt #
 ##############
 
 	build_goethe_denkmal = {
 		picture = "build_goethe_denkmal"
 		potential = {
-		  owns = 564
-		  NOT = { has_global_flag = goethe_denkmal_build }
+		owns = 564
+		NOT = { has_global_flag = goethe_denkmal_build }
 		}
 
 		allow = {
@@ -4237,7 +4258,7 @@ political_decisions = {
 # Württemberg #
 ###############
 
-    build_schiller_denkmal = {
+	build_schiller_denkmal = {
 		picture = "build_schiller_denkmal"
 		potential = {
 			owns = 589
@@ -4278,7 +4299,7 @@ political_decisions = {
 		ai_will_do = {
 			factor = 1
 		}
-    }
+	}
 
 ###########
 # Bavaria #
@@ -5021,6 +5042,7 @@ political_decisions = {
 
 ## Neuchatel ##
 
+	# Neuchatel Crisis resolved in Prussian favour
 	integrate_neuchatel_prussia = {
 		picture = declare_republic_of_neuchatel
 		potential = {
@@ -5035,9 +5057,9 @@ political_decisions = {
 
 		allow = {
 			war = no
-			NCT = { war = no }
 			NCT = {
-				exists = yes NOT = { vassal_of = SWI }
+				war = no
+				NOT = { vassal_of = SWI }
 				OR = {
 					in_sphere = THIS
 					NOT = { part_of_sphere = yes }
@@ -5048,14 +5070,92 @@ political_decisions = {
 		effect = {
 			clr_country_flag = neuchatel_crisis_escalated
 			any_country = { clr_country_flag = neuchatel_crisis_escalated }
-			any_country = { limit = { has_country_flag = supports_switzerland } leave_alliance = SWI clr_country_flag = supports_switzerland }
-			any_country = { release = NCT leave_alliance = NCT release_vassal = NCT }
+
+			any_country = {
+				limit = { has_country_flag = supports_switzerland }
+				leave_alliance = SWI
+				clr_country_flag = supports_switzerland
+			}
+
+			any_country = {
+				release = NCT
+				leave_alliance = NCT
+				release_vassal = NCT
+			}
+
 			inherit = NCT
+
 			608 = { remove_core = NCT }
 		}
+
 		ai_will_do = { factor = 1 }
 	}
 
+	# Neuchatel Crisis resolved in Swiss favour
+	integrate_neuchatel = {
+		picture = declare_republic_of_neuchatel
+		potential = {
+			tag = SWI
+			exists = yes
+			NCT = {
+				exists = yes
+				vassal_of = THIS
+			}
+			OR = {
+				has_country_flag = neuchatel_crisis_escalated
+				year = 1860
+			}
+		}
+
+		allow = {
+			war = no
+			NCT = {
+				war = no
+				OR = {
+					sphere_owner = { NOT = { primary_culture = north_german } }
+					part_of_sphere = no
+				}
+			}
+			any_neighbor_country = {
+				OR = {
+					tag = PRU
+					tag = NGF
+					tag = GER
+				}
+				exists = yes
+				NOT = { has_country_modifier = preparations_for_war }
+			}
+		}
+
+		effect = {
+			clr_country_flag = neuchatel_crisis_escalated
+			any_country = { clr_country_flag = neuchatel_crisis_escalated }
+
+			any_country = {
+				limit = { has_country_flag = supports_switzerland }
+				leave_alliance = SWI
+				clr_country_flag = supports_switzerland
+			}
+			any_country = {
+				release = NCT
+				leave_alliance = NCT
+				release_vassal = NCT
+			}
+
+			inherit = NCT
+
+			608 = {
+				remove_core = NGF
+				remove_core = GER
+				remove_core = PRU
+				remove_core = NCT
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# Prussia can force trigger the Neuchatel Crisis if they keep the cores late enough
 	force_neuchatel_issue = {
 		picture = declare_republic_of_neuchatel
 		potential = {
@@ -5081,6 +5181,40 @@ political_decisions = {
 			country_event = 34615
 			set_country_flag = neuchatel_crisis_escalated
 		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# Cleanup decision for German cores on Neuchatel if Switzerland owns it
+	removing_neuchatel_cores = {
+		picture = declare_republic_of_neuchatel
+		potential = {
+			tag = SWI
+			exists = yes
+			owns = 608
+			608 = {
+				OR = {
+					is_core = NCT
+					is_core = PRU
+					is_core = NGF
+					is_core = GER
+				}
+			}
+		}
+
+		allow = { war = no }
+
+		effect = {
+			608 = {
+				remove_core = NCT
+				remove_core = PRU
+				remove_core = NGF
+				remove_core = GER
+			}
+			clr_country_flag = neuchatel_crisis_escalated
+			any_country = { clr_country_flag = neuchatel_crisis_escalated }
+		}
+
 		ai_will_do = { factor = 1 }
 	}
 
