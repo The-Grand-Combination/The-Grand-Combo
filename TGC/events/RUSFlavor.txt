@@ -3526,6 +3526,25 @@ country_event = {
 					25 = { reduce_pop = 0.3 }
 				}
 			}
+			random_pop = {
+                limit = {
+                    is_state_religion = no
+                    OR = {
+                        has_pop_culture = circassian
+                        has_pop_culture = chechen
+						has_pop_culture = dagestani
+						}
+                    location = {
+                        OR = {
+                            is_core = CIR
+                            is_core = DAG
+                            is_core = CHY
+                        }
+                    }
+                    NOT = { type = farmers }
+                }
+                move_pop = 876
+            }
 			
 			any_pop = {
 			limit = {
@@ -4683,7 +4702,7 @@ country_event = {
 			}
 		}
 		
-		#Tatar Emigration
+		#Tatar Emigration #todo elite move to turkey, as well as for circassian genocide
 		country_event = {
 			id = 500124
 			title = "Crimean Tatars Flee"
@@ -5084,7 +5103,7 @@ country_event = {
 			picture = "ottoman"
 			
 			is_triggered_only = yes
-			option = {
+			option = { #TODO
 				name = "Accept their Ultimatum"
 				prestige = -10
 			    ai_chance = { factor = 0 }
@@ -5162,6 +5181,12 @@ country_event = {
 			option = {
 				name = "Refuse!"
 				prestige = 10
+				any_country = {
+				limit = {
+				    vassal_of = PER
+					}
+					annex_to = PER
+				}
 				RUS = { country_event = { id = 500140 days = 5 } }
 			    ai_chance = { factor = 100 }
 			}
@@ -5223,13 +5248,13 @@ country_event = {
 			picture = "ottoman"
 			
 		is_triggered_only = yes
+		
 		option = {
 		name = "Recognize Russian dominance"
-		prestige = -25
+		prestige = -35
 		badboy = -5
-		clr_global_flag = persia_treaty
 		set_global_flag = russia_expands_the_great_game
-		set_country_flag = british_retreat_from_persia
+		set_global_flag = british_retreat_from_persia
 		relation = { who = PER value = -200 }
 		diplomatic_influence = { who = PER value = -200 }
 		relation = { who = AFG value = -200 }
@@ -5252,10 +5277,18 @@ country_event = {
 			}
 			secede_province = PER
 		}
+		any_owned = {
+			limit = {
+				is_core = AFG
+			}
+			secede_province = AFG
+		}
 		RUS = {
 			prestige = 15
 			diplomatic_influence = { who = PER value = 400 }
 			relation = { who = PER value = 200 }
+			diplomatic_influence = { who = AFG value = 400 }
+			relation = { who = AFG value = 200 }
 		}
 		release = PER
 		release_vassal = PER
@@ -5289,6 +5322,7 @@ country_event = {
 	}
 			option = {
 				name = "Reassert our influence in the region"
+				set_country_flag = british_oppose_russia_aggressively
 				prestige = 20
 				RUS = { country_event = { id = 99104 days = 5 } }
 			    ai_chance = {
@@ -5311,7 +5345,7 @@ country_event = {
 			id = 500142
 			title = "Question of Bosnian Vilayet"
 			desc = "EVTDESC500136"
-			picture = "ottoman"
+			picture = "bosnia_issue"
 			
 			fire_only_once = yes
 			
@@ -5361,7 +5395,7 @@ country_event = {
 			id = 500143
 			title = "Bosnian Vilayet Question"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "bosnia_issue"
 			
 			is_triggered_only = yes
 			option = {
@@ -5385,7 +5419,7 @@ country_event = {
 			id = 500144
 			title = "Bosnian Vilayet Question"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "bosnia_issue"
 			
 			is_triggered_only = yes
 			option = {
@@ -5407,13 +5441,14 @@ country_event = {
 			id = 500146
 			title = "The Porte bows to the Tsar"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "bosnia_issue"
 			
 			is_triggered_only = yes
 			option = {
 				name = "Very good"
 				BOS = { annex_to = SER }
-				AUS = { country_event = { id = 500145 days = 7 } }
+				619 = { owner = { country_event = { id = 500145 days = 7 } } }
+				KUK = { country_event = { id = 500145 days = 7 } }
 				prestige = 5
 			    ai_chance = { factor = 100 }
 			}
@@ -5423,21 +5458,21 @@ country_event = {
 		country_event = {
 			id = 500145
 			title = "Bosnian Vilayet Question"
-			desc = "EVTDESC500135"
-			picture = "ottoman"
+			desc = "EVTDESC500145"
+			picture = "bosnia_issue"
 			
 			is_triggered_only = yes
 			option = {
 				name = "Our hands are tied, do not contest the unification"
 				RUS = { country_event = { id = 500148 days = 7 } }
 				prestige = -15
-			    ai_chance = { factor = 100 }
+			    ai_chance = { factor = 0 }
 			}
 			option = {
-				name = "Contest it! (START WAR)"
+				name = "Not in *our* BACKYARD. Mobilize the troops and cross the Sava river!"
 				RUS = { country_event = { id = 500147 days = 7 } }
 				prestige = 10
-			    ai_chance = { factor = 0 } #todo aichance based on austrian choices in crimea
+			    ai_chance = { factor = 99 } #todo aichance based on austrian choices in crimea
 			}
 		}
 		
@@ -5445,13 +5480,13 @@ country_event = {
 		#SOMEBODY SHOOT THEIR CROWN PRINCE ALREADY
 		country_event = {
 			id = 500147
-			title = "Austria wants Bosnia"
-			desc = "EVTDESC500135"
-			picture = "ottoman"
+			title = "Austria invades Bosnia"
+			desc = "EVTDESC500147"
+			picture = "balkan_victory"
 			
 			is_triggered_only = yes
 			option = {
-				name = "Bloody Austrians!"
+				name = "Mobilize the Army. We will no tolerate this incursion!"
 				FROM = {
 				casus_belli = {
 					target = SER
@@ -5473,7 +5508,7 @@ country_event = {
 			id = 500148
 			title = "Austrians Back Out"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "bosnia_issue"
 			
 			is_triggered_only = yes
 			option = {
@@ -5489,7 +5524,7 @@ country_event = {
 			id = 500149
 			title = "Question of Bulgarian Unification"
 			desc = "EVTDESC500136"
-			picture = "ottoman"
+			picture = "congress_of_berlin"
 			
 			fire_only_once = yes
 			
@@ -5538,8 +5573,8 @@ country_event = {
 		country_event = {
 			id = 500150
 			title = "Western Bulgaria Question"
-			desc = "EVTDESC500135"
-			picture = "ottoman"
+			desc = "EVTDESC500150"
+			picture = "congress_of_berlin"
 			
 			is_triggered_only = yes
 			option = {
@@ -5549,7 +5584,7 @@ country_event = {
 			    ai_chance = { factor = 100 }
 			}
 			option = { #todo
-				name = "We will not allow it"
+				name = "Unified Bulgaria is a threat to our power. Tell the Porte to contest it."
 				#TUR = { country_event = { id = 500144 days = 7 } }
 				#AUS = { country_event = { id = 500145 days = 7 } }
 				#KUK = { country_event = { id = 500145 days = 7 } }
@@ -5562,7 +5597,7 @@ country_event = {
 		country_event = {
 			id = 500151
 			title = "Western Bulgaria Question"
-			desc = "EVTDESC500135"
+			desc = "EVTDESC500135" #todo
 			picture = "ottoman"
 			
 			is_triggered_only = yes
@@ -5584,7 +5619,7 @@ country_event = {
 		country_event = {
 			id = 500152
 			title = "The Porte bows to the Tsar"
-			desc = "EVTDESC500135"
+			desc = "EVTDESC500135" #todo
 			picture = "ottoman"
 			
 			is_triggered_only = yes
@@ -5601,7 +5636,7 @@ country_event = {
 		country_event = {
 			id = 500153
 			title = "Can we be free now?"
-			desc = "EVTDESC500135"
+			desc = "EVTDESC500135" #todo
 			picture = "ottoman"
 			
 			fire_only_once = yes
@@ -5633,18 +5668,18 @@ country_event = {
 		country_event = {
 			id = 500154
 			title = "United Bulgaria asks for Independence"
-			desc = "EVTDESC500135"
-			picture = "ottoman"
+			desc = "EVTDESC500154"
+			picture = "crete_revolt"
 			
 			is_triggered_only = yes
 			option = {
-				name = "Grant it"
+				name = "Free Bulgaria. A content ally is better than a discontent puppet."
 				release_vassal = BUL
 				prestige = -5
 			    ai_chance = { factor = 20 }
 			}
 			option = {
-				name = "Ungrateful letchers! Nyet."
+				name = "Surely, Bulgaria cannot dispense with our priceless mentorship. Nyet."
 				#todo
 				prestige = 5
 				BUL = { country_event = { id = 500155 days = 7 } }
@@ -5655,9 +5690,9 @@ country_event = {
 		#Bulgaria decides whether to take the issue to the battlefield
 		country_event = {
 			id = 500155
-			title = "Can we be free now?"
+			title = "Fight the Russians?"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "crete_revolt"
 			
 			is_triggered_only = yes
 			option = {
@@ -5679,7 +5714,7 @@ country_event = {
 			id = 500156
 			title = "Bulgarian Rebellion"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "crete_revolt"
 			
 			is_triggered_only = yes
 			option = {
@@ -5707,7 +5742,7 @@ country_event = {
 			id = 500157
 			title = "Sea, please?"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "treaty_port"
 			
 			fire_only_once = yes
 			
@@ -5727,7 +5762,7 @@ country_event = {
 		    }
 			option = {
 				name = "Ask for Sea Access"
-				RUS = { country_event = { id = 500154 days = 7 } }
+				RUS = { country_event = { id = 500158 days = 7 } }
 				prestige = 5
 			    ai_chance = { factor = 99 }
 			}
@@ -5743,18 +5778,18 @@ country_event = {
 		country_event = {
 			id = 500158
 			title = "Romania would like a Port"
-			desc = "EVTDESC500135"
-			picture = "ottoman"
+			desc = "EVTDESC500158"
+			picture = "treaty_port"
 			
 			is_triggered_only = yes
 			option = {
-				name = "Grant it"
+				name = "Cede them a strip of land in southern Dobruja."
 				3432 = { secede_province = ROM }
 				prestige = -5
 			    ai_chance = { factor = 20 }
 			}
 			option = {
-				name = "Sea Access? Nyet, you don't need that."
+				name = "Why in the God's name would we do that? Nyet."
 				#todo
 				prestige = 5
 				ROM = { country_event = { id = 500159 days = 7 } }
@@ -5764,16 +5799,17 @@ country_event = {
 		#ROM
 		country_event = {
 			id = 500159
-			title = "Romania revolt"
+			title = "Start a Rebellion?"
 			desc = "EVTDESC500135"
-			picture = "ottoman"
+			picture = "crete_revolt"
 			
 			is_triggered_only = yes
 			option = {
     			name = "Fight Russia"
+				set_country_flag = romanian_rebellion_on_the_danube
 				badboy = 1
 				leave_alliance = RUS
-			    RUS = { diplomatic_influence = { who = BUL value = -200 } }
+			    RUS = { diplomatic_influence = { who = ROM value = -200 } }
 			    relation = { who = RUS value = -200 }
 			    casus_belli = {
 				target = RUS
@@ -5788,13 +5824,61 @@ country_event = {
 				}
 				defender_goal = { casus_belli = make_puppet country = ROM } #TODO punishment path annexation of Moldavia/parts of Wallachia which triggers rebellious af romanian pop
 			}
-			    ai_chance = { factor = 1 }
+			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+			
+			    ai_chance = { factor = 99 }
 			}
 			option = {
 				name = "We will back off."
 				#todo
 				prestige = -5
-			    ai_chance = { factor = 99 }
+			    ai_chance = { factor = 1 }
 			}
 			
 		}
+		
+	#500160-500167 Bosnian Annexation Crisis 1908
+	
+	#Russia decides the faith of Danubian Principalities
+		country_event = {
+			id = 500168
+			title = "Romanian Rebellion has been put down"
+			desc = "EVTDESC500158"
+			picture = "treaty_port"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Annex them in entirety"
+				ROM = { annex_to = THIS }
+				prestige = 5
+				badboy = 8
+			    ai_chance = { factor = 5 }
+			}
+			option = {
+				name = "Annex Moldavia, reinstitute the Wallachian Principality"
+				MOL_673 = { secede_province = THIS }
+				ROM = { change_tag = WAL }
+				WAL = { any_owned = { add_core = WAL } }
+				create_vassal = WAL
+				diplomatic_influence = { who = WAL value = 200 }
+				prestige = 5
+				badboy = 4
+			    ai_chance = { factor = 75 }
+			}
+			option = {
+				name = "Split Romania into two Principalities again"
+				#TODO
+				prestige = 5
+				badboy = -3
+			    ai_chance = { factor = 10 }
+			}
+			option = {
+				name = "Keep them intact as a puppet"
+				diplomatic_influence = { who = ROM value = 200 }
+				prestige = 5
+				badboy = -3
+			    ai_chance = { factor = 10 }
+			}
+		}
+	
+	
