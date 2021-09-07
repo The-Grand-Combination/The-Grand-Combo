@@ -1,5 +1,42 @@
 political_decisions = {
 
+	## Multiplayer Setup ##
+
+		setup_claim_host = {
+			picture = cogs_red
+			potential = {
+				ai = no
+				has_global_flag = multi_player_game
+				NOT = { has_global_flag = host_already_set }
+			}
+
+			allow = { }
+
+			effect = {
+				set_global_flag = host_already_set
+				any_country = { clr_country_flag = multi_player_host }
+				set_country_flag = multi_player_host
+			}
+		}
+
+		setup_renounce_host = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				has_country_flag = multi_player_host
+				NOT = { year = 1837 } # Irrelevant after this since Options can only be taken in the first year
+			}
+
+			allow = { }
+
+			effect = {
+				clr_country_flag = multi_player_host
+				clr_global_flag = host_already_set
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
 	## Decisions relate to the startup options - All start 'option_'
 
 		#Shows Options
@@ -32,9 +69,11 @@ political_decisions = {
 					NOT = { has_global_flag = revolution_n_counter_researched }
 					NOT = { has_global_flag = lucky_nations_on }
 					NOT = { has_country_flag = spectator }
-					NOT = { has_global_flag = disabled_commie_mod }
+					has_global_flag = disabled_commie_mod
 					NOT = { has_global_flag = assimilation_events_disabled }
 					NOT = { has_global_flag = trade_policy_choosing_disabled_global }
+					NOT = { has_global_flag = mobilisation_limiter_enabled }
+					NOT = { has_global_flag = minor_greater_power_enabled }
 					NOT = { has_global_flag = enable_overrides }
 				}
 			}
@@ -75,9 +114,11 @@ political_decisions = {
 					NOT = { has_global_flag = revolution_n_counter_researched }
 					NOT = { has_global_flag = lucky_nations_on }
 					NOT = { has_country_flag = spectator }
-					NOT = { has_global_flag = disabled_commie_mod }
+					has_global_flag = disabled_commie_mod
 					NOT = { has_global_flag = assimilation_events_disabled }
 					NOT = { has_global_flag = trade_policy_choosing_disabled_global }
+					NOT = { has_global_flag = mobilisation_limiter_enabled }
+					NOT = { has_global_flag = minor_greater_power_enabled }
 					NOT = { has_global_flag = enable_overrides }
 				}
 			}
@@ -513,7 +554,7 @@ political_decisions = {
 			ai_will_do = { factor = 0 }
 		}
 
-		#Disables Commie Mod content
+		#Enables Commie Mod content
 		option_disable_commiemod = {
 			picture = cogs_red
 			alert = no
@@ -521,14 +562,14 @@ political_decisions = {
 				has_country_flag = looking_through_options
 				ai = no
 				NOT = { year = 1837 }
-				NOT = { has_global_flag = disabled_commie_mod }
+				has_global_flag = disabled_commie_mod
 			}
 
 			allow = {
 			}
 
 			effect = {
-				set_global_flag = disabled_commie_mod
+				clr_global_flag = disabled_commie_mod
 			}
 
 			ai_will_do = { factor = 0 }
@@ -584,6 +625,48 @@ political_decisions = {
 					remove_country_modifier = no_trade_policy_set
 				}
 			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+		#Enables mobilisation_limiter triggered modifier
+		option_mobilisation_limiter = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				has_country_flag = looking_through_options
+				ai = no
+				NOT = { year = 1837 }
+				NOT = { has_global_flag = mobilisation_limiter_enabled }
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_global_flag = mobilisation_limiter_enabled
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+			#Enables mobilisation_limiter triggered modifier
+			option_minor_greater_power = {
+				picture = cogs_red
+				alert = no
+				potential = {
+					has_country_flag = looking_through_options
+					ai = no
+					NOT = { year = 1837 }
+					NOT = { has_global_flag = minor_greater_power_enabled }
+				}
+
+				allow = {
+				}
+
+				effect = {
+					set_global_flag = minor_greater_power_enabled
+				}
 
 			ai_will_do = { factor = 0 }
 		}
@@ -646,6 +729,10 @@ political_decisions = {
 						}
 						NOT = { has_country_flag = disabled_popreduction_decisions }
 					}
+					AND = {
+						tech_school = traditional_academic
+						civilized = yes
+					}
 				}
 			}
 
@@ -692,6 +779,17 @@ political_decisions = {
 					#	num_of_vassals_no_substates = 1
 					#} # Logically irrelevant because of below but keeping for completeness sake
 					num_of_vassals_no_substates = 1
+					AND = {
+						OR = {
+							has_global_flag = single_player_game
+							has_country_flag = multi_player_host
+						}
+						NOT = { has_country_flag = disabled_popreduction_decisions }
+					}
+					AND = {
+						tech_school = traditional_academic
+						civilized = yes
+					}
 				}
 			}
 
@@ -813,7 +911,7 @@ political_decisions = {
 			ai_will_do = { factor = 0 }
 		}
 
-		## Return Cores ## Decisions in Return-Cores.txt
+		## Return Cores ## Decisions in 01_Return-Cores.txt
 
 			#Shows Returning Cores of Vassals and Spherelings
 			utility_return_core_on = {
@@ -894,7 +992,7 @@ political_decisions = {
 				ai_will_do = { factor = 0 }
 			}
 
-		## Release Vassal ## Decisions in gtfo.txt
+		## Release Vassal ## Decisions in 01_gtfo.txt
 
 			#Shows Releasing Vassal Decisions
 			utility_release_vassal_show = {
@@ -1024,7 +1122,7 @@ political_decisions = {
 				ai_will_do = { factor = 0 }
 			}
 
-		## Global Pop Reduction ## Decisions in Global_PopReduction.txt
+		## Global Pop Reduction ## Decisions in 01_Global_PopReduction.txt
 
 			# Shows decisions to reduce global pops
 			utility_popreduction_decisions_show = {
@@ -1099,6 +1197,52 @@ political_decisions = {
 				ai_will_do = { factor = 0 }
 			}
 
+		## Tech School Change ## Decisions in 01_Tech_School_Changes.txt
+
+			# Shows Change Tech School decisions
+			utility_tech_school_open = {
+				alert = no
+				picture = cogs_blue
+				potential = {
+					has_country_flag = looking_through_utilities
+					ai = no
+					tech_school = traditional_academic
+					civilized = yes
+					NOT = { has_country_flag = picking_up_a_tech_school }
+				}
+
+				allow = {
+				}
+
+				effect = {
+					set_country_flag = picking_up_a_tech_school
+				}
+
+				ai_will_do = { factor = 0 }
+			}
+
+			# Hides Change Tech School decisions
+			utility_tech_school_close = {
+				alert = no
+				picture = cogs_blue
+				potential = {
+					has_country_flag = looking_through_utilities
+					ai = no
+					tech_school = traditional_academic
+					civilized = yes
+					has_country_flag = picking_up_a_tech_school
+				}
+
+				allow = {
+				}
+
+				effect = {
+					clr_country_flag = picking_up_a_tech_school
+				}
+
+				ai_will_do = { factor = 0 }
+			}
+
 	## Decisions relate to the override decisions - All start override_
 
 		#Shows Overrides
@@ -1156,7 +1300,7 @@ political_decisions = {
 			}
 
 			effect = {
-				country_event = 199936 #Event found in Goods.txt
+				country_event = 199936 #Event found in RGOChangeEvents.txt
 			}
 
 			ai_will_do = { factor = 0 }
@@ -1178,7 +1322,7 @@ political_decisions = {
 			}
 
 			effect = {
-				country_event = 199937 #Event found in Goods.txt
+				country_event = 199937 #Event found in RGOChangeEvents.txt
 			}
 
 			ai_will_do = { factor = 0 }
@@ -1485,6 +1629,55 @@ political_decisions = {
 				ai_will_do = { factor = 0 }
 			}
 
+		## Infamy for Growth ##
+
+			#Choose the level of birthrate growth
+			override_infamy_for_growth_selector = {
+				picture = cogs_yellow
+				potential = {
+					has_country_flag = looking_through_overrides
+					ai = no
+					NOT = { has_country_modifier = birthrate_push_low }
+					NOT = { has_country_modifier = birthrate_push_medium }
+					NOT = { has_country_modifier = birthrate_push_high }
+					NOT = { has_country_flag = pop_growth_for_infamy_chooser }
+				}
+
+				allow = { }
+
+				effect = {
+					country_event = 1998001
+				}
+
+				ai_will_do = { factor = 0 }
+			}
+
+			#Remove the birthrate growth modifier after the cooldown has passed
+			override_infamy_for_growth_modifier_removal = {
+				picture = cogs_yellow
+				potential = {
+					has_country_flag = looking_through_overrides
+					ai = no
+					OR = {
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+					}
+				}
+
+				allow = {
+					NOT = { has_country_modifier = recently_selected_birthrate }
+				}
+
+				effect = {
+					remove_country_modifier = birthrate_push_low
+					remove_country_modifier = birthrate_push_medium
+					remove_country_modifier = birthrate_push_high
+				}
+
+				ai_will_do = { factor = 0 }
+			}
+
 ### World Setup Decisions
 
 	1836_initial_setup = {
@@ -1503,6 +1696,7 @@ political_decisions = {
 		}
 
 		effect = {
+			set_global_flag = disabled_commie_mod
 			set_global_flag = 1836_set_up
 			set_country_flag = existing_country
 			any_country = { limit = { exists = yes } set_country_flag = existing_country }
@@ -1723,6 +1917,7 @@ political_decisions = {
 				1253 = { add_province_modifier = { name = local_economic_downturn duration = 8760 } }
 				2172 = { set_province_flag = mexico_city }
 				1616 = { set_province_flag = summer_palace }
+				1555 = { add_province_modifier = { name = bad_iron duration = 23000 } }	#northernchyna
 
 			### Starting Money ###
 
@@ -2009,6 +2204,18 @@ political_decisions = {
 								duration = -1
 							}
 						}
+						any_owned = {
+							limit = {
+								OR = {
+									produces = iron
+									produces = coal
+								}
+							}
+							add_province_modifier = {
+								name = bad_iron
+								duration = 23000
+							}
+						}
 						set_variable = { which = china_destablization value = 0 }
 						any_pop = {
 							limit = {
@@ -2021,17 +2228,21 @@ political_decisions = {
 					}
 
 					1493 = {
-						add_province_modifier = {
-							name = canton_system
-							duration = -1
-						}
-						add_province_modifier = {
-							name = "foreign_smugglers"
-							duration = -1
-						}
-						add_province_modifier = {
-							name = local_opium_habit
-							duration = -1
+						add_province_modifier = { name = canton_system duration = -1 }
+						add_province_modifier = { name = "foreign_smugglers" duration = -1 }
+						add_province_modifier = { name = local_opium_habit duration = -1 }
+					}
+
+				## Korea iron debuff ##
+					KOR = {
+						any_owned = {
+							limit = {
+								OR = {
+									produces = iron
+									produces = coal
+								}
+							}
+							add_province_modifier = { name = bad_iron duration = 23000 }
 						}
 					}
 
@@ -2126,6 +2337,17 @@ political_decisions = {
 					any_greater_power = {
 						limit = { NOT = { tag = PRU } }
 						diplomatic_influence = { who = NCT value = -400 }
+					}
+
+				## African Minors Influence ##
+
+					any_country = {
+						limit = {
+							exists = yes
+							is_greater_power = yes
+						}
+						diplomatic_influence = { who = GAZ value = -400 }
+						diplomatic_influence = { who = AGC value = -400 }
 					}
 
 			### Uncivs ###
@@ -2380,15 +2602,6 @@ political_decisions = {
 
 			## To be implemented ##
 
-				#any_country = {
-				#	limit = {
-				#		exists = yes
-				#		is_greater_power = yes
-				#	}
-				#	diplomatic_influence = { who = GAZ value = -400 }
-				#	diplomatic_influence = { who = AGC value = -400 }
-				#}
-
 				## AI Personalities
 				#any_country = {
 				#	limit = {
@@ -2438,54 +2651,68 @@ political_decisions = {
 				#}
 
 				# HPM Muslim Mechanics
-				#any_country = {
-				#	limit = {
-				#		OR = {
-				#			has_country_flag = sunni_country
-				#			has_country_flag = shiite_country
-				#			has_country_flag = ibadi_country
-				#		}
-				#	}
-				#	set_country_flag = umar_pact
-				#}
+				any_country = {
+					limit = {
+						OR = {
+							has_country_flag = sunni_country
+							has_country_flag = shiite_country
+							has_country_flag = ibadi_country
+							has_country_flag = bektashi_country
+						}
+					}
+					set_country_flag = umar_pact
+				}
 
-				#any_country = {
-				#	limit = {
-				#		exists = yes
-				#		OR = {
-				#			has_country_flag = sunni_country
-				#			has_country_flag = shiite_country
-				#			has_country_flag = ibadi_country
-				#		}
-				#		any_owned_province = {
-				#			any_pop = {
-				#				OR = {
-				#					has_pop_religion = catholic
-				#					has_pop_religion = protestant
-				#					has_pop_religion = mormon
-				#					has_pop_religion = orthodox
-				#					has_pop_religion = coptic
-				#					has_pop_religion = druze
-				#					has_pop_religion = jewish
-				#					has_pop_religion = yazidi
-				#					has_pop_religion = mahayana
-				#					has_pop_religion = gelugpa
-				#					has_pop_religion = theravada
-				#					has_pop_religion = hindu
-				#					has_pop_religion = shinto
-				#					has_pop_religion = sikh
-				#					has_pop_religion = animist
-				#				}
-				#			}
-				#		}
-				#	}
-				#	add_country_modifier = { name = jizya duration = -1 }
-				#}
+				any_country = {
+					limit = {
+						OR = {
+							has_country_flag = sunni_country
+							has_country_flag = shiite_country
+							has_country_flag = ibadi_country
+							has_country_flag = bektashi_country
+						}
+						exists = yes
+						any_owned_province = {
+							any_pop = {
+								OR = { # TODO maybe exclusionary filter rather than inclusionary?
+									has_pop_religion = catholic
+									has_pop_religion = protestant
+									has_pop_religion = mormon
+									has_pop_religion = orthodox
+									has_pop_religion = coptic
+									has_pop_religion = druze
+									has_pop_religion = jewish
+									has_pop_religion = yazidi
+									has_pop_religion = mahayana
+									has_pop_religion = gelugpa
+									has_pop_religion = theravada
+									has_pop_religion = hindu
+									has_pop_religion = shinto
+									has_pop_religion = sikh
+									has_pop_religion = animist
+								}
+							}
+						}
+					}
+					add_country_modifier = { name = jizya duration = -1 }
+				}
 
-			any_country = {
-				limit = { ai = no }
-				country_event = 10000000
-			}
+			## Multiplayer Setup ##
+
+				random_country = {
+					limit = { ai = no }
+					set_country_flag = player
+				}
+
+				random_country = {
+					limit = { ai = no NOT = { has_country_flag = player } }
+					set_global_flag = multi_player_game
+				}
+
+				random_owned = {
+					limit = { NOT = { has_global_flag = multi_player_game } }
+					set_global_flag = single_player_game
+				}
 		}
 	}
 }

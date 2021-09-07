@@ -45,7 +45,6 @@ country_event = {
 
 	trigger = {
 		tag = ENG
-		year = 1836
 		public_meetings = yes_meeting
 		NOT = {
 			year = 1839
@@ -1507,7 +1506,6 @@ country_event = {
 
 	trigger = {
 		tag = ENG
-		year = 1836
 		exists = COB
 		OR = {
 			war_with = GER
@@ -3091,7 +3089,11 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA315003"
-		random_owned = { limit = { is_capital = yes } assimilate = yes }
+		random_owned = {
+			limit = { is_capital = yes }
+			# Audax Validator "." Ignore_NEXT
+			assimilate = yes
+		}
 		any_pop = { limit = { NOT = { is_primary_culture = yes } } militancy = 3 consciousness = 4 }
 		any_owned = { limit = { is_core = THIS } add_province_modifier = { name = cultural_resurgence duration = 3650 } }
 	}
@@ -3494,14 +3496,18 @@ country_event = {
 		}
 
 		option = {
-			name = "EVT44335OPTA"
+			name = "EVTOPTA44335"
+
 			overlord = { country_event = 44336 }
+
 			ai_chance = { factor = 100 }
 		}
 
 		option = {
-			name = "EVT44335OPTB"
+			name = "EVTOPTB44335"
+
 			set_country_flag = no_more_asking_for_cores
+
 			ai_chance = { factor = 0 }
 		}
 	}
@@ -3515,7 +3521,8 @@ country_event = {
 		is_triggered_only = yes
 
 		option = {
-			name = "EVT44336OPTA"
+			name = "EVTOPTA44336"
+
 			any_owned = {
 				limit = {
 					is_core = FROM
@@ -3525,15 +3532,18 @@ country_event = {
 			}
 			diplomatic_influence = { who = FROM value = 100 }
 			FROM = { country_event = 44337 }
+
 			ai_chance = { factor = 100 }
 		}
 
 		option = {
-			name = "EVT44336OPTB"
+			name = "EVTOPTB44336"
+
 			FROM = {
 				set_country_flag = no_more_asking_for_cores
 				country_event = 44338
 			}
+
 			ai_chance = { factor = 0 }
 		}
 	}
@@ -3547,7 +3557,8 @@ country_event = {
 		is_triggered_only = yes
 
 		option = {
-			name = "EVT44337OPTA"
+			name = "EVTOPTA44337"
+
 			prestige_factor = -0.1
 			relation = { who = FROM value = 50 }
 			FROM = {
@@ -3571,7 +3582,8 @@ country_event = {
 		is_triggered_only = yes
 
 		option = {
-			name = "EVT44338OPTA"
+			name = "EVTOPTA44338"
+
 			relation = { who = FROM value = -100 }
 			leave_alliance = FROM
 			casus_belli = {
@@ -3690,7 +3702,6 @@ country_event = {
 
 	#Description: After the Mexican-American war, if the USA doesn't already have any land in Central America, they can offer a treaty to the British that neither party will expand into Central America.
 	country_event = {
-
 		id = 209704
 		title = "EVTNAME209704"
 		desc = "EVTDESC209704"
@@ -3705,7 +3716,7 @@ country_event = {
 			}
 			ENG = {
 				is_greater_power = yes
-				relation = { who = THIS value = 50 }
+				relation = { who = THIS value = -50 }
 				NOT = {
 					war_with = THIS
 					truce_with = THIS
@@ -3808,7 +3819,7 @@ country_event = {
 		}
 	}
 
-	#Description: Britain can choose to sign the treaty, establishing Belize as a puppet and yielding the Bay Islands and Miskito coast, or refuse.
+	#Description: Britain can choose to sign the treaty, establishing Belize as a puppet and promising to yield the Bay Islands and Miskito coast, or refuse.
 	country_event = {
 
 		id = 209705
@@ -3827,49 +3838,6 @@ country_event = {
 
 			ENG_2187 = { add_core = BLZ remove_core = JAM }
 			release_vassal = BLZ
-
-			random_owned = { # Send event to secede Bay Islands (2196)
-				limit = { province_id = 2196 }
-				remove_core = JAM
-				random_country = {
-					limit = { owns = 2195 }
-					country_event = 209706
-				}
-			}
-
-			random_country = { # Send events to relevant Miskito Coast province owners (but only one if they are the same)
-				limit = {
-					OR = {
-						AND = { owns = 3334 NOT = { owns = 2195 } }
-						AND = { owns = 2220 NOT = { owns = 2198 } }
-					}
-					OR = {
-						tag = THIS
-						vassal_of = THIS
-					}
-				}
-				random_country = {
-					limit = {
-						owns = 2195
-						owns = 2198
-					}
-					country_event = 209707
-				}
-				random_country = {
-					limit = {
-						owns = 2195
-						NOT = { owns = 2198 }
-					}
-					country_event = 209707
-				}
-				random_country = {
-					limit = {
-						owns = 2198
-						NOT = { owns = 2195 }
-					}
-					country_event = 209707
-				}
-			}
 
 			set_global_flag = clayton_bulwer_treaty_signed # TODO this should also prevent USA expansion into Central America for when we add Nicaragua filibustering, Yucatan as a state etc
 
@@ -3893,7 +3861,7 @@ country_event = {
 		id = 209706
 		title = "EVTNAME209706"
 		desc = "EVTDESC209706"
-		picture = "Administration"
+		picture = "exemplar_colony"
 
 		is_triggered_only = yes
 
@@ -3919,7 +3887,7 @@ country_event = {
 		id = 209707
 		title = "EVTNAME209707"
 		desc = "EVTDESC209707"
-		picture = "Administration"
+		picture = "moskito_coast"
 
 		is_triggered_only = yes
 
@@ -3991,3 +3959,478 @@ country_event = {
 			relation = { who = FROM value = 30 }
 		}
 	}
+
+	#Description: If the Clayton-Bulwer Treaty has been signed, USA can demand ENG withdraw from central america
+	country_event = {
+		id = 209708
+		title = "EVTNAME209708"
+		desc = "EVTDESC209708"
+		picture = "Administration"
+
+		trigger = {
+			tag = USA
+			has_global_flag = clayton_bulwer_treaty_signed
+		}
+
+		mean_time_to_happen = {
+			years = 9
+		}
+
+		fire_only_once = yes
+
+		# Demand the Brittish Withdraw
+		option = {
+			name = "EVTOPTA209708"
+
+			ENG = { country_event = 209709 }
+
+			ai_chance = { factor = 70 }
+		}
+
+		# Consider the Treaty Breached
+		option = {
+			name = "EVTOPTB209708"
+
+			clr_global_flag = clayton_bulwer_treaty_signed
+
+			prestige = -5
+
+			ai_chance = { factor = 25 }
+		}
+
+		# Do Nothing
+		option = {
+			name = "EVTOPTC209708"
+
+			prestige = -20
+
+			ai_chance = {
+				factor = 5
+				modifier = {
+					factor = 5
+					war_exhaustion = 10
+				}
+			}
+		}
+	}
+
+	#Description: ENG recieves if the USA demands they withdraw from Central America
+	country_event = {
+		id = 209709
+		title = "EVTNAME209709"
+		desc = "EVTDESC209709"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		# Agree to withdraw
+		option = {
+			name = "EVTOPTA209709"
+
+			random_owned = { # Send event to secede Bay Islands (2196)
+				limit = { province_id = 2196 }
+				remove_core = JAM
+				random_country = {
+					limit = { owns = 2195 }
+					country_event = 209706
+				}
+			}
+
+			random_country = { # Send events to relevant Miskito Coast province owners (but only one if they are the same)
+				limit = {
+					OR = {
+						AND = { owns = 3334 NOT = { owns = 2195 } }
+						AND = { owns = 2220 NOT = { owns = 2198 } }
+					}
+					OR = {
+						tag = THIS
+						vassal_of = THIS
+					}
+				}
+				random_country = {
+					limit = {
+						owns = 2195
+						owns = 2198
+					}
+					country_event = 209707
+				}
+				random_country = {
+					limit = {
+						owns = 2195
+						NOT = { owns = 2198 }
+					}
+					country_event = 209707
+				}
+				random_country = {
+					limit = {
+						owns = 2198
+						NOT = { owns = 2195 }
+					}
+					country_event = 209707
+				}
+			}
+
+			set_global_flag = treaty_of_managua
+			random_country = {
+				limit = { owns = 2199 }
+				country_event = 99700
+			}
+
+			USA = { country_event = 209715 }
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Refuse to Withdraw
+		option = {
+			name = "EVTOPTB209709"
+
+			clr_global_flag = clayton_bulwer_treaty_signed
+
+			prestige = -5
+
+			USA = { country_event = 209710 }
+
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	#Description: USA recieves if ENG refuses to leave Central American under the Clayton-Bulwer Treaty
+	country_event = {
+		id = 209710
+		title = "EVTNAME209710"
+		desc = "EVTDESC209710"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		# Declare war to enforce the terms of the treaty
+		option = {
+			name = "EVTOPTA209710"
+
+			war = {
+				target = ENG
+				attacker_goal = { casus_belli = enforce_clayton_treaty country = ENG }
+				defender_goal = { casus_belli = status_quo country = THIS }
+				call_ally = no
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Do nothing
+		option = {
+			name = "EVTOPTB209710"
+
+			prestige = -20
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 5
+					war_exhaustion = 10
+				}
+			}
+		}
+	}
+
+	#Description: If the Clayton-Bulwer Treaty enforcement war is won by the US, ENG get's notified and sets off conditional peace deals
+	country_event = {
+		id = 209711
+		title = "EVTNAME209711"
+		desc = "EVTDESC209711"
+		picture = "ss_austria"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA209711"
+			prestige = -50
+
+			set_global_flag = clayton_bulwer_treaty_enforced
+		}
+	}
+
+	#Description: If the Clayton-Bulwer Treaty enforcement war is won by USA, they can take Bay Islands or return to Hondoras. Seperate event so can fire condtionally.
+	country_event = {
+		id = 209712
+		title = "EVTNAME209712"
+		desc = "EVTDESC209712"
+		picture = "exemplar_colony"
+
+		trigger = {
+			tag = USA
+			has_global_flag = clayton_bulwer_treaty_enforced
+			ENG = { owns = 2196 }
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		fire_only_once = yes
+
+		# Give the Islands to Hondoras
+		option = {
+			name = "EVTOPTA209712"
+
+			2196 = { # Send event to secede Bay Islands (2196)
+				remove_core = JAM
+				random_country = {
+					limit = { owns = 2195 }
+					country_event = 209706
+				}
+			}
+			ai_chance = { factor = 70 }
+		}
+
+		# Take the Islands
+		option = {
+			name = "EVTOPTB209712"
+
+			badboy = 2
+
+			2196 = { secede_province = THIS }
+
+			ai_chance = {
+				factor = 30
+				modifier = {
+					factor = 0.1
+					badboy = 0.8
+				}
+			}
+		}
+
+	}
+
+	#Description: If the Clayton-Bulwer Treaty enforcement war is won by USA, the question of MSK is raised. USA can give it to NIC, puppet it, or take it directly. Seperate event so can fire condtionally.
+	country_event = {
+		id = 209713
+		title = "EVTNAME209713"
+		desc = "EVTDESC209713"
+		picture = "moskito_coast"
+
+		trigger = {
+			tag = USA
+			has_global_flag = clayton_bulwer_treaty_enforced
+			exists = MSK
+			MSK = { is_independant = no }
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		fire_only_once = yes
+
+		# Give to NIC
+		option = {
+			name = "EVTOPTA209713"
+
+			random_country = {
+				limit = { owns = 2198 }
+				inherit = MSK
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Puppet
+		option = {
+			name = "EVTOPTB209713"
+
+			badboy = 4
+
+			create_vassal = MSK
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.1
+					badboy = 0.8
+				}
+			}
+		}
+
+		# Annex
+		option = {
+			name = "EVTOPTC209713"
+
+			badboy = 7
+
+			inherit = MSK
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.1
+					badboy = 0.8
+				}
+			}
+		}
+	}
+
+	#Description: If the Clayton-Bulwer Treaty enforcement war is won by USA, the question of BLZ is raised. They can free it, puppet it, or take it directly. Seperate event so can fire condtionally.
+	country_event = {
+		id = 209714
+		title = "EVTNAME209714"
+		desc = "EVTDESC209714"
+		picture = "ships_to_bangkok"
+
+		trigger = {
+			tag = USA
+			has_global_flag = clayton_bulwer_treaty_enforced
+			exists = BLZ
+			BLZ = { is_independant = no }
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		fire_only_once = yes
+
+		# Release it
+		option = {
+			name = "EVTOPTA209714"
+
+			badboy = -2
+
+			ENG = { release_vassal = BLZ }
+			diplomatic_influence = {
+				who = BLZ
+				value = 200
+			}
+			ai_chance = { factor = 70 }
+		}
+
+		# Puppet
+		option = {
+			name = "EVTOPTB209714"
+
+			badboy = 4
+
+			create_vassal = BLZ
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.1
+					badboy = 0.8
+				}
+			}
+		}
+
+		# Annex
+		option = {
+			name = "EVTOPTC209714"
+
+			badboy = 7
+
+			inherit = BLZ
+
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 0.1
+					badboy = 0.8
+				}
+			}
+		}
+	}
+
+	#Description: If ENG agrees to withdraw from Central America under the Clayton-Bulwer Treaty, USA is notified
+	country_event = {
+		id = 209715
+		title = "EVTNAME209715"
+		desc = "EVTDESC209715"
+		picture = "centennial"
+
+		is_triggered_only = yes
+
+		fire_only_once = yes
+
+		# Demand the Brittish Withdraw
+		option = {
+			name = "EVTOPTA209715"
+			prestige = 20
+		}
+	}
+
+#The End of Splendid Isolation
+country_event = {
+	id = 99957
+	title = "EVTNAME99957"
+	desc = "EVTDESC99957"
+	major = yes
+
+	trigger = {
+		tag = ENG
+		has_country_modifier = pax_britannica
+
+		OR = {
+			AND = {
+				exists = GER
+				year = 1885
+			}
+			exists = GCF
+			exists = RHI
+			exists = SCO
+			exists = WHA
+			AND = {
+				FRA_412 = {
+					NOT = {
+						owned_by = FRA
+					}
+				}
+				FRA_411 = {
+					NOT = {
+						owned_by = FRA
+					}
+				}
+			}
+			498 = { owned_by = FRA }
+			619 = { owned_by = GER }
+			PRU_575 = { owned_by = FRA }
+			SPA_492 = { owned_by = FRA }
+			CAN_46 = { NOT = { OR = { owned_by = ENG owned_by = CAN } } } # Southern Ontario
+		    CAN_58 = { NOT = { OR = { owned_by = ENG owned_by = CAN } } } # Southern Quebec
+			2468 = { NOT = { OR = { owned_by = ENG owned_by = AST } } } # New South Wales
+			2087 = { NOT = { OR = { owned_by = ENG owned_by = SAF } } } # Cape Town
+			3263 = { NOT = { OR = { owned_by = ENG owned_by = EIC } } } # Fort William Bengal
+			ENG_300 = { NOT = { owned_by = ENG } }
+			ENG_296 = { NOT = { owned_by = ENG } }
+			ENG_291 = { NOT = { owned_by = ENG } }
+			ENG_284 = { NOT = { owned_by = ENG } }
+			ENG_280 = { NOT = { owned_by = ENG } }
+			ENG_277 = { NOT = { owned_by = ENG } }
+			AND = {
+				exists = IRE
+				NOT = { year = 1905 }
+				has_recently_lost_war = yes
+			}
+			AND = {
+			    NOT = { has_global_flag = britain_accepts_talleyrand }
+			    NOT = { exists = BEL }
+			    }
+			any_greater_power = { industrial_score = THIS NOT = { tag = THIS } }
+			has_global_flag = EIC_independence
+			has_global_flag = treaty_of_paris_russia
+		}
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVT99957OPTA"
+		prestige = -25
+		remove_country_modifier = pax_britannica
+		any_greater_power = {
+			limit = { NOT = { truce_with = ENG } }
+			relation = {
+				who = ENG
+				value = 100
+			}
+		}
+	}
+}

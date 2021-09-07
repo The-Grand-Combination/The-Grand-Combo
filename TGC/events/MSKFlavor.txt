@@ -1,3 +1,4 @@
+#This file had all triggers sorted for performance optimisation, please keep it that way
 #The Treaty of Managua
 
 	#Description: Triggered by the UK if they still have the Moskito Kingdom as a vassal and want to sell it.
@@ -46,6 +47,11 @@
 				militancy = -1
 				consciousness = -1
 			}
+
+			3502 = {
+				remove_core = MSK
+			}
+
 			inherit = MSK
 			release_vassal = MSK
 			MSK = { government = colonial_company treasury = 1000 }
@@ -99,5 +105,63 @@
 			}
 
 			ai_chance = { factor = 0 }
+		}
+	}
+
+	#Description: MSK can occupy San Juan del Norte or choose not to
+	country_event = {
+		id = 99701
+		title = "EVTNAME99701"
+		desc = "EVTDESC99701"
+		picture = "moskito_coast"
+
+		trigger = {
+			tag = MSK
+			year = 1848
+		}
+
+		mean_time_to_happen = {
+			months = 3
+		}
+
+		fire_only_once = yes
+
+		# Take it
+		option = {
+			name = "EVTOPTA99701"
+			badboy = 5
+			3502 = { owner = { country_event = 99702 } }
+			3502 = { secede_province = THIS add_core = THIS }
+
+			ai_chance = { factor = 90 }
+		}
+
+		# Do Nothing
+		option = {
+			name = "EVTOPTB99701"
+
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	#Description: Tells when MSK occupies San Juan del Norte
+	country_event = {
+		id = 99702
+		title = "EVTNAME99702"
+		desc = "EVTDESC99702"
+		picture = "moskito_coast"
+
+		is_triggered_only = yes
+
+		option = {
+			USA = {
+				diplomatic_influence = {
+					who = THIS
+					value = 50
+				}
+			}
+			prestige = -5
+
+			name = "EVTOPTA99702"
 		}
 	}
