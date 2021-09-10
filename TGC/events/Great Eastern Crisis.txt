@@ -592,6 +592,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA90065"
 		prestige = 10
+		add_country_modifier = { name = win_or_die_oe duration = 1200 }
 		any_pop = {
 			limit = {
 				is_primary_culture = yes
@@ -684,11 +685,11 @@ country_event = {
 #Dismantle the Ottoman Empire
 country_event = {
 
-	id = 99832
+	id = 500183
 	title = "EVTNAME99832"
 	desc = "EVTDESC99832"
 	picture = "ottoman"
-
+    major = yes
 	is_triggered_only = yes
 
 	option = {
@@ -738,33 +739,75 @@ country_event = {
 		847 = { remove_core = TUR } #Chania
 		848 = { remove_core = TUR } #Iraklion
 		EGY_843 = { remove_core = TUR } #Aegean Islands
-		#TUR_860 = { remove_core = TUR } #Thrace
+		TUR_860 = { remove_core = TUR } #Thrace
 
-		#Secede Istanbul, Kars to Russia
+		#Secede the Straits Zone to Russia
 		random_owned = {
 			limit = {
-				province_id = 860 #Istanbul
+				province_id = 860 #Constantinople
 				owned_by = TUR
 			}
 			secede_province = RUS
 		}
 		random_owned = {
 			limit = {
-				province_id = 861 #Uskandar
+				province_id = 861 #Uskandar Straits Zone
 				owned_by = TUR
 			}
 			secede_province = RUS
 		}
 		random_owned = {
 			limit = {
-				province_id = 859 #Gallipoli
+				province_id = 859 #Gallipoli Straits Zone
 				owned_by = TUR
 			}
 			secede_province = RUS
 		}
+		
+		random_owned = {
+			limit = {
+				province_id = 862 #Izmit Straits Zone
+				owned_by = TUR
+			}
+			secede_province = RUS
+		}
+		
+		random_owned = {
+			limit = {
+				province_id = 900 #Antioch
+				owned_by = TUR
+			}
+			secede_province = RUS
+		}
+		
+		random_owned = {
+			limit = {
+				province_id = 866 #Straits Zone
+				owned_by = TUR
+			}
+			secede_province = RUS
+		}
+		
+		random_owned = {
+			limit = {
+				province_id = 865 #Straits Zone
+				owned_by = TUR
+			}
+			secede_province = RUS
+		}
+		
 		any_owned = {
-			limit = { region = TUR_885 }
+			limit = { region = TUR_885  #failsafe?
+			owned_by = TUR
+			}
 			secede_province = RUS
+		}
+		
+		any_owned = {
+			limit = { region = TUR_923 #Mosul 
+			owned_by = TUR
+			}
+			secede_province = ASY
 		}
 
 		#Secede to Bulgaria
@@ -907,6 +950,13 @@ country_event = {
 		# Any Montenegran lands given to Montenegro, it is freed if vassaled
 		any_owned = {
 			limit = { is_core = MON }
+			secede_province = MON
+		}
+		random_owned = {
+			limit = {
+				province_id = 850 #Skadar
+				owned_by = TUR
+			}
 			secede_province = MON
 		}
 		random_country = {
@@ -1143,6 +1193,18 @@ country_event = {
 				}
 			}
 		}
+		
+		random_owned = {
+			limit = {
+				province_id = 841 #Karafarye
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = GRE
+				}
+			}
+		}
 
 		#Return Aegean Islands to Greece
 		random_owned = {
@@ -1218,6 +1280,47 @@ country_event = {
 			TUR = { release_vassal = ATH }
 			GRE = { inherit = ATH }
 		}
+		
+		any_owned = {
+			limit = { is_core = CLC }
+			secede_province = CLC
+		}
+		
+		random_country = {
+			limit = {
+				tag = KWT
+				vassal_of = TUR
+			}
+			TUR = { release_vassal = KWT }
+		}
+		
+		random_country = {
+			limit = {
+				tag = TUN
+				vassal_of = TUR
+			}
+			TUR = { release_vassal = KWT }
+		}
+		
+		any_owned = {
+			limit = { is_core = ASY }
+			secede_province = ASY
+		}
+		
+		any_owned = {
+			limit = { is_core = IRQ }
+			secede_province = IRQ #Arabs in Iraq go independent
+		}
+		
+		any_owned = {
+			limit = { is_core = SYR }
+			secede_province = SYR #Russia sets up a Greater Syrian protectorate ruled by local Christian minority. Can annex after berlin conference
+		}
+		
+		any_owned = {
+			limit = { is_core = LBN }
+			secede_province = SYR
+		}
 
 		# Albania released
 		random_owned = {
@@ -1225,7 +1328,7 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 849 #Tirana
+				province_id = 849 #Tirana #Failsafe is Italy says no to Odessa
 				owned_by = TUR
 				NOT = { exists = ALB }
 			}
@@ -1254,6 +1357,11 @@ country_event = {
 			}
 			militancy = 5
 		}
+		
+		add_country_modifier = {
+				name = tsars_puppet
+				duration = -1
+			}
 
 		RUS = {
 			relation = { who = SER value = 400 }
@@ -1271,6 +1379,25 @@ country_event = {
 			relation = { who = ROM value = 400 }
 			diplomatic_influence = { who = ROM value = 200 }
 			create_alliance = ROM
+			
+			relation = { who = CLC value = 400 }
+			diplomatic_influence = { who = CLC value = 200 }
+			create_alliance = CLC
+			create_vassal = CLC
+			
+			create_vassal = ARM
+			
+			relation = { who = TUR value = 400 }
+			diplomatic_influence = { who = TUR value = 200 }
+			create_vassal = TUR
+			
+			relation = { who = SYR value = 400 }
+			diplomatic_influence = { who = SYR value = 200 }
+			create_vassal = SYR
+			
+			relation = { who = ASY value = 400 }
+			diplomatic_influence = { who = ASY value = 200 }
+			create_vassal = ASY
 
 			relation = { who = ALB value = 400 }
 			diplomatic_influence = { who = ALB value = 200 }
@@ -1308,6 +1435,18 @@ country_event = {
 				duration = -1
 			}
 		}
+		ARM = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			}
+		}
+		CLC = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			}
+		}
 		ALB = {
 			add_country_modifier = {
 				name = nationalist_balkans
@@ -1319,5 +1458,421 @@ country_event = {
 				remove_core = RUM
 			}
 		}
+	}
+}
+
+# Last ditch attempt not to get dismantled
+country_event = { #Scrapped
+	id = 500169
+	title = "Desperate situation calls for desperate solution" #The Cyprus Convention
+	desc = "EVTDESC900640"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Swallow our pride and ask the West for help in return for concessions"
+		set_country_flag = desperate_problems_require_desperate_solutions
+		random_country = {
+			limit = {
+				is_sphere_leader_of = EGY #Britain or France..hopefully
+				NOT = { tag = THIS }
+			}
+			country_event = 500173
+		}
+		720 = { owner = { country_event = 500170 } } #italy
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "We will face the Russian Wrath on our own"
+		#set_country_flag = cyprus_convention
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 500170
+	title = "Ottomans Dismantled - Time for our Share" #italy gets asked
+	desc = "EVTDESC900641"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Get our share"
+		#set_country_flag = italy_wants_concessions_oe
+		badboy = 6
+		#RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = RUS
+			value = 100
+		}
+		TUR = { country_event = { id = 500171 days = 2 } }
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 500171
+	title = "Cede them colonies" #Italy gets its share
+	desc = "EVTDESC900642"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA900642"
+		set_country_flag = receiving_cyprus
+		random_owned = { limit = { province_id = 848 owned_by = TUR } secede_province = FROM } #Crete
+		random_owned = { limit = { province_id = 847 owned_by = TUR } secede_province = FROM } #Crete
+		random_owned = { limit = { province_id = 849 owned_by = TUR } secede_province = FROM } #Albania
+		random_owned = { limit = { province_id = 852 owned_by = TUR } secede_province = FROM } #Albania
+		random_owned = { limit = { province_id = 853 owned_by = TUR } secede_province = FROM } #Albania
+		random_owned = { limit = { province_id = 3403 owned_by = TUR } secede_province = FROM } #Albania
+		any_owned = { limit = { region = TRI_1731 owned_by = TUR } secede_province = FROM } #Tripolitania
+		any_owned = { limit = { region = TRI_1735 owned_by = TUR } secede_province = FROM } #Cyr
+		random_owned = { limit = { province_id = 1759 owned_by = TUR } secede_province = FROM }
+		random_owned = { limit = { province_id = 846 owned_by = TUR } secede_province = FROM change_province_name = "Rodi" } #Rhodos
+		#FROM = { country_event = { id = 500172 days = 1 } }
+	    #add_country_modifier = { name = western_military_mission duration = 850 }
+	}
+}
+
+country_event = {
+	id = 500172
+	title = "$FROMCOUNTRY$ Accepts Odessa Conference"
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Excellent!"
+		relation = { who = FROM value = 50 }
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 500173
+	title = "Ottomans Dismantled" #EGY sphere owner gets asked
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We will join for concessions"
+		#set_country_flag = egypt_master_joins
+		badboy = 5
+		#RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = RUS
+			value = 100
+		}
+		TUR = { country_event = { id = 500174 days = 1 } }
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 500174
+	title = "Ceding concessions" #EGY sphere owner gets their share
+	desc = "EVTDESC900642"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA900642"
+		#add_country_modifier = { name = western_military_mission duration = 850 }
+		#All designed to protect Suez
+		any_owned = { limit = { region = EGY_921 owned_by = TUR } secede_province = EGY } #Palestine
+		any_owned = { limit = { region = EGY_910 owned_by = TUR } secede_province = EGY } #Jordan
+		any_owned = { limit = { region = HDJ_1151 owned_by = TUR } secede_province = EGY } #Hedjaz
+		#any_owned = { limit = { region = TUR_855 owned_by = TUR } secede_province = EGY } #Cyprus goes to GBR directly
+	    #FROM = { country_event = { id = 500172 days = 1 } }
+		#add_country_modifier = { name = western_military_mission duration = 850 }
+	}
+}
+
+country_event = { #Russia informed about Odessa Conference refusal
+	id = 500175
+	title = "$FROMCOUNTRY$ declines Odessa Conference, Allies Ottomans" #Russia informed Italy/GBR/FRA decide to back ottomans
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "They will die together, then."
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = { #Russia chain start of GEC, calls for Odessa Conference to dismantle the Ottoman Empire
+	id = 500176
+	title = "The Odessa Conference" #Russia informed Italy/GBR/FRA decide to back ottomans
+	desc = "EVTDESC500176"
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = "Ply the Great Powers with Ottoman Concessions"
+		set_global_flag = odessa_conference_has_happened
+		random_country = {
+			limit = {
+				is_sphere_leader_of = EGY #Britain or France..hopefully
+				NOT = { tag = THIS }
+			}
+			country_event = 500179
+		}
+		720 = { owner = { country_event = { id = 500178 days = 3 } } }#italy
+		549 = { owner = { country_event = { id = 500180 days = 3 } } }#germany
+		300 = { owner = { country_event = { id = 500181 days = 3 } } }#britain
+		425 = { owner = { country_event = { id = 500186 days = 3 } } }#france
+		badboy = -10
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "We will make zero concessions."
+		badboy = 20
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Russia Proposes Support for the Dismantlement of Ottomans in return for concessions
+	id = 500178
+	title = "Russia proposes to split the Ottoman Empire" #spaghettis
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We don't have to fire a single bullet and we get colonies? Sign me up!"
+		set_country_flag = ita_accept_russian_proposal_gec
+		RUS = { country_event = { id = 500172 days = 3 } }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Unacceptable. Instruct our Ambassador to the Porte to draw up an alliance agreement."
+        RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Russia Proposes Support for the Dismantlement of Ottomans in return for concessions
+	id = 500179
+	title = "Russia proposes to split the Ottoman Empire" #EGY sphere leader/owner
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We don't have to fire a single bullet and we get colonies? Sign me up!"
+		set_country_flag = egy_sphere_leader_accept_russian_proposal_gec
+		RUS = { country_event = { id = 500172 days = 3 } }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Unacceptable. Instruct our Ambassador to the Porte to draw up an alliance agreement."
+		RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Russia Proposes Support for the Dismantlement of Ottomans in return for concessions
+	id = 500180
+	title = "Russia Proposes to dismantle the Ottomans" #germany
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Russland nicht zu widersetzen? Das gefallt uns."
+		set_country_flag = ger_accept_russian_proposal_gec
+		RUS = { country_event = { id = 500172 days = 3 } }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Unacceptable. Instruct our Ambassador to the Porte to draw up an alliance agreement."
+		RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Russia Proposes Support for the Dismantlement of Ottomans in return for concessions
+	id = 500181
+	title = "Russia proposes to split the Ottoman Empire" #ENG
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We don't have to fire a single bullet and we get colonies? Sign me up!"
+		set_country_flag = eng_accept_russian_proposal_gec
+		RUS = { country_event = { id = 500172 days = 3 } }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Unacceptable. Instruct our Ambassador to the Porte to draw up an alliance agreement."
+		RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Russia Proposes Support for the Dismantlement of Ottomans in return for concessions
+	id = 500182
+	title = "Russia proposes to split the Ottoman Empire" #ENG
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We don't have to fire a single bullet and we get colonies? Sign me up!"
+		set_country_flag = fra_accept_russian_proposal_gec
+		RUS = { country_event = { id = 500172 days = 3 } }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Unacceptable. Instruct our Ambassador to the Porte to draw up an alliance agreement."
+		RUS = { country_event = { id = 500175 days = 5 } }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 500184
+	title = "Ottomans Dismantled" #EGY sphere owner gets asked
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We will join for concessions"
+		badboy = 5
+		relation = {
+			who = RUS
+			value = 100
+		}
+		TUR = { country_event = { id = 500185 days = 1 } }
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 500185
+	title = "Ceding concessions" #ENG owner gets their share
+	desc = "EVTDESC900642"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA900642"
+		relation = {
+			who = RUS
+			value = 100
+		}
+		#All designed to protect Suez
+		any_owned = { limit = { region = TUR_855 owned_by = TUR } secede_province = FROM } #Cyprus
+	}
+}
+
+country_event = {
+	id = 500186
+	title = "Ottomans Dismantled" #FRA asks for shite
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We will join for concessions"
+		badboy = 5
+		relation = {
+			who = RUS
+			value = 100
+		}
+		TUR = { country_event = { id = 500187 days = 1 } }
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 500187
+	title = "Ceding concessions" #ENG owner gets their share
+	desc = "EVTDESC900642"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA900642"
+		relation = {
+			who = RUS
+			value = 100
+		}
+		#All designed to protect Suez
+		TUN = { annex_to = TUR }
+		any_owned = { limit = { region = TUN_1726 owned_by = TUR } secede_province = FROM } #Tunis
 	}
 }
