@@ -337,10 +337,6 @@ political_decisions = {
 	#Build the Canal normally (No Clayton Treaty)
 	build_nicaragua_canal = {
 		picture = build_panama_canal
-		#news = yes # TODO commented out to prevent validator complaints until localizations are written, @champfish on discord
-		#news_desc_long = "nicaragua_canal_NEWS_LONG"
-		#news_desc_medium = "nicaragua_canal_NEWS_MEDIUM"
-		#news_desc_short = "nicaragua_canal_NEWS_SHORT"
 
 		potential = {
 			year = 1850
@@ -404,10 +400,6 @@ political_decisions = {
 	#Build the Canal under Clayton Treaty
 	build_nicaragua_canal_clayton = {
 		picture = build_panama_canal
-		#news = yes # TODO commented out to prevent validator complaints until localizations are written, @champfish on discord
-		#news_desc_long = "nicaragua_canal_NEWS_LONG"
-		#news_desc_medium = "nicaragua_canal_NEWS_MEDIUM"
-		#news_desc_short = "nicaragua_canal_NEWS_SHORT"
 
 		potential = {
 			year = 1850
@@ -466,7 +458,124 @@ political_decisions = {
 			factor = 1
 			modifier = {
 				factor = 0
-				war = yes
+				OR = {
+					AND = {
+						OR = {
+							has_global_flag = panama_under_construction
+							is_canal_enabled = 3
+						}
+						1723 = { owner = { relation = { who = THIS value = -50 } } }
+					}
+					war = yes
+				}
+			}
+		}
+	}
+
+### Corinth ###
+	#Build the Corinth Canal
+	build_corinth_canal = {
+		picture = build_panama_canal
+
+		potential = {
+			owns = 840
+			NOT = { is_canal_enabled = 7 }
+			NOT = { has_global_flag = corinth_under_construction }
+			NOT = { has_global_flag = corinth_canal_failed }
+			NOT = { has_global_flag = corinth_canal_useless }
+			OR = {
+				tag = GRE
+				tag = BYZ
+				AND = {
+					year = 1890
+					is_greater_power = yes				
+				}
+			}
+		}
+
+		allow = {
+			interchangeable_parts = 1
+			invention = machine_tools
+			money = 30000
+		}
+
+		effect = {
+			money = -30000
+			random_country = {
+				limit = {
+					tag = AUS
+				}
+				treasury = 6000
+			}
+
+			set_global_flag = corinth_under_construction
+
+			random_list = {
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 1825 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 2190 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 2555 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 2920 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 3285 } } }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				OR = {
+					war = yes
+					NOT = { money = 30000 }
+				}
+			}
+		}
+	}
+
+	#Widen the Corinth Canal if was left "useless" in first event chain
+	build_corinth_canal_widen = {
+		picture = build_panama_canal
+
+		potential = {
+			owns = 840
+			has_global_flag = corinth_canal_useless
+			OR = {
+				tag = GRE
+				tag = BYZ
+				AND = {
+					year = 1890
+					is_greater_power = yes				
+				}
+			}
+		}
+
+		allow = {
+			interchangeable_parts = 1
+			invention = machine_tools
+			money = 50000
+		}
+
+		effect = {
+			money = -50000
+
+			set_global_flag = corinth_under_construction_3
+
+			random_list = {
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 365 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 548 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 730 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 913 } } }
+				20 = { 840 = { add_province_modifier = { name = corinth_canal_construction duration = 1095 } } }
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				OR = {
+					war = yes
+					NOT = { money = 300000 }
+				}
 			}
 		}
 	}
