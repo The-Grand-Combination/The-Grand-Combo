@@ -1,319 +1,377 @@
 #This file had all triggers sorted for performance optimisation, please keep it that way
-country_event = {
 
-	id = 30000
+## World Fair ##
 
-	trigger = {
-		OR = {
-			industrial_score = 500 # limit to major non-western economies if not a GP
-			AND = {
-				is_greater_power = yes # nation is a great power
-				industrial_score = 200
+	# Plan World Fair
+	country_event = {
+
+		id = 30000
+
+		title = "EVTNAME30000"
+		desc = "EVTDESC30000"
+		picture = "Worldsfair"
+
+		trigger = {
+			OR = {
+				industrial_score = 500 # limit to major non-western economies if not a GP
+				AND = {
+					is_greater_power = yes # nation is a great power
+					industrial_score = 200
+				}
+			}
+			war = no
+			civilized = yes
+			NOT = { has_global_flag = PlanWorldFair }
+			NOT = { year = 1935 }
+			year = 1849
+		}
+
+		mean_time_to_happen = {
+			months = 800
+			modifier = {
+				factor = 0.8
+				year = 1870
+			}
+			modifier = {
+				factor = 0.01
+				primary_culture = french
+				regenerative_furnaces = 1
+				NOT = { has_country_flag = the_eiffel_tower_was_built }
+			}
+			modifier = {
+				factor = 0.8
+				year = 1890
+			}
+			modifier = {
+				factor = 0.8
+				year = 1910
 			}
 		}
-		war = no
-		civilized = yes
-		NOT = { has_global_flag = PlanWorldFair }
-		NOT = { year = 1935 }
-		year = 1849
-	}
 
-	mean_time_to_happen = {
-		months = 800
+		# Let's organize it
+		option = {
+			name = "EVTOPTA30000"
 
-		modifier = {
-			factor = 0.8
-			year = 1870
+			set_global_flag = PlanWorldFair
+			set_country_flag = world_fair_planner
+
+			## Pay ##
+
+				random_owned = {
+					limit = {
+						owner = {
+							NOT = { money = 10000 }
+							check_variable = { which = owed_cash_money value = 9 }
+						}
+					}
+					owner = { change_variable = { which = owed_cash_money value = 10 } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							NOT = { money = 10000 }
+							NOT = { check_variable = { which = owed_cash_money value = 1 } }
+						}
+					}
+					owner = { set_variable = { which = owed_cash_money value = 10 } }
+				}
+				random_owned = {
+					limit = { owner = { money = 10000 } }
+					owner = { treasury = -10000 }
+				}
 		}
 
-		modifier = {
-			factor = 0.01
-			primary_culture = french
-			regenerative_furnaces = 1
-			NOT = { has_country_flag = the_eiffel_tower_was_built }
-		}
+		# Maybe another time
+		option = {
+			name = "EVTOPTB30000"
 
-		modifier = {
-			factor = 0.8
-			year = 1890
-		}
-		modifier = {
-			factor = 0.8
-			year = 1910
-		}
-	}
-
-	title = "EVTNAME30000"
-	desc = "EVTDESC30000"
-	picture = "Worldsfair"
-
-	option = {
-		name = "EVTOPTA30000" # let's organize it
-		money = -1000
-		set_global_flag = PlanWorldFair
-		set_country_flag = world_fair_planner
-	}
-	option = {
-		name = "EVTOPTB30000" # maybe another time
-		prestige = -5
-	}
-}
-
-country_event = {
-
-	id = 30001 # hold world fair
-
-	trigger = {
-		has_country_flag = world_fair_planner
-		has_global_flag = PlanWorldFair
-		war = no
-		civilized = yes
-		NOT = { year = 1935 }
-		year = 1849
-	}
-
-	mean_time_to_happen = {
-		months = 12
-
-		modifier = {
-			factor = 0.2
-			year = 1855
-		}
-		modifier = {
-			factor = 0.25
-			year = 1870
-		}
-		modifier = {
-			factor = 0.50
-			year = 1885
-		}
-		modifier = {
-			factor = 0.65
-			year = 1890
-		}
-		modifier = {
-			factor = 0.85
-			year = 1900
+			prestige = -5
 		}
 	}
 
-	title = "EVTNAME30001"
-	desc = "EVTDESC30001"
-	picture = "Worldsfair"
+	# Hold World Fair
+	country_event = {
 
-	option = {
-		name = "EVTOPTA30001" # hold the fair
-		prestige = 20
-		clr_country_flag = world_fair_planner
-		clr_global_flag = PlanWorldFair
-	}
-}
+		id = 30001
 
-country_event = {
+		title = "EVTNAME30001"
+		desc = "EVTDESC30001"
+		picture = "Worldsfair"
 
-	id = 30002
+		trigger = {
+			has_country_flag = world_fair_planner
+			has_global_flag = PlanWorldFair
+			war = no
+			civilized = yes
+			NOT = { year = 1935 }
+			year = 1849
+		}
 
-	trigger = {
-		OR = {
-			industrial_score = 75 # limit to major non-western economies if not a GP
-			AND = {
-				is_greater_power = yes # nation is a great power
-				industrial_score = 50
+		mean_time_to_happen = {
+			months = 12
+			modifier = {
+				factor = 0.2
+				year = 1855
+			}
+			modifier = {
+				factor = 0.25
+				year = 1870
+			}
+			modifier = {
+				factor = 0.50
+				year = 1885
+			}
+			modifier = {
+				factor = 0.65
+				year = 1890
+			}
+			modifier = {
+				factor = 0.85
+				year = 1900
 			}
 		}
-		NOT = { has_country_flag = regionalfairplanner }
-		NOT = { has_global_flag = PlanRegionalFair }
-		war = no
-		civilized = yes
-		NOT = { year = 1935 }
-		year = 1849
-	}
 
-	mean_time_to_happen = {
-		months = 800
+		option = {
+			name = "EVTOPTA30001" # Hold the fair
 
-		modifier = {
-			factor = 0.8
-			year = 1870
-		}
-		modifier = {
-			factor = 0.8
-			year = 1890
-		}
-		modifier = {
-			factor = 0.8
-			year = 1910
+			prestige = 20
+			clr_country_flag = world_fair_planner
+			clr_global_flag = PlanWorldFair
 		}
 	}
 
-	title = "EVTNAME30002"
-	desc = "EVTDESC30002"
-	picture = "Worldsfair"
+## Regional Fair ##
 
-	option = {
-		name = "EVTOPTA30000" # let's organize it
-		money = -25000
-		set_global_flag = PlanRegionalFair
-		set_country_flag = regionalfairplanner
-		ai_chance = {
-			factor = 100
-			modifier = { factor = 0 NOT = { money = 25000 } }
+	# Plan Regional Fiar
+	country_event = {
+
+		id = 30002
+
+		title = "EVTNAME30002"
+		desc = "EVTDESC30002"
+		picture = "Worldsfair"
+
+		trigger = {
+			OR = {
+				industrial_score = 75 # limit to major non-western economies if not a GP
+				AND = {
+					is_greater_power = yes # nation is a great power
+					industrial_score = 50
+				}
+			}
+			NOT = { has_country_flag = regionalfairplanner }
+			NOT = { has_global_flag = PlanRegionalFair }
+			war = no
+			civilized = yes
+			NOT = { year = 1935 }
+			year = 1849
+		}
+
+		mean_time_to_happen = {
+			months = 800
+			modifier = {
+				factor = 0.8
+				year = 1870
+			}
+			modifier = {
+				factor = 0.8
+				year = 1890
+			}
+			modifier = {
+				factor = 0.8
+				year = 1910
+			}
+		}
+
+		# Let's organize it
+		option = {
+			name = "EVTOPTA30000"
+
+			money = -25000
+			set_global_flag = PlanRegionalFair
+			set_country_flag = regionalfairplanner
+
+			ai_chance = {
+				factor = 100
+				modifier = {
+					factor = 0
+					NOT = { money = 25000 }
+				}
+			}
+		}
+
+		# Maybe another time
+		option = {
+			name = "EVTOPTB30000"
+
+			prestige = -5
+
+			ai_chance = {
+				factor = 0.01
+				modifier = {
+					factor = 100
+					NOT = { money = 25000 }
+				}
+				modifier = {
+					factor = 0
+					money = 25000
+				}
+			}
 		}
 	}
 
-	option = {
-		name = "EVTOPTB30000" # maybe another time
-		prestige = -5
-		ai_chance = {
-			factor = 0.01
-			modifier = { factor = 100 NOT = { money = 25000 } }
-			modifier = { factor = 0 money = 25000 }
+	# Hold Regional Fair
+	country_event = {
+
+		id = 30003
+
+		title = "EVTNAME30003"
+		desc = "EVTDESC30003"
+		picture = "Worldsfair"
+
+		trigger = {
+			has_country_flag = regionalfairplanner
+			has_global_flag = PlanRegionalFair
+			war = no
+			NOT = { year = 1935 }
+			year = 1849
 		}
-	}
-}
 
-country_event = {
-
-	id = 30003 # hold regional fair
-
-	trigger = {
-		has_country_flag = regionalfairplanner
-		has_global_flag = PlanRegionalFair
-		war = no
-		NOT = { year = 1935 }
-		year = 1849
-	}
-
-	mean_time_to_happen = {
-		months = 12
-
-		modifier = {
-			factor = 0.2
-			year = 1855
+		mean_time_to_happen = {
+			months = 12
+			modifier = {
+				factor = 0.2
+				year = 1855
+			}
+			modifier = {
+				factor = 0.25
+				year = 1870
+			}
+			modifier = {
+				factor = 0.50
+				year = 1885
+			}
+			modifier = {
+				factor = 0.65
+				year = 1890
+			}
+			modifier = {
+				factor = 0.85
+				year = 1900
+			}
 		}
-		modifier = {
-			factor = 0.25
-			year = 1870
-		}
-		modifier = {
-			factor = 0.50
-			year = 1885
-		}
-		modifier = {
-			factor = 0.65
-			year = 1890
-		}
-		modifier = {
-			factor = 0.85
-			year = 1900
-		}
-	}
 
-	title = "EVTNAME30003"
-	desc = "EVTDESC30003"
-	picture = "Worldsfair"
+		option = {
+			name = "EVTOPTA30003" # Hold the fair
 
-	option = {
-		name = "EVTOPTA30003" # hold the fair
-		prestige = 10
-		clr_global_flag = PlanRegionalFair
-		clr_country_flag = regionalfairplanner
-	}
-}
-
-country_event = {
-
-	id = 30004
-
-	trigger = {
-		industrial_score = 50
-		war = no
-		colonial_nation = yes
-		civilized = yes
-		NOT = { has_global_flag = PlanColonialFair }
-		NOT = { has_country_flag = colonialfairplanner }
-		NOT = { year = 1935 }
-		year = 1880
-	}
-
-	mean_time_to_happen = {
-		months = 800
-
-		modifier = {
-			factor = 0.8
-			year = 1870
-		}
-		modifier = {
-			factor = 0.8
-			year = 1890
-		}
-		modifier = {
-			factor = 0.8
-			year = 1910
+			prestige = 10
+			clr_global_flag = PlanRegionalFair
+			clr_country_flag = regionalfairplanner
 		}
 	}
 
-	title = "EVTNAME30004"
-	desc = "EVTDESC30004"
-	picture = "Worldsfair"
+## Colonial Fair ##
 
-	option = {
-		name = "EVTOPTA30000" # let's organize it
-		money = -500
-		set_global_flag = PlanColonialFair
-		set_country_flag = colonialfairplanner
-	}
-	option = {
-		name = "EVTOPTB30000" # maybe another time
-		prestige = -5
-	}
-}
+	# Plan Colonial Fair
+	country_event = {
 
-country_event = {
+		id = 30004
 
-	id = 30005 # hold colonial fair
+		title = "EVTNAME30004"
+		desc = "EVTDESC30004"
+		picture = "Worldsfair"
 
-	trigger = {
-		has_country_flag = colonialfairplanner
-		has_global_flag = PlanColonialFair
-		war = no
-		NOT = { year = 1935 }
-		year = 1882
-	}
-
-	mean_time_to_happen = {
-		months = 12
-
-		modifier = {
-			factor = 0.2
-			year = 1885
+		trigger = {
+			industrial_score = 50
+			war = no
+			colonial_nation = yes
+			civilized = yes
+			NOT = { has_global_flag = PlanColonialFair }
+			NOT = { has_country_flag = colonialfairplanner }
+			NOT = { year = 1935 }
+			year = 1880
 		}
-		modifier = {
-			factor = 0.25
-			year = 1890
+
+		mean_time_to_happen = {
+			months = 800
+			modifier = {
+				factor = 0.8
+				year = 1870
+			}
+			modifier = {
+				factor = 0.8
+				year = 1890
+			}
+			modifier = {
+				factor = 0.8
+				year = 1910
+			}
 		}
-		modifier = {
-			factor = 0.50
-			year = 1895
+
+		# Let's organize it
+		option = {
+			name = "EVTOPTA30000"
+
+			money = -500
+			set_global_flag = PlanColonialFair
+			set_country_flag = colonialfairplanner
 		}
-		modifier = {
-			factor = 0.65
-			year = 1900
-		}
-		modifier = {
-			factor = 0.85
-			year = 1905
+
+		# Maybe another time
+		option = {
+			name = "EVTOPTB30000"
+
+			prestige = -5
 		}
 	}
 
-	title = "EVTNAME30005"
-	desc = "EVTDESC30005"
-	picture = "Worldsfair"
+	# Hold Colonial Fair
+	country_event = {
 
-	option = {
-		name = "EVTOPTA30005" # hold the fair
-		prestige = 15
-		clr_global_flag = PlanColonialFair
-		clr_country_flag = colonialfairplanner
+		id = 30005
+
+		title = "EVTNAME30005"
+		desc = "EVTDESC30005"
+		picture = "Worldsfair"
+
+		trigger = {
+			has_country_flag = colonialfairplanner
+			has_global_flag = PlanColonialFair
+			war = no
+			NOT = { year = 1935 }
+			year = 1882
+		}
+
+		mean_time_to_happen = {
+			months = 12
+
+			modifier = {
+				factor = 0.2
+				year = 1885
+			}
+			modifier = {
+				factor = 0.25
+				year = 1890
+			}
+			modifier = {
+				factor = 0.50
+				year = 1895
+			}
+			modifier = {
+				factor = 0.65
+				year = 1900
+			}
+			modifier = {
+				factor = 0.85
+				year = 1905
+			}
+		}
+
+		option = {
+			name = "EVTOPTA30005" # Hold the fair
+
+			prestige = 15
+			clr_global_flag = PlanColonialFair
+			clr_country_flag = colonialfairplanner
+		}
 	}
-}
