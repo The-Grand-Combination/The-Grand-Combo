@@ -2672,7 +2672,6 @@ rename_bourbon_island = {
 			NOT = {
 				exists = CAN
 				exists = QUE
-				exists = FCA
 				exists = ACA
 				QUE = { any_core = { controlled_by = THIS } }
 			}
@@ -2842,7 +2841,7 @@ rename_bourbon_island = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: Organize Acadia - add colonial integration, move pops, integrate into FCA if total victory
+	#Description: Organize Acadia - add colonial integration, move pops, integrate into CAN if total victory
 	organize_acadia = {
 		picture = "organize_acadia"
 		potential = {
@@ -2854,7 +2853,6 @@ rename_bourbon_island = {
 			NOT = {
 				exists = MRU
 				exists = ACA
-				exists = FCA
 				has_country_flag = acadia_organized
 			}
 		}
@@ -2875,7 +2873,7 @@ rename_bourbon_island = {
 			}
 			random_owned = {
 				limit = { owner = { has_country_flag = french_total_victory } }
-				ACA = { all_core = { add_core = FCA remove_core = ACA } }
+				ACA = { all_core = { add_core = CAN remove_core = ACA } }
 			}
 
 			## Set Acadia Flag Based on whether Bourbon/Napoleonic ##
@@ -2968,7 +2966,6 @@ rename_bourbon_island = {
 				exists = QUE
 				exists = ACA
 				exists = ULA
-				exists = FCA
 			}
 			has_country_flag = quebec_regained
 			NOT = { has_country_flag = canada_organized }
@@ -2984,7 +2981,6 @@ rename_bourbon_island = {
 		}
 
 		effect = {
-			FRA = { set_country_flag = canada_organized }
 
 			## Effects that will happen if either the Treaty of Montreal or Paris is taken ##
 
@@ -3021,17 +3017,22 @@ rename_bourbon_island = {
 
 				random_owned = {
 					limit = { owner = { has_country_flag = french_total_victory } }
+					any_country = {
+						limit = { has_country_flag = canada_master }
+						clr_country_flag = canada_master
+					}
+					FRA = { set_country_flag = canada_master }
 					COL = {
 						all_core = {
 							remove_core = COL
 							remove_core = ENG
 							remove_core = THIS
-							add_core = FCA
+							add_core = CAN
 						}
 					}
 					CAN = {
 						all_core = {
-							add_core = FCA
+							add_core = CAN
 							remove_core = ENG
 							remove_core = THIS
 							remove_core = CAN
@@ -3043,7 +3044,7 @@ rename_bourbon_island = {
 						annex_to = THIS
 						government = democracy
 						all_core = {
-							add_core = FCA
+							add_core = CAN
 							remove_core = ENG
 							remove_core = THIS
 							remove_core = COL
@@ -3053,21 +3054,23 @@ rename_bourbon_island = {
 						change_province_name = "Québec"
 						state_scope = { change_region_name = "Terre-Neuve" }
 					}
-					QUE = { all_core = { add_core = FCA remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW remove_core = QUE } }
+					QUE = { all_core = { add_core = CAN remove_core = ENG remove_core = THIS remove_core = RPL remove_core = NEW remove_core = QUE } }
 					ACA = { all_core = { add_core = ACA remove_core = ENG remove_core = THIS } }
 					owner = {
 						any_owned = {
-							limit = { is_core = FCA NOT = { terrain = arctic } }
+							limit = { is_core = CAN NOT = { terrain = arctic } }
 							add_province_modifier = { name = french_colonial_integration duration = 1825 }
 						}
 					}
-					FCA = {
-						remove_accepted_culture = french
+					CAN = {
+						remove_accepted_culture = french #?
+						primary_culture = french_canadian
 						add_accepted_culture = anglo_canadian
 						set_country_flag = post_colonial_country
 					}
 				}
 
+			#TODO: This far from works in the new flag system, and probably isn't needed either
 			## Set Canada Flag Based on whether Bourbon/Napoleonic ##
 
 				random_owned = {
@@ -3081,7 +3084,7 @@ rename_bourbon_island = {
 							}
 						}
 					}
-					ACA = { government = hms_government }
+					ACA = { government = fra_dominion }
 				}
 				random_owned = {
 					limit = {
@@ -3093,7 +3096,7 @@ rename_bourbon_island = {
 							}
 						}
 					}
-					FCA = { government = fra_colonial_company }
+					CAN = { government = fra_colonial_company }
 				}
 				random_owned = {
 					limit = { owner = { NOT = { colonial_policy = settlement } } }
@@ -3148,16 +3151,17 @@ rename_bourbon_island = {
 	french_louisiana = {
 		picture = new_france_louisiana
 		potential = {
-			primary_culture = french
-			is_greater_power = yes
-			capital = 425
+			tag = FRA
 			has_country_flag = french_total_victory	# France has won against Britain and taken all of British North America
 			has_country_flag = french_america 		# France has chosen to pursue restoring its American territories
-			has_country_flag = canada_organized 	# France has organized Canada
+			has_country_flag = canada_master 	# France has organized Canada
 			NOT = {
 				has_country_flag = war_for_louisiana
 				exists = ULA
-				exists = FCA
+				AND = {
+					exists = CAN
+					CAN = { primary_culture = french_canadian }
+				}
 			}
 		}
 
@@ -3259,7 +3263,7 @@ rename_bourbon_island = {
 				118 = { remove_core = ULA } # North Dakota
 				114 = { remove_core = ULA } # Montana
 
-				ULA = { all_core = { remove_core = FCA } }
+				ULA = { all_core = { remove_core = CAN } }
 
 			## Territory swap #
 
@@ -3271,7 +3275,7 @@ rename_bourbon_island = {
 							OR = {
 								is_core = ULA
 								is_core = ACA
-								is_core = FCA
+								is_core = CAN
 							}
 						}
 						secede_province = THIS
@@ -3284,7 +3288,7 @@ rename_bourbon_island = {
 						NOT = {
 							is_core = ACA
 							is_core = ULA
-							is_core = FCA
+							is_core = CAN
 						}
 					}
 					secede_province = USA
@@ -3368,7 +3372,7 @@ rename_bourbon_island = {
 					remove_core = THIS
 					add_core = ULA
 				}
-				FCA = {
+				CAN = {
 					any_owned = {
 						limit = {
 							OR = {
@@ -3398,7 +3402,7 @@ rename_bourbon_island = {
 								province_id = 128
 							}
 						}
-						remove_core = FCA
+						remove_core = CAN
 						add_core = ULA
 						secede_province = THIS
 					}
@@ -3436,7 +3440,7 @@ rename_bourbon_island = {
 				primary_culture = cajun
 				add_accepted_culture = acadian
 			}
-			ULA = { all_core = { remove_core = COL remove_core = FCA } }
+			ULA = { all_core = { remove_core = COL remove_core = CAN } }
 			D01 = { primary_culture = cajun }
 
 			## Setup Slavery ##
