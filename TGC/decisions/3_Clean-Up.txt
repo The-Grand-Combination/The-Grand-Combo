@@ -1,25 +1,22 @@
+#TODO: clean_up_colonial_government flag deprecated, remove decisions/events where its used, or replace with colonial_company_gov flag
+#TODO: Reintroduce way for Algiers to become Maghrebi primary culture instead of French if they go independent, but shouldnt be in this file
 political_decisions = {
 #from CleanUp.txt
 	ottoman_oppression_mil_gain = {
 		potential = {
-			ai = yes
-			exists = yes
-			OR = {
-				tag = SWI
-				AND = {
-					OR = {
-						SWI = { ai = no }
-						SWI = { exists = no }
-					}
-					OR = {
-						neighbour = TUR
-						tag = TUR
-					}
-				}
-			}
 			TUR = {
 				has_country_modifier = ottoman_oppression
 				NOT = { has_country_modifier = religious_minority_oppression }
+			}
+			OR = {
+				AND = {
+					tag = TUR
+					ai = yes
+				}
+				AND = {
+					TUR = { ai = no }
+					ai = yes
+				}
 			}
 		}
 
@@ -62,15 +59,38 @@ political_decisions = {
 
 	medicine_flags = {
 		potential = {
-			ai = yes
-			exists = yes
 			OR = {
-				any_greater_power = {
+				any_neighbor_country = {
 					ai = no
 					NOT = { has_country_flag = medicine_invented }
 					medicine = 1
 				}
 				any_neighbor_country = {
+					ai = no
+					NOT = { has_country_flag = biologism_invented }
+					biologism = 1
+				}
+				any_neighbor_country = {
+					ai = no
+					NOT = { has_country_flag = germs_invented }
+					invention = germ_theory
+				}
+				any_neighbor_country = {
+					ai = no
+					NOT = { has_country_flag = gaslights_invented }
+					invention = gaslights
+				}
+				any_neighbor_country = {
+					ai = no
+					NOT = { has_country_flag = electricity_invented }
+					electricity = 1
+				}
+				any_neighbor_country = {
+					ai = no
+					NOT = { has_country_flag = modern_central_bank_system_invented }
+					modern_central_bank_system = 1
+				}
+				any_greater_power = {
 					ai = no
 					NOT = { has_country_flag = medicine_invented }
 					medicine = 1
@@ -80,17 +100,7 @@ political_decisions = {
 					NOT = { has_country_flag = biologism_invented }
 					biologism = 1
 				}
-				any_neighbor_country = {
-					ai = no
-					NOT = { has_country_flag = biologism_invented }
-					biologism = 1
-				}
 				any_greater_power = {
-					ai = no
-					NOT = { has_country_flag = germs_invented }
-					invention = germ_theory
-				}
-				any_neighbor_country = {
 					ai = no
 					NOT = { has_country_flag = germs_invented }
 					invention = germ_theory
@@ -100,20 +110,15 @@ political_decisions = {
 					NOT = { has_country_flag = gaslights_invented }
 					invention = gaslights
 				}
-				any_neighbor_country = {
-					ai = no
-					NOT = { has_country_flag = gaslights_invented }
-					invention = gaslights
-				}
 				any_greater_power = {
 					ai = no
 					NOT = { has_country_flag = electricity_invented }
 					electricity = 1
 				}
-				any_neighbor_country = {
+				any_greater_power = {
 					ai = no
-					NOT = { has_country_flag = electricity_invented }
-					electricity = 1
+					NOT = { has_country_flag = modern_central_bank_system_invented }
+					modern_central_bank_system = 1
 				}
 				AND = {
 					NOT = { has_country_flag = medicine_invented }
@@ -135,7 +140,14 @@ political_decisions = {
 					NOT = { has_country_flag = electricity_invented }
 					electricity = 1
 				}
-
+				AND = {
+					NOT = { has_country_flag = modern_central_bank_system_invented }
+					modern_central_bank_system = 1
+				}
+			}
+			OR = {
+				ai = yes
+				NOT = { any_neighbor_country = { ai = yes } }
 			}
 		}
 
@@ -143,45 +155,31 @@ political_decisions = {
 		}
 
 		effect = {
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = medicine_invented } medicine = 1 } }
-				owner = { set_country_flag = medicine_invented }
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = biologism_invented } biologism = 1 } }
-				owner = { set_country_flag = biologism_invented }
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = germs_invented } invention = germ_theory } }
-				owner = { set_country_flag = germs_invented }
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = gaslights_invented } invention = gaslights } }
-				owner = { set_country_flag = gaslights_invented }
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = electricity_invented } electricity = 1 } }
-				owner = { set_country_flag = electricity_invented }
-			}
-			any_country = {
-				limit = { NOT = { has_country_flag = medicine_invented } medicine = 1 }
-				set_country_flag = medicine_invented
-			}
-			any_country = {
-				limit = { NOT = { has_country_flag = biologism_invented } biologism = 1 }
-				set_country_flag = biologism_invented
-			}
-			any_country = {
-				limit = { NOT = { has_country_flag = germs_invented } invention = germ_theory }
-				set_country_flag = germs_invented
-			}
-			any_country = {
-				limit = { NOT = { has_country_flag = gaslights_invented } invention = gaslights }
-				set_country_flag = gaslights_invented
-			}
-			any_country = {
-				limit = { NOT = { has_country_flag = electricity_invented } electricity = 1 }
-				set_country_flag = electricity_invented
+			UTI = {
+				any_country = {
+					limit = { NOT = { has_country_flag = medicine_invented } medicine = 1 }
+					set_country_flag = medicine_invented
+				}
+				any_country = {
+					limit = { NOT = { has_country_flag = biologism_invented } biologism = 1 }
+					set_country_flag = biologism_invented
+				}
+				any_country = {
+					limit = { NOT = { has_country_flag = germs_invented } invention = germ_theory }
+					set_country_flag = germs_invented
+				}
+				any_country = {
+					limit = { NOT = { has_country_flag = gaslights_invented } invention = gaslights }
+					set_country_flag = gaslights_invented
+				}
+				any_country = {
+					limit = { NOT = { has_country_flag = electricity_invented } electricity = 1 }
+					set_country_flag = electricity_invented
+				}
+				any_country = {
+					limit = { NOT = { has_country_flag = modern_central_bank_system_invented } modern_central_bank_system = 1 }
+					set_country_flag = modern_central_bank_system_invented
+				}
 			}
 		}
 
@@ -261,50 +259,61 @@ political_decisions = {
 		}
 		ai_will_do = { factor = 1 }
 	}
-
-	missing_government_flags = {
+#I can feel my mental health declining by looking at this mess, not a fan of this checking constantly running in the background, but can't think of a better solution right now
+#3 0s so the AI will click this decision before doing anything else no matter what
+	000_missing_government_flags = {
 		potential = {
-			ai = yes
-			exists = yes
-			year = 1837
 			OR = {
-				AND = { government = absolute_monarchy NOT = { has_country_flag = absolute_monarchy_gov } }
+				AND = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
 				AND = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
-				AND = { government = colonial_company NOT = { has_country_flag = clean_up_colonial_government } }
-				AND = { government = democracy NOT = { has_country_flag = democracy_gov } }
-				AND = { government = dominion NOT = { has_country_flag = dominion_gov } }
+				AND = { OR = { government = colonial_company government = eng_colonial_company government = fra_colonial_company government = rus_colonial_company government = net_colonial_company government = spa_colonial_company government = ger_colonial_company government = por_colonial_company government = tur_colonial_company government = qng_colonial_company } NOT = { has_country_flag = colonial_company_gov } }
+				AND = { OR = { government = federal_democracy government = democracy government = democracy2 } NOT = { has_country_flag = democracy_gov } }
+				AND = { OR = { government = dominion government = eng_dominion government = fra_dominion government = rus_dominion government = net_dominion government = spa_dominion government = ger_dominion government = por_dominion } NOT = { has_country_flag = dominion_gov } }
 				AND = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
-				AND = { government = federal_democracy NOT = { has_country_flag = democracy_gov } }
-				AND = { government = french_bourbon_hms NOT = { has_country_flag = constitutional_monarchy_gov } }
-				AND = { government = hms_government NOT = { has_country_flag = constitutional_monarchy_gov } }
-				#AND = { government = parliamentary_republic NOT = { has_country_flag = democracy_gov } }
+				AND = { OR = { government = hms_government government = hms_government2 } NOT = { has_country_flag = constitutional_monarchy_gov } }
 				AND = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
-				AND = { government = proletarian_dictatorship NOT = { has_country_flag = communist_gov } }
-				AND = { government = prussian_constitutionalism NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
+				AND = { OR = { government = proletarian_dictatorship government = trade_unions_congress government = communist_puppet } NOT = { has_country_flag = communist_gov } }
+				AND = { OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 } NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
 				AND = { government = theocracy NOT = { has_country_flag = theocratic_government } }
-				AND = { government = trade_unions_congress NOT = { has_country_flag = communist_gov } }
-				AND = { exists = yes NOT = { has_country_flag = existing_country } }
+				AND = { government = oligarchic_republic NOT = { has_country_flag = oligarchy_gov } }
 
 				any_neighbor_country = {
 					OR = {
-						AND = { government = absolute_monarchy NOT = { has_country_flag = absolute_monarchy_gov } }
+						AND = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
 						AND = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
-						AND = { government = colonial_company NOT = { has_country_flag = clean_up_colonial_government } }
-						AND = { government = democracy NOT = { has_country_flag = democracy_gov } }
-						AND = { government = dominion NOT = { has_country_flag = dominion_gov } }
+						AND = { OR = { government = colonial_company government = eng_colonial_company government = fra_colonial_company government = rus_colonial_company government = net_colonial_company government = spa_colonial_company government = ger_colonial_company government = por_colonial_company government = tur_colonial_company government = qng_colonial_company } NOT = { has_country_flag = colonial_company_gov } }
+						AND = { OR = { government = federal_democracy government = democracy government = democracy2 } NOT = { has_country_flag = democracy_gov } }
+						AND = { OR = { government = dominion government = eng_dominion government = fra_dominion government = rus_dominion government = net_dominion government = spa_dominion government = ger_dominion government = por_dominion } NOT = { has_country_flag = dominion_gov } }
 						AND = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
-						AND = { government = federal_democracy NOT = { has_country_flag = democracy_gov } }
-						AND = { government = french_bourbon_hms NOT = { has_country_flag = constitutional_monarchy_gov } }
-						AND = { government = hms_government NOT = { has_country_flag = constitutional_monarchy_gov } }
-						#AND = { government = parliamentary_republic NOT = { has_country_flag = democracy_gov } }
+						AND = { OR = { government = hms_government government = hms_government2 } NOT = { has_country_flag = constitutional_monarchy_gov } }
 						AND = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
-						AND = { government = proletarian_dictatorship NOT = { has_country_flag = communist_gov } }
-						AND = { government = prussian_constitutionalism NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
+						AND = { OR = { government = proletarian_dictatorship government = trade_unions_congress government = communist_puppet } NOT = { has_country_flag = communist_gov } }
+						AND = { OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 } NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
 						AND = { government = theocracy NOT = { has_country_flag = theocratic_government } }
-						AND = { government = trade_unions_congress NOT = { has_country_flag = communist_gov } }
-						AND = { exists = yes NOT = { has_country_flag = existing_country } }
+						AND = { government = oligarchic_republic NOT = { has_country_flag = oligarchy_gov } }
 					}
 				}
+
+				any_greater_power = {
+					OR = {
+						AND = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
+						AND = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
+						AND = { OR = { government = colonial_company government = eng_colonial_company government = fra_colonial_company government = rus_colonial_company government = net_colonial_company government = spa_colonial_company government = ger_colonial_company government = por_colonial_company government = tur_colonial_company government = qng_colonial_company } NOT = { has_country_flag = colonial_company_gov } }
+						AND = { OR = { government = federal_democracy government = democracy government = democracy2 } NOT = { has_country_flag = democracy_gov } }
+						AND = { OR = { government = dominion government = eng_dominion government = fra_dominion government = rus_dominion government = net_dominion government = spa_dominion government = ger_dominion government = por_dominion } NOT = { has_country_flag = dominion_gov } }
+						AND = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
+						AND = { OR = { government = hms_government government = hms_government2 } NOT = { has_country_flag = constitutional_monarchy_gov } }
+						AND = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
+						AND = { OR = { government = proletarian_dictatorship government = trade_unions_congress government = communist_puppet } NOT = { has_country_flag = communist_gov } }
+						AND = { OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 } NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
+						AND = { government = theocracy NOT = { has_country_flag = theocratic_government } }
+						AND = { government = oligarchic_republic NOT = { has_country_flag = oligarchy_gov } }
+					}
+				}
+			}
+			OR = {
+				ai = yes
+				NOT = { any_neighbor_country = { ai = yes } }
 			}
 		}
 
@@ -312,278 +321,487 @@ political_decisions = {
 		}
 
 		effect = {
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = clean_up_colonial_government
-			clr_country_flag = dominion_gov
-			random_owned = { limit = { owner = { government = absolute_monarchy } } owner = { set_country_flag = absolute_monarchy_gov } }
-			random_owned = { limit = { owner = { government = bourgeois_dictatorship } } owner = { set_country_flag = anarcho_liberal_gov } }
-			random_owned = { limit = { owner = { government = colonial_company } } owner = { set_country_flag = clean_up_colonial_government } }
-			random_owned = { limit = { owner = { government = democracy } } owner = { set_country_flag = democracy_gov } }
-			random_owned = { limit = { owner = { government = dominion } } owner = { set_country_flag = dominion_gov } }
-			random_owned = { limit = { owner = { government = fascist_dictatorship } } owner = { set_country_flag = fascist_gov } }
-			random_owned = { limit = { owner = { government = federal_democracy } } owner = { set_country_flag = democracy_gov } }
-			random_owned = { limit = { owner = { government = french_bourbon_hms } } owner = { set_country_flag = constitutional_monarchy_gov } }
-			random_owned = { limit = { owner = { government = hms_government } } owner = { set_country_flag = constitutional_monarchy_gov } }
-			#random_owned = { limit = { owner = { government = parliamentary_republic } } owner = { set_country_flag = democracy_gov } }
-			random_owned = { limit = { owner = { government = presidential_dictatorship } } owner = { set_country_flag = presidential_dictatorship_gov } }
-			random_owned = { limit = { owner = { government = proletarian_dictatorship } } owner = { set_country_flag = communist_gov } }
-			random_owned = { limit = { owner = { government = prussian_constitutionalism } } owner = { set_country_flag = semi_constitutional_monarchy_gov } }
-			random_owned = { limit = { owner = { government = theocracy } } owner = { set_country_flag = theocratic_government } }
-			random_owned = { limit = { owner = { government = trade_unions_congress } } owner = { set_country_flag = communist_gov } }
-			random_owned = { limit = { owner = { exists = yes NOT = { has_country_flag = existing_country } } } owner = { set_country_flag = existing_country } }
-			any_neighbor_country = {
-				limit = { exists = yes NOT = { has_country_flag = existing_country } }
-				set_country_flag = existing_country
+			UTI = {
+				any_country = {
+					limit = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = absolute_monarchy_gov
+				}
+				any_country = {
+					limit = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = anarcho_liberal_gov
+				}
+				any_country = {
+					limit = { OR = { government = colonial_company government = eng_colonial_company government = fra_colonial_company government = rus_colonial_company government = net_colonial_company government = spa_colonial_company government = ger_colonial_company government = por_colonial_company government = tur_colonial_company government = qng_colonial_company } NOT = { has_country_flag = colonial_company_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = colonial_company_gov
+				}
+				any_country = {
+					limit = { OR = { government = federal_democracy government = democracy government = democracy2 } NOT = { has_country_flag = democracy_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = democracy_gov
+				}
+				any_country = {
+					limit = { OR = { government = dominion government = eng_dominion government = fra_dominion government = rus_dominion government = net_dominion government = spa_dominion government = ger_dominion government = por_dominion } NOT = { has_country_flag = dominion_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = dominion_gov
+				}
+				any_country = {
+					limit = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = fascist_gov
+				}
+				any_country = {
+					limit = { OR = { government = hms_government government = hms_government2 } NOT = { has_country_flag = constitutional_monarchy_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = constitutional_monarchy_gov
+				}
+				any_country = {
+					limit = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = presidential_dictatorship_gov
+				}
+				any_country = {
+					limit = { OR = { government = proletarian_dictatorship government = trade_unions_congress government = communist_puppet } NOT = { has_country_flag = communist_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = communist_gov
+				}
+				any_country = {
+					limit = { OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 } NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = semi_constitutional_monarchy_gov
+				}
+				any_country = {
+					limit = { government = theocracy NOT = { has_country_flag = theocratic_government } }
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					clr_country_flag = oligarchy_gov
+					set_country_flag = theocratic_government
+				}
+				any_country = {
+					limit = { government = oligarchic_republic NOT = { has_country_flag = oligarchy_gov } }
+					clr_country_flag = theocratic_government
+					clr_country_flag = communist_gov
+					clr_country_flag = absolute_monarchy_gov
+					clr_country_flag = semi_constitutional_monarchy_gov
+					clr_country_flag = constitutional_monarchy_gov
+					clr_country_flag = democracy_gov
+					clr_country_flag = presidential_dictatorship_gov
+					clr_country_flag = fascist_gov
+					clr_country_flag = anarcho_liberal_gov
+					clr_country_flag = colonial_company_gov
+					clr_country_flag = dominion_gov
+					set_country_flag = oligarchy_gov
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	001_colcomp_gov_assigner = {
+		potential = {
+			has_country_flag = colonial_company_gov
+			OR = {
+				AND = {
+					overlord = { primary_culture = british }
+					NOT = { government = eng_colonial_company }
+				}
+				AND = {
+					overlord = { tag = FRA }
+					NOT = { government = fra_colonial_company }
+				}
+				AND = {
+					overlord = { tag = RUS }
+					NOT = { government = rus_colonial_company }
+				}
+				AND = {
+					overlord = { tag = NET }
+					NOT = { government = net_colonial_company }
+				}
+				AND = {
+					overlord = { tag = SPA }
+					NOT = { government = spa_colonial_company }
+				}
+				AND = {
+					overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } }
+					NOT = { government = ger_colonial_company }
+				}
+				AND = {
+					overlord = { tag = POR }
+					NOT = { government = por_colonial_company }
+				}
+				AND = {
+					overlord = { tag = TUR }
+					NOT = { government = tur_colonial_company }
+				}
+				AND = {
+					overlord = { tag = QNG }
+					NOT = { government = qng_colonial_company }
+				}
+				AND = {
+					overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR tag = TUR tag = QNG } }
+					OR = {
+						government = eng_colonial_company
+						government = fra_colonial_company
+						government = rus_colonial_company
+						government = net_colonial_company
+						government = spa_colonial_company
+						government = ger_colonial_company #If Austria takes a German colony it will keep its German name, but they cannot make it German themselves
+						government = por_colonial_company
+						government = tur_colonial_company
+						government = qng_colonial_company
+					}
+				}
+			}
+		}
+		allow = {
+		}
+		effect = {
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { primary_culture = british } NOT = { government = eng_colonial_company } }
+				government = eng_colonial_company
 			}
 			any_country = {
-				limit = { exists = yes NOT = { has_country_flag = existing_country } }
-				set_country_flag = existing_country
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = FRA } NOT = { government = fra_colonial_company } }
+				government = fra_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = absolute_monarchy NOT = { has_country_flag = absolute_monarchy_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				#clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = absolute_monarchy_gov
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = RUS } NOT = { government = rus_colonial_company } }
+				government = rus_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				#clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = anarcho_liberal_gov
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = NET } NOT = { government = net_colonial_company } }
+				government = net_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = colonial_company NOT = { has_country_flag = colonial_company_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				#clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = dominion_gov
-				set_country_flag = clean_up_colonial_government
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = SPA } NOT = { government = spa_colonial_company } }
+				government = spa_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = democracy NOT = { has_country_flag = democracy_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				#clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = democracy_gov
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } } NOT = { government = ger_colonial_company } }
+				government = ger_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = dominion NOT = { has_country_flag = dominion_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				#clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = clean_up_colonial_government
-				set_country_flag = dominion_gov
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = POR } NOT = { government = por_colonial_company } }
+				government = por_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				#clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = fascist_gov
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = TUR } NOT = { government = tur_colonial_company } }
+				government = tur_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = federal_democracy NOT = { has_country_flag = democracy_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				#clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = democracy_gov
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov overlord = { tag = QNG } NOT = { government = qng_colonial_company } }
+				government = qng_colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = french_bourbon_hms NOT = { has_country_flag = constitutional_monarchy_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				#clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = constitutional_monarchy_gov
+			any_country = {
+				limit = {
+					has_country_flag = colonial_company_gov
+					overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR tag = TUR tag = QNG } }
+					OR = {
+						government = eng_colonial_company
+						government = fra_colonial_company
+						government = rus_colonial_company
+						government = net_colonial_company
+						government = spa_colonial_company
+						government = ger_colonial_company
+						government = por_colonial_company
+						government = tur_colonial_company
+						government = qng_colonial_company
+					}
+			 	}
+				government = colonial_company
 			}
-			any_neighbor_country = {
-				limit = { government = hms_government NOT = { has_country_flag = constitutional_monarchy_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				#clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = constitutional_monarchy_gov
+		}
+	}
+
+	001_dominion_gov_assigner = {
+		potential = {
+			has_country_flag = dominion_gov
+			OR = {
+				AND = {
+					overlord = { primary_culture = british }
+					NOT = { government = eng_dominion }
+				}
+				AND = {
+					overlord = { tag = FRA }
+					NOT = { government = fra_dominion }
+				}
+				AND = {
+					overlord = { tag = RUS }
+					NOT = { government = rus_dominion }
+				}
+				AND = {
+					overlord = { tag = NET }
+					NOT = { government = net_dominion }
+				}
+				AND = {
+					overlord = { tag = SPA }
+					NOT = { government = spa_dominion }
+				}
+				AND = {
+					overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } }
+					NOT = { government = ger_dominion }
+				}
+				AND = {
+					overlord = { tag = POR }
+					NOT = { government = por_dominion }
+				}
+				AND = {
+					overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR } }
+					OR = {
+						government = eng_dominion
+						government = fra_dominion
+						government = rus_dominion
+						government = net_dominion
+						government = spa_dominion
+						government = ger_dominion #If Austria takes a German colony it will keep its German name, but they cannot make it German themselves
+						government = por_dominion
+					}
+				}
 			}
-			#any_neighbor_country = {
-			#	limit = { government = parliamentary_republic NOT = { has_country_flag = democracy_gov } }
-			#	clr_country_flag = theocratic_government
-			#	clr_country_flag = communist_gov
-			#	clr_country_flag = absolute_monarchy_gov
-			#	clr_country_flag = semi_constitutional_monarchy_gov
-			#	clr_country_flag = constitutional_monarchy_gov
-			#	#clr_country_flag = democracy_gov
-			#	clr_country_flag = presidential_dictatorship_gov
-			#	clr_country_flag = fascist_gov
-			#	clr_country_flag = anarcho_liberal_gov
-			#	clr_country_flag = colonial_company_gov
-			#	clr_country_flag = clean_up_colonial_government
-			#	clr_country_flag = dominion_gov
-			#	set_country_flag = democracy_gov
-			#}
-			any_neighbor_country = {
-				limit = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				#clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = presidential_dictatorship_gov
+		}
+		allow = {
+		}
+		effect = {
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { primary_culture = british } NOT = { government = eng_dominion } }
+				government = eng_dominion
 			}
-			any_neighbor_country = {
-				limit = { government = proletarian_dictatorship NOT = { has_country_flag = communist_gov } }
-				clr_country_flag = theocratic_government
-				#clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = communist_gov
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { tag = FRA } NOT = { government = fra_dominion } }
+				government = fra_dominion
 			}
-			any_neighbor_country = {
-				limit = { government = prussian_constitutionalism NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
-				clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				#clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = semi_constitutional_monarchy_gov
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { tag = RUS } NOT = { government = rus_dominion } }
+				government = rus_dominion
 			}
-			any_neighbor_country = {
-				limit = { government = theocracy NOT = { has_country_flag = theocratic_government } }
-				#clr_country_flag = theocratic_government
-				clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = theocratic_government
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { tag = NET } NOT = { government = net_dominion } }
+				government = net_dominion
 			}
-			any_neighbor_country = {
-				limit = { government = trade_unions_congress NOT = { has_country_flag = communist_gov } }
-				clr_country_flag = theocratic_government
-				#clr_country_flag = communist_gov
-				clr_country_flag = absolute_monarchy_gov
-				clr_country_flag = semi_constitutional_monarchy_gov
-				clr_country_flag = constitutional_monarchy_gov
-				clr_country_flag = democracy_gov
-				clr_country_flag = presidential_dictatorship_gov
-				clr_country_flag = fascist_gov
-				clr_country_flag = anarcho_liberal_gov
-				clr_country_flag = colonial_company_gov
-				clr_country_flag = clean_up_colonial_government
-				clr_country_flag = dominion_gov
-				set_country_flag = communist_gov
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { tag = SPA } NOT = { government = spa_dominion } }
+				government = spa_dominion
+			}
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } } NOT = { government = ger_dominion } }
+				government = ger_dominion
+			}
+			any_country = {
+				limit = { has_country_flag = dominion_gov overlord = { tag = POR } NOT = { government = por_dominion } }
+				government = por_dominion
+			}
+			any_country = {
+				limit = {
+					has_country_flag = dominion_gov
+					overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR } }
+					OR = {
+						government = eng_dominion
+						government = fra_dominion
+						government = rus_dominion
+						government = net_dominion
+						government = spa_dominion
+						government = ger_dominion
+						government = por_dominion
+					}
+				}
+				government = dominion
+			}
+		}
+	}
+
+	001_post_colonial_gov_assigner = {
+		potential = {
+			OR = {
+				has_country_flag = dominion_gov
+				has_country_flag = colonial_company_gov
+			}
+			is_vassal = no
+			is_substate = no
+			NOT = { has_country_flag = gov_reassign_exemption } #Flag for countries that use a colonial/dominion gov for special reasons
+		}
+		allow = {}
+		effect = {
+			any_country ={
+				limit = { has_country_flag = dominion_gov is_vassal = no is_substate = no NOT = { has_country_flag = gov_reassign_exemption } }
+				government = democracy
+			}
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov is_vassal = no is_substate = no civilized = yes NOT = { has_country_flag = gov_reassign_exemption } }
+				government = presidential_dictatorship
+			}
+			any_country = {
+				limit = { has_country_flag = colonial_company_gov is_vassal = no is_substate = no civilized = no NOT = { has_country_flag = gov_reassign_exemption } }
+				government = absolute_monarchy
+			}
+		}
+	}
+
+	vote_reform_fixer = {
+		potential = {
+			OR = {
+				AND = {
+					has_country_flag = dominion_gov
+					vote_franschise = none_voting
+				}
+				any_neighbor_country = {
+					has_country_flag = dominion_gov
+					vote_franschise = none_voting
+				}
+				AND = {
+					OR = {
+						has_country_flag = colonial_company_gov
+						has_country_flag = puppet_gov
+						has_country_flag = theocratic_government
+						government = communist_puppet
+					}
+				NOT = { vote_franschise = none_voting }
+				}
+				any_neighbor_country = {
+					OR = {
+						has_country_flag = colonial_company_gov
+						has_country_flag = puppet_gov
+						has_country_flag = theocratic_government
+						government = communist_puppet
+					}
+					NOT = { vote_franschise = none_voting }
+				}
+			}
+			OR = {
+				ai = yes
+				NOT = { any_neighbor_country = { ai = yes } }
+			}
+		}
+		allow = {
+		}
+		effect = {
+			any_country = {
+				limit = {
+					has_country_flag = dominion_gov
+					vote_franschise = none_voting
+				}
+				political_reform = landed_voting
+			}
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = colonial_company_gov
+						has_country_flag = puppet_gov
+						has_country_flag = theocratic_government
+						government = communist_puppet
+					}
+					NOT = { vote_franschise = none_voting }
+				}
+				political_reform = none_voting
 			}
 		}
 		ai_will_do = { factor = 1 }
@@ -591,14 +809,13 @@ political_decisions = {
 
 	enabling_crisis = {
 		potential = {
-			ai = yes
-			exists = yes
-			NOT = { has_global_flag = revolution_n_counter_researched }
 			OR = {
 				revolution_n_counterrevolution = 1
 				any_neighbor_country = { revolution_n_counterrevolution = 1 }
 				any_greater_power = { revolution_n_counterrevolution = 1 }
 			}
+			ai = yes
+			NOT = { has_global_flag = revolution_n_counter_researched }
 		}
 
 		allow = {
@@ -612,9 +829,6 @@ political_decisions = {
 
 	slave_pop_growth = {
 		potential = {
-			ai = yes
-			exists = yes
-			year = 1838
 			OR = {
 				AND = {
 					NOT = { has_country_modifier = slave_growth }
@@ -634,6 +848,8 @@ political_decisions = {
 					any_owned_province = { has_pop_type = slaves NOT = { slaves = 0.75 } }
 				}
 			}
+			ai = yes
+			year = 1838
 		}
 
 		allow = {
@@ -724,12 +940,6 @@ political_decisions = {
 
 	clean_up_crisis_tension = {
 		potential = {
-			ai = yes
-			exists = yes
-			OR = {
-				NOT = { has_global_flag = revolution_n_counter_researched }
-				is_vassal = yes
-			}
 			OR = {
 				any_owned_province = {
 					is_colonial = no
@@ -760,6 +970,11 @@ political_decisions = {
 						state_scope = { flashpoint_tension = 25 has_flashpoint = yes }
 					}
 				}
+			}
+			ai = yes
+			OR = {
+				NOT = { has_global_flag = revolution_n_counter_researched }
+				is_vassal = yes
 			}
 		}
 		allow = { }
@@ -799,8 +1014,6 @@ political_decisions = {
 	native_assimilation_act_ended = {
 		picture = native_assimilation_act
 		potential = {
-			ai = yes
-			exists = yes
 			OR = {
 				AND = {
 					has_country_flag = native_assimilation_enacted
@@ -817,6 +1030,7 @@ political_decisions = {
 					NOT = { has_country_modifier = native_assimilation_act_policy }
 				}
 			}
+			ai = yes
 		}
 
 		allow = {
@@ -844,50 +1058,8 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-
-	modern_central_banking_system_flag = {
-		potential = {
-			ai = yes
-			exists = yes
-			OR = {
-				any_greater_power = {
-					ai = no
-					NOT = { has_country_flag = modern_central_bank_system_invented }
-					modern_central_bank_system = 1
-				}
-				any_neighbor_country = {
-					ai = no
-					NOT = { has_country_flag = modern_central_bank_system_invented }
-					modern_central_bank_system = 1
-				}
-				AND = {
-					NOT = { has_country_flag = modern_central_bank_system_invented }
-					modern_central_bank_system = 1
-				}
-			}
-		}
-
-		allow = {
-		}
-
-		effect = {
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = modern_central_bank_system_invented } modern_central_bank_system = 1 } }
-				owner = { set_country_flag = modern_central_bank_system_invented }
-			}
-			any_country = {
-				limit = { NOT = { has_country_flag = modern_central_bank_system_invented } modern_central_bank_system = 1 }
-				set_country_flag = modern_central_bank_system_invented
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-
 	pay_owed_steamers = {
 		potential = {
-			ai = yes
 			OR = {
 				check_variable = { which = owed_steamers value = 1 }
 				check_variable = { which = owed_artillery value = 1 }
@@ -896,6 +1068,7 @@ political_decisions = {
 				check_variable = { which = owed_ammunition value = 1 }
 				check_variable = { which = owed_cash_money value = 1 }
 			}
+			ai = yes
 		}
 
 		allow = {
@@ -1055,8 +1228,6 @@ political_decisions = {
 
 	monthly_substate_payment = {
 		potential = {
-			ai = yes
-			NOT = { has_country_flag = exempt_from_vassal_contribution }
 			OR = {
 				is_substate = yes
 				AND = {
@@ -1065,6 +1236,8 @@ political_decisions = {
 					total_pops = 250000
 				}
 			}
+			ai = yes
+			NOT = { has_country_flag = exempt_from_vassal_contribution }
 		}
 
 		allow = {
@@ -1213,7 +1386,6 @@ political_decisions = {
 
 	player_owes_money = {
 		potential = {
-			ai = yes
 			OR = {
 				any_neighbor_country = {
 					ai = no
@@ -1258,6 +1430,7 @@ political_decisions = {
 					}
 				}
 			}
+			ai = yes
 		}
 
 		allow = {
@@ -1623,7 +1796,6 @@ political_decisions = {
 
 	silver_mines_without_modifier = {
 		potential = {
-			ai = yes
 			any_neighbor_country = {
 				OR = {
 					AND = {
@@ -1648,6 +1820,7 @@ political_decisions = {
 					}
 				}
 			}
+			ai = yes
 		}
 
 		allow = {
@@ -1678,15 +1851,13 @@ political_decisions = {
 
 	clean_up_crisis_tension_unciv = {
 		potential = {
-			ai = yes
-			exists = yes
-			civilized = no
 			any_owned_province = {
 				state_scope = { flashpoint_tension = 25 has_flashpoint = yes }
 				owner = {
 					civilized = no
 				}
 			}
+			ai = yes
 		}
 		allow = { }
 
@@ -1696,650 +1867,13 @@ political_decisions = {
 			}
 		}
 	}
-#from FlavourMod_PuppetGovernments.txt
-	clean_up_unciv_monarchy = {
-		potential = {
-			ai = yes
-			exists = yes
-			OR = {
-				AND = {
-					civilized = no
-					is_vassal = yes
-				}
-				AND = {
-					tag = UBD
-					NOT = { vassal_of = RUS }
-					OR = {
-						in_sphere = GER
-						in_sphere = NGF
-						in_sphere = GCF
-						in_sphere = AUS
-						in_sphere = SGF
-						in_sphere = PRU
-					}
-				}
-				tag = ARA
-			}
-			OR = {
-				government = democracy
-				government = prussian_constitutionalism
-				government = hms_government
-			}
-			NOT = { tag = LAN }
-			NOT = { tag = PHL }
-			NOT = { tag = LEG }
-			NOT = { tag = EGY }
-			NOT = { tag = KOR }
-			NOT = { has_country_flag = clean_up_unciv_monarchy }
-			NOT = { has_country_flag = clean_up_colonial_government }
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_country_flag = clean_up_unciv_monarchy
-			clr_country_flag = everywhere_genocide_only
-			clr_country_flag = non_colonial_genocide_only
-			clr_country_flag = colonial_genocide_only
-			clr_country_flag = preparations_to_kill
-			remove_country_modifier = preparations_to_kill
-			clr_country_flag = communist_gov
-			set_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			government = absolute_monarchy
-
-			random_owned = {
-				limit = { owner = { primary_culture = north_german } }
-				owner = { government = hms_government }
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	clean_up_colonial_government = {
-		potential = {
-			ai = yes
-			is_vassal = yes
-			exists = yes
-			OR = {
-				government = democracy
-				government = prussian_constitutionalism
-				government = hms_government
-				government = absolute_monarchy
-				government = presidential_dictatorship
-				government = bourgeois_dictatorship
-				government = french_bourbon_hms
-			}
-			OR = {
-				###British Puppets###
-				AND = {
-					tag = LEG
-					vassal_of = ENG
-					has_country_flag = british_orient
-				}
-				AND = {
-					OR = {
-						tag = CAN
-						tag = AST
-						tag = NEW
-						tag = NZL
-						tag = COL
-						tag = MRU
-					}
-					vassal_of = ENG
-					NOT = { has_global_flag = british_commonwealth }
-				}
-				AND = {
-					OR = {
-						tag = BLZ
-						tag = NGR
-						tag = MLT
-						tag = SWK
-						tag = HAN
-						tag = FIJ
-						tag = ION
-						tag = SEY
-						tag = IOT
-						tag = MAU
-						tag = HND
-						tag = BUR
-						tag = JAM
-						tag = MLY
-						tag = NEN
-						tag = TTB
-						tag = GMB
-						tag = SLE
-						tag = SGP
-						tag = YEM
-					}
-					vassal_of = ENG
-				}
-				AND = {
-					tag = KNY
-					is_culture_group = pan_british
-					vassal_of = ENG
-				}
-				AND = {
-					tag = CYP
-					OR = {
-						vassal_of = ENG
-						AND = {
-							vassal_of = TUR
-							in_sphere = ENG
-						}
-					}
-				}
-				###German Puppets###
-				AND = {
-					OR = {
-						tag = NMB
-						tag = TNZ
-						tag = ADV
-						tag = BOH
-						tag = KRO
-						tag = CMR
-						tag = PPG
-					}
-					is_culture_group = germanic
-					OR = {
-						vassal_of = GER
-						vassal_of = GCF
-					}
-				}
-				AND = {
-					OR = {
-						tag = SIE
-						tag = ALS
-						tag = BAN
-						tag = PZN
-						tag = PML
-						tag = SLS
-					}
-					OR = {
-						vassal_of = GER
-						vassal_of = GCF
-						vassal_of = NGF
-						vassal_of = SGF
-						vassal_of = AUS
-					}
-				}
-				AND = {
-					OR = {
-						AND = {
-							tag = LOM
-							732 = { is_core = LOM }
-						}
-						tag = BEL
-					}
-					OR = {
-						vassal_of = AUS
-						vassal_of = KUK
-						vassal_of = GER
-						vassal_of = GCF
-						vassal_of = NGF
-						vassal_of = SGF
-					}
-				}
-				AND = {
-					OR = {
-						tag = BOH
-						tag = POL
-					}
-					OR = {
-						AND = {
-							vassal_of = GER
-							GER = { government = fascist_dictatorship }
-						}
-						AND = {
-							vassal_of = GCF
-							GCF = { government = fascist_dictatorship }
-						}
-					}
-				}
-				AND = {
-					tag = BOS
-					OR = {
-						vassal_of = GER
-						vassal_of = GCF
-						vassal_of = NGF
-						vassal_of = SGF
-						vassal_of = AUS
-						vassal_of = KUK
-						vassal_of = TUR
-					}
-				}
-				###French Puppets###
-				AND = {
-					OR = {
-						tag = DAI
-						tag = MAD
-						tag = SYR
-						tag = IVC
-						tag = LBN
-						tag = GAB
-						tag = VTU
-						tag = MLI
-						tag = CGO
-						tag = NZF
-						tag = ULA
-						tag = ACA
-						tag = FCA
-						tag = QUE
-						tag = FAS
-						AND = {
-							tag = ALD
-							has_global_flag = berlin_conference
-						}
-					}
-					vassal_of = FRA
-				}
-				###Portuguese Puppets###
-				AND = {
-					OR = {
-						tag = MOZ
-						tag = ANG
-						tag = BRZ
-					}
-					OR = {
-						AND = {
-							vassal_of = POR
-							POR = {
-								OR = {
-									government = hms_government
-									government = prussian_constitutionalism
-									government = absolute_monarchy
-								}
-							}
-						}
-						AND = {
-							vassal_of = IBR
-							IBR = {
-								OR = {
-									government = hms_government
-									government = prussian_constitutionalism
-									government = absolute_monarchy
-								}
-							}
-						}
-					}
-				}
-				###Russian Puppets###
-				AND = {
-					OR = {
-						tag = LSK
-						tag = UBD
-						tag = STH
-						tag = LIV
-						tag = COU
-					}
-					vassal_of = RUS
-				}
-				###Dutch Puppets###
-				AND = {
-					OR = {
-						tag = INO
-						tag = VLK
-					}
-					vassal_of = NET
-				}
-				###Japanese Puppets###
-				AND = {
-					tag = TAI
-					vassal_of = JAP
-				}
-				AND = {
-					tag = KOR
-					vassal_of = JAP
-				}
-				###Spain Puppets###
-				AND = {
-					tag = PHL
-					OR = {
-						vassal_of = SPA
-						vassal_of = IBR
-					}
-				}
-				###Italian Puppets###
-				AND = {
-					OR = {
-						tag = ETH
-						tag = LBY
-					}
-					OR = {
-						vassal_of = ITA
-						vassal_of = ITS
-						vassal_of = SAR
-						vassal_of = PAP
-						vassal_of = SVY
-					}
-				}
-
-				###Ottoman Puppets###
-				AND = {
-					tag = HDJ
-					OR = {
-						vassal_of = TUR
-						vassal_of = EGY
-					}
-				}
-				AND = {
-					OR = {
-						tag = SAM
-						tag = RUM
-						tag = WAL
-						tag = MOL
-						tag = SER
-						tag = CRE
-						tag = ATH
-					}
-					vassal_of = TUR
-				}
-				###Chinese Puppets###
-				AND = {
-					OR = {
-						tag = GUI
-						tag = YNN
-						tag = XBI
-						tag = XIN
-						tag = MCK
-						tag = IMG
-						tag = MGL
-					}
-					vassal_of = QNG
-				}
-
-				###Sweden###
-				AND = {
-					tag = NOR
-					vassal_of = SWE
-				}
-
-				###Danish Puppets###
-				AND = {
-					OR = {
-						tag = SWH
-						tag = SCH
-						tag = HOL
-					}
-					vassal_of = DEN
-				}
-			}
-			NOT = {
-				OR = {
-					has_country_flag = clean_up_colonial_government
-					has_country_flag = dominion_gov
-				}
-			}
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			random_owned = {
-				limit = { is_core = ALD }
-				owner = {
-					primary_culture = french
-					add_accepted_culture = maghrebi
-				}
-			}
-			random_owned = {
-				limit = { is_core = TAI }
-				owner = {
-					primary_culture = japanese
-					add_accepted_culture = min
-				}
-			}
-			random_owned = { limit = { owner = { OR = { vote_franschise = none_voting civilized = no } } }
-				owner = {
-					clr_country_flag = everywhere_genocide_only
-					clr_country_flag = non_colonial_genocide_only
-					clr_country_flag = colonial_genocide_only
-					clr_country_flag = preparations_to_kill
-					remove_country_modifier = preparations_to_kill
-					clr_country_flag = communist_gov
-					clr_country_flag = absolute_monarchy_gov
-					clr_country_flag = semi_constitutional_monarchy_gov
-					clr_country_flag = constitutional_monarchy_gov
-					clr_country_flag = democracy_gov
-					clr_country_flag = presidential_dictatorship_gov
-					clr_country_flag = fascist_gov
-					clr_country_flag = anarcho_liberal_gov
-					clr_country_flag = dominion_gov
-					set_country_flag = clean_up_colonial_government
-					government = colonial_company
-				}
-			}
-			random_owned = { limit = { owner = { NOT = { vote_franschise = none_voting } } }
-				owner = {
-					clr_country_flag = everywhere_genocide_only
-					clr_country_flag = non_colonial_genocide_only
-					clr_country_flag = colonial_genocide_only
-					clr_country_flag = preparations_to_kill
-					remove_country_modifier = preparations_to_kill
-					random_owned = { limit = { owner = { border_policy = closed_borders } } owner = { political_reform = open_borders } }
-					clr_country_flag = communist_gov
-					clr_country_flag = absolute_monarchy_gov
-					clr_country_flag = semi_constitutional_monarchy_gov
-					clr_country_flag = constitutional_monarchy_gov
-					clr_country_flag = democracy_gov
-					clr_country_flag = presidential_dictatorship_gov
-					clr_country_flag = fascist_gov
-					clr_country_flag = anarcho_liberal_gov
-					clr_country_flag = clean_up_colonial_government
-					set_country_flag = dominion_gov
-					government = dominion
-				}
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	clean_up_freed_colonial_govt = {
-		potential = {
-			is_vassal = no
-			OR = {
-				government = colonial_company
-				government = dominion
-			}
-			NOT = {
-				tag = EIC
-				tag = MCK
-				tag = IMG
-				tag = SER
-				tag = PRG 	# Achieves independence and changes government through decision
-			}
-			OR = {
-				NOT = { tag = EGY }
-				AND = {
-					tag = EGY
-					NOT = { has_global_flag = egypt_submitted_to_ottomans }
-				}
-			}
-		}
-
-		allow = {
-			war = no
-			is_vassal = no
-		}
-
-		effect = {
-			set_country_flag = clean_up_unciv_monarchy
-			clr_country_flag = clean_up_colonial_government
-			random_owned = {
-				limit = { owner = { civilized = yes } }
-				owner = { government = democracy }
-			}
-			random_owned = {
-				limit = { owner = { civilized = no } }
-				owner = { government = absolute_monarchy }
-			}
-			random_owned = {
-				limit = {
-					is_core = ALD
-					owner = { primary_culture = french }
-				}
-				owner = {
-					primary_culture = maghrebi
-					remove_accepted_culture = maghrebi
-				}
-			}
-			random_owned = {
-				limit = {
-					is_core = HDJ
-					owner = { tag = HDJ }
-				}
-				owner = { government = absolute_monarchy }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						OR = {
-							tag = MOL
-							tag = WAL
-						}
-					}
-				}
-				owner = { government = prussian_constitutionalism }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						OR = {
-							tag = NOR
-							tag = NEW
-							tag = RHO
-							tag = SAF
-							tag = CAN
-							tag = NZL
-							tag = AST
-							tag = COL
-							tag = MRU
-							tag = MSK
-						}
-					}
-				}
-				owner = { government = hms_government }
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-	#from FlavourMod_Setup_CleanUp.txt
-	cleanup_colonial_infamy = {
-		potential = {
-			OR = {
-				tag = FRA
-				tag = ENG
-			}
-			has_global_flag = berlin_conference
-			ai = yes
-			badboy = 0.8
-			NOT = { has_country_flag = cleanup_colonial_infamy }
-		}
-
-		allow = {
-		}
-
-		effect = {
-			badboy = -20
-			random_country = {
-				limit = {
-					tag = THIS
-					NOT = { prestige = 600 }
-				}
-				prestige = 200
-			}
-			set_country_flag = cleanup_colonial_infamy
-		}
-	}
-
-	cleanup_war_with_non_existing_country = {
-		potential = {
-			ai = yes
-			OR = {
-				is_greater_power = yes
-				is_secondary_power = yes
-			}
-			#NOT = { has_country_flag = cleanup_colonial_infamy }
-		}
-
-		allow = {
-			war = yes
-			OR = {
-				TOU = { exists = no war_with = THIS }
-				ASH = { exists = no war_with = THIS }
-				MAS = { exists = no war_with = THIS }
-				SEG = { exists = no war_with = THIS }
-				TRZ = { exists = no war_with = THIS }
-				WOL = { exists = no war_with = THIS }
-				JAL = { exists = no war_with = THIS }
-				GBU = { exists = no war_with = THIS }
-				SOK = { exists = no war_with = THIS }
-				DAH = { exists = no war_with = THIS }
-				OYO = { exists = no war_with = THIS }
-				ARO = { exists = no war_with = THIS }
-				KBO = { exists = no war_with = THIS }
-				DND = { exists = no war_with = THIS }
-				DAM = { exists = no war_with = THIS }
-				MOS = { exists = no war_with = THIS }
-				LOA = { exists = no war_with = THIS }
-				KON = { exists = no war_with = THIS }
-				KNG = { exists = no war_with = THIS }
-
-			}
-		}
-
-		effect = {
-			any_country = {
-				limit = {
-					OR = {
-							tag = TOU
-							tag = ASH
-							tag = MAS
-							tag = SEG
-							tag = TRZ
-							tag = WOL
-							tag = JAL
-							tag = GBU
-							tag = SOK
-							tag = DAH
-							tag = OYO
-							tag = ARO
-							tag = KBO
-							tag = DND
-							tag = DAM
-							tag = MOS
-							tag = LOA
-							tag = KON
-							tag = KNG
-					}
-					exists = no
-					war_with = THIS
-				}
-				end_war = THIS
-			}
-			#set_country_flag = cleanup_colonial_infamy
-		}
-	}
 
 	rebel_tech_1850 = {
 		potential = {
-			ai = yes
-			is_greater_power = no
-			is_secondary_power = no
+			rank = 16
 			year = 1880
 			NOT = { has_global_flag = rebel_tech_1850 }
+			ai = yes
 		}
 
 		allow = {
@@ -2361,11 +1895,10 @@ political_decisions = {
 
 	rebel_tech_1870 = {
 		potential = {
-			ai = yes
-			is_greater_power = no
-			is_secondary_power = no
+			rank = 16
 			year = 1900
 			NOT = { has_global_flag = rebel_tech_1870 }
+			ai = yes
 		}
 
 		allow = {
@@ -2386,11 +1919,10 @@ political_decisions = {
 
 	rebel_tech_1900 = {
 		potential = {
-			ai = yes
-			is_greater_power = no
-			is_secondary_power = no
+			rank = 16
 			year = 1910
 			NOT = { has_global_flag = rebel_tech_1900 }
+			ai = yes
 		}
 
 		allow = {
@@ -2409,11 +1941,10 @@ political_decisions = {
 
 	rebel_tech_1920 = {
 		potential = {
-			ai = yes
-			is_greater_power = no
-			is_secondary_power = no
+			rank = 16
 			year = 1920
 			NOT = { has_global_flag = rebel_tech_1920 }
+			ai = yes
 		}
 
 		allow = {
@@ -2430,7 +1961,6 @@ political_decisions = {
 
 	ai_give_warships_steamer = {
 		potential = {
-			ai = yes
 			OR = {
 				is_greater_power = yes
 				tag = EIC
@@ -2521,6 +2051,7 @@ political_decisions = {
 				}
 			}
 			NOT = { has_country_modifier = ai_warships_cooldown }
+			ai = yes
 		}
 
 		allow = {
@@ -2689,9 +2220,6 @@ political_decisions = {
 
 	ai_give_warships_steamer_secondary_power = {
 		potential = {
-			year = 1837
-			ai = yes
-			is_disarmed = no
 			OR = {
 				tag = NET
 				tag = SAR
@@ -2727,6 +2255,9 @@ political_decisions = {
 				}
 			}
 			NOT = { has_country_modifier = ai_warships_cooldown }
+			is_disarmed = no
+			year = 1837
+			ai = yes
 		}
 
 		allow = {
@@ -2838,51 +2369,8 @@ political_decisions = {
 		}
 	}
 
-#from FlavourMod_Setup_CleanUp.txt
-	civilize_ai_countries = {
-		picture = "reichstag"
-		potential = {
-			ai = yes
-			civilized = no
-			year = 1905
-			OR = {
-				tag = ETH
-				NOT = {
-					capital_scope = { continent = africa }
-					capital_scope = { continent = west_africa }
-					capital_scope = { continent = central_africa }
-					capital_scope = { continent = east_africa }
-					capital_scope = { continent = south_west_africa }
-				}
-				AND = {
-					OR = {
-						capital_scope = { continent = africa }
-						capital_scope = { continent = west_africa }
-						capital_scope = { continent = central_africa }
-						capital_scope = { continent = east_africa }
-						capital_scope = { continent = south_west_africa }
-					}
-					is_vassal = yes
-				}
-			}
-			NOT = { has_country_flag = civilize_ai_countries }
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			civilized = yes
-			country_event = 90910
-			set_country_flag = civilize_ai_countries
-		}
-	}
-
 	ionian_lose_accepted_cultures = {
 		potential = {
-			ai = yes
-			is_cultural_union = no
 			OR = {
 				ION = {
 					NOT = { has_country_flag = normalized_cultures }
@@ -2912,6 +2400,8 @@ political_decisions = {
 					}
 				}
 			}
+			is_cultural_union = no
+			ai = yes
 		}
 
 		allow = {
