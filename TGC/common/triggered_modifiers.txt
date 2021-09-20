@@ -198,11 +198,11 @@ the_british_raj = {
 	trigger = {
 		ai = no
 		OR = {
-			government = absolute_monarchy
-			government = prussian_constitutionalism
-			government = hms_government
+			has_country_flag = absolute_monarchy_gov
+			has_country_flag = semi_constitutional_monarchy_gov
+			has_country_flag = constitutional_monarchy_gov
 			government = fascist_dictatorship
-			government = democracy
+			has_country_flag = democracy_gov
 		}
 		NOT = { is_culture_group = indo_iranian }
 		NOT = { is_culture_group = south_asian }
@@ -237,11 +237,11 @@ the_british_raj_ai = {
 	trigger = {
 		ai = yes
 		OR = {
-			government = absolute_monarchy
-			government = prussian_constitutionalism
-			government = hms_government
+			has_country_flag = absolute_monarchy_gov
+			has_country_flag = semi_constitutional_monarchy_gov
+			has_country_flag = constitutional_monarchy_gov
 			government = fascist_dictatorship
-			government = democracy
+			has_country_flag = democracy_gov
 		}
 		NOT = { is_culture_group = indo_iranian }
 		NOT = { is_culture_group = south_asian }
@@ -378,7 +378,7 @@ chinese_substate = {
 			vassal_of = QNG
 		}
 		civilized = no
-		QNG = {	government = absolute_monarchy }
+		QNG = {	has_country_flag = absolute_monarchy_gov }
 		is_culture_group = east_asian
 	}
 	icon = 10
@@ -805,9 +805,9 @@ free_city = {
 	trigger = {
 		NOT = { num_of_cities = 2 }
 		OR = {
-			government = democracy
-			government = colonial_company
-			government = dominion
+			has_country_flag = democracy_gov
+			has_country_flag = colonial_company_gov
+			has_country_flag = dominion_gov
 		}
 		OR = {
 			564 = { owned_by = THIS }
@@ -831,8 +831,8 @@ free_city = {
 free_state = {
 	trigger = {
 		OR = {
-			government = colonial_company
-			government = dominion
+			has_country_flag = colonial_company_gov
+			has_country_flag = dominion_gov
 		}
 		is_culture_group = germanic
 		OR = {
@@ -1086,18 +1086,20 @@ money_hoarder_4 = {
 mobilisation_limiter = {
 	trigger = {
 		has_global_flag = mobilisation_limiter_enabled
-		OR = {
-			AND = {
-			 	great_wars_enabled = yes
-				war = yes
-			}
-			AND = {
-				NOT = {
+		NOT = {
+			OR = {
+					AND = {
+					 	great_wars_enabled = yes
+						war = yes
+					}
+					any_greater_power = {
+						war_with = THIS
+						rank = 6
+					}
 					has_country_modifier = small_country_draft
 					has_country_modifier = taiping_draft
 					has_country_modifier = daimyo_draft
 					has_country_modifier = csa_draft
-				}
 			}
 		}
 		ai = yes
@@ -1105,10 +1107,21 @@ mobilisation_limiter = {
 	mobilisation_size = -10.00
 }
 
+minor_greater_power = {
+	trigger = {
+		has_global_flag = minor_greater_power_enabled
+		is_greater_power = yes
+		NOT = {
+			rank = 6
+		}
+	}
+	influence_modifier = -10.00
+}
+
 the_statue_of_liberty = {
 	trigger = {
 		owns = 232
-		government = democracy
+		has_country_flag = democracy_gov
 		is_culture_group = american_cultures
 		has_global_flag = statue_of_liberty_has_been_built
 		NOT = { has_global_flag = the_dream_is_over }
