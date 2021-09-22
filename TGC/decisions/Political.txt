@@ -15,8 +15,8 @@ political_decisions = {
 			OR = {
 				moralism = 30
 				liberal = 60
-				government = proletarian_dictatorship
-				government = fascist_dictatorship
+				has_country_flag = communist_gov
+				ruling_party_ideology = fascist
 				government = bourgeois_dictatorship
 				government = presidential_dictatorship
 			}
@@ -40,6 +40,7 @@ political_decisions = {
 			}
 		}
 	}
+
 	abolish_prohibition = {
 		picture = abolish_prohibition
 		potential = {
@@ -47,8 +48,8 @@ political_decisions = {
 		}
 		allow = {
 				OR = {
-					government = proletarian_dictatorship
-					government = fascist_dictatorship
+					has_country_flag = communist_gov
+					ruling_party_ideology = fascist
 					government = bourgeois_dictatorship
 					government = presidential_dictatorship
 					NOT = {
@@ -65,6 +66,7 @@ political_decisions = {
 
 		}
 	}
+
 	institute_central_bank = {
 		picture = institute_central_bank
 		potential = {
@@ -91,13 +93,13 @@ political_decisions = {
 	enact_female_suffrage = {
 		picture = enact_female_suffrage
 		potential = {
-			year = 1870
+			year = 1880
 			civilized = yes
 			NOT = { has_country_modifier = female_suffrage }
 			OR = {
-				government = prussian_constitutionalism
-				government = hms_government
-				government = democracy
+				has_country_flag = semi_constitutional_monarchy_gov
+				has_country_flag = constitutional_monarchy_gov
+				has_country_flag = democracy_gov
 			}
 			OR = {
 				vote_franschise = universal_weighted_voting
@@ -142,6 +144,17 @@ political_decisions = {
 				duration = -1
 			}
 		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+				mass_politics = 1
+				average_militancy = 3
+				}
+			}
+		}
 	}
 
 	leave_soi = {
@@ -149,7 +162,13 @@ political_decisions = {
 		picture = sign_the_geneva_convention
 		potential = {
 			part_of_sphere = yes
-			is_vassal = no
+			OR = {
+				is_vassal = no
+				AND = {
+					ai = yes
+					has_country_flag = failed_unification_remove_from_sphere # TODO port other effects from HPM
+				}
+			}
 		}
 
 		allow = {
@@ -164,11 +183,25 @@ political_decisions = {
 						}
 					}
 				}
+				AND = {
+					ai = yes
+					has_country_flag = failed_unification_remove_from_sphere
+				}
 			}
 		}
 
 		effect = {
-			sphere_owner = { country_event = 13202 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = failed_unification_remove_from_sphere } } }
+				owner = { sphere_owner = { country_event = 13202 } }
+			}
+			random_owned = {
+				limit = { owner = { has_country_flag = failed_unification_remove_from_sphere } }
+				owner = {
+					clr_country_flag = failed_unification_remove_from_sphere
+					sphere_owner = { diplomatic_influence = { who = THIS value = -200 } }
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -177,7 +210,10 @@ political_decisions = {
 			# Ai will do, if sphere owner has LESS than thrice our brigades.
 			modifier = {
 				factor = 0
-				NOT = { total_pops = 50000000 }
+				NOT = {
+					total_pops = 50000000
+					has_country_flag = failed_unification_remove_from_sphere
+				}
 				sphere_owner = {
 					# Factor = (sphere_owner regiments) / (our regiments).
 					# Returns true if( factor >= x ).
@@ -194,6 +230,7 @@ political_decisions = {
 		potential = {
 			can_nationalize = yes
 			civilized = yes
+            NOT = { has_country_modifier = nationalization_in_progress }
 		}
 
 		allow = {
@@ -242,6 +279,7 @@ political_decisions = {
 		}
 
 		effect = {
+            add_country_modifier = { name = nationalization_in_progress duration = 365 }
 			nationalize = yes
 		}
 
@@ -357,16 +395,9 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	population_exchanges = {
+	population_exchanges = { # TODO needs rework
 		picture = population_to_turkey
 		potential = {
-			NOT = { has_country_flag = megali_idea_claimed }
-			NOT = { has_country_flag = greater_bulgaria_claimed }
-			NOT = { tag = TUR }
-			NOT = { tag = EGY }
-			NOT = { tag = ALB }
-			NOT = { tag = BOS }
-			year = 1850
 			OR = {
 				AND = {
 					TUR = { NOT = { has_country_flag = eastern_rumelia_exchange } }
@@ -512,6 +543,13 @@ political_decisions = {
 					}
 				}
 			}
+			NOT = { has_country_flag = megali_idea_claimed }
+			NOT = { has_country_flag = greater_bulgaria_claimed }
+			NOT = { tag = TUR }
+			NOT = { tag = EGY }
+			NOT = { tag = ALB }
+			NOT = { tag = BOS }
+			year = 1850
 		}
 
 		allow = {
@@ -947,7 +985,7 @@ political_decisions = {
 				country_event = 986511
 			}
 		}
-	}
+		}
 
 		ai_will_do = { factor = 1 }
 	}
@@ -1150,12 +1188,12 @@ political_decisions = {
 	dissolve_the_upper_house = {
 		picture = dissolve_the_parliament
 		potential = {
-			NOT = { has_country_modifier = interment_camps }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-			government = absolute_monarchy
+			NOT = { has_country_modifier = internment_camps }
+			#OR = {
+			#	has_country_flag = government_decisions_on
+			#	ai = yes
+			#}
+			has_country_flag = absolute_monarchy_gov
 			upper_house_composition = appointed
 			NOT = { has_country_flag = dissolving_parliament }
 		}
@@ -1197,14 +1235,15 @@ political_decisions = {
 
 	start_propaganda = {
 		picture = british_propaganda
+		alert = no
 		potential = {
+			#OR = {
+			#	has_country_flag = government_decisions_on
+			#	ai = yes
+			#}
 			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
-			OR = {
-				government = fascist_dictatorship
-				government = proletarian_dictatorship
+				ruling_party_ideology = fascist
+				has_country_flag = communist_gov
 				government = bourgeois_dictatorship
 				invention = mass_advertising
 				associationism = 1
@@ -1259,65 +1298,62 @@ political_decisions = {
 
 		effect = {
 			plurality = -8
-			random_owned = {
-				limit = {
-					owner = {
-						NOT = { total_pops = 1000000 }
+			## Paying ##
+				random_owned = {
+					limit = { owner = { NOT = { total_pops = 1000000 } } }
+					owner = { treasury = -30000 }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							total_pops = 1000000
+							NOT = { total_pops = 2000000 }
+						}
 					}
+					owner = { treasury = -50000 }
 				}
-				owner = { treasury = -30000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 1000000
-						NOT = { total_pops = 2000000 }
+				random_owned = {
+					limit = {
+						owner = {
+							total_pops = 2000000
+							NOT = { total_pops = 3000000 }
+						}
 					}
+					owner = { treasury = -100000 }
 				}
-				owner = { treasury = -50000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 2000000
-						NOT = { total_pops = 3000000 }
+				random_owned = {
+					limit = {
+						owner = {
+							total_pops = 3000000
+							NOT = { total_pops = 4000000 }
+						}
 					}
+					owner = { treasury = -150000 }
 				}
-				owner = { treasury = -100000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 3000000
-						NOT = { total_pops = 4000000 }
+				random_owned = {
+					limit = {
+						owner = {
+							total_pops = 4000000
+							NOT = { total_pops = 5000000 }
+						}
 					}
+					owner = { treasury = -200000 }
 				}
-				owner = { treasury = -150000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 4000000
-						NOT = { total_pops = 5000000 }
+				random_owned = {
+					limit = {
+						owner = {
+							total_pops = 5000000
+							NOT = { total_pops = 10000000 }
+						}
 					}
+					owner = { treasury = -250000 }
 				}
-				owner = { treasury = -200000 }
-			}
-			random_owned = {
-				limit = {
-					owner = {
-						total_pops = 5000000
-						NOT = { total_pops = 10000000 }
+				random_owned = {
+					limit = {
+						owner = { total_pops = 10000000 }
 					}
+					owner = { treasury = 500000 }
 				}
-				owner = { treasury = -250000 }
-			}
-			random_owned = {
-				limit = {
-					owner = { total_pops = 10000000 }
-				}
-				owner = { treasury = 500000 }
-			}
 			country_event = 11002
 			set_country_flag = propaganda_program
 		}
@@ -1344,10 +1380,10 @@ political_decisions = {
 		alert = no
 		potential = {
 			NOT = { is_greater_power = yes }
-			OR = {
-				has_country_flag = government_decisions_on
-				ai = yes
-			}
+			#OR = {
+			#	has_country_flag = government_decisions_on
+			#	ai = yes
+			#}
 		}
 
 		allow = {
@@ -1530,59 +1566,14 @@ political_decisions = {
 		}
 	}
 #from Pop Growth for Infamy Decision
-		# infamy_for_growth_selector = {
-				# picture = conduct_census
-				# potential = {
-				# ai = no
-					# AND = {
-						# NOT = { has_country_modifier = birthrate_push_low  }
-						# NOT = { has_country_modifier = birthrate_push_medium }
-						# NOT = { has_country_modifier = birthrate_push_high  }
-						# NOT = { has_country_flag = pop_growth_for_infamy_chooser }
-					# }
-				# }
 
-				# allow = {
-					# ai = no
-				# }
-
-				# effect = {
-					# country_event = {
-						# id = 1998001
-					# }
-				# }
-		# }
-
-		# infamy_for_growth_modifier_removal = {
-				# picture = conduct_census
-				# potential = {
-					# AND = {
-						# ai = no
-						# OR = {
-							# has_country_modifier = birthrate_push_low
-							# has_country_modifier = birthrate_push_medium
-							# has_country_modifier = birthrate_push_high
-						# }
-					# }
-				# }
-
-				# allow = {
-					# NOT = { has_country_modifier = recently_selected_birthrate }
-				# }
-
-				# effect = {
-					# remove_country_modifier = birthrate_push_low
-					# remove_country_modifier = birthrate_push_medium
-					# remove_country_modifier = birthrate_push_high
-				# }
-		# }
-		#from Law Changes.txt
+	#from Law Changes.txt
 	increase_conscription = {
 		picture = marching_soldiers
 		alert = no
 		potential = {
-			civilized = yes
 			war = yes
+			civilized = yes
 			OR = {
 				AND = {
 					conscription = no_draft
@@ -1600,8 +1591,8 @@ political_decisions = {
 					NOT = { conscription = mandatory_service }
 					OR = {
 						conscription = four_year_draft
-						government = fascist_dictatorship
-						government = proletarian_dictatorship
+						ruling_party_ideology = fascist
+						has_country_flag = communist_gov
 						has_country_flag = in_great_war
 					}
 				}
@@ -1628,8 +1619,8 @@ political_decisions = {
 					conscription = four_year_draft
 					OR = {
 						war_policy = jingoism
-						government = fascist_dictatorship
-						government = proletarian_dictatorship
+						ruling_party_ideology = fascist
+						has_country_flag = communist_gov
 						government = bourgeois_dictatorship
 						has_country_flag = in_great_war
 					}
@@ -1644,8 +1635,8 @@ political_decisions = {
 					owner = {
 						NOT = { conscription = mandatory_service }
 						OR = {
-							government = fascist_dictatorship
-							government = proletarian_dictatorship
+							ruling_party_ideology = fascist
+							has_country_flag = communist_gov
 							government = bourgeois_dictatorship
 							has_country_flag = in_great_war
 						}
@@ -1660,7 +1651,7 @@ political_decisions = {
 		}
 
 		ai_will_do = {
-			factor = 0
+			factor = 0.1
 			modifier = { factor = 100 conscription = no_draft }
 			modifier = {
 				factor = 100
@@ -1723,27 +1714,128 @@ political_decisions = {
 				any_core = {
 					exists = no
 					capital_scope = { owned_by = THIS }
+					NOT = { has_country_flag = local_government_reform_blocker }
 					OR = {
-						AND = {
-							NOT = { political_parties = underground_parties }
-							THIS = { political_parties = underground_parties }
-						}
-						AND = {
-							NOT = { political_parties = harassment }
-							THIS = { political_parties = harassment }
-						}
-						AND = {
-							NOT = { political_parties = gerrymandering }
-							THIS = { political_parties = gerrymandering }
-						}
-						AND = {
-							NOT = { political_parties = non_secret_ballots }
-							THIS = { political_parties = non_secret_ballots }
-						}
-						AND = {
-							NOT = { political_parties = secret_ballots }
-							THIS = { political_parties = secret_ballots }
-						}
+						## Slavery ##
+							AND = {
+								slavery = yes_slavery
+								THIS = { slavery = freedom_of_womb }
+							}
+							AND = {
+								NOT = { slavery = no_slavery }
+								THIS = { slavery = no_slavery }
+							}
+						## Meetings ##
+							AND = {
+								NOT = { public_meetings = no_meeting }
+								THIS = { public_meetings = no_meeting }
+							}
+							AND = {
+								NOT = { public_meetings = yes_meeting }
+								THIS = { public_meetings = yes_meeting }
+							}
+						## Debt Law ##
+							AND = {
+								NOT = { debt_law = peonage }
+								THIS = { debt_law = peonage }
+							}
+							AND = {
+								NOT = { debt_law = debtors_prisons }
+								THIS = { debt_law = debtors_prisons }
+							}
+							AND = {
+								NOT = { debt_law = bankruptcy }
+								THIS = { debt_law = bankruptcy }
+							}
+						## Press Rights ##
+							AND = {
+								NOT = { press_rights = state_press }
+								THIS = { press_rights = state_press }
+							}
+							AND = {
+								NOT = { press_rights = censored_press }
+								THIS = { press_rights = censored_press }
+							}
+							AND = {
+								NOT = { press_rights = free_press }
+								THIS = { press_rights = free_press }
+							}
+						## Voting System ##
+							AND = {
+								NOT = { voting_system = first_past_the_post }
+								THIS = { voting_system = first_past_the_post }
+							}
+							AND = {
+								NOT = { voting_system = jefferson_method }
+								THIS = { voting_system = jefferson_method }
+							}
+							AND = {
+								NOT = { voting_system = proportional_representation }
+								THIS = { voting_system = proportional_representation }
+							}
+						## Vote Franchise ##
+							AND = {
+								NOT = { vote_franschise = none_voting }
+								THIS = { vote_franschise = none_voting }
+							}
+							AND = {
+								NOT = { vote_franschise = landed_voting }
+								THIS = { vote_franschise = landed_voting }
+							}
+							AND = {
+								NOT = { vote_franschise = wealth_weighted_voting }
+								THIS = { vote_franschise = wealth_weighted_voting }
+							}
+							AND = {
+								NOT = { vote_franschise = wealth_voting }
+								THIS = { vote_franschise = wealth_voting }
+							}
+							AND = {
+								NOT = { vote_franschise = universal_weighted_voting }
+								THIS = { vote_franschise = universal_weighted_voting }
+							}
+							AND = {
+								NOT = { vote_franschise = universal_voting }
+								THIS = { vote_franschise = universal_voting }
+							}
+						## Political Parties ##
+							AND = {
+								NOT = { political_parties = underground_parties }
+								THIS = { political_parties = underground_parties }
+							}
+							AND = {
+								NOT = { political_parties = harassment }
+								THIS = { political_parties = harassment }
+							}
+							AND = {
+								NOT = { political_parties = gerrymandering }
+								THIS = { political_parties = gerrymandering }
+							}
+							AND = {
+								NOT = { political_parties = non_secret_ballots }
+								THIS = { political_parties = non_secret_ballots }
+							}
+							AND = {
+								NOT = { political_parties = secret_ballots }
+								THIS = { political_parties = secret_ballots }
+							}
+						## Upper House Composition ##
+							AND = {
+								NOT = { upper_house_composition = party_appointed }
+								THIS = { upper_house_composition = party_appointed }
+							}
+							AND = {
+								NOT = { upper_house_composition = appointed }
+								THIS = { upper_house_composition = appointed }
+							}
+							AND = {
+								NOT = { upper_house_composition = state_equal_weight }
+								THIS = { upper_house_composition = state_equal_weight }
+							}
+							AND = {
+								NOT = { upper_house_composition = population_equal_weight }
+								THIS = { upper_house_composition = population_equal_weight }
+							}
 					}
 				}
 			}
@@ -1753,214 +1845,364 @@ political_decisions = {
 
 		effect = {
 
-			random_owned = {
-				limit = { owner = { slavery = no_slavery } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = no_slavery
-				}
-			}
+			## Slavery ##
 
-			random_owned = {
-				limit = { owner = { public_meetings = no_meeting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = no_meeting
-				}
-			}
+				# This decision will not enforce Slavery on constituent states
 
-			random_owned = {
-				limit = { owner = { public_meetings = yes_meeting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = yes_meeting
+				random_owned = {
+					limit = { owner = { slavery = freedom_of_womb } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							slavery = yes_slavery # Enforce Freedom of Womb only on constituent states with slavery
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = no_slavery
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { debt_law = peonage } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = peonage
+				random_owned = {
+					limit = { owner = { slavery = no_slavery } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = no_slavery
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { OR = { debt_law = debtors_prisons debt_law = bankruptcy } } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = debtors_prisons
-				}
-			}
+			## Meetings ##
 
-			random_owned = {
-				limit = { owner = { press_rights = state_press } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = state_press
+				random_owned = {
+					limit = { owner = { public_meetings = no_meeting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = no_meeting
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { press_rights = censored_press } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = censored_press
+				random_owned = {
+					limit = { owner = { public_meetings = yes_meeting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = yes_meeting
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { press_rights = free_press } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = free_press
-				}
-			}
+			## Debt Law ##
 
-			random_owned = {
-				limit = { owner = { voting_system = first_past_the_post } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = first_past_the_post
-				}
-			}
+				# This decision will not enforce Serfdom on constituent states
 
-			random_owned = {
-				limit = { owner = { voting_system = jefferson_method } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = jefferson_method
+				random_owned = {
+					limit = { owner = { debt_law = peonage } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = peonage
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { voting_system = proportional_representation } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = proportional_representation
+				random_owned = {
+					limit = { owner = { debt_law = debtors_prisons } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = debtors_prisons
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { vote_franschise = none_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = none_voting
+				random_owned = {
+					limit = { owner = { debt_law = bankruptcy } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = bankruptcy
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { vote_franschise = landed_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = landed_voting
-				}
-			}
+			## Press Rights ##
 
-			random_owned = {
-				limit = { owner = { vote_franschise = wealth_weighted_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = wealth_weighted_voting
+				random_owned = {
+					limit = { owner = { press_rights = state_press } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = state_press
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { vote_franschise = wealth_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = wealth_voting
+				random_owned = {
+					limit = { owner = { press_rights = censored_press } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = censored_press
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { vote_franschise = universal_weighted_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = universal_weighted_voting
+				random_owned = {
+					limit = { owner = { press_rights = free_press } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = free_press
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { vote_franschise = universal_voting } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = universal_voting
-				}
-			}
+			## Voting System ##
 
-			random_owned = {
-				limit = { owner = { political_parties = underground_parties } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = underground_parties
+				random_owned = {
+					limit = { owner = { voting_system = first_past_the_post } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = first_past_the_post
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { political_parties = harassment } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = harassment
+				random_owned = {
+					limit = { owner = { voting_system = jefferson_method } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = jefferson_method
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { political_parties = gerrymandering } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = gerrymandering
+				random_owned = {
+					limit = { owner = { voting_system = proportional_representation } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = proportional_representation
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { political_parties = non_secret_ballots } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = non_secret_ballots
-				}
-			}
+			## Vote Franchise ##
 
-			random_owned = {
-				limit = { owner = { political_parties = secret_ballots } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = secret_ballots
+				random_owned = {
+					limit = { owner = { vote_franschise = none_voting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = none_voting
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { upper_house_composition = party_appointed } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = party_appointed
+				random_owned = {
+					limit = { owner = { vote_franschise = landed_voting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = landed_voting
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { upper_house_composition = appointed } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = appointed
+				random_owned = {
+					limit = { owner = { vote_franschise = wealth_weighted_voting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = wealth_weighted_voting
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { upper_house_composition = state_equal_weight } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = state_equal_weight
+				random_owned = {
+					limit = { owner = { vote_franschise = wealth_voting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = wealth_voting
+					}
 				}
-			}
 
-			random_owned = {
-				limit = { owner = { upper_house_composition = population_equal_weight } }
-				any_country = {
-					limit = { exists = no capital_scope = { owned_by = THIS } }
-					political_reform = population_equal_weight
+				random_owned = {
+					limit = { owner = { vote_franschise = universal_weighted_voting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = universal_weighted_voting
+					}
 				}
-			}
+
+				random_owned = {
+					limit = { owner = { vote_franschise = universal_voting } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = universal_voting
+					}
+				}
+
+			## Political Parties ##
+
+				random_owned = {
+					limit = { owner = { political_parties = underground_parties } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = underground_parties
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { political_parties = harassment } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = harassment
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { political_parties = gerrymandering } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = gerrymandering
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { political_parties = non_secret_ballots } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = non_secret_ballots
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { political_parties = secret_ballots } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = secret_ballots
+					}
+				}
+
+			## Upper House Composition ##
+
+				random_owned = {
+					limit = { owner = { upper_house_composition = party_appointed } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = party_appointed
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { upper_house_composition = appointed } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = appointed
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { upper_house_composition = state_equal_weight } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = state_equal_weight
+					}
+				}
+
+				random_owned = {
+					limit = { owner = { upper_house_composition = population_equal_weight } }
+					any_country = {
+						limit = {
+							exists = no
+							capital_scope = { owned_by = THIS }
+							NOT = { has_country_flag = local_government_reform_blocker }
+						}
+						political_reform = population_equal_weight
+					}
+				}
 		}
+
 		ai_will_do = {
 			factor = 1
 			modifier = {
@@ -2035,10 +2277,10 @@ political_decisions = {
 				ruling_party_ideology = communist
 				}
 			OR = {
-				government = absolute_monarchy
-				government = fascist_dictatorship
+				has_country_flag = absolute_monarchy_gov
+				ruling_party_ideology = fascist
 				government = presidential_dictatorship
-				government = proletarian_dictatorship
+				has_country_flag = communist_gov
 			}
 		}
 		allow = {
@@ -2059,7 +2301,7 @@ political_decisions = {
 	#state_of_nation = {
 		#picture = union_speech
 		#potential = {
-			#government = democracy
+			#has_country_flag = democracy_gov
 			#exists = yes
 			#civilized = yes
 			#NOT = { has_country_modifier = national_speech }

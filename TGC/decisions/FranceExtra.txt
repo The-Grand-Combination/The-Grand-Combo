@@ -4,11 +4,8 @@ political_decisions = {
 		picture = "map_new_zealand"
 		potential = {
 			tag = FRA
-			OR = {
-				NZL = { all_core = { owned_by = THIS } }
-				NZF = { all_core = { owned_by = THIS } }
-			}
-			NOT = { has_country_flag = french_nzl }
+			NZL = { all_core = { owned_by = THIS } }
+			NOT = { has_country_flag = nzl_master }
 		}
 
 		allow = {
@@ -19,10 +16,11 @@ political_decisions = {
 		effect = {
 			money = -75000
 			add_accepted_culture = french_australian
-			NZL = { all_core = { add_core = NZF } }
-			NZF = {
+			NZL = {
 				set_country_flag = post_colonial_country
-				all_core = { remove_core = ENG remove_core = NZL remove_core = THIS }
+				all_core = { remove_core = ENG remove_core = THIS }
+				primary_culture = french_australian
+				remove_accepted_culture = australian
 			}
 			2510 = { state_scope = { change_region_name = "Ile du Nord" } }
 			2516 = { state_scope = { change_region_name = "Ile du Sud" } }
@@ -177,17 +175,20 @@ political_decisions = {
 			}
 			UTI = { primary_culture = french_australian }
 			any_owned = {
-				limit = { is_core = NZF }
+				limit = { is_core = NZL }
 				secede_province = UTI
 			}
 			UTI = {
-				2510 = { assimilate = yes }
-				2511 = { assimilate = yes }
-				2512 = { assimilate = yes }
-				2513 = { assimilate = yes }
-				2514 = { assimilate = yes }
-				2515 = { assimilate = yes }
-				2516 = { assimilate = yes }
+				any_owned = {
+					limit = {
+						OR = {
+							region = ENG_2509
+							region = ENG_2513
+						}
+					}
+					# Audax Validator "." Ignore_NEXT
+					assimilate = yes
+				}
 			}
 			inherit = UTI
 			any_pop = {
@@ -264,7 +265,7 @@ political_decisions = {
 				move_pop = 2516
 			}
 			any_owned = {
-				limit = { is_core = NZF }
+				limit = { is_core = NZL }
 				add_province_modifier = {
 					name = french_colonial_integration
 					duration = 3650
@@ -272,7 +273,7 @@ political_decisions = {
 			}
 			any_pop = {
 				limit = {
-					location = { is_core = NZF }
+					location = { is_core = NZL }
 					OR = {
 						has_pop_culture = french_australian
 						is_culture_group = pan_french
@@ -281,10 +282,14 @@ political_decisions = {
 				pop_type = farmers
 			}
 			random_owned = { limit = { owner = { NOT = { colonial_policy = settlement } } } owner = { political_reform = settlement } }
-			random_owned = { limit = { owner = { tag = FRA OR = { government = hms_government government = french_bourbon_hms government = absolute_monarchy government = prussian_constitutionalism } } NZF = { government = hms_government } } }
-			random_owned = { limit = { owner = { tag = FRA government = french_bourbon_absolute } } NZF = { government = colonial_company } }
+			random_owned = { limit = { owner = { tag = FRA OR = { has_country_flag = constitutional_monarchy_gov government = absolute_monarchy has_country_flag = semi_constitutional_monarchy_gov } } NZL = { government = fra_dominion } } }
+			random_owned = { limit = { owner = { tag = FRA government = absolute_monarchy2 } } NZL = { government = fra_colonial_company } }
 
-			set_country_flag = french_nzl
+			any_country = {
+				limit = { has_country_flag = nzl_master }
+				clr_country_flag = nzl_master
+			}
+			set_country_flag = nzl_master
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -294,11 +299,14 @@ political_decisions = {
 		picture = "imperial_japanese_navy"
 		potential = {
 			tag = FRA
-			OR = {
-				NZL = { all_core = { owned_by = THIS } }
-				NZF = { all_core = { owned_by = THIS } }
+			NZL = {
+				OR = {
+					all_core = { owned_by = THIS }
+					vassal_of = THIS
+					substate_of = THIS
+				}
 			}
-			NOT = { has_country_flag = claimed_australia }
+			NOT = { has_country_flag = fra_claimed_australia }
 		}
 
 		allow = {
@@ -310,7 +318,7 @@ political_decisions = {
 		effect = {
 			badboy = 7
 			AST = { all_core = { add_core = THIS } }
-			set_country_flag = claimed_australia
+			set_country_flag = fra_claimed_australia
 		}
 	}
 
@@ -324,7 +332,7 @@ political_decisions = {
 			owns = 2505
 			owns = 2497
 			owns = 2491
-			NOT = { has_country_flag = french_aus }
+			NOT = { has_country_flag = australia_master }
 		}
 		allow = {
 			money = 200000
@@ -333,9 +341,11 @@ political_decisions = {
 		effect = {
 			money = -200000
 			add_accepted_culture = french_australian
-			AST = { all_core = { add_core = FAS } }
-			FAS = { all_core = { remove_core = AST } }
-			FAS = { all_core = { remove_core = THIS } }
+			AST = {
+				all_core = { remove_core = THIS }
+				primary_culture = french_australian
+				remove_accepted_culture = australian
+			}
 			random_pop = {
 				limit = {
 					has_pop_culture = french
@@ -451,21 +461,17 @@ political_decisions = {
 			}
 			UTI = { primary_culture = french_australian }
 			any_owned = {
-				limit = { is_core = FAS }
+				limit = { is_core = AST }
 				secede_province = UTI
 			}
-			2468 = { assimilate = yes }
-			2469 = { assimilate = yes }
-			2470 = { assimilate = yes }
-			2471 = { assimilate = yes }
-			2472 = { assimilate = yes }
-			2473 = { assimilate = yes }
-			2474 = { assimilate = yes }
-			2475 = { assimilate = yes }
-			2508 = { assimilate = yes }
+			any_owned = {
+				limit = { region = ENG_2468 }
+				# Audax Validator "." Ignore_NEXT
+				assimilate = yes
+			}
 			THIS = { inherit = UTI }
 			any_owned = {
-				limit = { is_core = FAS NOT = { terrain = desert } }
+				limit = { is_core = AST NOT = { terrain = desert } }
 				add_province_modifier = {
 					name = french_colonial_integration
 					duration = 3650
@@ -556,9 +562,15 @@ political_decisions = {
 				move_pop = 2476
 			}
 			random_owned = { limit = { owner = { NOT = { colonial_policy = settlement } } } owner = { political_reform = settlement } }
-			random_owned = { limit = { owner = { tag = FRA OR = { government = hms_government government = french_bourbon_hms government = absolute_monarchy government = prussian_constitutionalism } } FAS = { government = hms_government } } }
-			random_owned = { limit = { owner = { tag = FRA government = french_bourbon_absolute } } FAS = { government = colonial_company } }
-			set_country_flag = french_aus
+			random_owned = { limit = { owner = { tag = FRA OR = { has_country_flag = constitutional_monarchy_gov government = absolute_monarchy has_country_flag = semi_constitutional_monarchy_gov } } AST = { government = fra_dominion } } }
+			random_owned = { limit = { owner = { tag = FRA government = absolute_monarchy2 } } AST = { government = fra_colonial_company } }
+			any_country = {
+				limit = { has_country_flag = australia_master }
+				clr_country_flag = australia_master
+			}
+			set_country_flag = australia_master
+
+
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -587,7 +599,7 @@ political_decisions = {
 				NOT = {
 					ruling_party_ideology = reactionary
 					AND = {
-						government = absolute_monarchy
+						has_country_flag = absolute_monarchy_gov
 						ruling_party_ideology = conservative
 					}
 				}

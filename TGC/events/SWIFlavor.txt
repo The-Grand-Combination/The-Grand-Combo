@@ -120,7 +120,7 @@ country_event = {
 
 	trigger = {
 		tag = SWI
-		government = democracy
+		has_country_flag = democracy_gov
 		year = 1898
 		NOT = { year = 1902 }
 	}
@@ -156,7 +156,7 @@ country_event = {
 
 	trigger = {
 		tag = SWI
-		government = democracy
+		has_country_flag = democracy_gov
 		year = 1866
 		NOT = { year = 1869 }
 	}
@@ -196,7 +196,7 @@ country_event = {
 
 	trigger = {
 		tag = SWI
-		government = democracy
+		has_country_flag = democracy_gov
 		year = 1887
 		NOT = { year = 1890 }
 	}
@@ -282,8 +282,9 @@ country_event = {
 		exists = AUS
 		AUS = {
 			OR = {
-				government = absolute_monarchy
-				government = hms_government
+				has_country_flag = absolute_monarchy_gov
+				has_country_flag = semi_constitutional_monarchy_gov
+				has_country_flag = constitutional_monarchy_gov
 			}
 		}
 		NOT = { year = 1902 }
@@ -325,7 +326,7 @@ country_event = {
 
 	trigger = {
 		tag = SWI
-		government = democracy
+		has_country_flag = democracy_gov
 		war = no
 		year = 1915
 		NOT = {
@@ -368,7 +369,7 @@ country_event = {
 
 	trigger = {
 		tag = SWI
-		government = democracy
+		has_country_flag = democracy_gov
 		war = no
 		year = 1916
 		has_country_flag = 1stSocCon
@@ -441,7 +442,7 @@ country_event = {
 		prestige = 20
 	}
 }
-
+#TODO: Let France and Austria intervene in Sonderbund War at risk of angering Britain
 #Sonderbund War
 country_event = {
 	id = 99800
@@ -470,12 +471,41 @@ country_event = {
 		609 = { add_core = SDB secede_province = SDB }
 		3272 = { add_core = SDB secede_province = SDB }
 		606 = { add_core = SDB secede_province = SDB }
+		any_country = {
+			limit = { has_country_flag = sonderbund_ally }
+			create_alliance = SDB
+		}
 		war = {
 			target = SDB
 			attacker_goal = { casus_belli = civil_war }
-			defender_goal = { casus_belli = status_quo }
+			defender_goal = { casus_belli = sonderbund_cb }
 		}
 		set_country_flag = sonderbund
+
+		ai_chance = { factor = 1 }
+	}
+	option = {
+		name = "EVTOPTB99800"
+
+		prestige = -10
+		remove_country_modifier = neutrality
+		3250 = { add_core = SDB secede_province = SDB }
+		609 = { add_core = SDB secede_province = SDB }
+		3272 = { add_core = SDB secede_province = SDB }
+		606 = { add_core = SDB secede_province = SDB }
+		any_country = {
+			limit = { has_country_flag = sonderbund_ally }
+			create_alliance = SDB
+		}
+		war = {
+			target = SDB
+			attacker_goal = { casus_belli = civil_war }
+			defender_goal = { casus_belli = sonderbund_cb }
+		}
+		set_country_flag = sonderbund
+		change_tag_no_core_switch = SDB
+
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -492,6 +522,7 @@ country_event = {
 		war = no
 		SDB = { exists = no }
 		any_owned_province = { is_core = SDB }
+		has_recently_lost_war = no
 	}
 
 	mean_time_to_happen = {
@@ -507,6 +538,29 @@ country_event = {
 		add_country_modifier = { name = neutrality duration = -1 }
 		political_reform = federalism
 		SDB = { all_core = { remove_core = SDB } }
+	}
+}
+
+#Sonderbund War Aftermath, Sonderbund Victory
+country_event = {
+	id = 99798
+	title = "EVTNAME99799"
+	desc = "EVTDESC99798"
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA99799"
+
+		change_tag_no_core_switch = SWI
+		SDB = { all_core = { remove_core = SDB } }
+		SWI = {
+			add_country_modifier = { name = neutrality duration = -1 }
+			political_reform = confederalism
+			government = democracy2
+			set_country_flag = 2nd_republicgov
+			inherit = SDB
+		}
 	}
 }
 
