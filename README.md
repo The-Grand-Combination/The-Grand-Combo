@@ -13,7 +13,7 @@ This mod is an attempt to merge all the various disparate HFM and HPM based subm
   * If you got a non-Steam version on Windows it might be something like C:/Program Files (x86)/Paradox Interactive/Victoria 2/mod
 3. Delete the old versions of the mods, if you have any.
 4. From the ZIP move everything into the mod folder.
-5. Start the game, select 'The Grand Combination'. 
+5. Start the game, select 'The Grand Combination'.
 6. We have three submods (Custom State Mechanics, Different Culture Colours (HFM), Country Endonyms).
 7. If you like to spice up your game with your favourite graphic submod, it will likely not work properly on TGC, as this mod has an entirely new map. But, fear not, as we have tailored some looks from two popular submods and adjusted them for TGC [PastelThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod) and [BelleCartographieTGC](https://github.com/emprahtheodosius/BelleCartographieTGC)
 8. Enjoy.
@@ -37,24 +37,17 @@ TGC was made possible by the below developers and mods:
 * Sighpie-HFM
 * u/louisky58-More Stuff for HFM
 * God of Cheese and Kristjan2-GOC PUIR
-* u/GetoBoi-Dynamic Infamy
 * vic1984-Victoria Universalis
 * u/YLEK111 or kstar234 - Hearts of Ideologies
 * Kspeher - GEF
 * MaTi - GreenUI
+* Guy from the Land of Phillip II - Localized Country Endonyms Submod
 * many others
 
 TGC Developers:
 
-* JmanThunder
-* MBnomics
-* vjwua
-* martoeuropa
-* DrFaustie
 * rderekp
 * Hammonia
-* Tenno Momonga
-* bop
 * anzu-3278
 * Kspeher
 * LouisTheFly
@@ -62,6 +55,17 @@ TGC Developers:
 * Fraggy
 * champfish
 * ColdSlav
+* emprahtheodosius
+
+Honorable mentions and ex-Developers:
+
+* JmanThunder - Founder
+* MBnomics
+* vjwua
+* martoeuropa
+* DrFaustie
+* Tenno Momonga
+* bop
 
 ## Discord
 

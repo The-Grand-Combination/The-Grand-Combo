@@ -45,6 +45,8 @@ political_decisions = {
 				}
 				move_pop = 43
 			}
+			TEX = { add_accepted_culture = north_german }
+			TEX = { add_accepted_culture = south_german }
 		}
 		ai_will_do = { factor = 0.4 }
 	}
@@ -126,8 +128,16 @@ political_decisions = {
 			}
 			NOT = { has_global_flag = extra_flavour_disabled }
 			ai = no
-			132 = { pop_majority_culture = north_german }
-			133 = { pop_majority_culture= north_german }
+			OR = {
+				AND = {
+					132 = { pop_majority_culture = north_german }
+					133 = { pop_majority_culture= north_german }
+				}
+				AND = {
+					has_global_flag = german_texas_funding3
+					TEX = { in_sphere = THIS }
+				}
+			}
 			is_culture_group = germanic
 			is_greater_power = yes
 			exists = TEX
@@ -194,7 +204,7 @@ political_decisions = {
 			3369 = { remove_core = MEX }
 			3370 = { remove_core = MEX }
 			134 = { remove_core = MEX }
-			ADV = { government = dominion }
+			ADV = { government = ger_dominion }
 		}
 		ai_will_do = { factor = 0.2 }
 	}
@@ -248,7 +258,7 @@ political_decisions = {
 			release = KRO
 			create_vassal = KRO
 			KRO = {
-				government = dominion
+				government = ger_dominion
 				political_reform = universal_voting
 				political_reform = state_equal_weight
 				political_reform = free_press
@@ -452,12 +462,12 @@ political_decisions = {
 				GER = { war_exhaustion = 90 }
 				GCF = { war_exhaustion = 90 }
 			}
-			has_global_flag = polish_rename_pomerania
-			has_global_flag = polish_rename_eastprussia
-			has_global_flag = danzig_rename_polish
-			has_global_flag = west_prussia_rename_polish
-			has_global_flag = posen_rename_polish
-			has_global_flag = prussian_silesia_rename_polish
+			NOT = {
+				PRU = { any_owned_province = { OR = { is_core = POL is_core = PLC } } }
+				NGF = { any_owned_province = { OR = { is_core = POL is_core = PLC } } }
+				GER = { any_owned_province = { OR = { is_core = POL is_core = PLC } } }
+				GCF = { any_owned_province = { OR = { is_core = POL is_core = PLC } } }
+			}
 		}
 
 		effect = {
@@ -745,7 +755,7 @@ political_decisions = {
 			has_country_modifier = lowland_compliance
 			NOT = { has_global_flag = disable_GEF }
 			NOT = { has_country_flag = give_in_into_radical_dutch_demands }
-			NOT = { government = federal_democracy }
+			NOT = { government = federal_democracy } #NOTE: This seems unintentional, this govtype wasnt supposed to be in use yet
 		}
 
 		allow = {
@@ -756,7 +766,7 @@ political_decisions = {
 		effect = {
 			set_country_flag = give_in_into_radical_dutch_demands
 			money = -1000000
-			government = federal_democracy
+			government = federal_democracy #NOTE: See earlier comment
 			remove_country_modifier = lowland_compliance
 			add_country_modifier = {
 				name = lowland_support
@@ -779,7 +789,7 @@ political_decisions = {
 			has_country_modifier = lowland_compliance
 			NOT = { has_global_flag = disable_GEF }
 			NOT = { has_country_flag = give_in_into_radical_dutch_demands_already_dem }
-			government = federal_democracy
+			government = federal_democracy #NOTE: See earlier comment
 		}
 
 		allow = {
@@ -931,8 +941,8 @@ political_decisions = {
 		allow = {
 			GER = {
 				OR = {
-					government = fascist_dictatorship
-					government = proletarian_dictatorship
+					ruling_party_ideology = fascist
+					has_country_flag = communist_gov
 					government = bourgeois_dictatorship
 				}
 			}

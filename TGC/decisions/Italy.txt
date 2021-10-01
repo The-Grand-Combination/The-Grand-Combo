@@ -8,8 +8,8 @@ political_decisions = {
 				tag = SVY
 			}
 			OR = {
-				government = absolute_monarchy
-				government = prussian_constitutionalism
+				has_country_flag = absolute_monarchy_gov
+				has_country_flag = semi_constitutional_monarchy_gov
 			}
 			OR = {
 				has_country_flag = liberal_revolution_in_progress
@@ -146,8 +146,8 @@ political_decisions = {
 				year = 1847
 			}
 			OR = {
-				government = hms_government
-				government = prussian_constitutionalism
+				has_country_flag = constitutional_monarchy_gov
+				has_country_flag = semi_constitutional_monarchy_gov
 			}
 			OR = {
 				average_militancy = 2
@@ -378,11 +378,7 @@ political_decisions = {
 	prussian_italian_alliance_claim_udine = {
 		picture = italia_irredenta
 		potential = {
-			OR = {
-				tag = ITS
-				tag = ITA
-				tag = ITP
-			}
+			tag = ITA
 			owns = 726
 			OR = {
 				owns = 729
@@ -485,65 +481,6 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Description: Changes tag to ITS if Italy is formed by a South Italian culture country.
-	form_ITS = {
-		picture = form_italy
-		potential = {
-			tag = ITA
-			primary_culture = south_italian
-			NOT = { government = theocracy }
-			NOT = { has_global_flag = ITS_form }
-		}
-
-		allow = { war = no }
-
-		effect = {
-			change_tag = ITS
-			add_accepted_culture = north_italian
-			ITA = { all_core = { add_core = ITS } }
-			ITA = { all_core = { remove_core = ITA } }
-			set_global_flag = ITS_form
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Changes tag to ITP if Italy is formed by a the Papal States.
-	form_ITP = {
-		picture = the_first_vatican_council
-		potential = {
-			tag = ITA
-			primary_culture = south_italian
-			government = theocracy
-			NOT = { has_global_flag = ITS_form }
-		}
-
-		allow = { war = no }
-
-		effect = {
-			change_tag = ITP
-			ITA = { all_core = { add_core = ITP } }
-			ITA = { all_core = { remove_core = ITA } }
-			set_global_flag = ITP_form
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If the player forms northern Italy, they can annex southern Italy. DEVNOTE: What purpose does this serve?
-	ITA_annex_ITS = {
-		potential = {
-			ai = no
-			tag = ITA
-			exists = yes
-			has_global_flag = ITS_form
-		}
-
-		allow = { }
-
-		effect = { ITS = { inherit = ITA } }
-	}
-
 	#Description: If an Italian country owns Malta and has a core on it, they can accept Maltese culture.
 	italy_accept_maltese = {
 		picture = embrace_minority
@@ -556,9 +493,19 @@ political_decisions = {
 
 		allow = {
 			war = no
+			social_science = 1
+			citizenship_policy = full_citizenship
+			citizens_rights = all_voting_pops
+			854 = {
+				literacy = 0.5
+				NOT = {
+					average_consciousness = 4
+					average_militancy = 3
+				}
+			}
 			OR = {
-				ruling_party_ideology = liberal
-				citizens_rights = all_voting_pops
+				school_reforms = acceptable_schools
+				school_reforms = good_schools
 			}
 			NOT = { average_militancy = 5 }
 		}
