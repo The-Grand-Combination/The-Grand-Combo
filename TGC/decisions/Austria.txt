@@ -290,8 +290,13 @@ political_decisions = {
 			war = no
 			OR = {
 				mass_politics = 1
-				BOS = { num_of_revolts = 1 }
+				AND = {
+				OR = {
 				BOS = { average_militancy = 6 }
+				BOS = { num_of_revolts = 1 }
+				}
+				year = 1890
+				}
 				year = 1908
 			}
 		}
@@ -336,8 +341,123 @@ political_decisions = {
 						is_culture_group = south_slavic
 					}
 				}
-				relation = { who = THIS value = -50 }
+				relation = { who = THIS value = -100 }
 			}
+			SER = { country_event = { id = 500160 days = 5 } }
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	bosnian_annexation_to_croatia = {
+		picture = treaty_signing
+
+		potential = {
+			OR = {
+				AND = {
+					tag = GCF
+					capital = 619 #Vienna
+					HAN = {
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									in_sphere = THIS
+									OR = {
+										is_vassal = no
+										vassal_of = THIS
+									}
+									war = no
+									is_greater_power = no
+								}
+							}
+						}
+					}
+				}
+				AND = {
+				    owns = 619
+					tag = GER
+					is_greater_power = yes
+				}
+			}
+			CRO = {
+				ai = yes
+				exists = yes
+				vassal_of = THIS
+				owns = 771
+			}
+			BOS = {
+				ai = yes
+				exists = yes
+				vassal_of = THIS
+			}
+			NOT = { has_country_flag = annexed_bosnia }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				mass_politics = 1
+				AND = {
+				OR = {
+				BOS = { average_militancy = 6 }
+				BOS = { num_of_revolts = 1 }
+				}
+				year = 1890
+				}
+				year = 1908
+			}
+		}
+
+		effect = {
+			set_country_flag = annexed_bosnia
+			prestige = 10
+			badboy = 5
+			CRO = { inherit = BOS }
+			relation = {
+			who = CRO
+			value = 400
+		    }
+			#random_owned = { #todo sandzak compromise
+			#	limit = {
+			#		NOT = { is_core = THIS }
+			#		NOT = { any_core = { primary_culture = THIS } }
+			#		province_id = 804
+			#		TUR = { exists = yes owns = 802 owns = 803 }
+			#	}
+			#	secede_province = TUR
+			#}
+			#random_owned = {
+			#	limit = {
+			#		NOT = { is_core = THIS }
+			#		NOT = { any_core = { primary_culture = THIS } }
+			#		province_id = 2577
+			#		TUR = { exists = yes owns = 802 owns = 803 }
+			#	}
+			#	secede_province = TUR
+			#}
+			#random_owned = {
+			#	limit = {
+			#		NOT = { is_core = THIS }
+			#		NOT = { any_core = { primary_culture = THIS } }
+			#		province_id = 3321
+			#		TUR = { exists = yes owns = 802 owns = 803 }
+			#	}
+			#	secede_province = SER
+			#}
+			any_country = {
+				limit = {
+					OR = {
+						tag = TUR
+						tag = RUS
+						is_culture_group = south_slavic
+					}
+				}
+				relation = { who = THIS value = -200 }
+			}
+			SER = { country_event = { id = 500160 days = 5 } }
 		}
 
 		ai_will_do = {

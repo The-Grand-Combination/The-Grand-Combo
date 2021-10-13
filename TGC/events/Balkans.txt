@@ -373,3 +373,258 @@ country_event = {
 		}
 	}
 }
+
+
+        #Bosnian Annexation Crisis 1908
+		country_event = {
+			id = 500160
+			title = "Austria Annexes Bosnia"
+			desc = "EVTDESC500136"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			
+			option = {
+				name = "Outrageous! Mobilize the Army and ask the Russians for support!"
+				set_country_flag = bosnian_question_1908_deliberated
+				RUS = { country_event = { id = 500161 days = 7 } }
+				prestige = 10
+				any_pop = {
+				limit = {
+					has_pop_culture = serb
+					location = { is_core = THIS }
+				}
+				consciousness = 3
+				militancy = -6
+			   }
+			    ai_chance = { factor = 97 }
+			}
+			option = {
+				name = "Back down. We can not hope to challenge Austria"
+				prestige = -20
+				any_pop = {
+				limit = {
+					has_pop_culture = serb
+					location = { is_core = THIS }
+				}
+				consciousness = 2
+				militancy = 5
+			   }
+			    ai_chance = { factor = 3 }
+			}
+		}
+	    #Serbia appeals to Russia to contest the Annexation
+		country_event = {
+			id = 500161
+			title = "Austria-Hungary annexes Bosnia-Herzegovina"
+			desc = "EVTDESC500161"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Send an ultimatum to Vienna. This can not stand!"
+				any_country = {
+				limit = {
+					has_country_flag = annexed_bosnia
+				}
+				country_event = { id = 500164 days = 6 }
+				leave_alliance = RUS
+				leave_alliance = SER
+				relation = { who = THIS value = -200 }
+			    }
+				SER = { country_event = { id = 500163 days = 7 }
+                relation = { who = THIS value = 200 }				}
+				prestige = 50
+			    ai_chance = { factor = 90 } #10
+			}
+			#option = { #TODO
+			#	name = "Call for a Conference. We need support from other Powers."
+			#	SER = { country_event = { id = 500162 days = 5 } }
+			#	#619 = { owner = { relation = { who = THIS value = -25 } } }
+			#	prestige = -5
+			#    ai_chance = { factor = 5 }
+			#}
+			option = {
+				name = "Send a strongly worded letter, but no more."
+				SER = { country_event = { id = 500162 days = 5 } }
+				619 = { owner = { relation = { who = THIS value = -25 } } }
+				prestige = -30
+			    ai_chance = { factor = 10 } #90
+			}
+		}
+		
+		#Serbia gets informed that Russia instructs them to back down
+		country_event = {
+			id = 500162
+			title = "Bosnian Vilayet Question"
+			desc = "EVTDESC500135"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Our hands are tied, we must stand down."
+				#RUS = { country_event = { id = 50016 days = 7 } } #informed serbia backed down todo
+				prestige = -5
+				relation = { who = RUS value = -50 }
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "We do not need Russia. Declare war now!"
+				#TODO war
+				leave_alliance = RUS
+				relation = { who = RUS value = -200 }
+				THIS = { diplomatic_influence = { who = RUS value = -200 } }
+				prestige = 10
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#Serbia informed Russia has their back
+		country_event = {
+			id = 500163
+			title = "March on Drina"
+			desc = "EVTDESC500135"
+			picture = "austrian_telegram"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Russia has our back!"
+				#add mobilization modifier boost
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#AUS gets the Russian Ultimatum
+		country_event = {
+			id = 500164
+			title = "Russian Ultimatum - Bosnien Oder Krieg"
+			desc = "EVTDESC500164"
+			picture = "austrian_telegram"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Reject the ultimatum. Send word to Feldmarschall Hotzendorf to mobilize the troops!"
+				RUS = { country_event = { id = 500165 days = 7 } }
+				prestige = 50
+			    ai_chance = { factor = 99 }
+			}
+			option = {
+				name = "We will back down."
+				RUS = { country_event = { id = 500166 days = 7 } }
+				prestige = -50
+			    ai_chance = { factor = 1 }
+			}
+		}
+		
+		#Austria rejects the ultimatum, one last chance to prevent millions of people to die
+		country_event = {
+			id = 500165
+			title = "$FROMCOUNTRY$ rejects Ultimatum. What now?"
+			desc = "EVTDESC500165"
+			picture = "the_great_war"
+			
+			is_triggered_only = yes
+			option = {
+				name = "The battle is inevitable. General Brusilov, sound the Assembly."
+				any_country = {
+				limit = {
+					NOT = {
+						tag = THIS
+						tag = FROM
+					}
+					capital_scope = { continent = europe }
+					is_greater_power = yes
+				}
+				country_event = { id = 500167 days = 3 } 
+			   }
+			   any_country = {
+				limit = {
+					has_country_flag = annexed_bosnia
+				}
+				country_event = { id = 500168 days = 8 }
+				relation = { who = THIS value = -200 }
+			    }
+				
+			    ai_chance = { factor = 50 }
+			}
+			
+			option = {
+				name = "Back down. They called our bluff."
+				prestige = -100
+			    ai_chance = { factor = 50 }
+			}
+		}
+		
+		#Russia informed Austria backs out
+		country_event = {
+			id = 500166
+			title = "Austrians Back Out"
+			desc = "EVTDESC500135"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Very good"
+				prestige = 5
+				#AUS = release bos TODO
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#other GPs help
+		country_event = {
+			id = 500167
+			title = "The World Mobilizes"
+			desc = "EVTDESC500166"
+			picture = "the_great_war"
+			
+			is_triggered_only = yes
+			option = {
+				name = "Support the Russians"
+				prestige = 25
+				create_alliance = RUS
+				relation = { who = RUS value = 400 }
+			    ai_chance = {
+				factor = 99 
+				modifier = {
+					factor = 0
+					alliance_with = GER
+				}
+				}
+			}
+			option = {
+				name = "Press for a diplomatic solution"
+				prestige = -25
+				relation = { who = RUS value = -100 }
+			    ai_chance = { factor = 1 }
+			}
+		}
+		
+		#Austria rejects the ultimatum, one last chance to prevent millions of people to die
+		country_event = {
+			id = 500168
+			title = "The Great War Kicks Off"
+			desc = "The diplomatic efforts have failed. A war of unprecedented scale shall ensue."
+			major = yes
+			
+			is_triggered_only = yes
+			option = {
+				name = "Russia Declares State of War with our Empire"
+				RUS = {
+				casus_belli = {
+					target = THIS
+					type = free_allied_cores
+					months = 50
+				}
+			    war = {
+				target = THIS
+				attacker_goal = { casus_belli = dismantle_cb }
+				defender_goal = { casus_belli = dismantle_cb }
+			    call_ally = yes
+				    }
+				}
+				prestige = 50
+			    ai_chance = { factor = 100 }
+			}
+		}
