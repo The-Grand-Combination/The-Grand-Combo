@@ -14,7 +14,11 @@ This mod is an attempt to merge all the various disparate HFM and HPM based subm
 3. Delete the old versions of the mods, if you have any.
 4. From the ZIP move everything into the mod folder.
 5. Start the game, select 'The Grand Combination'.
-6. We have three submods (Custom State Mechanics, Different Culture Colours (HFM), Country Endonyms).
+6. We have a few submods:
+   1. Direct Immigration - Adds two new buildings and inventions to enable them if you wish to use them. These buildings, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
+   2. Country Endonyms - Changes country names to be in the countries' own native languages (or a latin alphabet compatible transliteration due to the limitations of the Victoria 2 engine)
+   3. HFM Style Culture Colors - Currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM)
+   4. Statehood Mechanic (WIP) - Disables the base game mechanic of transformation of colonies to states when they reach a certain percentage of accepted culture bureaucrats. Instead, this adds decisions specific to each state which is colonial at game start regarding when it can be made a state, so as to more realistically represent the spread of direct authority (and prevent the UK from building factories across Africa in 1900).
 7. If you like to spice up your game with your favourite graphic submod, it will likely not work properly on TGC, as this mod has an entirely new map. But, fear not, as we have tailored some looks from two popular submods and adjusted them for TGC [PastelThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod) and [BelleCartographieTGC](https://github.com/emprahtheodosius/BelleCartographieTGC)
 8. Enjoy.
 
