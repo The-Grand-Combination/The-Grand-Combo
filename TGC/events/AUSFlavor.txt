@@ -2714,83 +2714,154 @@ country_event = {
 	}
 }
 
-# The Südtirol Compromise
-country_event = {
-	id = 110089
-	title = "EVTNAME110089"
-	desc = "EVTDESC110089"
-	picture = "map_trentin"
+## The Südtirol Compromise ##
 
-	trigger = {
-		OR = {
-			tag = AUS
-			tag = KUK
-			tag = DNB
-			tag = SGF
-			tag = GER
-			tag = GCF
-		}
-		owns = 734 # Trentin
-		owns = 735 # Bozen
-		nationalism_n_imperialism = 1
-		NOT = { has_global_flag = trentino_tirol_compromise }
-		ITA = {
-			exists = yes
-			relation = { who = THIS value = 0 }
-			NOT = { is_greater_power = yes }
+	#Description: Start - Compromise with Italy?
+	country_event = {
+		id = 110089
+		title = "EVTNAME110089"
+		desc = "EVTDESC110089"
+		picture = "map_trentin"
+
+		trigger = {
+			owns = 734 # Trentin
+			owns = 735 # Bozen
 			OR = {
-				AND = {
-					has_recently_lost_war = yes
-					truce_with = THIS
+				tag = AUS
+				tag = KUK
+				tag = DNB
+				tag = SGF
+				tag = GER
+				tag = GCF
+			}
+			nationalism_n_imperialism = 1
+			NOT = { has_global_flag = trentino_tirol_compromise }
+			ITA = {
+				exists = yes
+				relation = { who = THIS value = 0 }
+				NOT = { is_greater_power = yes }
+				OR = {
+					AND = {
+						has_recently_lost_war = yes
+						truce_with = THIS
+					}
+					in_sphere = THIS
 				}
-				in_sphere = THIS
+			}
+		}
+
+		mean_time_to_happen = { months = 12 }
+
+		fire_only_once = yes
+
+		# The land is rightfully theirs - compromise
+		option = {
+			name = "EVTOPTA110089"
+
+			set_global_flag = trentino_tirol_compromise
+			badboy = -1
+
+			ITA = { country_event = 110088 }
+
+			any_pop = { dominant_issue = { value = pacifism	factor = 0.05 }	}
+
+			any_greater_power = {
+				limit = { capital_scope = { continent = europe } }
+				relation = { who = THIS value = 25 }
+			}
+		}
+
+		# The land is rightfully ours - don't compromise
+		option = {
+			name = "EVTOPTB110089"
+
+			prestige = 5
+
+			ITA = { country_event = 110084 }
+
+			any_pop = { dominant_issue = { value = jingoism	factor = 0.05 }	}
+
+			any_greater_power = {
+				limit = { capital_scope = { continent = europe } }
+				relation = { who = THIS value = -25 }
 			}
 		}
 	}
 
-	mean_time_to_happen = { months = 12 }
+	#Description: Triggered for Italy if the Germans wants to compromise
+	country_event = {
+		id = 110088
+		title = "EVTNAME110088"
+		desc = "EVTDESC110088"
+		picture = "map_trentin"
 
-	fire_only_once = yes
+		is_triggered_only = yes
 
-	option = {
-		name = "EVTOPTA110089" #The land is rightfully theirs.
+		# Accept the compromise
+		option = {
+			name = "EVTOPTA110088"
 
-		badboy = -1
-		any_greater_power = {
-			limit = { capital_scope = { continent = europe } }
-			relation = { who = THIS value = 25 }
+			relation = { who = FROM value = 200 }
+			diplomatic_influence = { who = FROM value = 100 }
+			FROM = { remove_core = 734 }
+			remove_core = 735
+			734 = { secede_province = THIS }
 		}
-		relation = { who = ITA value = 200 }
-		diplomatic_influence = { who = ITA value = 100 }
-		any_pop = { dominant_issue = { value = pacifism	factor = 0.05 }	}
-		set_global_flag = trentino_tirol_compromise
-		734 = {
-			change_province_name = "Trento"
-			remove_core = THIS
-			secede_province = ITA
-		}
-		735 = {
-			remove_core = ITA
-			change_province_name = "Bolzano"
-			state_scope = { change_region_name = "Trentino-Alto Adige" }
+
+		# Refuse the compromise and continue claiming all of South Tyrol
+		option = {
+			name = "EVTOPTA110088"
+
+			random_owned = {
+				limit = { 734 = { is_core = THIS } }
+				owner = { badboy = 2 }
+			}
+			random_owned = {
+				limit = { NOT = { 734 = { is_core = THIS } } }
+				owner = { badboy = 5 }
+				AUS_734 = { add_core = THIS }
+			}
+
+			relation = { who = FROM value = -200 }
+			diplomatic_influence = { who = FROM value = -100 }
 		}
 	}
 
-	option = {
-		name = "EVTOPTB110089" #The land is rightfully ours.
+	#Description: Triggered for Italy if the Germans doesn't want to compromise
+	country_event = {
+		id = 110084
+		title = "EVTNAME110084"
+		desc = "EVTDESC110084"
+		picture = "map_trentin"
 
-		prestige = 5
-		any_greater_power = {
-			limit = { capital_scope = { continent = europe } }
-			relation = { who = THIS value = -25 }
+		is_triggered_only = yes
+
+		# Protest
+		option = {
+			name = "EVTOPTA110084"
+
+			prestige = -5
+
+			relation = { who = FROM value = -200 }
+			diplomatic_influence = { who = FROM value = -100 }
 		}
-		relation = { who = ITA value = -200 }
-		diplomatic_influence = { who = ITA value = -100 }
-		any_pop = { dominant_issue = { value = jingoism	factor = 0.05 }	}
-		734 = { change_province_name = "Trient" }
-		735 = { change_province_name = "Botzen" state_scope = {	change_region_name = "Südtirol"	} }
+
+		# Go to war
+		option = {
+			name = "EVTOPTB110084"
+
+			badboy = 2
+
+			relation = { who = FROM value = -200 }
+			diplomatic_influence = { who = FROM value = -100 }
+
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = acquire_core_state state_province_id = 734 }
+				defender_goal = { casus_belli = humiliate }
+			}
+		}
 	}
-}
 
 ## Vienna Taken ##
 
