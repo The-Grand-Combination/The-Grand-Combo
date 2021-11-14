@@ -39,12 +39,12 @@ political_decisions = {
 
 	sanctions_lifted = {
 		potential = {
-			is_disarmed = yes
-			has_recently_lost_war = yes
 			OR = {
 				has_country_modifier = kinda_bad_badboy
 				has_country_modifier = bad_badboy
 			}
+			is_disarmed = yes
+			has_recently_lost_war = yes
 		}
 
 		allow = { war = no }
@@ -188,8 +188,6 @@ political_decisions = {
 
 	abolishing_serfs = {
 		potential = {
-			ai = yes
-			exists = yes
 			OR = {
 				AND = {
 					any_owned_province = { has_pop_type = serfs }
@@ -206,6 +204,8 @@ political_decisions = {
 					NOT = { debt_law = serfdom }
 				}
 			}
+			ai = yes
+			exists = yes
 		}
 
 		allow = {
@@ -259,6 +259,7 @@ political_decisions = {
 		}
 		ai_will_do = { factor = 1 }
 	}
+
 #I can feel my mental health declining by looking at this mess, not a fan of this checking constantly running in the background, but can't think of a better solution right now
 #3 0s so the AI will click this decision before doing anything else no matter what
 	000_missing_government_flags = {
@@ -532,7 +533,7 @@ political_decisions = {
 					NOT = { government = spa_colonial_company }
 				}
 				AND = {
-					overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } }
+					overlord = { is_culture_group = germanic NOT = { tag = AUS tag = KUK tag = DNB } }
 					NOT = { government = ger_colonial_company }
 				}
 				AND = {
@@ -548,7 +549,7 @@ political_decisions = {
 					NOT = { government = qng_colonial_company }
 				}
 				AND = {
-					overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR tag = TUR tag = QNG } }
+					overlord = { NOT = { primary_culture = british is_culture_group = germanic tag = FRA tag = RUS tag = NET tag = SPA tag = POR tag = TUR tag = QNG } }
 					OR = {
 						government = eng_colonial_company
 						government = fra_colonial_company
@@ -568,45 +569,147 @@ political_decisions = {
 		effect = {
 			UTI = {
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { primary_culture = british } NOT = { government = eng_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = eng_colonial_company }
+						OR = {
+							overlord = { primary_culture = british }
+							AND = {
+								capital_scope = { owner = { primary_culture = british } }
+								exists = no
+							}
+						}
+					}
 					government = eng_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = FRA } NOT = { government = fra_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = fra_colonial_company }
+						OR = {
+							overlord = { tag = FRA }
+							AND = {
+								capital_scope = { owner = { tag = FRA } }
+								exists = no
+							}
+						}
+					}
 					government = fra_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = RUS } NOT = { government = rus_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = rus_colonial_company }
+						OR = {
+							overlord = { tag = RUS }
+							AND = {
+								capital_scope = { owner = { tag = RUS } }
+								exists = no
+							}
+						}
+					}
 					government = rus_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = NET } NOT = { government = net_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = net_colonial_company }
+						OR = {
+							overlord = { tag = NET }
+							AND = {
+								capital_scope = { owner = { tag = NET } }
+								exists = no
+							}
+						}
+					}
 					government = net_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = SPA } NOT = { government = spa_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = spa_colonial_company }
+						OR = {
+							overlord = { tag = SPA }
+							AND = {
+								capital_scope = { owner = { tag = SPA } }
+								exists = no
+							}
+						}
+					}
 					government = spa_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } } NOT = { government = ger_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = ger_colonial_company }
+						OR = {
+							overlord = {
+								is_culture_group = germanic
+								NOT = { tag = AUS tag = KUK tag = DNB }
+							}
+							AND = {
+								capital_scope = {
+									owner = {
+										is_culture_group = germanic
+										NOT = { tag = AUS tag = KUK tag = DNB }
+									}
+								}
+								exists = no
+							}
+						}
+					}
 					government = ger_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = POR } NOT = { government = por_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = por_colonial_company }
+						OR = {
+							overlord = { tag = POR }
+							AND = {
+								capital_scope = { owner = { tag = POR } }
+								exists = no
+							}
+						}
+					}
 					government = por_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = TUR } NOT = { government = tur_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = tur_colonial_company }
+						OR = {
+							overlord = { tag = TUR }
+							AND = {
+								capital_scope = { owner = { tag = TUR } }
+								exists = no
+							}
+						}
+					}
 					government = tur_colonial_company
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov overlord = { tag = QNG } NOT = { government = qng_colonial_company } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						NOT = { government = qng_colonial_company }
+						OR = {
+							overlord = { tag = QNG }
+							AND = {
+								capital_scope = { owner = { tag = QNG } }
+								exists = no
+							}
+						}
+					}
 					government = qng_colonial_company
 				}
 				any_country = {
 					limit = {
 						has_country_flag = colonial_company_gov
-						overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR tag = TUR tag = QNG } }
+						OR = {
+							is_vassal = yes
+							is_substate = yes
+						}
+						overlord = { NOT = { primary_culture = british is_culture_group = germanic tag = FRA tag = RUS tag = NET tag = SPA tag = POR tag = TUR tag = QNG } }
 						OR = {
 							government = eng_colonial_company
 							government = fra_colonial_company
@@ -650,7 +753,7 @@ political_decisions = {
 					NOT = { government = spa_dominion }
 				}
 				AND = {
-					overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } }
+					overlord = { is_culture_group = germanic NOT = { tag = AUS tag = KUK tag = DNB } }
 					NOT = { government = ger_dominion }
 				}
 				AND = {
@@ -658,7 +761,7 @@ political_decisions = {
 					NOT = { government = por_dominion }
 				}
 				AND = {
-					overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR } }
+					overlord = { NOT = { primary_culture = british is_culture_group = germanic tag = FRA tag = RUS tag = NET tag = SPA tag = POR } }
 					OR = {
 						government = eng_dominion
 						government = fra_dominion
@@ -676,37 +779,119 @@ political_decisions = {
 		effect = {
 			UTI = {
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { primary_culture = british } NOT = { government = eng_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = eng_dominion }
+						OR = {
+							overlord = { primary_culture = british }
+							AND = {
+								capital_scope = { owner = { primary_culture = british } }
+								exists = no
+							}
+						}
+					}
 					government = eng_dominion
 				}
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { tag = FRA } NOT = { government = fra_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = fra_dominion }
+						OR = {
+							overlord = { tag = FRA }
+							AND = {
+								capital_scope = { owner = { tag = FRA } }
+								exists = no
+							}
+						}
+					}
 					government = fra_dominion
 				}
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { tag = RUS } NOT = { government = rus_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = rus_dominion }
+						OR = {
+							overlord = { tag = RUS }
+							AND = {
+								capital_scope = { owner = { tag = RUS } }
+								exists = no
+							}
+						}
+					}
 					government = rus_dominion
 				}
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { tag = NET } NOT = { government = net_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = net_dominion }
+						OR = {
+							overlord = { tag = NET }
+							AND = {
+								capital_scope = { owner = { tag = NET } }
+								exists = no
+							}
+						}
+					}
 					government = net_dominion
 				}
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { tag = SPA } NOT = { government = spa_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = spa_dominion }
+						OR = {
+							overlord = { tag = SPA }
+							AND = {
+								capital_scope = { owner = { tag = SPA } }
+								exists = no
+							}
+						}
+					}
 					government = spa_dominion
 				}
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { OR = { primary_culture = north_german primary_culture = south_german } NOT = { tag = AUS tag = KUK tag = DNB } } NOT = { government = ger_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = ger_dominion }
+						OR = {
+							overlord = {
+								is_culture_group = germanic
+								NOT = { tag = AUS tag = KUK tag = DNB }
+							}
+							AND = {
+								capital_scope = {
+									owner = {
+										is_culture_group = germanic
+										NOT = { tag = AUS tag = KUK tag = DNB }
+									}
+								}
+								exists = no
+							}
+						}
+					}
 					government = ger_dominion
 				}
 				any_country = {
-					limit = { has_country_flag = dominion_gov overlord = { tag = POR } NOT = { government = por_dominion } }
+					limit = {
+						has_country_flag = dominion_gov
+						NOT = { government = por_dominion }
+						OR = {
+							overlord = { tag = POR }
+							AND = {
+								capital_scope = { owner = { tag = POR } }
+								exists = no
+							}
+						}
+					}
 					government = por_dominion
 				}
 				any_country = {
 					limit = {
 						has_country_flag = dominion_gov
-						overlord = { NOT = { primary_culture = british primary_culture = north_german primary_culture = south_german tag = FRA tag = RUS tag = NET tag = SPA tag = POR } }
+						OR = {
+							is_vassal = yes
+							is_substate = yes
+						}
+						overlord = { NOT = { primary_culture = british is_culture_group = germanic tag = FRA tag = RUS tag = NET tag = SPA tag = POR } }
 						OR = {
 							government = eng_dominion
 							government = fra_dominion
@@ -737,17 +922,37 @@ political_decisions = {
 		effect = {
 			UTI = {
 				any_country ={
-					limit = { has_country_flag = dominion_gov is_vassal = no is_substate = no NOT = { has_country_flag = gov_reassign_exemption } }
+					limit = {
+						has_country_flag = dominion_gov
+						is_vassal = no
+						is_substate = no
+						NOT = { has_country_flag = gov_reassign_exemption }
+						exists = yes
+					}
 					government = democracy
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov is_vassal = no is_substate = no civilized = yes NOT = { has_country_flag = gov_reassign_exemption } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						is_vassal = no
+						is_substate = no
+						civilized = yes
+						NOT = { has_country_flag = gov_reassign_exemption }
+						exists = yes
+					}
 					government = presidential_dictatorship
 				}
 				any_country = {
-					limit = { has_country_flag = colonial_company_gov is_vassal = no is_substate = no civilized = no NOT = { has_country_flag = gov_reassign_exemption } }
+					limit = {
+						has_country_flag = colonial_company_gov
+						is_vassal = no
+						is_substate = no
+						civilized = no
+						NOT = { has_country_flag = gov_reassign_exemption }
+						exists = yes
+					}
 					government = absolute_monarchy
-			}
+				}
 			}
 		}
 	}
@@ -994,8 +1199,8 @@ political_decisions = {
 				}
 
 				owner = {
-					any_pop = {
-						limit = { type = slaves NOT = { location = { slaves = 0.75 } } }
+					slaves = {
+						limit = { NOT = { location = { slaves = 0.75 } } }
 						random_list = {
 							10 = {}
 							10 = { reduce_pop = 1.04 }
@@ -1009,20 +1214,14 @@ political_decisions = {
 							10 = { reduce_pop = 1.12 }
 						}
 					}
-					any_pop = {
-						limit = { type = slaves }
-						random = { chance = 10 reduce_pop = 0.97 }
-					}
-					any_pop = {
-						limit = { type = slaves }
-						random = { chance = 10 reduce_pop = 0.98 }
-					}
+					slaves = { random = { chance = 10 reduce_pop = 0.97 } }
+					slaves = { random = { chance = 10 reduce_pop = 0.98 } }
 					random_list = {
 						33 = { add_country_modifier = { name = slave_growth duration = 1460 } }
 						33 = { add_country_modifier = { name = slave_growth duration = 1827 } }
 						33 = { add_country_modifier = { name = slave_growth duration = 2190 } }
 					}
-					any_pop = { limit = { type = slaves } literacy = -0.1 }
+					slaves = { literacy = -0.1 }
 				}
 			}
 
@@ -1032,8 +1231,8 @@ political_decisions = {
 					slavery = yes_slavery
 					any_owned_province = { has_pop_type = slaves NOT = { slaves = 0.75 } }
 				}
-				any_pop = {
-					limit = { type = slaves NOT = { location = { slaves = 0.75 } } }
+				slaves = {
+					limit = { NOT = { location = { slaves = 0.75 } } }
 					random_list = {
 						10 = {}
 						10 = { reduce_pop = 1.04 }
@@ -1047,20 +1246,14 @@ political_decisions = {
 						10 = { reduce_pop = 1.12 }
 					}
 				}
-				any_pop = {
-					limit = { type = slaves }
-					random = { chance = 10 reduce_pop = 0.97 }
-				}
-				any_pop = {
-					limit = { type = slaves }
-					random = { chance = 10 reduce_pop = 0.98 }
-				}
+				slaves = { random = { chance = 10 reduce_pop = 0.97 } }
+				slaves = { random = { chance = 10 reduce_pop = 0.98 } }
 				random_list = {
 					33 = { add_country_modifier = { name = slave_growth duration = 1460 } }
 					33 = { add_country_modifier = { name = slave_growth duration = 1827 } }
 					33 = { add_country_modifier = { name = slave_growth duration = 2190 } }
 				}
-				any_pop = { limit = { type = slaves } literacy = -0.1 }
+				slaves = { literacy = -0.1 }
 			}
 		}
 		ai_will_do = { factor = 1 }
@@ -1992,97 +2185,6 @@ political_decisions = {
 		effect = {
 			any_state = {
 				flashpoint_tension = -90
-			}
-		}
-	}
-
-	rebel_tech_1850 = {
-		potential = {
-			rank = 16
-			year = 1880
-			NOT = { has_global_flag = rebel_tech_1850 }
-			ai = yes
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			REB = {
-				activate_technology = post_napoleonic_thought
-				activate_technology = flintlock_rifles
-				activate_technology = muzzle_loaded_rifles
-				activate_technology = bronze_muzzle_loaded_artillery
-				activate_technology = military_staff_system
-				activate_technology = army_command_principle
-			}
-			set_global_flag = rebel_tech_1850
-		}
-	}
-
-	rebel_tech_1870 = {
-		potential = {
-			rank = 16
-			year = 1900
-			NOT = { has_global_flag = rebel_tech_1870 }
-			ai = yes
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_global_flag = rebel_tech_1870
-			REB = {
-				activate_technology = strategic_mobility
-				activate_technology = breech_loaded_rifles
-				activate_technology = iron_muzzle_loaded_artillery
-				activate_technology = military_plans
-				activate_technology = army_professionalism
-			}
-		}
-	}
-
-	rebel_tech_1900 = {
-		potential = {
-			rank = 16
-			year = 1910
-			NOT = { has_global_flag = rebel_tech_1900 }
-			ai = yes
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_global_flag = rebel_tech_1900
-			REB = {
-				activate_technology = point_defense_system
-				activate_technology = iron_breech_loaded_artillery
-				activate_technology = army_decision_making
-			}
-		}
-	}
-
-	rebel_tech_1920 = {
-		potential = {
-			rank = 16
-			year = 1920
-			NOT = { has_global_flag = rebel_tech_1920 }
-			ai = yes
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_global_flag = rebel_tech_1920
-			REB = {
-				activate_technology = bolt_action_rifles
 			}
 		}
 	}
