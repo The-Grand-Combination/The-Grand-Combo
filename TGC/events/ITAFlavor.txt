@@ -1093,7 +1093,11 @@
 					prestige = 10
 					ENG = { country_event = 202031 }
 					relation = { who = ENG value = 15 }
-					FRA = {
+					random_country = {
+						limit = {
+							primary_culture = french
+							capital = 425
+						}
 						country_event = 202032
 						relation = { who = THIS value = 15 }
 					}
@@ -4696,7 +4700,13 @@
 			option = {
 				name = "EVTOPTA202015"
 
-				FRA = { country_event = 202016 }
+				random_country = {
+					limit = {
+						primary_culture = french
+						capital = 425
+					}
+					country_event = 202016
+				}
 				prestige = 5
 				government = democracy
 				political_reform = universal_voting
@@ -4828,7 +4838,13 @@
 			option = {
 				name = "EVTOPTA202017"
 
-				FRA = { country_event = 202018 }
+				random_country = {
+					limit = {
+						primary_culture = french
+						capital = 425
+					}
+					country_event = 202018
+				}
 				government = theocracy
 				political_reform = none_voting
 				political_reform = appointed
@@ -6051,156 +6067,6 @@ country_event = {
 		}
 	}
 
-## The Trentino Compromise ##
-
-	#Description: Start - Compromise with Germany/Austria?
-	country_event = {
-		id = 110090
-		title = "EVTNAME110090"
-		desc = "EVTDESC110090"
-		picture = "map_trentin"
-
-		trigger = {
-			tag = ITA
-			owns = 734 # Trentin
-			owns = 735 # Bozen
-			nationalism_n_imperialism = 1
-			NOT = { has_global_flag = trentino_tirol_compromise }
-			619 = {
-				owner = {
-					is_culture_group = germanic
-					relation = { who = THIS value = 0 }
-					NOT = { is_greater_power = yes }
-					OR = {
-						AND = {
-							has_recently_lost_war = yes
-							truce_with = THIS
-						}
-						in_sphere = THIS
-					}
-				}
-			}
-		}
-
-		mean_time_to_happen = { months = 12 }
-
-		fire_only_once = yes
-
-		# The land is rightfully theirs - compromise
-		option = {
-			name = "EVTOPTA110090"
-
-			set_global_flag = trentino_tirol_compromise
-			badboy = -1
-
-			random_country = {
-				limit = { owns = 619 }
-				country_event = 110091
-			}
-
-			any_pop = { dominant_issue = { value = pacifism	factor = 0.05 }	}
-
-			any_greater_power = {
-				limit = { capital_scope = { continent = europe } }
-				relation = { who = THIS value = 25 }
-			}
-		}
-
-		# The land is rightfully ours - don't compromise
-		option = {
-			name = "EVTOPTB110090"
-
-			prestige = 5
-
-			random_country = {
-				limit = { owns = 619 }
-				country_event = 110093
-			}
-
-			any_pop = { dominant_issue = { value = jingoism	factor = 0.05 }	}
-
-			any_greater_power = {
-				limit = { capital_scope = { continent = europe } }
-				relation = { who = THIS value = -25 }
-			}
-		}
-	}
-
-	#Description: Triggered for the Germans if Italy wants to compromise
-	country_event = {
-		id = 110091
-		title = "EVTNAME110091"
-		desc = "EVTDESC110091"
-		picture = "map_trentin"
-
-		is_triggered_only = yes
-
-		# Accept the compromise
-		option = {
-			name = "EVTOPTA110091"
-
-			relation = { who = FROM value = 200 }
-			diplomatic_influence = { who = FROM value = 100 }
-			remove_core = 734
-			FROM = { remove_core = 735 }
-			735 = { secede_province = THIS }
-		}
-
-		# Refuse the compromise and continue claiming all of South Tyrol
-		option = {
-			name = "EVTOPTA110091"
-
-			random_owned = {
-				limit = { 734 = { is_core = THIS } }
-				owner = { badboy = 2 }
-			}
-			random_owned = {
-				limit = { NOT = { 734 = { is_core = THIS } } }
-				owner = { badboy = 5 }
-				AUS_734 = { add_core = THIS }
-			}
-
-			relation = { who = FROM value = -200 }
-			diplomatic_influence = { who = FROM value = -100 }
-		}
-	}
-
-	#Description: Triggered for the Germans if Italy doesn't want to compromise
-	country_event = {
-		id = 110093
-		title = "EVTNAME110093"
-		desc = "EVTDESC110093"
-		picture = "map_trentin"
-
-		is_triggered_only = yes
-
-		# Protest
-		option = {
-			name = "EVTOPTA110093"
-
-			prestige = -5
-
-			relation = { who = FROM value = -200 }
-			diplomatic_influence = { who = FROM value = -100 }
-		}
-
-		# Go to war
-		option = {
-			name = "EVTOPTB110093"
-
-			badboy = 2
-
-			relation = { who = FROM value = -200 }
-			diplomatic_influence = { who = FROM value = -100 }
-
-			war = {
-				target = FROM
-				attacker_goal = { casus_belli = acquire_core_state state_province_id = 734 }
-				defender_goal = { casus_belli = humiliate }
-			}
-		}
-	}
-
 ## Other ##
 
 	#Description: Sardinia becomes independent if Sardinia-Piedmont loses the coast
@@ -6237,13 +6103,136 @@ country_event = {
 				limit = { owner = { is_greater_power = yes } }
 				owner = { diplomatic_influence = { who = SRD value = 400 } }
 			}
-			random_country = {
-				limit = { is_sphere_leader_of = THIS }
-				diplomatic_influence = { who = SRD value = 400 }
-			}
 			relation = { who = SRD value = 200 }
 			all_core = { add_core = SVY remove_core = SAR }
 			change_tag = SVY
+		}
+	}
+
+	#Description: The Trentino Compromise -
+	country_event = {
+		id = 110090
+		title = "EVTNAME110090"
+		desc = "EVTDESC110090"
+		picture = "map_trentin"
+
+		trigger = {
+			tag = ITA
+			owns = 734 # Trentin
+			owns = 735 # Bozen
+			nationalism_n_imperialism = 1
+			NOT = { has_global_flag = trentino_tirol_compromise }
+			619 = {
+				owner = {
+					is_culture_group = germanic
+					relation = { who = THIS value = 0 }
+					NOT = { is_greater_power = yes }
+					OR = {
+						AND = {
+							has_recently_lost_war = yes
+							truce_with = THIS
+						}
+						in_sphere = THIS
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = { months = 12 }
+
+		fire_only_once = yes
+
+		# The land is rightfully theirs.
+		option = {
+			name = "EVTOPTA110090"
+
+			badboy = -1
+			any_greater_power = {
+				limit = { capital_scope = { continent = europe } }
+				relation = { who = THIS value = 25 }
+			}
+			## Relations and influence, secede and core ##
+				random_country = {
+					limit = { owns = 619 tag = AUS }
+					relation = { who = AUS value = 200 }
+					diplomatic_influence = { who = AUS value = 100 }
+					734 = { change_province_name = "Trento" remove_core = AUS }
+					735 = { remove_core = THIS secede_province = AUS }
+				}
+				random_country = {
+					limit = { owns = 619 tag = KUK }
+					relation = { who = KUK value = 200 }
+					diplomatic_influence = { who = KUK value = 100 }
+					734 = { change_province_name = "Trento" remove_core = KUK }
+					735 = { remove_core = THIS secede_province = KUK }
+				}
+				random_country = {
+					limit = { owns = 619 tag = DNB }
+					relation = { who = DNB value = 200 }
+					diplomatic_influence = { who = KUK value = 100 }
+					734 = { change_province_name = "Trento" remove_core = DNB }
+					735 = { remove_core = THIS secede_province = DNB }
+				}
+				random_country = {
+					limit = { owns = 619 tag = GCF }
+					relation = { who = GCF value = 200 }
+					diplomatic_influence = { who = GCF value = 100 }
+					734 = { change_province_name = "Trento" remove_core = GCF }
+					735 = { remove_core = THIS secede_province = GCF }
+				}
+				random_country = {
+					limit = { owns = 619 tag = GER }
+					relation = { who = GER value = 200 }
+					diplomatic_influence = { who = GER value = 100 }
+					734 = { change_province_name = "Trento" remove_core = GER }
+					735 = { remove_core = THIS secede_province = GER }
+				}
+			any_pop = { dominant_issue = { value = pacifism	factor = 0.05 }	}
+			set_global_flag = trentino_tirol_compromise
+
+		}
+
+		#The land is rightfully ours.
+		option = {
+			name = "EVTOPTB110090"
+
+			prestige = 5
+			any_greater_power = {
+				limit = { capital_scope = { continent = europe } }
+				relation = { who = THIS value = -25 }
+			}
+			## Relations and influence ##
+				random_country = {
+					limit = { owns = 619 tag = AUS }
+					relation = { who = AUS value = -200 }
+					diplomatic_influence = { who = AUS value = -100 }
+				}
+				random_country = {
+					limit = { owns = 619 tag = KUK }
+					relation = { who = KUK value = -200 }
+					diplomatic_influence = { who = KUK value = -100 }
+				}
+				random_country = {
+					limit = { owns = 619 tag = DNB }
+					relation = { who = DNB value = -200 }
+					diplomatic_influence = { who = KUK value = -100 }
+				}
+				random_country = {
+					limit = { owns = 619 tag = GCF }
+					relation = { who = GCF value = -200 }
+					diplomatic_influence = { who = GCF value = -100 }
+				}
+				random_country = {
+					limit = { owns = 619 tag = GER }
+					relation = { who = GER value = -200 }
+					diplomatic_influence = { who = GER value = -100 }
+				}
+			any_pop = { dominant_issue = { value = jingoism	factor = 0.05 }	}
+			734 = { change_province_name = "Trento" }
+			735 = {
+				change_province_name = "Bolzano"
+				state_scope = {	change_region_name = "Trentino"	}
+			}
 		}
 	}
 

@@ -624,26 +624,6 @@
 			prestige = 10
 			create_vassal = FROM
 
-			set_global_flag = hidden_code
-			random_owned = { # Since creating vassal takes your cores from your new vassal this is to return them
-				limit = { has_global_flag = hidden_code }
-				owner = {
-					any_owned = {
-						limit = {
-							is_core = FROM
-							OR = {
-								region = PEU_2297 # Cusco
-								region = PEU_2301 # Ucayali & Pando
-								region = BRZ_2401 # Amazonas
-								region = BRZ_2549 # Acre
-							}
-						}
-						secede_province = FROM
-					}
-				}
-			}
-			clr_global_flag = hidden_code
-
 			set_country_flag = PBC_administration
 		}
 	}
@@ -772,115 +752,39 @@
 		option = {
 			name = "EVTOPTA97038"
 
-			set_global_flag = hidden_code1
-			random_owned = {
-				limit = { has_global_flag = hidden_code1 }
-				SPU = { all_core = { remove_core = SPU } }
-				PEU_2297 = { add_core = SPU } # Cusco
-				PEU_2303 = { add_core = SPU } # Areqipa
-				2297 = { add_core = SPU } # Lima
-				2301 = { add_core = SPU } # Iñapari
-				2307 = { add_core = SPU } # Northern Atacama
-				2308 = { add_core = SPU }
-				2319 = { add_core = SPU } # Northern Bolivia
-				2321 = { add_core = SPU }
-				3296 = { add_core = SPU }
-				3297 = { add_core = SPU }
-				PEU = { release = SPU }
-				PEU = {
-					any_owned = {
-						limit = { is_core = SPU }
-						secede_province = SPU
-					}
-				}
-				THIS = {
-					any_owned = {
-						limit = { is_core = SPU }
-						secede_province = SPU
-					}
-				}
-			}
-			clr_global_flag = hidden_code1
-
-			create_vassal = SPU
-			create_vassal = PEU
-
-			set_global_flag = hidden_code2
-			random_owned = {
-				limit = { has_global_flag = hidden_code2 }
-				owner = {
-					random_owned = {
-						limit = { province_id = 2302 }
-						secede_province = SPU
-					}
-					random_owned = {
-						limit = { province_id = 2301 }
-						secede_province = SPU
-					}
-					random_owned = {
-						limit = { province_id = 2319 }
-						secede_province = SPU
-					}
-					random_owned = {
-						limit = { province_id = 2321 }
-						secede_province = SPU
-					}
-					random_owned = {
-						limit = { province_id = 3297 }
-						secede_province = SPU
-					}
-					random_owned = {
-						limit = { province_id = 3296 }
-						secede_province = SPU
-					}
-					SPU = {
-						all_core = {
-							limit = { owned_by = THIS }
-							secede_province = SPU
-						}
-					}
-
-					random_owned = {
-						limit = { province_id = 2300 }
-						secede_province = PEU
-					}
-					random_owned = {
-						limit = { province_id = 2298 }
-						secede_province = PEU
-					}
-					random_owned = {
-						limit = { province_id = 2549 }
-						secede_province = PEU
-					}
-					random_owned = {
-						limit = { province_id = 2407 }
-						secede_province = PEU
-					}
-					PEU = {
-						all_core = {
-							limit = { owned_by = THIS }
-							secede_province = PEU
-						}
-					}
-
-				}
-			}
-			clr_global_flag = hidden_code2
-
-			SPU = {
-				government = colonial_company
-				add_country_modifier = { name = reluctant_fighter duration = 3650 }
-			}
-			PEU = {
-				government = colonial_company
-				add_country_modifier = { name = reluctant_fighter duration = 3650 }
-			}
-
-			2578 = { add_province_modifier = { name = new_capital_modifier duration = 365 } }
-
 			all_core = { add_core = PBC }
 			change_tag = PBC
 			add_country_modifier = { name = pbc_is_unstable duration = 1825 } # 5 years
+
+			PEU_2297 = { add_core = SPU }
+			PEU_2303 = { add_core = SPU }
+			2297 = { add_core = SPU }
+			2307 = { add_core = SPU }
+			2308 = { add_core = SPU }
+			2319 = { add_core = SPU }
+			2321 = { add_core = SPU }
+			3296 = { add_core = SPU }
+			3297 = { add_core = SPU }
+			PEU = { release = SPU }
+			any_owned = {
+				limit = {
+					is_core = SPU
+					NOT = { is_core = THIS }
+				}
+				secede_province = SPU
+			}
+			create_vassal = SPU
+			SPU = {
+				government = colonial_company
+				add_country_modifier = { name = relutanct_figher duration = 3650 }
+			}
+			create_vassal = PEU
+			PEU = {
+				government = colonial_company
+				add_country_modifier = { name = relutanct_figher duration = 3650 }
+			}
+
+			2578 = { add_province_modifier = { name = new_capital_modifier duration = 365 } }
 
 			add_accepted_culture = peruvian
 			political_reform = federalism
@@ -1138,7 +1042,7 @@
 				is_disarmed = yes
 			}
 			NOT = { has_country_flag = the_confederation_is_legitime }
-			NOT = { has_global_flag = first_pbc_fell }
+			NOT = { has_country_flag = end_of_the_confederation }
 		}
 
 		mean_time_to_happen = {
@@ -1146,7 +1050,7 @@
 		}
 
 		immediate = {
-			set_global_flag = first_pbc_fell
+			set_country_flag = end_of_the_confederation
 		}
 
 		# Let it go
@@ -1155,6 +1059,8 @@
 
 			prestige = -5
 			badboy = -2
+
+			set_global_flag = first_pbc_fell
 
 			## Component states ##
 				random_country = {
@@ -1252,6 +1158,8 @@
 			name = "EVTOPTB97055"
 
 			badboy = -1
+
+			set_global_flag = first_pbc_fell
 
 			random_country = {
 				limit = {
@@ -1353,7 +1261,10 @@
 					any_owned = {
 						limit = { is_core = PEU }
 						any_pop = { militancy = 6 }
-						add_province_modifier = { name = nationalist_agitation duration = 1095 }
+						add_province_modifier = {
+							name = nationalist_agitation
+							duration = 1095
+						}
 					}
 				}
 			}
@@ -1362,7 +1273,6 @@
 					tag = PEU
 					vassal_of = PBC
 				}
-				country_event = 97034
 				THIS = {
 					release_vassal = PEU
 					leave_alliance = PEU
@@ -1378,7 +1288,6 @@
 					tag = SPU
 					vassal_of = PBC
 				}
-				country_event = 97034
 				THIS = {
 					release_vassal = SPU
 					leave_alliance = SPU
@@ -1388,16 +1297,6 @@
 						call_ally = yes
 					}
 				}
-			}
-			random_country = {
-				limit = {
-					tag = PEU
-					exists = SPU
-				}
-				create_alliance = SPU
-				military_access = SPU
-				SPU = { military_access = PEU }
-				relation = { who = SPU value = 250 }
 			}
 
 			ai_chance = {
@@ -1521,7 +1420,10 @@
 					any_owned = {
 						limit = { is_core = PEU }
 						any_pop = { militancy = 6 }
-						add_province_modifier = { name = nationalist_agitation duration = 1095 }
+						add_province_modifier = {
+							name = nationalist_agitation
+							duration = 1095
+						}
 					}
 				}
 			}
@@ -1588,7 +1490,6 @@
 					vassal_of = THIS
 				}
 				THIS = { release_vassal = SPU }
-				relation = { who = FROM value = 400 }
 			}
 
 			ai_chance = {
@@ -1620,7 +1521,7 @@
 						owned_by = SPU
 					}
 				}
-				secede_province = THIS
+				secede_province = BOL
 			}
 		}
 	}
@@ -1983,7 +1884,7 @@
 		picture = "Celebration"
 
 		trigger = {
-			has_country_modifier = reluctant_fighter
+			has_country_modifier = relutanct_figher
 			is_vassal = no
 		}
 
@@ -2006,7 +1907,7 @@
 				}
 				owner = { government = democracy }
 			}
-			remove_country_modifier = reluctant_fighter
+			remove_country_modifier = relutanct_figher
 			soldiers = { reduce_pop = 1.02 }
 			any_pop = {
 				limit = { is_primary_culture = yes }
