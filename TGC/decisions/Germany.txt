@@ -981,20 +981,13 @@ political_decisions = {
 				tag = NGF
 				tag = PRU
 			}
-			NOT = { has_global_flag = watching_the_rhine }
+			exists = FRA
 			OR = {
-				has_country_flag = french_claimed_the_rhine
-				FRA = { exists = yes NOT = { relation = { who = FRA value = 0 } } }
-				575 = { owner = { NOT = { is_culture_group = germanic } } }
-				576 = { owner = { NOT = { is_culture_group = germanic } } }
-				577 = { owner = { NOT = { is_culture_group = germanic } } }
-				572 = { owner = { NOT = { is_culture_group = germanic } } }
-				PRU_578 = { owner = { NOT = { is_culture_group = germanic } } }
-				PRU_575 = { owner = { NOT = { is_culture_group = germanic } } }
-				BAD_586 = { owner = { NOT = { is_culture_group = germanic } } }
-				WUR_589 = { owner = { NOT = { is_culture_group = germanic } } }
-				HES_2560 = { owner = { NOT = { is_culture_group = germanic } } }
+				has_global_flag = french_claimed_the_rhine
+				NOT = { relation = { who = FRA value = 0 } }
+				RHI = { any_core = { owner = { NOT = { is_culture_group = germanic } } } }
 			}
+			NOT = { has_global_flag = watching_the_rhine }
 		}
 
 		allow = {
@@ -2872,6 +2865,7 @@ political_decisions = {
 					owner = { vassal_of = THIS }
 				}
 			}
+			NOT = { has_global_flag = rhine_crisis_prussian_victory } # TODO this and below will be disabled if Prussia wins the Rhine crisis to prevent double punishment on France for losing and other weird stuff until this is also turned into a scripted peace deal for FPW
 		}
 
 		allow = {
@@ -2913,6 +2907,7 @@ political_decisions = {
 				is_greater_power = no
 			}
 			NOT = { has_global_flag = franco_prussian_memorial }
+			NOT = { has_global_flag = rhine_crisis_prussian_victory }
 		}
 
 		allow = {
@@ -4553,13 +4548,12 @@ political_decisions = {
 		}
 	}
 
-	annex_nm = {
+	annex_nm = { # TODO if puppet owned in the general case?
 		picture = moresnet
 		potential = {
 			owns = 396
 			owns = 3412
-			exists = MRN
-			NOT = { has_country_flag = annexed_nm }
+			3320 = { is_core = MRN }
 		}
 
 		allow = {
@@ -4568,9 +4562,30 @@ political_decisions = {
 
 		effect = {
 			prestige = 2
-			inherit = MRN
-			3320 = { remove_core = MRN }
-			set_country_flag = annexed_nm
+
+			random_country = {
+				limit = {
+					tag = MRN
+					owns = 3320
+				}
+				THIS = { inherit = MRN }
+			}
+			3320 = {
+				limit = { NOT = { owned_by = THIS } }
+				secede_province = THIS
+			}
+			3320 = {
+				remove_core = MRN
+				add_core = RHI
+			}
+			random_owned = {
+				limit = {
+					396 = { is_core = THIS }
+					3412 = { is_core = THIS }
+					THIS = { NOT = { tag = RHI } }
+				}
+				3320 = { add_core = THIS }
+			}
 		}
 	}
 
