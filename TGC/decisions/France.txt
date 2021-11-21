@@ -137,6 +137,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: Claim the Rhine is the natural border of France, start the Rhine Crisis event chain.
 	the_rhine_crisis = {
 		picture = adolphe_thiers
 		potential = {
@@ -147,9 +148,7 @@ political_decisions = {
 				owns = 572
 				owns = 575
 			}
-			NOT = {
-				has_country_flag = crisis_on_the_rhine
-			}
+			NOT = { has_country_flag = crisis_on_the_rhine }
 		}
 
 		allow = {
@@ -159,25 +158,20 @@ political_decisions = {
 		}
 
 		effect = {
-			badboy = 2
-			add_country_modifier = {
-				name = rhine_crisis
-				duration = -1
-			}
-			any_country = {
-				limit = {
-					OR = {
-						primary_culture = north_german
-						primary_culture = south_german
-					}
-				}
-				relation = {
-					who = THIS
-					value = -100
-				}
-			}
+			set_country_flag = crisis_on_the_rhine
+			set_global_flag = rhine_crisis_ongoing # TODO currently replacing the rhine_crisis modifier but neither was ever used in a condition so purpose ??
 			prestige = 10
-			FRA = { set_country_flag = crisis_on_the_rhine }
+			badboy = 2
+			any_country = {
+				limit = { is_culture_group = germanic }
+				relation = { who = THIS value = -100 }
+			}
+			set_global_flag = hidden_code
+			random_owned = {
+				limit = { has_global_flag = hidden_code }
+				owner = { country_event = { id = 33037 days = 2 } }
+			}
+			clr_global_flag = hidden_code
 		}
 
 		ai_will_do = {
@@ -188,11 +182,7 @@ political_decisions = {
 			}
 			modifier = {
 				factor = 0
-				NOT = {
-					any_greater_power = {
-						alliance_with = THIS
-					}
-				}
+				NOT = { any_greater_power = { alliance_with = THIS } }
 			}
 		}
 	}
@@ -4064,91 +4054,6 @@ rename_bourbon_island = {
 		ai_will_do = { factor = 1 }
 	}
 
-	clean_up_fra_vassal = {
-		picture = become_wallonia
-		potential = {
-			government = hms_government2
-			NOT = { tag = FRA }
-			NOT = { has_country_flag = french_bourbon_fixed }
-		}
-
-		allow = {
-			exists = yes
-		}
-
-		effect = {
-			set_country_flag = french_bourbon_fixed
-			government = hms_government
-		}
-		ai_will_do = { factor = 1 }
-	}
-
-	clean_up_fra_rhineland = {
-		picture = adolphe_thiers
-		potential = {
-			tag = RHI
-			RHI = {
-				exists = yes
-				ai = yes
-				in_sphere = FRA
-				NOT = { vassal_of = FRA }
-			}
-			NOT = { has_country_flag = rhine_vassal }
-		}
-
-		allow = {
-			war = no
-			FRA = { truce_with = PRU has_country_modifier = rhine_crisis }
-			PRU = { has_recently_lost_war = yes }
-		}
-
-		effect = {
-			set_country_flag = rhine_vassal
-			prestige = -50
-			any_owned = { limit = {  region = PRU_578 } secede_province = PRU }
-			571 = { add_core = RHI }
-			570 = { add_core = RHI }
-			random_country = {
-				limit = {
-					primary_culture = french
-					is_greater_power = yes
-					exists = yes
-				}
-				country_event = 99994
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-
-	clean_up_france_lost_rhine_crisis = {
-		picture = adolphe_thiers
-		potential = {
-			ai = yes
-			NOT = { has_global_flag = clean_up_france_lost_rhine_crisis }
-			FRA = { truce_with = PRU has_country_modifier = rhine_crisis }
-			575 = { OR = {owned_by = PRU owned_by = NGF owned_by = GER owned_by = GCF owned_by = AUS owned_by = SGF } }
-			PRU = { is_disarmed = no }
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			set_global_flag = clean_up_france_lost_rhine_crisis
-			random_country = {
-				limit = {
-					primary_culture = french
-					is_greater_power = yes
-					exists = yes
-				}
-				country_event = 99993
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
 	take_the_channel_islands = {
 		picture = channel_islands
 		potential = {
@@ -4194,8 +4099,9 @@ rename_bourbon_island = {
 		}
 	}
 
+	#Description: Annex the Rhineland puppet that was formed after victory in the Rhine crisis.
 	annex_rhineland = {
-	picture = rhineland
+		picture = rhineland
 		potential = {
 			tag = FRA
 			is_greater_power = yes
@@ -4208,18 +4114,14 @@ rename_bourbon_island = {
 			war = no
 			owns = 412
 			revolution_n_counterrevolution = 1
-			is_greater_power = yes
 			OR = {
 				has_global_flag = franco_prussian_war_has_begun
-				AND = {
-					owns = 412
-					year = 1875
-				}
+				year = 1875
 			}
 		}
 
 		effect = {
-			FRA = { set_country_flag = annexed_rhineland }
+			set_country_flag = annexed_rhineland
 			prestige = 25
 			badboy = 5
 			inherit = RHI

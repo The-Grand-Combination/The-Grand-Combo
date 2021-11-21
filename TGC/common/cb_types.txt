@@ -7577,3 +7577,156 @@ webster_ashburton_cb = {
 
 	war_name = WAR_WEBSTER_ASHBURTON
 }
+
+rhine_crisis_german = {
+	sprite_index = 2
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 0.5
+	peace_cost_factor = 30
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		set_global_flag = rhine_crisis_prussian_victory
+		clr_global_flag = rhine_crisis_ongoing
+		country_event = 99993 # France gets event about their loss
+	}
+
+	on_add = {}
+
+	war_name = WAR_RHINE_CRISIS
+}
+
+rhine_crisis_french = {
+	sprite_index = 2
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 0.5
+	peace_cost_factor = 65
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		set_global_flag = rhine_crisis_french_victory
+		clr_global_flag = rhine_crisis_ongoing
+
+		# In case we ever remove RHI cores from game start
+		PRU_575 = { add_core = RHI } 	# Rhineland
+		PRU_578 = { 					# Northern Rhineland
+			limit = {
+				NOT = {
+					# Audax Validator "." Ignore_NEXT
+					province_id = 3270 # Wetzlar is disconnected from the rest of Nordrhein
+				}
+			}
+			add_core = RHI
+		}
+		HES_570 = { add_core = RHI } 	# Rhine-Hesse
+		BAV_571 = { add_core = RHI } 	# Palatinate
+		PRU_396 = {						# Eupen-Malmedy
+			limit = {
+				NOT = {
+					# Audax Validator "." Ignore_NEXT
+					is_core = MRN
+				}
+			}
+			add_core = RHI
+		}
+
+		# In case of Talleyrand Plan execution secede lands in Belgium
+		any_owned = {
+			limit = {
+				OR = {
+					region = NET_378
+					region = NET_379
+					region = BEL_387
+					region = BEL_388
+					region = BEL_390
+					region = BEL_394
+					region = BEL_395
+					region = LUX_397
+				}
+				NOT = { province_id = 3412 }
+			}
+			secede_province = THIS
+			add_core = THIS
+		}
+		any_owned = {
+			limit = {
+				OR = {
+					province_id = 381
+					province_id = 3313
+					province_id = 3412
+				}
+			}
+			add_core = RHI
+		}
+
+		# Secede the Prussian Rhineland
+		any_owned = {
+			limit = {
+				is_core = RHI
+				NOT = { region = PRU_578 }
+			}
+			secede_province = THIS
+		}
+
+		FRA = {
+			release_vassal = RHI
+			create_alliance = RHI
+			diplomatic_influence = { who = RHI value = 400 }
+			# Audax Validator "." Ignore_NEXT
+			country_event = { id = 99994 days = 3 }
+		}
+
+		RHI = {
+			set_country_flag = rhine_vassal
+			prestige = -50
+			primary_culture = rhinelander
+			add_accepted_culture = french
+			add_accepted_culture = north_german
+			clr_country_flag = german_confederation_member
+		}
+	}
+
+	on_add = {}
+
+	war_name = WAR_RHINE_CRISIS
+}
