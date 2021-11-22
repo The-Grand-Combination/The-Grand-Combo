@@ -578,23 +578,20 @@ political_decisions = {
 ### Austrian Led Germany Route ###
 
 	austrian_form_south_german_confederation = {
-
 		potential = {
 			OR = {
 				tag = AUS
 				tag = KUK
 			}
-			any_owned_province = {
-				NOT = {
-					OR = {
-						is_core = AUS
-						is_core = GER
-						is_colonial = yes
-					}
-				}
-			}
 			is_greater_power = yes
 			primary_culture = south_german
+			any_owned_province = {
+				NOT = {
+					is_core = THIS
+					is_core = GER
+					is_colonial = yes
+				}
+			}
 			NOT = {
 				exists = GER
 				exists = SGF
@@ -656,7 +653,40 @@ political_decisions = {
 					}
 				}
 			}
-			594 = { owned_by = THIS }
+			HOH = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							ai = yes
+							in_sphere = THIS
+							OR = {
+								is_vassal = no
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
+			SGM = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							ai = yes
+							in_sphere = THIS
+							OR = {
+								is_vassal = no
+								vassal_of = THIS
+							}
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
 		}
 
 		effect = {
@@ -674,46 +704,41 @@ political_decisions = {
 						tag = BAD
 						tag = BAV
 						tag = SGM
+						tag = HOH
 					}
 					in_sphere = THIS
 				}
 				annex_to = THIS
 			}
-			any_owned = {
-				limit = {
-					OR = {
-						culture = south_german
-						province_id = 412
+			GER = {
+				all_core = {
+					limit = {
+						OR = {
+							is_core = WUR
+							is_core = BAD
+							is_core = BAV
+							is_core = SGM
+							is_core = HOH
+						}
+						NOT = { is_core = THIS }
 					}
-					is_core = GER
-					NOT = {
-						is_core = AUS
-						is_core = KUK
-					}
-					NOT = { has_country_flag = post_colonial_country }
+					add_core = SGF
 				}
-				add_core = SGF
 			}
 			release_vassal = SGF
-			diplomatic_influence = {
-				who = SGF
-				value = 300
-			}
+			create_alliance = SGF
+			diplomatic_influence = { who = SGF value = 400 }
 			SGF = {
 				prestige = -50
 				political_reform = confederalism
-				create_alliance = THIS
 			}
 		}
 
-		ai_will_do = {
-			factor = 1
-		}
+		ai_will_do = { factor = 1 }
 	}
 
 	austria_annex_SGF = {
 		picture = form_south_german_confederation
-
 		potential = {
 			OR = {
 				tag = AUS
