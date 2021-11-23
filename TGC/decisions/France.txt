@@ -2798,12 +2798,12 @@ rename_bourbon_island = {
 				random_owned = {
 					limit = {
 						owner = {
-							tag = FRA
 							OR = {
 								has_country_flag = constitutional_monarchy_gov
 								has_country_flag = absolute_monarchy_gov
 								has_country_flag = semi_constitutional_monarchy_gov
 							}
+							NOT = { has_country_flag = 2nd_monarchygov }
 						}
 					}
 					ACA = { government = hms_government }
@@ -2811,11 +2811,12 @@ rename_bourbon_island = {
 				random_owned = {
 					limit = {
 						owner = {
-							tag = FRA
 							OR = {
-								government = hms_government2
-								government = absolute_monarchy2
+								has_country_flag = constitutional_monarchy_gov
+								has_country_flag = absolute_monarchy_gov
+								has_country_flag = semi_constitutional_monarchy_gov
 							}
+							has_country_flag = 2nd_monarchygov
 						}
 					}
 					ACA = { government = fra_colonial_company }
@@ -2825,48 +2826,53 @@ rename_bourbon_island = {
 					owner = { political_reform = settlement }
 				}
 
-			any_pop = {
-				limit = {
-					location = { is_core = ACA }
-					culture = french_canadian
-				}
-				militancy = -10
-				consciousness = -10
-				reduce_pop = 2
-			}
-
 			## Move pops ##
 
-				any_pop = {
-					limit = {
-						location = { is_core = ACA }
-						has_pop_culture = anglo_canadian
-						OR = {
-							type = soldiers
-							type = officers
+			set_global_flag = hidden_code
+			random_owned = {
+				limit = { has_global_flag = hidden_code }
+				owner = {
+					any_pop = {
+						limit = {
+							location = { is_core = ACA }
+							culture = french_canadian
 						}
+						militancy = -10
+						consciousness = -10
+						reduce_pop = 2
 					}
-					move_pop = 57 # Bytown / Ottawa
-				}
-				any_pop = {
-					limit = {
-						location = { is_core = ACA }
-						has_pop_culture = yankee
-						OR = {
-							type = soldiers
-							type = officers
+					any_pop = {
+						limit = {
+							location = { is_core = ACA }
+							has_pop_culture = anglo_canadian
+							OR = {
+								type = soldiers
+								type = officers
+							}
 						}
+						move_pop = 57 # Bytown / Ottawa
 					}
-					move_pop = 243 # Boston
-				}
-				any_pop = {
-					limit = {
-						location = { is_core = ACA }
-						type = craftsmen
-						is_state_religion = no
+					any_pop = {
+						limit = {
+							location = { is_core = ACA }
+							has_pop_culture = yankee
+							OR = {
+								type = soldiers
+								type = officers
+							}
+						}
+						move_pop = 243 # Boston
 					}
-					move_pop = 46 # Toronto
+					craftsmen = {
+						limit = {
+							location = { is_core = ACA }
+							is_state_religion = no
+						}
+						move_pop = 46 # Toronto
+					}
 				}
+			}
+			clr_global_flag = hidden_code
 		}
 
 		ai_will_do = { factor = 1 }
@@ -2897,12 +2903,14 @@ rename_bourbon_island = {
 		}
 
 		effect = {
+			set_country_flag = canada_organized
 
 			## Effects that will happen if either the Treaty of Montreal or Paris is taken ##
 
 				treasury = -100000
 				2593 = { state_scope = { change_region_name = "Nord-du-Québec" } }
-				65 = { change_province_name = "Québec" state_scope = { change_region_name = "Québec" } }
+				65 = { state_scope = { change_region_name = "Québec" } }
+				65 = { change_province_name = "Québec" }
 				58 = { change_province_name = "Montréal" }
 				63 = { change_province_name = "Témiscaming" }
 				70 = { change_province_name = "Île Saint-Jean" }
@@ -2919,7 +2927,15 @@ rename_bourbon_island = {
 					ULA = { all_core = { remove_core = ULA } }
 					owner = { badboy = -5 } # Reduces your infamy for dropping the rest of your claims
 					46 = { state_scope = { change_region_name = "Southern Ontario" } }
-					QUE = { all_core = { remove_core = ENG remove_core = THIS remove_core = RPL remove_core = CAN remove_core = NEW } }
+					QUE = {
+						all_core = {
+							remove_core = ENG
+							remove_core = THIS
+							remove_core = RPL
+							remove_core = CAN
+							remove_core = NEW
+						}
+					}
 					THIS = {
 						any_owned = {
 							limit = { is_core = QUE NOT = { terrain = arctic } }
@@ -2966,12 +2982,25 @@ rename_bourbon_island = {
 							remove_core = COL
 						}
 					}
-					74 = {
-						change_province_name = "Québec"
-						state_scope = { change_region_name = "Terre-Neuve" }
+					74 = { state_scope = { change_region_name = "Terre-Neuve" } }
+					74 = { change_province_name = "Québec" }
+					QUE = {
+						all_core = {
+							add_core = CAN
+							remove_core = ENG
+							remove_core = THIS
+							remove_core = RPL
+							remove_core = NEW
+							remove_core = QUE
+						}
 					}
-					QUE = { all_core = { add_core = CAN remove_core = ENG remove_core = THIS remove_core = RPL remove_core = NEW remove_core = QUE } }
-					ACA = { all_core = { add_core = ACA remove_core = ENG remove_core = THIS } }
+					ACA = {
+						all_core = {
+							add_core = ACA
+							remove_core = ENG
+							remove_core = THIS
+						}
+					}
 					owner = {
 						any_owned = {
 							limit = { is_core = CAN NOT = { terrain = arctic } }
@@ -2992,12 +3021,12 @@ rename_bourbon_island = {
 				random_owned = {
 					limit = {
 						owner = {
-							tag = FRA
 							OR = {
 								has_country_flag = constitutional_monarchy_gov
 								has_country_flag = absolute_monarchy_gov
 								has_country_flag = semi_constitutional_monarchy_gov
 							}
+							NOT = { has_country_flag = 2nd_monarchygov }
 						}
 					}
 					ACA = { government = fra_dominion }
@@ -3005,11 +3034,12 @@ rename_bourbon_island = {
 				random_owned = {
 					limit = {
 						owner = {
-							tag = FRA
 							OR = {
-								government = hms_government2
-								government = absolute_monarchy2
+								has_country_flag = constitutional_monarchy_gov
+								has_country_flag = absolute_monarchy_gov
+								has_country_flag = semi_constitutional_monarchy_gov
 							}
+							has_country_flag = 2nd_monarchygov
 						}
 					}
 					CAN = { government = fra_colonial_company }
@@ -3019,45 +3049,49 @@ rename_bourbon_island = {
 					owner = { political_reform = settlement }
 				}
 
-			any_pop = {
-				limit = {
-					OR = {
-						culture = anglo_canadian
-						culture = irish
-						culture = british
-					}
-				}
-				consciousness = 7
-				militancy = 7
-			}
-			any_pop = {
-				limit = {
-					location = { province_id = 72 }
-					culture = french_canadian
-				}
-				reduce_pop = 1.5
-				militancy = -10
-				consciousness = -10
-			}
-
-			## Move Pops ##
-
-				any_pop = {
-					limit = {
-						location = { is_core = QUE }
-						OR = {
-							AND = {
-								has_pop_culture = anglo_canadian
-								OR = {
-									type = soldiers
-									type = officers
-								}
+			set_global_flag = hidden_code
+			random_owned = {
+				limit = { has_global_flag = hidden_code }
+				owner = {
+					any_pop = {
+						limit = {
+							OR = {
+								culture = anglo_canadian
+								culture = irish
+								culture = british
 							}
-							has_pop_culture = british
 						}
+						consciousness = 7
+						militancy = 7
 					}
-					move_pop = 57 # Bytown / Ottawa
+					any_pop = {
+						limit = {
+							location = { province_id = 72 }
+							culture = french_canadian
+						}
+						reduce_pop = 1.5
+						militancy = -10
+						consciousness = -10
+					}
+					any_pop = {
+						limit = {
+							location = { is_core = QUE }
+							OR = {
+								AND = {
+									has_pop_culture = anglo_canadian
+									OR = {
+										type = soldiers
+										type = officers
+									}
+								}
+								has_pop_culture = british
+							}
+						}
+						move_pop = 57 # Bytown / Ottawa
+					}
 				}
+			}
+			clr_global_flag = hidden_code
 		}
 
 		ai_will_do = { factor = 1 }
@@ -3071,6 +3105,7 @@ rename_bourbon_island = {
 			has_country_flag = french_total_victory	# France has won against Britain and taken all of British North America
 			has_country_flag = french_america 		# France has chosen to pursue restoring its American territories
 			has_country_flag = canada_master 	# France has organized Canada
+			exists = USA
 			NOT = {
 				has_country_flag = war_for_louisiana
 				exists = ULA
@@ -3100,7 +3135,8 @@ rename_bourbon_island = {
 			}
 			random_country = {
 				limit = { is_our_vassal = USA NOT = { tag = THIS } }
-				relation = { who = THIS value = -200 } leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+				leave_alliance = THIS
 			}
 			any_pop = { dominant_issue = { factor = 0.05 value = jingoism } consciousness = 2 }
 
@@ -3278,6 +3314,8 @@ rename_bourbon_island = {
 		}
 
 		effect = {
+			set_country_flag = louisiana_organized
+
 			money = -150000
 
 			## Setup Territory ##
@@ -3352,202 +3390,200 @@ rename_bourbon_island = {
 
 			add_accepted_culture = cajun
 
-			## Move American Pops ##
-
-				any_pop = {
-					limit = {
-						type = craftsmen
-						has_pop_culture = dixie
-					}
-					move_pop = 194
-				}
-				any_pop = {
-					limit = {
-						type = craftsmen
-						has_pop_culture = yankee
-					}
-					move_pop = 167
-				}
-				any_pop = {
-					limit = {
-						location = { is_core = ULA }
-						type = craftsmen
-						is_state_religion = no
-					}
-					move_pop = 167
-				}
-
 			ULA = {
 				set_country_flag = post_colonial_country
 				primary_culture = cajun
 				add_accepted_culture = acadian
-			}
-			ULA = { all_core = { remove_core = COL remove_core = CAN } }
-			D01 = { primary_culture = cajun }
-
-			## Setup Slavery ##
-
-				random_owned = {
-					limit = { owner = { slavery = yes_slavery } }
-					D01 = { political_reform = yes_slavery }
+				all_core = {
+					remove_core = COL
+					remove_core = CAN
 				}
-				random_owned = {
-					limit = { owner = { slavery = freedom_of_womb } }
-					D01 = { political_reform = freedom_of_womb }
-				}
-				random_owned = {
-					limit = { owner = { slavery = no_slavery } }
-					D01 = { political_reform = no_slavery }
-				}
-
-			## Move French Pops ##
-
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = soldiers
-						location = { continent = europe }
-					}
-					move_pop = 151
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = artisans
-						location = { continent = europe }
-					}
-					move_pop = 146
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = artisans
-						location = { continent = europe }
-					}
-					move_pop = 143
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = soldiers
-						location = { continent = europe }
-					}
-					move_pop = 144
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = artisans
-						location = { continent = europe }
-					}
-					move_pop = 145
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = clergymen
-						location = { continent = europe }
-					}
-					move_pop = 150
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = clergymen
-						location = { continent = europe }
-					}
-					move_pop = 149
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = soldiers
-						location = { continent = europe }
-					}
-					move_pop = 140
-				}
-				random_pop = {
-					limit = {
-						has_pop_culture = french
-						type = artisans
-						location = { continent = europe }
-					}
-					move_pop = 146
-				}
-
-			any_pop = {
-				limit = { culture = yankee }
-				consciousness = 7
-				militancy = 7
-			}
-			any_pop = {
-				limit = {
-					location = { province_id = 146 }
-					is_state_religion = no
-				}
-				move_pop = 167
-			}
-			any_pop = {
-				limit = {
-					location = { province_id = 143 }
-					is_state_religion = no
-				}
-				move_pop = 193
 			}
 
-			## Assimilate ##
+			set_global_flag = hidden_code
+			random_owned = {
+				limit = { has_global_flag = hidden_code }
+				owner = {
+					## Move American Pops ##
 
-				any_owned = {
-					limit = {
-						OR = {
-							province_id = 146
-							province_id = 143
+						craftsmen = {
+							limit = { has_pop_culture = dixie }
+							move_pop = 194
 						}
-					}
-					secede_province = D01
-				}
-				D01 = {
-					146 = {
-						# Audax Validator "." Ignore_NEXT
-						assimilate = yes
-					}
-					143 = {
-						# Audax Validator "." Ignore_NEXT
-						assimilate = yes
-					}
-				}
-				THIS = { inherit = D01 }
+						craftsmen = {
+							limit = { has_pop_culture = yankee }
+							move_pop = 167
+						}
+						craftsmen = {
+							limit = {
+								location = { is_core = ULA }
+								is_state_religion = no
+							}
+							move_pop = 167
+						}
 
-			any_pop = {
-				limit = {
-					location = { province_id = 143 }
-					type = artisans
+					D01 = { primary_culture = cajun }
+
+					## Setup Slavery ##
+
+						random_owned = {
+							limit = { owner = { slavery = yes_slavery } }
+							D01 = { political_reform = yes_slavery }
+						}
+						random_owned = {
+							limit = { owner = { slavery = freedom_of_womb } }
+							D01 = { political_reform = freedom_of_womb }
+						}
+						random_owned = {
+							limit = { owner = { slavery = no_slavery } }
+							D01 = { political_reform = no_slavery }
+						}
+
+					## Move French Pops ##
+
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = soldiers
+								location = { continent = europe }
+							}
+							move_pop = 151
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = artisans
+								location = { continent = europe }
+							}
+							move_pop = 146
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = artisans
+								location = { continent = europe }
+							}
+							move_pop = 143
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = soldiers
+								location = { continent = europe }
+							}
+							move_pop = 144
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = artisans
+								location = { continent = europe }
+							}
+							move_pop = 145
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = clergymen
+								location = { continent = europe }
+							}
+							move_pop = 150
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = clergymen
+								location = { continent = europe }
+							}
+							move_pop = 149
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = soldiers
+								location = { continent = europe }
+							}
+							move_pop = 140
+						}
+						random_pop = {
+							limit = {
+								has_pop_culture = french
+								type = artisans
+								location = { continent = europe }
+							}
+							move_pop = 146
+						}
+
+					any_pop = {
+						limit = { culture = yankee }
+						consciousness = 7
+						militancy = 7
+					}
+					any_pop = {
+						limit = {
+							location = { province_id = 146 }
+							is_state_religion = no
+						}
+						move_pop = 167
+					}
+					any_pop = {
+						limit = {
+							location = { province_id = 143 }
+							is_state_religion = no
+						}
+						move_pop = 193
+					}
+
+					## Assimilate ##
+
+						any_owned = {
+							limit = {
+								OR = {
+									province_id = 146
+									province_id = 143
+								}
+							}
+							secede_province = D01
+						}
+						D01 = {
+							146 = {
+								# Audax Validator "." Ignore_NEXT
+								assimilate = yes
+							}
+							143 = {
+								# Audax Validator "." Ignore_NEXT
+								assimilate = yes
+							}
+						}
+						THIS = { inherit = D01 }
+
+					artisans = {
+						limit = { location = { province_id = 143 } }
+						pop_type = farmers
+					}
+					soldiers = {
+						limit = { location = { province_id = 142 } }
+						pop_type = farmers
+					}
+					artisans = {
+						limit = { location = { province_id = 146 } }
+						pop_type = farmers
+					}
+					soldiers = {
+						limit = { location = { province_id = 146 } }
+						pop_type = farmers
+					}
+					any_pop = {
+						limit = { has_pop_culture = cajun }
+						reduce_pop = 3
+					}
+					any_owned = {
+						limit = { is_core = ULA }
+						add_province_modifier = { name = french_colonial_integration duration = 3650 }
+					}
 				}
-				pop_type = farmers
 			}
-			any_pop = {
-				limit = {
-					location = { province_id = 142 }
-					type = soldiers
-				}
-				pop_type = farmers
-			}
-			any_owned = {
-				limit = { is_core = ULA }
-				add_province_modifier = { name = french_colonial_integration duration = 3650 }
-			}
-			any_pop = {
-				limit = { has_pop_culture = cajun }
-				reduce_pop = 3
-			}
-			any_pop = {
-				limit = { location = { province_id = 146 } type = artisans }
-				pop_type = farmers
-			}
-			any_pop = {
-				limit = { location = { province_id = 146 } type = soldiers }
-				pop_type = farmers
-			}
+			clr_global_flag = hidden_code
 
 			## Setup Government ##
 
@@ -3556,13 +3592,20 @@ rename_bourbon_island = {
 					owner = { political_reform = settlement }
 				}
 				random_owned = {
-					limit = { owner = { tag = FRA OR = { has_country_flag = constitutional_monarchy_gov has_country_flag = absolute_monarchy_gov has_country_flag = semi_constitutional_monarchy_gov } }
-					ULA = { government = hms_government } }
+					limit = {
+						owner = {
+							OR = {
+								has_country_flag = constitutional_monarchy_gov
+								has_country_flag = absolute_monarchy_gov
+								has_country_flag = semi_constitutional_monarchy_gov
+							}
+						}
+					}
+					ULA = { government = hms_government }
 				}
 				random_owned = {
 					limit = {
 						owner = {
-							tag = FRA
 							OR = {
 								government = hms_government2
 								government = absolute_monarchy2
@@ -3571,8 +3614,6 @@ rename_bourbon_island = {
 					}
 					ULA = { government = fra_colonial_company }
 				}
-
-			FRA = { set_country_flag = louisiana_organized }
 		}
 
 		ai_will_do = { factor = 1 }
@@ -3753,7 +3794,7 @@ rename_bourbon_island = {
 	}
 
 	claim_wallonia = {
-	picture = become_wallonia
+		picture = become_wallonia
 		potential = {
 			tag = FRA
 			is_greater_power = yes
@@ -3766,7 +3807,7 @@ rename_bourbon_island = {
 			NOT = { has_country_flag = claim_wallonia }
 			NOT = { exists = GER }
 			NOT = { exists = GCF }
-			WLL = { any_core = { NOT = { owned_by = THIS } } }
+			NOT = { WLL = { any_core = { owned_by = THIS } } }
 			owns = 412
 		}
 
@@ -3774,38 +3815,23 @@ rename_bourbon_island = {
 			crisis_exist = no
 			war = no
 			war_policy = jingoism
+			394 = { owner = { NOT = { relation = { who = THIS value = 100 } } } }
 			OR = {
-				AND = {
-					NOT = { relation = { who = BEL value = 100 } }
-					BEL = { exists = yes }
-				}
-				AND = {
-					NOT = { relation = { who = NET value = 100 } }
-					394 = { owned_by = NET }
-				}
-				AND = {
-					WLL = { exists = yes }
-					NOT = { relation = { who = WLL value = 100 } }
-				}
-			}
-			OR = {
-				RHI = {  exists = yes vassal_of = THIS }
+				RHI = { exists = yes vassal_of = THIS }
 				AND = { owns = 575 owns = 573 }
 			}
 		}
 
 		effect = {
-			FRA = { set_country_flag = claim_wallonia }
+			set_country_flag = claim_wallonia
 			badboy = 5
+
 			WLL = { all_core = { add_core = THIS } }
-			any_country = {
-				limit = { owns = 394 }
+			random_country = {
+				limit = { owns = 394 NOT = { tag = THIS } }
 				leave_alliance = THIS
-				relation = {
-					who = THIS
-					value = -400
-				}
 				country_event = 99984
+				relation = { who = THIS value = -400 }
 			}
 		}
 
@@ -4670,8 +4696,9 @@ rename_bourbon_island = {
 	purchase_annam = {
 		picture = dreams_of_empire
 		potential = {
-			capital_scope = { continent = europe }
+			owns = 1380
 			is_greater_power = yes
+			capital_scope = { continent = europe }
 			NOT = { has_country_flag = purchase_annam }
 			1375 = {
 				owner = {
@@ -4689,7 +4716,6 @@ rename_bourbon_island = {
 					owned_by = THIS
 				}
 			}
-			owns = 1380
 			NOT = { owns = 1375 }
 		}
 
