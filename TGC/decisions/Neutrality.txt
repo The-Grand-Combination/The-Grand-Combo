@@ -1,4 +1,12 @@
 political_decisions = {
+
+# NOTE: When adding a possibility of neutrality for a country, it should be added in 3 places:
+# 1. In the conditions and effects of enforce_neutrality_on_player where, due to the way scopes work, we can't make it work without explicitly checking individual countries.
+# 2. A decision to violate their neutrality in the Neutrality Violation section, specific to that country.
+# 3. In the conquest CB in cb_types.txt, under the can_use condition, in the section checking for the neutrality_violated flag.
+
+## Neutrality Status ##
+
 	declare_neutrality = {
 		potential = {
 			has_country_flag = neutrality_candidate
@@ -49,23 +57,26 @@ political_decisions = {
 			modifier = {
 				factor = 0
 				NOT = {
-					OR = {
-						badboy = 0.75
-						ruling_party_ideology = fascist
-						has_country_flag = communist_gov
-					}
+					badboy = 0.8
+					ruling_party_ideology = fascist
+					has_country_flag = communist_gov
 				}
+			}
+			modifier = { # AI OPMs will never abandon neutrality because obviously
+				factor = 0
+				NOT = { num_of_cities = 2 }
 			}
 		}
 	}
 
-	enforce_neutrality = { # TODO unfinished
+## Neutrality Enforcement ##
+
+	#Description: End alliances, military access and wars for AI neutral nations.
+	enforce_neutrality = {
 		picture = declare_neutrality
 		potential = {
 			has_country_modifier = neutrality
 			ai = yes
-			# Audax Validator "." Ignore_NEXT
-			always = no
 		}
 
 		allow = {
@@ -78,37 +89,120 @@ political_decisions = {
 		effect = {
 			any_country = {
 				limit = { NOT = { vassal_of = THIS } alliance_with = THIS }
-				relation = { who = THIS value = -125 }
+				relation = { who = THIS value = -80 }
+				leave_alliance = THIS
 			}
-			any_country = { limit = { NOT = { vassal_of = THIS } } leave_alliance = THIS end_military_access = THIS }
-			any_country = { limit = { war_with = THIS } end_war = THIS }
+			any_country = {
+				limit = { NOT = { vassal_of = THIS } military_access = THIS }
+				relation = { who = THIS value = -30 }
+				end_military_access = THIS
+			}
+			any_country = {
+				limit = { war_with = THIS }
+				relation = { who = THIS value = 100 }
+				end_war = THIS
+			}
 			add_country_modifier = { name = neutrality_timer duration = 7 }
 		}
 	}
 
-	enforce_neutrality_on_player = { #TODO Still needs to be adapted
+	#Description: End alliances, military access and wars for Player neutral nations.
+	enforce_neutrality_on_player = {
 		picture = declare_neutrality
 		potential = {
-			ai = yes
-			exists = yes
-			SWI = {
-				has_country_modifier = neutrality
-				ai = no
-				OR = {
-					any_greater_power = { military_access = SWI }
-					any_neighbor_country = { NOT = { vassal_of = SWI } military_access = SWI }
-					sphere_owner = { military_access = SWI }
-					AND = {
-						num_of_allies = 1
-						NOT = { NCT = { alliance_with = SWI } }
+			OR = {
+				ADO = {
+					has_country_modifier = neutrality
+					ai = no
+					OR = {
+						any_greater_power = { military_access = ADO }
+						any_neighbor_country = { NOT = { vassal_of = ADO } military_access = ADO }
+						any_greater_power = { alliance_with = ADO }
+						any_neighbor_country = { alliance_with = ADO }
+						war = yes
 					}
-					AND = {
-						num_of_allies = 2
-						NCT = { exists = yes alliance_with = SWI }
+					OR = {
+						NOT = { has_country_modifier = neutrality_timer }
+						war = yes
 					}
-					war = yes
+				}
+				ATH = {
+					has_country_modifier = neutrality
+					ai = no
+					OR = {
+						any_greater_power = { military_access = ATH }
+						any_neighbor_country = { NOT = { vassal_of = ATH } military_access = ATH }
+						any_greater_power = { alliance_with = ATH }
+						any_neighbor_country = { alliance_with = ATH }
+						war = yes
+					}
+					OR = {
+						NOT = { has_country_modifier = neutrality_timer }
+						war = yes
+					}
+				}
+				BEL = {
+					has_country_modifier = neutrality
+					ai = no
+					OR = {
+						any_greater_power = { military_access = BEL }
+						any_neighbor_country = { NOT = { vassal_of = BEL } military_access = BEL }
+						any_greater_power = { alliance_with = BEL }
+						any_neighbor_country = { alliance_with = BEL }
+						war = yes
+					}
+					OR = {
+						NOT = { has_country_modifier = neutrality_timer }
+						war = yes
+					}
+				}
+				LIE = {
+					has_country_modifier = neutrality
+					ai = no
+					OR = {
+						any_greater_power = { military_access = LIE }
+						any_neighbor_country = { NOT = { vassal_of = LIE } military_access = LIE }
+						any_greater_power = { alliance_with = LIE }
+						any_neighbor_country = { alliance_with = LIE }
+						war = yes
+					}
+					OR = {
+						NOT = { has_country_modifier = neutrality_timer }
+						war = yes
+					}
+				}
+				SMR = {
+					has_country_modifier = neutrality
+					ai = no
+					OR = {
+						any_greater_power = { military_access = SMR }
+						any_neighbor_country = { NOT = { vassal_of = SMR } military_access = SMR }
+						any_greater_power = { alliance_with = SMR }
+						any_neighbor_country = { alliance_with = SMR }
+						war = yes
+					}
+					OR = {
+						NOT = { has_country_modifier = neutrality_timer }
+						war = yes
+					}
+				}
+				SWI = {
+					has_country_modifier = neutrality
+					ai = no
+					OR = {
+						any_greater_power = { military_access = SWI }
+						any_neighbor_country = { NOT = { vassal_of = SWI } military_access = SWI }
+						any_greater_power = { alliance_with = SWI }
+						any_neighbor_country = { alliance_with = SWI }
+						war = yes
+					}
+					OR = {
+						NOT = { has_country_modifier = neutrality_timer }
+						war = yes
+					}
 				}
 			}
+			ai = yes
 		}
 
 		allow = {
@@ -116,30 +210,132 @@ political_decisions = {
 		}
 
 		effect = {
-			any_country = {
-				limit = { NOT = { vassal_of = SWI } OR = { military_access = SWI alliance_with = SWI } }
-				relation = { who = SWI value = -125 }
+			ADO = {
+				any_country = {
+					limit = { NOT = { vassal_of = ADO } alliance_with = ADO }
+					relation = { who = ADO value = -80 }
+					leave_alliance = ADO
+				}
+				any_country = {
+					limit = { NOT = { vassal_of = ADO } military_access = ADO }
+					relation = { who = ADO value = -30 }
+					end_military_access = ADO
+				}
+				any_country = {
+					limit = { war_with = ADO }
+					relation = { who = ADO value = 100 }
+					end_war = ADO
+				}
+				add_country_modifier = { name = neutrality_timer duration = 7 }
 			}
-			any_country = { limit = { alliance_with = SWI NOT = { vassal_of = SWI } } leave_alliance = SWI }
-			any_country = { limit = { war_with = SWI } end_war = SWI }
-			any_country = { limit = { military_access = SWI NOT = { vassal_of = SWI } } end_military_access = SWI }
+			ATH = {
+				any_country = {
+					limit = { NOT = { vassal_of = ATH } alliance_with = ATH }
+					relation = { who = ATH value = -80 }
+					leave_alliance = ATH
+				}
+				any_country = {
+					limit = { NOT = { vassal_of = ATH } military_access = ATH }
+					relation = { who = ATH value = -30 }
+					end_military_access = ATH
+				}
+				any_country = {
+					limit = { war_with = ATH }
+					relation = { who = ATH value = 100 }
+					end_war = ATH
+				}
+				add_country_modifier = { name = neutrality_timer duration = 7 }
+			}
+			BEL = {
+				any_country = {
+					limit = { NOT = { vassal_of = BEL } alliance_with = BEL }
+					relation = { who = BEL value = -80 }
+					leave_alliance = BEL
+				}
+				any_country = {
+					limit = { NOT = { vassal_of = BEL } military_access = BEL }
+					relation = { who = BEL value = -30 }
+					end_military_access = BEL
+				}
+				any_country = {
+					limit = { war_with = BEL }
+					relation = { who = BEL value = 100 }
+					end_war = BEL
+				}
+				add_country_modifier = { name = neutrality_timer duration = 7 }
+			}
+			LIE = {
+				any_country = {
+					limit = { NOT = { vassal_of = LIE } alliance_with = LIE }
+					relation = { who = LIE value = -80 }
+					leave_alliance = LIE
+				}
+				any_country = {
+					limit = { NOT = { vassal_of = LIE } military_access = LIE }
+					relation = { who = LIE value = -30 }
+					end_military_access = LIE
+				}
+				any_country = {
+					limit = { war_with = LIE }
+					relation = { who = LIE value = 100 }
+					end_war = LIE
+				}
+				add_country_modifier = { name = neutrality_timer duration = 7 }
+			}
+			SMR = {
+				any_country = {
+					limit = { NOT = { vassal_of = SMR } alliance_with = SMR }
+					relation = { who = SMR value = -80 }
+					leave_alliance = SMR
+				}
+				any_country = {
+					limit = { NOT = { vassal_of = SMR } military_access = SMR }
+					relation = { who = SMR value = -30 }
+					end_military_access = SMR
+				}
+				any_country = {
+					limit = { war_with = SMR }
+					relation = { who = SMR value = 100 }
+					end_war = SMR
+				}
+				add_country_modifier = { name = neutrality_timer duration = 7 }
+			}
+			SWI = {
+				any_country = {
+					limit = { NOT = { vassal_of = SWI } alliance_with = SWI }
+					relation = { who = SWI value = -80 }
+					leave_alliance = SWI
+				}
+				any_country = {
+					limit = { NOT = { vassal_of = SWI } military_access = SWI }
+					relation = { who = SWI value = -30 }
+					end_military_access = SWI
+				}
+				any_country = {
+					limit = { war_with = SWI }
+					relation = { who = SWI value = 100 }
+					end_war = SWI
+				}
+				add_country_modifier = { name = neutrality_timer duration = 7 }
+			}
 		}
 
 		ai_will_do = { factor = 1 }
 	}
-#Andorra starts with de-facto neutrality due to both of its neighbours being sovereigns over them
+
+## Neutrality Violation ##
+
+	#Andorra starts with de-facto neutrality due to both of its neighbours being sovereigns over them
 	violate_neutrality_ADO = {
 		picture = declare_neutrality
 		alert = no
 		potential = {
+			neighbour = ADO
 			NOT = {
 				tag = FRA
 				tag = SPA
 			}
-			ADO = {
-				neighbour = THIS
-				has_country_modifier = neutrality
-			}
+			ADO = { has_country_modifier = neutrality }
 		}
 
 		allow = {
@@ -188,7 +384,8 @@ political_decisions = {
 			factor = 1
 		}
 	}
-#Athos starts with neutrality
+
+	#Athos starts with neutrality
 	violate_neutrality_ATH = {
 		picture = declare_neutrality
 		alert = no
@@ -246,7 +443,8 @@ political_decisions = {
 			factor = 1
 		}
 	}
-#Belgium gets neutrality after historical treaty of London
+
+	#Belgium gets neutrality after historical treaty of London
 	violate_neutrality_BEL = {
 		picture = declare_neutrality
 		alert = no
@@ -313,7 +511,8 @@ political_decisions = {
 			}
 		}
 	}
-#Liechtenstein declares neutrality after brother's war if Austria loses
+
+	#Liechtenstein declares neutrality after brother's war if Austria loses
 	violate_neutrality_LIE = {
 		picture = declare_neutrality
 		alert = no
@@ -371,7 +570,8 @@ political_decisions = {
 			factor = 1
 		}
 	}
-#San Marino starts with de-facto neutrality for gameplay purposes
+
+	#San Marino starts with de-facto neutrality for gameplay purposes
 	violate_neutrality_SMR = {
 		picture = declare_neutrality
 		alert = no
@@ -429,7 +629,8 @@ political_decisions = {
 			factor = 1
 		}
 	}
-#Switzerland starts with neutrality
+
+	#Switzerland starts with neutrality
 	violate_neutrality_SWI = {
 		picture = declare_neutrality
 		alert = no
