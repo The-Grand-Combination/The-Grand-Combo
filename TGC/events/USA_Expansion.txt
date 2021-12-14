@@ -895,7 +895,7 @@
 							OR = {
 								slavery = yes_slavery
 								slavery = freedom_of_womb
-								has_country_modifier = the_slavery_debate
+								has_country_modifier = the_slavery_debate_modifier
 							}
 						}
 					}
@@ -907,7 +907,7 @@
 							NOT = {
 								slavery = yes_slavery
 								slavery = freedom_of_womb
-								has_country_modifier = the_slavery_debate
+								has_country_modifier = the_slavery_debate_modifier
 							}
 						}
 					}
@@ -933,7 +933,7 @@
 							OR = {
 								slavery = yes_slavery
 								slavery = freedom_of_womb
-								has_country_modifier = the_slavery_debate
+								has_country_modifier = the_slavery_debate_modifier
 							}
 						}
 					}
@@ -945,7 +945,7 @@
 							NOT = {
 								slavery = yes_slavery
 								slavery = freedom_of_womb
-								has_country_modifier = the_slavery_debate
+								has_country_modifier = the_slavery_debate_modifier
 							}
 						}
 					}
@@ -3157,79 +3157,338 @@
 
 ### Canadian Expansion ###
 
-	#Description: WebsterÂ–Ashburton Treaty
-	country_event = {
+	## Aroostook War ##
 
-		id = 44122
-		title = "EVTNAME44122"
-		desc = "EVTDESC44122"
-		news = yes
-		news_desc_long = "EVTDESC44122_NEWS_LONG"
-		news_desc_medium = "EVTDESC44122_NEWS_MEDIUM"
-		news_desc_short = "EVTDESC44122_NEWS_SHORT"
-		picture = "treaty"
+		#Description: Webster–Ashburton Treaty
+		country_event = {
 
-		is_triggered_only = yes
+			id = 44122
+			title = "EVTNAME44122"
+			desc = "EVTDESC44122"
+			news = yes
+			news_desc_long = "EVTDESC44122_NEWS_LONG"
+			news_desc_medium = "EVTDESC44122_NEWS_MEDIUM"
+			news_desc_short = "EVTDESC44122_NEWS_SHORT"
+			picture = "treaty"
 
-		# Accept the border proposal (historical)
-		option = {
-			name = "EVTOPTA44122"
+			is_triggered_only = yes
 
-			prestige = 10
+			# Accept the border proposal (historical)
+			option = {
+				name = "EVTOPTA44122"
 
-			add_core = 250
-			250 = { secede_province = THIS }
-			add_core = 158
-			158 = { secede_province = THIS }
+				prestige = 10
 
-			remove_core = 49
-			remove_core = 69
-			remove_core = 3280
-			NEN = {
+				add_core = 250
+				250 = { secede_province = THIS }
+				add_core = 158
+				158 = { secede_province = THIS }
+
+				remove_core = 49
 				remove_core = 69
 				remove_core = 3280
+				NEN = {
+					remove_core = 69
+					remove_core = 3280
+				}
+
+				CAN = {
+					remove_core = 250
+					remove_core = 158
+					remove_core = 239
+				}
+				NBR = { remove_core = 250 }
+				MRU = { remove_core = 250 }
+				QUE = { remove_core = 239 }
+
+				relation = { who = ENG value = 100 }
+
+				ai_chance = { factor = 95 }
 			}
 
-			CAN = {
-				remove_core = 250
-				remove_core = 158
-				remove_core = 239
+			#Refuse the deal and escalate the conflict
+			option = {
+				name = "EVTOPTB44122"
+
+				prestige = 15
+				badboy = 4
+
+				# So that if neither country wins you still get the neutral (historical) border
+				250 = { secede_province = THIS }
+				158 = { secede_province = THIS }
+
+				relation = { who = ENG value = -200 }
+
+				war = {
+					target = ENG
+					attacker_goal = { casus_belli = webster_ashburton_cb }
+					defender_goal = { casus_belli = webster_ashburton_cb }
+					call_ally = no
+				}
+
+				ai_chance = { factor = 5 }
 			}
-			NBR = { remove_core = 250 }
-			MRU = { remove_core = 250 }
-			QUE = { remove_core = 239 }
-
-			relation = { who = ENG value = 100 }
-
-			ai_chance = { factor = 95 }
 		}
 
-		#Refuse the deal and escalate the conflict
-		option = {
-			name = "EVTOPTB44122"
+		#Description: British Victory
+		country_event = {
 
-			prestige = 15
-			badboy = 4
+			id = 44129
+			title = "EVTNAME44129"
+			desc = "EVTDESC44129"
+			picture = "aroostook_war"
 
-			ENG = {
-				add_core = 158
-				add_core = 250
-				add_core = 249
-				add_core = 239
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44129"
+
+				USA = {
+					remove_core = 158
+					remove_core = 49
+
+					remove_core = 239
+
+					remove_core = 249
+					remove_core = 3280
+					remove_core = 250
+					remove_core = 69
+				}
+
+				NEN = {
+					remove_core = 158
+					remove_core = 49
+
+					remove_core = 239
+
+					remove_core = 249
+					remove_core = 3280
+					remove_core = 250
+					remove_core = 69
+				}
+
+				## Minnesota ##
+
+					random_owned = {
+						limit = { 50 = { is_core = CAN } }
+						CAN = {
+							add_core = 158
+							add_core = 49
+						}
+					}
+
+					random_country = {
+						limit = {
+							tag = CAN
+							owns = 50
+							vassal_of = ENG
+						}
+						158 = { secede_province = CAN }
+						49 = { secede_province = CAN }
+					}
+
+					random_country = {
+						limit = {
+							tag = ENG
+							owns = 50
+						}
+						158 = { secede_province = ENG }
+						49 = { secede_province = ENG }
+					}
+
+				## Quebec ##
+
+					random_owned = {
+						limit = { 66 = { is_core = QUE } }
+						QUE = { add_core = 239 }
+					}
+
+					random_owned = {
+						limit = { 66 = { is_core = CAN } }
+						CAN = { add_core = 239 }
+					}
+
+					random_country = {
+						limit = {
+							tag = QUE
+							owns = 66
+							vassal_of = ENG
+						}
+						239 = { secede_province = QUE }
+					}
+
+					random_country = {
+						limit = {
+							tag = CAN
+							owns = 66
+							vassal_of = ENG
+						}
+						239 = { secede_province = CAN }
+					}
+
+					random_country = {
+						limit = {
+							tag = ENG
+							owns = 66
+						}
+						239 = { secede_province = ENG }
+					}
+
+				## New Brunswick ##
+
+					random_owned = {
+						limit = { 68 = { is_core = MRU } }
+						MRU = {
+							add_core = 249
+							add_core = 3280
+							add_core = 250
+							add_core = 69
+						}
+					}
+
+					random_owned = {
+						limit = { 68 = { is_core = NBR } }
+						NBR = {
+							add_core = 249
+							add_core = 3280
+							add_core = 250
+							add_core = 69
+						}
+					}
+
+					random_owned = {
+						limit = { 68 = { is_core = CAN } }
+						CAN = {
+							add_core = 249
+							add_core = 3280
+							add_core = 250
+							add_core = 69
+						}
+					}
+
+					random_country = {
+						limit = {
+							tag = MRU
+							owns = 68
+							vassal_of = ENG
+						}
+						249 = { secede_province = MRU }
+						3280 = { secede_province = MRU }
+						250 = { secede_province = MRU }
+						69 = { secede_province = MRU }
+					}
+
+					random_country = {
+						limit = {
+							tag = NBR
+							owns = 68
+							vassal_of = ENG
+						}
+						249 = { secede_province = NBR }
+						3280 = { secede_province = NBR }
+						250 = { secede_province = NBR }
+						69 = { secede_province = NBR }
+					}
+
+					random_country = {
+						limit = {
+							tag = ENG
+							owns = 68
+						}
+						249 = { secede_province = ENG }
+						3280 = { secede_province = ENG }
+						250 = { secede_province = ENG }
+						69 = { secede_province = ENG }
+					}
 			}
-
-			CAN = {
-				add_core = 249
-				add_core = 239
-			}
-
-			MRU = { add_core = 249 }
-
-			relation = { who = ENG value = -200 }
-
-			ai_chance = { factor = 5 }
 		}
-	}
+
+		#Description: American Victory
+		country_event = {
+
+			id = 44130
+			title = "EVTNAME44129"
+			desc = "EVTDESC44129"
+			picture = "aroostook_war"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA44129"
+
+				ENG = {
+					remove_core = 158
+					remove_core = 49
+
+					remove_core = 239
+
+					remove_core = 249
+					remove_core = 3280
+					remove_core = 250
+					remove_core = 69
+				}
+
+				CAN = {
+					remove_core = 158
+					remove_core = 49
+
+					remove_core = 239
+
+					remove_core = 249
+					remove_core = 3280
+					remove_core = 250
+					remove_core = 69
+				}
+
+				MRU = {
+					remove_core = 249
+					remove_core = 3280
+					remove_core = 250
+					remove_core = 69
+				}
+
+				NBR = {
+					remove_core = 249
+					remove_core = 3280
+					remove_core = 250
+					remove_core = 69
+				}
+
+				QUE = { remove_core = 239 }
+
+				USA = {
+					add_core = 158
+					add_core = 49
+
+					add_core = 239
+
+					add_core = 249
+					add_core = 3280
+					add_core = 250
+					add_core = 69
+				}
+
+				random_owned = {
+					limit = { 243 = { is_core = NEN } }
+					NEN = {
+						add_core = 249
+						add_core = 3280
+						add_core = 250
+						add_core = 69
+					}
+				}
+
+				158 = { secede_province = USA }
+				49 = { secede_province = USA }
+
+				239 = { secede_province = USA }
+
+				249 = { secede_province = USA }
+				3280 = { secede_province = USA }
+				250 = { secede_province = USA }
+				69 = { secede_province = USA }
+			}
+		}
 
 	## Crusade For Canada ##
 
