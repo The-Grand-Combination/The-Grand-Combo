@@ -1,2 +1,2 @@
-name = "TGCPastelMap"
+name = "TGC - Pastel Map"
 path = "mod/TGCPastelMap"

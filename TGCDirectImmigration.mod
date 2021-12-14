@@ -1,3 +1,3 @@
 name = "TGC - Direct Immigration Submod"
-path = "mod/DirectImmigration"
+path = "mod/TGCDirectImmigration"
 dependencies = { "The Grand Combination" }
