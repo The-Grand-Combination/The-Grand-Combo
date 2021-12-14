@@ -1,4 +1,4 @@
-name = "The Grand Combination"
+name = "TGC - The Grand Combination"
 path = "mod/TGC"
 user_dir = "TGC"
 replace_path = "common"
