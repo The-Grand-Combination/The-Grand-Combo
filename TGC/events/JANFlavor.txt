@@ -1,0 +1,69 @@
+#This file had all triggers sorted for performance optimisation, please keep it that way
+#Warning player that theyre touching something they're not supposed to, bad player learn to behave!
+country_event = {
+	id = 50
+	title = "EVTNAME50"
+	desc = "EVTDESC50"
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = JAN
+		ai = no
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA50"
+		prestige = -9001
+	}
+}
+#The Yearly Updater
+country_event = {
+	id = 51
+	title = "EVTNAME51"
+	desc = "EVTDESC51"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA51"
+		country_event = { id = 51 days = 365 }
+		any_country = {
+			limit = {
+				#Basically = not 0, but we cant check for that so this is as good as it gets
+				pioneers = 0.000000000001
+				NOT = {
+					OR = {
+						has_country_flag = pioneer_state
+						has_country_flag = big_pioneer_state
+					}
+				}
+			}
+			any_pop = {
+				limit = { type = pioneers location = { work_available = { worker = farmers } } }
+				pop_type = farmers
+			}
+			any_pop = {
+				limit = { type = pioneers location = { work_available = { worker = labourers } } }
+				pop_type = labourers
+			}
+		}
+		any_country = {
+			limit = {
+				has_country_flag = big_pioneer_state
+			}
+			any_pop = {
+				limit = { type = pioneers location = { is_colonial = no work_available = { worker = farmers } } }
+				pop_type = farmers
+			}
+			any_pop = {
+				limit = { type = pioneers location = { is_colonial = no work_available = { worker = labourers } } }
+				pop_type = labourers
+			}
+		}
+	}
+}
