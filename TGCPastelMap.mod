@@ -1,2 +1,3 @@
-name = "TGC - Pastel Map"
+name = "TGC Map - Pastel"
 path = "mod/TGCPastelMap"
+dependencies = { "The Grand Combination" }
