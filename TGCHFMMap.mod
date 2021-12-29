@@ -1,3 +1,3 @@
 name = "TGC Map - HFM Style"
 path = "mod/TGCHFMMap"
-dependencies = { "The Grand Combination" }
+dependencies = { "TGC - The Grand Combination" }
