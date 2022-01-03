@@ -36,6 +36,18 @@ political_decisions = {
 					}
 				}
 			}
+			SIE = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
 		}
 		effect = {
 			prestige = 20
@@ -123,6 +135,177 @@ political_decisions = {
 			}
 		}
 	}
+	
+	#With the advent of nationalism, an independent Romania can lay claim to Transylvania.
+	lay_claim_on_transylvania = {
+		picture = create_romania
+		potential = {
+			tag = ROM
+			NOT = { has_country_flag = lay_claim_on_transylvania }
+		}
+
+		allow = {
+		    nationalism_n_imperialism = 1
+			is_vassal = no
+			is_disarmed = no
+			#NOT = {
+			#	government = colonial_company
+			#	government = dominion
+			#}
+			654 = { owner = {
+				        NOT = { relation = { who = THIS value = 100 } }
+				        NOT = { alliance_with = THIS }
+				        NOT = { is_sphere_leader_of = THIS }
+						    }
+						}
+			657 = { owner = {
+				        NOT = { relation = { who = THIS value = 100 } }
+				        NOT = { alliance_with = THIS }
+				        NOT = { is_sphere_leader_of = THIS }
+						    }
+						}
+			OR = {
+				war = no
+				654 = {
+					owner = {
+						NOT = { is_culture_group = pan_romanian }
+						war_with = THIS
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			badboy = 4
+			set_country_flag = lay_claim_on_transylvania
+			SIE = { all_core = { add_core = ROM } }
+			any_country = {
+				limit = {
+					owns = 654
+				}
+				relation = {
+					who = THIS
+					value = -100
+				}
+			}
+			any_country = {
+				limit = {
+					owns = 654
+					is_culture_group = hungarian_culture_group
+				}
+				relation = {
+					who = THIS
+					value = -200
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	lay_claim_on_bessarabia = {
+		picture = create_romania
+		potential = {
+			tag = ROM
+			NOT = { has_country_flag = lay_claim_on_bessarabia }
+		}
+
+		allow = {
+		    nationalism_n_imperialism = 1
+			is_vassal = no
+			is_disarmed = no
+			#NOT = {
+			#	government = colonial_company
+			#	government = dominion
+			#}
+			676 = { owner = {
+				        NOT = { relation = { who = THIS value = 100 } }
+				        NOT = { alliance_with = THIS }
+				        NOT = { is_sphere_leader_of = THIS }
+						    }
+				}
+			OR = {
+				war = no
+				676 = {
+					owner = {
+						NOT = { is_culture_group = pan_romanian }
+						war_with = THIS
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			badboy = 3
+			set_country_flag = lay_claim_on_bessarabia
+			MDV = { all_core = { add_core = ROM } }
+			any_country = {
+				limit = {
+					owns = 676
+				}
+				relation = {
+					who = THIS
+					value = -150
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	lay_claim_on_bukovina = {
+		picture = create_romania
+		potential = {
+			tag = ROM
+			NOT = { has_country_flag = lay_claim_on_bukovina }
+		}
+
+		allow = {
+		    nationalism_n_imperialism = 1
+			is_vassal = no
+			is_disarmed = no
+			#NOT = {
+			#	government = colonial_company
+			#	government = dominion
+			#}
+			663 = { owner = {
+				        NOT = { relation = { who = THIS value = 100 } }
+				        NOT = { alliance_with = THIS }
+				        NOT = { is_sphere_leader_of = THIS }
+						    }
+				}
+			OR = {
+				war = no
+				663 = {
+					owner = {
+						NOT = { is_culture_group = pan_romanian }
+						war_with = THIS
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 10
+			badboy = 1
+			set_country_flag = lay_claim_on_bukovina 
+			BKV = { all_core = { add_core = ROM } }
+			any_country = {
+				limit = {
+					owns = 663
+				}
+				relation = {
+					who = THIS
+					value = -50
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
 #from Balkans.txt
 	unite_with_romania = {
 		picture = create_romania
@@ -291,9 +474,10 @@ political_decisions = {
 				limit = { in_sphere = RUS }
 				relation = { who = THIS value = 200 }
 			}
+			any_owned = { limit = { OR = { is_core = WAL is_core = MOL is_core = SIE } } add_core = ROM }
 			any_owned = { limit = { is_core = ROM } remove_core = WAL remove_core = MOL }
-			random_country = { limit = { tag = MOL exists = no } all_core = { remove_core = MOL } }
-			random_country = { limit = { tag = WAL exists = no } all_core = { remove_core = WAL } }
+			any_country = { limit = { tag = MOL exists = no } all_core = { add_core = ROM remove_core = MOL } }
+			any_country = { limit = { tag = WAL exists = no } all_core = { add_core = ROM remove_core = WAL } }
 			random_owned = { limit = { owner = { accepted_culture = ukrainian } } owner = { remove_accepted_culture = ukrainian } }
 			random_owned = {
 				limit = { owner = { NOT = { neighbour = TUR } } }
@@ -567,34 +751,34 @@ political_decisions = {
 			650 = { add_core = ROM }
 			649 = { add_core = ROM }
 			792 = { add_core = ROM }
-			795 = { add_core = ROM } # not really part of the "Tisza region" being south of the Danube now is it?
+			#795 = { add_core = ROM } # not really part of the "Tisza region" being south of the Danube now is it?
 		}
 		ai_will_do = { factor = 1 }
 	}
-#	abolish_transylvania = {
-#		picture = create_romania
-#		potential = {
-#			tag = ROM
-#			SIE = { exists = no }
-#			exists = yes
-#			any_owned_province = { is_core = SIE }
-#		}
-#
-#		allow = {
-#			SIE = { all_core = { owned_by = THIS } }
-#			war = no
-#		}
-#
-#		effect = {
-#			badboy = 2
-#			SIE = { all_core = { remove_core = SIE } }
-#		}
-#
-#		ai_will_do = {
-#			factor = 1
-#			modifier = { factor = 0 badboy = 0.82 }
-#		}
-#	}
+	abolish_transylvania = {
+		picture = create_romania
+		potential = {
+			tag = ROM
+			SIE = { exists = no }
+			exists = yes
+			any_owned_province = { is_core = SIE }
+		}
+
+		allow = {
+			SIE = { all_core = { owned_by = THIS } }
+			war = no
+		}
+
+		effect = {
+			badboy = 2
+			SIE = { all_core = { remove_core = SIE } }
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 0 badboy = 0.82 }
+		}
+	}
 
 	abolish_wallachia_moldavia = {
 		picture = create_romania
@@ -617,8 +801,8 @@ political_decisions = {
 		}
 
 		effect = {
-			WAL = { all_core = { remove_core = WAL } }
-			MOL = { all_core = { remove_core = MOL } }
+			WAL = { all_core = { add_core = ROM remove_core = WAL } }
+			MOL = { all_core = { add_core = ROM remove_core = MOL } }
 			MOL_676 = { remove_core = WAL remove_core = MOL }
 		}
 
