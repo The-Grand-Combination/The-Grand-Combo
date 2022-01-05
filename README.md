@@ -52,14 +52,12 @@ TGC Developers:
 
 * rderekp
 * Hammonia
-* anzu-3278
 * Kspeher
-* LouisTheFly
 * Gelre
-* Fraggy
 * champfish
 * ColdSlav
 * emprahtheodosius
+* Frazza
 
 Honorable mentions and ex-Developers:
 
@@ -70,6 +68,9 @@ Honorable mentions and ex-Developers:
 * DrFaustie
 * Tenno Momonga
 * bop
+* Fraggy
+* LouisTheFly
+* anzu-3278
 
 ## Discord
 
