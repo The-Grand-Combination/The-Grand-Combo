@@ -1068,6 +1068,228 @@ political_decisions = {
 	
 	#1848 stuff
 	#Polish Uprising - Foreign Intervention
+	january_uprising_decision = {
+		picture = january_uprising_decision
+		potential = {
+			tag = CPL
+			OR = {
+				ai = no
+				KRA = { ai = no }
+				PZN = { ai = no }
+			}
+			NOT = { has_global_flag = january_uprising_happened }
+			NOT = { has_global_flag = january_uprising_decision }
+			OR = {
+				year = 1860
+				has_global_flag = treaty_of_paris_1856
+				has_global_flag = treaty_of_paris_russia
+				AND = {
+					OR = {
+						has_global_flag = krakow_uprising
+						has_global_flag = krakow_succeeded
+						has_global_flag = greater_poland_uprising
+						has_global_flag = greater_poland_succeeded
+					}
+					OR = {
+						KRA = { exists = yes }
+						PZN = { exists = yes }
+					}
+				}
+			}
+		}
+		
+		allow = {
+			owns = 706
+			706 = {
+				owner = {
+					OR = {
+						vassal_of = RUS
+						substate_of = RUS
+					}
+				}
+			}
+			OR = {
+				RUS = {
+					OR = {
+						war_exhaustion = 40
+						AND = {
+							has_recently_lost_war = yes	
+							any_owned_province = {
+								pop_majority_culture = polish
+								OR = {
+									average_militancy = 2
+									average_consciousness = 4
+								}
+							}
+						}
+						has_country_flag = crimean_war
+						any_owned_province = {
+							OR = {
+								pop_majority_culture = polish
+								pop_majority_culture = lithuanian
+							}
+							OR = {
+								average_militancy = 4
+								average_consciousness = 7 
+							}
+						}
+					}
+				}
+				KRA = {
+					has_global_flag = krakow_uprising
+					OR = {
+						war_with = GER
+						war_with = GCF
+						war_with = AUS
+						war_with = KUK
+						war_with = SGF
+						has_global_flag = krakow_succeeded
+					}
+				}
+				PZN = {
+					has_global_flag = greater_poland_uprising
+					OR = {
+						war_with = PRU
+						war_with = NGF
+						war_with = GER
+						war_with = GCF
+						has_global_flag = greater_poland_succeeded
+					}
+				}
+			}
+		}
+		
+		effect = {
+			set_global_flag = january_uprising_decision
+			RUS = {
+				country_event = 500001
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	krakow_uprising_decision = {
+		picture = january_uprising_decision
+		potential = {
+			tag = KRA
+			OR = {
+				ai = no
+				CPL = { ai = no }
+				PZN = { ai = no }
+			}
+			NOT = { has_global_flag = krakow_uprising }
+			NOT = { has_global_flag = krakow_uprising_decision }
+			OR = {
+				AND = {
+					year = 1846
+					month = 2
+				}
+				AND = {
+					OR = {
+						has_global_flag = january_uprising_happened
+						has_global_flag = through_january_uprising
+						has_global_flag = january_uprising_succeeded
+						has_global_flag = greater_poland_uprising
+						has_global_flag = greater_poland_succeeded
+					}
+					OR = {
+						CPL = { exists = yes }
+						PZN = { exists = yes }
+					}
+				}
+			}
+		}
+		
+		allow = {
+			owns = 703
+			OR = {
+				AND = {
+					year = 1846
+					month = 2
+				}
+				CPL = {
+					has_global_flag = january_uprising_happened
+					OR = {
+						war_with = RUS
+						has_global_flag = january_uprising_succeeded
+					}
+				}
+				PZN = {
+					has_global_flag = greater_poland_uprising
+					OR = {
+						war_with = PRU
+						war_with = NGF
+						war_with = GER
+						war_with = GCF
+						has_global_flag = greater_poland_succeeded
+					}
+				}
+			}
+		}
+		
+		effect = {
+			set_global_flag = krakow_uprising_decision
+			set_global_flag = krakow_uprising
+			set_country_flag = ANON_total_war_flag
+			prestige = 25
+		
+			government = presidential_dictatorship
+			ruling_party_ideology = liberal
+			nationalvalue = nv_liberty
+			political_reform = none_voting
+			political_reform = harassment
+			political_reform = appointed
+			political_reform = state_controlled
+			political_reform = free_press
+			political_reform = yes_meeting
+			
+			define_general = {
+				name = "Edward Dembowski"
+				personality = resolute
+				background = nationalist
+			}
+			
+			any_pop = { limit = { is_culture_group = polish_culture_group } militancy = -4 consciousness = -4 }
+			
+			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+			
+			AUS = {
+				release_vassal = KRA
+				relation = { who = KRA value = -400 }
+				diplomatic_influence = { who = KRA value = -400 }
+				any_pop = { limit = { has_pop_culture = polish } militancy = 2 consciousness = 4 } 
+			}
+			RUS = {
+				relation = { who = KRA value = -300 }
+				diplomatic_influence = { who = KRA value = -300 }
+				any_pop = { limit = { has_pop_culture = polish } militancy = 3 consciousness = 5 }
+			}
+			random_country = {
+				limit = {
+				exists = yes
+					OR = {
+						tag = PRU
+						tag = NGF
+						tag = GER
+						tag = GCF
+					}
+					owns = 549
+				}
+				relation = { who = KRA value = -300 }
+				diplomatic_influence = { who = KRA value = -300 }
+			}
+			neutrality = yes
+			AUS = {
+				country_event = 600054
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
 	polish_foreign_intervention = {
 	picture = essen_ruhr #add somethin new innit
 		potential = {
