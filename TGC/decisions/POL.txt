@@ -1166,7 +1166,7 @@ political_decisions = {
 			}
 		}
 		ai_will_do = {
-			factor = 1
+			factor = 0
 		}
 	}
 	
@@ -1459,5 +1459,122 @@ political_decisions = {
 			}
 		}
 		ai_will_do = { factor = 0 }
+	}
+	
+	incite_galicia_to_revolt = {
+		picture = january_uprising_decision
+		potential = {
+			tag = CPL
+			OR = {
+				ai = no
+				KRA = { ai = no }
+				PZN = { ai = no }
+			}
+			year = 1848
+			NOT = { year = 1850 }
+		}
+		
+		allow = {
+			owns = 706
+			714 = {
+				owner = {
+					tag = AUS
+				}
+			}
+			641 = {
+				owner = {
+					tag = HUN
+				}
+			} #Hungarians are revolting
+			OR = {
+				KRA = {
+					has_global_flag = krakow_uprising
+					OR = {
+						war_with = GER
+						war_with = GCF
+						war_with = AUS
+						war_with = KUK
+						war_with = SGF
+						has_global_flag = krakow_succeeded
+					}
+				}
+				PZN = {
+					has_global_flag = greater_poland_uprising
+					OR = {
+						war_with = PRU
+						war_with = NGF
+						war_with = GER
+						war_with = GCF
+						has_global_flag = greater_poland_succeeded
+					}
+				}
+				has_global_flag = form_PNC
+			}
+			NOT = { has_country_flag = a_habsburg_on_the_throne_POL }
+		}
+		effect = {
+			set_global_flag = glm_revolt_incite
+			AUS = {
+			release_vassal = GLM
+			release = GLM
+			diplomatic_influence = { who = GLM value = -200 }
+		    relation = { who = GLM value = -400 }
+		    leave_alliance = GLM
+			war = {
+			target = GLM
+			attacker_goal = { casus_belli = conquest_any }
+		 	defender_goal = { casus_belli = status_quo }
+		    }
+			}
+			
+			GLM = {
+			government = presidential_dictatorship
+			remove_accepted_culture = russian
+            remove_accepted_culture = ukrainian
+			#remove_country_modifier = russian_absolutist_encroachment
+			#remove_country_modifier = rus_organic_statute_cpl
+			ruling_party_ideology = conservative
+			political_reform = none_voting
+			political_reform = party_appointed
+			political_reform = no_meeting
+			political_reform = state_press
+			political_reform = no_trade_unions
+			political_reform = underground_parties
+			political_reform = mandatory_service
+			political_reform = serfdom
+			nationalvalue = nv_order
+			leadership = 80
+			treasury = 10000
+
+			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1095 }
+					set_country_flag = recognized_country
+				}
+			}
+
+			any_pop = {
+				limit = {
+					has_pop_culture = south_german
+					OR = {
+						pop_type = bureaucrats
+						pop_type = soldiers
+						pop_type = officers
+						pop_type = aristocrats
+						pop_type = capitalists
+					}
+				}
+				reduce_pop = 0.8
+			}
+			any_owned = {
+			add_province_modifier = { name = polish_revolt duration = 1080 }
+		}
+		}
+		}
+		ai_will_do = {
+			factor = 0
+		}
 	}
 }
