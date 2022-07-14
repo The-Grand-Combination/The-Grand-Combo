@@ -710,9 +710,45 @@ country_event = {
 		remove_country_modifier = female_suffrage
 	}
 }
-
 # handling insolvent AI countries that cannot borrow money
-# 60165 and 60167 handled by JANFlavor.txt monthly
+
+country_event = {
+	id = 60165
+	title = "EVTNAME60165"
+	desc = "EVTDESC60165"
+	picture = "bankruptcy"
+
+	trigger = {
+		OR = {
+			has_country_modifier = in_bankrupcy
+			has_country_modifier = generalised_debt_default
+			AND = {
+				civilized = no
+				NOT = { finance_reform = finance_reform_two }
+			}
+		}
+		ai = yes
+		civilized = yes
+		NOT = {
+			money = 10
+			has_country_modifier = emergency_tax_measures1
+			has_country_modifier = emergency_tax_measures2
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = "EVTOPTA60165"
+		add_country_modifier = {
+			name = emergency_tax_measures1
+			duration = -1
+		}
+	}
+}
+
 country_event = {
 	id = 60166
 	title = "EVTNAME60166"
@@ -727,7 +763,7 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		months = 6	
+		months = 6
 	}
 
 	option = {
@@ -737,6 +773,38 @@ country_event = {
 			name = emergency_tax_measures2
 			duration = -1
 		}
+	}
+}
+
+country_event = {
+	id = 60167
+	title = "EVTNAME60167"
+	desc = "EVTDESC60167"
+	picture = "bankruptcy"
+
+	trigger = {
+		OR = {
+			has_country_modifier = emergency_tax_measures1
+			has_country_modifier = emergency_tax_measures2
+		}
+		OR = {
+			ai = no
+			money = 1000
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 1
+		modifier = {
+			factor = 0.01
+			ai = no
+		}
+	}
+
+	option = {
+		name = "EVTOPTA60167"
+		remove_country_modifier = emergency_tax_measures1
+		remove_country_modifier = emergency_tax_measures2
 	}
 }
 
