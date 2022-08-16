@@ -1,0 +1,762 @@
+
+## Rhine Crisis ##
+
+	#Description: Entry Point - triggered by the_rhine_crisis for France
+	country_event = {
+		id = 33037
+		title = "EVTNAME33037"
+		desc = "EVTDESC33037"
+		picture = "rhineland"
+		major = yes
+
+		is_triggered_only = yes
+
+		# Claim the Rhine
+		option = {
+			name = "EVTOPTA33037"
+
+			set_global_flag = french_claimed_the_rhine
+
+			badboy = 5
+			any_greater_power = {
+				limit = { alliance_with = THIS }
+				leave_alliance = THIS
+			}
+			PRU = { country_event = 99925 }
+			any_country = {
+				limit = {
+					is_greater_power = no
+					is_culture_group = germanic
+					has_country_flag = german_confederation_member
+					NOT = { has_country_modifier = neutrality }
+				}
+				casus_belli = { target = THIS type = cut_down_to_size months = 24 }
+				end_military_access = THIS
+				leave_alliance = THIS
+				relation = { who = THIS value = -200 }
+			}
+			any_greater_power = {
+				limit = {
+					is_culture_group = germanic
+					has_country_flag = german_confederation_member
+					NOT = { has_country_modifier = neutrality }
+				}
+				end_military_access = THIS
+				leave_alliance = THIS
+				relation = { who = THIS value = -150 }
+			}
+
+			ai_chance = {
+				factor = 0.15
+				modifier = {
+					factor = 0
+					has_recently_lost_war = yes
+				}
+				modifier = {
+					factor = 0
+					is_disarmed = yes
+				}
+				modifier = {
+					factor = 0
+					war_exhaustion = 1
+				}
+				modifier = {
+					factor = 0
+					num_of_revolts = 1
+				}
+				modifier = {
+					factor = 0
+					war = yes
+				}
+			}
+		}
+
+		# Apologize
+		option = {
+			name = "EVTOPTB33037"
+
+			prestige = -25
+			badboy = -2
+			clr_global_flag = rhine_crisis_ongoing
+			any_country = {
+				limit = {
+					is_culture_group = germanic
+					has_country_flag = german_confederation_member
+					NOT = { has_country_modifier = neutrality }
+				}
+				relation = { who = THIS value = 50 }
+			}
+
+			ai_chance = { factor = 0.85 }
+		}
+
+		# TODO hidden 3rd option EVTOPTC33037 "Let’s go a step beyond that claim."
+	}
+
+	#Description: Prussian response to French claims
+	country_event = {
+		id = 99925
+		title = "EVTNAME99925"
+		desc = "EVTDESC99925"
+		picture = "rhineland"
+
+		is_triggered_only = yes
+
+		# Fight for the Rhine
+		option = {
+			name = "EVTOPTA99925"
+
+			prestige = 10
+			FRA_412 = { add_core = GER }
+			any_country = {
+				limit = {
+					has_country_flag = german_confederation_member
+					is_greater_power = no
+					NOT = { has_country_modifier = neutrality }
+					exists = yes
+				}
+				create_alliance = THIS
+				casus_belli = { target = FROM type = cut_down_to_size months = 20 }
+			}
+			any_greater_power = {
+				limit = {
+					is_culture_group = germanic
+					has_country_flag = german_confederation_member
+					NOT = { tag = THIS }
+				}
+				country_event = 99978
+			}
+			war = { # TODO maybe separate french war goals in two in case of talleyrand so that you can PO for just big Luxembourg
+				target = FROM
+				attacker_goal = { casus_belli = rhine_crisis_german }
+				defender_goal = { casus_belli = rhine_crisis_french }
+				call_ally = yes
+			}
+
+			ai_chance = {
+				factor = 0.7
+				modifier = {
+					factor = 0.5
+					truce_with = FROM
+				}
+				modifier = {
+					factor = 0.5
+					war = yes
+				}
+				modifier = {
+					factor = 0.1
+					FROM = { alliance_with = RUS }
+				}
+			}
+		}
+
+		# Calm things down
+		option = {
+			name = "EVTOPTB99925"
+
+			prestige = -25
+			clr_global_flag = rhine_crisis_ongoing
+			any_greater_power = {
+				limit = {
+					is_culture_group = germanic
+					has_country_flag = german_confederation_member
+				}
+				end_military_access = FROM
+				leave_alliance = FROM
+				relation = { who = FROM value = -150 }
+			}
+
+			ai_chance = {
+				factor = 0.30
+				modifier = {
+					factor = 0
+					FROM = { ai = no }
+				}
+			}
+		}
+	}
+
+	#Description: Other German GPs respond
+	country_event = {
+		id = 99978
+		title = "EVTNAME99978"
+		desc = "EVTDESC99978"
+		picture = "rhineland"
+
+		is_triggered_only = yes
+
+		# Fight alongside Prussia
+		option = {
+			name = "EVTOPTA99978"
+
+			prestige = 10
+			create_alliance = FROM
+			war = {
+				target = FRA
+				attacker_goal = { casus_belli = humiliate }
+				attacker_goal = { casus_belli = war_reparations }
+				defender_goal = { casus_belli = war_reparations }
+				call_ally = yes
+			}
+
+			ai_chance = {
+				factor = 95
+				modifier = {
+					factor = 0.5
+					any_core = { owned_by = FROM }
+				}
+				modifier = {
+					factor = 0.5
+					truce_with = FROM
+				}
+				modifier = {
+					factor = 0.5
+					war = yes
+				}
+				modifier = {
+					factor = 5
+					FROM = { ai = no }
+				}
+			}
+		}
+
+		# Sit this out
+		option = {
+			name = "EVTOPTB99978"
+
+			prestige = -25
+			relation = { who = FROM value = -200 }
+			any_country = {
+				limit = {
+					is_culture_group = germanic
+					has_country_flag = german_confederation_member
+					exists = yes
+					is_greater_power = no
+					NOT = { has_country_modifier = neutrality }
+				}
+				relation = { who = FROM value = -100 }
+			}
+
+			ai_chance = {
+				factor = 5
+				modifier = {
+					factor = 5
+					any_core = { owned_by = FROM }
+				}
+				modifier = {
+					factor = 5
+					truce_with = FROM
+				}
+				modifier = {
+					factor = 5
+					war = yes
+				}
+				modifier = {
+					factor = 0
+					FRA = { ai = no }
+				}
+			}
+		}
+	}
+
+## German Victory ##
+
+	#Description: French Loss - triggered for France by rhine_crisis_german CB peace out
+	country_event = {
+		id = 99993
+		title = "EVTNAME99993"
+		desc = "EVTDESC99993"
+		major = yes
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA99993"
+
+			prestige = -15
+			FRA_412 = {
+				limit = { owned_by = THIS }
+				secede_province = FROM
+				add_core = GER
+			}
+			random_owned = { # If Talleyrand plan or Big Luxembourg cause Prussia to have Bastogne, they also get Longwy for prettier borders
+				limit = {
+					province_id = 3458
+					FROM = {
+						owns = 398
+						is_core = 398
+					}
+				}
+				secede_province = FROM
+				add_core = GER
+			}
+
+			# TODO if Talleyrand, maybe the Dutch, Belgians and British smell blood in the water
+		}
+	}
+
+## French Victory ##
+
+	#Description: France Wins - triggered for France by rhine_crisis_french CB peace out
+	country_event = {
+		id = 99994
+		title = "EVTNAME99994"
+		desc = "EVTDESC99994"
+		major = yes
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA99993"
+
+			prestige = 25
+			badboy = 5
+
+			# Despite being surrounded by two countries the status of Moresnet is no longer disputed
+			random_country = {
+				limit = {
+					tag = MRN
+					exists = yes
+					RHI = { owns = 396 }
+					OR = {
+						THIS = { owns = 3412 }
+						RHI = { owns = 3412 }
+					}
+				}
+				all_core = { remove_core = MRN add_core = RHI add_core = GER }
+				annex_to = RHI
+			}
+
+			# Austria will offer peace if still fighting when Prussia is defeated
+			#random_country = {
+			#	limit = {
+			#		OR = {
+			#			tag = AUS
+			#			tag = KUK
+			#			tag = DNB
+			#		}
+			#		war_with = THIS
+			#	}
+			#	country_event = { id = TODO days = 10 }
+			#}
+
+			# Trigger The Rhine is Lost for Prussia
+			random_country = {
+				limit = {
+					tag = PRU
+					is_vassal = no
+					NOT = {
+						exists = GER
+						exists = GCF
+						exists = NGF
+						year = 1890
+						has_global_flag = 3hurrahs
+					}
+				}
+				country_event = { id = 33039 days = 25 }
+			}
+
+			# Other countries seceding Rhineland cores # TODO this should happen later so that you can get the CBs on NGF/SGF
+			any_country = {
+				limit = {
+					any_owned_province = {
+						is_core = RHI
+						NOT = { region = PRU_578 }
+					}
+					NOT = { tag = RHI }
+				}
+				country_event = 99995
+			}
+		}
+	}
+
+	#Description: German countries secede RHI cores
+	country_event = {
+		id = 99995
+		title = "EVTNAME99995"
+		desc = "EVTDESC99995"
+		major = yes
+
+		is_triggered_only = yes
+
+		# Secede RHI cores
+		option = {
+			name = "EVTOPTA99995"
+
+			prestige = -15
+			any_owned = {
+				limit = {
+					is_core = RHI
+					NOT = { region = PRU_578 }
+				}
+				secede_province = RHI
+				remove_core = THIS
+			}
+
+			ai_chance = {
+				factor = 75
+				modifier = {
+					factor = 0.5
+					is_greater_power = yes
+				}
+			}
+		}
+
+		# Refuse
+		option = {
+			name = "EVTOPTB99995"
+
+			prestige = 5
+			badboy = 5
+			add_casus_belli = { target = FRA type = free_allied_cores months = 6 }
+
+			ai_chance = {
+				factor = 25
+				modifier = {
+					factor = 0
+					OR = {
+						is_disarmed = yes
+						truce_with = FRA
+						in_sphere = FRA
+						vassal_of = FRA
+					}
+				}
+			}
+		}
+	}
+
+	#The Rhine is Lost - Prussia calls for Unity
+	country_event = {
+		id = 33039
+		title = "EVTNAME33039"
+		desc = "EVTDESC33039"
+		picture = "german_rhine"
+		major = yes
+
+		is_triggered_only = yes
+
+		# Form NGF
+		option = {
+			name = "EVTOPTA33038"
+
+			## NGF Stuff - Same as below ##
+
+				all_core = { add_core = NGF }
+				any_owned = {
+					limit = { is_core = GER }
+					add_core = NGF
+				}
+
+				change_tag = NGF
+
+				any_country = {
+					limit = {
+						has_country_flag = german_confederation_member
+						is_culture_group = germanic
+						is_greater_power = no
+						OR = {
+							is_vassal = no
+							vassal_of = THIS
+							overlord = {
+								has_country_flag = german_confederation_member
+								OR = {
+									is_vassal = no
+									vassal_of = THIS
+								}
+							}
+						}
+						NOT = {
+							tag = AUS
+							tag = KUK
+							tag = DNB
+							tag = LIE
+							primary_culture = south_german
+							capital_scope = { NOT = { is_core = GER } }
+						}
+						exists = yes
+					}
+					all_core = { add_core = THIS }
+					country_event = 33038
+				}
+
+				any_pop = {
+					limit = { is_culture_group = germanic }
+					dominant_issue = { value = jingoism factor = 0.1 }
+				}
+
+			ai_chance = {
+				factor = 0.7
+				modifier = {
+					factor = 0
+					FRA = { ai = no }
+				}
+			}
+		}
+
+		# Form NGF and SGF
+		option = {
+			name = "EVTOPTB33039"
+
+			## NGF Stuff - Same as above ##
+
+				all_core = { add_core = NGF }
+				any_owned = {
+					limit = { is_core = GER }
+					add_core = NGF
+				}
+
+				change_tag = NGF
+
+				any_country = {
+					limit = {
+						has_country_flag = german_confederation_member
+						is_culture_group = germanic
+						is_greater_power = no
+						OR = {
+							is_vassal = no
+							vassal_of = THIS
+							overlord = {
+								has_country_flag = german_confederation_member
+								OR = {
+									is_vassal = no
+									vassal_of = THIS
+								}
+							}
+						}
+						NOT = {
+							tag = AUS
+							tag = KUK
+							tag = DNB
+							tag = LIE
+							primary_culture = south_german
+							capital_scope = { NOT = { is_core = GER } }
+						}
+						exists = yes
+					}
+					all_core = { add_core = THIS }
+					country_event = 33038
+				}
+
+				any_pop = {
+					limit = { is_culture_group = germanic }
+					dominant_issue = { value = jingoism factor = 0.1 }
+				}
+
+			## Form SGF ##
+
+				random_country = {
+					limit = {
+						primary_culture = south_german
+						ai = no
+						has_country_flag = german_confederation_member
+						is_substate = no
+						is_vassal = no
+						capital_scope = { is_core = GER }
+						NOT = {
+							tag = AUS
+							tag = KUK
+							tag = DNB
+							tag = LIE
+						}
+					}
+					change_tag = SGF
+					country_event = 33036
+				}
+				random_country = {
+					limit = {
+						NOT = { exists = SGF }
+						primary_culture = south_german
+						ai = yes
+						has_country_flag = german_confederation_member
+						is_substate = no
+						is_vassal = no
+						capital_scope = { is_core = GER }
+						NOT = {
+							tag = AUS
+							tag = KUK
+							tag = DNB
+							tag = LIE
+						}
+					}
+					change_tag = SGF
+					country_event = 33036
+				}
+
+			ai_chance = { factor = 0.3 }
+		}
+	}
+
+	#The Rhine is Lost - Event for the formation of SGF
+	country_event = {
+		id = 33036
+		title = "EVTNAME33038"
+		desc = "EVTDESC33038"
+		picture = "german_rhine"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA33038"
+
+			prestige = 10
+
+			add_accepted_culture = north_german
+
+			any_country = {
+				limit = {
+					has_country_flag = german_confederation_member
+					primary_culture = south_german
+					is_greater_power = no
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+						overlord = {
+							has_country_flag = german_confederation_member
+							OR = {
+								is_vassal = no
+								vassal_of = THIS
+							}
+						}
+					}
+					capital_scope = { is_core = GER }
+					NOT = {
+						tag = AUS
+						tag = KUK
+						tag = DNB
+						tag = LIE
+					}
+					# DEVNOTE anzu:3278: All these checks are very redundant and we should start phasing them out in favor of has_country_flag = german_confederation_member
+					# Losing the Rhine crisis would therefore trigger LIE and AUS to drop out of the confederation or trigger a unification crisis because of the Austrian non-German territories
+					exists = yes
+				}
+				all_core = { add_core = THIS }
+				country_event = 33038
+			}
+
+			any_pop = {
+				limit = { is_culture_group = germanic }
+				dominant_issue = { value = jingoism factor = 0.1 }
+			}
+
+			FROM = {
+				relation = { who = THIS value = 400 }
+				diplomatic_influence = { who = THIS value = 100 }
+				create_alliance = THIS
+			}
+
+			random_country = {
+				limit = {
+					OR = {
+						tag = AUS
+						tag = KUK
+						tag = DNB
+					}
+					exists = yes
+				}
+				relation = { who = THIS value = 100 }
+				diplomatic_influence = { who = THIS value = 50 }
+			}
+		}
+	}
+
+	#The Rhine is Lost - German states decide whether to join NGF/SGF
+	country_event = {
+		id = 33038
+		title = "EVTNAME33038"
+		desc = "EVTDESC33038"
+		picture = "german_rhine"
+
+		is_triggered_only = yes
+
+		# Join NGF/SGF # TODO maybe an option to become NGF/SGF if they are AI and you are not?
+		option = {
+			name = "EVTOPTA33038"
+
+			FROM = { inherit = THIS }
+
+			ai_chance = {
+				factor = 0.5
+				modifier = {
+					factor = 1.1
+					relation = { who = FROM value = 50 }
+				}
+				modifier = {
+					factor = 1.1
+					relation = { who = FROM value = 100 }
+				}
+				modifier = {
+					factor = 1.1
+					in_sphere = FROM
+				}
+				modifier = {
+					factor = 1.7
+					NOT = { total_num_of_ports = 1 }
+					primary_culture = FROM
+					is_vassal = no
+				}
+				modifier = {
+					factor = 0.1
+					is_vassal = yes
+					overlord = { NOT = { primary_culture = FROM } }
+				}
+				modifier = {
+					factor = 0.1
+					part_of_sphere = yes
+					sphere_owner = { NOT = { primary_culture = FROM } }
+				}
+				modifier = {
+					factor = 0.2
+					NOT = { primary_culture = FROM }
+				}
+				modifier = {
+					factor = 0
+					is_vassal = yes
+					NOT = { vassal_of = FROM }
+				}
+				modifier = {
+					factor = 2
+					truce_with = FRA
+				}
+			}
+		}
+
+		# Don't join NGF/SGF
+		option = {
+			name = "EVTOPTB33038"
+
+			any_owned = {
+				limit = { is_core = GER }
+				add_province_modifier = { name = nationalist_agitation duration = 3650 }
+			}
+			relation = { who = FRA value = 25 }
+
+			ai_chance = {
+				factor = 0.5
+				modifier = {
+					factor = 0
+					OR = {
+						is_vassal = no
+						vassal_of = FROM
+					}
+					NOT = { num_of_cities = 3 }
+				}
+				modifier = {
+					factor = 0
+					vassal_of = FROM
+				}
+				modifier = {
+					factor = 0.1
+					NOT = { relation = { who = FROM value = 0 } }
+				}
+				modifier = {
+					factor = 0
+					FRA = { ai = no }
+					OR = {
+						is_vassal = no
+						vassal_of = FROM
+						overlord = { has_country_flag = german_confederation_member }
+					}
+				}
+			}
+		}
+	}

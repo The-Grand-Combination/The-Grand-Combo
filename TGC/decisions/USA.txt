@@ -487,7 +487,7 @@ political_decisions = {
 			NOT = { war_policy = pacifism }
 			NOT = { MEX = { any_owned_province = { country_units_in_province = USA } } }
 			OR = {
-				TEX = { in_sphere = THIS }
+				TEX = { in_sphere = THIS } # TODO Texas should petition to join the union and only then should this be unlocked so this condition will be deprecated
 				TEX = { exists = no }
 				invention = manifest_destiny
 				any_owned_province = { is_core = MEX }
@@ -503,22 +503,10 @@ political_decisions = {
 				USA_81 = { add_core = USA } # Oregon
 				MEX_85 = { add_core = USA } # California
 				USA_91 = { add_core = USA } # Idaho
-				MEX_94 = { add_core = USA } # Nevada
-				MEX_97 = { add_core = USA } # Utah
-				USA_106 = { add_core = USA } # Colorado
 				USA_111 = { add_core = USA } # Wyoming
 				USA_116 = { add_core = USA } # Montana
-				USA_126 = { add_core = USA } # Kansas
-				USA_129 = { add_core = USA } # Oklahoma/Indian Country
-				TEX_132 = { add_core = USA } # Texas
-				100 = { add_core = USA } # Arizona
-				101 = { add_core = USA }
-				3367 = { add_core = USA }
-				38 = { add_core = USA } # New Mexico
-				105 = { add_core = USA }
-				109 = { add_core = USA }
-				2148 = { add_core = USA }
-				2631 = { add_core = USA }
+				ALTA_CALIFORNIA = { add_core = USA }
+				BIG_TEXAS = { add_core = USA }
 
 			## Diplomacy ##
 				relation = { who = MEX value = -200 }
@@ -544,16 +532,8 @@ political_decisions = {
 						tag = MEX
 						any_owned_province = {
 							OR = {
-								region = MEX_85 # California
-								region = MEX_94 # Nevada
-								region = MEX_97 # Utah
-								region = USA_106 # Colorado
-								region = USA_111 # Wyoming
-								region = USA_126 # Kansas
-								region = USA_129 # Oklahoma
-								region = TEX_132 # Texas
-								region = MEX_100 # Arizona
-								region = MEX_103 # New Mexico
+								region = BIG_TEXAS
+								region = ALTA_CALIFORNIA
 							}
 						}
 					}
@@ -629,7 +609,7 @@ political_decisions = {
 				}
 				MEX = {
 					any_owned = {
-						limit = { region = MEX_85 }
+						limit = { region = ALTA_CALIFORNIA }
 						any_pop = {
 							limit = { culture = yankee }
 							reduce_pop = 5
@@ -2776,6 +2756,87 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Description: If the UK denies the Crusade for Canada, they can gain Michigan, Montana, North Dakota, Washington, Oregon, Idaho, New York, New England, and parts of Minnesota and Wisconsin for their puppets.
+	USA_CAN_denied = {
+		picture = canadian_dominion
+		potential = {
+			tag = ENG
+			is_greater_power = yes
+			USA = { has_country_flag = USA_CAN_expansion }
+			NOT = {
+				has_global_flag = USA_CAN_denied
+				has_global_flag = USA_CAN_achieved
+			}
+		}
+
+		allow = {
+			truce_with = USA
+			has_recently_lost_war = no
+			USA = {
+				is_disarmed = yes
+				has_recently_lost_war = yes
+			}
+		}
+
+		effect = {
+			set_global_flag = USA_CAN_denied
+			USA_176 = { add_core = ENG } # Michigan
+			USA_176 = { add_core = CAN }
+			USA_116 = { add_core = ENG } # Montana
+			USA_116 = { add_core = COL }
+			USA_118 = { add_core = ENG } # North Dakota
+			USA_118 = { add_core = CAN }
+			161 = { add_core = ENG }
+			161 = { add_core = CAN }
+			160 = { add_core = ENG }
+			160 = { add_core = CAN }
+			158 = { add_core = ENG }
+			158 = { add_core = CAN }
+			157 = { add_core = ENG }
+			157 = { add_core = CAN }
+			USA_78 = { add_core = ENG } # Washington
+			USA_78 = { add_core = COL }
+			USA_81 = { add_core = ENG } # Oregon
+			USA_81 = { add_core = COL }
+			USA_91 = { add_core = ENG } # Idaho
+			USA_91 = { add_core = COL }
+			COL = {
+				primary_culture = anglo_canadian
+				add_accepted_culture = yankee
+			}
+			USA = {
+				any_owned = {
+					limit = { region = USA_232 } # New York
+					add_core = NEN
+					remove_core = USA
+				}
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = NEN
+							is_core = ENG
+							is_core = CAN
+							is_core = COL
+						}
+					}
+					secede_province = ENG
+					remove_core = USA
+				}
+			}
+			69 = { remove_core = NEN }
+			250 = { remove_core = MRU }
+			ENG = { all_core = { remove_core = USA } }
+			USA = {
+				country_event = {
+					id = 72748
+					days = 0
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 	#Description: If the USA successfully takes Canada, they can choose whether to release Quebec as a puppet or integrate its French-speaking population.
 	USA_french = {
 		picture = quebec_question
@@ -4066,11 +4127,7 @@ political_decisions = {
 
 			## Louisiana and Acadia ##
 
-				random_country = {
-					limit = {
-						primary_culture = french
-						capital = 425
-					}
+				FRA = {
 					release = ULA
 					release = ACA
 					remove_accepted_culture = cajun
@@ -4557,103 +4614,4 @@ political_decisions = {
 
 		ai_will_do = { factor = 1 }
 	}
-
-## Other ##
-
-	USA_1836_setup = {
-		picture = constantinople
-		potential = {
-			tag = USA
-			# Audax Validator "." Ignore_NEXT
-			always = no
-		}
-
-		allow = {
-			tag = USA
-		}
-
-		effect = {
-			country_event = 16001 #The Slavery Debate
-			set_variable = {
-				which = var_USA_anti_slavery
-				value = 3 #Slave and Free states balanced so amounts to 0. +3 against Slavery due to Missouri Compromise
-			}
-			set_variable = {
-				which = var_USA_federal_cohesion
-				value = 100 #No one is upset yet in 1836 (aside from some natives but they as usual in US history don't count)
-			}
-			set_variable = {
-				which = var_USA_gov_strength
-				value = 25 #Pretty weak government, but not enough to collapse
-			}
-			add_country_modifier = { name = missouri_compromise duration = -1 }
-			relation = { who = DEN value = 150 }
-			relation = { who = KHI value = -25 }
-			relation = { who = BUK value = -25 }
-			relation = { who = KAZ value = -25 }
-			relation = { who = KOK value = -25 }
-			any_country = { limit = { capital_scope = {continent = africa } NOT = { tag = MOR } } relation = { who = USA value = -25 } }
-			relation = { who = MOR value = -25 }
-			1887 = { any_pop = { literacy = -0.99 } }
-			1888 = { any_pop = { literacy = -0.99 } }
-			any_pop = { limit = { has_pop_culture = north_german } literacy = 0.5 }
-			any_pop = { limit = { has_pop_culture = irish } literacy = 0.2 }
-			any_pop = { limit = { has_pop_culture = french_canadian } literacy = 0.35 }
-			USA_241 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.14 } }
-			USA_243 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.14 } }
-			USA_247 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.13 } }
-			USA_248 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.13 } }
-			USA_231 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.10 } }
-			USA_176 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.12 } }
-			USA_232 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.10 } }
-			USA_223 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.09 } }
-			USA_178 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.08 } }
-			USA_151 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.08 } }
-			USA_139 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.08 } }
-			USA_219 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.06 } }
-			USA_200 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.04 } }
-			USA_194 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.02 } }
-			USA_170 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.01 } }
-			USA_148 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.01 } }
-			USA_185 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.03 } }
-			USA_196 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.04 } }
-			222 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.1 } }
-			USA_211 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.05 } }
-			USA_205 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.05 } }
-			USA_205 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.05 } }
-			USA_201 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.06 } }
-			USA_201 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.06 } }
-			USA_144 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.08 } }
-			USA_188 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.1 } }
-			USA_2556 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = -0.14 } }
-			any_pop = {
-				limit = {
-					OR = {
-						type = slaves
-						has_pop_culture = afro_american
-						is_culture_group = west_african
-						is_culture_group = central_african
-						is_culture_group = east_african
-						is_culture_group = southern_african
-						has_pop_culture = dakota
-						has_pop_culture = cherokee
-						has_pop_culture = native_american_minor
-					}
-				}
-				literacy = -0.99
-			}
-			any_pop = { limit = { has_pop_religion = catholic } literacy = -0.1 }
-			163 = { add_province_modifier = { name = small_baby_boom duration = 3650 } }
-			any_owned = {
-				limit = {
-					has_pop_type = slaves
-					produces = cotton
-				}
-				add_province_modifier = { name = king_cotton duration = -1 }
-			}
-			add_country_modifier = { name = america_new_world duration = 1825 }
-		}
-	}
-
-
 }

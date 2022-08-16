@@ -1053,393 +1053,6 @@ country_event = {
 	}
 }
 
-## The Rhine Crisis ##
-
-	#The Rhine Crisis - French Declaration
-	country_event = {
-		id = 33037
-		title = "EVTNAME33037"
-		desc = "EVTDESC33037"
-		picture = "rhineland"
-		major = yes
-
-		trigger = {
-			primary_culture = french
-			is_greater_power = yes
-			capital = 425
-			has_country_flag = crisis_on_the_rhine
-		}
-
-		mean_time_to_happen = { days = 1 }
-
-		fire_only_once = yes
-
-		option = {
-			name = "EVTOPTA33037"
-
-			badboy = 5
-			set_country_flag = french_claimed_the_rhine
-			PRU = { set_country_flag = french_claimed_the_rhine }
-			any_country = {
-				limit = {
-					is_greater_power = yes
-					alliance_with = THIS
-				}
-				leave_alliance = THIS
-			}
-			PRU = { country_event = 99925 }
-			casus_belli = {
-				target = PRU
-				type = acquire_state
-				months = 6
-			}
-			casus_belli = {
-				target = PRU
-				type = liberate_country
-				months = 6
-			}
-			any_country = {
-				limit = {
-					is_greater_power = no
-					is_culture_group = germanic
-					NOT = { has_country_modifier = neutrality }
-				}
-				casus_belli = {
-					target = THIS
-					type = cut_down_to_size
-					months = 24
-				}
-				end_military_access = THIS
-				leave_alliance = THIS
-				relation = { who = THIS value = -200 }
-			}
-			any_greater_power = {
-				limit = {
-					is_culture_group = germanic
-					NOT = { has_country_modifier = neutrality }
-				}
-				end_military_access = THIS
-				leave_alliance = THIS
-				relation = { who = THIS value = -150 }
-			}
-
-			ai_chance = {
-				factor = 0.15
-				modifier = {
-					factor = 0
-					has_recently_lost_war = yes
-				}
-				modifier = {
-					factor = 0
-					is_disarmed = yes
-				}
-				modifier = {
-					factor = 0
-					war_exhaustion = 1
-				}
-				modifier = {
-					factor = 0
-					num_of_revolts = 1
-				}
-				modifier = {
-					factor = 0
-					war = yes
-				}
-			}
-		}
-
-		option = {
-			name = "EVTOPTB33037"
-
-			prestige = -10
-			badboy = -2
-			remove_country_modifier = rhine_crisis
-			any_country = {
-				limit = {
-					is_culture_group = germanic
-					NOT = { has_country_modifier = neutrality }
-				}
-				relation = { who = THIS value = 50 }
-			}
-
-			ai_chance = { factor = 0.85 }
-		}
-	}
-
-	#The Rhine is Lost - German states decide what to do
-	country_event = {
-		id = 33038
-		title = "EVTNAME33038"
-		desc = "EVTDESC33038"
-		picture = "german_rhine"
-
-		is_triggered_only = yes
-
-		option = {
-			name = "EVTOPTA33038"
-
-			any_owned = { limit = { is_core = THIS } add_core = FROM }
-			random_owned = {
-				limit = { owner = { primary_culture = FROM } }
-				owner = {
-					any_owned = {
-						limit = { is_core = THIS }
-						remove_core = THIS
-					}
-				}
-			}
-			annex_to = NGF
-
-			ai_chance = {
-				factor = 0.5
-				modifier = {
-					factor = 1.1
-					primary_culture = FROM
-					OR = {
-						vassal_of = FROM
-						in_sphere = FROM
-					}
-				}
-				modifier = {
-					factor = 0.7
-					NOT = { total_num_of_ports = 1 }
-					primary_culture = FROM
-					is_vassal = no
-				}
-				modifier = {
-					factor = 0.1
-					OR = {
-						vassal_of = AUS
-						in_sphere = AUS
-						in_sphere = BAV
-						vassal_of = BAV
-						in_sphere = HAN
-						vassal_of = HAN
-						vassal_of = FRA
-					}
-				}
-			}
-		}
-
-		option = {
-			name = "EVTOPTB33038"
-
-			any_owned = {
-				limit = { is_core = GER }
-				add_province_modifier = { name = nationalist_agitation duration = 3650 }
-			}
-
-			ai_chance = {
-				factor = 0.5
-				modifier = {
-					factor = 0.7
-					OR = {
-						vassal_of = AUS
-						in_sphere = AUS
-						in_sphere = BAV
-						vassal_of = BAV
-						in_sphere = HAN
-						vassal_of = HAN
-						vassal_of = FRA
-					}
-				}
-			}
-		}
-
-		option = {
-			name = "EVTOPTC33038"
-
-			all_core = {
-				add_core = NGF
-				remove_core = THIS
-			}
-			NGF = { inherit = THIS }
-			change_tag_no_core_switch = NGF
-
-			ai_chance = { factor = 0 }
-		}
-	}
-
-	#The Rhine is Lost - Prussia calls for Unity
-	country_event = {
-		id = 33039
-		title = "EVTNAME33039"
-		desc = "EVTDESC33039"
-		picture = "german_rhine"
-		major = yes
-
-		trigger = {
-			tag = PRU
-			is_vassal = no
-			ai = yes
-			NOT = { exists = NGF }
-			NOT = { exists = GER }
-			NOT = { exists = GCF }
-			NOT = { year = 1890 }
-			has_country_flag = french_claimed_the_rhine
-			has_global_flag = watching_the_rhine
-			NOT = { has_global_flag = 3hurrahs }
-			OR = {
-				571 = { owner = { NOT = { is_culture_group = germanic } } }
-				572 = { owner = { NOT = { is_culture_group = germanic } } }
-				573 = { owner = { NOT = { is_culture_group = germanic } } }
-				575 = { owner = { NOT = { is_culture_group = germanic } } }
-				576 = { owner = { NOT = { is_culture_group = germanic } } }
-				577 = { owner = { NOT = { is_culture_group = germanic } } }
-				3302 = { owner = { NOT = { is_culture_group = germanic } } }
-				PRU_578 = { owner = { NOT = { is_culture_group = germanic } } }
-				BAD_586 = { owner = { NOT = { is_culture_group = germanic } } }
-				WUR_589 = { owner = { NOT = { is_culture_group = germanic } } }
-				HES_2560 = { owner = { NOT = { is_culture_group = germanic } } }
-				AND = {
-					RHI = {
-						exists = yes
-						vassal_of = FRA
-					}
-					has_global_flag = left_bank_french_victory
-				}
-			}
-		}
-
-		mean_time_to_happen = { days = 10 }
-
-		fire_only_once = yes
-
-		option = {
-			name = "EVTOPTA33038"
-
-			NGF = { set_country_flag = formed_on_rhine_crisis }
-			any_owned = {
-				limit = { is_core = GER }
-				add_core = NGF
-				remove_core = THIS
-			}
-			change_tag = NGF
-			all_core = {
-				limit = { is_core = PRU }
-				remove_core = PRU
-				add_core = NGF
-			}
-			any_country = {
-				limit = {
-					is_culture_group = germanic
-					is_greater_power = no
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-					has_country_flag = german_confederation_member
-					NOT = {
-						tag = AUS
-						tag = KUK
-						tag = DNB
-						tag = LIE
-						capital_scope = { NOT = { is_core = GER } }
-					}
-				}
-				country_event = 33038
-			}
-			FRA_412 = { add_core = GER }
-			any_pop = {
-				limit = { is_culture_group = germanic }
-				dominant_issue = {
-					factor = 0.1
-					value = jingoism
-				}
-			}
-
-			ai_chance = { factor = 0.70 }
-		}
-
-		option = {
-			name = "EVTOPTB33039"
-
-			NGF = { set_country_flag = formed_on_rhine_crisis }
-			any_owned = {
-				limit = { is_core = GER }
-				add_core = NGF
-				remove_core = THIS
-			}
-			change_tag = NGF
-			all_core = {
-				limit = { is_core = PRU }
-				remove_core = PRU
-				add_core = NGF
-			}
-			any_country = {
-				limit = {
-					in_sphere = THIS
-					primary_culture = north_german
-					ai = yes
-					is_substate = no
-					capital_scope = { is_core = GER }
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-				}
-				annex_to = THIS
-			}
-			random_country = {
-				limit = {
-					primary_culture = south_german
-					ai = yes
-					is_substate = no
-					capital_scope = { is_core = GER }
-					is_vassal = no
-				}
-				change_tag = SGF
-			}
-			any_country = {
-				limit = {
-					primary_culture = south_german
-					capital_scope = { is_core = GER }
-					ai = yes
-					is_substate = no
-					OR = {
-						is_vassal = no
-						vassal_of = THIS
-					}
-				}
-				annex_to = SGF
-			}
-
-			relation = { who = SGF value = 400 }
-			diplomatic_influence = { who = SGF value = 100 }
-			create_alliance = SGF
-			random_country = {
-				limit = {
-					OR = {
-						tag = AUS
-						tag = KUK
-					}
-					exists = yes
-				}
-				relation = { who = SGF value = 100 }
-				diplomatic_influence = { who = SGF value = 50 }
-			}
-			FRA_412 = { add_core = GER }
-			any_pop = {
-				limit = { is_culture_group = germanic }
-				dominant_issue = {
-					factor = 0.1
-					value = jingoism
-				}
-			}
-			SGF = {
-				any_pop = {
-					limit = { is_culture_group = germanic }
-					dominant_issue = {
-						factor = 0.1
-						value = jingoism
-					}
-				}
-			}
-
-			ai_chance = { factor = 0.80 }
-		}
-	}
-
 ## Liferating Normalization ##
 
 	#Germany LR Normalization
@@ -1675,10 +1288,17 @@ country_event = {
 		treasury = -75000
 		set_country_flag = german_new_guinea_company
 		badboy = 2
-		2531 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-		2530 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-		1531 = { secede_province = THIS any_pop = { literacy = -0.99 } }
-		2537 = { secede_province = THIS any_pop = { literacy = -0.99 } }
+		GER_2530 = {
+			limit = { empty = yes }
+			secede_province = THIS any_pop = { literacy = -0.99 }
+		}
+		GER_2539 = {
+			limit = {
+				# Audax Validator "." Ignore_NEXT
+				is_core = PPG # TODO this will need to be redone once cores are removed from empty provinces
+			}
+			secede_province = THIS any_pop = { literacy = -0.99 }
+		}
 
 		ai_chance = { factor = 100 }
 	}
@@ -1693,167 +1313,7 @@ country_event = {
 	}
 }
 
-## Rhine Crisis ##
-
-	country_event = {
-		id = 99925
-		title = "EVTNAME99925"
-		desc = "EVTDESC99925"
-		picture = "rhineland"
-
-		fire_only_once = yes
-		is_triggered_only = yes
-
-		option = {
-			name = "EVTOPTA99925"
-
-			prestige = 10
-			FRA_412 = { add_core = GER }
-			any_country = {
-				limit = {
-					is_culture_group = germanic
-					exists = yes
-					is_greater_power = no
-					NOT = { has_country_modifier = neutrality }
-				}
-				create_alliance = THIS
-				casus_belli = {
-					target = FROM
-					type = cut_down_to_size
-					months = 20
-				}
-			}
-			any_greater_power = {
-				limit = {
-					is_culture_group = germanic
-					NOT = { tag = THIS }
-				}
-				country_event = 99978
-			}
-			war = {
-				target = FROM
-				attacker_goal = { casus_belli = humiliate }
-				attacker_goal = {
-					casus_belli = acquire_state
-					state_province_id = 412
-				}
-				defender_goal = { casus_belli = liberate_country country = RHI }
-				call_ally = yes
-			}
-
-			ai_chance = {
-				factor = 0.7
-				modifier = {
-					factor = 100
-					FROM = { ai = no }
-				}
-				modifier = {
-					factor = 0.5
-					truce_with = FROM
-				}
-				modifier = {
-					factor = 0.5
-					war = yes
-				}
-				modifier = {
-					factor = 0.1
-					FROM = { alliance_with = RUS }
-				}
-			}
-		}
-
-		option = {
-			name = "EVTOPTB99925"
-
-			prestige = -5
-			FROM = { remove_country_modifier = rhine_crisis }
-			any_greater_power = {
-				limit = { is_culture_group = germanic }
-				end_military_access = FROM
-				leave_alliance = FROM
-				relation = { who = FROM value = -150 }
-			}
-
-			ai_chance = {
-				factor = 0.30
-				modifier = {
-					factor = 0
-					FROM = { ai = no }
-				}
-			}
-		}
-	}
-
-	country_event = {
-		id = 99978
-		title = "EVTNAME99978"
-		desc = "EVTDESC99978"
-		picture = "rhineland"
-
-		fire_only_once = yes
-		is_triggered_only = yes
-
-		option = {
-			name = "EVTOPTA99978"
-
-			prestige = 10
-			create_alliance = FROM
-			war = {
-				target = FRA
-				attacker_goal = { casus_belli = humiliate }
-				attacker_goal = { casus_belli = war_reparations }
-				defender_goal = { casus_belli = war_reparations }
-				call_ally = yes
-			}
-
-			ai_chance = {
-				factor = 95
-				modifier = {
-					factor = 0.5
-					any_core = { owned_by = FROM }
-				}
-				modifier = {
-					factor = 0.5
-					truce_with = FROM
-				}
-				modifier = {
-					factor = 0.5
-					war = yes
-				}
-				modifier = {
-					factor = 5
-					FROM = { ai = no }
-				}
-			}
-		}
-
-		option = {
-			name = "EVTOPTB99978"
-
-			prestige = -5
-			relation = { who = FROM value = -200 }
-
-			ai_chance = {
-				factor = 5
-				modifier = {
-					factor = 5
-					any_core = { owned_by = FROM }
-				}
-				modifier = {
-					factor = 5
-					truce_with = FROM
-				}
-				modifier = {
-					factor = 5
-					war = yes
-				}
-				modifier = {
-					factor = 0
-					FRA = { ai = no }
-				}
-			}
-		}
-	}
+## Franco-Prussian War ## TODO change Franco-Prussian War to scripted
 
 	#Treaty of Frankfurt (1/2)
 	country_event = {
@@ -1862,7 +1322,6 @@ country_event = {
 		desc = "EVTDESC99932"
 		major = yes
 
-		fire_only_once = yes
 		is_triggered_only = yes
 
 		option = {
@@ -2056,13 +1515,14 @@ country_event = {
 			treasury = 15000
 			3259 = { secede_province = FROM remove_core = OLD add_core = FROM }
 			PRU = { country_event = 40002 }
-			random_country = {
+
+			random_country = { # TODO this happened later, make this a separate event
 				limit = {
 					tag = KNP
 					vassal_of = THIS
 				}
-				THIS = { inherit = KNP } # TODO this happened later, make this a separate event
-				KNP = { all_core = { remove_core = KNP add_core = THIS } }
+				all_core = { remove_core = KNP add_core = THIS }
+				THIS = { inherit = KNP }
 			}
 
 			ai_chance = { factor = 100 }
@@ -2093,7 +1553,6 @@ country_event = {
 
 			treasury = -15000
 			prestige = 10
-			set_country_flag = purchased_jade
 		}
 	}
 
@@ -2124,7 +1583,9 @@ country_event = {
 		picture = "plan"
 
 		trigger = {
-			has_country_flag = purchased_jade
+			owns = 3259
+			is_greater_power = yes
+			is_culture_group = germanic
 			NOT = { has_country_flag = building_wilhelmshaven }
 			money = 15000
 		}
@@ -2133,16 +1594,13 @@ country_event = {
 			days = 25
 		}
 
+		fire_only_once = yes
+
 		option = {
 			name = "EVTOPTA40004"
 
 			treasury = -15000
-			3259 = {
-				add_province_modifier = {
-					name = baby_boom
-					duration = 1825
-				}
-			}
+			3259 = { add_province_modifier = { name = baby_boom duration = 1825 } }
 			set_country_flag = building_wilhelmshaven
 		}
 	}
@@ -2157,7 +1615,6 @@ country_event = {
 
 		trigger = {
 			has_country_flag = building_wilhelmshaven
-			NOT = { has_country_flag = built_wilhelmshaven }
 		}
 
 		mean_time_to_happen = {
@@ -2172,6 +1629,8 @@ country_event = {
 			}
 		}
 
+		fire_only_once = yes
+
 		option = {
 			name = "EVTOPTA40005"
 
@@ -2183,12 +1642,8 @@ country_event = {
 					limit = { has_pop_culture = north_german }
 					reduce_pop = 2
 				}
-				add_province_modifier = {
-					name = baby_boom
-					duration = 3650
-				}
+				add_province_modifier = { name = baby_boom duration = 3650 }
 			}
-			set_country_flag = built_wilhelmshaven
 		}
 	}
 
@@ -2878,6 +2333,10 @@ country_event = {
 				}
 				random_owned = {
 					limit = { province_id = 2538 }
+					add_core = BAN
+				}
+				random_owned = {
+					limit = { province_id = 3309 }
 					add_core = BAN
 				}
 				random_owned = {
@@ -3630,7 +3089,7 @@ country_event = {
 				badboy = 20
 				FROM = {
 					all_core = {
-						limit = { 
+						limit = {
 						NOT = { is_core = HUN }
 						NOT = { is_core = CRO }
 						}
@@ -3946,7 +3405,7 @@ country_event = {
 				remove_country_modifier = prussian_general_staff
 				FROM = {
 					all_core = {
-						limit = { 
+						limit = {
 						NOT = { is_core = HUN }
 						NOT = { is_core = CRO }
 						}
@@ -4600,7 +4059,7 @@ country_event = {
 			ENG = { country_event = 200010 }
 			any_country = {
 				limit = {
-					is_culture_group = germanic
+					has_country_flag = german_confederation_member
 					NOT = { tag = THIS }
 				}
 				country_event = 200009
@@ -5515,13 +4974,7 @@ country_event = {
 			prestige = 2
 			relation = { who = FRA value = -25 }
 			relation = { who = ENG value = 5 }
-			random_country = {
-				limit = {
-					primary_culture = french
-					capital = 425
-				}
-				country_event = 200026
-			}
+			FRA = { country_event = 200026 }
 			ENG = { country_event = 200027 }
 			BAV = { country_event = 200028 }
 		}

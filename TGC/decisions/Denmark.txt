@@ -1,0 +1,197 @@
+political_decisions = {
+
+## Politics ##
+
+	#Description: Adopt a constitution, changing government type.
+	danmarks_riges_grundlov = {
+		picture = danmarks_riges_grundlov
+		potential = {
+			OR = {
+				tag = DEN
+				AND = {
+					tag = SCA
+					primary_culture = danish
+				}
+			}
+			NOT = { has_country_flag = danish_constitutionalism }
+			has_country_flag = absolute_monarchy_gov
+		}
+
+		allow = {
+			state_n_government = 1
+			NOT = { average_militancy = 3 }
+		}
+
+		effect = {
+			political_reform = landed_voting
+			government = hms_government
+			prestige = 5
+			set_country_flag = danish_constitutionalism
+		}
+	}
+
+## Claims ##
+
+	#Description: If Schleswig-Holstein is not our vassal and owns Schleswig,
+	claim_schleswig = {
+		picture = claim_schleswig
+		potential = {
+			tag = DEN
+			NOT = { has_country_flag = annex_schleswig_holstein }
+			SWH = {
+				exists = yes
+				any_owned_province = { is_core = SCH } # Schleswig
+				is_vassal = no
+			}
+			OR = {
+				has_country_flag = absolute_monarchy_gov
+				has_country_flag = semi_constitutional_monarchy_gov
+				has_country_flag = constitutional_monarchy_gov
+			}
+			is_vassal = no
+			NOT = { num_of_revolts = 1 }
+		}
+
+		allow = {
+			war = no
+			SWH = {
+				war = no
+				OR = {
+					part_of_sphere = no
+					sphere_owner = { NOT = { is_sphere_leader_of = THIS } }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = annex_schleswig_holstein
+			SCH = { all_core = { add_core = THIS } }
+			SWH = { country_event = 90051 }
+			any_pop = {
+				limit = { has_pop_culture = danish }
+				militancy = -2
+				dominant_issue = {
+					factor = 0.05
+					value = jingoism
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				war_exhaustion = 10
+			}
+			modifier = {
+				factor = 0
+				has_recently_lost_war = yes
+			}
+		}
+	}
+
+## Colonial ##
+
+	#Description: Demnark can sell their colony in India to the owner of Tanjore or others.
+	selling_danish_india = {
+		picture = map_india
+		alert = no
+		potential = {
+			OR = {
+				tag = DEN
+				tag = SCA
+			}
+			NOT = { has_country_flag = selling_danish_india }
+			any_owned_province = { is_core = HND }
+			NOT = { owns = 1309 }
+			state_n_government = 1
+			is_vassal = no
+			is_greater_power = no
+			year = 1845
+		}
+
+		allow = {
+			war = no
+			1309 = { # Tanjore
+				owner = {
+					relation = { who = THIS value = 0 }
+					money = 20001
+					NOT = { ruling_party_ideology = fascist }
+					NOT = { ruling_party_ideology = communist }
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					civilized = yes
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = selling_danish_india
+			prestige = -5
+			random_country = {
+				limit = { owns = 1309 }
+				country_event = 36224
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	#Description: If the year is at least 1850, Denmark can sell their colony in Ghana to the owner of Cape Coast or others.
+	selling_danish_ghana = {
+		picture = map_africa
+		alert = no
+		potential = {
+			OR = {
+				tag = DEN
+				tag = SCA
+			}
+			NOT = { has_country_flag = selling_danish_ghana }
+			any_owned_province = {
+				OR = {
+					region = ASH_1909 # Gold Coast
+					region = FRA_1907 # Ghana
+				}
+			}
+			NOT = { owns = 1908 }
+			state_n_government = 1
+			is_vassal = no
+			is_greater_power = no
+			year = 1850
+		}
+
+		allow = {
+			war = no
+			1908 = { # Cape Coast
+				owner = {
+					relation = { who = THIS value = 0 }
+					money = 35001
+					NOT = { ruling_party_ideology = fascist }
+					NOT = { ruling_party_ideology = communist }
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					civilized = yes
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = selling_danish_ghana
+			prestige = -5
+			random_country = {
+				limit = { owns = 1908 }
+				country_event = 36950
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
