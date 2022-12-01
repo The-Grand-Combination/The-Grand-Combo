@@ -809,13 +809,19 @@ political_decisions = {
 		}
 
 		effect = {
-			badboy = 0.5
+			badboy = 0.25
 			set_country_flag = integrate_svaneti
 			random_country = {
 				limit = {
 					tag = SVA
 					exists = yes
-					TCA = { exists = yes vassal_of = RUS }
+					TCA = {
+						exists = yes
+						OR = {
+							vassal_of = RUS
+							substate_of = RUS
+						}
+					}
 				}
 				all_core = { add_core = TCA }
 				annex_to = TCA
@@ -876,7 +882,13 @@ political_decisions = {
 				limit = {
 					tag = MIG
 					exists = yes
-					TCA = { exists = yes vassal_of = RUS }
+					TCA = {
+						exists = yes
+						OR = {
+							vassal_of = RUS
+							substate_of = RUS
+						}
+					}
 				}
 				all_core = { add_core = TCA }
 				annex_to = TCA
@@ -891,6 +903,47 @@ political_decisions = {
 				annex_to = RUS
 			}
 			MIG = { all_core = { remove_core = MIG } }
+			#Samurzakano
+			random_country = {
+				limit = {
+					tag = AB0
+					exists = yes
+					OR = {
+						vassal_of = RUS
+						substate_of = RUS
+						in_sphere = RUS
+						vassal_of = MIG
+						substate_of = MIG
+					}
+					TCA = {
+						exists = yes
+						OR = {
+							vassal_of = RUS
+							substate_of = RUS
+						}
+					}
+				}
+				all_core = { add_core = TCA }
+				annex_to = TCA
+			}
+			random_country = {
+				limit = {
+					tag = AB0
+					exists = yes
+					OR = {
+						vassal_of = RUS
+						substate_of = RUS
+						in_sphere = RUS
+						vassal_of = MIG
+						substate_of = MIG
+					}
+					TCA = { exists = no }
+				}
+				all_core = { add_core = RUS }
+				annex_to = RUS
+			}
+			AB0 = { all_core = { remove_core = AB0 } }
+			#
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -2351,23 +2404,29 @@ political_decisions = {
 	establish_caucasus_viceroyalty = {
 		picture = caucasus_viceroyalty
 		potential = {
-			primary_culture = russian
+			tag = RUS
 			NOT = { has_country_flag = caucasus_viceroyalty_established }
 			TCA = { ai = yes }
 			NOT = { has_global_flag = transcaucasia_formed }
 			OR = {
 				TCA = {
 					exists = yes
-					vassal_of = THIS
+					OR = {
+						vassal_of = THIS
+						substate_of = THIS
+					}
 				}
 				any_owned_province = {
 					OR = {
 						is_core = ARM
 						is_core = GEO
 						is_core = AZB
+						region = TRANSCAUCASIA_REGION
 					}
 				}
 			}
+			is_vassal = no
+			is_substate = no
 		}
 
 		allow = {
@@ -2393,13 +2452,20 @@ political_decisions = {
 			random_country = {
 				limit = {
 					tag = TCA
-					vassal_of = RUS
+					OR = {
+						vassal_of = RUS
+						substate_of = RUS
+					}
 				}
 				annex_to = RUS
 			}
-			RUS_1090 = { add_core = RUS }
-			RUS_1098 = { add_core = RUS }
-			RUS_1102 = { add_core = RUS }
+			TRANSCAUCASIA_REGION = { add_core = RUS }
+			any_owned = {
+				limit = {
+					region = SAN_STEFANO_PRE_BERLIN_TRANSCAUCASIA_REGION
+				}
+				add_core = RUS
+			}
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -2449,7 +2515,13 @@ political_decisions = {
 				limit = {
 					tag = ABK
 					exists = yes
-					TCA = { exists = yes vassal_of = RUS }
+					TCA = {
+						exists = yes
+						OR = {
+							vassal_of = THIS
+							substate_of = THIS
+						}
+					}
 				}
 				all_core = { add_core = TCA }
 				annex_to = TCA
@@ -3210,3 +3282,156 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 }
+
+#Benisman
+
+	integrate_free_svaneti = {
+		picture = integrate_abkhazia
+		potential = {
+			primary_culture = russian
+			OR = {
+				TCA = { has_country_flag = integrate_svaneti }
+				has_country_flag = integrate_svaneti
+			}
+			NOT = { has_country_flag = integrate_free_svaneti }
+			owns = 1051
+			owns = 1049
+			owns = 1056
+			OR = {
+				SV0 = {
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						substate_of = THIS
+						in_sphere = THIS
+					}
+				}
+				owns = 3274
+			}
+			OR = {
+				has_global_flag = crimea_has_happened
+				year = 1876
+			}
+		}
+
+		allow = {
+			war = no
+			OR = {
+				revolution_n_counterrevolution = 1
+				great_wars_enabled = yes
+				has_global_flag = 2nd_caucasian_war
+			}
+		}
+
+		effect = {
+			badboy = 0.25
+			set_country_flag = integrate_free_svaneti
+			random_country = {
+				limit = {
+					tag = SV0
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						substate_of = THIS
+						in_sphere = THIS
+					}
+					TCA = {
+						exists = yes
+						OR = {
+							vassal_of = RUS
+							substate_of = RUS
+						}
+					}
+				}
+				all_core = { add_core = TCA }
+				annex_to = TCA
+			}
+			random_country = {
+				limit = {
+					tag = SV0
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						substate_of = THIS
+						in_sphere = THIS
+					}
+					TCA = { exists = no }
+				}
+				all_core = { add_core = RUS }
+				annex_to = RUS
+			}
+			SV0 = { all_core = { remove_core = SV0 } }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	integrate_karachay = {
+		picture = integrate_abkhazia
+		potential = {
+			primary_culture = russian
+			has_country_flag = caucasus_viceroyalty_established
+			NOT = { has_country_flag = integrate_karachay }
+			owns = 1051
+			owns = 1049
+			owns = 1056
+			OR = {
+				TAU = {
+					exists = yes
+					OR = {
+						vassal_of = THIS
+						substate_of = THIS
+					}
+				}
+				owns = 1054
+			}
+			OR = {
+				has_global_flag = crimea_has_happened
+				year = 1850
+			}
+		}
+
+		allow = {
+			OR = {
+				AND = {
+				war = no
+					OR = {
+						revolution_n_counterrevolution = 1
+						great_wars_enabled = yes
+					}
+				}
+				has_global_flag = 2nd_caucasian_war
+			}
+		}
+
+		effect = {
+			badboy = 0.25
+			set_country_flag = integrate_karachay
+			random_country = {
+				limit = {
+					tag = TAU
+					exists = yes
+					DON = {
+						exists = yes
+						OR = {
+							vassal_of = RUS
+							substate_of = RUS
+						}
+					}
+				}
+				all_core = { add_core = DON }
+				annex_to = DON
+			}
+			random_country = {
+				limit = {
+					tag = TAU
+					exists = yes
+					TCA = { exists = no }
+				}
+				all_core = { add_core = RUS }
+				annex_to = RUS
+			}
+			TAU = { all_core = { remove_core = TAU } }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
