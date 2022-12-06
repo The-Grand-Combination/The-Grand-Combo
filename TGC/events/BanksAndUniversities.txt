@@ -158,7 +158,7 @@ province_event = {
 				militancy = -2
 			}
 		}
-	}
+	
 	option = {
 		name = "EVTOPTB6200"
 		farmers = {
@@ -279,6 +279,19 @@ province_event = {
 	}
 }
 
+#
+#  The AI wont build new buildings by itself. This event and the next one are meant
+#  to give the AI access to those buildings at a resonable and realistic rate.
+#  The conditions and modifiers are trying to replicate the decision making of building 
+#  banks and universities. For instance, if the AI is investing lots of research points
+#  into banking tech, it has higher chances of building banks, if it's spending very little
+#  on education it has less chances of building universtities. 
+#
+#  It's by no means perfect, but if you let a game run for a while and change to other countries
+#  they will have a realistic distribution of Banks and Universities in their provinces.
+#
+# TO DO: Stop the AI from building where the terrain wont allow. Thankfully that's rare and low impact.
+#
 
 ## Event so the AI also builds universities
 province_event = {
@@ -288,13 +301,13 @@ province_event = {
 	desc = "AIEVENT"
 
 	trigger = {
-        owner = { ai = yes 
-                  money = 15000 }
+        owner = { money = 50000
+			      ai = yes }
     }
 
 	mean_time_to_happen =  {
 
-		months = 5000
+		months = 3000
 
 		modifier = { factor = 0.2                                       #Higher chance of choosing the capital
                      is_capital = yes }
@@ -331,7 +344,7 @@ province_event = {
         modifier = { factor = 0.5
                     owner = { money = 500000 }}
         modifier = { factor = 0.2
-                    owner = { money = 1000000 }}
+                    owner = { money = 1000000 }}	
 
         modifier = { factor = 1.5                                       #Lower chance if bad terrain
                      terrain = desert }
@@ -362,7 +375,7 @@ province_event = {
 	option = {
 		name = "AIEVENT" 
 		university = +1
-        owner = { treasury = -15000 }
+        owner = { treasury = -10000 }
 	}
 }
 
@@ -377,7 +390,7 @@ province_event = {
 	trigger = { 
         owner = { ai = yes 
                   money = 10000 
-                  economic_policy = laissez_faire 
+                  NOT = { economic_policy = laissez_faire }
                   private_banks = 1 
 		} 
     }
@@ -432,13 +445,13 @@ province_event = {
                      produces = cotton } 
 
         modifier = { factor = 3                                         #Lower chance if the life rating is low
-                     NOT =  {life_rating = 10 }}
+                     NOT =  { life_rating = 10 }}
         modifier = { factor = 2   
-                     NOT =  {life_rating = 15 }}
+                     NOT =  { life_rating = 15 }}
         modifier = { factor = 1.5   
-                     NOT =  {life_rating = 20 }}
+                     NOT =  { life_rating = 20 }}
         modifier = { factor = 1.2   
-                     NOT =  {life_rating = 25 }} 
+                     NOT =  { life_rating = 25 }} 
 
         modifier = { factor = 2                                       #Lower chance if bad terrain
                      terrain = desert }
@@ -468,6 +481,6 @@ province_event = {
 		name = "AIEVENT" 
         owner = { treasury = -3000 }
 		bank = +1
-	    }
 	}
+}
     
