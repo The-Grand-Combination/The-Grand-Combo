@@ -2071,6 +2071,7 @@ political_decisions = {
 				owns = 2244
 				OR = {
 					tag = AST
+					tag = FAS
 					AND = {
 						owns = 2476
 						owns = 2468
@@ -2081,12 +2082,25 @@ political_decisions = {
 					}
 					has_country_flag = australia_master
 				}
-				2244 = { NOT = { is_core = AST } }
-				AST = {
-					OR = {
-						exists = no
-						vassal_of = THIS
-						substate_of = THIS
+				2244 = { NOT = { is_core = AST is_core = FAS} }
+				any_owned_province = { 
+					limit = { owner = { NOT = { tag = FRA tag = FAS } } }	
+					AST = {
+						OR = {
+							exists = no
+							vassal_of = THIS
+							substate_of = THIS
+						}
+					}
+				}
+				any_owned_province = { 
+					limit = { owner = { OR = { tag = FRA tag = FAS } } }	
+					FAS = {
+						OR = {
+							exists = no
+							vassal_of = THIS
+							substate_of = THIS
+						}
 					}
 				}
 			}
@@ -2097,10 +2111,21 @@ political_decisions = {
 			}
 
 			effect = {
-				2244 = { add_core = AST }
+				random_owned = { 
+					limit = { owner = { NOT = { tag = FRA tag = FAS } } }	
+					2244 = { add_core = AST }
+				}
+				random_owned = { 
+					limit = { owner = { OR = { tag = FRA tag = FAS } } }	
+					2244 = { add_core = FAS }
+				}
 				random_country = {
 					limit = { tag = AST exists = yes }
 					2244 = { secede_province = AST }
+				}
+				random_country = {
+					limit = { tag = FAS exists = yes }
+					2244 = { secede_province = FAS }
 				}
 			}
 
