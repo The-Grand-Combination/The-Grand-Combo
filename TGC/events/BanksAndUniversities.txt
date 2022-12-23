@@ -86,7 +86,7 @@ province_event = {
 
 		random_pop = {                                       #Paying workers
 			limit = { strata = poor	}				  
-			money = 500       		  	                     #I took this idea from  u/Bearhobag's tax refund script
+			money = 500       		  	                     #I took this idea from u/Bearhobag's tax refund script
 		}								                     #This way, the money does not go to waste and gets injected back into the economy
 		random_pop = {										 #This will also make the economy healthier.
 			limit = { strata = poor	}	
@@ -168,10 +168,11 @@ province_event = {
 
 	trigger = { 
         owner = { money = 10000
-                  NOT = { economic_policy = laissez_faire }
-				  ai = yes
-				  administration_spending = 0.6
-		} 
+                  NOT = { economic_policy = laissez_faire }             
+				  ai = yes											    
+				  exists = yes                                          #If the game checks for administration_spending of a tag that does not exist, it will CTD, so the exists is necessary.
+				  administration_spending = 0.5							#Yes. Paradox magic.
+		} 																
     }
 
 	mean_time_to_happen =  {
@@ -185,12 +186,8 @@ province_event = {
         modifier = { factor = 1.5
                     is_overseas = yes }
 
-        modifier = { factor = 0.7                                       #Higher chance if investing high on administration
+        modifier = { factor = 0.8                                       #Higher chance if investing high on administration
                      administration_spending = 1 }                     
-        modifier = { factor = 0.8 
-                     administration_spending = 0.9 }
-        modifier = { factor = 0.9 
-                     administration_spending = 0.8 }
 
         modifier = { factor = 0.8                                      #Higher chance if hoarding money
                      owner = { money = 100000 } }                     
@@ -216,11 +213,11 @@ province_event = {
 					OR = {	produces = sulphur
 					 		produces = cotton } }
 
-        modifier = { factor = 3                                         #Lower chance if the life rating is low
+        modifier = { factor = 5                                         #Lower chance if the life rating is low
                      NOT =  { life_rating = 10 } }
-        modifier = { factor = 2   
+        modifier = { factor = 3   
                      NOT =  { life_rating = 15 } }
-        modifier = { factor = 1.5   						
+        modifier = { factor = 4   						
                      NOT =  { life_rating = 20 } }
 
         modifier = { factor = 0.8                                       #Higher chance if province has other economic buildings
@@ -280,6 +277,7 @@ province_event = {
 
 	trigger = {
 		has_building = bank
+		exists = yes
 		NOT = { administration_spending = 0.5 }
 	}
 
@@ -308,11 +306,10 @@ country_event = {                   #A tunned down version of u/Bearhobag's tax 
 	id = 6203                       #This should force money to flow back into the economy if the AI is still hoarding too much after the tax hits.
 	title = "AIEVENT"               
 	desc = "AIEVENT"                #It literally takes money away from the tresuary and inserts back into the poor and middle strata
-	picture = "Poor"				#A literal tax refund that will kill any money hoarding.
-									
-	trigger = {						#I decided to limit this to the AI, I don't want the player to be bothered with it.
-		money = 800000				#By all means, the player shoulnd't even notice this happenening at all
-        ai = yes			
+	                				#A literal tax refund that will kill any money hoarding.									
+	trigger = {						
+		money = 800000				#I decided to limit this to the AI, I don't want the player to be bothered with it.
+        ai = yes			        #By all means, the player shoulnd't even notice this happenening at all
 	}
 
 	mean_time_to_happen = {
