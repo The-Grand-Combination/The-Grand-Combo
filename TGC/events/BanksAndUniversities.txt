@@ -8,6 +8,8 @@
 #  It's by no means perfect, but if you let a game run for a while and tag to other countries
 #  they will have a realistic distribution of Banks and Universities in their provinces.
 #
+#  Made by Wyrm.
+#
 # TO DO: Stop the AI from building where the terrain wont allow. Thankfully that's rare and has low impact.
 
 ## Event so the AI also builds universities
@@ -34,16 +36,16 @@ province_event = {
                     is_overseas = yes }
 
 		modifier = { factor = 0.5                                    	#Higher chance if investing high on education
-                     education_spending = 1 }
+                     owner = { education_spending = 1 } }						
         modifier = { factor = 0.6                                       
-                     education_spending = 0.9 }                     
+                     owner = { education_spending = 0.9 } }                     
         modifier = { factor = 0.7 
-                     education_spending = 0.8 }
+                     owner = { education_spending = 0.8 } }
 
         modifier = { factor = 5                                         #Lower chance if investing low on education
-                    NOT = { education_spending = 0.3 } }
+                   owner = { NOT = { education_spending = 0.3 } } }			
         modifier = { factor = 10
-                    NOT = { education_spending = 0.15 } }
+                   owner = { NOT = { education_spending = 0.15 } } }
 
         modifier = { factor = 0.8                                    	#Higher chance if hoarding money
                     owner = { money = 100000 } }                    
@@ -68,21 +70,21 @@ province_event = {
                     has_building = university }
 
         modifier = { factor = 0.8                                       #Increase chance if the AI is reasearching university tech        
-                    positivism = 1 }                                    
+                    owner = { positivism = 1 } }                                   
         modifier = { factor = 0.8                                      
-                    functionalism = 1 }                            
+                    owner = { functionalism = 1 } }                       
         modifier = { factor = 0.8                                       
-                    biologism = 1 }                              
+                    owner = { biologism = 1 } }                      
         modifier = { factor = 0.7                                       
-                    social_science = 1 }
+                    owner = { social_science = 1 } }
         modifier = { factor = 0.7                                       
-                    social_alienation = 1 }
+                    owner = { social_alienation = 1 } }
     }
 
 	option = {
 		name = "AIEVENT" 
 		university = 1
-        owner = { treasury = -10000 }
+        owner = { treasury = -10250 }
 
 		random_pop = {                                       #Paying workers
 			limit = { strata = poor	}				  
@@ -90,7 +92,7 @@ province_event = {
 		}								                     #This way, the money does not go to waste and gets injected back into the economy
 		random_pop = {										 #This will also make the economy healthier.
 			limit = { strata = poor	}	
-			money = 500
+			money = 500									
 		}
 		random_pop = {
 			limit = { strata = poor	}
@@ -133,20 +135,16 @@ province_event = {
 			money = 500
 		}
 		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
+			limit = { strata = middle	}
+			money = 750
 		}
 		random_pop = {
 			limit = { strata = middle }
-			money = 1000
+			money = 750
 		}
 		random_pop = {
 			limit = { strata = middle }
-			money = 1000
+			money = 750
 		}
 		random_pop = {
 			limit = { strata = rich }
@@ -169,11 +167,11 @@ province_event = {
 	trigger = { 
         owner = { money = 10000
                   NOT = { economic_policy = laissez_faire }             
-				  ai = yes											    
-				  exists = yes                                          #If the game checks for administration_spending of a tag that does not exist, it will CTD, so the exists is necessary.
-				  administration_spending = 0.5							#Yes. Paradox magic.
-		} 																
-    }
+				  exists = yes									        #The game can and will check administration_spending of tags that dont exist, and then it will CTD, so the "exists = yes" is necessary.
+				  administration_spending = 0.5                         #It's maybe the only use case for exists = yes as a common event trigger, and, supposedly, this only happens with the administration_spending check.
+				  ai = yes						                        
+		} 																#Yes. Paradox magic. Don't even ask me why. We don't know. Gelre said he realized that by accident and has no explanation as well.
+    }																	#I know it's weird. But not having the exists = yes check WILL make it crash, in my last full run I had two random CTDs caused by this issue.
 
 	mean_time_to_happen =  {
 
@@ -187,19 +185,21 @@ province_event = {
                     is_overseas = yes }
 
         modifier = { factor = 0.8                                       #Higher chance if investing high on administration
-                     administration_spending = 1 }                     
+                    owner = {  administration_spending = 1 } }          #Fun fact: Even so administration_spending being a country scope condition, it would work without an owner check here anyway.Not idea why.
+        modifier = { factor = 0.9                                      	#My theory is: It first checks it as a province scope province, it fails, and it checks again as a global condition.
+                    owner = {  administration_spending = 0.9 } }        #If that's the case, using the owner tag would result in one less check, so it's better this way, even if both ways are working.
 
-        modifier = { factor = 0.8                                      #Higher chance if hoarding money
+        modifier = { factor = 0.8                                       #Higher chance if hoarding money
                      owner = { money = 100000 } }                     
         modifier = { factor = 0.6
                      owner = { money = 200000 } }
-        modifier = { factor = 0.5 
+        modifier = { factor = 0.5                                   
 					 owner = { money = 300000 } }
 
-        modifier = { factor = 4                                         #Lower chance if investing low on administration
-                    NOT = { administration_spending = 0.3 } }
+        modifier = { factor = 4                                             #Lower chance if investing low on administration
+                    owner = { NOT = { administration_spending = 0.3 } } }
         modifier = { factor = 8
-                    NOT = { administration_spending = 0.15 } }
+                    owner = { NOT = { administration_spending = 0.15 } } } 
 
 		modifier = { factor = 0.2										#Higher chance if good RGO
 					OR = {	produces = precious_goods
@@ -226,15 +226,15 @@ province_event = {
                     has_building = university }
         
         modifier = { factor = 0.7                                       #Increase chance if the AI is reasearching Bank tech        
-                    stock_exchange = 1 }                                
+                     owner = { stock_exchange = 1 } }                          
         modifier = { factor = 0.7                                       
-                    business_banks = 1 }                            
+                     owner = { business_banks = 1 } }                     
         modifier = { factor = 0.7                                       
-                    investment_banks = 1 }                              
+                     owner = { investment_banks = 1 } }                     
         modifier = { factor = 0.7                                       
-                    bank_inspection_board = 1 }
+                     owner = { bank_inspection_board = 1 } }
         modifier = { factor = 0.7                                       
-                    mutual_funds = 1 }     
+                     owner = { mutual_funds = 1 } }
     }
 
 	option = {
@@ -251,20 +251,12 @@ province_event = {
 			money = 500
 		}
 		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
 			limit = { strata = middle }
-			money = 500
+			money = 1000
 		}
 		random_pop = {
 			limit = { strata = rich }
-			money = 500
+			money = 1000
 		}
 	}
 }
@@ -291,7 +283,6 @@ province_event = {
     
     option = {
 		name = "EVTOPTA6202"
-        # Audax Validator "." Ignore_NEXT
         bank = -1
 		farmers = { militancy = -2 }
 	}
@@ -302,6 +293,7 @@ province_event = {
 	}
 }
 
+## Tax Refund
 country_event = {                   #A tunned down version of u/Bearhobag's tax refund script. THIS IS EXPERIMENTAL
 	id = 6203                       #This should force money to flow back into the economy if the AI is still hoarding too much after the tax hits.
 	title = "AIEVENT"               
@@ -313,7 +305,7 @@ country_event = {                   #A tunned down version of u/Bearhobag's tax 
 	}
 
 	mean_time_to_happen = {
-		months = 5
+		months = 1
 		modifier = {
 			factor = 0.5
 			money = 900000
@@ -401,3 +393,8 @@ country_event = {                   #A tunned down version of u/Bearhobag's tax 
 		}
 	}
 }
+
+
+
+
+
