@@ -2,7 +2,7 @@
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
-This mod is an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, with a goal to improve historical accuracy and detail and add plausible alt history paths and flavor to all nations.
+This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, with a goal to improve historical accuracy and detail and add plausible alt history paths and flavor to all nations. The team's current priority is designing new mechanics to make Victoria 2 feel new again as well as increasing efforts to represent the world more accurately.
 
 ## Features
 
@@ -10,11 +10,13 @@ This mod is an attempt to merge all the various disparate HFM and HPM based subm
 
 ![improved map](https://user-images.githubusercontent.com/32886642/209586582-d566522e-1617-4ce2-926c-a950375a0642.png)
 
-Yeah yeah the map is better
+Improved map made with professional mapping software, no detail in history is too small to not be represented.
 
 ### Superior culture map
 
 ![Superior culture map](https://user-images.githubusercontent.com/32886642/209586623-a286a6c5-02b1-4a63-a98d-5db6bca3c7fa.png)
+
+Vastly superior culture map with accurate pop placement. 
 
 ### Multiple map skins
 
