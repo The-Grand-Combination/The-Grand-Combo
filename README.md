@@ -1,8 +1,28 @@
 # The Grand Combination
 
+![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
+
 This mod is an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, with a goal to improve historical accuracy and detail and add plausible alt history paths and flavor to all nations.
 
+## Features
+
+### Improved Map
+
+![improved map](https://user-images.githubusercontent.com/32886642/209586582-d566522e-1617-4ce2-926c-a950375a0642.png)
+
+Yeah yeah the map is better
+
+### Superior culture map
+
+![Superior culture map](https://user-images.githubusercontent.com/32886642/209586623-a286a6c5-02b1-4a63-a98d-5db6bca3c7fa.png)
+
+### Multiple map skins
+
+### Unique Mechanics
+
+
 ## Installation Instructions
+
 
 1. To get the latest version, click the green button that says "Code" and click "Download ZIP". *warning: read below*
   * ***BEWARE: There is a chance that due to the sheer number of files, Github Browser zipping process can corrupt your download, therefore the mod might not work for you. If that happens, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
