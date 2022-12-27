@@ -10,18 +10,21 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 
 ![improved map](https://user-images.githubusercontent.com/32886642/209586582-d566522e-1617-4ce2-926c-a950375a0642.png)
 
-Improved map made with professional mapping software, no detail in history is too small to not be represented.
+Improved map made with professional mapping software, no detail in history is too small to not be represented. Yada yada we need more text here
 
 ### Superior culture map
 
 ![Superior culture map](https://user-images.githubusercontent.com/32886642/209586623-a286a6c5-02b1-4a63-a98d-5db6bca3c7fa.png)
 
-Vastly superior culture map with accurate pop placement. 
+Vastly superior culture map with accurate pop placement.  Yada yada we need more text here
 
 ### Multiple map skins
 
+yeah tehres many
+
 ### Unique Mechanics
 
+lots here too
 
 ## Installation Instructions
 
