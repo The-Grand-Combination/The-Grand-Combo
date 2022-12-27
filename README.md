@@ -18,9 +18,18 @@ Everything from borders and provinces to terrain types have been improved. As of
 
 A better map requires better pops living on it, TGC's culture map is carefully made to better showcase the intricacies of each region. Assimilation mechanics are also revamped so the player can interact better with this superior culture map.
 
+![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
+
+<img src="https://user-images.githubusercontent.com/32886642/209615150-280c51cd-158b-459c-a4cf-0568c9ac52b2.png" align="left"/>
+
+As many other overhauls, TGC adds plenty of flavor and new historical content. From new events, decisions, formables and resonable alt history paths the player can follow.
+
+But we strongly avoid "railroady" content and event chains. 
+
+<br clear="left"/>
+
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
-
 
 Besides the default TGC map, players have 3 other options of map skins to choose from: High Contrast a improved version of the normal TGC map. HFM map: A map with colors scheme similar to HFM's default map. And the classical Belle Carthography, a map skin aiming to mimic old victorian sytle maps.
 
