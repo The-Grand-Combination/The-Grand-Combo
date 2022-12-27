@@ -43,13 +43,6 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 
 <br clear="left"/>
 
-![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
-![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
-
-Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classical [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
-
-We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
-
 ![CommunityBanner](https://user-images.githubusercontent.com/32886642/209602388-2573bbec-2418-421c-ac94-327e4ef4cfa5.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
 
@@ -65,6 +58,14 @@ The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this 
 
 And of course, we are always looking for new developers interesting in helping the development of the mod! 
 
+![Submods](https://user-images.githubusercontent.com/32886642/209713854-2d5bb988-e41e-40d3-b612-d662c353c441.png)
+![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
+![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
+
+Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classical [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
+
+We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
+
 ![DirectImmigrationBanner](https://user-images.githubusercontent.com/32886642/209609103-4b6d5404-d080-45fe-85cf-17086b2a90c0.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209609120-3c9dafc3-c115-4f99-9264-85231a576c12.png" align="right"/>
@@ -78,6 +79,18 @@ Our Direct Immigration submod adds two new buildings and inventions to enable th
 With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit.
 
 <br clear="right"/>
+
+![namebanner](https://user-images.githubusercontent.com/32886642/209714495-d6c3915c-82e8-4c10-b220-6bc81d67ef80.png)
+
+<img src="https://user-images.githubusercontent.com/32886642/209714354-62dd65c5-f9b7-43a6-bb0c-c32a98774373.png" align="left"/>
+  
+<br>
+<br>
+<br>
+With the Endonymic Localization submod, Guy from the Land of Phillip II, countries' names will be changed to their native names instead of english. For added immersion during gameplay.
+
+
+<br clear="left"/>
 
 ![more](https://user-images.githubusercontent.com/32886642/209707903-f3fa035a-d1c5-429e-8c5e-4d1b1f48f8e5.png)
 
