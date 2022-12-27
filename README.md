@@ -115,10 +115,11 @@ The features listed here are just a fraction of what TGC has to offer, it's a fu
 
 5. Start the game, select 'The Grand Combination'.
 
-By the end of the process, your /mod folder should look like the picture on the left.
-
 <br clear="left"/>
 
+By the end of the process, your /mod folder should look like the picture on the left.
+
+<br>
 
  * ***BEWARE: There is a chance that due to the sheer number of files, Github Browser zipping process can corrupt your download, therefore the mod might not work for you. If that happens, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
   * Fresh off the press version: You can use the GitHub Desktop application. This is slightly more complicated but preferable since downloading the zip through the browser can lead to corrupted files being downloaded which can cause the game to crash. For instructions on this go to the #install-instructions channel on the Discord.
