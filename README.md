@@ -2,29 +2,35 @@
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
-This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, with a goal to improve historical accuracy and detail and add plausible alt history paths and flavor to all nations. The team's current priority is designing new mechanics to make Victoria 2 feel new again as well as increasing efforts to represent the world more accurately.
+This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, but that objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, adding plausible alt history paths and flavor to all nations, and designing new mechanics to make Victoria 2 feel new again. 
 
-## Features
+### Features
 
-### Improved Map
+![MapBanner](https://user-images.githubusercontent.com/32886642/209600377-b23a8eed-caac-416d-bcd1-27a9df293d7f.png)
+![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
 
-![improved map](https://user-images.githubusercontent.com/32886642/209586582-d566522e-1617-4ce2-926c-a950375a0642.png)
+Improved map made with professional mapping software, no detail in history is too small to not be represented. TGC's map is currently the most accurate Victoria II map from vanilla to all other mods. 
 
-Improved map made with professional mapping software, no detail in history is too small to not be represented. Yada yada we need more text here
+Everything from borders and provinces to terrain types have been improved. As of our motto, "No detail in history is too small to not be represented". 
 
-### Superior culture map
+![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
+![CultureMap1](https://user-images.githubusercontent.com/32886642/209600947-2e505c04-9a8c-4fe1-a6cf-1d3e1bf4cc8e.png)
 
-![Superior culture map](https://user-images.githubusercontent.com/32886642/209586623-a286a6c5-02b1-4a63-a98d-5db6bca3c7fa.png)
-
-Vastly superior culture map with accurate pop placement.  Yada yada we need more text here
+A better map requires better pops living on it, TGC's culture map is carefully made to better showcase the intricacies of each region. Assimilation mechanics are also revamped so the player can interact better with this superior culture map.
 
 ### Multiple map skins
 
-yeah tehres many
+![Mapskins](https://user-images.githubusercontent.com/32886642/209593528-13e3729d-cb02-4c37-b7a8-aa56bc75df90.png)
+
+Besides the default TGC map, players have 3 other options of map skins to choose from: High Contrast, HFM map and Belle Cartography.
 
 ### Unique Mechanics
 
-lots here too
+#### New Buildings
+
+#### New Pop Types
+
+
 
 ## Installation Instructions
 
