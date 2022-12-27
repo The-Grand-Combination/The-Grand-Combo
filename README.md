@@ -31,13 +31,14 @@ The player's voice is always heard in TGC, the team makes constant pooling about
 
 ![UniqueMechanicsBanner](https://user-images.githubusercontent.com/32886642/209603508-c4613aa2-eb1d-4073-a30e-47d85c58dbe2.png)
 ![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
-<p align="center">
-  <img src=""/>
-</p>
 
 <img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
-TGC's adds new unique Buildings and Population types to enhance the player's experience. With Banks and Universities the player has new playstyles and new ways of !
-spending money. With Pioners and Tribesmen the player has an enchanced colonizing experience, given both troops have special and unique interactions. 
+TGC's adds new unique buildings and population types to enhance the player's experience. 
+
+With Banks and Universities the player has new playstyles and new ways of spending money. Universities are expensive but will provide prestige and a steady source of research points, giving the player the opportunity of pulling ahead on research and becoming a technological power house. Development Banks will help local land owners develop their farms and greatly increase farming capacity, giving the player the opportunity to invest in RGO instead of only industrialization. 
+
+With Pioners and Tribesmen the player will have an unique expansion and colonization experience. Pioners are a special type of pop that can work both as a farmer and a soldier, appearing mostly in the american frontier. Tribesmen are also special pop types, they are hard to assimilate and don't plan to work for their colonizers, cause of course, a native wouldn't simply pick a hoe and start farming as soon as someone colonize their land, rigth?
+
 <br clear="left"/>
 
 
