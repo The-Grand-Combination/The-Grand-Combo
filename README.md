@@ -1,4 +1,8 @@
-<p align="center"/> # The Grand Combination </p>
+<p align="center"/> 
+
+# The Grand Combination
+
+</p>
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
@@ -30,6 +34,19 @@ Playing TGC, you always have fun, but not outrageous or absurd, "look what the A
 
 <br clear="left"/>
 
+![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
+
+<img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
+
+TGC adds new unique buildings and population types to enhance the player's experience. 
+
+
+With Banks and Universities the player has new playstyles and new ways of spending money. Universities are expensive but will provide prestige and a steady source of research points, giving the player the opportunity of pulling ahead on research and becoming a technological power house. Development Banks will help local land owners develop their farms and greatly increase farming capacity, giving the player the opportunity to invest in RGO instead of only industrialization. 
+
+With Pioners and Tribesmen the player will have an unique expansion and colonization experience. Pioners are a special type of pop that can work both as a farmer and a soldier, appearing mostly in the american frontier. Tribesmen are also special pop types, they are hard to assimilate and don't plan to work for their colonizers, cause of course, a native wouldn't simply pick a hoe and start farming as soon as someone colonize their land, rigth?
+
+<br clear="left"/>
+
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
@@ -47,19 +64,6 @@ The player's voice is always heard in TGC, the team makes constant pooling about
 <br>
 
 The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, or discuss history in a civil manner.
-
-<br clear="left"/>
-
-![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
-
-<img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
-
-TGC adds new unique buildings and population types to enhance the player's experience. 
-
-
-With Banks and Universities the player has new playstyles and new ways of spending money. Universities are expensive but will provide prestige and a steady source of research points, giving the player the opportunity of pulling ahead on research and becoming a technological power house. Development Banks will help local land owners develop their farms and greatly increase farming capacity, giving the player the opportunity to invest in RGO instead of only industrialization. 
-
-With Pioners and Tribesmen the player will have an unique expansion and colonization experience. Pioners are a special type of pop that can work both as a farmer and a soldier, appearing mostly in the american frontier. Tribesmen are also special pop types, they are hard to assimilate and don't plan to work for their colonizers, cause of course, a native wouldn't simply pick a hoe and start farming as soon as someone colonize their land, rigth?
 
 <br clear="left"/>
 
