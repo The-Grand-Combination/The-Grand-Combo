@@ -45,7 +45,7 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 ![polling](https://user-images.githubusercontent.com/32886642/209735696-2d36c43b-fdb0-497c-a7ae-c9983106f57d.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
 
-The player's voice is always heard in TGC, the team makes constant pooling about important decisions to help guide the mod's development. 
+The player's voice is always heard in TGC, the team makes constant polling about important decisions to help guide the mod's development. 
 
 <img src="https://user-images.githubusercontent.com/32886642/209703700-c2908082-3eb5-4452-a373-376d7a91acbc.png" align="left"/>
 <br>
@@ -74,7 +74,7 @@ We also have the HFM Style Culture Colors submod, currently in the base mod cult
 
 Our Direct Immigration submod adds two new buildings working as province selection buttons. These buttons, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
 
-With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit, making it possible to deeply shape the country's demography.
+With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit, making it feasible to deeply shape the country's demography.
 
 <br clear="right"/>
 
