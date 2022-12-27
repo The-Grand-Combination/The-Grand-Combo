@@ -33,7 +33,9 @@ The player's voice is always heard in TGC, the team makes constant pooling about
 ![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
+
 TGC's adds new unique buildings and population types to enhance the player's experience. 
+
 
 With Banks and Universities the player has new playstyles and new ways of spending money. Universities are expensive but will provide prestige and a steady source of research points, giving the player the opportunity of pulling ahead on research and becoming a technological power house. Development Banks will help local land owners develop their farms and greatly increase farming capacity, giving the player the opportunity to invest in RGO instead of only industrialization. 
 
