@@ -1,12 +1,10 @@
-<p align="center"/> 
-
 # The Grand Combination
-
-</p>
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
 This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, but that objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, adding plausible alt history paths and flavor to all nations, and designing new mechanics to make Victoria 2 feel new again. 
+
+## Features
 
 ![MapBanner](https://user-images.githubusercontent.com/32886642/209600377-b23a8eed-caac-416d-bcd1-27a9df293d7f.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
@@ -80,6 +78,8 @@ Our Direct Immigration submod adds two new buildings and inventions to enable th
 With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit.
 
 <br clear="right"/>
+
+## Instalation and Perfomance
 
 ![Instalation](https://user-images.githubusercontent.com/32886642/209700468-bed71a7c-0ac4-48c1-9bab-87146db84c20.png)
 
