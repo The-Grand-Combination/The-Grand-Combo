@@ -35,7 +35,9 @@ Playing TGC, you always have fun, but not outrageous or absurd, "look what the A
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
-Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with colors scheme similar to HFM's default map. And the classical [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps.
+Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classical [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
+
+We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
 
 ![CommunityBanner](https://user-images.githubusercontent.com/32886642/209602388-2573bbec-2418-421c-ac94-327e4ef4cfa5.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
@@ -63,36 +65,39 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 <br>
 <br>
 <br>
-Our Direct Immigration Submod allows the player greater freedom in shaping it's country's population. 
+
+Adds two new buildings and inventions to enable them if you wish to use them. These buildings, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
 
 With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
 
 <br clear="right"/>
 
-## Installation Instructions
+![Instalation](https://user-images.githubusercontent.com/32886642/209700468-bed71a7c-0ac4-48c1-9bab-87146db84c20.png)
 
-
-
-
+<img src="https://user-images.githubusercontent.com/32886642/209701573-3f7f47b1-549a-4301-8485-029a840639f6.png" align="left"/>
+  
 1. To get the latest version, click the green button that says "Code" and click "Download ZIP". *warning: read below*
-  * ***BEWARE: There is a chance that due to the sheer number of files, Github Browser zipping process can corrupt your download, therefore the mod might not work for you. If that happens, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
-  * Fresh off the press version: You can use the GitHub Desktop application. This is slightly more complicated but preferable since downloading the zip through the browser can lead to corrupted files being downloaded which can cause the game to crash. For instructions on this go to the #install-instructions channel on the Discord.
-  * Slightly stale: Stable pre-packed zip releases: https://github.com/rderekp/The-Grand-Combo/releases
+ 
 2. Go to the mod folder in your Victoria 2 install directory.
   * If you got the Steam version on Windows this will look something like C:/Program Files (x86)/Steam/steamapps/common/Victoria 2/mod
   * If you got a non-Steam version on Windows it might be something like C:/Program Files (x86)/Paradox Interactive/Victoria 2/mod
-3. Delete the old versions of the mods, if you have any.
-4. From the ZIP move everything into the mod folder.
-5. Start the game, select 'The Grand Combination'.
-6. We have a few submods:
-   1. Direct Immigration - Adds two new buildings and inventions to enable them if you wish to use them. These buildings, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
-   2. Country Endonyms - Changes country names to be in the countries' own native languages (or a latin alphabet compatible transliteration due to the limitations of the Victoria 2 engine)
-   3. HFM Style Culture Colors - Currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM)
-   4. Statehood Mechanic (WIP) - Disables the base game mechanic of transformation of colonies to states when they reach a certain percentage of accepted culture bureaucrats. Instead, this adds decisions specific to each state which is colonial at game start regarding when it can be made a state, so as to more realistically represent the spread of direct authority (and prevent the UK from building factories across Africa in 1900).
-7. If you like to spice up your game with your favourite graphic submod, it will likely not work properly on TGC, as this mod has an entirely new map. But, fear not, as we have tailored some looks from two popular submods and adjusted them for TGC [PastelThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), [BelleCartographieTGC](https://github.com/emprahtheodosius/BelleCartographieTGC) and [HFM Style Political Map] (Credits to ColdSlav)
-8. Enjoy.
 
-### 64-bit increased performance
+3. Delete the old versions of the mods, if you have any.
+
+4. From the ZIP move everything into the mod folder.
+
+5. Start the game, select 'The Grand Combination'.
+
+By the end of the process, your /mod folder should look like this ->
+
+<br clear="right"/>
+
+
+ * ***BEWARE: There is a chance that due to the sheer number of files, Github Browser zipping process can corrupt your download, therefore the mod might not work for you. If that happens, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
+  * Fresh off the press version: You can use the GitHub Desktop application. This is slightly more complicated but preferable since downloading the zip through the browser can lead to corrupted files being downloaded which can cause the game to crash. For instructions on this go to the #install-instructions channel on the Discord.
+  * Slightly stale: Stable pre-packed zip releases: https://github.com/rderekp/The-Grand-Combo/releases
+
+![64](https://user-images.githubusercontent.com/32886642/209701835-8fccabf5-35d0-4613-9d8e-5aaba237a2fe.png)
 
 For Increased Performace(64-bit PCs):
 1. Download laa_2_0_4.zip from the site: https://www.techpowerup.com/forums/threads/large-address-aware.112556/
