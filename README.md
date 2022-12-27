@@ -65,6 +65,8 @@ The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this 
 
 <br clear="left"/>
 
+And of course, we are always looking for new developers interesting in helping the development of the mod! 
+
 ![DirectImmigrationBanner](https://user-images.githubusercontent.com/32886642/209609103-4b6d5404-d080-45fe-85cf-17086b2a90c0.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209609120-3c9dafc3-c115-4f99-9264-85231a576c12.png" align="right"/>
@@ -78,7 +80,8 @@ Our Direct Immigration submod adds two new buildings and inventions to enable th
 With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit.
 
 <br clear="right"/>
-![more](https://user-images.githubusercontent.com/32886642/209707244-4fa4b3ca-7210-4c68-b74f-c08651443416.png)
+
+![more](https://user-images.githubusercontent.com/32886642/209707903-f3fa035a-d1c5-429e-8c5e-4d1b1f48f8e5.png)
 
 The features listed here are just a fraction of what TGC has to offer, it's a full overhaul after all. New map, new provinces, tons of flavor, interesting but non railroady event chains, improved reform system, useful submods, adjusted economy, no liquidity crisis, new mechanics like improved pop growth, ideological spread, improved assimilation mechanics and much much more. 
 
