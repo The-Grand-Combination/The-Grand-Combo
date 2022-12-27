@@ -78,6 +78,9 @@ Our Direct Immigration submod adds two new buildings and inventions to enable th
 With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit.
 
 <br clear="right"/>
+![more](https://user-images.githubusercontent.com/32886642/209707244-4fa4b3ca-7210-4c68-b74f-c08651443416.png)
+
+The features listed here are just a fraction of what TGC has to offer, it's a full overhaul after all. New map, new provinces, tons of flavor, interesting but non railroady event chains, improved reform system, useful submods, adjusted economy, no liquidity crisis, new mechanics like improved pop growth, ideological spread, improved assimilation mechanics and much much more. 
 
 ## Instalation and Perfomance
 
