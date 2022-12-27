@@ -4,8 +4,6 @@
 
 This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, but that objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, adding plausible alt history paths and flavor to all nations, and designing new mechanics to make Victoria 2 feel new again. 
 
-### Features
-
 ![MapBanner](https://user-images.githubusercontent.com/32886642/209600377-b23a8eed-caac-416d-bcd1-27a9df293d7f.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
 
@@ -51,7 +49,6 @@ The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this 
 
 <br clear="left"/>
 
-![UniqueMechanicsBanner](https://user-images.githubusercontent.com/32886642/209603508-c4613aa2-eb1d-4073-a30e-47d85c58dbe2.png)
 ![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
