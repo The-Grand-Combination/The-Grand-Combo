@@ -88,9 +88,9 @@ With it, the player can influence migration with ease to adjust the country's po
 
 5. Start the game, select 'The Grand Combination'.
 
-By the end of the process, your /mod folder should look like this ->
+By the end of the process, your /mod folder should look like the picture on the left.
 
-<br clear="right"/>
+<br clear="left"/>
 
 
  * ***BEWARE: There is a chance that due to the sheer number of files, Github Browser zipping process can corrupt your download, therefore the mod might not work for you. If that happens, follow instructions below on how to download the mod (its very latest version) via Github Desktop app or download the zip from latest pre-packed release (usually somewhat outdated).***
@@ -107,7 +107,7 @@ For Increased Performace(64-bit PCs):
 5. Save
 6. Enjoy! the game now should run twice as fast now for any mod
 
-## Acknowledgements
+![Acknowledgements](https://user-images.githubusercontent.com/32886642/209702062-2863718f-663a-4f62-9982-1ca68908a65a.png)
 
 TGC was made possible by the below developers and mods:
 
