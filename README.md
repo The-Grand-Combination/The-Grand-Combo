@@ -20,9 +20,10 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209601415-5ad8ce91-a69c-415d-99d0-9bc7921f4df6.png)
 
-![Mapskins](https://user-images.githubusercontent.com/32886642/209593528-13e3729d-cb02-4c37-b7a8-aa56bc75df90.png)
+![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
+![Mapskins](https://user-images.githubusercontent.com/32886642/209603177-91bab395-ceb5-43f2-9ec2-a8812fefba2a.png)
 
-Besides the default TGC map, players have 3 other options of map skins to choose from: High Contrast, HFM map and Belle Cartography.
+Besides the default TGC map, players have 3 other options of map skins to choose from: High Contrast a improved version of the normal TGC map. HFM map: A map with colors scheme similar to HFM's default map. And the classical Belle Carthography, a map skin aiming to mimic old victorian sytle maps.
 
 ![CommunityBanner](https://user-images.githubusercontent.com/32886642/209602388-2573bbec-2418-421c-ac94-327e4ef4cfa5.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
