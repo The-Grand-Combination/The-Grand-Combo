@@ -1,4 +1,4 @@
-# The Grand Combination
+< # The Grand Combination align="center/>
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
@@ -70,9 +70,9 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 <br>
 <br>
 
-Adds two new buildings and inventions to enable them if you wish to use them. These buildings, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
+Our Direct Immigration submod adds two new buildings and inventions to enable them if you wish to use them. These buildings, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
 
-With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
+With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit.
 
 <br clear="right"/>
 
