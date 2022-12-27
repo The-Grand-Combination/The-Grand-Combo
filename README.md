@@ -87,7 +87,9 @@ With it, it's possible to influence migration with ease to adjust the country's 
 <br>
 <br>
 <br>
-With the Endonymic Localization submod, Guy from the Land of Phillip II, countries' names will be changed to their native names instead of english. For added immersion during gameplay.
+<br>
+<br>
+With the Endonymic Localization submod, by Guy from the Land of Phillip II, countries' names will be changed to their native names instead of english. For added immersion during gameplay.
 
 
 <br clear="left"/>
