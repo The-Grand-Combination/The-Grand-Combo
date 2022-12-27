@@ -9,9 +9,7 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 ![MapBanner](https://user-images.githubusercontent.com/32886642/209600377-b23a8eed-caac-416d-bcd1-27a9df293d7f.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
 
-Improved map made with professional mapping software, no detail in history is too small to not be represented. With hundreds, maybe thousands, of new provinces, the TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. 
-
-Everything from borders and provinces to terrain types have been improved. As of our motto, "No detail in history is too small to not be represented". 
+Improved map made with professional mapping software. With hundreds, maybe thousands, of new provinces, and fixing the proportions of the Americas, TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. As of our motto, "No detail in history is too small to not be represented". 
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209600947-2e505c04-9a8c-4fe1-a6cf-1d3e1bf4cc8e.png)
@@ -26,8 +24,8 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 <br>
 As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events and decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
 <br>
-One thing we strongly avoid is "Railroady" content, opting to always give choice not only for the player but the for the AI as well, making multiple runs always different from one another. 
-
+One thing we strongly avoid is "Railroady" content, focuzing mechanized and detailed content instead of flavor and novel-style gameplay, opting to always give choice not only for the player but the for the AI as well, making the game more interesting, flexible and unpredictable.
+<br>
 Playing TGC, you always have fun, but not outrageous or absurd, "look what the AI did this time" moments during your campaigns.
 
 <br clear="left"/>
