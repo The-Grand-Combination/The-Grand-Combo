@@ -22,7 +22,7 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 <br>
 As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events and decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
 <br>
-One thing we strongly avoid is "Railroady" content, focuzing mechanized and detailed content instead of novel-style gameplay, opting to always give choice not only for the player but the for the AI as well, making the game more interesting, flexible and unpredictable.
+One thing we strongly avoid is "Railroady" content, focuzing mechanized and detailed content instead of flavor and novel-style gameplay, opting to always give choice not only for the player but the for the AI as well, making the game more interesting, flexible and unpredictable.
 <br>
 Playing TGC, you always have fun, but not outrageous or absurd, "look what the AI did this time" moments during your campaigns.
 
@@ -41,26 +41,25 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 
 <br clear="left"/>
 
-![CommunityBanner](https://user-images.githubusercontent.com/32886642/209602388-2573bbec-2418-421c-ac94-327e4ef4cfa5.png)
+![polling](https://user-images.githubusercontent.com/32886642/209735696-2d36c43b-fdb0-497c-a7ae-c9983106f57d.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
 
-The player's voice is always heard in TGC, the team makes constant pooling about important decisions to help guide the mod development. 
-
+The player's voice is always heard in TGC, the team makes constant pooling about important decisions to help guide the mod's development. 
 
 <img src="https://user-images.githubusercontent.com/32886642/209703700-c2908082-3eb5-4452-a373-376d7a91acbc.png" align="left"/>
 <br>
 
-The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, or discuss history in a civil manner.
+The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, be part of the pools or discuss history in a civil manner.
 
 <br clear="left"/>
 
-And of course, we are always looking for new developers interesting in helping the development of the mod! 
+And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to #modder-recruiting.
 
 ## Submods
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
-Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classical [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
+Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
 
 We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
 
