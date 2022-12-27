@@ -51,7 +51,7 @@ Our Direct Immigration Submod allows the player greater freedom in shaping it's 
 
 With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
 
-<br clear="left"/>
+<br clear="right"/>
 
 ## Installation Instructions
 
