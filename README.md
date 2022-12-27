@@ -24,8 +24,8 @@ A better map requires better pops living on it, TGC's culture map is carefully m
   
 <br>
 <br>
-As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events, decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
-
+As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events and decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
+<br>
 One thing we strongly avoid is "Railroady" content, opting to always give choice not only for the player but the for the AI as well, making multiple runs always different from one another. 
 
 Playing TGC, you always have fun, but not outrageous or absurd, "look what the AI did this time" moments during your campaigns.
@@ -60,8 +60,9 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 
 <img src="https://user-images.githubusercontent.com/32886642/209609120-3c9dafc3-c115-4f99-9264-85231a576c12.png" align="right"/>
   
-  
-  
+<br>
+<br>
+<br>
 Our Direct Immigration Submod allows the player greater freedom in shaping it's country's population. 
 
 With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
