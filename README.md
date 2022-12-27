@@ -30,13 +30,11 @@ Besides the default TGC map, players have 3 other options of map skins to choose
 The player's voice is always heard in TGC, the team makes constant pooling about important decisions to help guide the mod development. 
 
 ![UniqueMechanicsBanner](https://user-images.githubusercontent.com/32886642/209603508-c4613aa2-eb1d-4073-a30e-47d85c58dbe2.png)
-
-
-#### New Buildings
-
-#### New Pop Types
-
-
+![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
+<p align="left">
+  <img src="[http://some_place.com/image.png](https://user-images.githubusercontent.com/32886642/209605569-c823293a-2bed-442a-af08-cd2204526a04.png)" />
+</p>
+TGC's adds new unique Buildings and Population types to enhance the player's experience. With Banks and Universities the player has new playstyles and new ways of spending money. With Pioners and Tribesmen the player has an enchanced colonizing experience, given both troops have special and unique interactions. 
 
 ## Installation Instructions
 
