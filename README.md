@@ -49,7 +49,6 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 <br/>
 <br/>
 <br/>
-<br/>
 Our Direct Immigration Submod allows the player greater freedom in shaping it's country's population. 
 
 With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
