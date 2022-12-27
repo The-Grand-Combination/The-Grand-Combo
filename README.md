@@ -18,8 +18,6 @@ Everything from borders and provinces to terrain types have been improved. As of
 
 A better map requires better pops living on it, TGC's culture map is carefully made to better showcase the intricacies of each region. Assimilation mechanics are also revamped so the player can interact better with this superior culture map.
 
-![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209601415-5ad8ce91-a69c-415d-99d0-9bc7921f4df6.png)
-
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603177-91bab395-ceb5-43f2-9ec2-a8812fefba2a.png)
 
@@ -30,7 +28,8 @@ Besides the default TGC map, players have 3 other options of map skins to choose
 
 The player's voice is always heard in TGC, the team makes constant pooling about important decisions to help guide the mod development. 
 
-### Unique Mechanics
+![UniqueMechanicsBanner](https://user-images.githubusercontent.com/32886642/209603508-c4613aa2-eb1d-4073-a30e-47d85c58dbe2.png)
+
 
 #### New Buildings
 
