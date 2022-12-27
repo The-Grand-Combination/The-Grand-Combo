@@ -35,7 +35,7 @@ Playing TGC, you always have fun, but not outrageous or absurd, "look what the A
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
-Besides the default TGC map, players have 3 other options of map skins to choose from: High Contrast a improved version of the normal TGC map. HFM map: A map with colors scheme similar to HFM's default map. And the classical Belle Carthography, a map skin aiming to mimic old victorian sytle maps.
+Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with colors scheme similar to HFM's default map. And the classical [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps.
 
 ![CommunityBanner](https://user-images.githubusercontent.com/32886642/209602388-2573bbec-2418-421c-ac94-327e4ef4cfa5.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
