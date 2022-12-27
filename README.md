@@ -43,8 +43,19 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 
 <br clear="left"/>
 
+![DirectImmigrationBanner](https://user-images.githubusercontent.com/32886642/209609103-4b6d5404-d080-45fe-85cf-17086b2a90c0.png)
+
+<img src="https://user-images.githubusercontent.com/32886642/209609120-3c9dafc3-c115-4f99-9264-85231a576c12.png" align="right"/>
+
+Our Direct Immigration Submod allows the player greater freedom in shaping it's country's population. 
+
+With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
+
+<br clear="left"/>
 
 ## Installation Instructions
+
+
 
 
 1. To get the latest version, click the green button that says "Code" and click "Download ZIP". *warning: read below*
