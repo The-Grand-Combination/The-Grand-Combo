@@ -44,6 +44,13 @@ We also have the HFM Style Culture Colors submod, currently in the base mod cult
 
 The player's voice is always heard in TGC, the team makes constant pooling about important decisions to help guide the mod development. 
 
+
+<img src="https://user-images.githubusercontent.com/32886642/209703700-c2908082-3eb5-4452-a373-376d7a91acbc.png" align="left"/>
+
+The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, or discuss history in a civil manner.
+
+<br clear="left"/>
+
 ![UniqueMechanicsBanner](https://user-images.githubusercontent.com/32886642/209603508-c4613aa2-eb1d-4073-a30e-47d85c58dbe2.png)
 ![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
 
@@ -146,7 +153,3 @@ Honorable mentions and ex-Developers:
 * Fraggy
 * LouisTheFly
 * anzu-3278
-
-## Discord
-
-The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, or discuss history in a civil manner.
