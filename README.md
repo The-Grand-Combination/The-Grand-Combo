@@ -22,7 +22,7 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 <br>
 As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events and decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
 <br>
-One thing we strongly avoid is "Railroady" content, focuzing mechanized and detailed content instead of flavor and novel-style gameplay, opting to always give choice not only for the player but the for the AI as well, making the game more interesting, flexible and unpredictable.
+One thing we strongly avoid is "Railroady" content, focuzing mechanized and detailed content instead of novel-style gameplay, opting to always give choice not only for the player but the for the AI as well, making the game more interesting, flexible and unpredictable.
 <br>
 Playing TGC, you always have fun, but not outrageous or absurd, "look what the AI did this time" moments during your campaigns.
 
