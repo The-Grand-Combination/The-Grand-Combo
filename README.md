@@ -9,7 +9,7 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 ![MapBanner](https://user-images.githubusercontent.com/32886642/209600377-b23a8eed-caac-416d-bcd1-27a9df293d7f.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
 
-Improved map made with professional mapping software, no detail in history is too small to not be represented. TGC's map is currently the most accurate Victoria II map from vanilla to all other mods. 
+Improved map made with professional mapping software, no detail in history is too small to not be represented. With hundreds, maybe thousands, of new provinces, the TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. 
 
 Everything from borders and provinces to terrain types have been improved. As of our motto, "No detail in history is too small to not be represented". 
 
@@ -21,7 +21,9 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="left"/>
-
+  
+  
+  
 As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events, decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
 
 One thing we strongly avoid is "Railroady" content, opting to always give choice not only for the player but the for the AI as well, making multiple runs always different from one another. Playing TGC, you always have fun, but not outrageous or absurd, "look what the AI did this time" moments during your campaigns.
@@ -55,7 +57,9 @@ With Pioners and Tribesmen the player will have an unique expansion and coloniza
 ![DirectImmigrationBanner](https://user-images.githubusercontent.com/32886642/209609103-4b6d5404-d080-45fe-85cf-17086b2a90c0.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209609120-3c9dafc3-c115-4f99-9264-85231a576c12.png" align="right"/>
-
+  
+  
+  
 Our Direct Immigration Submod allows the player greater freedom in shaping it's country's population. 
 
 With it, the player can influence migration with ease to adjust the country's population in whatever way is necessary.
