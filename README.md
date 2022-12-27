@@ -58,7 +58,7 @@ The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this 
 
 And of course, we are always looking for new developers interesting in helping the development of the mod! 
 
-![Submods](https://user-images.githubusercontent.com/32886642/209713854-2d5bb988-e41e-40d3-b612-d662c353c441.png)
+## Submods
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
