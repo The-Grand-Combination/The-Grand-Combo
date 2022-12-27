@@ -20,11 +20,11 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
-<img src="https://user-images.githubusercontent.com/32886642/209615150-280c51cd-158b-459c-a4cf-0568c9ac52b2.png" align="left"/>
+<img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="left"/>
 
-As many other overhauls, TGC adds plenty of flavor and new historical content. From new events, decisions, formables and resonable alt history paths the player can follow.
+As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events, decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
 
-But we strongly avoid "railroady" content and event chains. 
+One thing we strongly avoid is "Railroady" content, opting to always give choice not only for the player but the for the AI as well, making multiple runs always different from one another. Playing TGC, you always have fun, but not outrageous or absurd, "look what the AI did this time" moments during your campaigns.
 
 <br clear="left"/>
 
