@@ -34,6 +34,7 @@ The player's voice is always heard in TGC, the team makes constant pooling about
 
 <img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
 
+
 TGC's adds new unique buildings and population types to enhance the player's experience. 
 
 
