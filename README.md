@@ -5,8 +5,7 @@
 This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, but that objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, adding plausible alt history paths and flavor to all nations, and designing new mechanics to make Victoria 2 feel new again. 
 
 ## Features
-
-![MapBanner](https://user-images.githubusercontent.com/32886642/209600377-b23a8eed-caac-416d-bcd1-27a9df293d7f.png)
+![map](https://user-images.githubusercontent.com/32886642/209727927-60db4e4e-8b7f-4387-bf36-978ebabe72e2.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
 
 Improved map made with professional mapping software. With hundreds, maybe thousands, of new provinces, and fixing the proportions of the Americas, TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. As of our motto, "No detail in history is too small to not be represented". 
@@ -88,6 +87,7 @@ With it, it's possible to influence migration with ease to adjust the country's 
 <br>
 <br>
 <br>
+<br>
 With the Endonymic Localization submod, by Guy from the Land of Phillip II, countries' names will be changed to their native names instead of english. For added immersion during gameplay.
 
 
@@ -97,9 +97,9 @@ With the Endonymic Localization submod, by Guy from the Land of Phillip II, coun
 
 The features listed here are just a fraction of what TGC has to offer, it's a full overhaul after all. New map, new provinces, tons of flavor, interesting but non railroady event chains, improved reform system, useful submods, adjusted economy, no liquidity crisis, new mechanics like improved pop growth, ideological spread, improved assimilation mechanics and much much more. 
 
-## Instalation and Perfomance
+## Installation and Technical stuff
 
-![Instalation](https://user-images.githubusercontent.com/32886642/209700468-bed71a7c-0ac4-48c1-9bab-87146db84c20.png)
+![install](https://user-images.githubusercontent.com/32886642/209728180-cbe5c0cf-eba4-4889-8c49-d67597386347.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209701573-3f7f47b1-549a-4301-8485-029a840639f6.png" align="left"/>
   
@@ -117,7 +117,7 @@ The features listed here are just a fraction of what TGC has to offer, it's a fu
 
 <br clear="left"/>
 
-By the end of the process, your /mod folder should look like the picture on the left.
+By the end of the process, your /mod folder should look like the picture above, and you be able to select the mod in the Launcher.
 
 <br>
 
