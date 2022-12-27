@@ -32,9 +32,10 @@ The player's voice is always heard in TGC, the team makes constant pooling about
 ![UniqueMechanicsBanner](https://user-images.githubusercontent.com/32886642/209603508-c4613aa2-eb1d-4073-a30e-47d85c58dbe2.png)
 ![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
 <p align="left">
-  <img src="[http://some_place.com/image.png](https://user-images.githubusercontent.com/32886642/209605569-c823293a-2bed-442a-af08-cd2204526a04.png)" />
+  <img src="[NewBuilds](https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png)" />
 </p>
-TGC's adds new unique Buildings and Population types to enhance the player's experience. With Banks and Universities the player has new playstyles and new ways of spending money. With Pioners and Tribesmen the player has an enchanced colonizing experience, given both troops have special and unique interactions. 
+TGC's adds new unique Buildings and Population types to enhance the player's experience. With Banks and Universities the player has new playstyles and new ways of !
+spending money. With Pioners and Tribesmen the player has an enchanced colonizing experience, given both troops have special and unique interactions. 
 
 ## Installation Instructions
 
