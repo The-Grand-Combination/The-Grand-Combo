@@ -19,8 +19,7 @@ A better map requires better pops living on it, TGC's culture map is carefully m
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="left"/>
-  
-<br>
+
 <br>
 As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events and decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
 <br>
@@ -74,9 +73,9 @@ We also have the HFM Style Culture Colors submod, currently in the base mod cult
 <br>
 <br>
 
-Our Direct Immigration submod adds two new buildings and inventions to enable them if you wish to use them. These buildings, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
+Our Direct Immigration submod adds two new buildings working as province selection buttons. These buttons, along with decisions enabled through Options decisions, can be used to move pops around where you want them.
 
-With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit.
+With it, it's possible to influence migration with ease to adjust the country's population in whatever way the player sees fit, making it possible to deeply shape the country's demography.
 
 <br clear="right"/>
 
