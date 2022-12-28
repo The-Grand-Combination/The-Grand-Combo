@@ -50,7 +50,7 @@ The player's voice is always heard in TGC, the team makes constant polling about
 <img src="https://user-images.githubusercontent.com/32886642/209703700-c2908082-3eb5-4452-a373-376d7a91acbc.png" align="left"/>
 <br>
 
-The [The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, be part of the pools or discuss history in a civil manner.
+[The Grand Combination](https://discord.gg/rGfQAgwyST) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, be part of the pools or discuss history in a civil manner.
 
 <br clear="left"/>
 
