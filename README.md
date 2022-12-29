@@ -6,7 +6,6 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 
 ## Features
 ![mapbanner](https://user-images.githubusercontent.com/32886642/209995357-3bdc506f-7e02-49ba-aec1-c6a6dd6f7892.png)
-
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
@@ -14,7 +13,6 @@ Improved map made with professional mapping software. With hundreds, maybe thous
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
-
 
 A better map requires better pops living on it, TGC's culture map is carefully made to better showcase the intricacies of each region. Assimilation mechanics are also revamped so the player can interact better with this superior culture map.
 
