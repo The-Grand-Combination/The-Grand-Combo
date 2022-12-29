@@ -6,13 +6,14 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 
 ## Features
 ![map](https://user-images.githubusercontent.com/32886642/209727927-60db4e4e-8b7f-4387-bf36-978ebabe72e2.png)
-![improved map](https://user-images.githubusercontent.com/32886642/209994739-268c029d-f09c-4af3-bbc2-519f71faab3c.png)
-![improved map2](https://user-images.githubusercontent.com/32886642/209994785-33d3cfa6-e64f-4c7a-9310-bda9655b36c7.png)
+![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
+![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
 Improved map made with professional mapping software. With hundreds, maybe thousands, of new provinces, and fixing the proportions of the Americas, TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. As of our motto, "No detail in history is too small to not be represented". 
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
-![CultureMap1](https://user-images.githubusercontent.com/32886642/209600947-2e505c04-9a8c-4fe1-a6cf-1d3e1bf4cc8e.png)
+![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
+
 
 A better map requires better pops living on it, TGC's culture map is carefully made to better showcase the intricacies of each region. Assimilation mechanics are also revamped so the player can interact better with this superior culture map.
 
