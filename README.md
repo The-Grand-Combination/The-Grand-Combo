@@ -84,7 +84,7 @@ With it, it's possible to influence migration with ease to adjust the country's 
 <img src="https://user-images.githubusercontent.com/32886642/209892582-2447a7f4-a71f-47e4-8fd8-7b17b71d7b8c.png" align="left"/>
 <br>  
 TGC's oficial music sub mod! Hours of carefully curated classical music to enchance your Victoria II gameplay. Each music was carefully choosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
-
+<br>
 * Songs carefully hand picked.
 * Fully overhaulded western music.
 * Different song for different cultures.
@@ -98,7 +98,7 @@ Due download size constraints, The Grand Orchestra is stored in another repo, wh
 
 ![namebanner](https://user-images.githubusercontent.com/32886642/209714495-d6c3915c-82e8-4c10-b220-6bc81d67ef80.png)
 
-<img src="https://user-images.githubusercontent.com/32886642/209714354-62dd65c5-f9b7-43a6-bb0c-c32a98774373.png" align="left"/>
+<img src="https://user-images.githubusercontent.com/32886642/209714354-62dd65c5-f9b7-43a6-bb0c-c32a98774373.png" align="right"/>
   
 <br>
 <br>
@@ -109,7 +109,7 @@ Due download size constraints, The Grand Orchestra is stored in another repo, wh
 With the Endonymic Localization submod, by Guy from the Land of Phillip II, countries' names will be changed to their native names instead of english. For added immersion during gameplay.
 
 
-<br clear="left"/>
+<br clear="right"/>
 
 ![more](https://user-images.githubusercontent.com/32886642/209707903-f3fa035a-d1c5-429e-8c5e-4d1b1f48f8e5.png)
 
