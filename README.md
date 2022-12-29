@@ -61,7 +61,7 @@ And we are always looking for new developers interested in helping the developme
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
-Given how TGC completely overhauls the map, mostly (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
+Given how TGC completely overhauls the map, most (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast a improved version of the default map. HFM Style Map, a map with color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian sytle maps. 
 
 We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
 
@@ -83,8 +83,9 @@ With it, it's possible to influence migration with ease to adjust the country's 
 
 
 <img src="https://user-images.githubusercontent.com/32886642/209892582-2447a7f4-a71f-47e4-8fd8-7b17b71d7b8c.png" align="left"/>
-<br>  
-TGC's oficial music sub mod! Hours of carefully curated classical music to enchance your Victoria II gameplay. Each music was carefully choosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
+<br>
+<br>
+TGC's oficial music sub mod! Hours of carefully curated classic and folk music to enchance your Victoria II gameplay. Each music was carefully choosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
 <br>
 <br>
 
