@@ -36,7 +36,7 @@ When playing TGC, there are always cool "look what the AI did this time" moments
 
 Banks and Universities provide the player with new playstyles and methods to spend money. Universities are costly, but they provide prestige and a steady source of research points,  giving the player the opportunity of pulling ahead on research and becoming a technological powerhouse. Development banks will assist local landowners in developing their farms and considerably increasing farming capacity, allowing the player to invest more in RGO rather than just industrialisation.
 
-With Pioneers and Tribesmen the player will have an unique expansion and colonization experience. Pioneers, usually seen on the American frontier, are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarly unique pops; they are difficult to integrate and have no plans to in working for their colonizers, cause of course, why would a native pick up a hoe and start farming as soon as someone claim their lands?
+With Pioneers and Tribesmen the player will have an unique expansion and colonization experience. Pioneers, usually seen on the American frontier, are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarly unique pops; they are difficult to integrate and have no plans in working for their colonizers, cause of course, why would a native pick up a hoe and start farming as soon as someone claim their lands?
 
 
 <br clear="left"/>
