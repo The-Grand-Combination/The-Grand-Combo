@@ -5,7 +5,8 @@
 This mod started as attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, but that objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, adding plausible alt history paths and flavor to all nations, and designing new mechanics to make Victoria 2 feel new again. 
 
 ## Features
-![map](https://user-images.githubusercontent.com/32886642/209727927-60db4e4e-8b7f-4387-bf36-978ebabe72e2.png)
+![mapbanner](https://user-images.githubusercontent.com/32886642/209995357-3bdc506f-7e02-49ba-aec1-c6a6dd6f7892.png)
+
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
