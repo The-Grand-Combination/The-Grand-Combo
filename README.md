@@ -9,24 +9,24 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
-Improved map made with professional mapping software. With hundreds, maybe thousands, of new provinces, and fixing the proportions of the Americas, TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. As of our motto, "No detail in history is too small to not be represented". 
+TGC's map is currently the most accurate and well-made Victoria II map from Vanilla to all other mods, an expanded 25% larger map with hundreds, if not thousands, of additional provinces, fixed projection, enhanced detail and borders, and a slew of other improvements. "No detail in history is too little to be ignored," as of our motto, "No detail in history is too small to not be represented". 
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
 
-A better map requires better pops living on it, TGC's culture map is carefully made to better showcase the intricacies of each region. Assimilation mechanics are also revamped so the player can interact better with this superior culture map.
+A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the intricacies of each location. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map.
 
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="left"/>
 
 <br>
-As many other full overhauls, TGC is no stranger to flavor and new historical content. Ranging from new events and decisions to new formables and resonable alt history paths the player can follow to fulfil their geographical desires.
+TGC, like many other major overhauls, is no stranger to additional historical content and flavor. From fresh events and decisions to new formables and plausible alternative historical pathways the player can pursue to satisfy their geographical desires.
 <br>
-One thing we strongly avoid is "Railroady" content, focuzing mechanized and detailed content instead novel-style gameplay, opting to always give choice not only for the player but the for the AI as well, making the game more interesting, flexible and unpredictable.
+One thing we strongly avoid is "Railroady" material, focusing on mechanical and detailed content rather than novel-style gameplay, deciding to always provide options not just for the player but also for the AI, making the game more intriguing, flexible, and unexpected.
 <br>
 <br>
-Playing TGC, you always have fun "look what the AI did this time" moments during your campaigns.
+When playing TGC, there are always cool "look what the AI did this time" moments during your campaigns.
 
 <br clear="left"/>
 
@@ -36,10 +36,10 @@ Playing TGC, you always have fun "look what the AI did this time" moments during
 
 TGC adds new unique buildings and population types to enhance the player's experience. 
 
+Banks and Universities provide the player with new playstyles and methods to spend money. Universities are costly, but they provide prestige and a steady source of research points,  giving the player the opportunity of pulling ahead on research and becoming a technological powerhouse. Development banks will assist local landowners in developing their farms and considerably increasing farming capacity, allowing the player to invest more in RGO rather than just industrialisation.
 
-With Banks and Universities the player has new playstyles and new ways of spending money. Universities are expensive but will provide prestige and a steady source of research points, giving the player the opportunity of pulling ahead on research and becoming a technological power house. Development Banks will help local land owners develop their farms and greatly increase farming capacity, giving the player the opportunity to invest in RGO instead of only industrialization. 
+With Pioneers and Tribesmen the player will have an unique expansion and colonization experience. Pioneers, usually seen on the American frontier, are a special pop that can work as both a farmer and a soldier, a workers always ready to get his trusty rifle and protect his land. Tribesmen are similarly unique pops; they are difficult to integrate and have no plans to in working for their colonizers, cause of course, why would a native pick up a hoe and start farming as soon as someone claim their lands?
 
-With Pioners and Tribesmen the player will have an unique expansion and colonization experience. Pioners are a special type of pop that can work both as a farmer and a soldier, appearing mostly in the american frontier. Tribesmen are also special pop types, they are hard to assimilate and don't plan to work for their colonizers, cause of course, a native wouldn't simply pick a hoe and start farming as soon as someone colonize their land, rigth?
 
 <br clear="left"/>
 
