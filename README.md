@@ -78,6 +78,21 @@ With it, it's possible to influence migration with ease to adjust the country's 
 
 <br clear="right"/>
 
+![Orchestra](https://user-images.githubusercontent.com/32886642/209892139-cad0287e-33bd-4035-9134-19b9693bb170.png)
+
+<img src="https://user-images.githubusercontent.com/32886642/209892176-6d23b79a-4316-42a7-b439-4412b9b041aa.png" align="left"/>
+  
+TGC's oficial music sub mod! Hours of carefully curated classical music to enchance your Victoria II gameplay. Each music was carefully choosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
+
+* Songs carefully hand picked.
+* Fully overhaulded western music.
+* Different song for different cultures.
+* Different songs for different game situations.
+* Completely new playlist for asian countries.
+* Much more!
+
+<br clear="left"/>
+
 ![namebanner](https://user-images.githubusercontent.com/32886642/209714495-d6c3915c-82e8-4c10-b220-6bc81d67ef80.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209714354-62dd65c5-f9b7-43a6-bb0c-c32a98774373.png" align="left"/>
