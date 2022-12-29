@@ -91,8 +91,7 @@ TGC's oficial music sub mod! Hours of carefully curated classical music to encha
 * Fully overhaulded western music.
 * Different songs for different cultures.
 * Different songs for different game situations.
-* Completely new playlist for asian countries.
-* Constant updates.
+* Completely new non-western playlist for asian countries.
 
 <br clear="left"/>
 
