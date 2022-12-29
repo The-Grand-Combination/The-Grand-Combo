@@ -9,7 +9,7 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
-TGC's map is currently the most accurate and well-made Victoria II map from Vanilla to all other mods, an expanded 25% larger map with hundreds, if not thousands, of additional provinces, fixed projection, enhanced detail and borders, and a slew of other improvements. "No detail in history is too little to be ignored," as of our motto, "No detail in history is too small to not be represented". 
+TGC's map is currently the most accurate and well-made Victoria II map from Vanilla to all other mods, an expanded 25% larger map with hundreds, if not thousands, of additional provinces, fixed projection, enhanced detail and borders, and a slew of other improvements. As of our motto, "No detail in history is too small to not be represented". 
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
