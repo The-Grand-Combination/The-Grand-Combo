@@ -6,7 +6,8 @@ This mod started as attempt to merge all the various disparate HFM and HPM based
 
 ## Features
 ![map](https://user-images.githubusercontent.com/32886642/209727927-60db4e4e-8b7f-4387-bf36-978ebabe72e2.png)
-![improved map](https://user-images.githubusercontent.com/32886642/209600580-bf761c2c-4e13-419f-9a58-f116f73d86fc.png)
+![improved map](https://user-images.githubusercontent.com/32886642/209994739-268c029d-f09c-4af3-bbc2-519f71faab3c.png)
+![improved map2](https://user-images.githubusercontent.com/32886642/209994785-33d3cfa6-e64f-4c7a-9310-bda9655b36c7.png)
 
 Improved map made with professional mapping software. With hundreds, maybe thousands, of new provinces, and fixing the proportions of the Americas, TGC's map is currently the most accurate and well made Victoria II map from vanilla to all other mods. As of our motto, "No detail in history is too small to not be represented". 
 
