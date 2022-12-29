@@ -85,6 +85,7 @@ With it, it's possible to influence migration with ease to adjust the country's 
 <br>  
 TGC's oficial music sub mod! Hours of carefully curated classical music to enchance your Victoria II gameplay. Each music was carefully choosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
 <br>
+
 * Songs carefully hand picked.
 * Fully overhaulded western music.
 * Different song for different cultures.
@@ -94,7 +95,7 @@ TGC's oficial music sub mod! Hours of carefully curated classical music to encha
 
 <br clear="left"/>
 
-Due download size constraints, The Grand Orchestra is stored in another repo, which you can access [here](https://github.com/joelAVS/The-Grand-Orchestra).
+Due download size constraints, The Grand Orchestra is stored in another repository, which you can access [here](https://github.com/joelAVS/The-Grand-Orchestra).
 
 ![namebanner](https://user-images.githubusercontent.com/32886642/209714495-d6c3915c-82e8-4c10-b220-6bc81d67ef80.png)
 
