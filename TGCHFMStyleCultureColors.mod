@@ -1,3 +1,3 @@
-name = "TGC - HFM Style Culture Colors"
+name = "TGC Submod - HFM Style Culture Colors"
 path = "mod/TGCHFMStyleCultureColors"
 dependencies = { "TGC - The Grand Combination" }
