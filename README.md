@@ -2,14 +2,14 @@
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
-TGC is a complete game overhaul that started as an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, this objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, adding plausible alt-history paths and flavor to all nations, and designing new mechanics to make Victoria 2 feel new again.
+TGC is a complete game overhaul that started as an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, this objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, by adding plausible alt-history paths, immersive flavor to all nations, and designing new mechanics to make Victoria 2 feel new and refreshed again.
 
 ## Features
 ![mapbanner](https://user-images.githubusercontent.com/32886642/209995357-3bdc506f-7e02-49ba-aec1-c6a6dd6f7892.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
-TGC's map is currently the most accurate and well-made Victoria II map from Vanilla to all other mods, an expanded 25% larger map with hundreds, if not thousands, of additional provinces, improved projection, enhanced detail and borders, and a slew of other improvements. As of our motto, "No detail in history is too small to not be represented". 
+TGC has the currently largest, most accurate, and well-made Victoria II map from Vanilla and all other mods, including an expanded 25% larger map with hundreds, if not thousands, of additional provinces, an improved map projection, enhanced coastlines and borders, and a slew of other improvements. As of our motto, "No detail in history is too small to not be represented
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
@@ -34,9 +34,9 @@ When playing TGC, there are always cool "look what the AI did this time" moments
 
 <img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
 
-Banks and Universities provide the player with new playstyles and methods to spend money. Universities are costly, but they provide prestige and a steady source of research points,  giving the player the opportunity of pulling ahead on research and becoming a technological powerhouse. Development banks will assist local landowners in developing their farms and considerably increasing farming capacity, allowing the player to invest more in RGO rather than just industrialisation.
+Banks and Universities provide the player with new playstyles and methods to spend money. Universities are costly, but they provide prestige and a steady source of research points, giving the player the opportunity to pull ahead on research and become a technological powerhouse. Development banks will assist local landowners in developing their farms and considerably increasing farming capacity, allowing the player to develop their economy by investing in RGOs rather than just industrialization, creating a never-seen before playstyle.
 
-With Pioneers and Tribesmen the player will have an unique expansion and colonization experience. Pioneers, usually seen on the American frontier, are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarly unique pops; they are difficult to integrate and have no plans in working for their colonizers, 'cause of course, why would a native pick up a hoe and start farming as soon as someone claims their lands?
+Our two new PoPs: Pioneers and Tribesmen allow for a never-seen experience when it comes to expanding and colonizing new lands. Pioneers, who are usually seen in lands ripe for colonization are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarily unique PoPs, in the sense that they are harder to integrate into western society, and have no plans in working with settlers. Why would a native pick up a hoe and start farming as soon as someone steps into their lands? These two new PoPs open room to vast possibilities in terms of flavor, immersion, and gameplay, something which you may never see in any other mod.
 
 
 <br clear="left"/>
@@ -59,7 +59,7 @@ And we are always looking for new developers interested in helping the developme
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
-Given how TGC completely overhauls the map, most (if not all) map mods won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast an improved version of the default map. HFM Style Map, a map with a color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian style maps. 
+Given how TGC completely overhauls the map and the game's mechanics, most (if not all) map mods and addons won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast, improved version of the default map. HFM Style Map, a map with a color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian style maps. 
 
 We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
 
@@ -81,9 +81,9 @@ With it, it's possible to influence migration with ease to adjust the country's 
 
 ![HighClassBanner](https://user-images.githubusercontent.com/32886642/210163119-4ba0270f-27b1-4a5f-8eef-1c59383f94e9.png)
 
-TGC's official music sub mod! Hours of carefully curated classic and folk music to enhance your Victoria II gameplay. Each music was carefully chosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
+TGC's official music submod! With hours of carefully curated classic and folk music, to enhance your Victoria II gameplay. Each music was carefully chosen, and assigned special playing conditions, from war, peace, country, culture, even war exhaustion and level of westernization!
 
-* Songs carefully hand picked.
+* Songs carefully hand picked with proper research and analysis.
 * Fully overhauled western music.
 * Different songs for different cultures.
 * Different songs for different game situations.
