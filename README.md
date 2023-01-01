@@ -2,7 +2,7 @@
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
-TGC is a complete game overhaul that started as an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, this objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail, by adding plausible alt-history paths, immersive flavor to all nations, and designing new mechanics to make Victoria 2 feel new and refreshed again.
+TGC is a complete game overhaul that started as an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, this objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail by adding plausible alt-history paths, immersive flavor to all nations, and designing new mechanics to make Victoria 2 feel new and refreshed again.
 
 ## Features
 ![mapbanner](https://user-images.githubusercontent.com/32886642/209995357-3bdc506f-7e02-49ba-aec1-c6a6dd6f7892.png)
