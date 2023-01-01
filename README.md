@@ -14,16 +14,16 @@ TGC has the currently largest, most accurate, and well-made Victoria II map from
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
 
-A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the intricacies of each location. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map.
+A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the sociocultural intricacies of each location.. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map.
 
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
 <img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="left"/>
 
 <br>
-TGC, like many other major overhauls, is no stranger to additional historical content and flavor. From fresh events and decisions to new formables and plausible alternative historical pathways the player can pursue to satisfy their geographical desires.
+TGC, like many other major overhauls, is no stranger to additional historical content and flavor. From fresh events and decisions to new formables and plausible alternative historical pathways, the player can pursue and satisfy their geographical and roleplay desires.
 <br>
-One thing we strongly avoid is "Railroady" material, focusing on mechanical and detailed content rather than novel-style gameplay, deciding to always provide options not just for the player but also for the AI, making the game more intriguing, flexible, and unexpected.
+One thing we strongly try to avoid is "railroady" content, focusing our modding efforts on a mechanical and detailed approach rather than novel-style gameplay is our focus as a team, this lets us provide with options not just to the player but also to the AI, making the game more intriguing, flexible, and unexpectable.
 <br>
 <br>
 When playing TGC, there are always cool "look what the AI did this time" moments during your campaigns.
