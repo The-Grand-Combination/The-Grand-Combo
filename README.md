@@ -61,7 +61,7 @@ And we are always looking for new developers interested in helping the developme
 
 Given how TGC completely overhauls the map and the game's mechanics, most (if not all) map mods and addons won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast, improved version of the default map. HFM Style Map, a map with a color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian style maps. 
 
-We also have the HFM Style Culture Colors submod, currently in the base mod culture colors in Europe have been changed to reflect how close certain languages are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
+We also have the HFM Style Culture Colors submod, In the default mod, the culture colors of Europe have been changed to reflect the distinct language groups of the region and how closely related they are to each other. This rolls back that change to the HFM style of culture colors (for cultures inherited from HFM).
 
 ![DirectImmigrationBanner](https://user-images.githubusercontent.com/32886642/209609103-4b6d5404-d080-45fe-85cf-17086b2a90c0.png)
 
