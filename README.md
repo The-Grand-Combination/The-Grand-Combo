@@ -18,7 +18,7 @@ A better map requires better people living on it; TGC's superior culture map is 
 
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
-<img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="left"/>
+<img src="https://user-images.githubusercontent.com/32886642/209615454-4059c489-edc9-4b54-971a-92b83e093791.png" align="right"/>
 
 <br>
 TGC, like many other major overhauls, is no stranger to additional historical content and flavor. From fresh events and decisions to new formables and plausible alternative historical pathways, the player can pursue and satisfy their geographical and roleplay desires.
@@ -28,7 +28,7 @@ One thing we strongly try to avoid is "railroady" content, focusing our modding 
 <br>
 When playing TGC, there are always cool "look what the AI did this time" moments during your campaigns.
 
-<br clear="left"/>
+<br clear="right"/>
 
 ![New buildings](https://user-images.githubusercontent.com/32886642/209605479-204565b7-4ebf-4217-8673-4562fa81fffd.png)
 
@@ -107,7 +107,7 @@ Due to download size constraints, The Grand Orchestra is stored in another repos
 
 ![namebanner](https://user-images.githubusercontent.com/32886642/209714495-d6c3915c-82e8-4c10-b220-6bc81d67ef80.png)
 
-<img src="https://user-images.githubusercontent.com/32886642/209714354-62dd65c5-f9b7-43a6-bb0c-c32a98774373.png" align="right"/>
+<img src="https://user-images.githubusercontent.com/32886642/209714354-62dd65c5-f9b7-43a6-bb0c-c32a98774373.png" align="left"/>
   
 <br>
 <br>
@@ -118,7 +118,7 @@ Due to download size constraints, The Grand Orchestra is stored in another repos
 With the Endonymic Localization submod, by Guy from the Land of Phillip II, countries' names will be changed to their native names instead of english. For added immersion during gameplay.
 
 
-<br clear="right"/>
+<br clear="left"/>
 
 ![more](https://user-images.githubusercontent.com/32886642/209707903-f3fa035a-d1c5-429e-8c5e-4d1b1f48f8e5.png)
 
