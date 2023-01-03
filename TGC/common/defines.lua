@@ -9,8 +9,8 @@ defines = {
 		REBEL_ACCEPTANCE_MONTHS = 60,
 		BASE_COUNTRY_TAX_EFFICIENCY = 0.2, -- Basic efficiency for taxes without 'crats and tech
 		BASE_COUNTRY_ADMIN_EFFICIENCY = 0.2,
-		GOLD_TO_CASH_RATE = 1.0, -- Amount of money generated per gold unit
-		GOLD_TO_WORKER_PAY_RATE = 3.0, -- Multiplier for how much money gold pays to pops
+		GOLD_TO_CASH_RATE = 10, -- Amount of money generated per gold unit. MODIFIED, Vanilla = 1.0                      Those two changes will ensure gold miners
+		GOLD_TO_WORKER_PAY_RATE = 1, -- Multiplier for how much money gold pays to pops. MODIFIED, Vanilla value = 3     won't hoard all the gold in the country.
 		GREAT_NATIONS_COUNT = 8,
 		GREATNESS_DAYS = 365, 	   -- how many days until country risks losing status as great nation
 		BADBOY_LIMIT = 25,
@@ -111,8 +111,8 @@ defines = {
 		BANKRUPCY_DURATION = 3, -- Years till a bankruptcy clears all loans
 		SECOND_RANK_BASE_SHARE_FACTOR = 0.5,
 		CIV_BASE_SHARE_FACTOR = 0.75,
-		UNCIV_BASE_SHARE_FACTOR = 1,
-		FACTORY_PAYCHECKS_LEFTOVER_FACTOR = 0.3, -- % of how much we pay to the pops and capitalists, from the leftovers.
+		UNCIV_BASE_SHARE_FACTOR = 1,				
+		FACTORY_PAYCHECKS_LEFTOVER_FACTOR = 0.5, -- % of how much we pay to the pops and capitalists, from the leftovers. MODIFIED, Vanilla value = 0.3 
 		MAX_FACTORY_MONEY_SAVE = 3000,	-- how much money is stored maximum in a factory.
 		SMALL_DEBT_LIMIT = 20000,
 		FACTORY_UPGRADE_EMPLOYEE_FACTOR = 0.75, -- determines how close to the employee limit we need to be before "upgrade all" will upgrade/expand a given factory (1 = 100%).
@@ -673,7 +673,7 @@ defines = {
 
 		MIL_HIT_FROM_CONQUEST = 4, -- how much militancy grows in a province if taken without being core.
 		LUXURY_CON_CHANGE = 0.001, -- con boost from over-buying luxury goods
-		INVENTION_IMPACT_ON_DEMAND = 0.02, -- how much each invention in a country increases demand for a product in percent
+		INVENTION_IMPACT_ON_DEMAND = 0.008, -- how much each invention in a country increases demand for a product in percent. MODIFIED, vanilla value = 0.005. 
 		ARTISAN_SUPPRESSED_COLONIAL_GOODS_CATEGORY = 0, -- Goods category index not produced in colonies
 		ISSUE_MOVEMENT_JOIN_LIMIT = 8,
 		ISSUE_MOVEMENT_LEAVE_LIMIT = 7,
