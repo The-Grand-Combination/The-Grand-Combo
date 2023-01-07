@@ -1,0 +1,169 @@
+province_event = {                                   #Zombify province
+	id = 123456100
+	title = "EVTNAME123456025"
+	desc = "EVTDESC123456025"
+
+	trigger = {
+		owner = {exists = yes }
+		NOT = { owner = { tag = ZOM } }
+		province_control_days = 730
+		has_province_modifier = zombie_outbreak
+		controlled_by = REB
+		exists = ZOM
+		ZOM = {
+			has_country_modifier = accepts_new_provinces
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 10
+		modifier = {
+			factor = 0.75
+			any_neighbor_province = {
+				has_province_modifier = zombie_outbreak
+			}
+		}
+		modifier = {
+			factor = 0.75
+			has_empty_adjacent_province = yes
+		}
+
+		
+	}
+
+	option = {
+		name = "Uh oh."
+		any_pop = {
+			reduce_pop = 0.4
+			militancy = 8
+			consciousness = -3
+		}
+		add_core = THIS
+		owner = { prestige = -3 }
+		life_rating = -10
+		change_controller = ZOM
+		secede_province = ZOM
+		ZOM = {
+			remove_country_modifier = do_not_annex
+			add_country_modifier = {
+				name = do_not_annex
+				duration = 31
+			}
+		}
+	}
+}
+
+country_event = { #note, this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
+	id = 123456101
+	title = "EVTNAME123456101"
+	desc = "EVTDESC123456101"
+
+	trigger = {
+		exists = yes
+		NOT = { exists = ZOM }
+		any_owned_province = {
+			province_control_days = 730
+			has_province_modifier = zombie_outbreak
+			controlled_by = REB
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 10
+	}
+
+	option = {
+		name = "Uh oh."
+		random_owned = {
+			limit = {
+				province_control_days = 730
+				has_province_modifier = zombie_outbreak
+				controlled_by = REB
+			}
+			any_pop = {
+				reduce_pop = 0.4
+				militancy = 8
+				consciousness = -3
+			}
+			add_core = THIS
+			owner = { prestige = -3 }
+			life_rating = -10
+			change_controller = ZOM
+			secede_province = ZOM
+		}
+		ZOM = {
+			remove_country_modifier = do_not_annex
+			remove_country_modifier = accepts_provinces
+			add_country_modifier = {
+				name = do_not_annex
+				duration = 30
+			}
+			country_event = { id = 123456202 days = 31 }
+		}
+	}
+}
+
+country_event = {
+	id = 123456200
+	title = "EVTNAME123456200"
+	desc = "EVTDESC123456200"
+	
+	trigger = {
+		OR = {
+			AND = { exists = yes tag = ZOM NOT = { has_country_modifier = do_not_annex } year = 1841 }
+			AND = { OR = { NOT = { total_pops = 10 } } NOT = { tag = JAN } ai = yes }
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "OK"
+		any_owned_province = {
+			change_controller = THIS
+		}
+		FROM = { inherit = THIS }
+	}
+}
+
+country_event = {
+	id = 123456203
+	title = "EVTNAME123456201"
+	desc = "EVTDESC123456201"
+	
+	trigger = {
+		tag = ZOM
+		has_country_modifier = accepts_new_provinces
+		OR = {
+			num_of_cities = 200 #75
+			war = yes #it's probably best to also suspend province defection to ZOM if ZOM is at war with some other country
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "OK"
+		remove_country_modifier = accepts_new_provinces
+	}
+}
+
+country_event = {
+	id = 123456202
+	title = "Zombieland will now accept new provinces"
+	desc = "Zombieland will now accept new provinces"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "OK"
+		add_country_modifier = {
+			name = accepts_new_provinces
+			duration = -1
+		}
+	}
+}
