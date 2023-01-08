@@ -419,14 +419,27 @@
 							region = USA_78
 							region = USA_81
 							region = USA_91
+							region = USA_111
+							region = USA_116
 						}
 					}
 					USA_78 = { add_core = UOR } # Washington
 					USA_81 = { add_core = UOR } # Oregon
 					USA_91 = { add_core = UOR } # Idaho
-					111 = { add_core = UOR } # Wyoming except what is part of Louisiana
-					113 = { add_core = UOR } # Wyoming except what is part of Louisiana
-					114 = { add_core = UOR } # Montana except what is part of Louisiana
+					any_owned = {
+						limit = {
+							region = USA_111 # Wyoming
+							NOT = { OR = { is_core = TEX is_core = ULA province_id = 110 } } #110 goes to DES and it may not have a core on it
+						}
+						add_core = UOR
+					}
+					any_owned = {
+						limit = {
+							region = USA_116 # Montana
+							NOT = { is_core = ULA }
+						}
+						add_core = UOR
+					}
 					UOR = { all_core = { remove_core = USA remove_core = DES } }
 				}
 				random_owned = {
@@ -439,11 +452,28 @@
 				}
 			## Deseret ##
 				random_owned = {
-					limit = { region = MEX_97 }
+					limit = { 
+						OR = { 
+							region = MEX_97 
+							region = USA_106
+							region = USA_111
+						}
+					}
 					MEX_97 = { add_core = DES } # Utah
-					110 = { add_core = DES } # The remaining part of Wyoming
-					108 = { add_core = DES } # Colorado except what is part of Texas
-					135 = { add_core = DES } # Colorado except what is part of Texas
+					any_owned = {
+						limit = {
+							region = USA_106 # Colorado
+							NOT = { OR = { is_core = TEX is_core = ULA } }
+						}
+						add_core = DES
+					}
+					any_owned = {
+						limit = {
+							region = USA_111 #Wyoming
+							NOT = { OR = { is_core = TEX is_core = ULA is_core = UOR } }
+						}
+						add_core = DES
+					}
 					DES = { all_core = { remove_core = USA } }
 				}
 				random_owned = {
