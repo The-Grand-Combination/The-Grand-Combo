@@ -1,3 +1,3 @@
 name = "TGC Submod - Content Creator mode"
-path = "mod/TGCNoSwastikas"
+path = "mod/TGCStreamerMode"
 dependencies = { "The Grand Combination" }
