@@ -1,0 +1,744 @@
+political_decisions = {
+
+	## General mechanics ##
+
+	#Desc: Whoever owns the Martin Garcia Island can set up special tariffs and restrictions to the Plata River
+	setup_la_plata_policy = {
+		picture = map_plata_river
+		potential = {
+			owns = 3591
+			capital_scope = {
+				continent = south_america
+			}
+			NOT = {
+				OR = {
+					has_country_modifier = la_plata_open
+					has_country_modifier = light_la_plata_restrictions
+					has_country_modifier = medium_la_plata_restrictions
+					has_country_modifier = heavy_la_plata_restrictions
+					has_country_modifier = la_plata_closed
+				}
+				OR = {
+					has_global_flag = la_plata_opened_by_foreign
+					has_global_flag = la_plata_closed_by_foreign
+				}
+			}
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			set_country_flag = setting_la_plata_policy
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Desc: Whoever owns Martin Garcia and has already a navigation policy set up, can change it
+	change_la_plata_policy = {
+		picture = map_plata_river
+		potential = {
+			owns = 3591
+			capital_scope = {
+				continent = south_america
+			}
+			NOT = {
+				OR = {
+					has_global_flag = la_plata_opened_by_foreign
+					has_global_flag = la_plata_closed_by_foreign
+				}
+			}
+			OR = {
+				has_country_modifier = la_plata_open
+				has_country_modifier = light_la_plata_restrictions
+				has_country_modifier = medium_la_plata_restrictions
+				has_country_modifier = heavy_la_plata_restrictions
+				has_country_modifier = la_plata_closed
+			}
+		}
+
+		allow = {
+			war = no
+		}
+
+		effect = {
+			set_country_flag = changing_la_plata_policy
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Desc: Countries with free trade can open the Plata River to all countries, boosts relations with GPs and lowers infamy
+	open_la_plata = {
+		picture = la_plata_open
+		potential = {
+			OR = {
+				has_country_flag = setting_la_plata_policy
+				has_country_flag = changing_la_plata_policy
+				has_country_modifier = light_la_plata_restrictions
+			}
+		}
+
+		allow = {	#COLDSLAV NOTE: Rework trade policies?
+			OR = {
+				trade_policy = free_trade
+				ruling_party_ideology = liberal
+				ruling_party_ideology = anarcho_liberal
+			}
+		}
+
+		effect = {
+			remove_country_modifier = light_la_plata_restrictions
+			add_country_modifier = { name = la_plata_open duration = -1 }
+			badboy = -5
+			prestige_factor = 0.01
+			any_country = {
+				limit = {
+					is_greater_power = yes
+				}
+				relation = {
+					who = THIS
+					value = 15
+				}
+			}
+			any_country = {
+				limit = {
+					OR = {
+						trade_policy = free_trade
+						ruling_party_ideology = liberal
+						ruling_party_ideology = anarcho_liberal
+					}
+				}
+				relation = {
+					who = THIS
+					value = -30
+				}
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	#Desc: Countries with free trade can apply light restrictions to La Plata
+	apply_light_plata_restrictions = {
+		picture = map_plata_river
+		potential = {
+			OR = {
+				has_country_flag = setting_la_plata_policy
+				has_country_flag = changing_la_plata_policy
+			}
+		}
+
+		allow = {	#COLDSLAV NOTE: Rework trade policies?
+			OR = {
+				trade_policy = free_trade
+				ruling_party_ideology = liberal
+				ruling_party_ideology = anarcho_liberal
+			}
+		}
+
+		effect = {
+			remove_country_modifier = la_plata_open
+			remove_country_modifier = medium_la_plata_restrictions
+			remove_country_modifier = heavy_la_plata_restrictions
+			remove_country_modifier = la_plata_closed
+			add_country_modifier = { name = light_la_plata_restrictions duration = -1 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Desc: Countries with free trade and protectionism can apply moderate restrictions to La Plata
+	apply_moderate_plata_restrictions = {
+		picture = map_plata_river
+		potential = {
+			OR = {
+				has_country_flag = setting_la_plata_policy
+				has_country_flag = changing_la_plata_policy
+			}
+		}
+
+		allow = {	#COLDSLAV NOTE: Rework trade policies?
+			OR = {
+				trade_policy = free_trade
+				trade_policy = protectionism
+				ruling_party_ideology = liberal
+				ruling_party_ideology = conservative
+			}
+		}
+
+		effect = {
+			remove_country_modifier = la_plata_open
+			remove_country_modifier = light_la_plata_restrictions
+			remove_country_modifier = heavy_la_plata_restrictions
+			remove_country_modifier = la_plata_closed
+			add_country_modifier = { name = medium_la_plata_restrictions duration = -1 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Desc: Countries with protectionism can apply heavy restrictions to La Plata
+	apply_heavy_plata_restrictions = {
+		picture = map_plata_river
+		potential = {
+			OR = {
+				has_country_flag = setting_la_plata_policy
+				has_country_flag = changing_la_plata_policy
+			}
+		}
+
+		allow = {	#COLDSLAV NOTE: Rework trade policies?
+			OR = {
+				trade_policy = protectionism
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+			}
+		}
+
+		effect = {
+			remove_country_modifier = la_plata_open
+			remove_country_modifier = light_la_plata_restrictions
+			remove_country_modifier = medium_la_plata_restrictions
+			remove_country_modifier = la_plata_closed
+			add_country_modifier = { name = heavy_la_plata_restrictions duration = -1 }
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Desc: Countries with protectionism can close the Plata River to all countries, worsens relations with GPs and increases infamy but boosts local production
+	close_la_plata = {
+		picture = la_plata_closed
+		potential = {
+			OR = {
+				has_country_flag = setting_la_plata_policy
+				has_country_flag = changing_la_plata_policy
+				has_country_modifier = heavy_la_plata_restrictions
+			}
+		}
+
+		allow = {	#COLDSLAV NOTE: Rework trade policies?
+			OR = {
+				trade_policy = protectionism
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+				ruling_party_ideology = fascist
+			}
+		}
+
+		effect = {
+			remove_country_modifier = heavy_la_plata_restrictions
+			add_country_modifier = { name = la_plata_closed duration = -1 }
+			badboy = 5
+			prestige_factor = -0.01
+			any_country = {
+				limit = {
+					is_greater_power = yes
+				}
+				relation = {
+					who = THIS
+					value = -20
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	ask_for_help_war = {
+		picture = belgrano_tucuman
+		potential = {
+			has_country_modifier = delegating_diplomacy
+			NOT = {
+				has_country_flag = calling_for_help
+			}
+			war_countries = {
+				NOT = {
+					OR = {
+						AND = {
+							has_country_flag = the_centralization_debate
+							has_country_modifier = delegating_diplomacy
+						}
+						AND = {
+							has_country_flag = the_centralization_debate
+							has_country_modifier = diplomatic_delegate
+						}
+					}
+				}
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = calling_for_help
+		}
+	}
+
+	call_provinces_to_war = {
+		picture = belgrano_tucuman
+		potential = {
+			has_country_modifier = diplomatic_delegate
+			has_country_flag = member_called_for_help
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			random_country = {
+				any_country = {
+					limit = {
+						has_country_modifier = delegating_diplomacy
+						NOT = {
+							OR = {
+								vassal_of = THIS
+								is_vassal = yes
+							}
+						}
+					}
+					prestige = 1
+				}
+				any_country = { #puppets of the calling country will be automatically called into the war
+					limit = {
+						has_country_modifier = delegating_diplomacy
+						vassal_of = THIS
+					}
+					prestige = 1
+				}
+				any_country = { #Countries with more influence than the calling country will be able to circumvent the force-join
+					limit = {
+						has_country_modifier = delegating_diplomacy
+						NOT = {
+							OR = {
+								AND = {
+									THIS = {
+										has_country_modifier = extremely_high_influential_member
+									}
+									has_country_modifier = maximum_influential_member
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = very_high_influential_member
+									}
+									OR = {
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = high_influential_member
+									}
+									OR = {
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = mildly_high_influential_member
+									}
+									OR = {
+										has_country_modifier = high_influential_member
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = mildly_influential_member
+									}
+									OR = {
+										has_country_modifier = mildly_high_influential_member
+										has_country_modifier = high_influential_member
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = mildly_low_influential_member
+									}
+									OR = {
+										has_country_modifier = mildly_influential_member
+										has_country_modifier = mildly_high_influential_member
+										has_country_modifier = high_influential_member
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = low_influential_member
+									}
+									OR = {
+										has_country_modifier = mildly_low_influential_member
+										has_country_modifier = mildly_influential_member
+										has_country_modifier = mildly_high_influential_member
+										has_country_modifier = high_influential_member
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = very_low_influential_member
+									}
+									OR = {
+										has_country_modifier = low_influential_member
+										has_country_modifier = mildly_low_influential_member
+										has_country_modifier = mildly_influential_member
+										has_country_modifier = mildly_high_influential_member
+										has_country_modifier = high_influential_member
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+								AND = {
+									THIS = {
+										has_country_modifier = extremely_low_influential_member
+									}
+									OR = {
+										has_country_modifier = extremely_low_influential_member
+										has_country_modifier = low_influential_member
+										has_country_modifier = mildly_low_influential_member
+										has_country_modifier = mildly_influential_member
+										has_country_modifier = mildly_high_influential_member
+										has_country_modifier = high_influential_member
+										has_country_modifier = very_high_influential_member
+										has_country_modifier = extremely_high_influential_member
+										has_country_modifier = maximum_influential_member
+									}
+								}
+							}
+						}
+					}
+					prestige = 1
+				}
+			}
+		}
+	}
+
+	#Desc: You can close a university if the province has enough consciousness, and liberals, boosts influence a lot but makes liberals very angry
+	close_university = {
+		picture = gtfo
+		potential = {
+			OR = {
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+				any_owned_province = {
+					has_building = university
+				}
+			}
+		}
+		allow = {
+			any_owned_province = {
+				average_consciousness = 5.5
+				any_pop = {
+					strata = middle
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_ideology = anarcho_liberal
+					}
+				}
+			}
+		}
+		effect = {
+			country_event = 548231
+		}
+	}
+
+	#Desc: Countries/provinces without an official constitution can create one #COLDSLAV NOTE: Make mechanic available for all countries?
+	write_a_constitution = {
+		picture = constitution
+		potential = {
+			OR = {
+				has_country_flag = no_constitution
+				has_country_flag = provisional_constitution
+			}
+			NOT = {
+				has_country_flag = writing_constitution
+			}
+		}
+		allow = {
+			OR = {
+				has_country_flag = new_coup_government
+				has_country_flag = constitutionalist_movement
+				has_country_flag = government_wants_constitution
+				AND = {
+					political_reform_want = 0.55
+					social_reform_want = 0.25
+				}
+			}
+		}
+		effect = {
+			set_country_flag = writing_constitution
+			any_pop = {
+				limit = {
+					pop_majority_ideology = reactionary
+				}
+				militancy = 6
+			}
+		}
+	}
+
+	#Desc: Countries that already have a constitution can write a new one given certain circumstances
+	write_a_new_constitution = {
+		picture = constitution
+		potential = {
+			OR = {
+				AND = {
+					has_country_flag = has_constitution
+					has_country_flag = new_coup_government
+				}
+				AND = {
+					has_country_flag = has_constitution
+					has_country_flag = constitutionalist_movement
+				}
+				AND = {
+					has_country_flag = has_constitution
+					has_country_flag = government_wants_constitution
+				}
+			}
+			NOT = {
+				has_country_flag = recently_written_constitution
+			}
+		}
+		
+		allow = {
+			political_reform_want = 0.5
+			social_reform_want = 0.25
+		}
+		
+		effect = {
+			set_country_flag = writing_new_constitution
+			any_pop = {
+				limit = {
+					pop_majority_ideology = reactionary
+				}
+				militancy = 6
+			}
+		}
+	}
+
+	#Desc: Countries that already have a constitution can suspend it given certain circumstances
+	suspend_constitution = {
+		picture = constitution
+		potential = {
+			OR = {
+				has_country_flag = has_constitution
+				AND = {
+					has_country_flag = has_constitution
+					has_country_flag = constitutionalist_movement
+					militancy = 6
+				}
+				AND = {
+					has_country_flag = has_constitution
+					has_country_flag = government_wants_constitution
+					any_pop = {
+						OR = {
+							type = aristocrats
+							type = bureaucrats
+						}
+						militancy = 4
+						political_reform_want = 0.7
+					}
+				}
+			}
+		}
+		allow = {
+			political_reform_want = 0.4
+		}
+		effect = {
+			set_country_flag = constitution_suspended
+		}
+	}
+
+	#Desc: Sets up different land reforms and policies
+	land_reforms_setup = {
+		picture = land_grant
+		potential = {
+		}
+		allow = {
+			any_owned_province = {
+				owned_by = THIS
+				has_province_modifier = recently_colonized_province
+			}
+		}
+		effect = {
+			set_country_flag = land_reform_setup
+		}
+	}
+
+	#Desc: Set up the land prices
+	land_policy_setup_price = {
+		picture = land_grant
+		potential = {
+			has_country_flag = established_colonial_office
+			has_country_flag = land_reform_setup
+		}
+		allow = {
+		}
+		effect = {
+			prestige = 1
+		}
+	}
+
+	#Desc: Set up the land sizes
+	land_policy_setup_size = {
+		picture = land_grant
+		potential = {
+			has_country_flag = established_colonial_office
+			has_country_flag = land_reform_setup
+		}
+		allow = {
+		}
+		effect = {
+			prestige = 1
+		}
+	}
+
+	#Desc: Reform the haciendas
+	land_reform_hacienda = {
+		picture = estancia
+		potential = {
+			has_country_flag = land_reform_setup
+			OR = {
+				ruling_party_ideology = anarcho_liberal
+				ruling_party_ideology = communist
+				ruling_party_ideology = socialist
+			}
+		}
+		allow = {
+		}
+		effect = {
+			prestige = 1
+		}
+	}
+	#Desc: Recently colonized provinces with mine RGO can be granted to boost immigration and production
+	give_mine_land_grant = {
+		picture = land_grant
+		potential = {
+			has_country_flag = established_colonial_office
+		}
+		allow = {
+			any_owned_province = {
+				owned_by = THIS
+				OR = {
+					trade_goods = coal
+					trade_goods = sulphur
+					trade_goods = iron
+					trade_goods = oil
+					trade_goods = precious_metal
+					trade_goods = precious_goods
+				}
+				has_province_modifier = recently_colonized_province
+			}
+		}
+		effect = {
+			random_owned = {
+				limit = {
+					has_province_modifier = recently_colonized_province
+				}
+				add_province_modifier = { name = mine_land_grant duration = 3650 }
+			}
+		}
+	}
+
+	## Caudillo Content ##
+
+	#Desc: Caudillos bordering other non-ARC countries can ask for assistance
+	province_ask_for_help_outside = {
+		picture = arc_talks
+		potential = {
+			OR = {
+				has_country_modifier = diplomatic_delegate
+				has_country_modifier = delegating_diplomacy
+			}
+			any_neighbor_country = {
+				NOT = {
+					OR = {
+						has_country_modifier = diplomatic_delegate
+						has_country_modifier = delegating_diplomacy
+					}
+				}
+				NOT = {
+					relation = { who = THIS value = -30 }
+				}
+			}
+		}
+		allow = {
+			OR = {
+				AND = {
+					check_variable = {
+						which = influence
+						value = 60
+					}
+					relation = { who = THIS value = 50 }
+				}
+				AND = {
+					check_variable = {
+						which = influence
+						value = 80
+					}
+					relation = { who = THIS value = 30 }
+				}
+			}
+		}
+		effect = {
+			random_country = {
+				any_country = {
+					limit = {
+						NOT = {
+							OR = {
+								has_country_modifier = diplomatic_delegate
+								has_country_modifier = delegating_diplomacy
+							}
+						}
+					}
+					prestige = 1
+				}
+			}
+		}
+	}
+
+	#Desc: Provinces with charismatic or influential leaders can conspire to assassinate neighboring enemy leaders
+	kill_enemy_leader = {
+		picture = arc_death
+		potential = {
+			OR = {
+				has_country_flag = charismatic_leader
+				has_country_flag = influential_leader
+			}
+		}
+		
+		allow = {
+			NOT = {
+				prestige = 0
+			}
+		}
+		
+		effect = {
+			any_pop = {
+				limit = {
+					location = {
+						NOT = {
+							is_capital = yes
+						}
+					}
+				}
+				militancy = 10
+			}
+		}
+	}
+}
