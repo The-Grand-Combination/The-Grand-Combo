@@ -1,0 +1,3386 @@
+#### Flavor and mechanics for both provinces of the Argentine Confederation and the ARC Tag ####
+
+#desc: The Centralization Debate, similar set up event to the Slavery Debate in the US
+	country_event = {
+		id = 49600
+		title = "EVTDESC49600"
+		desc = "EVTDESC49600"
+		picture = federalism_vs_unitarism
+		
+		fire_only_once = yes
+
+		immediate = {
+			set_country_flag = the_centralization_debate
+		}
+
+		option = {
+			name = EVTOPTA49600
+			
+			add_country_modifier = { name = the_centralization_debate_modifier duration = -1 }
+		}
+	}
+
+### Generic Events ###
+
+## Caudillo Influence Mechanic ##
+
+#desc: Federalist clubs and leagues (For unitarian and moderate-ruled provinces)
+	province_event = {
+		id = 49601
+		title = "EVTNAME49601"
+		desc = "EVTDESC49601"
+
+		allow_multiple_instances = yes
+
+		trigger = {
+			owner = {
+				OR = {
+					has_country_modifier = diplomatic_delegate
+					has_country_modifier = delegating_diplomacy
+					has_country_flag = the_centralization_debate
+				}
+				NOT = { 
+					ruling_party = ARG_conservative
+				}
+				NOT = { has_province_modifier = federalist_ideas_spread }
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 36
+			modifier = {
+				factor = 0.5
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					pop_majority_issue = federalism
+					consciousness = 3
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					pop_majority_ideology = conservative
+					consciousness = 3
+				}
+			}
+			modifier = {
+				factor = 1.2
+				owner = {
+					ruling_party = ARG_conservative_1 
+				}
+			}
+			modifier = {
+				factor = 1.8
+				owner = {
+					has_country_modifier = pro_government_organizations
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49601" #Promote their ideas
+			
+			add_province_modifier = { name = federalist_ideas_spread duration = 1000 }
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_liberal_1
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 10
+							}
+							check_variable = {
+								which = influence
+								value = 5
+							}
+						}
+					}
+					change_variable = { 
+						which = influence 
+						value = -10
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_liberal
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 20
+							}
+							check_variable = {
+								which = influence
+								value = 15
+							}
+							check_variable = {
+								which = influence
+								value = 10
+							}
+							check_variable = {
+								which = influence
+								value = 5
+							}
+						}
+					}
+					change_variable = { 
+						which = influence 
+						value = -20
+					}
+				}
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_issue = federalism
+					}
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -0.5
+				consciousness = 0.7
+			}
+
+			any_pop = {
+				limit = {
+					literacy = 0.05
+				}
+				ideology = {
+					factor = 0.05
+					value = conservative
+				}
+				move_issue_percentage = {
+					from = unitary
+					to = federalism
+					value = 0.1
+				}
+				dominant_issue = {
+					value = federalism
+					factor = 0.1
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = clergymen
+					pop_majority_ideology = conservative
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -2
+				consciousness = 1.5
+			}
+			
+			any_pop = {
+				limit = {
+					type = officers
+					pop_majority_ideology = conservative
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -1.5
+				consciousness = 0.5
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49601" #Show no interest
+
+			add_province_modifier = { name = federalist_ideas_spread duration = 700 }
+
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 5
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = -5
+					}
+				}
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_issue = federalism
+					}
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -0.2
+				consciousness = 0.3
+			}
+
+			any_pop = {
+				limit = {
+					literacy = 0.05
+				}
+				ideology = {
+					factor = 0.02
+					value = conservative
+				}
+				move_issue_percentage = {
+					from = unitary
+					to = federalism
+					value = 0.05
+				}
+				dominant_issue = {
+					value = federalism
+					factor = 0.05
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = clergymen
+					pop_majority_ideology = conservative
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -1
+				consciousness = 0.8
+			}
+			
+			any_pop = {
+				limit = {
+					type = officers
+					pop_majority_ideology = conservative
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -1
+				consciousness = 0.3
+			}
+		}
+		
+		option = {
+			name = "EVTOPTC49601" #Repress their ideas
+
+			add_province_modifier = {
+				name = federalist_ideas_spread
+				duration = 300
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 100
+							}
+							check_variable = {
+								which = influence
+								value = 95
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 10
+					}
+				}
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_issue = federalism
+					}
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					militancy = 1.5
+					consciousness = 1
+				}
+			}
+
+			any_pop = {
+				limit = {
+					literacy = 0.05
+				}
+				ideology = {
+					factor = -0.05
+					value = conservative
+				}
+				move_issue_percentage = {
+					from = federalism
+					to = unitary
+					value = 0.05
+				}
+				dominant_issue = {
+					value = unitary
+					factor = 0.08
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = clergymen
+					pop_majority_ideology = conservative
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					militancy = 1
+					consciousness = 1.6
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = officers
+					pop_majority_ideology = conservative
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = 0.5
+				consciousness = 2
+			}
+		}
+	}
+
+	#desc: Unitarian clubs and leagues (For federalist and moderate-ruled countries)
+	province_event = {
+		id = 49602
+		title = "EVTNAME49602"
+		desc = "EVTDESC49602"
+
+		allow_multiple_instances = yes
+
+		trigger = {
+			owner = {
+				has_country_flag = the_centralization_debate
+				NOT = {
+					ruling_party = ARG_liberal
+				}
+			}
+			NOT = {
+				has_province_modifier = unitarian_ideas_spread
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 36
+			modifier = {
+				factor = 0.5
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					pop_majority_issue = unitary
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					pop_majority_ideology = liberal
+					consciousness = 3
+				}
+			}
+			modifier = {
+				factor = 1.2
+				owner = {
+					ruling_party = ARG_liberal_1
+				}
+			}
+			modifier = {
+				factor = 1.8
+				owner = {
+					has_country_modifier = pro_government_organizations
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49602" #Promote their ideas
+			
+			add_province_modifier = {
+				name = unitarian_ideas_spread
+				duration = 1000
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_conservative_1
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 10
+							}
+							check_variable = {
+								which = influence
+								value = 5
+							}
+						}
+					}
+					change_variable = { 
+						which = influence 
+						value = -10
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_conservative
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 20
+							}
+							check_variable = {
+								which = influence
+								value = 15
+							}
+							check_variable = {
+								which = influence
+								value = 10
+							}
+							check_variable = {
+								which = influence
+								value = 5
+							}
+						}
+					}
+					change_variable = { 
+						which = influence 
+						value = -20
+					}
+				}
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_issue = unitary
+					}
+					NOT = {
+						is_culture_group = native_american
+					}
+				}
+				militancy = -0.5
+				consciousness = 0.7
+			}
+
+			any_pop = {
+				limit = {
+					literacy = 0.05
+				}
+				ideology = {
+					factor = 0.05
+					value = liberal
+				}
+				move_issue_percentage = {
+					from = federalism
+					to = unitary
+					value = 0.1
+				}
+				dominant_issue = {
+					value = unitary
+					factor = 0.1
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = clergymen
+					pop_majority_ideology = liberal
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -2
+				consciousness = 1.5
+			}
+			
+			any_pop = {
+				limit = {
+					type = officers
+					pop_majority_ideology = liberal
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -1.5
+				consciousness = 0.5
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49602" #Show no interest
+
+			add_province_modifier = {
+				name = unitarian_ideas_spread
+				duration = 700
+			}
+
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 5
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = -5
+					}
+				}
+			}
+
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_issue = unitary
+					}
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -0.2
+				consciousness = 0.3
+			}
+
+			any_pop = {
+				limit = {
+					literacy = 0.05
+				}
+				ideology = {
+					factor = 0.02
+					value = liberal
+				}
+				move_issue_percentage = {
+					from = federalism
+					to = unitary
+					value = 0.05
+				}
+				dominant_issue = {
+					value = unitary
+					factor = 0.05
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = clergymen
+					pop_majority_ideology = liberal
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -1
+				consciousness = 0.8
+			}
+			
+			any_pop = {
+				limit = {
+					type = officers
+					pop_majority_ideology = liberal
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = -1
+				consciousness = 0.3
+			}
+		}
+		
+		option = {
+			name = "EVTOPTC49602" #Repress their ideas
+
+			add_province_modifier = {
+				name = unitarian_ideas_spread
+				duration = 300
+			}
+
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 100
+							}
+							check_variable = {
+								which = influence
+								value = 95
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 10
+					}
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_issue = unitary
+					}
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					militancy = 1.5
+					consciousness = 1
+				}
+			}
+
+			any_pop = {
+				limit = {
+					literacy = 0.05
+				}
+				ideology = {
+					factor = -0.05
+					value = liberal
+				}
+				move_issue_percentage = {
+					from = unitary
+					to = federalism
+					value = 0.05
+				}
+				dominant_issue = {
+					value = federalism
+					factor = 0.08
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = clergymen
+					pop_majority_ideology = liberal
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					militancy = 1
+					consciousness = 1.6
+				}
+			}
+			
+			any_pop = {
+				limit = {
+					type = officers
+					pop_majority_ideology = liberal
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				militancy = 0.5
+				consciousness = 2
+			}
+		}
+	}
+
+#desc: The Sons of May, an intellectual movement critical of both unitarism and federalism, also a double-edged sword
+	country_event = {
+		id = 49603
+		title = "EVTNAME49603"
+		desc = "EVTDESC49603"
+		picture = literary_hall
+
+		trigger = {
+			has_country_flag = the_centralization_debate
+			any_owned_province = {
+				total_pops = 20000
+			}
+			NOT = {
+				has_global_flag = sons_of_may_started
+				has_country_flag = sons_of_may_origin
+				any_pop = {
+					type = clergymen
+					pop_majority_ideology = liberal
+					consciousness = 2
+				}
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 36
+			modifier = {
+				factor = 0.5
+				any_pop = {
+					OR = {
+						type = clergymen
+						strata = middle
+					}
+					pop_majority_ideology = liberal
+					consciousness = 3.5
+				}
+			}
+			modifier = {
+				factor = 0.6
+				upper_house = { ideology = reactionary value = 0.2 }
+			}
+			modifier = {
+				factor = 0.7
+				upper_house = { ideology = liberal value = 0.25 }
+			}
+			modifier = {
+				factor = 0.8
+				OR = {
+					any_pop = {
+						strata = rich
+						pop_majority_issue = federalism
+					}
+					any_pop = {
+						strata = rich
+						pop_majority_ideology = reactionary
+						militancy = 2.5
+					}
+				}
+			}
+			modifier = {
+				factor = 0.9
+				classicism_n_early_romanticism = 1
+			}
+			modifier = {
+				factor = 1.4
+				any_pop = {
+					OR = {
+						strata = middle
+						type = clergymen
+					}
+					pop_majority_issue = unitary
+				}
+			}
+			modifier = {
+				factor = 1.6
+				has_country_modifier = pro_government_militia
+			}
+		}
+
+		immediate = {
+			set_country_flag = sons_of_may_origin
+			set_global_flag = sons_of_may_started
+		}
+
+		option = {
+			name = "EVTOPTA49603" #Support them: good if liberals are getting too angry, bad if you need influence
+
+			random_country = {
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						OR = {
+							ruling_party_ideology = conservative
+							ruling_party_ideology = reactionary
+						}
+					}
+					change_variable = { which = influence value = -20 }
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								strata = rich
+								strata = poor
+							}
+						}
+						militancy = 1.5
+						consciousness = 2
+						ideology = {
+							factor = 0.02
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.03
+							value = conservative
+						}
+						ideology = {
+							factor = 0.03
+							value = reactionary
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								AND = {
+									strata = poor
+									NOT = {
+										agree_with_ruling_party = 0.25
+									}
+								}
+								type = clergymen
+								strata = middle
+								type = officers
+								type = soldiers
+							}
+						}
+						militancy = -0.5
+						consciousness = 1.5
+						ideology = {
+							factor = 0.05
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.07
+							value = reactionary
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						OR = {
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					change_variable = { which = influence value = -10 }
+					change_variable = { which = army_influence value = -10 }
+					any_pop = {
+						limit = {
+							OR = {
+								strata = rich
+								strata = middle
+								strata = poor
+								agree_with_ruling_party = 0.25
+							}
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								agree_with_ruling_party = 0.3
+							}
+						}
+						militancy = -1.5
+						consciousness = 1.5
+						ideology = {
+							factor = 0.05
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.04
+							value = conservative
+						}
+						ideology = {
+							factor = -0.09
+							value = reactionary
+						}
+						dominant_issue = {
+							value = unitary
+							factor = 0.06
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								strata = rich
+								strata = middle
+								strata = poor
+								NOT = {
+									agree_with_ruling_party = 0.25
+								}
+							}
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								NOT = {
+									agree_with_ruling_party = 0.3
+								}
+							}
+						}
+						militancy = 1
+						consciousness = 1.5
+						ideology = {
+							factor = -0.03
+							value = liberal
+						}
+						ideology = {
+							factor = 0.03
+							value = reactionary
+						}
+					}
+				}
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						OR = {
+							ruling_party = ARG_conservative
+							ruling_party = ARG_conservative_1
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					any_pop = {
+						limit = {
+							strata = poor
+							NOT = {
+								agree_with_ruling_party = 0.25
+							}
+							OR = {
+								type = clergymen
+								strata = middle
+								type = officers
+								type = soldiers
+							}
+						}
+						ideology = {
+							factor = 0.05
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.07
+							value = reactionary
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49603" #Pressure: Good for avoiding problems in the short term, but bad in the long run
+
+			random_country = {
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						OR = {
+							ruling_party = ARG_conservative
+							ruling_party = ARG_conservative_1
+						}
+					}
+					change_variable = { which = influence value = -10 }
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								strata = rich
+								strata = poor
+							}
+						}
+						militancy = 0.7
+						consciousness = 1
+						ideology = {
+							factor = 0.01
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.01
+							value = conservative
+						}
+						ideology = {
+							factor = 0.02
+							value = reactionary
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								AND = {
+									strata = poor
+									NOT = {
+										agree_with_ruling_party = 0.25
+									}
+								}
+								type = clergymen
+								strata = middle
+								type = officers
+								type = soldiers
+							}
+						}
+						militancy = -0.3
+						consciousness = 1
+						ideology = {
+							factor = 0.02
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.04
+							value = reactionary
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						OR = {
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					change_variable = { which = influence value = -5 }
+					change_variable = { which = army_influence value = -5 }
+					any_pop = {
+						limit = {
+							OR = {
+								strata = rich
+								strata = middle
+								strata = poor
+								agree_with_ruling_party = 0.25
+							}
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								agree_with_ruling_party = 0.3
+							}
+						}
+						militancy = -1
+						consciousness = 1
+						ideology = {
+							factor = 0.02
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.02
+							value = conservative
+						}
+						ideology = {
+							factor = -0.05
+							value = reactionary
+						}
+						dominant_issue = {
+							value = unitary
+							factor = 0.03
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								strata = rich
+								strata = middle
+								strata = poor
+								NOT = {
+									agree_with_ruling_party = 0.25
+								}
+							}
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								NOT = {
+									agree_with_ruling_party = 0.3
+								}
+							}
+						}
+						militancy = 0.5
+						consciousness = 1
+						ideology = {
+							factor = -0.02
+							value = liberal
+						}
+						ideology = {
+							factor = 0.02
+							value = reactionary
+						}
+					}
+				}
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						OR = {
+							ruling_party_ideology = conservative
+							ruling_party_ideology = liberal
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								AND = {
+									strata = poor
+									NOT = {
+										agree_with_ruling_party = 0.25
+									}
+								}
+								type = clergymen
+								strata = middle
+								type = officers
+								type = soldiers
+							}
+						}
+						ideology = {
+							factor = 0.02
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = -0.03
+							value = reactionary
+						}
+					}
+				}
+			}
+		}
+		
+		option = {
+			name = "EVTOPTC49603" #Repress their ideas: good for influence, but may lead to a surge in reactionism
+
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 100
+							}
+						}
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 100
+							}
+						}
+					}
+					change_variable = { which = influence value = 10 }
+					change_variable = { which = army_influence value = 5 }
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								strata = rich
+								strata = poor
+							}
+						}
+						militancy = -1.5
+						consciousness = -2
+						ideology = {
+							factor = -0.05
+							value = liberal
+						}
+						ideology = {
+							factor = 0.03
+							value = conservative
+						}
+						ideology = {
+							factor = 0.07
+							value = reactionary
+						}
+						dominant_issue = {
+							value = federalism
+							factor = 0.06
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								AND = {
+									strata = poor
+									NOT = {
+										agree_with_ruling_party = 0.25
+									}
+								}
+								type = clergymen
+								strata = middle
+								type = officers
+								type = soldiers
+							}
+						}
+						militancy = 1
+						consciousness = 2
+						ideology = {
+							factor = -0.05
+							value = liberal
+						}
+						ideology = {
+							factor = 0.02
+							value = reactionary
+						}
+						dominant_issue = {
+							value = federalism
+							factor = 0.06
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = {
+							check_variable = {
+								which = influence
+								value = 100
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 5
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = {
+							check_variable = {
+								which = army_influence
+								value = 100
+							}
+						}
+					}
+					change_variable = {
+						which = army_influence
+						value = 5
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = liberal
+					}
+					change_variable = { which = influence value = 10 }
+					change_variable = { which = army_influence value = 5 }
+					any_pop = {
+						limit = {
+							OR = {
+								agree_with_ruling_party = 0.25
+								strata = rich
+								strata = middle
+								strata = poor
+							}
+							OR = {
+								agree_with_ruling_party = 0.3
+								type = aristocrats
+								type = officers
+								type = soldiers
+							}
+						}
+						militancy = 2
+						consciousness = 2
+						ideology = {
+							factor = -0.01
+							value = liberal
+						}
+						ideology = {
+							factor = -0.07
+							value = conservative
+						}
+						ideology = {
+							factor = 0.02
+							value = reactionary
+						}
+						dominant_issue = {
+							value = unitary
+							factor = 0.06
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								strata = rich
+								strata = middle
+								strata = poor
+								NOT = {
+									agree_with_ruling_party = 0.25
+								}
+							}
+							OR = {
+								type = aristocrats
+								type = officers
+								type = soldiers
+								NOT = {
+									agree_with_ruling_party = 0.3
+								}
+							}
+						}
+						militancy = -1
+						consciousness = -1.5
+						ideology = {
+							factor = -0.03
+							value = liberal
+						}
+						ideology = {
+							factor = 0.04
+							value = reactionary
+						}
+						dominant_issue = {
+							value = unitary
+							factor = 0.03
+						}
+					}
+				}
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						is_ideology_enabled = anarcho_liberal
+						OR = {
+							ruling_party = ARG_conservative
+							ruling_party = ARG_conservative_1
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					any_pop = {
+						limit = {
+							OR = {
+								AND = {
+									strata = poor
+									NOT = {
+										agree_with_ruling_party = 0.25
+									}
+								}
+								type = clergymen
+								strata = middle
+								type = officers
+								type = soldiers
+							}
+						}
+						ideology = {
+							factor = -0.08
+							value = anarcho_liberal
+						}
+						ideology = {
+							factor = 0.07
+							value = reactionary
+						}
+						dominant_issue = {
+							value = federalism
+							factor = 0.06
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#desc: Federalist demonstration
+	province_event = {
+		id = 49604
+		title = "EVTNAME49604"
+		desc = "EVTDESC49604"
+
+		allow_multiple_instances = yes
+
+		trigger = {
+			owner = {
+				OR = {
+					has_country_modifier = diplomatic_delegate
+					has_country_modifier = delegating_diplomacy
+				}
+				NOT = {
+					ruling_party = ARG_conservative
+				}
+			}
+			NOT = {
+				has_province_modifier = unitarian_revolt
+				has_province_modifier = federalist_revolt
+				controlled_by = REB
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 4
+			modifier = {
+				factor = 0.3
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					conservative = 25
+					militancy = 2.5
+				}
+			}
+			modifier = {
+				factor = 0.5
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					conservative = 20
+					militancy = 2
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					conservative = 15
+					militancy = 1.5
+				}
+			}
+			modifier = {
+				factor = 1.2
+				ruling_party = ARG_liberal_1
+			}
+			modifier = {
+				factor = 1.3
+				owner = {
+					war_with = THIS
+				}
+			}
+			modifier = {
+				factor = 1.5
+				owner = {
+					NOT = {
+						average_militancy = 1
+					}
+				}
+			}
+		}
+
+		immediate = {
+			add_province_modifier = { name = federalist_revolt duration = 48 }
+		}
+
+		option = {
+			name = "EVTOPTA49604" #Try to negotiate
+
+			owner = {
+				change_variable = { which = army_influence value = 5 }
+				change_variable = { which = influence value = -5 }
+				any_pop = {
+					limit = {
+						type = officers
+						pop_majority_ideology = liberal
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					militancy = 1.5
+					consciousness = 1
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49604" #Repress
+
+			owner = {
+				change_variable = { which = army_influence value = 5 }
+				change_variable = { which = influence value = 5 }
+				any_pop = {
+					limit = {
+						type = officers
+						pop_majority_ideology = liberal
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					militancy = -1.5
+					consciousness = -1
+				}
+			}
+		}
+	}
+
+#desc: Unitarian demonstration
+	province_event = {
+		id = 49605
+		title = "EVTNAME49605"
+		desc = "EVTDESC49605"
+		
+		allow_multiple_instances = yes
+		
+		trigger = {
+			has_country_flag = the_centralization_debate
+			OR = {
+				has_country_modifier = diplomatic_delegate
+				has_country_modifier = delegating_diplomacy
+			}
+			NOT = { ruling_party = ARG_liberal }
+			NOT = {
+				has_province_modifier = unitarian_revolt
+				has_province_modifier = federalist_revolt
+				controlled_by = REB
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 4
+			modifier = {
+				factor = 0.3
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					liberal = 25
+					militancy = 2.5
+				}
+			}
+			modifier = {
+				factor = 0.5
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					liberal = 20
+					militancy = 2
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_pop = {
+					OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					liberal = 15
+					militancy = 1.5
+				}
+			}
+			modifier = {
+				factor = 1.2
+				ruling_party = ARG_liberal_1
+			}
+			modifier = {
+				factor = 1.3
+				owner = {
+					war_with = THIS
+				}
+			}
+			modifier = {
+				factor = 1.5
+				owner = {
+					NOT = {
+						average_militancy = 1
+					}
+				}
+			}
+		}
+		
+		immediate = {
+			add_province_modifier = { name = unitarian_revolt duration = 48 }
+		}
+		
+		option = {
+			name = "EVTOPTA49605" #Try to negotiate
+
+			owner = {
+				change_variable = { which = army_influence value = -5 }
+				change_variable = { which = influence value = -5 }
+				any_pop = {
+					limit = {
+						OR = {
+							type = officers
+							pop_majority_ideology = conservative
+							pop_majority_ideology = reactionary
+						}
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					militancy = 1.5
+					consciousness = 1
+				}
+			}
+		}
+		
+		option = {
+			name = "EVTOPTB49605" #Repress
+
+			owner = {
+				change_variable = { which = army_influence value = 5 }
+				change_variable = { which = influence value = 5 }
+				any_pop = {
+					limit = {
+						OR = {
+							type = officers
+							pop_majority_ideology = conservative
+							pop_majority_ideology = reactionary
+						}
+						OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+						}
+					}
+					militancy = -1.5
+					consciousness = -1
+				}
+			}
+		}
+	}
+
+#desc: Letting federalists spread propaganda may cause a chain of movements and dissent
+	country_event = {
+		id = 49606
+		title = "EVTNAME49606"
+		desc = "EVTDESC49606"
+		picture = rebellion
+
+		allow_multiple_instances = yes
+		
+		trigger = {
+			OR = {
+				has_country_modifier = federalist_ideas_spread
+				any_pop = {
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_ideology = reactionary
+						pop_majority_issue = federalism
+					}
+					militancy = 4
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 24
+			modifier = {
+				factor = 0.3
+				has_country_flag = anti_radical_movement
+				any_pop = {
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_issue = federalism
+					}
+					militancy = 4
+				}
+			}
+			modifier = {
+				factor = 0.5
+				any_owned_province = {
+					has_province_modifier = federalist_revolt
+					average_militancy = 3.5
+				}
+			}
+			modifier = {
+				factor = 0.6
+				any_pop = {
+					NOT = {
+						agree_with_ruling_party = 0.3
+					}
+					militancy = 3
+				}
+			}
+			modifier = {
+				factor = 1.3
+				any_owned_province = {
+					NOT = {
+						has_province_modifier = federalist_revolt
+					}
+				}
+			}
+			modifier = {
+				factor = 1.5
+				has_country_modifier = pro_government_organizations
+			}
+			modifier = {
+				factor = 1.7
+				has_country_modifier = pro_government_militia
+			}
+		}
+		
+		option = {
+			name = "EVTOPTA49606" #Appease
+			
+			any_pop = {
+				limit = {
+					pop_majority_ideology = conservative
+					pop_majority_issue = federalism
+				}
+				consciousness = 3
+				militancy = 1.5
+			}
+		}
+	}
+
+	#desc: High militancy and consciousness among federalist soldiers, officers and upper strata may cause a pronouncement/pronunciamiento
+	country_event = {
+		id = 49607
+		title = "EVTNAME49607"
+		desc = "EVTDESC49607"
+		picture = assassination
+		
+		trigger = {
+			OR = {
+				has_country_modifier = medium_army_influence
+				has_country_modifier = high_army_influence
+				has_country_modifier = very_high_army_influence
+			}
+			NOT = {
+				OR = {
+					election = yes
+					has_country_modifier = upper_house_election
+				}
+			}
+			OR = {
+				has_country_flag = the_centralization_debate
+				has_country_modifier = the_centralization_debate_modifier
+			}
+			OR = {
+				ruling_party = ARG_liberal
+				ruling_party = ARG_liberal_1
+				AND = {
+					any_pop = {
+						OR = {
+							type = officers
+							type = soldiers
+							type = aristocrats
+						}
+						pop_majority_issue = federalism
+						militancy = 7
+					}
+					any_pop = {
+						OR = {
+							type = officers
+							type = soldiers
+							type = aristocrats
+						}
+						pop_majority_issue = federalism
+						consciousness = 7
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 24
+			modifier = {
+				factor = 0.3
+				any_pop = {
+					OR = {
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_issue = federalism
+					}
+					militancy = 9
+				}
+			}
+			modifier = {
+				factor = 0.5
+				any_pop = {
+					OR = {
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+					OR = {
+						pop_majority_ideology = conservative
+						pop_majority_issue = federalism
+					}
+					militancy = 7
+				}
+			}
+			modifier = {
+				factor = 0.6
+				any_owned_province = {
+					has_province_modifier = federalist_revolt
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_pop = {
+					OR = {
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+					NOT = {
+						agree_with_ruling_party = 0.75
+					}
+					militancy = 5
+				}
+			}
+			modifier = {
+				factor = 1.3
+				any_owned_province = {
+					NOT = {
+						has_province_modifier = federalist_revolt
+						has_province_modifier = unitarian_revolt
+					}
+				}
+			}
+			modifier = {
+				factor = 1.5
+				has_country_modifier = pro_government_organizations
+			}
+			modifier = {
+				factor = 1.7
+				has_country_modifier = pro_government_militia
+			}
+		}
+		
+		option = {
+			name = "EVTOPTA49607" #Back down and resign
+
+			ruling_party_ideology = conservative
+			remove_country_modifier = term_of_office
+			add_country_modifier = { name = term_of_office duration = 730 }
+			
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party_ideology = conservative
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+							}
+						}
+						consciousness = -4
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+							}
+						}
+						consciousness = 3.5
+						militancy = 3
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							OR = {
+								pop_majority_ideology = liberal
+								pop_majority_issue = unitary
+							}
+						}
+						consciousness = -3
+						militancy = -2.5
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								pop_majority_ideology = liberal
+								pop_majority_issue = unitary
+							}
+						}
+						consciousness = 4
+						militancy = 5
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.2
+							}
+							pop_majority_ideology = reactionary
+						}
+						consciousness = -2
+						militancy = -2
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.2
+							pop_majority_ideology = reactionary
+						}
+						consciousness = 6
+						militancy = 5
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party_ideology = liberal
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							OR = {
+								pop_majority_ideology = liberal
+								pop_majority_issue = unitary
+							}
+						}
+						consciousness = -4
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								pop_majority_ideology = liberal
+								pop_majority_issue = unitary
+							}
+						}
+						consciousness = 3.5
+						militancy = 3
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+							}
+						}
+						consciousness = -3
+						militancy = -2.5
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+							}
+						}
+						consciousness = 4
+						militancy = 5
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.2
+							}
+							pop_majority_ideology = anarcho_liberal
+						}
+						consciousness = -2
+						militancy = -2
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.2
+							pop_majority_ideology = anarcho_liberal
+						}
+						consciousness = 6
+						militancy = 5
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49607" #Open room for negotiations, VERY bad for influence, prestige, and relations
+
+			set_country_flag = federalist_pronouncement_negotiations
+			change_variable = {
+				which = influence
+				value = -40
+			}
+			prestige_factor = -0.35
+			random_country = {
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						war_policy = jingoism
+						NOT = { tag = THIS }
+						THIS = {
+							has_country_flag = the_centralization_debate
+							ruling_party_ideology = conservative
+							war_policy = jingoism
+						}
+					}
+					relation = {
+						who = THIS
+						value = -150
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						war_policy = pro_military
+						NOT = { tag = THIS }
+						THIS = {
+							has_country_flag = the_centralization_debate
+							ruling_party_ideology = conservative
+							war_policy = jingoism
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						war_policy = jingoism
+						NOT = { tag = THIS }
+						THIS = {
+							has_country_flag = the_centralization_debate
+							ruling_party_ideology = conservative
+							war_policy = pro_military
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						war_policy = pro_military
+						NOT = { tag = THIS }
+						THIS = {
+							has_country_flag = the_centralization_debate
+							ruling_party_ideology = conservative
+							war_policy = pro_military
+						}
+					}
+					relation = {
+						who = THIS
+						value = -150
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = liberal
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = liberal
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = conservative
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = liberal
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = liberal
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = -150
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = reactionary
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = reactionary
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = -150
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = reactionary
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = anarcho_liberal
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = anarcho_liberal
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = -150
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = liberal
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = anarcho_liberal
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.5
+							}
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+							}
+						}
+						militancy = -2
+						consciousness = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.5
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+							}
+						}
+						militancy = 5
+						consciousness = 3
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.75
+							}
+							OR = {
+								pop_majority_ideology = liberal
+								pop_majority_issue = unitary
+							}
+						}
+						militancy = -1.6
+						consciousness = -2
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.75
+							OR = {
+								pop_majority_ideology = liberal
+								pop_majority_issue = unitary
+							}
+						}
+						militancy = 2.8
+						consciousness = 3.6
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.75
+							}
+							pop_majority_ideology = reactionary
+						}
+						militancy = -2
+						consciousness = -4
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.75
+							pop_majority_ideology = reactionary
+						}
+						militancy = 4.9
+						consciousness = 4.2
+					}
+				}
+			}
+		}
+		option = {
+			name = "EVTOPTA49607" #Oppose the pronouncement, good for relations, bad for stability
+
+		}
+	}
+
+#desc: High militancy and consciousness among unitarian soldiers, officers and upper strata may cause a pronouncement/pronunciamiento
+	country_event = {
+		id = 49608
+		title = "EVTNAME49608"
+		desc = "EVTDESC49608"
+		picture = assassination
+		
+		trigger = {
+			OR = {
+				has_country_modifier = medium_army_influence
+				has_country_modifier = high_army_influence
+				has_country_modifier = very_high_army_influence
+			}
+			NOT = {
+				OR = {
+					election = yes
+					has_country_modifier = upper_house_election
+				}
+			}
+			OR = {
+				has_country_flag = the_centralization_debate
+				has_country_modifier = the_centralization_debate_modifier
+			}
+			OR = {
+				ruling_party = ARG_conservative
+				ruling_party = ARG_conservative_1
+				OR = {
+					AND = {
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = unitary
+							militancy = 5
+						}
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = unitary
+							consciousness = 5
+						}
+					}
+					AND = {
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = federalism
+							militancy = 7
+						}
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = federalism
+							consciousness = 7
+						}
+					}
+				}
+			}
+			OR = {
+				ruling_party = ARG_liberal
+				ruling_party = ARG_liberal_1
+				OR = {
+					AND = {
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = federalism
+							militancy = 5
+						}
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = federalism
+							consciousness = 5
+						}
+					}
+					AND = {
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = unitary
+							militancy = 7
+						}
+						any_pop = {
+							OR = {
+								type = officers
+								type = soldiers
+								type = aristocrats
+							}
+							pop_majority_issue = unitary
+							consciousness = 7
+						}
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 24
+			modifier = {
+				factor = 0.3
+				OR = {
+					any_pop = {
+						OR = {
+							type = aristocrats
+							type = officers
+							type = soldiers
+						}
+						OR = {
+							pop_majority_ideology = conservative
+							pop_majority_issue = federalism
+						}
+						militancy = 9
+					}
+					any_pop = {
+						OR = {
+							type = aristocrats
+							type = officers
+							type = soldiers
+						}
+						OR = {
+							pop_majority_ideology = liberal
+							pop_majority_issue = unitary
+						}
+						militancy = 9
+					}
+				}
+			}
+			modifier = {
+				factor = 0.5
+				OR = {
+					any_pop = {
+						OR = {
+							type = aristocrats
+							type = officers
+							type = soldiers
+						}
+						OR = {
+							pop_majority_ideology = conservative
+							pop_majority_issue = federalism
+						}
+						militancy = 7
+					}
+					any_pop = {
+						OR = {
+							type = aristocrats
+							type = officers
+							type = soldiers
+						}
+						OR = {
+							pop_majority_ideology = liberal
+							pop_majority_issue = unitary
+						}
+						militancy = 7
+					}
+				}
+			}
+			modifier = {
+				factor = 0.6
+				any_owned_province = {
+					OR = {
+						has_province_modifier = federalist_revolt
+						has_province_modifier = unitarian_revolt
+					}
+				}
+			}
+			modifier = {
+				factor = 0.8
+				any_pop = {
+					OR = {
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+					NOT = {
+						agree_with_ruling_party = 0.3
+					}
+					militancy = 5
+				}
+			}
+			modifier = {
+				factor = 1.3
+				any_owned_province = {
+					NOT = {
+						has_province_modifier = federalist_revolt
+						has_province_modifier = unitarian_revolt
+					}
+				}
+			}
+			modifier = {
+				factor = 1.5
+				has_country_modifier = pro_government_organizations
+			}
+			modifier = {
+				factor = 1.7
+				has_country_modifier = pro_government_militia
+			}
+		}
+		
+		option = {
+			name = "EVTOPTA49608" #Back down and resign
+
+			
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+					}
+					ruling_party_ideology = liberal
+					remove_country_modifier = term_of_office
+					add_country_modifier = { name = term_of_office duration = 730 }
+				}
+				any_country = {
+					limit = {
+						OR = {
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					ruling_party_ideology = conservative
+					remove_country_modifier = term_of_office
+					add_country_modifier = { name = term_of_office duration = 730 }
+				}
+				any_country = {
+					limit = {
+						OR = {
+							ruling_party = ARG_conservative
+							ruling_party = ARG_conservative_1
+						}
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							pop_majority_ideology = conservative
+							pop_majority_issue = federalism
+						}
+						consciousness = -1.5
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							pop_majority_ideology = conservative
+							pop_majority_issue = federalism
+						}
+						consciousness = 4
+						militancy = 2
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.2
+							}
+							pop_majority_ideology = reactionary
+						}
+						consciousness = -1
+						militancy = -2
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.2
+							pop_majority_ideology = reactionary
+						}
+						consciousness = 5
+						militancy = 3
+					}
+				}
+				any_country = {
+					limit = {
+						OR = {
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							pop_majority_ideology = liberal
+							pop_majority_issue = unitary
+						}
+						consciousness = -1.5
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							pop_majority_ideology = liberal
+							pop_majority_issue = unitary
+						}
+						consciousness = 4
+						militancy = 2
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.2
+							}
+							pop_majority_ideology = anarcho_liberal
+						}
+						consciousness = -1.5
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.2
+							pop_majority_ideology = anarcho_liberal
+						}
+						consciousness = 5
+						militancy = 3
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49608" #Open room for negotiations, VERY bad for influence, prestige, and relations
+
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+					}
+					change_variable = {
+						which = influence
+						value = -40
+					}
+					prestige_factor = -0.35
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+					}
+					set_country_flag = unitarian_pronouncement_negotiations
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = conservative
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = -150
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = liberal
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = conservative
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+						NOT = { tag = THIS }
+						THIS = {
+							ruling_party_ideology = liberal
+							has_country_flag = the_centralization_debate
+						}
+					}
+					relation = {
+						who = THIS
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						has_country_flag = the_centralization_debate
+						ruling_party_ideology = conservative
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							OR = {
+								pop_majority_ideology = conservative
+								pop_majority_issue = federalism
+								AND = {
+									pop_majority_ideology = conservative
+									pop_majority_issue = jingoism
+								}
+							}
+						}
+						consciousness = -1.5
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							pop_majority_ideology = conservative
+							pop_majority_issue = federalism
+						}
+						consciousness = 4
+						militancy = 2
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.2
+							}
+							pop_majority_ideology = reactionary
+						}
+						consciousness = -1
+						militancy = -2
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.2
+							pop_majority_ideology = reactionary
+						}
+						consciousness = 5
+						militancy = 3
+					}
+				}
+				any_country = {
+					limit = {
+						OR = {
+							ruling_party = ARG_liberal
+							ruling_party = ARG_liberal_1
+						}
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.3
+							}
+							pop_majority_ideology = liberal
+							pop_majority_issue = unitary
+						}
+						consciousness = -1.5
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.3
+							pop_majority_ideology = liberal
+							pop_majority_issue = unitary
+						}
+						consciousness = 4
+						militancy = 2
+					}
+					any_pop = {
+						limit = {
+							NOT = {
+								agree_with_ruling_party = 0.2
+							}
+							pop_majority_ideology = anarcho_liberal
+						}
+						consciousness = -1.5
+						militancy = -3
+					}
+					any_pop = {
+						limit = {
+							agree_with_ruling_party = 0.2
+							pop_majority_ideology = anarcho_liberal
+						}
+						consciousness = 5
+						militancy = 3
+					}
+				}
+			}
+		}
+	}
+
+	#desc: Choose what to do with the University
+	country_event = {
+		id = 49690
+		title = "EVTNAME49690"
+		desc = "EVTDESC49690"
+		picture = army_gates
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49690" #Close the University
+
+			badboy = 2.5
+			random_owned = {
+				limit = {
+					has_building = university
+				}
+				set_variable = {
+					which = closed_university
+					value = 1
+				}
+				university = -6
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_ideology = anarcho_liberal
+					}
+					location = {
+						check_variable = {
+							which = closed_university
+							value = 1
+						}
+					}
+				}
+				militancy = 6.8
+				consciousness = 7.5
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							has_country_modifier = maximum_influential_member
+						}
+						check_variable = {
+							which = influence
+							value = 95
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 5
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							OR = {
+								has_country_modifier = maximum_influential_member
+								check_variable = {
+									which = influence
+									value = 95
+								}
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 10
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							OR = {
+								has_country_modifier = maximum_influential_member
+								has_country_modifier = extremely_high_influential_member
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 15
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49690" #Demolish the University
+			
+			badboy = 3.5
+			random_owned = {
+				limit = {
+					has_building = university
+				}
+				set_variable = {
+					which = demolished_university
+					value = 1
+				}
+				university = -6
+			}
+			any_pop = {
+				limit = {
+					pop_majority_ideology = liberal
+				}
+				militancy = 7
+				consciousness = 8
+			}
+			any_pop = {
+				limit = {
+					OR = {
+						pop_majority_ideology = liberal
+						pop_majority_ideology = anarcho_liberal
+					}
+					location = {
+						check_variable = {
+							which = demolished_university
+							value = 1
+						}
+					}
+				}
+				militancy = 6.8
+				consciousness = 7.5
+			}
+			any_pop = {
+				limit = {
+					strata = rich
+					location = {
+						check_variable = {
+							which = demolished_university
+							value = 1
+						}
+					}
+				}
+				ideology = {
+					factor = 0.25
+					value = conservative
+				}
+				ideology = {
+					factor = 0.1
+					value = reactionary
+				}
+			}
+			any_pop = {
+				limit = {
+					strata = poor
+					location = {
+						check_variable = {
+							which = demolished_university
+							value = 1
+						}
+					}
+				}
+				ideology = {
+					factor = 0.15
+					value = conservative
+				}
+				ideology = {
+					factor = 0.05
+					value = reactionary
+				}
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							has_country_modifier = maximum_influential_member
+						}
+						check_variable = {
+							which = influence
+							value = 95
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 5
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							OR = {
+								has_country_modifier = maximum_influential_member
+								check_variable = {
+									which = influence
+									value = 95
+								}
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 10
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						NOT = {
+							OR = {
+								has_country_modifier = maximum_influential_member
+								has_country_modifier = extremely_high_influential_member
+							}
+						}
+					}
+					change_variable = {
+						which = influence
+						value = 15
+					}
+				}
+			}
+		}
+	}
+
+##Election Events##
+
+	# Election trigger
+	country_event = {
+		id = 49900
+		title = "EVTNAME49900"
+		desc = "EVTDESC49900"
+		picture = election
+		
+		trigger = {
+			OR = {
+				has_country_flag = the_centralization_debate
+				has_country_modifier = the_centralization_debate_modifier
+				has_country_modifier = diplomatic_delegate
+				has_country_modifier = delegating_diplomacy
+			}
+			NOT = {
+				has_country_modifier = term_of_office
+				election = yes
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 1
+			modifier = {
+				factor = 0.1
+				NOT = {
+					has_country_modifier = term_of_office
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49900" #Proceed
+			
+			election = yes
+		}
+	}
+
+	# Election trigger for internal legislatures
+	country_event = {
+		id = 49901
+		title = "EVTNAME49901"
+		desc = "EVTDESC49901"
+		picture = election
+		
+		trigger = {
+			vote_franschise = none_voting
+			OR = {
+				has_country_flag = the_centralization_debate
+				has_country_modifier = the_centralization_debate_modifier
+				has_country_modifier = delegating_diplomacy
+				has_country_modifier = diplomatic_delegate
+			}
+			NOT = {
+				has_country_modifier = term_of_office
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 1
+			modifier = {
+				factor = 0.1
+				NOT = {
+					has_country_modifier = term_of_office
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49901" #Proceed
+			
+			add_country_modifier = { name = upper_house_election duration = -1 }
+		}
+	}
+
+	# Federalist governor elected
+	country_event = {
+		id = 49902
+		title = "EVTNAME49902"
+		desc = "EVTDESC49902"
+		picture = election
+		
+		trigger = {
+			has_country_modifier = upper_house_election
+			NOT = {
+				has_country_modifier = term_of_office
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.3
+				OR = {
+					upper_house = { ideology = conservative value = 1 }
+					upper_house = { ideology = conservative value = 0.9 }
+					upper_house = { ideology = conservative value = 0.8 }
+					upper_house = { ideology = conservative value = 0.7	}
+					upper_house = { ideology = conservative value = 0.6	}
+				}	
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					upper_house = { ideology = liberal value = 0.5 }
+					upper_house = { ideology = liberal value = 0.4 }
+					upper_house = { ideology = liberal value = 0.3 }
+					upper_house = { ideology = liberal value = 0.2 }
+					upper_house = { ideology = anarcho_liberal value = 0.5 }
+					upper_house = { ideology = anarcho_liberal value = 0.4 }
+					upper_house = { ideology = anarcho_liberal value = 0.3 }
+					upper_house = { ideology = anarcho_liberal value = 0.2 }
+				}
+			}
+			modifier = {
+				factor = 5
+				OR = {
+					upper_house = { ideology = liberal value = 1 }
+					upper_house = { ideology = liberal value = 0.9 }
+					upper_house = { ideology = liberal value = 0.8 }
+					upper_house = { ideology = liberal value = 0.7 }
+					upper_house = { ideology = liberal value = 0.6 }
+					upper_house = { ideology = anarcho_liberal value = 1 }
+					upper_house = { ideology = anarcho_liberal value = 0.9 }
+					upper_house = { ideology = anarcho_liberal value = 0.8 }
+					upper_house = { ideology = anarcho_liberal value = 0.7 }
+					upper_house = { ideology = anarcho_liberal value = 0.6 }
+					upper_house = { ideology = reactionary value = 1 }
+					upper_house = { ideology = reactionary value = 0.9 }
+					upper_house = { ideology = reactionary value = 0.8 }
+					upper_house = { ideology = reactionary value = 0.7 }
+					upper_house = { ideology = reactionary value = 0.6 }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49902" #Ok
+
+			ruling_party_ideology = conservative
+			remove_country_modifier = { name = upper_house_election }
+		}
+	}
+
+	# Unitarian governor elected
+	country_event = {
+		id = 49903
+		title = "EVTNAME49903"
+		desc = "EVTDESC49903"
+		picture = election
+		
+		trigger = {
+			has_country_modifier = upper_house_election
+			NOT = {
+				has_country_modifier = term_of_office
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.3
+				OR = {
+					upper_house = { ideology = liberal value = 1 }
+					upper_house = { ideology = liberal value = 0.9 }
+					upper_house = { ideology = liberal value = 0.8 }
+					upper_house = { ideology = liberal value = 0.7 }
+					upper_house = { ideology = liberal value = 0.6 }
+				}	
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					upper_house = { ideology = conservative value = 0.5 }
+					upper_house = { ideology = conservative value = 0.4 }
+					upper_house = { ideology = conservative value = 0.3 }
+					upper_house = { ideology = conservative value = 0.2 }
+					upper_house = { ideology = reactionary value = 0.5 }
+					upper_house = { ideology = reactionary value = 0.4 }
+					upper_house = { ideology = reactionary value = 0.3 }
+					upper_house = { ideology = reactionary value = 0.2 }
+				}
+			}
+			modifier = {
+				factor = 5
+				OR = {
+					upper_house = { ideology = conservative value = 1 }
+					upper_house = { ideology = conservative value = 0.9 }
+					upper_house = { ideology = conservative value = 0.8 }
+					upper_house = { ideology = conservative value = 0.7 }
+					upper_house = { ideology = conservative value = 0.6 }
+					upper_house = { ideology = reactionary value = 1 }
+					upper_house = { ideology = reactionary value = 0.9 }
+					upper_house = { ideology = reactionary value = 0.8 }
+					upper_house = { ideology = reactionary value = 0.7 }
+					upper_house = { ideology = reactionary value = 0.6 }
+					upper_house = { ideology = anarcho_liberal value = 1 }
+					upper_house = { ideology = anarcho_liberal value = 0.9 }
+					upper_house = { ideology = anarcho_liberal value = 0.8 }
+					upper_house = { ideology = anarcho_liberal value = 0.7 }
+					upper_house = { ideology = anarcho_liberal value = 0.6 }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49903" #Ok
+			
+			ruling_party_ideology = liberal
+			remove_country_modifier = { name = upper_house_election }
+		}
+	}
+
+	# Radical governor elected
+	country_event = {
+		id = 49904
+		title = "EVTNAME49904"
+		desc = "EVTDESC49904"
+		picture = election
+		
+		trigger = {
+			has_country_modifier = upper_house_election
+			NOT = {
+				has_country_modifier = term_of_office
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.3
+				OR = {
+					upper_house = { ideology = anarcho_liberal value = 1 }
+					upper_house = { ideology = anarcho_liberal value = 0.9 }
+					upper_house = { ideology = anarcho_liberal value = 0.8 }
+					upper_house = { ideology = anarcho_liberal value = 0.7 }
+					upper_house = { ideology = anarcho_liberal value = 0.6 }
+				}	
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					upper_house = { ideology = reactionary value = 0.5 }
+					upper_house = { ideology = reactionary value = 0.4 }
+					upper_house = { ideology = reactionary value = 0.3 }
+					upper_house = { ideology = reactionary value = 0.2 }
+					upper_house = { ideology = conservative value = 0.5 }
+					upper_house = { ideology = conservative value = 0.4 }
+					upper_house = { ideology = conservative value = 0.3 }
+					upper_house = { ideology = conservative value = 0.2 }
+				}
+			}
+			modifier = {
+				factor = 5
+				OR = {
+					upper_house = { ideology = reactionary value = 1 }
+					upper_house = { ideology = reactionary value = 0.9 }
+					upper_house = { ideology = reactionary value = 0.8 }
+					upper_house = { ideology = reactionary value = 0.7 }
+					upper_house = { ideology = reactionary value = 0.6 }
+					upper_house = { ideology = conservative value = 1 }
+					upper_house = { ideology = conservative value = 0.9 }
+					upper_house = { ideology = conservative value = 0.8 }
+					upper_house = { ideology = conservative value = 0.7 }
+					upper_house = { ideology = conservative value = 0.6 }
+					upper_house = { ideology = liberal value = 1 }
+					upper_house = { ideology = liberal value = 0.9 }
+					upper_house = { ideology = liberal value = 0.8 }
+					upper_house = { ideology = liberal value = 0.7 }
+					upper_house = { ideology = liberal value = 0.6 }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49904" #Ok
+			
+			ruling_party_ideology = anarcho_liberal
+			remove_country_modifier = { name = upper_house_election }
+		}
+	}
+
+	# Ultramontanist elected
+	country_event = {
+		id = 49905
+		title = "EVTNAME49905"
+		desc = "EVTDESC49905"
+		picture = election
+		
+		trigger = {
+			has_country_modifier = upper_house_election
+			NOT = {
+				has_country_modifier = term_of_office
+			}
+		}
+		
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.3
+				OR = {
+					upper_house = { ideology = reactionary value = 1 }
+					upper_house = { ideology = reactionary value = 0.9 }
+					upper_house = { ideology = reactionary value = 0.8 }
+					upper_house = { ideology = reactionary value = 0.7 }
+					upper_house = { ideology = reactionary value = 0.6 }
+				}	
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					upper_house = { ideology = anarcho_liberal value = 0.5 }
+					upper_house = { ideology = anarcho_liberal value = 0.4 }
+					upper_house = { ideology = anarcho_liberal value = 0.3 }
+					upper_house = { ideology = anarcho_liberal value = 0.2 }
+					upper_house = { ideology = liberal value = 0.5 }
+					upper_house = { ideology = liberal value = 0.4 }
+					upper_house = { ideology = liberal value = 0.3 }
+					upper_house = { ideology = liberal value = 0.2 }
+				}
+			}
+			modifier = {
+				factor = 5
+				OR = {
+					upper_house = { ideology = anarcho_liberal value = 1 }
+					upper_house = { ideology = anarcho_liberal value = 0.9 }
+					upper_house = { ideology = anarcho_liberal value = 0.8 }
+					upper_house = { ideology = anarcho_liberal value = 0.7 }
+					upper_house = { ideology = anarcho_liberal value = 0.6 }
+					upper_house = { ideology = liberal value = 1 }
+					upper_house = { ideology = liberal value = 0.9 }
+					upper_house = { ideology = liberal value = 0.8 }
+					upper_house = { ideology = liberal value = 0.7 }
+					upper_house = { ideology = liberal value = 0.6 }
+					upper_house = { ideology = conservative value = 1 }
+					upper_house = { ideology = conservative value = 0.9 }
+					upper_house = { ideology = conservative value = 0.8 }
+					upper_house = { ideology = conservative value = 0.7 }
+					upper_house = { ideology = conservative value = 0.6 }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49905" #Ok
+			
+			ruling_party_ideology = reactionary
+			remove_country_modifier = { name = upper_house_election }
+		}
+	}
+
+	#desc: Winning a war against another caudillo makes yours more influential and popular
+	country_event = {
+		id = 49700
+		title = "EVTNAME49700"
+		desc = "EVTDESC49700"
+		picture = arc_victory
+		
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49609" #Ok
+
+			prestige_factor = 0.1
+			change_variable = { which = influence value = 20 }
+		}
+	}
