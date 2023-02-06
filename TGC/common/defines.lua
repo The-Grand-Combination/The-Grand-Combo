@@ -116,11 +116,13 @@ defines = {
 		MAX_FACTORY_MONEY_SAVE = 3000,	-- how much money is stored maximum in a factory.
 		SMALL_DEBT_LIMIT = 20000,
 		FACTORY_UPGRADE_EMPLOYEE_FACTOR = 0.75, -- determines how close to the employee limit we need to be before "upgrade all" will upgrade/expand a given factory (1 = 100%).
-		RGO_SUPPLY_DEMAND_FACTOR_HIRE_HI = 0.2,	-- how fast pops are Hired when there is a high demand
-		RGO_SUPPLY_DEMAND_FACTOR_HIRE_LO = 0.02,	-- how fast pops are Hired when there is a medium demand
-		RGO_SUPPLY_DEMAND_FACTOR_FIRE = 0.2,		-- how fast pops are Fired when there is a low demand
-		EMPLOYMENT_HIRE_LOWEST = 0.01,				-- we Hire pops no slower then x% of total required per day
-		EMPLOYMENT_FIRE_LOWEST = 0.01,				-- we Fire pops no slower then x% of total required per day
+
+		RGO_SUPPLY_DEMAND_FACTOR_HIRE_HI = 0.05,	-- how fast pops are Hired when there is a high demand
+		RGO_SUPPLY_DEMAND_FACTOR_HIRE_LO = 0.005,	-- how fast pops are Hired when there is a medium demand
+		RGO_SUPPLY_DEMAND_FACTOR_FIRE = 0.001,		-- how fast pops are Fired when there is a low demand
+		EMPLOYMENT_HIRE_LOWEST = 0.001,				-- we Hire pops no slower then x% of total required per day
+		EMPLOYMENT_FIRE_LOWEST = 0.001,				-- we Fire pops no slower then x% of total required per day
+		
 		TRADE_CAP_LOW_LIMIT_LAND = 0.3, 				-- the lowest % the slider can go for land units
 		TRADE_CAP_LOW_LIMIT_NAVAL = 0.2, 			-- the lowest % the slider can go for naval units
 		TRADE_CAP_LOW_LIMIT_CONSTRUCTIONS = 0.15, 		-- the lowest % the slider can go for constructions
