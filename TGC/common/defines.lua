@@ -113,20 +113,20 @@ defines = {
 		CIV_BASE_SHARE_FACTOR = 0.75,
 		UNCIV_BASE_SHARE_FACTOR = 1,				
 		FACTORY_PAYCHECKS_LEFTOVER_FACTOR = 0.5, -- % of how much we pay to the pops and capitalists, from the leftovers. MODIFIED, Vanilla value = 0.3 
-		MAX_FACTORY_MONEY_SAVE = 3000,	-- how much money is stored maximum in a factory.
+		MAX_FACTORY_MONEY_SAVE = 10000,	-- how much money is stored maximum in a factory.
 		SMALL_DEBT_LIMIT = 20000,
 		FACTORY_UPGRADE_EMPLOYEE_FACTOR = 0.75, -- determines how close to the employee limit we need to be before "upgrade all" will upgrade/expand a given factory (1 = 100%).
 
-		RGO_SUPPLY_DEMAND_FACTOR_HIRE_HI = 0.05,	-- how fast pops are Hired when there is a high demand
+		RGO_SUPPLY_DEMAND_FACTOR_HIRE_HI = 0.07,	-- how fast pops are Hired when there is a high demand
 		RGO_SUPPLY_DEMAND_FACTOR_HIRE_LO = 0.005,	-- how fast pops are Hired when there is a medium demand
 		RGO_SUPPLY_DEMAND_FACTOR_FIRE = 0.001,		-- how fast pops are Fired when there is a low demand
 		EMPLOYMENT_HIRE_LOWEST = 0.001,				-- we Hire pops no slower then x% of total required per day
 		EMPLOYMENT_FIRE_LOWEST = 0.001,				-- we Fire pops no slower then x% of total required per day
 		
-		TRADE_CAP_LOW_LIMIT_LAND = 0.3, 				-- the lowest % the slider can go for land units
-		TRADE_CAP_LOW_LIMIT_NAVAL = 0.2, 			-- the lowest % the slider can go for naval units
+		TRADE_CAP_LOW_LIMIT_LAND = 0.15, 				-- the lowest % the slider can go for land units
+		TRADE_CAP_LOW_LIMIT_NAVAL = 0.15, 			-- the lowest % the slider can go for naval units
 		TRADE_CAP_LOW_LIMIT_CONSTRUCTIONS = 0.15, 		-- the lowest % the slider can go for constructions
-		FACTORY_PURCHASE_MIN_FACTOR = 0.50,			-- the lowest % of its daily needs a factory will purchase
+		FACTORY_PURCHASE_MIN_FACTOR = 0.25,			-- the lowest % of its daily needs a factory will purchase
 		FACTORY_PURCHASE_DRAWDOWN_FACTOR = 0.01		-- the % a factory will reduce its input purchases each day if it did not sell all its goods (also used for scaling up production if all goods are sold)
 	},
 
@@ -675,7 +675,7 @@ defines = {
 
 		MIL_HIT_FROM_CONQUEST = 4, -- how much militancy grows in a province if taken without being core.
 		LUXURY_CON_CHANGE = 0.001, -- con boost from over-buying luxury goods
-		INVENTION_IMPACT_ON_DEMAND = 0.009, -- how much each invention in a country increases demand for a product in percent. MODIFIED, vanilla value = 0.005. 
+		INVENTION_IMPACT_ON_DEMAND = 0.015, -- how much each invention in a country increases demand for a product in percent. MODIFIED, vanilla value = 0.005. 
 		ARTISAN_SUPPRESSED_COLONIAL_GOODS_CATEGORY = 0, -- Goods category index not produced in colonies
 		ISSUE_MOVEMENT_JOIN_LIMIT = 8,
 		ISSUE_MOVEMENT_LEAVE_LIMIT = 7,
