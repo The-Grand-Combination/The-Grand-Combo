@@ -670,7 +670,7 @@ defines = {
 																	-- (if value < 1.0, the MIL will be increased) (Beware! value must be > 0)
 
 		POP_TO_LEADERSHIP = 0.0001, -- how much leadership every 1000 officers gives each day.
-		ARTISAN_MIN_PRODUCTIVITY = 5, -- Minimum efficiency of an artisan
+		ARTISAN_MIN_PRODUCTIVITY = 1, -- Minimum efficiency of an artisan 5 to 1
 		SLAVE_GROWTH_DIVISOR = 10.0, -- Slaves have N times lower growth
 
 		MIL_HIT_FROM_CONQUEST = 4, -- how much militancy grows in a province if taken without being core.
