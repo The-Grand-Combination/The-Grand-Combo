@@ -20,8 +20,9 @@ province_event = {
 	desc = "AIEVENT"
 
 	trigger = {
-        owner = { money = 50000
+        owner = { money = 100000
 			      ai = yes }
+		NOT = { has_province_modifier = university_cooldown }
 
 		OR = { state_scope = { any_owned_province = { NOT = { has_building = university } } } 
 		       has_building = university }
@@ -71,7 +72,7 @@ province_event = {
         modifier = { factor = 0.7                                       #Higher chance if province has other economic buildings
                     has_building = infrastructure }
 
-        modifier = { factor = 0.3                                       #Bigger chance to upgrade rather than building new one
+        modifier = { factor = 0.2                                       #Bigger chance to upgrade rather than building new one
                     has_building = university }
 
         modifier = { factor = 0.8                                       #Increase chance if the AI is reasearching university tech        
@@ -89,8 +90,22 @@ province_event = {
 
 	option = {
 		name = "AIEVENT" 
-		university = +1
-        owner = { treasury = -10250 }
+		university = 6
+        any_owned_province = { limit = { owner = { positivism = 1 } } 
+								owner = { treasury = -10000 }
+		}
+		any_owned_province = { limit = { owner = { functionalism = 1 } } 
+								owner = { treasury = -10000 }
+		}
+		any_owned_province = { limit = { owner = { biologism = 1 } } 
+								owner = { treasury = -10000 }
+		}
+		any_owned_province = { limit = { owner = { social_science  = 1 } } 
+								owner = { treasury = -10000 }
+		}
+		any_owned_province = { limit = { owner = { social_alienation= 1 } } 
+								owner = { treasury = -10000 }
+		}
 	}
 }  
 
@@ -102,7 +117,8 @@ province_event = {
 	desc = "AIEVENT"
 
 	trigger = { 
-        owner = { money = 10000
+		NOT = { has_province_modifier = bank_cooldown }
+        owner = { money = 50000
                   NOT = { economic_policy = laissez_faire }             
 				  exists = yes									        #The game can and will check administration_spending of tags that dont exist, and then it will CTD, so the "exists = yes" is necessary.
 				  administration_spending = 0.5                         #It's maybe the only use case for exists = yes as a common event trigger, and, supposedly, this only happens with the administration_spending check.
@@ -178,8 +194,25 @@ province_event = {
 
 	option = {
 		name = "AIEVENT" 
-        owner = { treasury = -3000 }
-		bank = +1
+		bank = 6
+
+		add_province_modifier = { name = bank_cooldown duration = 1500 }
+
+		any_owned_province = { limit = { owner = { stock_exchange = 1 } } 
+								owner = { treasury = -3000 }
+		}
+		any_owned_province = { limit = { owner = { business_banks = 1 } } 
+								owner = { treasury = -3000 }
+		}
+		any_owned_province = { limit = { owner = { investment_banks = 1 } } 
+								owner = { treasury = -3000 }
+		}
+		any_owned_province = { limit = { owner = { bank_inspection_board  = 1 } } 
+								owner = { treasury = -3000 }
+		}
+		any_owned_province = { limit = { owner = { mutual_funds = 1 } } 
+								owner = { treasury = -3000 }
+		}
 	}
 }
 
@@ -409,31 +442,34 @@ country_event = {
 
 	option = {
 		name = "AIEVENT"
+
+		any_country = { limit = {}
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers } } money = 0.5 } }
 		
         any_country = { limit = { civilized = yes enlightenment_thought = 1 } 
-						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers } } money = 0.40 } }
-
-        any_country = { limit = { ideological_thought = 1 } 
-						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 0.60 } }
-
-        any_country = { limit = { state_n_government = 1 } 
-						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 0.80 } }
-
-        any_country = { limit = { nationalism_n_imperialism = 1 } 
-						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 1 } }
-
-        any_country = { limit = { revolution_n_counterrevolution = 1 } 
 						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers } } money = 1.2 } }
 
+        any_country = { limit = { ideological_thought = 1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 0.2 } }
+
+        any_country = { limit = { state_n_government = 1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 0.3 } }
+
+        any_country = { limit = { nationalism_n_imperialism = 1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 0.5 } }
+
+        any_country = { limit = { revolution_n_counterrevolution = 1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers } } money = 1 } }
+
         any_country = { limit = { mass_politics = 1 } 
-						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 1.5 } }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 2 unemployment = 0.5 type = capitalists type = soldiers  } } money = 2 } }
 										  
 		country_event = { id = 6208 days = 1 }
 	}
 }
 
 country_event = {                   	
-	id = 6209 image.png
+	id = 6209
 	title = "Money"               
 	desc = "Income updater trigger"             
 	                													
