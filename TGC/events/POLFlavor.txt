@@ -68,6 +68,18 @@ country_event = {
 		}
 	}
 
+	mean_time_to_happen = {
+		months = 4
+		modifier = {
+			factor = 0.5
+			year = 1861
+		}
+		modifier = {
+			factor = 1
+			year = 1863
+		}
+	}
+
 	option = {
 		name = "EVTOPTA500001"
 		set_global_flag = january_uprising_happened
@@ -99,7 +111,7 @@ country_event = {
 			secede_province = CPL
 		}
 		CPL = { all_core = { add_core = THIS } }
-		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 365 } }
+		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 1080 } }
 		CPL = {
 			government = presidential_dictatorship
 			remove_accepted_culture = russian
@@ -170,78 +182,6 @@ country_event = {
 			defender_goal = { casus_belli = status_quo }
 		}
 		
-		random_country = {
-			limit = {
-				tag = LIT
-				OR = {
-					substate_of = THIS
-					vassal_of = THIS
-				}
-			}
-			THIS = { release_vassal = LIT }
-		}
-		release = LIT
-		diplomatic_influence = { who = LIT value = -200 }
-		relation = { who = LIT value = -400 }
-		leave_alliance = LIT
-		any_owned = {
-			limit = {
-				OR = {
-					is_core = LIT
-					region = RUS_940
-					region = RUS_360
-					province_id = 947
-				}
-			}
-			secede_province = LIT
-		}
-		LIT = {
-			government = presidential_dictatorship
-			ruling_party_ideology = conservative
-			political_reform = none_voting
-			political_reform = party_appointed
-			political_reform = no_meeting
-			political_reform = state_press
-			political_reform = no_trade_unions
-			political_reform = underground_parties
-			political_reform = mandatory_service
-			political_reform = serfdom
-			nationalvalue = nv_order
-			leadership = 80
-			treasury = 10000
-
-			add_country_modifier = { name = small_country_draft duration = 720 }
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
-				owner = {
-					add_country_modifier = { name = unrecognized_country duration = 1095 }
-					set_country_flag = recognized_country
-				}
-			}
-
-			any_pop = {
-				limit = {
-					has_pop_culture = russian
-					OR = {
-						pop_type = bureaucrats
-						pop_type = soldiers
-						pop_type = officers
-						pop_type = aristocrats
-						pop_type = capitalists
-					}
-				}
-				reduce_pop = 0.8
-			}
-			any_owned = {
-			add_province_modifier = { name = polish_revolt duration = 1080 }
-		}
-		}
-
-		war = {
-			target = LIT
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
-		}
 		any_owned = {
 			limit = {
 				OR = {
@@ -249,9 +189,10 @@ country_event = {
 					is_core = UKR
 					is_core = RUT
 					is_core = LAT
+					is_core = LIT
 				}
 			}
-			add_province_modifier = { name = polish_revolt duration = 1080 }
+			add_province_modifier = { name = polish_revolt duration = 1080 } #This is so armies are slowed and Poland player has time to organize
 		}
 
 		any_owned = {
@@ -264,8 +205,17 @@ country_event = {
 					is_core = LAT
 				}
 			}
-			any_pop = {
-				limit = { is_accepted_culture = no }
+			any_pop = { #This represents Polish Intelligentsia and Nobility in Lithuania and Belarus
+				limit = { 
+					OR = {
+					has_pop_culture = lithuanian
+					has_pop_culture = polish
+					}
+					OR = {
+					strata = rich
+					type = clergymen
+					}
+					}
 				ideology = { factor = 0.1 value = liberal }
 				militancy = 7
 				consciousness = 8
@@ -280,7 +230,14 @@ country_event = {
 				}
 			}
 			any_pop = {
-				limit = { is_accepted_culture = no }
+				limit = { 
+					is_accepted_culture = no 
+					has_pop_religion = catholic
+				    OR = {
+					strata = rich
+					type = clergymen
+					}
+				}
 				militancy = 3
 				consciousness = 5
 			}
@@ -334,7 +291,7 @@ country_event = {
 			}
 			secede_province = CPL
 		}
-		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 365 } }
+		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 1080 } }
 		CPL = {
 			government = presidential_dictatorship
 			ruling_party_ideology = conservative
@@ -402,91 +359,21 @@ country_event = {
 			attacker_goal = { casus_belli = conquest_any }
 			defender_goal = { casus_belli = status_quo }
 		}
-		
-		random_country = {
-			limit = {
-				tag = LIT
-				OR = {
-					substate_of = THIS
-					vassal_of = THIS
-				}
-			}
-			THIS = { release_vassal = LIT }
-		}
-		release = LIT
-		diplomatic_influence = { who = LIT value = -200 }
-		relation = { who = LIT value = -400 }
-		leave_alliance = LIT
-		any_owned = {
-			limit = {
-				OR = {
-					is_core = LIT
-					region = RUS_940
-					region = RUS_360
-					province_id = 947
-				}
-			}
-			secede_province = LIT
-		}
-		LIT = {
-			government = presidential_dictatorship
-			ruling_party_ideology = conservative
-			political_reform = none_voting
-			political_reform = party_appointed
-			political_reform = no_meeting
-			political_reform = state_press
-			political_reform = no_trade_unions
-			political_reform = underground_parties
-			political_reform = mandatory_service
-			political_reform = serfdom
-			nationalvalue = nv_order
-			leadership = 80
-			treasury = 10000
 
-			add_country_modifier = { name = small_country_draft duration = 720 }
-			remove_country_modifier = russian_absolutist_encroachment
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
-				owner = {
-					add_country_modifier = { name = unrecognized_country duration = 1095 }
-					set_country_flag = recognized_country
-				}
-			}
-
-			any_pop = {
-				limit = {
-					has_pop_culture = russian
-					OR = {
-						pop_type = bureaucrats
-						pop_type = soldiers
-						pop_type = officers
-						pop_type = aristocrats
-						pop_type = capitalists
-					}
-				}
-				reduce_pop = 0.8
-			}
-						any_owned = {
-			add_province_modifier = { name = polish_revolt duration = 1080 }
-		}
-		}
-
-		war = {
-			target = LIT
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
-		}
 		any_owned = {
 			limit = {
 				OR = {
 					is_core = BYE
-					is_core = UKR
+					#is_core = UKR
 					is_core = RUT
 					is_core = LAT
+					is_core = LIT
+					is_core = RUT
 				}
 			}
-			add_province_modifier = { name = polish_revolt duration = 1080 }
+			add_province_modifier = { name = polish_revolt duration = 1080 } #This is so armies are slowed and Poland player has time to organize
 		}
+
 		any_owned = {
 			limit = {
 				OR = {
@@ -497,13 +384,23 @@ country_event = {
 					is_core = LAT
 				}
 			}
-			any_pop = {
-				limit = { is_accepted_culture = no }
+			any_pop = { #This represents Polish Intelligentsia and Nobility in Lithuania and Belarus
+				limit = { 
+					OR = {
+					has_pop_culture = lithuanian
+					has_pop_culture = polish
+					}
+					OR = {
+					strata = rich
+					type = clergymen
+					}
+					}
 				ideology = { factor = 0.1 value = liberal }
 				militancy = 7
 				consciousness = 8
 			}
 		}
+
 		any_owned = {
 			limit = {
 				OR = {
@@ -512,7 +409,14 @@ country_event = {
 				}
 			}
 			any_pop = {
-				limit = { is_accepted_culture = no }
+				limit = { 
+					is_accepted_culture = no 
+					has_pop_religion = catholic
+				    OR = {
+					strata = rich
+					type = clergymen
+					}
+				}
 				militancy = 3
 				consciousness = 5
 			}
@@ -529,7 +433,7 @@ country_event = {
 	}
 }
 
-#Polish Uprising - Foreign Intervention
+#Polish Uprising - Foreign Intervention #This is only for 1860s
 country_event = {
 	id = 500002
 	title = "EVTNAME500002"
@@ -892,7 +796,7 @@ country_event = {
 	}
 	
 	#validator says shit shit doesn't work, but it actually does.
-	immediate = { any_country = { limit = { OR = { tag = KRA tag = CPL } ai = no exists = yes } country_event = 666666123 } }
+	immediate = { any_country = { limit = { OR = { tag = KRA tag = CPL } ai = no exists = yes } country_event = 666666123 } } #FALSE FLAG
 		
 	option = {
 		name = "Suppress the revolutionaries. It will not end well for Posen." 
@@ -1008,7 +912,6 @@ country_event = {
 	option = {
 		name = "Let the Poles be free! Let's Unite Poland and restore its glory!"
 		set_global_flag = greater_poland_uprising
-		set_country_flag = ANON_total_war_flag
 		prestige = 25
 		
 		government = oligarchic_republic
@@ -1149,7 +1052,7 @@ country_event = {
 		}
 		PZN = { country_event = 666666006 }
 		ai_chance = {
-			factor = 95
+			factor = 99
 		}
 	}
 	
@@ -1162,7 +1065,7 @@ country_event = {
 		set_global_flag = greater_poland_succeeded
 		PZN = { country_event = 666666007 }
 		ai_chance = {
-			factor = 5
+			factor = 0.1
 		}
 	}
 }
@@ -1927,9 +1830,9 @@ country_event = {
 }
 
 
-#form_PNC notification for GPs #POL tag rep2
+#form_PNC notification for GPs #POL tag Prussia
 country_event = {
-	id = 666666009
+	id = 666666009 
 	title = "EVTNAME666666004" 
 	desc = "EVTDESC666666007"
 	picture = "greater_poland_uprising"
@@ -1996,7 +1899,7 @@ country_event = {
 		}
 	}
 }
-country_event = {
+country_event = { #Austria
 	id = 666666010
 	title = "EVTNAME666666004" 
 	desc = "EVTDESC666666007"
@@ -2008,11 +1911,12 @@ country_event = {
 		name = "We shall see... To arms!"
 		war = {
 			target = POL
-			attacker_goal = { casus_belli = acquire_core_state state_province_id = 703 }
+			attacker_goal = { casus_belli = acquire_any_state state_province_id = 703 }
+			attacker_goal = { casus_belli = acquire_any_state state_province_id = 702 } #Lvov
 			defender_goal = { casus_belli = status_quo }
 		}
 		ai_chance = {
-			factor = 95
+			factor = 195
 			modifier = {
 				factor = 100
 				THIS = {
@@ -2076,8 +1980,9 @@ country_event = {
 		name = "We shall see... To arms!"
 		war = {
 			target = POL
-			attacker_goal = { casus_belli = acquire_core_state state_province_id = 706 }
-			attacker_goal = { casus_belli = acquire_core_state state_province_id = 715 }
+			attacker_goal = { casus_belli = acquire_any_state state_province_id = 706 } #This might need some work if Russia conquers Galicia or Posen earlier than rebellion
+			attacker_goal = { casus_belli = acquire_any_state state_province_id = 715 }
+			attacker_goal = { casus_belli = acquire_any_state state_province_id = 362 }
 			defender_goal = { casus_belli = status_quo }
 		}
 		ai_chance = {
@@ -5041,6 +4946,8 @@ country_event = {
 		}
 		POL = { exists = no }
 		NOT = { has_global_flag = form_PNC }
+		PZN = { exists = yes }
+		GLM = { exists = yes }
 	}
 	
 	mean_time_to_happen = { days = 15 } 
@@ -5049,7 +4956,9 @@ country_event = {
 	immediate = {
 		random_owned = { limit = { owner = { ai = no OR = { tag = CPL tag = PZN } KRA = { exists = yes ai = yes } } } owner = { KRA = { country_event = 666666122 } } }
 		random_owned = { limit = { owner = { ai = no OR = { tag = CPL tag = KRA } PZN = { exists = yes ai = yes } } } owner = { PZN = { country_event = 666666122 } } }
+		random_owned = { limit = { owner = { ai = no OR = { tag = CPL tag = KRA } GLM = { exists = yes ai = yes } } } owner = { GLM = { country_event = 666666122 } } }
 		random_owned = { limit = { owner = { ai = no OR = { tag = KRA tag = PZN } CPL = { exists = yes ai = yes } } } owner = { CPL = { country_event = 666666122 } } }
+		random_owned = { limit = { owner = { ai = no OR = { tag = GLM tag = PZN } CPL = { exists = yes ai = yes } } } owner = { GLM = { country_event = 666666122 } } }
 	}
 	
 	option = {
@@ -5078,68 +4987,6 @@ country_event = {
 		any_country = {
 			limit = {
 				OR = {
-					alliance_with = PRU
-					alliance_with = NGF
-					alliance_with = GER
-					alliance_with = GCF
-					alliance_with = AUS
-					alliance_with = KUK
-					alliance_with = SGF
-					alliance_with = RUS
-				}
-				OR = {
-					war_with = PZN
-					war_with = KRA
-					war_with = CPL
-					war_with = THIS
-				}
-			}
-			THIS = { release_vassal = PZN }
-		}
-		release = PZN
-		diplomatic_influence = { who = PZN value = -200 }
-		relation = { who = PZN value = -400 }
-		leave_alliance = PZN
-		any_owned = {
-			limit = {
-				is_core = PZN
-			}
-			secede_province = PZN
-		}
-		PZN = { all_core = { add_core = THIS } }
-		PZN = {
-			government = presidential_dictatorship
-			primary_culture = polish
-			add_accepted_culture = north_german
-			ruling_party_ideology = conservative
-			political_reform = none_voting
-			political_reform = party_appointed
-			political_reform = no_meeting
-			political_reform = state_press
-			political_reform = no_trade_unions
-			political_reform = underground_parties
-			political_reform = mandatory_service
-			political_reform = peonage
-			nationalvalue = nv_order
-			leadership = 80
-			treasury = 10000
-			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
-				owner = {
-					add_country_modifier = { name = unrecognized_country duration = 1095 }
-					set_country_flag = recognized_country
-				}
-			}
-		}
-		war = {
-			target = PZN
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
-		}
-		any_country = {
-			limit = {
-				OR = {
 					tag = PRU
 					tag = NGF
 					tag = GER
@@ -5161,6 +5008,19 @@ country_event = {
 				exists = yes
 			}
 			end_war = KRA
+			end_war = THIS
+			country_event = 666666010
+		}
+		any_country = {
+			limit = {
+				OR = {
+					tag = AUS
+					tag = KUK
+					tag = SGF
+				}
+				exists = yes
+			}
+			end_war = GLM
 			end_war = THIS
 			country_event = 666666010
 		}
@@ -5700,495 +5560,513 @@ country_event = {
 	}
 }	
 
-# Poland deliberates on Congress Tactics
+#notification for polish countries about uprising in $FROMCOUNTRY$ FALSE ALARM 1847 Posen
 country_event = {
 	id = 666666124
-	title = "EVTNAME666666025" #The Galicia-Lodomeria Convention
-	desc = "EVTDESC666666025"
-	picture = "galicia_lodomeria"
-	# fire_only_once = yes 
-	is_triggered_only = yes
-	
-	option = {
-		name = "A Habsburg!"
-		AUS = { country_event = 666666025 }
-		ai_chance = { factor = 25 }
-	}
-	
-	option = {
-		name = "von Wettin!"
-		#add wetin flavour shite
-		ai_chance = { factor = 50 }
-	}
-	
-	option = {
-		name = "A Hohenzollern!"
-		PRU = { country_event = 666666125 }
-		ai_chance = { factor = 25 }
-	}
-	
-	option = {
-		name = "No compromises. Liberty of the Republic or death!"
-		ai_chance = { factor = 5 }
-	}
-	
-	#option = {
-	#	name = "Romanov!"
-	#	ai_chance = { factor = 5 }
-	#} Zapadoslavia path, add later
-	
-}
-
-# Posen negotiations with Prussia
-country_event = { #redo the chain lclz
-	id = 666666125
-	title = "EVTNAME666666025" #The Galicia-Lodomeria Convention
-	desc = "EVTDESC666666025"
-	picture = "galicia_lodomeria"
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVT666666025OPTA"
-		set_country_flag = PZN_convention
-		POL = { country_event = 666666126 }
-		ai_chance = { factor = 100 }
-	}
-	
-	option = {
-		name = "EVTOPTB500006"
-		PZN = { any_owned = { remove_core = THIS } }
-		release = PZN
-		prestige = -100
-		ai_chance = { factor = 0 }
-	}
-
-	option = {
-		name = "EVTOPTC500006"
-		set_global_flag = posen_uprising
-		random_country = {
-			limit = {
-				tag = PZN
-				OR = {
-					substate_of = THIS
-					vassal_of = THIS
-				}
-			}
-			THIS = { release_vassal = PZN }
-		}
-		release = PZN
-		diplomatic_influence = { who = PZN value = -200 }
-		relation = { who = PZN value = -400 }
-		leave_alliance = PZN
-		any_owned = {
-			limit = {
-				is_core = PZN
-			}
-			secede_province = PZN
-		}
-		PZN = { all_core = { add_core = THIS } }
-		PZN = {
-			government = presidential_dictatorship
-			ruling_party_ideology = conservative
-			political_reform = none_voting
-			political_reform = party_appointed
-			political_reform = no_meeting
-			political_reform = state_press
-			political_reform = no_trade_unions
-			political_reform = underground_parties
-			political_reform = mandatory_service
-			political_reform = peonage
-			nationalvalue = nv_order
-			leadership = 80
-			treasury = 10000
-			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
-				owner = {
-					add_country_modifier = { name = unrecognized_country duration = 1095 }
-					set_country_flag = recognized_country
-				}
-			}
-		}
-		war = {
-			target = PZN
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
-		}
-		any_country = {
-			limit = {
-				tag = FRA
-				owns = 425
-			}
-			# country_event = { id = 500007 days = 5 }
-		}
-		change_tag_no_core_switch = PZN
-		ai_chance = { factor = 0 }
-	}
-}
-
-country_event = {
-	id = 666666126
-	title = "EVTNAME666666025" #The Galicia-Lodomeria Convention - to Poland
-	desc = "EVTDESC666666026"
-	picture = "karl_ferdinand_habsburg"
+	title = "EVTNAME666666124"
+	desc = "EVTDESC666666124"
 	
 	is_triggered_only = yes
 	
 	option = {
-		name = "EVT666666026OPTA"
-		set_country_flag = a_hohenzollern_on_the_throne_POL
-		FROM = {
-			country_event = 666666127
-			set_country_flag = a_hohenzollern_on_the_throne_POL
-		}
-		ai_chance = { factor = 95 }
-	}
-	
-	option = {
-		name = "EVT666666026OPTB"
-		FROM = { country_event = 666666128 }
-		ai_chance = { factor = 5 }
-	}
-}
-
-country_event = {
-	id = 666666127
-	title = "EVTNAME666666027"
-	desc = "EVTDESC666666027"
-	picture = "galicia_lodomeria"
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVT666666027OPTA"
-		relation = { who = POL value = 400 }
-		POL = {
-			set_country_flag = receiving_pzn
-			change_variable = {
-				which = paris_congress_support_poland
-				value = -1
-			}
-			change_variable = {
-				which = paris_congress_support_GPs
-				value = 1
-			}
-			create_alliance = THIS
-			relation = { who = THIS value = 400 }
-			diplomatic_influence = { who = THIS value = 800 }
-			leave_alliance = FRA
-			#leave_alliance = BOR
-			leave_alliance = ENG
-			#leave_alliance = ENL
-		}
-		PRU_701 = { remove_core = GER remove_core = PRU add_core = PZN }
-	}
-}
-
-country_event = {
-	id = 666666128
-	title = "EVTNAME666666028"
-	desc = "EVTDESC666666028"
-	picture = "galicia_lodomeria"
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVT666666028OPTA"
-		prestige = -5
-		ai_chance = { factor = 5 }
-	}
-	
-	option = {
-		name = "EVT666666028OPTB"
-		relation = { who = POL value = -50 }
-		POL = {
-			change_variable = {
-				which = paris_congress_support_poland
-				value = -1
-			}
-			change_variable = {
-				which = paris_congress_support_GPs
-				value = 1
-			}
-		}
-		ai_chance = { factor = 95 }
-	}
-}
-
-#Galicia-Lodomeria Convention Results
-country_event = {
-	id = 666666129
-	title = "EVTNAME666666029"
-	desc = "EVTDESC666666029"
-	picture = "galicia_lodomeria"
-	
-	trigger = {
-		POL = { has_country_flag = a_hohenzollern_on_the_throne_POL }
-		NOT = {
-			has_country_flag = pzn_abide
-			has_country_flag = pzn_betray
-		}
-		has_global_flag = paris_congress_held
-		war = no
-		#OR = {
-		#	owns = 699
-		##	owns = 701
-		#} #needs alt values
-		OR = {
-			tag = PRU
-			tag = GER
-		}
-	}
-	
-	mean_time_to_happen = {
-		days = 3
-	}
-	
-	option = {
-		name = "EVT666666029OPTA"
-		#POL = { clr_country_flag = a_hohenzollern_on_the_throne_POL }
-		set_country_flag = pzn_abide
-		random_country = {
-			limit = { has_country_flag = receiving_pzn }
-			country_event = 666666130
-		}
+		name = "EVT666666124OPTA"
 		ai_chance = {
-			factor = 80
+			factor = 100
 		}
 	}
-	
-	option = {
-		name = "EVT666666029OPTB"
-		clr_country_flag = a_hohenzollern_on_the_throne_POL
-		PZN = { all_core = { add_core = POL } } # Galicia-Lodomeria
-		prestige = -10
-		set_country_flag = pzn_betray
-		random_country = {
-			limit = { has_country_flag = receiving_pzn }
-			country_event = 666666131
-		}
-		ai_chance = {
-			factor = 20
-			modifier = {
-				factor = 0.1
-				has_global_flag = poland_paris_supported
-			}
-		}
-	}
-}
+}	
 
-country_event = {
-	id = 666666130
-	title = "EVTNAME666666030"
-	desc = "EVTDESC666666030"
-	picture = "karl_ferdinand_habsburg"
+#SCRAPPED German Kings path for now
+
+# # Poland deliberates on Congress Tactics
+# country_event = {
+# 	id = 666666124
+# 	title = "EVTNAME666666025" #The Galicia-Lodomeria Convention
+# 	desc = "EVTDESC666666025"
+# 	picture = "galicia_lodomeria"
+# 	# fire_only_once = yes 
+# 	is_triggered_only = yes
 	
-	is_triggered_only = yes
+# 	option = {
+# 		name = "A Habsburg!"
+# 		AUS = { country_event = 666666025 }
+# 		ai_chance = { factor = 25 }
+# 	}
 	
-	immediate = {
-		set_country_flag = received_pzn
-		FROM = { release_vassal = PZN } #state id, not this shite, or fix congress results
-		PZN = { remove_core = PRU remove_core = GER annex_to = THIS }
-	}
+# 	option = {
+# 		name = "von Wettin!"
+# 		#add wetin flavour shite
+# 		ai_chance = { factor = 50 }
+# 	}
 	
-	option = {
-		name = "EVT666666030OPTA"
-		set_country_flag = receiving_pzn_cleanup
-		clr_country_flag = receiving_pzn
-		clr_country_flag = PZN_convention
-		government = absolute_monarchy
-		political_reform = unitary
-		ruling_party_ideology = reactionary
-		relation = { who = FROM value = 200 }
-		diplomatic_influence = { who = FROM value = 400 }
-		PZN = { all_core = { remove_core = PZN remove_core = PRU remove_core = GER remove_core = AUS remove_core = KUK remove_core = SGF add_core = POL } } # Galicia-Lodomeria
-		add_country_modifier = {
-				name = pol_hohenzollern_on_the_throne
-				duration = -1
-			}
-		any_pop = {
-			scaled_militancy = {
-				ideology = liberal
-				factor = 4
-			}
-			scaled_consciousness = {
-				ideology = liberal
-				factor = 4
-			}
-			scaled_militancy = {
-				ideology = anarcho_liberal
-				factor = 4
-			}
-			scaled_consciousness = {
-				ideology = anarcho_liberal
-				factor = 4
-			}
-			scaled_militancy = {
-				ideology = communist
-				factor = 4
-			}
-			scaled_consciousness = {
-				ideology = communist
-				factor = 4
-			}
-			scaled_militancy = {
-				ideology = socialist
-				factor = 4
-			}
-			scaled_consciousness = {
-				ideology = socialist
-				factor = 4
-			}
+# 	option = {
+# 		name = "A Hohenzollern!"
+# 		PRU = { country_event = 666666125 }
+# 		ai_chance = { factor = 25 }
+# 	}
+	
+# 	option = {
+# 		name = "No compromises. Liberty of the Republic or death!"
+# 		ai_chance = { factor = 5 }
+# 	}
+	
+# 	#option = {
+# 	#	name = "Romanov!"
+# 	#	ai_chance = { factor = 5 }
+# 	#} Zapadoslavia path, add later
+	
+# }
+
+# # Posen negotiations with Prussia
+# country_event = { #redo the chain lclz
+# 	id = 666666125
+# 	title = "EVTNAME666666025" #The Galicia-Lodomeria Convention
+# 	desc = "EVTDESC666666025"
+# 	picture = "galicia_lodomeria"
+# 	is_triggered_only = yes
+	
+# 	option = {
+# 		name = "EVT666666025OPTA"
+# 		set_country_flag = PZN_convention
+# 		POL = { country_event = 666666126 }
+# 		ai_chance = { factor = 100 }
+# 	}
+	
+# 	option = {
+# 		name = "EVTOPTB500006"
+# 		PZN = { any_owned = { remove_core = THIS } }
+# 		release = PZN
+# 		prestige = -100
+# 		ai_chance = { factor = 0 }
+# 	}
+
+# 	option = {
+# 		name = "EVTOPTC500006"
+# 		set_global_flag = posen_uprising
+# 		random_country = {
+# 			limit = {
+# 				tag = PZN
+# 				OR = {
+# 					substate_of = THIS
+# 					vassal_of = THIS
+# 				}
+# 			}
+# 			THIS = { release_vassal = PZN }
+# 		}
+# 		release = PZN
+# 		diplomatic_influence = { who = PZN value = -200 }
+# 		relation = { who = PZN value = -400 }
+# 		leave_alliance = PZN
+# 		any_owned = {
+# 			limit = {
+# 				is_core = PZN
+# 			}
+# 			secede_province = PZN
+# 		}
+# 		PZN = { all_core = { add_core = THIS } }
+# 		PZN = {
+# 			government = presidential_dictatorship
+# 			ruling_party_ideology = conservative
+# 			political_reform = none_voting
+# 			political_reform = party_appointed
+# 			political_reform = no_meeting
+# 			political_reform = state_press
+# 			political_reform = no_trade_unions
+# 			political_reform = underground_parties
+# 			political_reform = mandatory_service
+# 			political_reform = peonage
+# 			nationalvalue = nv_order
+# 			leadership = 80
+# 			treasury = 10000
+# 			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+# 			random_owned = {
+# 				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+# 				owner = {
+# 					add_country_modifier = { name = unrecognized_country duration = 1095 }
+# 					set_country_flag = recognized_country
+# 				}
+# 			}
+# 		}
+# 		war = {
+# 			target = PZN
+# 			attacker_goal = { casus_belli = conquest_any }
+# 			defender_goal = { casus_belli = status_quo }
+# 		}
+# 		any_country = {
+# 			limit = {
+# 				tag = FRA
+# 				owns = 425
+# 			}
+# 			# country_event = { id = 500007 days = 5 }
+# 		}
+# 		change_tag_no_core_switch = PZN
+# 		ai_chance = { factor = 0 }
+# 	}
+# }
+
+# country_event = {
+# 	id = 666666126
+# 	title = "EVTNAME666666025" #The Galicia-Lodomeria Convention - to Poland
+# 	desc = "EVTDESC666666026"
+# 	picture = "karl_ferdinand_habsburg"
+	
+# 	is_triggered_only = yes
+	
+# 	option = {
+# 		name = "EVT666666026OPTA"
+# 		set_country_flag = a_hohenzollern_on_the_throne_POL
+# 		FROM = {
+# 			country_event = 666666127
+# 			set_country_flag = a_hohenzollern_on_the_throne_POL
+# 		}
+# 		ai_chance = { factor = 95 }
+# 	}
+	
+# 	option = {
+# 		name = "EVT666666026OPTB"
+# 		FROM = { country_event = 666666128 }
+# 		ai_chance = { factor = 5 }
+# 	}
+# }
+
+# country_event = {
+# 	id = 666666127
+# 	title = "EVTNAME666666027"
+# 	desc = "EVTDESC666666027"
+# 	picture = "galicia_lodomeria"
+	
+# 	is_triggered_only = yes
+	
+# 	option = {
+# 		name = "EVT666666027OPTA"
+# 		relation = { who = POL value = 400 }
+# 		POL = {
+# 			set_country_flag = receiving_pzn
+# 			change_variable = {
+# 				which = paris_congress_support_poland
+# 				value = -1
+# 			}
+# 			change_variable = {
+# 				which = paris_congress_support_GPs
+# 				value = 1
+# 			}
+# 			create_alliance = THIS
+# 			relation = { who = THIS value = 400 }
+# 			diplomatic_influence = { who = THIS value = 800 }
+# 			leave_alliance = FRA
+# 			#leave_alliance = BOR
+# 			leave_alliance = ENG
+# 			#leave_alliance = ENL
+# 		}
+# 		PRU_701 = { remove_core = GER remove_core = PRU add_core = PZN }
+# 	}
+# }
+
+# country_event = {
+# 	id = 666666128
+# 	title = "EVTNAME666666028"
+# 	desc = "EVTDESC666666028"
+# 	picture = "galicia_lodomeria"
+	
+# 	is_triggered_only = yes
+	
+# 	option = {
+# 		name = "EVT666666028OPTA"
+# 		prestige = -5
+# 		ai_chance = { factor = 5 }
+# 	}
+	
+# 	option = {
+# 		name = "EVT666666028OPTB"
+# 		relation = { who = POL value = -50 }
+# 		POL = {
+# 			change_variable = {
+# 				which = paris_congress_support_poland
+# 				value = -1
+# 			}
+# 			change_variable = {
+# 				which = paris_congress_support_GPs
+# 				value = 1
+# 			}
+# 		}
+# 		ai_chance = { factor = 95 }
+# 	}
+# }
+
+# #Galicia-Lodomeria Convention Results
+# country_event = {
+# 	id = 666666129
+# 	title = "EVTNAME666666029"
+# 	desc = "EVTDESC666666029"
+# 	picture = "galicia_lodomeria"
+	
+# 	trigger = {
+# 		POL = { has_country_flag = a_hohenzollern_on_the_throne_POL }
+# 		NOT = {
+# 			has_country_flag = pzn_abide
+# 			has_country_flag = pzn_betray
+# 		}
+# 		has_global_flag = paris_congress_held
+# 		war = no
+# 		#OR = {
+# 		#	owns = 699
+# 		##	owns = 701
+# 		#} #needs alt values
+# 		OR = {
+# 			tag = PRU
+# 			tag = GER
+# 		}
+# 	}
+	
+# 	mean_time_to_happen = {
+# 		days = 3
+# 	}
+	
+# 	option = {
+# 		name = "EVT666666029OPTA"
+# 		#POL = { clr_country_flag = a_hohenzollern_on_the_throne_POL }
+# 		set_country_flag = pzn_abide
+# 		random_country = {
+# 			limit = { has_country_flag = receiving_pzn }
+# 			country_event = 666666130
+# 		}
+# 		ai_chance = {
+# 			factor = 80
+# 		}
+# 	}
+	
+# 	option = {
+# 		name = "EVT666666029OPTB"
+# 		clr_country_flag = a_hohenzollern_on_the_throne_POL
+# 		PZN = { all_core = { add_core = POL } } # Galicia-Lodomeria
+# 		prestige = -10
+# 		set_country_flag = pzn_betray
+# 		random_country = {
+# 			limit = { has_country_flag = receiving_pzn }
+# 			country_event = 666666131
+# 		}
+# 		ai_chance = {
+# 			factor = 20
+# 			modifier = {
+# 				factor = 0.1
+# 				has_global_flag = poland_paris_supported
+# 			}
+# 		}
+# 	}
+# }
+
+# country_event = {
+# 	id = 666666130
+# 	title = "EVTNAME666666030"
+# 	desc = "EVTDESC666666030"
+# 	picture = "karl_ferdinand_habsburg"
+	
+# 	is_triggered_only = yes
+	
+# 	immediate = {
+# 		set_country_flag = received_pzn
+# 		FROM = { release_vassal = PZN } #state id, not this shite, or fix congress results
+# 		PZN = { remove_core = PRU remove_core = GER annex_to = THIS }
+# 	}
+	
+# 	option = {
+# 		name = "EVT666666030OPTA"
+# 		set_country_flag = receiving_pzn_cleanup
+# 		clr_country_flag = receiving_pzn
+# 		clr_country_flag = PZN_convention
+# 		government = absolute_monarchy
+# 		political_reform = unitary
+# 		ruling_party_ideology = reactionary
+# 		relation = { who = FROM value = 200 }
+# 		diplomatic_influence = { who = FROM value = 400 }
+# 		PZN = { all_core = { remove_core = PZN remove_core = PRU remove_core = GER remove_core = AUS remove_core = KUK remove_core = SGF add_core = POL } } # Galicia-Lodomeria
+# 		add_country_modifier = {
+# 				name = pol_hohenzollern_on_the_throne
+# 				duration = -1
+# 			}
+# 		any_pop = {
+# 			scaled_militancy = {
+# 				ideology = liberal
+# 				factor = 4
+# 			}
+# 			scaled_consciousness = {
+# 				ideology = liberal
+# 				factor = 4
+# 			}
+# 			scaled_militancy = {
+# 				ideology = anarcho_liberal
+# 				factor = 4
+# 			}
+# 			scaled_consciousness = {
+# 				ideology = anarcho_liberal
+# 				factor = 4
+# 			}
+# 			scaled_militancy = {
+# 				ideology = communist
+# 				factor = 4
+# 			}
+# 			scaled_consciousness = {
+# 				ideology = communist
+# 				factor = 4
+# 			}
+# 			scaled_militancy = {
+# 				ideology = socialist
+# 				factor = 4
+# 			}
+# 			scaled_consciousness = {
+# 				ideology = socialist
+# 				factor = 4
+# 			}
 			
-			scaled_militancy = {
-				ideology = conservative
-				factor = -4
-			}
-			scaled_consciousness = {
-				ideology = conservative
-				factor = -4
-			}
-			scaled_militancy = {
-				ideology = reactionary
-				factor = -4
-			}
-			scaled_consciousness = {
-				ideology = reactionary
-				factor = -4
-			}
-		}
-		ai_chance = {
-			factor = 95
-		}
-	}
+# 			scaled_militancy = {
+# 				ideology = conservative
+# 				factor = -4
+# 			}
+# 			scaled_consciousness = {
+# 				ideology = conservative
+# 				factor = -4
+# 			}
+# 			scaled_militancy = {
+# 				ideology = reactionary
+# 				factor = -4
+# 			}
+# 			scaled_consciousness = {
+# 				ideology = reactionary
+# 				factor = -4
+# 			}
+# 		}
+# 		ai_chance = {
+# 			factor = 95
+# 		}
+# 	}
 	
-	option = {
-		name = "EVT666666030OPTB"
-		clr_country_flag = receiving_pzn
-		clr_country_flag = PZN_convention
-		AUS_702 = { add_core = PZN add_core = FROM }
-		AUS_662 = { add_core = PZN add_core = FROM }
-		relation = { who = FROM value = -400 }
-		diplomatic_influence = { who = FROM value = -400 }
-		FROM = { country_event = 666666131 }
-		ai_chance = {
-			factor = 5
-		}
-	}
-}
+# 	option = {
+# 		name = "EVT666666030OPTB"
+# 		clr_country_flag = receiving_pzn
+# 		clr_country_flag = PZN_convention
+# 		AUS_702 = { add_core = PZN add_core = FROM }
+# 		AUS_662 = { add_core = PZN add_core = FROM }
+# 		relation = { who = FROM value = -400 }
+# 		diplomatic_influence = { who = FROM value = -400 }
+# 		FROM = { country_event = 666666131 }
+# 		ai_chance = {
+# 			factor = 5
+# 		}
+# 	}
+# }
 
-country_event = {
-	id = 666666131
-	title = "EVTNAME666666031"
-	desc = "EVTDESC666666031"
-	picture = "galicia_lodomeria"
+# country_event = {
+# 	id = 666666131
+# 	title = "EVTNAME666666031"
+# 	desc = "EVTDESC666666031"
+# 	picture = "galicia_lodomeria"
 	
-	is_triggered_only = yes
+# 	is_triggered_only = yes
 	
-	option = {
-		name = "EVT666666031OPTA"
-		leave_alliance = FROM
-		relation = { who = FROM value = -200 }
-		diplomatic_influence = { who = FROM value = -200 }
-		war = {
-			target = FROM
-			attacker_goal = {
-				casus_belli = acquire_any_state
-				state_province_id = 699
-			}
-			call_ally = yes
-		}
-		ai_chance = {
-			factor = 50
-			modifier = {
-				factor = 0
-				war_policy = pacifism
-			}
-			modifier = {
-				factor = 0.5
-				war_policy = anti_military
-			}
-			modifier = {
-				factor = 0.75
-				war = yes
-			}
-			modifier = {
-				factor = 0
-				any_greater_power = { war_with = THIS }
-			}
-			modifier = {
-				factor = 0.5
-				OR = {
-					tag = AUS
-					tag = KUK
-					tag = SGF
-					tag = GCF
-					tag = GER
-					tag = DNB
-				}
-				POL = { brigades_compare = 1.5 }
-			}
-			modifier = {
-				factor = 0.5
-				tag = POL
-				OR = {
-					AUS = { brigades_compare = 1.5 }
-					KUK = { brigades_compare = 1.5 }
-					SGF = { brigades_compare = 1.5 }
-				}
-			}
-		}
-	}
+# 	option = {
+# 		name = "EVT666666031OPTA"
+# 		leave_alliance = FROM
+# 		relation = { who = FROM value = -200 }
+# 		diplomatic_influence = { who = FROM value = -200 }
+# 		war = {
+# 			target = FROM
+# 			attacker_goal = {
+# 				casus_belli = acquire_any_state
+# 				state_province_id = 699
+# 			}
+# 			call_ally = yes
+# 		}
+# 		ai_chance = {
+# 			factor = 50
+# 			modifier = {
+# 				factor = 0
+# 				war_policy = pacifism
+# 			}
+# 			modifier = {
+# 				factor = 0.5
+# 				war_policy = anti_military
+# 			}
+# 			modifier = {
+# 				factor = 0.75
+# 				war = yes
+# 			}
+# 			modifier = {
+# 				factor = 0
+# 				any_greater_power = { war_with = THIS }
+# 			}
+# 			modifier = {
+# 				factor = 0.5
+# 				OR = {
+# 					tag = AUS
+# 					tag = KUK
+# 					tag = SGF
+# 					tag = GCF
+# 					tag = GER
+# 					tag = DNB
+# 				}
+# 				POL = { brigades_compare = 1.5 }
+# 			}
+# 			modifier = {
+# 				factor = 0.5
+# 				tag = POL
+# 				OR = {
+# 					AUS = { brigades_compare = 1.5 }
+# 					KUK = { brigades_compare = 1.5 }
+# 					SGF = { brigades_compare = 1.5 }
+# 				}
+# 			}
+# 		}
+# 	}
 	
-	option = {
-		name = "EVT666666031OPTB"
-		prestige = -20
-		leave_alliance = FROM
-		relation = { who = FROM value = -100 }
-		diplomatic_influence = { who = FROM value = -100 }
-		casus_belli = {
-			target = FROM
-			type = humiliate
-			months = 12
-		}
-		ai_chance = {
-			factor = 50
-			modifier = {
-				factor = 0.5
-				war_policy = jingoism
-			}
-			modifier = {
-				factor = 1.5
-				war_policy = anti_military
-			}
-			modifier = {
-				factor = 1.25
-				war = yes
-			}
-			modifier = {
-				factor = 0.5
-				OR = {
-					tag = AUS
-					tag = KUK
-					tag = SGF
-					tag = GCF
-					tag = GER
-					tag = DNB
-				}
-				POL = { NOT = { brigades_compare = 1 } }
-			}
-			modifier = {
-				factor = 0.5
-				tag = POL
-				OR = {
-					AUS = { NOT = { brigades_compare = 1 } }
-					KUK = { NOT = { brigades_compare = 1 } }
-					SGF = { NOT = { brigades_compare = 1 } }
-				}
-			}
-		}
-	}
-}
+# 	option = {
+# 		name = "EVT666666031OPTB"
+# 		prestige = -20
+# 		leave_alliance = FROM
+# 		relation = { who = FROM value = -100 }
+# 		diplomatic_influence = { who = FROM value = -100 }
+# 		casus_belli = {
+# 			target = FROM
+# 			type = humiliate
+# 			months = 12
+# 		}
+# 		ai_chance = {
+# 			factor = 50
+# 			modifier = {
+# 				factor = 0.5
+# 				war_policy = jingoism
+# 			}
+# 			modifier = {
+# 				factor = 1.5
+# 				war_policy = anti_military
+# 			}
+# 			modifier = {
+# 				factor = 1.25
+# 				war = yes
+# 			}
+# 			modifier = {
+# 				factor = 0.5
+# 				OR = {
+# 					tag = AUS
+# 					tag = KUK
+# 					tag = SGF
+# 					tag = GCF
+# 					tag = GER
+# 					tag = DNB
+# 				}
+# 				POL = { NOT = { brigades_compare = 1 } }
+# 			}
+# 			modifier = {
+# 				factor = 0.5
+# 				tag = POL
+# 				OR = {
+# 					AUS = { NOT = { brigades_compare = 1 } }
+# 					KUK = { NOT = { brigades_compare = 1 } }
+# 					SGF = { NOT = { brigades_compare = 1 } }
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 
 ###############
