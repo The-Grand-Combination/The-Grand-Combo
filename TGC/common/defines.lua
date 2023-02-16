@@ -181,7 +181,7 @@ defines = {
 		AI_SPECIAL_PROPORTION = 0.15, -- fraction of brigades that should be engineers and tanks
 		AI_ESCORT_RATIO = 2.0, -- ratio of escorts to transports in invasion fleets
 		AI_ARMY_TAXBASE_FRACTION = 0.2, -- max of tax base that AI will spend on army supply costs (based on peacetime costs)
-		AI_NAVY_TAXBASE_FRACTION = 0.2, -- max of tax base that AI will spend on navy supply costs (based on peacetime costs)
+		AI_NAVY_TAXBASE_FRACTION = 0.05, -- max of tax base that AI will spend on navy supply costs (based on peacetime costs) nerfed
 		AI_BLOCKADE_RANGE = 2000, -- max distance the AI will send out blockade fleets from their home base
 		RECON_UNIT_RATIO = 0.1, -- the % of units in the army that must have a recon value to get the full bonus
 		ENGINEER_UNIT_RATIO = 0.1, -- the % of units in the army that must have a fort attack value to get the full bonus
@@ -629,13 +629,13 @@ defines = {
 		PROMOTION_SCALE = 0.002,
 		PROMOTION_ASSIMILATION_CHANCE = 0.0005,
 		LUXURY_THRESHOLD = 500,
-		BASE_GOODS_DEMAND = 0.8,
+		BASE_GOODS_DEMAND = 0.8, --0.8
 		BASE_POPGROWTH = 0.000085,
 		MIN_LIFE_RATING_FOR_GROWTH = 30,
 		LIFE_RATING_GROWTH_BONUS = 0.000085,
 		LIFE_NEED_STARVATION_LIMIT = 0.5,
 
-		MIL_LACK_EVERYDAY_NEED = 0.05, -- was 0.01
+		MIL_LACK_EVERYDAY_NEED = 0.05, -- was 0.1
 		MIL_HAS_EVERYDAY_NEED = -0.1,
 		MIL_HAS_LUXURY_NEED = -0.2,
 		MIL_NO_LIFE_NEED = 0.2,
@@ -659,9 +659,9 @@ defines = {
 
 		NATIONAL_FOCUS_DIVIDER = 400000.0,
 
-		POP_SAVINGS = 0.03,
+		POP_SAVINGS = 0.018,
 
-		STATE_CREATION_ADMIN_LIMIT = 0.01,
+		STATE_CREATION_ADMIN_LIMIT = 0.015,
 		MIL_TO_JOIN_REBEL = 8, -- Rebels over this will join a faction
 		MIL_TO_JOIN_RISING = 9, -- Rebels over this will join a general rising
 		MIL_TO_AUTORISE = 9, -- Rebels over this rise no matter what
