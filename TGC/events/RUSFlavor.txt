@@ -6736,8 +6736,6 @@ country_event = {
 		}
 	}
 }
-
-#500200 empty
 	
 	country_event = {
 		id = 500201
@@ -7193,3 +7191,513 @@ country_event = {
 		}
 	}
 }
+
+#Alexander II Assassination 
+### Design decision: While initially thought as leaving it up to random_list chance whether Alexander lives or dies, now the player decides the outcome and future of Tsardom. 
+#In AI scenario will almost always die.
+country_event = {
+
+	id = 500231
+
+	title = "EVTNAME500231"
+	desc = "EVTDESC500231"
+	picture = "tsar_assassination"
+
+	trigger = {
+		year = 1878
+		tag = RUS
+		has_country_flag = monarchy_gov
+		war = no
+		is_ideology_enabled = socialist #Narodnaya Volya
+		any_owned_province = {
+			average_militancy = 4
+		}
+		NOT = { has_country_flag = alexanderii_assassinated } 
+		NOT = { has_country_flag = alexanderii_lifeattempt } 
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	immediate = {
+		set_country_flag = alexanderii_lifeattempt
+	}
+
+	option = {
+		name = "EVTOPTA500231"
+		country_event = {id = 500235 days = 1 }
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+country_event = {
+
+	id = 500232
+
+	title = "EVTNAME500232"
+	desc = "EVTDESC500232"
+	news = yes
+	news_title = "EVTNAME500232_NEWS_TITLE"
+	news_desc_long = "EVTDESC500232_NEWS_LONG"
+	news_desc_medium = "EVTDESC500232_NEWS_MEDIUM"
+	news_desc_short = "EVTDESC500232_NEWS_SHORT"
+	picture = "alexander2_dead"
+	major = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = alexanderii_assassinated
+	}
+
+	option = {
+		name = "EVTOPTA500232" #Scrap the Constitution Plans, Manifesto on Unshakable Autocracy
+			any_pop = { #Death of the Tsar produces loyalty
+				limit = {
+					is_culture_group = east_slavic
+					location = { is_core = THIS }
+				}
+				ideology = { factor = 0.05 value = reactionary }
+			}
+			country_event = {id = 500234 days = 7 }
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+
+	# option = {
+	# 	name = "EVTOPTB90016" #Forgive path? Vladimir the Forgiver LOL
+
+	# 	prestige = -50
+
+	# 	ai_chance = {
+	# 		factor = 0
+	# 	}
+	# }
+}
+
+	#Melikov's Constitution - Reformist path
+	#For now there will be no scripted changes and it will be up to the player to carry them further. 
+	#landed_voting represents the "it is the first step towards the constitution" - Alexander II
+	country_event = {
+		id = 500233
+		title = "EVTNAME500233"
+		desc = "EVTDESC500233"
+		picture = "melikovconstitution"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500233" 
+			political_reform = landed_voting
+			poliical_reform = censored_press
+			any_pop = {
+				limit = {
+					is_culture_group = east_slavic
+					#location = { is_core = THIS }
+				}
+				ideology = { factor = 0.1 value = liberal }
+				consciousness = 5 
+			}
+			clr_country_flag = vote_reform_blocker
+			clr_country_flag = soc_reform_blocker
+		}
+    }
+
+
+	#Manifesto on Unshakable Autocracy
+	country_event = {
+		id = 500234
+		title = "EVTNAME500234"
+		desc = "EVTDESC500234"
+		picture = "narodnaya_Volya_terrorists_hanged"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500234"  #Scrap the Constitution Plans, Manifesto on Unshakable Autocracy
+			prestige = 10
+			badboy = 2
+			set_country_flag = vote_reform_blocker #This will not allow Autocracy to suddenly disappear due to militancy
+			set_country_flag = soc_reform_blocker 
+			ruling_party_ideology = reactionary
+			political_reform = none_voting
+			political_reform = state_press
+			political_reform = appointed
+			political_reform = state_controlled
+			political_reform = underground_parties
+			political_reform = mandatory_service
+			government = absolute_monarchy 
+			any_pop = {
+				militancy = -1
+				consciousness = 3
+				scaled_militancy = {
+					ideology = reactionary
+					factor = -3
+				}
+
+				scaled_militancy = {
+					ideology = conservative
+					factor = -1
+				}
+
+				scaled_consciousness = {
+					ideology = conservative
+					factor = -2
+				}
+
+				scaled_consciousness = {
+					ideology = reactionary
+					factor = -4
+				}
+
+				scaled_consciousness = {
+					ideology = liberal
+					factor = 2
+				}
+				scaled_consciousness = {
+					ideology = anarcho_liberal
+					factor = 4
+				}
+				scaled_consciousness = {
+					ideology = socialist
+					factor = 4
+				}
+				scaled_consciousness = {
+					ideology = communist
+					factor = 6
+				}
+			}
+			set_country_flag = the_manifesto
+
+		ai_chance = {
+			factor = 100
+			}
+		}
+}
+
+country_event = {
+
+	id = 500235
+
+	title = "EVTNAME500235"
+	desc = "EVTDESC500235"
+	picture = "alexanderii_bomb"
+
+	trigger = {
+		year = 1878
+		tag = RUS
+		has_country_flag = monarchy_gov
+		war = no
+		is_ideology_enabled = socialist #Narodnaya Volya
+		any_owned_province = {
+			average_militancy = 4
+		}
+		NOT = { has_country_flag = alexanderii_assassinated } 
+		NOT = { has_country_flag = alexanderii_lifeattempt } 
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	immediate = {
+		set_country_flag = alexanderii_lifeattempt
+	}
+
+	option = {
+		name = "EVTOPTB500235" #He Dies
+		country_event = {id = 500232 days = 1 } #Return to Autocracy
+		ai_chance = {
+			factor = 90
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500235" #He Lives
+		country_event = { id = 500233 days = 7 } #Step towards the Constitution, Melikov Draft
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+
+#Nicholas I Reign and Autocracy
+country_event = {
+
+	id = 500236
+
+	trigger = {
+		tag = RUS
+		year = 1836
+		month = 2
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 2
+
+		modifier = {
+			factor = 3 #increase likelihood to happen
+			year = 1836
+		}
+
+		modifier = {
+			factor = 3 #increase likelihood to happen
+			year = 1837
+		}
+	}
+
+	title = "EVTNAME500236"
+	desc = "EVTDESC500236"
+	picture = "nickyone"
+
+	option = {
+		name = "EVTOPTA500236"
+			##Orthodoxy, Autocracy, Nationality
+			prestige = 1
+			any_pop = { 
+				limit = {
+					is_culture_group = east_slavic 
+					OR = {
+						type = aristocrats
+						type = officers
+						type = bureaucrats
+					}
+				}
+			ideology = { value = reactionary factor = 0.15 }
+			}
+			any_pop = { 
+				limit = {
+					is_culture_group = east_slavic 
+					OR = {
+						type = aristocrats
+						type = officers
+						type = bureaucrats
+					}
+				}
+			ideology = { value = conservative factor = 0.15 }
+			}
+			any_pop = { #People love the Tsar
+				limit = {
+					is_culture_group = east_slavic 
+				}
+			ideology = { value = reactionary factor = 0.02 }
+			}
+			set_country_flag = political_reform_blocker
+			set_country_flag = social_reform_blocker
+			country_event = { id = 500238 days = 2 }
+	}
+}
+
+#Nicholas I dies, Alexander II succeeds
+country_event = {
+
+	id = 500237
+	news = yes
+	news_desc_long = "EVTDESC500237_NEWS_LONG"
+	news_desc_medium = "EVTDESC500237_NEWS_MEDIUM"
+	news_desc_short = "EVTDESC500237_NEWS_SHORT"
+
+	trigger = {
+		tag = RUS
+		has_country_flag = monarchy_gov
+		year = 1854
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 4
+
+		modifier = {
+			factor = 0.75 #increase likelihood to happen
+			has_country_flag = crimean_war
+		}
+
+		modifier = {
+			factor = 1 #increase likelihood to happen
+			year = 1855
+		}
+	}
+
+	title = "EVTNAME500237"
+	desc = "EVTDESC500237"
+	picture = "nickyone_alextwo"
+
+	option = {
+		name = "EVTOPTA500237"
+		any_pop = {
+			scaled_consciousness = {
+				factor = 3
+				ideology = liberal
+			}
+			scaled_consciousness = {
+				factor = 2
+				ideology = conservative
+			}
+		}
+		any_pop = { 
+				limit = {
+					is_culture_group = east_slavic 
+					#NOT = {
+					#	type = aristocrats
+					#	type = officers
+					#	type = bureaucrats
+					#}
+				}
+			ideology = { value = liberal factor = 0.1 }
+			}
+		clr_country_flag = political_reform_blocker
+		clr_country_flag = social_reform_blocker
+		set_country_flag = tsaralexander2
+		remove_country_modifier = orthodoxy_autocracy_nationality
+		remove_country_modifier = gendarme_of_europe
+		add_country_modifier = { name = total_reform duration = 365 }
+	}
+}
+
+country_event = {
+
+	id = 500238
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500238"
+	desc = "EVTDESC500238"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500238"
+			##Orthodoxy, Autocracy, Nationality
+			prestige = 5
+			add_country_modifier = { name = orthodoxy_autocracy_nationality duration = 7200 } 
+			add_country_modifier = { name = gendarme_of_europe duration = 7200 } #Enable Autocracy CB
+			country_event = { id = 500239 days = 2 }
+	}
+}
+
+#Player introduction
+
+country_event = {
+
+	id = 500239
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500239"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500239"
+			country_event = { id = 500240 }
+	}
+
+	option = {
+		name = "EVTOPTB500239"
+			country_event = { id = 500241 }
+	}
+
+	option = {
+		name = "EVTOPTC500239"
+			country_event = { id = 500242 }
+	}
+
+	option = {
+		name = "EVTOPTD500239"
+			country_event = { id = 500243 }
+	}
+
+	option = {
+		name = "EVTOPTE500239"
+		treasury = -1
+	}
+}
+
+country_event = {
+
+	id = 500240
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500240"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500241
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500241"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500242
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500242"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500243
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500243"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+#1905 Revolution
