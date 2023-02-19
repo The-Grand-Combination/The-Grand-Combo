@@ -86,6 +86,19 @@ political_decisions = {
 			}
 			random_country = {
 				limit = {
+					OR = {
+						tag = PRU
+						tag = GER
+						tag = NGF
+					}
+					has_country_flag = prussia_sides_against_ausrus
+				}
+				diplomatic_influence = { who = TUR value = 25 }
+				create_alliance = TUR
+				leave_alliance = THIS
+			}
+			random_country = {
+				limit = {
 					is_sphere_leader_of = TUR
 					NOT = { tag = THIS }
 				}
@@ -93,12 +106,16 @@ political_decisions = {
 			}
 			random_country = {
 				limit = {
-					tag = PRU
-					ai = yes
+					OR = {
+						tag = PRU
+						tag = GER
+						tag = NGF
+					}
+					NOT = { has_country_flag = prussia_sides_against_ausrus }
 				}
 				leave_alliance = TUR
 			}
-			any_greater_power = {
+			any_greater_power = { #This is probably unnecessary now
 				limit = {
 					NOT = { tag = TUR }
 					NOT = { tag = FRA }
@@ -111,6 +128,16 @@ political_decisions = {
 				}
 				country_event = 19030
 			}
+			any_greater_power = { #This is so we don't have random GPs helping Russia
+				limit = {
+					is_greater_power = yes
+					NOT = { has_country_flag = austria_honours_the_holy_alliance } #Austria
+					NOT = { has_country_flag = prussia_stands_with_russia_aus_in_coalition } #Prussia in the very rare case Austria sides with Coalition and Prussia decides its balans time
+					alliance_with = THIS
+					capital_scope = { continent = europe }
+				}
+				leave_alliance = THIS
+			}
 			casus_belli = {
 				target = TUR
 				type = cut_down_to_size
@@ -119,7 +146,8 @@ political_decisions = {
 			war = {
 				target = TUR
 				attacker_goal = { casus_belli = cut_down_to_size }
-				defender_goal = { casus_belli = status_quo }
+				defender_goal = { casus_belli = cut_down_to_size_rus }
+				call_ally = yes #Austria
 			}
 		}
 
