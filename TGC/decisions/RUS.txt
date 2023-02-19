@@ -3502,13 +3502,13 @@ political_decisions = {
 			is_greater_power = yes
 			capital = 994
 			has_country_flag = russian_america_ambition # Russia decided it wants to expand their North American Pacific
-			has_country_flag = war_for_california # Mexico said no to the ultimatum
 			NOT = { has_country_flag = rossiskiy_kalyforniya }
 		}
 
 		allow = {
 			has_recently_lost_war = no
 			truce_with = MEX
+			has_country_flag = war_for_california # Mexico said no to the ultimatum
 			money = 50000
 			owns = 89
 			owns = 104
@@ -3519,12 +3519,11 @@ political_decisions = {
 			}
 		}
 
-		effect = { #set_country_flag = french_total_victory
+		effect = {
 			RUS = { set_country_flag = rossiskiy_kalyforniya }
 			prestige = 15
-			badboy = 5
-			#LSK = { primary_culture = russian religion = orthodox government = dominion }
-			#CAL = { all_core = { add_core = THIS } }
+			#badboy = 5
+			99 = { secede_province = MEX } #Fixing border
 			treasury = -50000
 				any_owned = {
 					limit = {
@@ -3544,36 +3543,75 @@ political_decisions = {
 			is_greater_power = yes
 			primary_culture = russian
 			has_country_flag = russian_america_ambition
+			year = 1842
 			NOT = { has_country_flag = snatch_oregon_rus }
 		}
 
 		allow = {
-			money = 50001
+			money = 100001
+			#has_country_flag = initiated_mordvinov_plan
 			war = no
 			owns = 89
 			owns = 104
 			81 = { empty = yes }
 			82 = { empty = yes }
 			83 = { empty = yes }
+			79 = { empty = yes }
+			13 = { empty = yes }
 		}
 
 		effect = {
-			  treasury = -50000
+			  treasury = -100000
 			  set_country_flag = snatch_oregon_rus
-              81 = { secede_province = RUS }
-			  82 = { secede_province = RUS }
-			  83 = { secede_province = RUS }
-			any_country = { #maybe redo this with RUS as third party in Oregon Crisis, a bit touchy
+			  USA_78 = { secede_province = RUS } # Washington
+			  USA_81 = { secede_province = RUS } # Oregon
+			  USA_91 = { secede_province = RUS } #Idaho
+			  CAN_13 = { secede_province = RUS } #BC - could do a separate decision
+			  114 = { secede_province = RUS }
+			any_country = { 
 					limit = { OR = { tag = USA tag = ENG } }
 					relation = { who = THIS value = -50 }
 					casus_belli = { target = THIS type = place_in_the_sun months = 36 }
-			} #Washington and B. Columbia: event during Crimean War to claim it so Russia player doesn't wage 2 wars over frozen dirt
+				#Reaction: event during Crimean War for both UK and USA to reassert its claims, they will press it. Player will have to hold another front and defend. losing key cities means loss of pacific america. In the meantime RUS can pay off USA claims back (legalising 1825 treaty reversal)
+			}
+			country_event = { id = 500245 days = 30 } #Border CLashes
 		}
 
 		ai_will_do = { factor = 0 }
 	}
+
+	begone_russia_usa = {
+		picture = abolish_slavery_romania
+		potential = {
+			tag = USA
+			RUS = { has_country_flag = russian_america_ambition owns = 85 }
+			NOT = { has_country_flag = usa_seize_pacific_rus }
+		}
+
+		allow = {
+			OR = {
+				AND = {
+					controls = 104
+					controls = 87
+					controls = 89
+					controls = 81
+					controls = 85
+				}
+			}
+			#War for Pacific
+			NOT = { has_country_modifier = { rocky_war_timer } } #This is so they can't just take it asap as california falls. Player has 3 years since war STARTS to retake the occupied land before its lost forever
+		}
+
+		effect = {
+			set_global_flag = usa_seize_pacific_rus
+			#Renaming probably not needed, it will have Mexican names in flags
+			end_war = RUS
+			RUS = { country_event = { id = 500248 } } #Pacific Lost
+		}
+		ai_will_do = { factor = 1 }
+	}
 		
-	initiate_mordvinov_plan = {
+	initiate_mordvinov_plan = { #First wave, second wave TBD
 		picture = constantinople
 		
 		potential = {
@@ -3586,7 +3624,7 @@ political_decisions = {
 			debt_law = serfdom
 			owns = 89
 			owns = 84
-			owns = 81
+			#owns = 81
 			money = 50000
 		}
 
@@ -3596,14 +3634,14 @@ political_decisions = {
 			political_reform = quota_immigration #This allows overseas colonial emigration
 			any_pop = {
 					limit = {
-						location = { is_core = CAL }
+						location = { is_core = LSK }
 						has_pop_culture = mexican
 					}
 					move_pop = 2172 # Mexico City
 				}
 				any_pop = {
 					limit = {
-						location = { is_core = CAL }
+						location = { is_core = LSK }
 						has_pop_culture = yankee
 					}
 					move_pop = 103 # Denver
@@ -3613,9 +3651,11 @@ political_decisions = {
 			#MEX_2139 = { 2138 3368 2139 } # Baja California
 
 			#81 83 82  Wash 79 78 80
+
+			#Add a few soldiers
 			
 			#Russians, Malorussians, Byelorussians #allfixed, i think
-            any_pop = { limit = { location = { province_id = 2614 } type = serfs culture = russian } move_pop = 97 } #salt lake, redo
+            any_pop = { limit = { location = { province_id = 2614 } type = serfs culture = russian } move_pop = 97 } #salt lake
 	        any_pop = { limit = { location = { province_id = 1005 } type = serfs culture = russian } move_pop = 93 } #north of salt
 	        any_pop = { limit = { location = { province_id = 994 } type = serfs culture = russian } move_pop = 91 } #idaho
 	        any_pop = { limit = { location = { province_id = 1024 } type = serfs culture = russian } move_pop = 89 } #this ok
@@ -3625,6 +3665,7 @@ political_decisions = {
 	        any_pop = { limit = { location = { province_id = 1019 } type = serfs culture = ukrainian } move_pop = 85 }#this ok
          	any_pop = { limit = { location = { province_id = 977 } type = serfs culture = ukrainian } move_pop = 86 }#this ok
         	any_pop = { limit = { location = { province_id = 1018 } type = serfs culture = ukrainian } move_pop = 90 } #this ok
+			#Oregon
 	        any_pop = { limit = { location = { province_id = 971 } type = serfs culture = ukrainian } move_pop = 83 } #ok
 	        any_pop = { limit = { location = { province_id = 970 } type = serfs culture = ukrainian } move_pop = 81 } #ok
         	any_pop = { limit = { location = { province_id = 974 } type = serfs culture = ukrainian } move_pop = 82 } #ok
@@ -3693,6 +3734,24 @@ political_decisions = {
 				#92 = { change_province_name = "Fort Pugachov" }
 				#93 = { change_province_name = "Fort Kropotkin" }
 
+				#This needs Columbia, Nevada and so forth names
+
+				any_owned = {
+					limit = {
+						continent = north_america
+						NOT = { is_core = LSK }
+					}
+					add_core = LSK
+				}
+
+				any_owned = {
+					limit = {
+						is_core = LSK
+						NOT = { terrain = desert terrain = arctic terrain = montane_tundra }
+					}
+					add_province_modifier = { name = land_of_opportunity_modifier duration = 1000 }
+				}
+
 				random_owned = {
 					limit = { owner = { has_country_flag = initiated_mordvinov_plan } }
 					CAL = {
@@ -3707,7 +3766,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 	 
-	###SCRAPPED might redo it as second wave in cali
+	###SCRAPPED redo this for Oregon and BC
 	# initiate_mordvinov_plan_phase_2 = {
 	# 	picture = constantinople
 		
@@ -3876,7 +3935,7 @@ political_decisions = {
 	
 	#Romania Rebellion end
 	decide_faith_of_romania = {
-		picture = a_black_sea_fleet #need new pic
+		picture = a_black_sea_fleet 
 		potential = {
 		    tag = RUS
 			ROM = { has_country_flag = romanian_rebellion_on_the_danube }

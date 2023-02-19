@@ -1109,24 +1109,10 @@
 					tag = FROM
 					number_of_states = 2
 					civilized = no
-					NOT = { has_global_flag = berlin_conference }
 				}
 				add_casus_belli = {
 					target = THIS
-					type = demand_concession_NI_casus_belli
-					months = 24
-				}
-			}
-			random_country = {
-				limit = {
-					tag = FROM
-					number_of_states = 2
-					civilized = no
-					has_global_flag = berlin_conference
-				}
-				add_casus_belli = {
-					target = THIS
-					type = demand_concession_BC_casus_belli
+					type = demand_concession_casus_belli
 					months = 24
 				}
 			}
@@ -1147,24 +1133,10 @@
 					tag = FROM
 					NOT = { number_of_states = 2 }
 					civilized = no
-					NOT = { has_global_flag = berlin_conference }
 				}
 				add_casus_belli = {
 					target = THIS
-					type = establish_protectorate_NI_casus_belli
-					months = 24
-				}
-			}
-			random_country = {
-				limit = {
-					tag = FROM
-					NOT = { number_of_states = 2 }
-					civilized = no
-					has_global_flag = berlin_conference
-				}
-				add_casus_belli = {
-					target = THIS
-					type = establish_protectorate_BC_casus_belli
+					type = establish_protectorate_casus_belli
 					months = 24
 				}
 			}
@@ -3157,7 +3129,7 @@ country_event = {
 					is_state_religion = no
 					OR = {
 						has_pop_culture = circassian
-						has_pop_culture = chechen
+						#has_pop_culture = chechen #Chechens didn't get massacred
 					}
 					location = { is_core = CIR }
 				}
@@ -3171,7 +3143,7 @@ country_event = {
 			}
 
 			ai_chance = { factor = 0.95 }
-			TUR = { country_event = { id = 500125 days = 7 } }
+			TUR = { country_event = { id = 500125 days = 7 } } #might just move upper/mid strata instead
 		}
 
 		option = {
@@ -4192,17 +4164,23 @@ country_event = {
 
 	trigger = {
 		tag = RUS
-		war = no
 		NOT = {
 			has_country_flag = russian_america_ambition
 			has_country_flag = no_russian_america_ambition
 		}
-		year = 1838
 		NOT = { year = 1845 }
 	}
 
 	mean_time_to_happen = {
-		months = 6
+		months = 3
+		modifier = {
+			factor = 1.5 #increase likelihood to happen
+			year = 1837
+		}
+		modifier = {
+			factor = 3 #increase likelihood to happen
+			year = 1838
+		}
 	}
 
 	option = {
@@ -4227,7 +4205,6 @@ country_event = {
 }
 
 ## Demand California ##
-#Todo Localization ##cut it down to coast and immediate hinterlands, rockies are too ambitious 
 	country_event = {
 
 		id = 500115
@@ -4304,19 +4281,7 @@ country_event = {
 				}
 				add_core = LSK #Russian America
 			}
-		# 	#MEX_94 = { add_core = CAL } # Nevada
-		# #MEX_97 = { add_core = CAL } # Utah
-		# MEX_100 = { add_core = CAL }
-		# #USA_111 = { add_core = CAL } # Wyoming
-		# 2137 = { add_core = LSK } # Sonora prov
-		# MEX_2139 = { add_core = LSK } # Baja California
-		# 38 = { add_core = CAL }
-		# 108 = { add_core = CAL }
-		# 109 = { add_core = CAL }
-		# 110 = { add_core = CAL }
-		# 135 = { add_core = CAL }
-		# 2148 = { add_core = CAL }
-		# 2662 = { add_core = CAL }
+			badboy = 5
 			casus_belli = {
 				target = MEX
 				type = place_in_the_sun
@@ -4324,16 +4289,23 @@ country_event = {
 			}
 			war = {
 				target = MEX
-				attacker_goal = {
+				attacker_goal = { #California
 							casus_belli = place_in_the_sun
 							state_province_id = 87
 						}
-			    attacker_goal = {
+			    attacker_goal = { #Baja
 							casus_belli = place_in_the_sun
 							state_province_id = 2139
 						}
+				attacker_goal = { #NEvada
+							casus_belli = place_in_the_sun
+							state_province_id = 94
+						}
+				attacker_goal = { #Yuta
+							casus_belli = place_in_the_sun
+							state_province_id = 97
+						}
 				defender_goal = { casus_belli = status_quo }
-				call_ally = yes
 			}
 			ai_chance = { factor = 30 }
 		}
@@ -4386,7 +4358,7 @@ country_event = {
 	}
 	
 	
-	#Russian offer to the US ### SCRAPPED for now
+	#Russian offer to the US ### SCRAPPED
 		country_event = {
 			id = 500118
 			title = EVTNAME500118
@@ -4685,7 +4657,7 @@ country_event = {
 		    }
 
 			mean_time_to_happen = {
-				months = 3
+				months = 2
 			}
 			
 			option = {
@@ -7651,6 +7623,154 @@ country_event = {
 
 	option = {
 		name = "EVTOPTF500239"
+	}
+}
+
+#Clashes between Anglo and Russian settlers on the Rockies border
+country_event = {
+
+	id = 500244
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500244"
+	desc = "EVTDESC500244"
+	picture = "russiazenith1830"  #russian america
+
+	option = {
+		name = "EVTOPTA500244"
+		any_owned_province = { limit = { any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } } add_province_modifier = { name = border_clashes duration = 7200 } }
+	}
+}
+country_event = {
+
+	id = 500245
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500245"
+	desc = "EVTDESC500245"
+	picture = "russiazenith1830"  #russian america
+
+	option = {
+		name = "EVTOPTA500245"
+		#any_owned = { 
+		#	limit = {
+		#	any_neighbor_province = { OR = { owned_by = ENG owner = { vassal_of = ENG } owned_by = USA owner = { vassal_of = USA } } }	
+		#	}
+		#	add_province_modifier = { name = border_clashes duration = 7200 }
+		#}
+		any_owned_province = { limit = { any_neighbor_province = { OR = { owned_by = ENG owner = { vassal_of = ENG } } } } add_province_modifier = { name = border_clashes duration = 7200 } }
+		any_owned_province = { limit = { any_neighbor_province = { OR = { owned_by = USA owner = { vassal_of = USA } } } } add_province_modifier = { name = border_clashes duration = 7200 } }
+
+		any_country = { 
+					limit = { OR = { tag = USA tag = ENG tag = UNB tag = RPL } }
+					relation = { who = THIS value = -50 }
+					country_event = { id = 500244 }
+					}
+	}
+}
+
+country_event = {
+
+	id = 500246
+
+	trigger = {
+		tag = USA
+		has_global_flag = crimea_has_happened
+		has_country_flag = hasmanifestdestiny
+		RUS = { has_country_flag = rossiskiy_kalyforniya war = yes }
+	}
+
+	mean_time_to_happen = {
+		months = 1
+		modifier = { 
+			factor = 3
+			RUS = { war_exhaustion = 10 }
+		}
+		modifier = { 
+			factor = 3
+			RUS = { war_with = ENG }
+		}
+	}
+
+	title = "EVTNAME500246"
+	desc = "EVTDESC500246"
+	picture = "russiazenith1830"
+
+	option = {
+		name = "EVTOPTA500246"
+		war = {
+				target = RUS
+				attacker_goal = { casus_belli = acquire_all_cores }
+				defender_goal = { casus_belli = status_quo }
+			}
+		any_country = { 
+					limit = { AND = { tag = ENG war_with = RUS } }
+					relation = { who = THIS value = 50 }
+					country_event = { id = 500247 } #Evict Russia from America, split by historical parallel
+					}
+		RUS = { country_event = { id = 500249 days = 1 } }
+	}
+}
+
+#Britain Informed
+country_event = {
+	id = 500247
+	title = "EVTNAME500247"
+	desc = "EVTDESC500247"
+	picture = "russiazenith1830"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500247" #yes
+		#trigger oregon events here
+	}
+}
+
+country_event = {
+	id = 500248
+	title = "EVTNAME500248"
+	desc = "EVTDESC500248"
+	picture = "russiazenith1830"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500248" #All is Lost in America
+		#Historical 44 split
+		any_owned_province = {
+					limit = { 
+						OR = {
+						state_id = 87
+						state_id = 78
+						state_id = 91 #Idaho
+						state_id = 81 #Oregon 
+						state_id = 2139 #Baja
+						is_core = USA
+						}
+					}
+					state_scope = { remove_core = LSK secede_province = USA }
+				}
+		any_owned_province = {
+					limit = { 
+						OR = {
+						state_id = 13
+						state_id = 1 #Alaska?
+						}
+					}
+					state_scope = { remove_core = LSK secede_province = ENG }
+				}
+	}	
+}
+country_event = { #Explanation of the war, outline if they lose control of provinces, Russian America is getting annexed
+	id = 500249
+	title = "EVTNAME500249"
+	desc = "EVTDESC500249"
+	picture = "russiazenith1830"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500249" 
 	}
 }
 
