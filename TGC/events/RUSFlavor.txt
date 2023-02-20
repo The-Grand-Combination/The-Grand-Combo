@@ -5590,7 +5590,7 @@ country_event = {
 				relation = { who = FROM value = -50 }
 				relation = { who = BUL value = -50 }
 				relation = { who = TUR value = 50 }
-				MCD = { any_owned = { limit = { OR = { is_core = BUL is_code = MCD } } add_province_modifier = { name = nationalist_agitation duration = 1800 } } }
+				MCD = { any_owned = { limit = { OR = { is_core = BUL is_core = MCD } } add_province_modifier = { name = nationalist_agitation duration = 1800 } } }
 				prestige = -10
 			    ai_chance = { factor = 0 }
 			}
@@ -6078,7 +6078,7 @@ country_event = {
 					secede_province = RUS
 				}
 			ai_chance = {
-				factor = 0
+				factor = 10
 				modifier = {
 					factor = 0.5
 					NOT = { war_exhaustion = 10 }
@@ -6105,12 +6105,11 @@ country_event = {
 				annex_to = THIS
 			}
             KML = { annex_to = QNG }
-			#1613 = { add_core = MCK }
-			any_owned = { limit = { is_core = MCK } add_province_modifier = { name = nationalist_agitation duration = 365 } }
-			any_owned = { limit = { is_core = MCK } add_core = QNG }
+			#any_owned = { limit = { is_core = MCK } add_province_modifier = { name = nationalist_agitation duration = 365 } }
+			#any_owned = { limit = { is_core = MCK } add_core = QNG }
 
 			ai_chance = {
-				factor = 100
+				factor = 90
 				modifier = {
 					factor = 1.1
 					NOT = { war_exhaustion = 25 }
@@ -6162,18 +6161,21 @@ country_event = {
 			relation = { who = FROM value = -100 }
 			diplomatic_influence = { who = FROM value = -100 }
 			casus_belli = {
-				target = FROM
-				type = cut_down_to_size
-				months = 30
-			}
-			casus_belli = {
 			target = FROM
 			type = war_reparations
 			months = 40
 		    }
 		    war = {
 			target = QNG
-			attacker_goal = { casus_belli = cut_down_to_size }
+			attacker_goal = { #Manchuria
+							casus_belli = acquire_any_state
+							state_province_id = 1553
+						}
+			attacker_goal = { 
+							casus_belli = acquire_any_state
+							state_province_id = 1479
+						}
+			defender_goal = { casus_belli = status_quo }
 		    }
 			#1613 = { add_core = RUS } #no cores, easy there bud
 			#1188 = { add_core = RUS }
@@ -7711,7 +7713,7 @@ country_event = {
 		any_country = { 
 					limit = { AND = { tag = ENG war_with = RUS } }
 					relation = { who = THIS value = 50 }
-					country_event = { id = 500247 } #Evict Russia from America, split by historical parallel
+					country_event = 500247 #Evict Russia from America, split by historical parallel
 					}
 		RUS = { country_event = { id = 500249 days = 1 } }
 	}
@@ -7809,5 +7811,117 @@ country_event = { #Explanation of the war, outline if they lose control of provi
 				leave_alliance = KUK
 			}
 		}
-	#500259 in Canada
+	#500259 in Canada 500260 - 500270 GEC
+
+### Oregon Expansion ###
+	#Description: The Oregon Trail - Russian colonists will slowly progress inland
+	#TBD Yukon and further inland
+	country_event = {
+
+		id = 500271
+		title = "EVTNAME44125"
+		desc = "EVTDESC44125"
+		picture = "1843_GreatMigration"
+
+		trigger = {
+			tag = RUS
+			year = 1840
+			has_country_flag = snatch_oregon_rus
+			OR = {
+				AND = { 91 = { empty = yes } owns = 92 }
+				AND = { 80 = { empty = yes } owns = 79 }
+				AND = { 114 = { empty = yes } owns = 91 }
+				AND = { 20 = { empty = yes } owns = 13 }
+				AND = { 21 = { empty = yes } OR = { owns = 20 owns = 91 } }
+				AND = { 19 = { empty = yes } owns = 20 }
+				AND = { 16 = { empty = yes } owns = 15 }
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.8
+				year = 1840
+			}
+			modifier = {
+				factor = 0.5
+				year = 1843
+			}
+			modifier = {
+				factor = 0.5
+				state_n_government = 1
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.9
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.8
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.7
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.6
+			}
+		}
+
+		option = {
+			name = "EVTOPTA44125"
+
+			random_owned = {
+				limit = {
+					91 = { empty = yes }
+					92 = { owned_by = THIS }
+				}
+				91 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+			random_owned = {
+				limit = {
+					80 = { empty = yes }
+					79 = { owned_by = THIS }
+				}
+				80 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+			random_owned = {
+				limit = {
+					114 = { empty = yes }
+					91 = { owned_by = THIS }
+				}
+				114 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+			random_owned = {
+				limit = {
+					20 = { empty = yes }
+					13 = { owned_by = THIS }
+				}
+				20 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+			random_owned = {
+				limit = {
+					21 = { empty = yes }
+					20 = { owned_by = THIS }
+				}
+				21 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+			random_owned = {
+				limit = {
+					19 = { empty = yes }
+					20 = { owned_by = THIS }
+				}
+				19 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+			random_owned = {
+				limit = {
+					16 = { empty = yes }
+					15 = { owned_by = THIS }
+				}
+				16 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
+			}
+		}
+	}
 #1905 Revolution
