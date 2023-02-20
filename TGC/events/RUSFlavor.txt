@@ -6067,18 +6067,16 @@ country_event = {
 				}
 				country_event = 500191
 			}
-			any_owned = {
+			random_owned = {
 					limit = { OR = { #Zheltorossiya/Russian Manchuria ambition
 						region = CHI_1479
 						region = CHI_1552
-						province_id = 1188
-						province_id = 1613
 						}
 					}
 					secede_province = RUS
 				}
 			ai_chance = {
-				factor = 10
+				factor = 5
 				modifier = {
 					factor = 0.5
 					NOT = { war_exhaustion = 10 }
@@ -6094,7 +6092,8 @@ country_event = {
 		option = {
 			name = "EVTOPTB80110" #refuse
 			prestige = 10
-			RUS = { country_event = 500192 }
+			RUS = { country_event = 500192 days = 7 }
+			JAP = { country_event = 500272 days = 1 } #JAP intervention possibility
 			relation = { who = FROM value = -300 }
 			random_country = {
 				limit = {
@@ -6104,7 +6103,7 @@ country_event = {
 				}
 				annex_to = THIS
 			}
-            KML = { annex_to = QNG }
+            #KML = { annex_to = QNG }
 			#any_owned = { limit = { is_core = MCK } add_province_modifier = { name = nationalist_agitation duration = 365 } }
 			#any_owned = { limit = { is_core = MCK } add_core = QNG }
 
@@ -6142,6 +6141,7 @@ country_event = {
 		option = {
 			name = "EVTOPTA80101"
 			prestige = 10
+			create_vassal = MGL
 			relation = { who = FROM value = 50 }
 		}
 	}
@@ -6175,20 +6175,24 @@ country_event = {
 							casus_belli = acquire_any_state
 							state_province_id = 1479
 						}
+			attacker_goal = { 
+							casus_belli = take_puppet
+							country = MGL
+						}
 			defender_goal = { casus_belli = status_quo }
 		    }
 			#1613 = { add_core = RUS } #no cores, easy there bud
 			#1188 = { add_core = RUS }
 			#CHI_1552 = { add_core = RUS } # Heilongjiang
             #CHI_1479 = { add_core = RUS } # Fengtian
-			CHI_1532 = { add_core = MGL } # Inner Mongolia 1820
-			1599 = { add_core = MGL } # Inner Mongolia
-			1488 = { add_core = MGL } # Inner Mongolia
-			1576 = { add_core = MGL } # Inner Mongolia
-			1572 = { add_core = MGL } # Inner Mongolia
-			1573 = { add_core = MGL } # Inner Mongolia
-			1561 = { add_core = MGL } # Inner Mongolia
-			1491 = { add_core = MGL } # Inner Mongolia
+			# CHI_1532 = { add_core = MGL } # Inner Mongolia 1820
+			# 1599 = { add_core = MGL } # Inner Mongolia
+			# 1488 = { add_core = MGL } # Inner Mongolia
+			# 1576 = { add_core = MGL } # Inner Mongolia
+			# 1572 = { add_core = MGL } # Inner Mongolia
+			# 1573 = { add_core = MGL } # Inner Mongolia
+			# 1561 = { add_core = MGL } # Inner Mongolia
+			# 1491 = { add_core = MGL } # Inner Mongolia
 			
 		}
 	}
@@ -7924,4 +7928,64 @@ country_event = { #Explanation of the war, outline if they lose control of provi
 			}
 		}
 	}
+
+country_event = { #Japan-Russia Rivalry over Manchuria and China
+	id = 500272
+	title = "EVTNAME500272" #spaghettis
+	desc = "EVTDESC900272"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500261"
+		RUS = { country_event = 500273 days = 10 }
+		relation = {
+			who = FROM
+			value = 50
+		}
+		#create_alliance = FROM
+		diplomatic_influence = {
+			who = FROM
+			value = 50
+		}
+		ai_chance = { factor = 95 }
+	}
+	
+	option = {
+		name = "EVTOPTB500261"
+		relation = {
+			who = QNG
+			value = -100
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 5 }
+	}
+}
+
+country_event = { #Russia informed about GPs supporting Ottomans
+	id = 500273
+	title = "EVTNAME500273" 
+	desc = "EVTDESC500273"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500273" #Japan sides with China
+		relation = { who = FROM value = -200 }
+		leave_alliance = FROM
+		FROM = {
+			war = {
+				target = THIS
+				attacker_goal = { casus_belli = humiliate } #this should be about Korea and Manchuria but can't code it with such certainty
+				defender_goal = { casus_belli = humiliate }
+			}
+		}
+		ai_chance = { factor = 100 }
+	}
+}
 #1905 Revolution
