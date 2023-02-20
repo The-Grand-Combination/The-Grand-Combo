@@ -123,6 +123,8 @@ political_decisions = {
 					NOT = { tag = PRU }
 					NOT = { tag = NGF }
 					NOT = { tag = AUS }
+					NOT = { tag = SAR }
+					NOT = { tag = ITA }
 					NOT = { alliance_with = THIS }
 					capital_scope = { continent = europe }
 				}
@@ -1750,6 +1752,7 @@ political_decisions = {
 			AND = {  #assuring a no-crimea war world can have berlin congress
 			has_global_flag = great_eastern_crisis
 			has_country_flag = started_the_great_eastern_crisis
+			NOT = { has_global_flag = crimea_has_happened }
 			}
 			}
 			NOT = {
@@ -1862,6 +1865,7 @@ political_decisions = {
 						tag = ROM
 						tag = MON
 						tag = BUL
+						tag = ARM
 					}
 				}
 				create_alliance = RUS
@@ -1869,7 +1873,6 @@ political_decisions = {
 			}
 			country_event = 500176
 			TUR = {
-			#country_event = { id = 500169 days = 1 }
 			country_event = { id = 99826 days = 30 }
 			}
 		}
@@ -1884,23 +1887,23 @@ political_decisions = {
 				factor = 0
 				war_exhaustion = 15
 			}
-			modifier = {
-				factor = 0
-				OR = {
-					AND = {
-						exists = NGF
-						TUR = { alliance_with = NGF }
-					}
-					AND = {
-						exists = GER
-						TUR = { alliance_with = GER }
-					}
-					AND = {
-						exists = GCF
-						TUR = { alliance_with = GCF }
-					}
-				}
-			}
+			# modifier = {
+			# 	factor = 0
+			# 	OR = {
+			# 		AND = {
+			# 			exists = NGF
+			# 			TUR = { alliance_with = NGF }
+			# 		}
+			# 		AND = {
+			# 			exists = GER
+			# 			TUR = { alliance_with = GER }
+			# 		}
+			# 		AND = {
+			# 			exists = GCF
+			# 			TUR = { alliance_with = GCF }
+			# 		}
+			# 	}
+			# }
 			modifier = {
 				factor = 0
 				badboy = 0.8
@@ -2067,6 +2070,173 @@ political_decisions = {
 			TUR = {
 			country_event = { id = 500183 days = 10 }
 			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	dismantle_ottomans_alone = {
+		picture = "eastern_crisis_dismantle_ottomans"
+		potential = {
+			tag = RUS
+			TUR = { has_country_flag = lost_russo_turkish_war }
+			truce_with = TUR
+			OR = {
+				has_country_flag = turks_defy_congress
+				has_country_flag = eastern_crisis_dismantle_ottomans
+			}
+			NOT = { has_global_flag = dismantle_ottomans }
+			has_global_flag = russia_isolated_gec #Russia Solo path
+		}
+
+		allow = {
+			war = no
+			truce_with = TUR
+		}
+
+		effect = {
+			set_global_flag = dismantle_ottomans
+			badboy = 15
+			prestige = 300
+			any_pop = {
+				limit = {
+					has_pop_religion = orthodox
+				}
+				militancy = -10
+				consciousness = -10
+			}
+			TUR = {
+				any_pop = {
+					limit = {
+						location = {
+							OR = {
+								is_core = ROM
+								is_core = BUL
+								is_core = SER
+								is_core = BOS
+								is_core = GRE
+								is_core = MON
+								is_core = ARM
+								is_core = CLC
+							}
+						}
+						is_culture_group = turko_semitic
+					}
+					reduce_pop = 0.8
+				}
+			}
+			TUR = {
+				any_pop = {
+					limit = {
+						location = { province_id = 860 }
+						is_culture_group = turko_semitic
+					}
+					reduce_pop = 0.8
+				}
+			}
+			TUR = {
+			country_event = { id = 500183 days = 10 }
+			}
+			random_country = {
+			limit = {
+				tag = EGY
+				ai = yes
+			}
+			inherit = EGY
+			create_vassal = EGY
+		} #this needs to be finished as an event to TUR: puppet PAL, EGY, IRQ, TUN, LYB
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	kick_russians_out_oe = {
+		picture = "eastern_crisis_dismantle_ottomans"
+		potential = {
+			tag = TUR
+			truce_with = RUS
+			has_country_flag = eastern_crisis_dismantle_ottomans
+			has_global_flag = eastern_crisis_dismantle_ottomans
+			has_global_flag = russia_isolated_gec
+			NOT = { has_global_flag = kick_russians_out_oe }
+			NOT = { year = 1885 } #Idk how else not to have this pop up if Russia loses a war later on but they WP'd on escalated GEC
+		}
+
+		allow = {
+			war = no
+			truce_with = RUS
+			RUS = { has_recently_lost_war = yes is_disarmed = yes }
+		}
+
+		effect = {
+			set_global_flag = kick_russians_out_oe
+			badboy = 10
+			prestige = 200
+			any_pop = {
+				limit = {
+					has_pop_religion = orthodox
+				}
+				militancy = 5
+				consciousness = 5
+			}
+			any_pop = {
+				limit = {
+					has_pop_religion = sunni
+				}
+				militancy = -10
+				consciousness = -10
+			}
+			#Russian Balkans and Caucasus dismantled
+			RUS = {
+			prestige = -1000
+			release = ROM
+			release = BUL
+			release = SER
+			release = YUG
+			release = ARM
+			release = GRE
+			release = MCD
+			release = BOS
+			release = GEO
+			release = AZB
+			diplomatic_influence = { who = SER value = -200 }
+			diplomatic_influence = { who = BUL value = -200 }
+			diplomatic_influence = { who = ROM value = -200 }
+			diplomatic_influence = { who = YUG value = -200 }
+			diplomatic_influence = { who = ARM value = -200 }
+			diplomatic_influence = { who = GRE value = -200 }
+			diplomatic_influence = { who = MCD value = -200 }
+			diplomatic_influence = { who = BOS value = -200 }
+			diplomatic_influence = { who = GEO value = -200 }
+			add_country_modifier = { name = global_liberal_agitation duration = 1800 }
+			}
+			inherit = ARM
+			inherit = GEO
+			inherit = AZB
+			#This should stay the same
+			random_country = {
+				limit = { has_country_flag = ita_accept_russian_proposal_gec } #Italy
+				country_event = 500170
+			}
+			random_country = {
+				limit = { has_country_flag = egy_sphere_leader_accept_russian_proposal_gec } #gbr/fra usually
+				country_event = 500173
+			}
+			random_country = {
+				limit = { has_country_flag = ger_accept_russian_proposal_gec } #GER or AUS?
+				country_event = 500173
+			}
+			random_country = {
+				limit = { has_country_flag = eng_accept_russian_proposal_gec } #GBR
+				country_event = 500184
+			}
+			random_country = {
+				limit = { has_country_flag = fra_accept_russian_proposal_gec } #FRA
+				country_event = 500186
+			}
+			#TUR = {
+			#country_event = { id = 500183 days = 10 }
+			#}
 		}
 
 		ai_will_do = { factor = 1 }

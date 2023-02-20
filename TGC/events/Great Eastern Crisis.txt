@@ -600,6 +600,14 @@ country_event = {
 			militancy = -8
 			consciousness = -8
 		}
+		any_country = { #This is if Russia goes solo at it
+			limit = {
+				has_country_flag = anti_russian_coalition_gec
+			}
+			create_alliance = TUR
+			leave_alliance = RUS
+		}
+
 		FROM = {
 			war = {
 				target = THIS
@@ -1461,36 +1469,6 @@ country_event = {
 	}
 }
 
-# Last ditch attempt not to get dismantled
-country_event = { #Scrapped
-	id = 500220
-	title = "Desperate situation calls for desperate solution" #The Cyprus Convention
-	desc = "EVTDESC900640"
-	picture = "cyprus_convention"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "Swallow our pride and ask the West for help in return for concessions"
-		set_country_flag = desperate_problems_require_desperate_solutions
-		random_country = {
-			limit = {
-				is_sphere_leader_of = EGY #Britain or France..hopefully
-				NOT = { tag = THIS }
-			}
-			country_event = 500173
-		}
-		720 = { owner = { country_event = 500170 } } #italy
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "We will face the Russian Wrath on our own"
-		#set_country_flag = cyprus_convention
-		ai_chance = { factor = 0 }
-	}
-}
-
 country_event = {
 	id = 500170
 	title = "Ottomans Dismantled - Time for our Share" #italy gets asked
@@ -1541,8 +1519,8 @@ country_event = {
 
 country_event = {
 	id = 500172
-	title = "$FROMCOUNTRY$ Accepts Odessa Conference"
-	desc = "EVTDESC900643"
+	title = "$FROMCOUNTRY$ Accepts Odessa Conference!"
+	desc = "$FROMCOUNTRY$ government representatives have been seen walking out of the Odessa Conference with wide smiles. They have told journalists the Great Powers have settled on the final resolution of the Ottoman issue."
 	picture = "cyprus_convention"
 
 	is_triggered_only = yes
@@ -1600,7 +1578,7 @@ country_event = {
 country_event = { #Russia informed about Odessa Conference refusal
 	id = 500175
 	title = "$FROMCOUNTRY$ declines Odessa Conference, Allies Ottomans" #Russia informed Italy/GBR/FRA decide to back ottomans
-	desc = "EVTDESC900643"
+	desc = "$FROMCOUNTRY$ representatives were not at all pleased with the proposed solutions at the Odessa Conference, they have immediately left Russia today. Their Government released a brisk statement upon returning: $FROMCOUNTRY$ they will support the Ottomans uphold their territorial sovereignty against Russian aggression."
 	picture = "cyprus_convention"
 
 	is_triggered_only = yes
@@ -1613,7 +1591,7 @@ country_event = { #Russia informed about Odessa Conference refusal
 
 country_event = { #Russia chain start of GEC, calls for Odessa Conference to dismantle the Ottoman Empire
 	id = 500176
-	title = "The Odessa Conference" #Russia informed Italy/GBR/FRA decide to back ottomans
+	title = "The Odessa Conference"
 	desc = "EVTDESC500176"
 	major = yes
 	is_triggered_only = yes
@@ -1632,13 +1610,18 @@ country_event = { #Russia chain start of GEC, calls for Odessa Conference to dis
 		549 = { owner = { country_event = { id = 500180 days = 3 } } }#germany
 		300 = { owner = { country_event = { id = 500181 days = 3 } } }#britain
 		425 = { owner = { country_event = { id = 500186 days = 3 } } }#france
-		badboy = -10
+		badboy = -5
+		#Isolation lifted - check
 		ai_chance = { factor = 100 }
 	}
 	
 	option = {
-		name = "We will make zero concessions."
+		name = "We will make zero concessions." #war with the world, essentially
 		badboy = 20
+		set_global_flag = russia_isolated_gec
+		TUR = { country_event = 500220 } #Ottomans attempt to save themselves
+		add_country_modifier = { name = diplomatic_isolation duration = 3600 }
+		any_greater_power = { relation = { who = THIS value = 200 } }
 		ai_chance = { factor = 0 }
 	}
 }
@@ -1874,5 +1857,305 @@ country_event = {
 		#All designed to protect Suez
 		TUN = { annex_to = TUR }
 		any_owned = { limit = { region = TUN_1726 owned_by = TUR } secede_province = FROM } #Tunis
+	}
+}
+
+#Missing German Concessions. Sudan?
+
+#Russia Player alone: doesn't wanna split sand and desert with Westoids, gets gangbanged
+#500260:
+# Last ditch attempt not to get dismantled
+country_event = { #Triggered by Russia deciding to solo GEC
+	id = 500220
+	title = "Desperate situation calls for a desperate solution"
+	desc = "Russia declared the issue of Greater Eastern Crisis an internal of Russian Empire and its allies. It has shunned all the other Great Powers. A respite comes to us, perhaps. If we are willing to cede some sand to the West, we might yet live as a country and retake our place that was once ours."
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Swallow our pride and ask the West for help in return for concessions"
+		set_country_flag = desperate_problems_require_desperate_solutions
+		720 = { owner = { country_event = { id = 500261 days = 3 } } }#italy
+		#500262 EGY sphere owner but kinda touchy
+		549 = { owner = { country_event = { id = 500263 days = 3 } } }#germany
+		300 = { owner = { country_event = { id = 500264 days = 3 } } }#britain
+		425 = { owner = { country_event = { id = 500265 days = 3 } } }#france
+		any_country = {
+				limit = { #because why not
+				OR = {
+					tag = USA
+					tag = JAP
+					tag = TKG
+					tag = SPA
+					tag = SWE
+					tag = DEN
+					tag = SCA
+					tag = NET
+					tag = BEL
+				}
+					NOT = { relation = { who = RUS value = 50 } }
+					NOT = { alliance_with = RUS }
+				}
+				country_event = 500262
+			}
+		ai_chance = { factor = 100 }
+	}	
+
+	option = {
+		name = "We will face the Russian Wrath on our own"
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Desperate Ottomans
+	id = 500261
+	title = "Ottoman Empire pleads for help" #spaghettis
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We cannot allow unchecked Russian Hegemony in the world. Accept their proposal."
+		set_country_flag = ita_accept_russian_proposal_gec #these flags work the same
+		set_country_flag = anti_russian_coalition_gec
+		TUR = { country_event = { id = 500267 days = 3 } }
+		RUS = { country_event = 500266 }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "We will not challenge Russia."
+        TUR = { country_event = { id = 500268 days = 5 } }
+		relation = {
+			who = TUR
+			value = -400
+		}
+		diplomatic_influence = {
+			who = TUR
+			value = -100
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 500262
+	title = "Ottomans plead for aid!" #EGY sphere leader/owner
+	desc = "Greater Eastern Crisis is escalating by the hour! Great Powers of Europe are uniting behind the Sultan in the face of Russian unprecedented refusal to make a compromise! They declare issues of the Middle East their own internal affair!"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We cannot allow unchecked Russian Hegemony in the world. Accept their proposal."
+		set_country_flag = anti_russian_coalition_gec
+		TUR = { country_event = { id = 500267 days = 3 } }
+		RUS = { country_event = 500266 }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "We will not challenge Russia."
+        TUR = { country_event = { id = 500268 days = 5 } }
+		relation = {
+			who = TUR
+			value = -400
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 500263
+	title = "Russia Proposes to dismantle the Ottomans" #germany
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We cannot allow unchecked Russian Hegemony in the world. Accept their proposal."
+		set_country_flag = ger_accept_russian_proposal_gec
+		set_country_flag = anti_russian_coalition_gec
+		TUR = { country_event = { id = 500267 days = 3 } }
+		RUS = { country_event = 500266 }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "We will not challenge Russia."
+        TUR = { country_event = { id = 500268 days = 5 } }
+		relation = {
+			who = TUR
+			value = -400
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 500264
+	title = "Russia proposes to split the Ottoman Empire" #ENG
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We cannot allow unchecked Russian Hegemony in the world. Accept their proposal."
+		set_country_flag = eng_accept_russian_proposal_gec
+		set_country_flag = anti_russian_coalition_gec
+		TUR = { country_event = { id = 500267 days = 3 } }
+		RUS = { country_event = 500266 }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "We will not challenge Russia."
+		TUR = { country_event = { id = 500268 days = 5 } }
+		relation = {
+			who = TUR
+			value = -400
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 500265
+	title = "Russia proposes to split the Ottoman Empire" #ENG
+	desc = "EVTDESC900643"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We cannot allow unchecked Russian Hegemony in the world. Accept their proposal."
+		set_country_flag = fra_accept_russian_proposal_gec
+		set_country_flag = anti_russian_coalition_gec
+		TUR = { country_event = { id = 500267 days = 3 } }
+		RUS = { country_event = 500266 }
+		relation = {
+			who = TUR
+			value = 400
+		}
+		create_alliance = TUR
+		diplomatic_influence = {
+			who = TUR
+			value = 100
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "We will not challenge Russia."
+        TUR = { country_event = { id = 500268 days = 5 } }
+		relation = {
+			who = TUR
+			value = -400
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = { #Russia informed about GPs supporting Ottomans
+	id = 500266
+	title = "$FROMCOUNTRY$ allies Ottoman Empire" 
+	desc = "$FROMCOUNTRY$, united with other Powers in Europe, has declared it will not tolerate Russian Hegemony in the Middle East. They are preparing a coalition to defend Ottomans. Newspapers report there are secret articles of this treaty, and Constantinople has promised them territorial concessions."
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "They will die together, then."
+		relation = { who = FROM value = 400 }
+		leave_alliance = FROM
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = { #OE informed about new ally
+	id = 500267
+	title = "$FROMCOUNTRY$ allies Ottoman Empire" 
+	desc = "$FROMCOUNTRY$, united with other Powers in Europe, has declared it will not tolerate Russian Hegemony in the Middle East. They are preparing a coalition to defend Ottomans. Newspapers report there are secret articles of this treaty, and Constantinople has promised them territorial concessions."
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "We stand together against the menacing Russian Bear!"
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = { #OE informed about rejection
+	id = 500268
+	title = "$FROMCOUNTRY$ Declines our Offer" 
+	desc = "$FROMCOUNTRY$, unlike other Powers in Europe, has declared it will not get involved in @RUS Russian sphere of interest."
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Unfortunate news."
+		ai_chance = { factor = 100 }
 	}
 }
