@@ -162,6 +162,25 @@ For Increased Performace(64-bit PCs):
 5. Save
 6. Enjoy! the game now should run twice as fast now for any mod
 
+![lowram](https://user-images.githubusercontent.com/32886642/220321810-fc6d60fa-f18e-412c-adc6-f28c68561122.png)
+
+If you have a low end pc or laptop and is running low on ram, this patch will made your make run on less than 2gbs of ram.
+
+1. After installing TGC and running the mod for the first time, go to your "Vitoria 2/mod" folder
+2. Enter the "TGCLowRam" folder
+3. Copy the "CompressedFlagCache.zip" file
+
+![firststep](https://user-images.githubusercontent.com/32886642/220323241-6c9573c7-e0c4-4e4c-a325-51ce119ffe4f.png)
+
+4. Go to your flag cache folder at "Documents\Paradox Interactive\Victoria II\TGC\gfx\flags"
+5. Delete all the contents inside the /flags folder
+6. Paste the "CompressedFlagCache.zip" file you copied inside said folder
+7. Unpack the contents of the .zip into the /flags folder
+
+Now your /flags folder should look like this, and TGC game will use 1gb less ram:
+
+![step2](https://user-images.githubusercontent.com/32886642/220324975-e14a0434-a35f-452b-bdaa-038fc0f1d916.png)
+
 ![Acknowledgements](https://user-images.githubusercontent.com/32886642/209702062-2863718f-663a-4f62-9982-1ca68908a65a.png)
 
 TGC was made possible by the below developers and mods:
