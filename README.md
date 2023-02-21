@@ -177,9 +177,9 @@ If you have a low end pc or laptop and is running low on ram, this patch will ma
 6. Paste the "CompressedFlagCache.zip" file you copied inside said folder
 7. Unpack the contents of the .zip into the /flags folder
 
-Now your /flags folder should look like this, and TGC game will use 1gb less ram:
+Now your /flags folder should look like this, and TGC game will use consideraly less ram:
 
-![step2](https://user-images.githubusercontent.com/32886642/220324975-e14a0434-a35f-452b-bdaa-038fc0f1d916.png)
+![step2](https://user-images.githubusercontent.com/32886642/220329532-06d66615-ea7c-4646-b60e-4d4963a89046.png)
 
 ![Acknowledgements](https://user-images.githubusercontent.com/32886642/209702062-2863718f-663a-4f62-9982-1ca68908a65a.png)
 
