@@ -166,7 +166,7 @@ For Increased Performace(64-bit PCs):
 
 If you have a low end pc or laptop and is running low on ram, this patch will made your make run on less than 2gbs of ram.
 
-1. After installing TGC and running the mod for the first time, go to your "Vitoria 2/mod" folder
+1. After installing TGC and running the mod for the first time, go to your "Victoria 2/mod" folder
 2. Enter the "TGCLowRam" folder
 3. Copy the "CompressedFlagCache.zip" file
 
