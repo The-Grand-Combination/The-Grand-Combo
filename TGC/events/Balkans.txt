@@ -378,8 +378,10 @@ country_event = {
 country_event = {
 	id = 500160
 	title = "EVTNAME500160"
-	desc = "EVTDESC500160" # Perfo : TODO description
+	desc = "EVTDESC500160" #done
 	picture = "bosnia_issue"
+
+	major = yes
 
 	is_triggered_only = yes
 
@@ -437,7 +439,7 @@ country_event = {
 		SER = { country_event = { id = 500163 days = 7 }
         relation = { who = THIS value = 200 }				}
 		prestige = 50
-		ai_chance = { factor = 90 } #10
+		ai_chance = { factor = 10 } #10
 	}
 	
 	#option = { #TODO
@@ -453,7 +455,7 @@ country_event = {
 		SER = { country_event = { id = 500162 days = 5 } }
 		619 = { owner = { relation = { who = THIS value = -25 } } }
 		prestige = -30
-		ai_chance = { factor = 10 } #90
+		ai_chance = { factor = 90 } #90
 	}
 }
 		
@@ -461,7 +463,7 @@ country_event = {
 country_event = {
 	id = 500162
 	title = "EVTNAME500162"
-	desc = "EVTDESC500162" # Perfo : TODO description
+	desc = "EVTDESC500162" # done
 	picture = "bosnia_issue"
 
 	is_triggered_only = yes
@@ -469,17 +471,24 @@ country_event = {
 	option = {
 		name = "EVTOPTA500162"
 		#RUS = { country_event = { id = 50016 days = 7 } } #informed serbia backed down todo
-		prestige = -5
+		prestige = -10
 		relation = { who = RUS value = -50 }
 		ai_chance = { factor = 100 }
 	}
 	
 	option = {
 		name = "EVTOPTB500162"
-		#TODO war
 		leave_alliance = RUS
 		relation = { who = RUS value = -200 }
 		THIS = { diplomatic_influence = { who = RUS value = -200 } }
+		war = {
+			target = AUS
+			attacker_goal = { casus_belli = acquire_any_state
+							state_province_id = 781 }
+			attacker_goal = { casus_belli = acquire_all_cores
+							 country = AUS }
+		    defender_goal = { casus_belli = make_puppet country = SER }
+		}
 		prestige = 10
 		ai_chance = { factor = 0 }
 	}
@@ -489,7 +498,7 @@ country_event = {
 country_event = {
 	id = 500163
 	title = "EVTNAME500163"
-	desc = "EVTDESC500163" # Perfo : TODO description
+	desc = "EVTDESC500163" # done
 	picture = "austrian_telegram"
 
 	is_triggered_only = yes
@@ -509,20 +518,26 @@ country_event = {
 	desc = "EVTDESC500164"
 	picture = "austrian_telegram"
 
+	major = yes
+
 	is_triggered_only = yes
 	
 	option = {
 		name = "EVTOPTA500164"
 		RUS = { country_event = { id = 500165 days = 7 } }
-		prestige = 50
-		ai_chance = { factor = 99 }
+		prestige = 100
+		ai_chance = { factor = 90 }
 	}
 	
 	option = {
 		name = "EVTOPTB500164"
 		RUS = { country_event = { id = 500166 days = 7 } }
-		prestige = -50
-		ai_chance = { factor = 1 }
+		release = BOS
+		diplomatic_influence = { who = BOS value =-200 }
+		diplomatic_influence = { who = SER value =-200 }
+		diplomatic_influence = { who = BUL value =-200 }
+		prestige = -100
+		ai_chance = { factor = 10 }
 	}
 }
 		
@@ -542,6 +557,9 @@ country_event = {
 				NOT = {
 					tag = THIS
 					tag = FROM
+					alliance_with = AUS
+					alliance_with = KUK
+					relation = { who = THIS value = 0 }
 				}
 				capital_scope = { continent = europe }
 				is_greater_power = yes
@@ -555,13 +573,13 @@ country_event = {
 			country_event = { id = 500168 days = 8 }
 			relation = { who = THIS value = -200 }
 		}
-		ai_chance = { factor = 50 }
+		ai_chance = { factor = 80 }
 	}
 			
 	option = {
 		name = "EVTOPTB500165"
 		prestige = -100
-		ai_chance = { factor = 50 }
+		ai_chance = { factor = 20 }
 	}
 }
 		
@@ -569,15 +587,15 @@ country_event = {
 country_event = {
 	id = 500166
 	title = "EVTNAME500166"
-	desc = "EVTDESC500166" # Perfo : TODO description
+	desc = "EVTDESC500166" #done
 	picture = "bosnia_issue"
 
 	is_triggered_only = yes
 	
 	option = {
 		name = "EVTOPTA500166"
-		prestige = 5
-		#AUS = release bos TODO
+		prestige = 100
+		diplomatic_influence = { who = BOS value = 400 }
 		ai_chance = { factor = 100 }
 	}
 }
@@ -586,22 +604,52 @@ country_event = {
 country_event = {
 	id = 500167
 	title = "EVTNAME500167"
-	desc = "EVTDESC500167" #Perfo : TODO description
+	desc = "EVTDESC500167" #done
 	picture = "the_great_war"
 
 	is_triggered_only = yes
+
+	major = yes
 	
 	option = {
 		name = "EVTOPTA500167"
 		prestige = 25
 		create_alliance = RUS
+		leave_alliance = AUS
+		leave_alliance = KUK
 		relation = { who = RUS value = 400 }
+		relation = { who = AUS value = -200 }
 		ai_chance = {
-			factor = 99 
+			factor = 30 
 			modifier = {
 				factor = 0
 				alliance_with = GER
 			}
+			modifier = {
+			factor = 100
+			tag = FRA
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTC500167" #support austria
+		prestige = 25
+		relation = { who = RUS value = -400 }
+		relation = { who = AUS value = 200 }
+		create_alliance = AUS
+		create_alliance = KUK
+		leave_alliance = RUS
+		ai_chance = { 
+		factor = 15
+		modifier = {
+			factor = 100
+			tag = GER
+			}
+		modifier = {
+			factor = 0
+			alliance_with = RUS
+			} 
 		}
 	}
 
@@ -609,7 +657,16 @@ country_event = {
 		name = "EVTOPTB500167"
 		prestige = -25
 		relation = { who = RUS value = -100 }
-		ai_chance = { factor = 1 }
+		ai_chance = { factor = 30
+		modifier = {
+			factor = 25
+			tag = ENG
+			}
+		modifier = {
+			factor = 25
+			tag = ITA
+			}
+		}
 	}
 }
 		
