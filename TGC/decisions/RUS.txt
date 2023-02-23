@@ -220,9 +220,8 @@ political_decisions = {
 					}
 				}
 				end_war = TUR
-				}			
+				}		
 			badboy = 10
-
 		#Removes Turkish Cores from the Balkans
 		TUR_674 = { remove_core = TUR } # Dobrudja
 		TUR_788 = { remove_core = TUR } # Bosnia
@@ -249,8 +248,9 @@ political_decisions = {
 		847 = { remove_core = TUR } #Chania
 		848 = { remove_core = TUR } #Iraklion
 		EGY_843 = { remove_core = TUR } #Aegean Islands
-
 			#Romania
+			MOL = { any_owned = { add_core = URP } }
+			WAL = { any_owned = { add_core = URP } }
 			random_country = {
 				limit = {
 					tag = WAL
@@ -259,54 +259,33 @@ political_decisions = {
 						ai = yes
 						exists = yes
 					}
-					ROM = { exists = no }
+					URP = { exists = no }
 				}
 				inherit = MOL
-				change_tag = ROM
+				change_tag = URP
 			}
 			random_country = {
 				limit = {
 					tag = WAL
 					exists = yes
 					MOL = { exists = no }
-					ROM = { exists = no }
+					URP = { exists = no }
 				}
-				change_tag = ROM
+				change_tag = URP
 			}
 			random_country = {
 				limit = {
 					tag = MOL
 					exists = yes
 					ai = no
-					ROM = { exists = no }
+					URP = { exists = no }
 				}
 				inherit = WAL
-				change_tag = ROM
+				change_tag = URP
 				capital = 664
 			}
-			random_country = {
-				limit = {
-					tag = TUR
-					is_our_vassal = ROM
-				}
-				release_vassal = ROM
-				leave_alliance = ROM
-			}
-			ROM = { government = prussian_constitutionalism any_owned = { limit = { is_core = ROM } remove_core = WAL remove_core = MOL } }
-
-			random_country = {
-				limit = {
-					tag = TUR
-					OR = {
-						THIS = { has_country_flag = crimean_surrender }
-						TUR = {
-							is_disarmed = yes
-						}
-					}
-				}
-				country_event = 97512
-				RUS = { treasury = 250000 }
-			}
+			URP = { government = absolute_monarchy any_owned = { limit = { is_core = URP } remove_core = WAL remove_core = MOL } }
+			TUR = { country_event = 97512 }
 			diplomatic_influence = { who = TUR value = 50 }
 			random_country = {
 				limit = {
@@ -1187,6 +1166,7 @@ political_decisions = {
 			political_reform = peonage
 			clr_country_flag = serfdom_not_abolished
 			add_country_modifier = { name = total_reform duration = 730 }
+			add_country_modifier = { name = redemption_payments duration = 17885 } #49 years, can be abolished by decision
 			any_country = {
 				limit = {
 					OR = {
@@ -1241,7 +1221,7 @@ political_decisions = {
 		}
 
 		allow = {
-			NOT = { has_country_flag = pol_reform_blocker }
+			#NOT = { has_country_flag = pol_reform_blocker }
 			war = no 
 			NOT = { debt_law = serfdom } #Abolished Serfdom
 			nationalism_n_imperialism = 1
@@ -1262,6 +1242,8 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = alexander_reforms
+			clr_country_flag = pol_reform_blocker #This will now allow for manual reforms
+			clr_country_flag = soc_reform_blocker
 			war_exhaustion = -5
 			tech_school = army_tech_school
 			random_owned = {
@@ -1865,6 +1847,7 @@ political_decisions = {
 					OR = {
 						tag = SER
 						tag = ROM
+						tag = URP
 						tag = MON
 						tag = BUL
 						tag = ARM
@@ -4210,15 +4193,15 @@ political_decisions = {
 		picture = a_black_sea_fleet 
 		potential = {
 		    tag = RUS
-			ROM = { has_country_flag = romanian_rebellion_on_the_danube }
+			URP = { has_country_flag = romanian_rebellion_on_the_danube }
 			NOT = { has_country_flag = romanian_rebellion_quelled }
 		}
 
 		allow = {
 			war = no
-			truce_with = ROM
+			truce_with = URP
 			owns = 674
-			ROM = { vassal_of = RUS }
+			URP = { vassal_of = RUS }
 		}
 		
 		effect = {
@@ -4228,6 +4211,38 @@ political_decisions = {
 
 		ai_will_do = { factor = 1 }
 	}
+
+	abolish_redemption_payments = {
+		picture = abolish_slavery_romania
+		potential = {
+		    has_country_modifier = redemption_payments
+		}
+
+		allow = {
+			average_militancy = 4
+			average_consciousness = 2
+			money = 250000
+		}
+		
+		effect = {
+			remove_country_modifier = redemption_payments
+			treasury = -250000
+			any_pop = {
+				limit = {
+					OR = {
+						type = farmers
+						type = labourers
+					}
+				}
+				money = 5
+				militancy = -6
+				consciousness = -1
+			}
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+	
 	
 	donbass_coal_basin = {
 		picture = lugansk_mine

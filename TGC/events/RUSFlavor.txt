@@ -5792,7 +5792,7 @@ country_event = {
 			fire_only_once = yes
 			
 			trigger = {
-                tag = ROM
+                tag = URP
                 has_global_flag = treaty_of_paris_russia
 				in_sphere = RUS
 				OR = {
@@ -5841,7 +5841,7 @@ country_event = {
 			is_triggered_only = yes
 			option = {
 				name = "EVTOPTA500158"
-				3432 = { secede_province = ROM }
+				3432 = { secede_province = URP }
 				prestige = -5
 			    ai_chance = { factor = 10 }
 			}
@@ -5849,7 +5849,7 @@ country_event = {
 				name = "EVTOPTB500158"
 				#todo
 				prestige = 5
-				ROM = { country_event = { id = 500159 days = 7 } }
+				URP = { country_event = { id = 500159 days = 7 } }
 			    ai_chance = { factor = 90 }
 			}
 		}
@@ -5866,7 +5866,7 @@ country_event = {
 				set_country_flag = romanian_rebellion_on_the_danube
 				badboy = 1
 				leave_alliance = RUS
-			    RUS = { diplomatic_influence = { who = ROM value = -200 } }
+			    RUS = { diplomatic_influence = { who = URP value = -200 } }
 			    relation = { who = RUS value = -200 }
 			    casus_belli = {
 				target = RUS
@@ -5879,7 +5879,7 @@ country_event = {
 					casus_belli = acquire_state
 					state_province_id = 674
 				}
-				defender_goal = { casus_belli = make_puppet country = ROM }
+				defender_goal = { casus_belli = make_puppet country = URP }
 			}
 			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
 			
@@ -5906,8 +5906,8 @@ country_event = {
 			is_triggered_only = yes
 			option = {
 				name = "EVTOPTA500169"
-				ROM = { annex_to = THIS }
-				any_owned = { limit = { OR = { is_core = ROM is_core = WAL is_core = MOL } } add_province_modifier = { name = nationalist_agitation duration = 3600 } }
+				URP = { annex_to = THIS }
+				any_owned = { limit = { OR = { is_core = URP is_core = WAL is_core = MOL } } add_province_modifier = { name = nationalist_agitation duration = 3600 } }
 				prestige = 10
 				badboy = 8
 			    ai_chance = { factor = 5 }
@@ -5915,7 +5915,7 @@ country_event = {
 			option = {
 				name = "EVTOPTB500169"
 				MOL_673 = { secede_province = THIS add_province_modifier = { name = nationalist_agitation duration = 1095 } }
-				ROM = { change_tag = WAL }
+				URP = { change_tag = WAL }
 				WAL = { any_owned = { add_core = WAL } }
 				create_vassal = WAL
 				diplomatic_influence = { who = WAL value = 200 }
@@ -5925,7 +5925,7 @@ country_event = {
 			}
 			option = {
 				name = "EVTOPTC500169"
-				inherit = ROM
+				inherit = URP
 				MOL_673 = { add_core = MOL }
 				WAL_665 = { add_core = WAL }
 				WAL_666 = { add_core = WAL }
@@ -5939,7 +5939,7 @@ country_event = {
 			}
 			option = {
 				name = "EVTOPTD500169"
-				diplomatic_influence = { who = ROM value = 200 }
+				diplomatic_influence = { who = URP value = 200 }
 				prestige = 5
 				badboy = -3
 			    ai_chance = { factor = 10 }
@@ -7193,6 +7193,8 @@ country_event = {
 		set_country_flag = alexanderii_lifeattempt
 	}
 
+	fire_only_once = yes #can't believe I forgot this
+
 	option = {
 		name = "EVTOPTA500231"
 		country_event = {id = 500235 days = 1 }
@@ -7516,8 +7518,8 @@ country_event = {
 				}
 			ideology = { value = liberal factor = 0.1 }
 			}
-		clr_country_flag = pol_reform_blocker
-		clr_country_flag = soc_reform_blocker
+		#clr_country_flag = pol_reform_blocker
+		#clr_country_flag = soc_reform_blocker These are moved to Alex reforming decisions
 		set_country_flag = tsaralexander2
 		country_event = 500281 #Decide on the Flag again
 		ruling_party_ideology = conservative
@@ -7573,7 +7575,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTG500239"
-			country_event = { id = 500283 }
+			country_event = { id = 500284 }
 	}
 
 	option = {
@@ -7674,12 +7676,12 @@ country_event = {
 
 country_event = {
 
-	id = 500283
+	id = 500284
 
 	is_triggered_only = yes
 
 	title = "EVTNAME500239"
-	desc = "EVTDESC500283"
+	desc = "EVTDESC500284"
 	picture = "russiazenith1830" 
 
 	option = {
@@ -8090,13 +8092,17 @@ country_event = { #Russia informed about Japanese intervention in Manchuria
 			trigger = {
 			tag = RUS
 			year = 1880
+			OR = {
 			has_country_modifier = decadent_autocracy
+			has_country_modifier = decadent_autocracy2
+			}
 			NOT = { has_country_flag = absolute_monarchy_gov }
 		    }
 
 			option = {
 				name = "EVTOPTA500252"
 				remove_country_modifier = decadent_autocracy
+				remove_country_modifier = decadent_autocracy2
 				clr_country_flag = pol_reform_blocker
 				clr_country_flag = soc_reform_blocker
 			}
@@ -8211,4 +8217,207 @@ country_event = {
 		relation = { who = FROM value = -400 }
 	}
 }
+
+#Reactionary pushback to Alexanders reforms
+	country_event = {
+			id = 500285
+			title = "EVTNAME500285"
+			desc = "EVTDESC500285"
+			picture = "alex2reform"
+			fire_only_once = yes
+			
+			
+			mean_time_to_happen = { months = 12 }
+			
+			trigger = {
+			primary_culture = russian
+			has_country_flag = monarchy_gov
+			OR = {
+			has_country_modifier = total_reform
+			has_country_flag = tsaralexander2
+			}
+			has_country_flag = alexander_reforms
+			NOT = { year = 1875 }
+			NOT = { has_country_flag = pol_reform_blocker }
+		    }
+
+			option = {
+				name = "EVTOPTA500285" #We will continue reforms!
+				add_country_modifier = { name = total_reform duration = 730 }
+				labourers = {
+				consciousness = 1
+				militancy = -3
+				}
+				farmers = {
+				consciousness = 1
+				militancy = -3
+				}
+				aristocrats = {
+				consciousness = 3
+				militancy = 2
+				}
+				any_pop = { ideology = { factor = 0.02 value = liberal } }
+				ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 0
+					has_country_flag = alexlifeattempt1866
+				}
+			}
+			}
+
+			option = {
+				name = "EVTOPTB500285" #Perhaps they are right
+				remove_country_modifier = total_reform 
+				#roll back some of the changes here
+				set_country_flag = pol_reform_blocker
+				set_country_flag = soc_reform_blocker
+				labourers = {
+				consciousness = 1
+				militancy = 3
+				}
+				farmers = {
+				consciousness = 1
+				militancy = 3
+				}
+				aristocrats = {
+				consciousness = -3
+				militancy = -8
+				}
+				any_pop = { ideology = { factor = 0.05 value = conservative } }
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 50
+					has_country_flag = alexlifeattempt1866
+				}
+			}
+			}
+		}
+
+#1866 Attempt At Alexander's life
+country_event = {
+
+	id = 500286
+
+	title = "EVTNAME500286"
+	desc = "EVTDESC500286"
+	picture = "alex1866attempt"
+
+	trigger = {
+		year = 1865
+		primary_culture = russian
+		has_country_flag = monarchy_gov
+		has_country_flag = tsaralexander2
+		any_owned_province = {
+			average_militancy = 3
+		}
+		NOT = { has_country_flag = alexlifeattempt1866 } 
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	fire_only_once = yes
+
+	immediate = {
+		set_country_flag = alexlifeattempt1866
+	}
+
+	option = {
+		name = "EVTOPTA500286"
+		country_event = {id = 500235 days = 2 }
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+country_event = {
+
+	id = 500287
+
+	title = "EVTNAME500287"
+	desc = "EVTDESC500287"
+	picture = "alex1866attempt"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500287"
+		remove_country_modifier = redemption_payments
+		treasury = -500000
+		labourers = {
+			money = 50
+			consciousness = -1
+			militancy = -9
+		}
+		farmers = {
+			money = 50
+			consciousness = 1
+			militancy = -9
+		}
+		upper_house = {
+			ideology = liberal
+			value = 0.5
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "EVTOPTB500287"
+		prestige = -1
+		labourers = {
+			consciousness = 1
+			militancy = 1
+		}
+		farmers = {
+			consciousness = 1
+			militancy = 1
+		}
+		upper_house = {
+			ideology = conservative
+			value = 0.5
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+#1900s
+country_event = {
+
+	id = 500288
+
+	title = "EVTNAME500288"
+	desc = "EVTDESC500288"
+	picture = "autocracy"
+
+	trigger = {
+		mass_politics = 1
+		primary_culture = russian
+		has_country_flag = absolute_monarchy_gov
+		any_owned_province = {
+			average_militancy = 6
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA500288"
+		add_country_modifier = { name = decadent_autocracy2 duration = -1 } #until revolution
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
 #1905 Revolution
