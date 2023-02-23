@@ -39,14 +39,6 @@
 
 # Order that CBs are executed in a peace treaty
 peace_order = {
-#Scripted Peacedeal CB's always go first
-padri_war_cb
-sonderbund_cb
-hungarian_game_escalation1
-enforce_clayton_treaty
-webster_ashburton_cb
-rhine_crisis_french
-rhine_crisis_german
 #Normal CB's
 treaty_port_casus_belli
 war_reparations
@@ -129,6 +121,16 @@ liberate_puppet
 #conquest_low
 negotiated_transfer
 great_war_penalty_cb
+#Scripted Peacedeal CB's
+padri_war_cb
+sonderbund_cb
+hungarian_game_escalation1
+enforce_clayton_treaty
+webster_ashburton_cb
+rhine_crisis_french
+rhine_crisis_german
+crimean_war_cb
+crimean_war_defender
 }
 
 # Great War CB's
@@ -4861,40 +4863,6 @@ establish_protectorate_casus_belli = {
 	on_po_accepted = { tech_school = unciv_tech_school country_event = 426700 }
 }
 
-#Status Quo
-status_quo = {
-	sprite_index = 1
-	is_triggered_only = yes
-	months = 12
-	constructing_cb = no
-
-	can_use = {
-		always = no
-	}
-
-	break_truce_prestige_factor = 5
-	break_truce_infamy_factor = 2
-	break_truce_militancy_factor = 2
-	truce_months = 48
-
-	badboy_factor = 1
-	prestige_factor = 1
-	peace_cost_factor = 1
-	penalty_factor = 1
-
-	on_add = {
-		move_issue_percentage = {
-			from = jingoism
-			to = pro_military
-			value = 0.25
-		}
-	}
-
-	po_status_quo = yes
-
-	war_name = WAR_NAME
-}
-
 #New with AHD
 cut_down_to_size_boxer = {
 	sprite_index = 8
@@ -7595,8 +7563,7 @@ padri_war_cb = {
 	always = no
 
 	can_use = { }
-
-	po_remove_prestige = yes
+	po_status_quo = yes
 
 	on_po_accepted = {
 		country_event = 971204
@@ -7606,6 +7573,80 @@ padri_war_cb = {
 	on_add = {}
 
 	war_name = WAR_PADRI_WAR
+}
+
+crimean_war_cb = {
+	sprite_index = 23
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 0.5
+	peace_cost_factor = 40 #80, this is so AI doesn't go wild taking things, but still a bit room if player decides to take things from eg Austria or Prussia, if they sided against 
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 60
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_disarmament = yes
+	po_reparations = yes
+
+	on_po_accepted = {
+		set_country_flag = crimean_surrender
+	}
+
+	on_add = {}
+
+	war_name = CRIMEAN_WAR_NAME
+}
+
+crimean_war_defender = {
+	sprite_index = 23
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 0.5
+	peace_cost_factor = 15 #30
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 60
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+	po_status_quo = yes
+
+	on_po_accepted = {
+		set_country_flag = crimean_surrender
+	}
+
+	on_add = {}
+
+	war_name = CRIMEAN_WAR_NAME
 }
 
 hungarian_game_escalation1 = {
@@ -7868,4 +7909,38 @@ rhine_crisis_french = {
 	on_add = {}
 
 	war_name = WAR_RHINE_CRISIS
+}
+
+#Status Quo
+status_quo = {
+	sprite_index = 1
+	is_triggered_only = yes
+	months = 12
+	constructing_cb = no
+
+	can_use = {
+		always = no
+	}
+
+	break_truce_prestige_factor = 5
+	break_truce_infamy_factor = 2
+	break_truce_militancy_factor = 2
+	truce_months = 48
+
+	badboy_factor = 1
+	prestige_factor = 1
+	peace_cost_factor = 1
+	penalty_factor = 1
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.25
+		}
+	}
+
+	po_status_quo = yes
+
+	war_name = WAR_NAME
 }

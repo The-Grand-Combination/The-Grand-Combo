@@ -160,8 +160,8 @@ political_decisions = {
 			}
 			war = {
 				target = TUR
-				attacker_goal = { casus_belli = cut_down_to_size }
-				defender_goal = { casus_belli = cut_down_to_size } #This has been changed from status quo to prolong the war and its stakes
+				attacker_goal = { casus_belli = crimean_war_cb }
+				defender_goal = { casus_belli = crimean_war_defender } #This has been changed from status quo to prolong the war and its stakes
 				#call_ally = yes #this makes them decline almost all of the time, making events instead
 			}
 			random_country = { #Prussia on Russia's side
@@ -1946,7 +1946,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	turks_defy_congress = {
+	turks_defy_congress = { #this should not exist, as turks already defied one congress before that caused the war in the first place, the constantinople conference.
 		picture = "eastern_crisis_dismantle_ottomans"
 		potential = {
 			tag = RUS
@@ -1972,6 +1972,71 @@ political_decisions = {
 				target = TUR
 				attacker_goal = { casus_belli = cut_down_to_size_ottoman }
 				call_ally = yes
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+    #So this is if Turks defy Congress of Berlin, previously have lost Russo-Turkish War (player, because AI will never say no to Congress otherwise), or Russo-Turkish war hasn't happened
+	dismantle_ottomans_berlin_congress_rejected = {
+		picture = "eastern_crisis_dismantle_ottomans"
+		potential = {
+			tag = RUS
+			#TUR = { has_country_flag = lost_russo_turkish_war }
+			truce_with = TUR
+			has_country_flag = turks_defy_congress
+			NOT = { has_global_flag = treaty_of_paris_russia } #failsafe this somehow doesnt get unlocked if Russia won in 1st war
+			NOT = { has_global_flag = dismantle_ottomans }
+		}
+
+		allow = {
+			war = no
+			truce_with = TUR
+		}
+
+		effect = {
+			set_global_flag = dismantle_ottomans
+			badboy = 10
+			prestige = 30
+			any_pop = {
+				limit = {
+					has_pop_religion = orthodox
+				}
+				militancy = -10
+				consciousness = -10
+			}
+			TUR = {
+				any_pop = {
+					limit = {
+						location = {
+							OR = {
+								is_core = ROM
+								is_core = BUL
+								is_core = SER
+								is_core = BOS
+								is_core = GRE
+								is_core = MON
+								is_core = ARM
+								is_core = CLC
+							}
+						}
+						is_culture_group = turko_semitic
+					}
+					reduce_pop = 0.8
+				}
+			}
+			TUR = {
+				any_pop = {
+					limit = {
+						location = { province_id = 860 }
+						is_culture_group = turko_semitic
+					}
+					reduce_pop = 0.8
+				}
+			}
+			TUR = {
+			country_event = { id = 99832 days = 10 }
 			}
 		}
 
@@ -4219,7 +4284,7 @@ political_decisions = {
 		}
 
 		allow = {
-			average_militancy = 4
+			average_militancy = 5
 			average_consciousness = 2
 			money = 250000
 		}
@@ -4240,7 +4305,12 @@ political_decisions = {
 			}
 		}
 
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0 
+		modifier = {
+			factor = 1
+			average_militancy = 6
+		}
+		}
 	}
 	
 	
