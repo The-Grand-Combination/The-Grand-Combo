@@ -9,14 +9,41 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA980000"
-		country_event = 980006 #please explain to me the mechanics again
+
+		any_owned = {
+			limit = { has_building = province_selector }
+			add_core = THIS
+		}
 	}
 
 	option = {
-		name = "EVTOPTB980000" #this allows for immigrator screw ups to be cleaned up
+		name = "EVTOPTB980000"
+
 		any_owned = {
 			# Audax Validator "." Ignore_NEXT
 			immigrator = -3
+		}
+	}
+
+	option = {
+		name = "EVTOPTC980000"
+
+		any_owned = {
+			# Audax Validator "." Ignore_NEXT
+			province_selector = -3
+			# Audax Validator "." Ignore_NEXT
+			immigrator = -3
+			remove_province_modifier = forced_expulsion
+		}
+	}
+
+	option = {
+		name = "EVTOPTD980000"
+
+		any_owned = {
+			limit = { total_pops = 100000 }
+			# Audax Validator "." Ignore_NEXT
+			province_selector = 1
 		}
 	}
 
@@ -30,33 +57,7 @@ country_event = {
 			immigrator = -3
 			remove_province_modifier = forced_expulsion
 		}
-		set_variable = { which = has_province_selector value = 0 }
-		remove_country_modifier = direct_immigration_program
 	}
-	
-	#option = { #on hold
-	#	name = "Send pop to XZY country"
-	#	badboy = 1
-	#	random_country = {
-	#		limit = {
-	#			exists = yes
-	#			civilized = yes
-	#			vassal_of = THIS
-	#			neighbour = THIS
-	#			NOT = {
-	#			    has_country_flag = accepting_overlord_population
-	#			}
-	#		}
-	#		set_country_flag = accepting_overlord_population
-	#		random_owned = {
-	#		limit = {
-	#			is_capital = yes
-	#		}
-	#		immigrator = 1
-	#	}
-	#	}
-	#	set_country_flag = sending_pops_overseas
-	#}
 
 	option = {
 		name = "EVTOPTF980000"
@@ -70,133 +71,19 @@ province_event = {
 	desc = "EVTDESC980003"
 
 	trigger = {
-		owner = { ai = no 
-		NOT = { check_variable = { which = has_province_selector value = 5 } } 
-		}
+		owner = { ai = no }
 		has_building = province_selector
 		NOT = { has_province_modifier = forced_expulsion }
 	}
 
 	option = {
 		name = "EVTOPTA980003"
-			add_province_modifier = { name = forced_expulsion duration = -1 } #subject to change
-			any_pop = { consciousness = 2 militancy = 3 }
-		owner = { change_variable = { which = has_province_selector value = 1 } }
-	}
-}
-
-# 5-province-limit
-country_event = {
-
-	id = 980004
-	title = "EVTNAME980004"
-	desc = "EVTDESC980004"
-
-	trigger = {
-			check_variable = { which = has_province_selector value = 5.01 }
-			any_owned_province = {
-				has_building = province_selector
-				NOT = { has_province_modifier = forced_expulsion }
-				}
-		}
-
-	option = {
-		name = "EVTOPTA980004"
-        #set_variable = { which = has_province_selector value = 5 } #counter productive
-		any_owned = {
-			limit = { has_building = province_selector 
-			NOT = { has_province_modifier = forced_expulsion } }
-			# Audax Validator "." Ignore_NEXT
-			province_selector = -3
+		state_scope = {
+			any_owned = {
+				limit = { has_building = province_selector }
+				add_province_modifier = { name = forced_expulsion duration = -1 }
+				any_pop = { consciousness = 2 militancy = 6 }
+			}
 		}
 	}
-}
-
-#Immigrator effects
-province_event = {
-	id = 980005
-	title = "EVTNAME980005"
-	desc = "EVTDESC980005"
-
-	trigger = {
-		owner = { ai = no }
-		has_building = immigrator
-		NOT = { has_province_modifier = lingering_effects_DI }
-	}
-
-	option = {
-		name = "EVTOPTA980003"
-			add_province_modifier = { name = lingering_effects_DI duration = 1825 } 
-			any_pop = { consciousness = 2 militancy = 1 }
-	}
-}
-
-country_event = {
-
-	id = 980006
-	title = "EVTNAME980006"
-	desc = "EVTDESC980006"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA980006" #this explains the mechanics to the player once he first enables the direct immigration
-	}
-}
-
-country_event = {
-
-	id = 980007
-	title = "EVTNAME980006"
-	desc = "EVTDESC980006"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA980006" #this explains the mechanics to the player once he first enables the direct immigration
-		
-random_state = {
-							limit = {
-								is_colonial = no
-								NOT = { any_owned_province = { has_province_modifier = nationalist_agitation } }
-								any_owned_province = { is_accepted_culture = no is_core = THIS }
-							}
-							any_owned = { add_province_modifier = { name = national_assimilation_complete duration = 1800 } } #5yr campaign
-							any_pop = {
-								militancy = 2
-							}
-						}
-	}
-	
-		option = {
-		name = "EVTOPTA980006" #this explains the mechanics to the player once he first enables the direct immigration
-		
-random_state = {
-							limit = {
-								is_colonial = no
-								NOT = { any_owned_province = { has_province_modifier = nationalist_agitation } }
-								any_owned_province = { is_accepted_culture = no is_core = THIS }
-							}
-							any_owned = { add_province_modifier = { name = national_assimilation_complete duration = 1800 } } #5yr campaign
-							any_pop = {
-								militancy = 2
-							}
-						}
-	}
-	
-		option = {
-		name = "EVTOPTA980006" #this explains the mechanics to the player once he first enables the direct immigration
-		
-random_state = {
-							limit = {
-								is_colonial = no
-								NOT = { any_owned_province = { has_province_modifier = nationalist_agitation } }
-								any_owned_province = { is_accepted_culture = no is_core = THIS }
-							}
-							any_owned = { add_province_modifier = { name = national_assimilation_complete duration = 1800 } } #5yr campaign
-							any_pop = {
-								militancy = 2
-							}
-						}
-					}
 }
