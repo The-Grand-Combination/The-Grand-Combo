@@ -42,7 +42,7 @@ country_event = {
 		set_global_flag = france_protector_of_eastern_christians
 		prestige = -30
 		FROM = { country_event = 97504 }
-		RUS = { country_event = 97503 }
+		RUS = { country_event = { id = 97503 days = 15 } }
 		ai_chance = {
 			factor = 20
 			modifier = {
@@ -96,7 +96,6 @@ country_event = {
 	title = "EVTNAME97502" #French Escalation
 	desc = "EVTDESC97502"
 	picture = "crimean_war_ships"
-
 	is_triggered_only = yes
 
 	option = {
@@ -105,9 +104,9 @@ country_event = {
 		prestige = -40
 		create_alliance = FROM
 		FROM = { country_event = 97504 }
-		RUS = { country_event = 97503 }
+		RUS = { country_event = { id = 97503 days = 15 } }
 		ai_chance = {
-			factor = 90
+			factor = 95
 			modifier = {
 				factor = 0.5
 				in_sphere = RUS
@@ -131,7 +130,7 @@ country_event = {
 			}
 		}
 		ai_chance = {
-			factor = 10
+			factor = 0
 			modifier = {
 				factor = 5
 				in_sphere = RUS
@@ -157,11 +156,12 @@ country_event = {
 	news_desc_medium = "EVTDESC97503_NEWS_MEDIUM"
 	news_desc_short = "EVTDESC97503_NEWS_SHORT"
 	picture = "russian_claims_on_holy_land"
-
+    major = yes
 	is_triggered_only = yes
 
 	option = {
 		name = "EVTOPTA97503"
+		set_global_flag = crimean_war_inevitable
 		diplomatic_influence = { who = TUR value = -400 }
 		relation = { who = TUR value = -400 }
 	}
@@ -190,6 +190,11 @@ country_event = {
 		diplomatic_influence = { who = TUR value = 300 }
 		relation = { who = TUR value = 300 }
 		create_alliance = TUR
+		military_access = TUR
+		ENG = { country_event = { id = 97506 days = 3 } }
+		RUS = { country_event = { id = 500283 days = 1 } }
+		619 = { owner = { country_event = { id = 97514 days = 3 } } }
+		720 = { owner = { country_event = { id = 97513 days = 3 } } }
 	}
 }
 
@@ -230,7 +235,7 @@ country_event = {
 		set_global_flag = france_protector_of_eastern_christians
 		prestige = -20
 		FRA = { country_event = 97504 }
-		RUS = { country_event = 97503 }
+		RUS = { country_event = { id = 97503 days = 15 } }
 	}
 }
 
@@ -239,33 +244,101 @@ country_event = {
 	title = "EVTNAME97505" #UK's Response
 	desc = "EVTDESC97506"
 	picture = "ottoman"
+    major = yes
+	
+	is_triggered_only = yes
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = ENG
-		is_greater_power = yes
-		has_global_flag = france_protector_of_eastern_christians
-		NOT = {
-			war_with = RUS
-			war_with = TUR
-			has_global_flag = abandoned_holy_land
-			has_global_flag = treaty_of_paris_1856
-			has_global_flag = treaty_of_paris_russia
-		}
-	}
-
-	mean_time_to_happen = {
-		days = 10
-	}
+	#mean_time_to_happen = {
+	#	days = 10
+	#}
 
 	option = {
 		name = "EVTOPTA97506"
 		prestige = -20
 		diplomatic_influence = { who = TUR value = -50 }
 		relation = { who = RUS value = 50 }
+		RUS = { country_event = { id = 500251 days = 0 } } #inform Russia
+		TUR = { country_event = { id = 500251 days = 0 } } #inform Ottomans
 		ai_chance = {
 			factor = 5
+			modifier = {
+				factor = 2
+				NOT = {
+					relation = { who = TUR value = 0 }
+				}
+			}
+			modifier = {
+				factor = 20
+				alliance_with = RUS
+			}
+			modifier = {
+				factor = 0
+				RUS = { has_country_flag = russian_america_ambition } #UK will certainly intervene if Russia is pursuing its American ambitions
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB97506" #Side with Turkey
+		set_country_flag = england_protecting_interests
+		prestige = 10
+		diplomatic_influence = { who = TUR value = 100 }
+		relation = { who = TUR value = 100 }
+		relation = { who = RUS value = -50 }
+		leave_alliance = RUS
+		create_alliance = TUR
+		RUS = { country_event = { id = 500250 days = 0 } } #inform Russia
+		TUR = { country_event = { id = 500250 days = 0 } } #inform Ottomans
+		ai_chance = {
+			factor = 95
+			modifier = {
+				factor = 0.5
+				alliance_with = RUS
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 500283
+	title = "EVTNAME500283" #Russian Response
+	desc = "EVTDESC500283"
+	picture = "russian_claims_on_holy_land"
+    major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500283"
+		#set_global_flag = crimean_war_inevitable
+		#diplomatic_influence = { who = TUR value = -400 }
+		relation = { who = TUR value = -400 }
+	}
+}
+
+#Tailor for Italy TODO localiz
+country_event = {
+	id = 97513 #Sardinia/Italy
+	title = "EVTNAME97513" # done
+	desc = "EVTDESC97513"
+	picture = "ottoman"
+    major = yes
+	
+	is_triggered_only = yes
+
+	#mean_time_to_happen = {
+	#	days = 10
+	#}
+
+	option = {
+		name = "EVTOPTA97513"
+		prestige = -10
+		diplomatic_influence = { who = TUR value = -50 }
+		diplomatic_influence = { who = FRA value = -50 }
+		RUS = { country_event = { id = 500251 days = 2 } } #inform Russia
+		TUR = { country_event = { id = 500251 days = 2 } } #inform Ottomans
+		relation = { who = RUS value = 50 }
+		ai_chance = {
+			factor = 15
 			modifier = {
 				factor = 2
 				NOT = {
@@ -280,24 +353,502 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTB97506"
-		set_country_flag = england_protecting_interests
-		prestige = 10
+		name = "EVTOPTB97513"
+		set_country_flag = sardinia_joins_the_french
+		prestige = 5
 		diplomatic_influence = { who = TUR value = 100 }
-		relation = { who = TUR value = 100 }
-		relation = { who = RUS value = -50 }
+		relation = { who = TUR value = 200 }
+		relation = { who = FRA value = 200 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -100 }
+		RUS = { country_event = { id = 500250 days = 2 } } #inform Russia
+		TUR = { country_event = { id = 500250 days = 2 } } #inform Ottomans
 		leave_alliance = RUS
 		create_alliance = TUR
 		ai_chance = {
-			factor = 95
+			factor = 85
 			modifier = {
 				factor = 0.5
 				alliance_with = RUS
+			}
+			modifier = {
+				factor = 0.75
+				NOT = { alliance_with = FRA }
+			}
+			modifier = {
+				factor = 20
+				alliance_with = FRA
 			}
 		}
 	}
 }
 
+#Austria deliberates on the Crimean War
+country_event = {
+	id = 97514 #Sardinia/Italy
+	title = "EVTNAME97514" # done
+	desc = "EVTDESC97514"
+	picture = "ottoman"
+    major = yes
+	
+	is_triggered_only = yes
+
+	#mean_time_to_happen = {
+	#	days = 10
+	#}
+
+	option = {
+		name = "EVTOPTA97514" #Honour the Holy Alliance
+		set_country_flag = austria_honours_the_holy_alliance
+		prestige = 10
+		diplomatic_influence = { who = TUR value = -100 }
+		diplomatic_influence = { who = FRA value = -50 }
+		diplomatic_influence = { who = ENG value = -50 }
+		relation = { who = RUS value = 200 }
+		create_alliance = RUS
+		RUS = { country_event = { id = 500129 days = 4 } }
+		549 = { owner = { country_event = { id = 500256 days = 2 } } }
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 2
+				NOT = {
+					relation = { who = TUR value = 0 }
+				}
+			}
+			modifier = {
+				factor = 80
+				has_global_flag = option_make_aiaustria_more_likely_to_join
+			}
+			modifier = {
+				factor = 0.5
+				truce_with = RUS
+			}
+			modifier = {
+				factor = 0
+				OR = {
+				is_greater_power = no
+				NOT = { owns = 641 }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB97514" #Sit still and hope nobody notices us
+		set_country_flag = austria_stays_put
+		prestige = -5
+		diplomatic_influence = { who = TUR value = -50 }
+		relation = { who = RUS value = -50 }
+		leave_alliance = RUS
+		RUS = { country_event = { id = 500128 days = 4 } }
+		549 = { owner = { country_event = { id = 500256 days = 2 } } }
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0.01
+				has_global_flag = option_make_aiaustria_more_likely_to_join
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTC97514" #Hostile Neutrality
+		set_country_flag = austria_stays_put_but_warns_russia
+		prestige = 5
+		diplomatic_influence = { who = TUR value = 10 }
+		relation = { who = TUR value = 50 }
+		relation = { who = FRA value = 50 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -150 }
+		diplomatic_influence = { who = WAL value = 200 } #Annexation path of Danubian Princip. C and D
+		diplomatic_influence = { who = MOL value = 200 } #Annexation path of Danubian Princip. C and D
+		military_access = WAL
+		military_access = MOL
+		leave_alliance = RUS
+		WAL = { leave_alliance = RUS leave_alliance = TUR }
+		MOL = { leave_alliance = RUS leave_alliance = TUR }
+		RUS = { country_event = { id = 500127 days = 4 } }
+		549 = { owner = { country_event = { id = 500256 days = 2 } } }
+		ai_chance = {
+			factor = 80
+			modifier = {
+				factor = 0
+				has_global_flag = option_make_aiaustria_more_likely_to_join
+			}
+			modifier = {
+				factor = 0
+				OR = {
+				is_greater_power = no
+				NOT = { owns = 641 }
+			}
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTD97514" #Join the Coalition Outright
+		set_country_flag = austria_joins_the_allies
+		prestige = -10
+		badboy = 4
+		diplomatic_influence = { who = TUR value = 25 }
+		relation = { who = TUR value = 200 }
+		relation = { who = FRA value = 200 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -400 }
+		create_alliance = TUR
+		diplomatic_influence = { who = WAL value = 200 }
+		diplomatic_influence = { who = MOL value = 200 }
+		military_access = WAL
+		military_access = MOL
+		leave_alliance = RUS
+		WAL = { leave_alliance = RUS leave_alliance = TUR }
+		MOL = { leave_alliance = RUS leave_alliance = TUR }
+		casus_belli = {
+				target = RUS
+				type = acquire_state
+				months = 60
+	    }
+		RUS = { country_event = { id = 500126 days = 4 } }
+		549 = { owner = { country_event = { id = 500256 days = 2 } } }
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				alliance_with = FRA
+			}
+			modifier = {
+				factor = 100
+				has_global_flag = option_make_aiaustria_more_likely_to_join
+			}
+			modifier = {
+				factor = 0
+			OR = {
+				is_greater_power = no
+				NOT = { owns = 641 }
+			}
+			}
+		}
+	}
+}
+
+#This is so Turkey and Russia get informed what is actually going on
+#Stands with Turkey
+country_event = {
+	id = 500250
+	title = "EVTNAME500250"
+	desc = "EVTDESC500250"
+	picture = "ottoman"
+			
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500250"
+		prestige = 5
+	}
+}
+
+#Does not support Ottomans
+country_event = {
+	id = 500251
+	title = "EVTNAME500251"
+	desc = "EVTDESC500251"
+    picture = "crisis"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500251"
+		prestige = 5
+	}
+}
+
+#Austria outcome on Danubian Princip.
+country_event = {
+	id = 500253 #done
+	title = "EVTNAME500253"
+	desc = "EVTDESC500253"
+    picture = "crisis"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500253"
+		619 = { owner = {  inherit = URP inherit = WAL inherit = MOL country_event = { id = 500254 days = 2 } } } 
+		ai_chance = {
+			factor = 0
+			modifier = {
+				factor = 200
+				619 = { owner = { has_country_flag = austria_joins_the_allies } }
+			}
+		}	
+	}
+	
+	option = { #gtfo lmao
+		name = "EVTOPTB500253"
+		prestige = 5
+		relation = { who = AUS value = -25 }
+		relation = { who = URP value = 200 }
+		diplomatic_influence = { who = URP value = 400 }
+		619 = { owner = { country_event = { id = 500255 days = 2 } } }
+		ai_chance = {
+			factor = 200
+		}
+	}
+}
+
+country_event = { #yes
+	id = 500254 # done
+	title = "EVTNAME500254"
+	desc = "EVTDESC500254"
+	picture = "crisis"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500254"
+		prestige = 25
+		relation = { who = TUR value = -100 }
+		any_owned = { 
+			limit = {
+				AND = {
+					culture = romanian 
+					NOT = { is_core = SIE }
+				}
+			}
+			add_province_modifier = { name = nationalist_agitation duration = 7500 }
+		}
+		any_owned = { 
+			limit = {
+				AND = {
+					is_core = SIE
+					culture = romanian
+				}
+			}
+			add_province_modifier = { name = nationalist_agitation duration = 3600 }
+		}
+		any_owned = {
+			limit = {
+				OR = {
+				province_id = 673
+				province_id = 678
+			}
+			}
+			secede_province = RUS #this is so to revert the URP getting sea port historical
+		}
+	}
+}
+
+country_event = { #no
+	id = 500255
+	title = "EVTNAME500255" #done
+	desc = "EVTDESC500255"
+    picture = "crisis"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500255"
+		relation = { who = URP value = -200 }
+		diplomatic_influence = { who = URP value = -400 }
+		prestige = -50 #This was key moment of Austrian diplomatic decline
+		#Isolation
+		relation = { who = FRA value = -50 }
+		relation = { who = TUR value = -50 }
+		relation = { who = ENG value = -50 }
+	}
+	# option = {
+	# 	name = "EVTOPTB500255"
+	# 	prestige = 5
+	# } #path to a war for this but like.. meh
+}
+
+country_event = {
+	id = 500256 #Prussia
+	title = "EVTNAME500256" # done
+	desc = "EVTDESC500256"
+	picture = "ottoman"
+    major = yes
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500256"
+		prestige = 1
+		#This represents Prussia being the only major trading partner of RUS during Crimea in Europe, so money go brr
+		add_country_modifier = { name = lucrative_russia_trade duration = 1000 }
+		treasury = 100000
+		relation = { who = TUR value = -50 }
+		relation = { who = FRA value = -50 }
+		RUS = { country_event = { id = 500251 days = 2 } } #inform Russia
+		TUR = { country_event = { id = 500251 days = 2 } } #inform Ottomans
+		set_country_flag = prussia_neutral_in_crimea
+		relation = { who = RUS value = 50 }
+		leave_alliance = RUS #Just in case they're allied
+		leave_alliance = TUR
+		ai_chance = {
+			factor = 95
+			modifier = {
+				factor = 0
+				619 = { owner = { has_country_flag = austria_honours_the_holy_alliance } }
+			}
+			modifier = {
+				factor = 0
+				619 = { owner = { has_country_flag = austria_joins_the_allies } }
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB500256"
+		set_country_flag = prussia_sides_against_ausrus
+		prestige = 50
+		diplomatic_influence = { who = TUR value = 100 }
+		relation = { who = TUR value = 200 }
+		relation = { who = FRA value = 200 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -100 }
+		relation = { who = AUS value = -100 }
+		RUS = { country_event = { id = 500250 days = 2 } } #inform Russia
+		TUR = { country_event = { id = 500250 days = 2 } } #inform Ottomans
+		leave_alliance = RUS
+		leave_alliance = AUS
+		create_alliance = TUR
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 100
+				619 = { owner = { alliance_with = RUS } }
+			}
+			modifier = {
+				factor = 100
+				619 = { owner = { has_country_flag = austria_honours_the_holy_alliance } }
+			}
+			modifier = {
+				factor = 2
+				alliance_with = FRA
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTC500256"
+		set_country_flag = prussia_stands_with_russia_aus_in_coalition
+		prestige = 25
+		diplomatic_influence = { who = TUR value = -100 }
+		relation = { who = TUR value = -200 }
+		relation = { who = FRA value = -100 }
+		relation = { who = ENG value = -100 }
+		relation = { who = RUS value = 400 }
+		relation = { who = AUS value = -100 }
+		leave_alliance = TUR
+		leave_alliance = AUS
+		leave_alliance = FRA
+		leave_alliance = ENG
+		create_alliance = RUS
+		RUS = { country_event = { id = 500250 days = 2 } } #inform Russia
+		TUR = { country_event = { id = 500250 days = 2 } } #inform Ottomans
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 100
+				AUS = { alliance_with = TUR }
+			}
+			modifier = {
+				factor = 100
+				AUS = { has_country_flag = austria_joins_the_allies }
+			}
+			modifier = {
+				factor = 2
+				alliance_with = RUS
+			}
+			modifier = {
+				factor = 0.5
+				truce_with = RUS
+			}
+		}
+	}
+}
+
+#Austria joins the war by declaring on Turks - this is a separate war designed because AI keeps crapping pants and refusing calls to arms
+country_event = { 
+	id = 500257 # done
+	title = "EVTNAME500257"
+	desc = "EVTDESC500257"
+    picture = "crimean_war_defeat"
+			
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500257"
+		prestige = 5
+		war = { #test
+			target = PRU
+			attacker_goal = { casus_belli = unification_humiliate_cb }
+			defender_goal = { casus_belli = unification_humiliate_cb }
+		}
+		war = {
+			target = TUR
+			attacker_goal = { casus_belli = cut_down_to_size }
+			defender_goal = { casus_belli = humiliate }
+		}
+		random_country = {
+			limit = {
+				owns = 549 #Berlin
+			}
+			casus_belli = { #just in case
+			target = THIS
+			type = unification_humiliate_cb
+			months = 25
+			}
+		}
+		casus_belli = { #This is so PRU-AUS have a 
+			target = PRU
+			type = unification_humiliate_cb
+			months = 25
+		}
+	}
+}
+
+#Prussia intervenes on behalf of Russia if Austria sided with the coalition
+country_event = { 
+	id = 500258 # done
+	title = "EVTNAME500258"
+	desc = "EVTDESC500258"
+    picture = "crimean_war_defeat"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500258"
+		prestige = 5
+		war = {
+			target = AUS
+			attacker_goal = { casus_belli = unification_humiliate_cb }
+			defender_goal = { casus_belli = unification_humiliate_cb }
+		}
+		war = {
+			target = TUR
+			attacker_goal = { casus_belli = cut_down_to_size }
+			defender_goal = { casus_belli = humiliate }
+		}
+		random_country = {
+			limit = {
+				owns = 619 #AUS
+			}
+			casus_belli = { #just in case
+				target = THIS
+				type = unification_humiliate_cb
+				months = 25
+			}
+		}
+		casus_belli = { 
+			target = AUS
+			type = unification_humiliate_cb
+			months = 25
+		}
+	}
+}
+		
 country_event = {
 	id = 97507
 	title = "EVTNAME97507" #The War is Lost
@@ -439,59 +990,32 @@ country_event = {
 	picture = "treaty_of_paris_1856"
 
 	is_triggered_only = yes
-
+    major = yes
 	option = {
 		name = "EVTOPTA97512"
 		prestige = -40
 		treasury = -250000
+		#Dobruja to Russia
 		any_owned = {
 			limit = {
-				OR = {
-					province_id = 674 #Southern Dobruja to Romanians, Northern back to Russia (if they owned it)
-					province_id = 675
-					province_id = 3431
+			    OR = {
+				region = TUR_674
+				province_id = 3489
 				}
-				exists = ROM
 			}
-			secede_province = ROM
-
-				673 = { secede_province = RUS }
-				678 = { secede_province = RUS }
-
+			secede_province = RUS
 		}
+		#San Stefano desires in Caucasus/Pontus
 		any_owned = {
 			limit = {
-				OR = {
-					province_id = 674
-					province_id = 675
-					province_id = 3431
-				}
-				exists = URP
+			          OR = {
+			          region = TUR_885 
+					  province_id = 3383
+					  province_id = 856
+					  province_id = 884
+					  province_id = 882
+					  }
 			}
-			secede_province = URP
-
-				673 = { secede_province = RUS }
-				678 = { secede_province = RUS }
-
-		}
-		any_owned = {
-			limit = {
-				OR = {
-					province_id = 674
-					province_id = 675
-					province_id = 3431
-				}
-				NOT = { exists = ROM
-						exists = URP	}
-			}
-			secede_province = WAL
-
-				673 = { secede_province = RUS }
-				678 = { secede_province = RUS }
-
-		}
-		any_owned = {
-			limit = { region = TUR_885 }
 			secede_province = TCA
 		}
 
@@ -531,6 +1055,51 @@ country_event = {
 			}
 			TUR = { release_vassal = MON }
 		}
+		
+		#Bosnia autonomous vilayet
+		release_vassal = BOS
+		random_owned = {
+			limit = {
+				province_id = 783
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 785
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 789
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = BOS
+				}
+			}
+		}
+		BOS = {
+		primary_culture = serb
+		religion = orthodox
+		government = colonial_company
+		add_country_modifier = {
+				name = bosnian_question
+				duration = -1
+				}
+		}
 
 		# Give Bulgaria, Eastern Rumelia and Silestre to Bulgaria, free it if vassaled
 		random_country = {
@@ -540,20 +1109,10 @@ country_event = {
 			}
 			TUR = { release_vassal = BUL }
 		}
+		#Creating a solution for Bulgaria a la Constantinople Conference (Western-Eastern, path to unite later) with a tablespoon of Russian dominance
 		random_owned = {
 			limit = {
-				province_id = 809 #Sofya
-				owned_by = TUR
-			}
-			state_scope = {
-				any_owned = {
-					secede_province = BUL
-				}
-			}
-		}
-		random_owned = {
-			limit = {
-				province_id = 817 #Burgas
+				province_id = 815 #Burgas
 				owned_by = TUR
 			}
 			state_scope = {
@@ -575,28 +1134,66 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 818 #Silistre
+				province_id = 3387 #kirk kelisi
 				owned_by = TUR
 			}
 			secede_province = BUL
 		}
-
+		#Western Bulgaria
+		806 = { add_core = MCD }
+		813 = { remove_core = MCD }
+		822 = { remove_core = MCD }
+		release_vassal = MCD
 		random_owned = {
 			limit = {
-				province_id = 3432 #Pazarcik, southern Dobruja
+				province_id = 807 #Northern Macedonia
 				owned_by = TUR
 			}
-			secede_province = BUL
+			state_scope = {
+				any_owned = {
+					secede_province = MCD
+				}
+			}
 		}
-
+		
 		random_owned = {
 			limit = {
-				province_id = 2690 #Tophane Agreement alt-history: necessary to prevent spawning of RUM if Russia wins Crimea, but goes to the Congress that keeps OE strong
+				province_id = 809 #Sofya
 				owned_by = TUR
 			}
-			secede_province = BUL
+			state_scope = {
+				any_owned = {
+					secede_province = MCD
+				}
+			}
 		}
-
+		random_owned = {
+			limit = {
+				province_id = 805 #Southeastern Mac.
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = MCD
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 819 #kesriye
+				owned_by = TUR
+			}
+			secede_province = MCD
+		}
+		
+		random_owned = {
+			limit = {
+				province_id = 799 #Pirot
+				owned_by = TUR
+			}
+			secede_province = MCD
+		}
+		MCD = { primary_culture = bulgarian religion = orthodox government = colonial_company capital = 809 }
 		# Free Serbia if it is owned, return Nis, Leskovac
 		random_owned = {
 			limit = {
@@ -618,7 +1215,21 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				province_id = 799 #Leskovac
+				province_id = 347 #Mitrovica
+				owned_by = TUR
+			}
+			secede_province = SER
+		}
+		random_owned = {
+			limit = {
+				province_id = 3321 #Novi Pazar
+				owned_by = TUR
+			}
+			secede_province = SER
+		}
+		random_owned = {
+			limit = {
+				province_id = 804 #Sjenica
 				owned_by = TUR
 			}
 			secede_province = SER
@@ -678,7 +1289,6 @@ country_event = {
 			limit = {
 				province_id = 824
 				owned_by = TUR
-				NOT = { exists = GRE }
 			}
 			secede_province = GRE
 		}
@@ -704,10 +1314,69 @@ country_event = {
 			}
 			owner = { release_vassal = SAM }
 		}
+		
+		#Armenian 6 Vilayets - According to San Stefano treaty, there was a stipulation obliging the Ottomans to create an autonomous region with Armenian majority
+		random_owned = {
+				limit = {
+					province_id = 878
+					owned_by = TUR
+					NOT = { exists = ARM }
+				}
+				secede_province = ARM
+				TUR = { create_vassal = ARM }
+			}
+		random_owned = {
+				limit = {
+					province_id = 890
+					owned_by = TUR
+				}
+				state_scope = {
+				any_owned = {
+					secede_province = ARM
+				   }
+		    	}
+			}
+		random_owned = {
+			limit = {
+				province_id = 879 #Erzuzum
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = ARM
+				}
+			}
+		}
+		random_owned = {
+			limit = {
+				province_id = 893 #Diyarbakir
+				owned_by = TUR
+			}
+			state_scope = {
+				any_owned = {
+					secede_province = ARM
+				}
+			}
+		}
+		
+		random_owned = {
+				limit = {
+					province_id = 878
+					owned_by = TUR
+				}
+				add_core = ARM
+				secede_province = ARM
+			}
+
+		TUR = {
+			release_vassal = URP
+		}
 		FRA = {
-			prestige = -40
+			prestige = -50
 			relation = { who = RUS value = -100 }
-			leave_alliance = RUS
+			leave_alliance = TUR
+			diplomatic_influence = { who = TUR value = -200 }
+			relation = { who = TUR value = -400 }
 			casus_belli = {
 				target = RUS
 				type = take_from_sphere
@@ -725,9 +1394,12 @@ country_event = {
 				tag = ENG
 				has_country_flag = england_protecting_interests
 			}
-			prestige = -40
+			release_vassal = ION
+			prestige = -50
 			relation = { who = RUS value = -100 }
-			leave_alliance = RUS
+			leave_alliance = TUR
+			diplomatic_influence = { who = TUR value = -200 }
+			relation = { who = TUR value = -400 }
 			casus_belli = {
 				target = RUS
 				type = take_from_sphere
@@ -739,15 +1411,34 @@ country_event = {
 				months = 60
 			}
 		}
+		
+		any_country = {
+				limit = {
+				    OR = {
+					has_country_flag = sardinia_joins_the_french
+					has_country_flag = austria_joins_the_allies
+					has_country_flag = prussia_sides_against_ausrus
+					is_greater_power = yes
+					}
+					NOT = { tag = RUS }
+				}
+				diplomatic_influence = { who = THIS value = -200 }
+				leave_alliance = TUR
+				relation = { who = TUR value = -400 }
+			}
 		RUS = {
-			military_access = TUR
-			diplomatic_influence = { who = TUR value = 100 }
-			relation = { who = TUR value = 200 }
+			diplomatic_influence = { who = TUR value = 200 }
+			relation = { who = TUR value = 400 }
 
 			relation = { who = SER value = 400 }
 			diplomatic_influence = { who = SER value = 200 }
 			create_alliance = SER
-
+			
+			relation = { who = BOS value = 400 }
+			diplomatic_influence = { who = BOS value = 200 }
+			create_alliance = BOS
+			
+            create_vassal = BUL
 			relation = { who = BUL value = 400 }
 			diplomatic_influence = { who = BUL value = 200 }
 			create_alliance = BUL
@@ -759,8 +1450,22 @@ country_event = {
 			relation = { who = ROM value = 400 }
 			diplomatic_influence = { who = ROM value = 200 }
 			create_alliance = ROM
+
+			relation = { who = URP value = 400 }
+			diplomatic_influence = { who = URP value = 200 }
+			create_alliance = URP
+			
+			relation = { who = MCD value = 400 }
+			diplomatic_influence = { who = MCD value = 200 }
+			create_alliance = MCD
+			
+			relation = { who = ARM value = 400 }
+			diplomatic_influence = { who = ARM value = 200 }
+			create_alliance = ARM
+			
+			country_event = { id = 500132 days = 5 }
 		}
-		ROM = {
+		URP = {
 			add_country_modifier = {
 				name = nationalist_balkans
 				duration = -1
@@ -776,6 +1481,18 @@ country_event = {
 			}
 		}
 		GRE = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			}
+		}
+		SER = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			}
+		}
+		MON = {
 			add_country_modifier = {
 				name = nationalist_balkans
 				duration = -1
@@ -815,7 +1532,7 @@ country_event = {
 	news_desc_medium = "EVTDESC97510_NEWS_MEDIUM"
 	news_desc_short = "EVTDESC97510_NEWS_SHORT"
 	picture = "treaty_of_paris_1856"
-
+    major = yes
 	is_triggered_only = yes
 
 	option = {
@@ -841,8 +1558,8 @@ country_event = {
 			add_core = URP
 			secede_province = URP
 		}
-		relation = { who = URP value = 200 }
-		diplomatic_influence = { who = URP value = 200 }
+		relation = { who = URP value = -100 }
+		diplomatic_influence = { who = URP value = -200 }
 		URP = {
 			any_pop = { militancy = -8 }
 		}
@@ -863,7 +1580,7 @@ country_event = {
 		ROM = { all_core = { remove_core = RUS } }
 		relation = { who = URP value = -100 }
 		badboy = 10
-		any_greater_power = {
+		any_greater_power = { #Script a war here
 			limit = {
 				NOT = { tag = THIS }
 				OR = {
