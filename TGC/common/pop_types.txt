@@ -24,15 +24,15 @@ promotion_chance = {
 			literacy = 0.4
 		}
 		modifier = {
-			factor = 0.04
+			factor = 0.02
 			literacy = 0.5
 		}
 		modifier = {
-			factor = 0.04
+			factor = 0.02
 			literacy = 0.6
 		}
 		modifier = {
-			factor = 0.04
+			factor = 0.02
 			literacy = 0.7
 		}
 		modifier = {
@@ -71,7 +71,8 @@ promotion_chance = {
 			life_needs = 0.8
 		}
 		modifier = {
-			factor = 0.1
+			factor = 0.2 #moar promotions!
+			strata = poor
 			life_needs = 0.9
 		}
 	}
@@ -291,24 +292,23 @@ demotion_chance = {
 
 	group = { #This has been changed to poor strata everyday goods
 		modifier = {
-			factor = 0.15
+			factor = 0.1
 			strata = poor
 			NOT = { everyday_needs = 0.4 }
 		}
 		modifier = {
-			factor = 0.15
+			factor = 0.1
 			strata = poor
 			NOT = { everyday_needs = 0.15 }
 		}
 		modifier = {
 			factor = 0.2 #Demotion to craftsmen
 			strata = poor
-			NOT = { everyday_needs = 0.1 }
+			NOT = { everyday_needs = 0.1 }  #hypothetically this should never affect soldiers
 			literacy = 0.3
 			country = { civilized = yes }
 			state_scope = { is_colonial = no }
-			year = 1848
-			NOT = { year = 1900 }
+			NOT = {  unemployment = 0.2 }
 		}
 	}
 
@@ -485,7 +485,7 @@ migration_chance = {
 	group = {
 		modifier = {
 			factor = 0.1
-			NOT = { life_needs = 0.9 }
+			#NOT = { life_needs = 0.9 } #modified as pops will almost always have this now
 			NOT = { everyday_needs = 0.1 }
 			NOT = { luxury_needs = 0.1 }
 		}
@@ -629,13 +629,13 @@ migration_chance = {
 	}
 
 	#poor irish migration to leh england
-	modifier = {
-		factor = 0.2
-		THIS = { has_pop_culture = irish }
-		#unemployment = 0.1
-		NOT = { year = 1879 }
-		location = { controlled_by = owner }
-	}
+	# modifier = { this is not needed as local modifiers produce plenty of internal migration on their own
+	# 	factor = 0.1
+	# 	THIS = { has_pop_culture = irish }
+	# 	NOT = { unemployment = 0.3 }
+	# 	NOT = { year = 1879 }
+	# 	location = { controlled_by = owner }
+	# }
 
 	modifier = {
 		factor = -0.7 #Christians of OE less likely to migrate from their core lands, preventing minority ping-pong around OE
@@ -757,7 +757,7 @@ colonialmigration_chance = {
 	group = {
 		modifier = {
 			factor = 0.1
-			NOT = { life_needs = 0.9 }
+			#NOT = { life_needs = 0.9 } #modified as pops will almost always have this now
 			NOT = { everyday_needs = 0.1 }
 			NOT = { luxury_needs = 0.1 }
 		}
@@ -901,7 +901,7 @@ colonialmigration_chance = {
 	}
 
 	modifier = {
-		factor = 0.60
+		factor = 0.70
 		THIS = { has_pop_culture = irish }
 		country = {
 			primary_culture = british
@@ -1057,7 +1057,7 @@ emigration_chance = {
 	group = {
 		modifier = {
 			factor = 0.1
-			NOT = { life_needs = 0.9 }
+			#NOT = { life_needs = 0.9 } #modified as pops will now 99% always have life needs
 			NOT = { everyday_needs = 0.1 }
 			NOT = { luxury_needs = 0.1 }
 		}
@@ -1178,17 +1178,17 @@ emigration_chance = {
 		factor = -0.3
 		state_scope = { has_factories = yes }
 		country = { NOT = { has_country_flag = preparations_to_kill } }
-		OR = {
-			country = { NOT = { has_country_flag = great_irish_famine } }
-			location = {
-				NOT = {
-					state_id = 263
-					state_id = 254
-					state_id = 258
-					state_id = 260
-				}
-			}
-		}
+		# OR = { #this is dumb, countries will always had first flag true if they're not UK, ergo all emigration gets -0.3
+		# 	country = { NOT = { has_country_flag = great_irish_famine } }
+		# 	location = {
+		# 		NOT = {
+		# 			state_id = 263
+		# 			state_id = 254
+		# 			state_id = 258
+		# 			state_id = 260
+		# 		}
+		# 	}
+		# }
 	}
 
 	modifier = {
@@ -1229,10 +1229,10 @@ emigration_chance = {
 	modifier = {
 		factor = -0.3
 		state_scope = { has_factories = yes }
-		NOT = { unemployment = 0.2 }
+		NOT = { unemployment = 0.2 } #This might need a redo as there is essentially no employment issues now
 		country = {
 			NOT = {
-				#has_country_flag = preparations_to_kill
+				#has_country_flag = preparations_to_kill #why were these commented out en masse?
 				has_country_flag = great_irish_famine
 			}
 		}
@@ -1481,19 +1481,20 @@ emigration_chance = {
 
 	#Representing primarily Swedish and Norwegian Emigration to USA
 	modifier = {
-		factor = 0.5
+		factor = 1.1
 		THIS = {
 			is_culture_group = scandinavian
 		}
-		year = 1865
+		year = 1860
 		NOT = { year = 1915 }
 		NOT = { unemployment = 0.1 }
+		country = { is_greater_power = no } #this is assuming they unite and conditions get better
 		location = { controlled_by = owner }
 	}
 	
 	#Israel Law of Return
 	modifier = {
-		factor = 5
+		factor = 4
 		THIS = {
 			is_culture_group = jewish_cultures
 		}
@@ -1506,7 +1507,7 @@ emigration_chance = {
 	}
 
 	modifier = {
-		factor = 0.9
+		factor = 1.25
 		THIS = {
 			OR = {
 				has_pop_culture = british
@@ -1518,7 +1519,7 @@ emigration_chance = {
 		NOT = { year = 1905 }
 		country = {
 			primary_culture = british
-			NOT = { war_exhaustion = 1 }
+			NOT = { war_exhaustion = 5 }
 			NOT = { has_country_flag = liberal_revolution_fired }
 			NOT = { has_country_flag = liberal_revolution_in_progress }
 		}
@@ -1534,18 +1535,18 @@ emigration_chance = {
 	}
 
 	#irish
-	modifier = {
-		factor = 0.5
+	modifier = { #this is regardless of the famine
+		factor = 1.1
 		THIS = {
 			has_pop_culture = irish
 		}
-		NOT = { year = 1859 }
-		#unemployment = 0.1
+		NOT = { year = 1905 }
+		NOT = { unemployment = 0.25 }
 		location = { controlled_by = owner }
 	}
 
-	modifier = {
-		factor = 0.1
+	modifier = { #so there's a bit before the famine
+		factor = 0.5
 		THIS = {
 			has_pop_culture = irish
 		}
@@ -1554,19 +1555,8 @@ emigration_chance = {
 		country = {
 			primary_culture = british
 			NOT = { war_exhaustion = 1 }
-			NOT = { has_country_flag = great_irish_famine }
+			NOT = { has_country_flag = great_irish_famine } #this shit never gets cleared
 		}
-		location = { controlled_by = owner }
-	}
-
-	#this is until 1860 I guess
-	modifier = {
-		factor = 0.35
-		THIS = {
-			has_pop_culture = irish
-		}
-		NOT = { year = 1859 }
-		NOT = { unemployment = 0.25 }
 		location = { controlled_by = owner }
 	}
 
@@ -1578,6 +1568,22 @@ emigration_chance = {
 			NOT = { debt_law = serfdom }
 			NOT = { has_country_flag = preparations_to_kill }
 		}
+	}
+
+	#Galicia Lodomeria
+	modifier = {
+		factor = 1.1 #experimental
+		THIS = {
+			has_pop_culture = polish
+			has_pop_culture = ukrainian
+		}
+		NOT = { unemployment = 0.5 }
+		country = {
+			is_culture_group = germanic
+			NOT = { war_exhaustion = 5 }
+			has_country_flag = goloty_i_glodomerji
+		}
+		location = { controlled_by = owner }
 	}
 
 	modifier = {
