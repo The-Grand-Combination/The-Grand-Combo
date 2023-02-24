@@ -193,6 +193,46 @@ political_decisions = {
 
 			ai_will_do = { factor = 0 }
 		}
+		
+		#Enables early CBs on bordering/port africa nations
+		option_colonial_cassus_belli_africa_enabled = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				has_country_flag = looking_through_options
+				NOT = { year = 1837 }
+				NOT = { has_global_flag = colonial_cassus_belli_africa_enabled }
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_global_flag = colonial_cassus_belli_africa_enabled
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+		#Options for Crimean War
+		option_make_aiaustria_more_likely_to_join = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				has_country_flag = looking_through_options
+				NOT = { year = 1837 }
+				NOT = { has_global_flag = option_make_aiaustria_more_likely_to_join }
+			}
+
+			allow = {
+			}
+
+			effect = {
+				set_global_flag = option_make_aiaustria_more_likely_to_join
+			}
+
+			ai_will_do = { factor = 0 }
+		}
 
 		#Disables UK Splendid Isolation
 		option_disable_uk_isolation = {
@@ -2176,10 +2216,8 @@ political_decisions = {
 					QNG = {
 						treasury = 50000
 						add_country_modifier = { name = corrupt_army duration = 10950 }
-						add_country_modifier = { name = lean_stomachs duration = 9000 }
-						add_country_modifier = { name = inefficient_farming duration = 12410 }
+						add_country_modifier = { name = china_isolationism duration = 10950 }
 						add_country_modifier = { name = global_baby_boom duration = 1065 }
-						add_country_modifier = { name = uncivilized_isolationism duration = -1 }
 						remove_country_modifier = western_influences
 						set_country_flag = mandate
 						bureaucrats = { literacy = 0.05 }
@@ -2201,6 +2239,12 @@ political_decisions = {
 								}
 							}
 							add_province_modifier = { name = bad_iron duration = 23000 }
+						}
+						any_owned = {
+							limit = {
+								produces = silk
+							}
+							add_province_modifier = { name = chinese_silk duration = -1 }
 						}
 						set_variable = { which = china_destablization value = 0 }
 						any_pop = { # TODO this is probably unnecessary, we should investigate the population
@@ -3044,6 +3088,58 @@ political_decisions = {
 							}
 						}
 					}
+			
+			## Poland
+
+			CPL = {
+			treasury = 25000
+			any_pop = { limit = { has_pop_culture = ashkenazi } literacy = 0.54 }
+			any_pop = { limit = { is_culture_group = germanic } literacy = 0.4 }
+			any_pop = { limit = { has_pop_culture = lithuanian } literacy = 0.19 }
+			any_pop = { limit = { has_pop_culture = russian } literacy = 0.15 }
+
+			any_pop = {
+				limit = {
+					OR = {
+						has_pop_culture = byelorussian
+						has_pop_culture = ukrainian
+					}
+				}
+				literacy = -0.05
+			}
+			
+			any_pop = {
+				limit = {
+				    OR = {
+					has_pop_culture = ashkenazi
+					has_pop_culture = north_german
+					}
+					location = {
+						OR = {
+							province_id = 712
+							province_id = 706
+						}
+					}
+				}
+				literacy = 0.1
+			}
+
+			serfs = {
+				militancy = -9
+				consciousness = -9
+				literacy = -0.99
+			}
+			
+			add_country_modifier = {
+				name = russian_absolutist_encroachment
+				duration = -1
+			}
+			
+			add_country_modifier = {
+				name = rus_organic_statute_cpl
+				duration = -1
+			}
+		}
 
 				## Prussia ##
 
@@ -3097,14 +3193,19 @@ political_decisions = {
 
 						add_country_modifier = {
 							name = global_baby_boom
-							duration = 3650
+							duration = 5110 #Buffed to better AI Prussia chances against Austria
+						}
+
+						random_owned = {
+							limit = { owner = { ai = yes } } #This si so Austria stops winning 9/10s of the time
+							owner = { add_country_modifier = { name = prussian_military duration = 8760 } }
 						}
 
 						FRM = {
 							any_owned = {
 								add_province_modifier = {
 									name = baby_boom
-									duration = 3650
+									duration = 5110
 								}
 							}
 						}
@@ -3112,7 +3213,7 @@ political_decisions = {
 							any_owned = {
 								add_province_modifier = {
 									name = baby_boom
-									duration = 3650
+									duration = 5110
 								}
 							}
 						}
@@ -3120,7 +3221,7 @@ political_decisions = {
 							any_owned = {
 								add_province_modifier = {
 									name = baby_boom
-									duration = 3650
+									duration = 5110
 								}
 							}
 						}
@@ -3128,7 +3229,7 @@ political_decisions = {
 							any_owned = {
 								add_province_modifier = {
 									name = small_baby_boom
-									duration = 3650
+									duration = 5110
 								}
 							}
 							534 = {
@@ -3378,6 +3479,7 @@ political_decisions = {
 					}
 
 					425 = { any_pop = { literacy = 0.05 } }
+					452 = { any_pop = { ideology = { value = anarcho_liberal factor = 0.25 }  } add_province_modifier = { name = lyon_textiles duration = -1 } } #Lyonese Textile Industry and nascent Socialism
 					FRA_420 = { any_pop = { literacy = -0.1 } }
 					FRA_412 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.1 } }
 					FRA_411 = { any_pop = { limit = { OR = { is_accepted_culture = yes is_primary_culture = yes } } literacy = 0.1 } }
@@ -3418,10 +3520,6 @@ political_decisions = {
 				## UK ##
 
 					ENG = {
-						add_country_modifier = {
-							name = eic_balance2
-							duration = 8030
-						}
 						any_pop = {
 							limit = {
 								OR = {
@@ -3547,7 +3645,7 @@ political_decisions = {
 							limit = { owner = { ai = yes } }
 							AST = { set_country_flag = unreleasable_country }
 							NZL = { set_country_flag = unreleasable_country }
-							owner = { add_country_modifier = { name = eic_balance2_ai duration = 7665 } }
+							owner = { add_country_modifier = { name = eic_balance2 duration = 7665 } }
 						}
 
 						any_pop = { limit = { has_pop_culture = irish has_pop_religion = protestant } literacy = 0.05 }
@@ -3555,6 +3653,7 @@ political_decisions = {
 						any_pop = { limit = { has_pop_culture = irish location = { NOT = { is_core = IRE } is_colonial = no } } literacy = 0.2 }
 						any_pop = { limit = { has_pop_culture = north_italian } literacy = 0.25 }
 						any_pop = { limit = { has_pop_culture = spanish } literacy = 0.03 }
+						278 = { add_province_modifier = { name = manchester_textiles duration = -1 } }
 					}
 
 					SCO = { all_core = { any_pop = { limit = { NOT = { has_pop_culture = irish } } literacy = 0.2 } } }
@@ -3611,6 +3710,13 @@ political_decisions = {
 						any_country = {
 							limit = { capital_scope = { is_core = HND } civilized = no vassal_of = ENG }
 							economic_reform = yes_monetary_reform
+						}
+
+						any_owned = {
+							limit = {
+								produces = silk
+							}
+							add_province_modifier = { name = chinese_silk duration = -1 }
 						}
 					}
 
@@ -4013,6 +4119,7 @@ political_decisions = {
 							name = bad_immigration_policy
 							duration = -1
 						}
+						set_country_flag = bad_immigration_policy
 					}
 
 			### Uncivs ###
