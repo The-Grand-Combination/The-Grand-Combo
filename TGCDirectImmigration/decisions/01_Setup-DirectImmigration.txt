@@ -14,6 +14,7 @@ political_decisions = {
 
 		allow = {
 		money = 31000
+		state_n_government = 1
 		NOT = { has_country_modifier = direct_immigration_program }
 		NOT = { citizenship_policy = full_citizenship }
 		NOT = { has_country_flag = democracy_gov }
@@ -21,10 +22,9 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = direct_immigration
-			activate_technology = basic_chemistry
 			treasury = -30000
 			badboy = 0.5
-			add_country_modifier = { name = direct_immigration_program duration = 180 }
+			add_country_modifier = { name = direct_immigration_program duration = 365 }
 			set_variable = { which = has_province_selector value = 0 }
 		}
 
@@ -119,8 +119,50 @@ political_decisions = {
 
 		ai_will_do = { factor = 0 }
 	}
-	
-    #Preference by religion
+
+	#Move Pops to colonies (previosly administrative spending is 100%)
+	override_direct_immigration_move_pops_to_colonies = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			#has_country_flag = looking_through_overrides
+			ai = no
+			has_country_flag = direct_immigration
+			NOT = { has_country_flag = direct_immigration_move_pops_to_colonies }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = direct_immigration_move_pops_to_colonies
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Move Pops internally (previosly administrative spending is not 100%)
+	override_direct_immigration_move_pops_internally = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			#has_country_flag = looking_through_overrides
+			ai = no
+			has_country_flag = direct_immigration
+			has_country_flag = direct_immigration_move_pops_to_colonies
+		}
+
+		allow = {
+		}
+
+		effect = {
+			clr_country_flag = direct_immigration_move_pops_to_colonies
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Preference by religion
 	#Move non accepted religion
 	override_direct_immigration_move_not_state_religion = {
 		picture = cogs_yellow
@@ -163,43 +205,22 @@ political_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
-	#Move Pops to colonies (previosly administrative spending is 100%)
-	override_direct_immigration_move_pops_to_colonies = {
+	#Direct Assimilation
+
+	override_start_direct_assimilation = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			#has_country_flag = looking_through_overrides
 			ai = no
-			has_country_flag = direct_immigration
-			NOT = { has_country_flag = direct_immigration_move_pops_to_colonies }
 		}
 
 		allow = {
+			NOT = { has_country_modifier = assimilation_campaign_in_progress }
+			money = 31000
 		}
 
 		effect = {
-			set_country_flag = direct_immigration_move_pops_to_colonies
-		}
-
-		ai_will_do = { factor = 0 }
-	}
-
-	#Move Pops internally (previosly administrative spending is not 100%)
-	override_direct_immigration_move_pops_internally = {
-		picture = cogs_yellow
-		alert = no
-		potential = {
-			#has_country_flag = looking_through_overrides
-			ai = no
-			has_country_flag = direct_immigration
-			has_country_flag = direct_immigration_move_pops_to_colonies
-		}
-
-		allow = {
-		}
-
-		effect = {
-			clr_country_flag = direct_immigration_move_pops_to_colonies
+			country_event = 980007
 		}
 
 		ai_will_do = { factor = 0 }
