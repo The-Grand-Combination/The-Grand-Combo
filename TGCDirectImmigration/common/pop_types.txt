@@ -756,7 +756,6 @@ migration_chance = {
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			country = { has_country_flag = direct_immigration_move_primary_pops }
 			is_primary_culture = yes
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 		}
 		
 		# Non-accepted cultures will not move if primary pops migration is set
@@ -771,7 +770,6 @@ migration_chance = {
 			country = { ai = no }
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			country = { has_country_flag = direct_immigration_move_primary_pops }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 		}
 
 		# Accepted cultures will move if accepted pops migration is set
@@ -785,14 +783,13 @@ migration_chance = {
 			country = { ai = no }
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			country = { has_country_flag = direct_immigration_move_accepted_pops }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 			AND = {
 			is_accepted_culture = yes
 			is_primary_culture = no
 			}
 		}
 
-		# Non-accepted cultures will not move if accepted pops migration is set
+		# Non-accepted and primary cultures will not move if accepted pops migration is set
 		modifier = {
 			factor = -3
 			location = {
@@ -806,7 +803,6 @@ migration_chance = {
 			country = { ai = no }
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			country = { has_country_flag = direct_immigration_move_accepted_pops }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 		}
 
 		# Non-accepted cultures will move if accepted pops migration is not set
@@ -821,7 +817,6 @@ migration_chance = {
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
 			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 			is_accepted_culture = no
 		}
 
@@ -838,7 +833,6 @@ migration_chance = {
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
 			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
-			#NOT = { country = { has_country_flag = sending_pops_overseas } }
 		}
 
 		# No internal migration for any culture if colonial migration is set
@@ -868,7 +862,6 @@ migration_chance = {
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
 			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 			is_state_religion = no
 		}
 
@@ -886,7 +879,6 @@ migration_chance = {
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
 			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
 			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
-			#NOT = { country = { has_country_flag = sending_pops_overseas } }
 		}
 
 		# No migration if no province selector present
@@ -987,7 +979,8 @@ colonialmigration_chance = {
 
 	## Direct Immigration Shenanigans ## Pops will move to colonies colonial migration is set
 
-		# Accepted cultures will move accepted cultures migration is set
+
+	 #Primary culture will move is primary migration is set #this is only primary
 		modifier = {
 			factor = 1.5
 			location = {
@@ -995,14 +988,13 @@ colonialmigration_chance = {
 				has_building = province_selector
 			}
 			country = { has_country_flag = direct_immigration }
-			is_accepted_culture = yes
 			country = { ai = no }
-			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
-			country = { has_country_flag = direct_immigration_move_accepted_pops }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
+			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
+			country = { has_country_flag = direct_immigration_move_primary_pops }
+			is_primary_culture = yes
 		}
-
-		# Non-accepted cultures will not move accepted cultures migration is set
+		
+		# Non-accepted cultures will not move if primary pops migration is set
 		modifier = {
 			factor = -3
 			location = {
@@ -1010,13 +1002,15 @@ colonialmigration_chance = {
 				has_building = province_selector
 			}
 			country = { has_country_flag = direct_immigration }
+			is_primary_culture = no #this should be enough to stop accepted and non accepted
 			country = { ai = no }
 			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
-			country = { has_country_flag = direct_immigration_move_accepted_pops }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
+			country = { has_country_flag = direct_immigration_move_primary_pops }
 		}
 
-		# Non-accepted cultures will move accepted cultures migration not set
+		#this is only accepteds
+
+		# Accepted cultures will move if accepted pops migration is set
 		modifier = {
 			factor = 1.5
 			location = {
@@ -1024,14 +1018,49 @@ colonialmigration_chance = {
 				has_building = province_selector
 			}
 			country = { has_country_flag = direct_immigration }
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
+			country = { has_country_flag = direct_immigration_move_accepted_pops }
+			AND = {
+			is_accepted_culture = yes
+			is_primary_culture = no
+			}
+		}
+
+		# Non-accepted and primary cultures will not move if accepted pops migration is set
+		modifier = {
+			factor = -3
+			location = {
+				# Audax Validator "." Ignore_NEXT
+				has_building = province_selector
+			}
+			country = { has_country_flag = direct_immigration }
+			OR = {
+			is_primary_culture = yes
+			is_accepted_culture = no }
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
+			country = { has_country_flag = direct_immigration_move_accepted_pops }
+		}
+
+		#so this is non accepteds
+
+		# Non-accepted cultures will move if accepted pops migration is not set
+		modifier = {
+			factor = 1.5
+			location = {
+				# Audax Validator "." Ignore_NEXT
+				has_building = province_selector
+			}
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration }
+			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
+			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
+			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
 			is_accepted_culture = no
-			country = { ai = no }
-			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
-			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
 		}
 
-		# Accepted cultures will not move accepted cultures migration not set
+		# Accepted cultures will not move if accepted pops migration is not set
 		modifier = {
 			factor = -3
 			location = {
@@ -1043,8 +1072,44 @@ colonialmigration_chance = {
 			country = { ai = no }
 			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
 			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
-			NOT = { country = { has_country_flag = sending_pops_overseas } }
+			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
 		}
+
+		#Religion - This is not to be used concurent with culture moving!
+		
+		# Non-state religion will move if this is enabled
+		modifier = {
+			factor = 1.5
+			location = {
+				# Audax Validator "." Ignore_NEXT
+				has_building = province_selector
+			}
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration }
+			country = { has_country_flag = direct_immigration_move_not_state_religion }
+			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
+			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
+			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
+			is_state_religion = no
+		}
+
+		# Accepted religion will not move if accepted pops migration is not set
+		modifier = {
+			factor = -3
+			location = {
+				# Audax Validator "." Ignore_NEXT
+				has_building = province_selector
+			}
+			country = { has_country_flag = direct_immigration }
+			is_state_religion = yes
+			country = { ai = no }
+			country = { has_country_flag = direct_immigration_move_not_state_religion }
+			country = { has_country_flag = direct_immigration_move_pops_to_colonies }
+			NOT = { country = { has_country_flag = direct_immigration_move_accepted_pops } }
+			NOT = { country = { has_country_flag = direct_immigration_move_primary_pops } }
+		}
+
+		#########################################
 
 		# No colonial migration for any culture if colonial migration is not set
 		modifier = {
@@ -1054,7 +1119,6 @@ colonialmigration_chance = {
 				has_building = province_selector
 			}
 			NOT = { country = { has_country_flag = direct_immigration_move_pops_to_colonies } }
-			#NOT = { country = { has_country_flag = sending_pops_overseas } }
 			country = { ai = no }
 			country = { has_country_flag = direct_immigration }
 		}
@@ -1407,16 +1471,6 @@ emigration_chance = {
 				has_building = province_selector
 			}
 		}
-	    NOT = { country = { has_country_flag = sending_pops_overseas } }
-	}
-	modifier = { #dux: likely removing any send_pops_overseas references
-		factor = 5
-		location = {
-				# Audax Validator "." Ignore_NEXT
-				has_building = province_selector
-			}
-		is_accepted_culture = no
-	    country = { has_country_flag = sending_pops_overseas }
 	}
 
 	modifier = {
