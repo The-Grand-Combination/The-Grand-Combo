@@ -1,3 +1,3 @@
-name = "TGC - Organized Stacks"
-path = "mod/TGCQOL_Stacks"
+name = "TGC Submod - Organized Stacks"
+path = "mod/TGCOrganizedStacks"
 dependencies = { "TGC - The Grand Combination" }
