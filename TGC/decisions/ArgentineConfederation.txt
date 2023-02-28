@@ -2,7 +2,7 @@ political_decisions = {
 
 	## General mechanics ##
 
-	#Desc: Whoever owns the Martin Garcia Island can set up special tariffs and restrictions to the Plata River
+	#Desc: The Platine Question - Whoever controls Martin Garcia can apply navigation restrictions to the river
 	setup_la_plata_policy = {
 		picture = map_plata_river
 		potential = {
@@ -11,17 +11,13 @@ political_decisions = {
 				continent = south_america
 			}
 			NOT = {
-				OR = {
-					has_country_modifier = la_plata_open
-					has_country_modifier = light_la_plata_restrictions
-					has_country_modifier = medium_la_plata_restrictions
-					has_country_modifier = heavy_la_plata_restrictions
-					has_country_modifier = la_plata_closed
-				}
-				OR = {
-					has_global_flag = la_plata_opened_by_foreign
-					has_global_flag = la_plata_closed_by_foreign
-				}
+				has_country_modifier = la_plata_open
+				has_country_modifier = light_la_plata_restrictions
+				has_country_modifier = medium_la_plata_restrictions
+				has_country_modifier = heavy_la_plata_restrictions
+				has_country_modifier = la_plata_closed
+				has_global_flag = la_plata_opened_by_foreign
+				has_global_flag = la_plata_closed_by_foreign
 			}
 		}
 
@@ -45,10 +41,9 @@ political_decisions = {
 				continent = south_america
 			}
 			NOT = {
-				OR = {
-					has_global_flag = la_plata_opened_by_foreign
-					has_global_flag = la_plata_closed_by_foreign
-				}
+				has_global_flag = la_plata_opened_by_foreign
+				has_global_flag = la_plata_closed_by_foreign
+				has_country_flag = changing_la_plata_policy
 			}
 			OR = {
 				has_country_modifier = la_plata_open
@@ -70,7 +65,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Desc: Countries with free trade can open the Plata River to all countries, boosts relations with GPs and lowers infamy
+	#Desc: Internationality of La Plata: countries with free trade can open the Plata River to all countries, boosts relations with GPs and lowers infamy
 	open_la_plata = {
 		picture = la_plata_open
 		potential = {
@@ -92,7 +87,7 @@ political_decisions = {
 		effect = {
 			remove_country_modifier = light_la_plata_restrictions
 			add_country_modifier = { name = la_plata_open duration = -1 }
-			badboy = -5
+			badboy = -3
 			prestige_factor = 0.01
 			any_country = {
 				limit = {
@@ -106,14 +101,20 @@ political_decisions = {
 			any_country = {
 				limit = {
 					OR = {
-						trade_policy = free_trade
-						ruling_party_ideology = liberal
-						ruling_party_ideology = anarcho_liberal
+						trade_policy = protectionism
+						AND = {
+							ruling_party_ideology = conservative
+							trade_policy = protectionism
+						}
+						AND = {
+							ruling_party_ideology = reactionary
+							trade_policy = protectionism
+						}
 					}
 				}
 				relation = {
 					who = THIS
-					value = -30
+					value = -10
 				}
 			}
 		}
@@ -232,7 +233,6 @@ political_decisions = {
 			remove_country_modifier = heavy_la_plata_restrictions
 			add_country_modifier = { name = la_plata_closed duration = -1 }
 			badboy = 5
-			prestige_factor = -0.01
 			any_country = {
 				limit = {
 					is_greater_power = yes
@@ -256,7 +256,44 @@ political_decisions = {
 			}
 			war_countries = {
 				NOT = {
-					OR = {
+					AND = {
+						has_country_flag = the_centralization_debate
+						has_country_modifier = delegating_diplomacy
+					}
+					AND = {
+						has_country_flag = the_centralization_debate
+						has_country_modifier = diplomatic_delegate
+					}
+					all_land_provinces = {
+						owner = {
+							has_country_modifier = diplomatic_delegate
+							truce_with = THIS
+						}
+					}
+				}
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = member_called_for_help
+		}
+	}
+
+	call_provinces_to_war = {
+		picture = belgrano_tucuman
+		potential = {
+			has_country_modifier = diplomatic_delegate
+			OR = {
+				all_land_provinces = {
+					owner = {
+						has_country_flag = member_called_for_help
+					}
+				}
+				war_countries = {
+					NOT = {
 						AND = {
 							has_country_flag = the_centralization_debate
 							has_country_modifier = delegating_diplomacy
@@ -271,154 +308,246 @@ political_decisions = {
 		}
 		
 		allow = {
+			OR = {
+				has_country_modifier = high_influential_member
+				has_country_modifier = very_high_influential_member
+				has_country_modifier = extremely_high_influential_member
+				has_country_modifier = maximum_influential_member
+			}
+			any_pop = { #WIP: must have at least 5% of war support from the ruling class to be able to enact this decision
+				type = aristocrats
+				pro_military = 0.05
+			}
 		}
-		
-		effect = {
-			set_country_flag = calling_for_help
-		}
-	}
 
-	call_provinces_to_war = {
-		picture = belgrano_tucuman
-		potential = {
-			has_country_modifier = diplomatic_delegate
-			has_country_flag = member_called_for_help
-		}
-		
-		allow = {
-		}
-		
 		effect = {
 			random_country = {
 				any_country = {
 					limit = {
 						has_country_modifier = delegating_diplomacy
 						NOT = {
-							OR = {
-								vassal_of = THIS
-								is_vassal = yes
+							vassal_of = THIS
+							is_vassal = yes
+						}
+						OR = { # Influence checks
+							AND = {
+								THIS = {
+									has_country_modifier = maximum_influential_member
+								}
+								OR = {
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = extremely_high_influential_member
+								}
+								OR = {
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = very_high_influential_member
+								}
+								OR = {
+									has_country_modifier = high_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = high_influential_member
+								}
+								OR = {
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = mildly_high_influential_member
+								}
+								OR = {
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = mildly_influential_member
+								}
+								OR = {
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = mildly_low_influential_member
+								}
+								OR = {
+									has_country_modifier = low_influential_member
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = low_influential_member
+								}
+								OR = {
+									has_country_modifier = very_low_influential_member
+									has_country_modifier = extremely_low_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = very_low_influential_member
+								}
+								has_country_modifier = extremely_low_influential_member
 							}
 						}
 					}
-					prestige = 1
-				}
-				any_country = { #puppets of the calling country will be automatically called into the war
-					limit = {
-						has_country_modifier = delegating_diplomacy
-						vassal_of = THIS
-					}
-					prestige = 1
+					country_event = { id = 49750 days = 5 }
 				}
 				any_country = { #Countries with more influence than the calling country will be able to circumvent the force-join
 					limit = {
 						has_country_modifier = delegating_diplomacy
-						NOT = {
-							OR = {
-								AND = {
-									THIS = {
-										has_country_modifier = extremely_high_influential_member
-									}
+						NOT = { # Influence checks
+							AND = {
+								THIS = {
+									has_country_modifier = extremely_high_influential_member
+								}
+								has_country_modifier = maximum_influential_member
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = very_high_influential_member
+								}
+								OR = {
+									has_country_modifier = extremely_high_influential_member
 									has_country_modifier = maximum_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = very_high_influential_member
-									}
-									OR = {
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = high_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = high_influential_member
-									}
-									OR = {
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+								OR = {
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = mildly_high_influential_member
-									}
-									OR = {
-										has_country_modifier = high_influential_member
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = mildly_high_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = mildly_influential_member
-									}
-									OR = {
-										has_country_modifier = mildly_high_influential_member
-										has_country_modifier = high_influential_member
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+								OR = {
+									has_country_modifier = high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = mildly_low_influential_member
-									}
-									OR = {
-										has_country_modifier = mildly_influential_member
-										has_country_modifier = mildly_high_influential_member
-										has_country_modifier = high_influential_member
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = mildly_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = low_influential_member
-									}
-									OR = {
-										has_country_modifier = mildly_low_influential_member
-										has_country_modifier = mildly_influential_member
-										has_country_modifier = mildly_high_influential_member
-										has_country_modifier = high_influential_member
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+								OR = {
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = very_low_influential_member
-									}
-									OR = {
-										has_country_modifier = low_influential_member
-										has_country_modifier = mildly_low_influential_member
-										has_country_modifier = mildly_influential_member
-										has_country_modifier = mildly_high_influential_member
-										has_country_modifier = high_influential_member
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = mildly_low_influential_member
 								}
-								AND = {
-									THIS = {
-										has_country_modifier = extremely_low_influential_member
-									}
-									OR = {
-										has_country_modifier = extremely_low_influential_member
-										has_country_modifier = low_influential_member
-										has_country_modifier = mildly_low_influential_member
-										has_country_modifier = mildly_influential_member
-										has_country_modifier = mildly_high_influential_member
-										has_country_modifier = high_influential_member
-										has_country_modifier = very_high_influential_member
-										has_country_modifier = extremely_high_influential_member
-										has_country_modifier = maximum_influential_member
-									}
+								OR = {
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = low_influential_member
+								}
+								OR = {
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = very_low_influential_member
+								}
+								OR = {
+									has_country_modifier = low_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
+								}
+							}
+							AND = {
+								THIS = {
+									has_country_modifier = extremely_low_influential_member
+								}
+								OR = {
+									has_country_modifier = extremely_low_influential_member
+									has_country_modifier = low_influential_member
+									has_country_modifier = mildly_low_influential_member
+									has_country_modifier = mildly_influential_member
+									has_country_modifier = mildly_high_influential_member
+									has_country_modifier = high_influential_member
+									has_country_modifier = very_high_influential_member
+									has_country_modifier = extremely_high_influential_member
+									has_country_modifier = maximum_influential_member
 								}
 							}
 						}
@@ -429,7 +558,7 @@ political_decisions = {
 		}
 	}
 
-	#Desc: You can close a university if the province has enough consciousness, and liberals, boosts influence a lot but makes liberals very angry
+	#Desc: [WIP] You can close a university if the province has enough consciousness and liberals, boosts influence a lot but makes liberals very angry
 	close_university = {
 		picture = gtfo
 		potential = {
@@ -567,14 +696,16 @@ political_decisions = {
 	#Desc: Sets up different land reforms and policies
 	land_reforms_setup = {
 		picture = land_grant
+
 		potential = {
 		}
+
 		allow = {
 			any_owned_province = {
-				owned_by = THIS
 				has_province_modifier = recently_colonized_province
 			}
 		}
+
 		effect = {
 			set_country_flag = land_reform_setup
 		}
@@ -583,12 +714,15 @@ political_decisions = {
 	#Desc: Set up the land prices
 	land_policy_setup_price = {
 		picture = land_grant
+
 		potential = {
 			has_country_flag = established_colonial_office
 			has_country_flag = land_reform_setup
 		}
+
 		allow = {
 		}
+
 		effect = {
 			prestige = 1
 		}
@@ -625,7 +759,7 @@ political_decisions = {
 			prestige = 1
 		}
 	}
-	#Desc: Recently colonized provinces with mine RGO can be granted to boost immigration and production
+	#Desc: Recently colonized provinces with mine RGO can be given/sold to boost immigration and production
 	give_mine_land_grant = {
 		picture = land_grant
 		potential = {
@@ -633,7 +767,7 @@ political_decisions = {
 		}
 		allow = {
 			any_owned_province = {
-				owned_by = THIS
+				has_province_modifier = recently_colonized_province
 				OR = {
 					trade_goods = coal
 					trade_goods = sulphur
@@ -642,7 +776,6 @@ political_decisions = {
 					trade_goods = precious_metal
 					trade_goods = precious_goods
 				}
-				has_province_modifier = recently_colonized_province
 			}
 		}
 		effect = {
@@ -667,10 +800,8 @@ political_decisions = {
 			}
 			any_neighbor_country = {
 				NOT = {
-					OR = {
-						has_country_modifier = diplomatic_delegate
-						has_country_modifier = delegating_diplomacy
-					}
+					has_country_modifier = diplomatic_delegate
+					has_country_modifier = delegating_diplomacy
 				}
 				NOT = {
 					relation = { who = THIS value = -30 }
@@ -712,7 +843,49 @@ political_decisions = {
 		}
 	}
 
-	#Desc: Provinces with charismatic or influential leaders can conspire to assassinate neighboring enemy leaders
+	#Desc: If Entre Rios manages to take the Lechiguanas, they can claim Martin Garcia too
+	claim_martin_garcia = {
+		picture = map_plata_river
+		potential = {
+			3592 = {
+				is_core = THIS
+			}
+			NOT = {
+				owns = 3591
+			}
+		}
+		allow = {
+			3592 = {
+				owned_by = THIS
+			}
+			OR = {
+				has_country_modifier = high_influential_member
+				has_country_modifier = very_high_influential_member
+				has_country_modifier = extremely_high_influential_member
+				has_country_modifier = maximum_influential_member
+			}
+			NOT = {
+				war_policy = pacifism
+				war_policy = anti_military
+			}
+		}
+		effect = {
+			3591 = {
+				add_core = THIS
+			}
+			random_country = {
+				limit = {
+					owns = 3591
+				}
+				relation = {
+					who = THIS
+					value = -100
+				}
+			}
+		}
+	}
+
+	#Desc: Influential provinces can conspire to assassinate neighboring enemy leaders
 	kill_enemy_leader = {
 		picture = arc_death
 		potential = {
@@ -729,16 +902,7 @@ political_decisions = {
 		}
 		
 		effect = {
-			any_pop = {
-				limit = {
-					location = {
-						NOT = {
-							is_capital = yes
-						}
-					}
-				}
-				militancy = 10
-			}
+			set_country_flag = conspiration_to_kill
 		}
 	}
 }
