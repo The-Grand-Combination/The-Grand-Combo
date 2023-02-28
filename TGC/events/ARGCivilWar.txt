@@ -1,4 +1,4 @@
-#### Flavor and mechanics for both provinces of the Argentine Confederation and the ARC Tag ####
+#### Flavor and mechanics for Argentina before unification ####
 
 #desc: The Centralization Debate, similar set up event to the Slavery Debate in the US
 	country_event = {
@@ -9,14 +9,22 @@
 		
 		fire_only_once = yes
 
-		immediate = {
-			set_country_flag = the_centralization_debate
+		trigger = {
+			OR = {
+				has_country_modifier = diplomatic_delegate
+				has_country_modifier = delegating_diplomacy
+			}
+		}
+		
+		mean_time_to_happen = {
+			days = 1
 		}
 
 		option = {
-			name = EVTOPTA49600
+			name = "EVTOPTA49600"
 			
 			add_country_modifier = { name = the_centralization_debate_modifier duration = -1 }
+			set_country_flag = the_centralization_debate
 		}
 	}
 
@@ -24,7 +32,7 @@
 
 ## Caudillo Influence Mechanic ##
 
-#desc: Federalist clubs and leagues (For unitarian and moderate-ruled provinces)
+	#Desc: Federalist clubs and leagues (For unitarian and moderate-ruled provinces)
 	province_event = {
 		id = 49601
 		title = "EVTNAME49601"
@@ -33,6 +41,7 @@
 		allow_multiple_instances = yes
 
 		trigger = {
+			NOT = { has_province_modifier = federalist_ideas_spread }
 			owner = {
 				OR = {
 					has_country_modifier = diplomatic_delegate
@@ -42,7 +51,6 @@
 				NOT = { 
 					ruling_party = ARG_conservative
 				}
-				NOT = { has_province_modifier = federalist_ideas_spread }
 			}
 		}
 
@@ -152,7 +160,6 @@
 				militancy = -0.5
 				consciousness = 0.7
 			}
-
 			any_pop = {
 				limit = {
 					literacy = 0.05
@@ -171,7 +178,6 @@
 					factor = 0.1
 				}
 			}
-			
 			any_pop = {
 				limit = {
 					type = clergymen
@@ -184,7 +190,6 @@
 				militancy = -2
 				consciousness = 1.5
 			}
-			
 			any_pop = {
 				limit = {
 					type = officers
@@ -1183,12 +1188,6 @@
 								value = 100
 							}
 						}
-						NOT = {
-							check_variable = {
-								which = influence
-								value = 100
-							}
-						}
 					}
 					change_variable = { which = influence value = 10 }
 					change_variable = { which = army_influence value = 5 }
@@ -1765,10 +1764,8 @@
 				has_country_modifier = very_high_army_influence
 			}
 			NOT = {
-				OR = {
-					election = yes
-					has_country_modifier = upper_house_election
-				}
+				election = yes
+				has_country_modifier = upper_house_election
 			}
 			OR = {
 				has_country_flag = the_centralization_debate
@@ -2302,10 +2299,8 @@
 				has_country_modifier = very_high_army_influence
 			}
 			NOT = {
-				OR = {
-					election = yes
-					has_country_modifier = upper_house_election
-				}
+				election = yes
+				has_country_modifier = upper_house_election
 			}
 			OR = {
 				has_country_flag = the_centralization_debate
@@ -2812,9 +2807,9 @@
 				limit = {
 					has_building = university
 				}
-				set_variable = {
-					which = closed_university
-					value = 1
+				add_province_modifier = {
+					name = closed_university
+					duration = -1
 				}
 				university = -6
 			}
@@ -2825,10 +2820,7 @@
 						pop_majority_ideology = anarcho_liberal
 					}
 					location = {
-						check_variable = {
-							which = closed_university
-							value = 1
-						}
+						has_province_modifier = closed_university
 					}
 				}
 				militancy = 6.8
@@ -2855,12 +2847,10 @@
 					limit = {
 						tag = THIS
 						NOT = {
-							OR = {
-								has_country_modifier = maximum_influential_member
-								check_variable = {
-									which = influence
-									value = 95
-								}
+							has_country_modifier = maximum_influential_member
+							check_variable = {
+								which = influence
+								value = 95
 							}
 						}
 					}
@@ -2873,10 +2863,8 @@
 					limit = {
 						tag = THIS
 						NOT = {
-							OR = {
-								has_country_modifier = maximum_influential_member
-								has_country_modifier = extremely_high_influential_member
-							}
+							has_country_modifier = maximum_influential_member
+							has_country_modifier = extremely_high_influential_member
 						}
 					}
 					change_variable = {
@@ -2895,9 +2883,9 @@
 				limit = {
 					has_building = university
 				}
-				set_variable = {
-					which = demolished_university
-					value = 1
+				add_province_modifier = {
+					name = demolished_university
+					duration = -1
 				}
 				university = -6
 			}
@@ -2915,10 +2903,7 @@
 						pop_majority_ideology = anarcho_liberal
 					}
 					location = {
-						check_variable = {
-							which = demolished_university
-							value = 1
-						}
+						has_province_modifier = demolished_university
 					}
 				}
 				militancy = 6.8
@@ -2928,10 +2913,7 @@
 				limit = {
 					strata = rich
 					location = {
-						check_variable = {
-							which = demolished_university
-							value = 1
-						}
+						has_province_modifier = demolished_university
 					}
 				}
 				ideology = {
@@ -2947,10 +2929,7 @@
 				limit = {
 					strata = poor
 					location = {
-						check_variable = {
-							which = demolished_university
-							value = 1
-						}
+						has_province_modifier = demolished_university
 					}
 				}
 				ideology = {
@@ -2983,12 +2962,10 @@
 					limit = {
 						tag = THIS
 						NOT = {
-							OR = {
-								has_country_modifier = maximum_influential_member
-								check_variable = {
-									which = influence
-									value = 95
-								}
+							has_country_modifier = maximum_influential_member
+							check_variable = {
+								which = influence
+								value = 95
 							}
 						}
 					}
@@ -3001,10 +2978,8 @@
 					limit = {
 						tag = THIS
 						NOT = {
-							OR = {
-								has_country_modifier = maximum_influential_member
-								has_country_modifier = extremely_high_influential_member
-							}
+							has_country_modifier = maximum_influential_member
+							has_country_modifier = extremely_high_influential_member
 						}
 					}
 					change_variable = {
@@ -3072,7 +3047,6 @@
 			}
 			NOT = {
 				has_country_modifier = term_of_office
-				has_country_modifier = upper_house_election
 			}
 		}
 		
@@ -3158,7 +3132,7 @@
 			name = "EVTOPTA49902" #Ok
 
 			ruling_party_ideology = conservative
-			remove_country_modifier = { name = upper_house_election }
+			remove_country_modifier = upper_house_election
 		}
 	}
 
@@ -3227,7 +3201,7 @@
 			name = "EVTOPTA49903" #Ok
 			
 			ruling_party_ideology = liberal
-			remove_country_modifier = { name = upper_house_election }
+			remove_country_modifier = upper_house_election
 		}
 	}
 
@@ -3296,7 +3270,7 @@
 			name = "EVTOPTA49904" #Ok
 			
 			ruling_party_ideology = anarcho_liberal
-			remove_country_modifier = { name = upper_house_election }
+			remove_country_modifier = upper_house_election
 		}
 	}
 
@@ -3365,9 +3339,11 @@
 			name = "EVTOPTA49905" #Ok
 			
 			ruling_party_ideology = reactionary
-			remove_country_modifier = { name = upper_house_election }
+			remove_country_modifier = upper_house_election
 		}
 	}
+
+## Diplomacy ##
 
 	#desc: Winning a war against another caudillo makes yours more influential and popular
 	country_event = {
@@ -3383,5 +3359,633 @@
 
 			prestige_factor = 0.1
 			change_variable = { which = influence value = 20 }
+		}
+	}
+
+	#desc: Getting deposed after a war sets up the new government
+	country_event = {
+		id = 49701
+		title = "EVTNAME49701"
+		desc = "EVTDESC49701"
+		picture = arc_victory
+		
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49701" #Ok
+
+			prestige_factor = 0.1
+			change_variable = { which = influence value = 20 }
+		}
+	}
+
+	#desc: Call to arms - forced join
+	country_event = {
+		id = 49750
+		title = "EVTNAME49750"
+		desc = "EVTDESC49750"
+		picture = arc_victory
+		
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49750" #Ok
+
+			prestige_factor = 0.1
+			change_variable = { which = influence value = -5 }
+		}
+	}
+
+### Flavor ###
+
+## Buenos Aires ##
+
+#desc: British envoy offers to open negotiations with the government of the leader of the confederation to ban slave trade
+	country_event = {
+		id = 49800
+		title = "EVTNAME49800"
+		desc = "EVTDESC49800"
+		picture = world_anti_slavery_convention
+
+		fire_only_once = yes
+		
+		trigger = {
+			ENG = {
+				is_greater_power = yes
+				slavery = no_slavery
+			}
+			all_land_provinces = {
+				port = yes
+				owner = {
+					has_country_modifier = diplomatic_delegate
+					has_country_flag = the_centralization_debate
+					NOT = {
+						slavery = no_slavery
+					}
+				}
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 72
+			modifier = {
+				factor = 0.7
+				NOT = { THIS = { relation = { who = ENG value = -50 } } }
+				any_pop = { type = slaves militancy = 4 }
+			}
+			modifier = {
+				factor = 0.8
+				NOT = {
+					citizenship_policy = full_citizenship
+				}
+			}
+			modifier = {
+				factor = 0.9
+				any_pop = {
+					has_pop_culture = british
+					pop_majority_issue = no_slavery
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49800" #Accept the offer (historical)
+			
+			prestige = 1
+			ENG = {
+				relation = { who = THIS value = 15 }
+				country_event = { id = 49801 days = 35 }
+			}
+			any_country = {
+				limit = {
+					slavery = no_slavery
+				}
+				relation = { who = THIS value = 5 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49800" #Politely refuse
+			
+			badboy = 1.5
+			prestige = 3
+			ENG = {
+				relation = { who = THIS value = -10 }
+				country_event = { id = 49802 days = 35 }
+			}
+			any_country = {
+				limit = {
+					slavery = no_slavery
+				}
+				relation = { who = THIS value = -5 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49800" #Agressively refuse
+			
+			badboy = 3.5
+			prestige = 6
+			ENG = {
+				relation = { who = THIS value = -30 }
+				country_event = { id = 49811 days = 30 }
+			}
+			any_country = {
+				limit = {
+					slavery = no_slavery
+				}
+				relation = { who = THIS value = -10 }
+			}
+		}
+	}
+
+#desc: Information about the event - positive response
+	country_event = {
+		id = 49801
+		title = "EVTNAME49801"
+		desc = "EVTDESC49801"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49801" #Neat
+			
+			prestige = 2
+		}
+	}
+
+#desc: Information about the event - neutral response
+	country_event = {
+		id = 49802
+		title = "EVTNAME49802"
+		desc = "EVTDESC49802"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49802" #End negotiations
+			
+			prestige = -3
+		}
+
+		option = {
+			name = "EVTOPTB49802" #Make a counter-offer (gives $15,000 and builds a bank in a random province if accepted)
+			
+			FROM = {
+				country_event = { id = 49803 days = 30 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49802" #Pressure
+			
+			badboy = 0.5
+			FROM = {
+				country_event = { id = 49809 days = 30 }
+			}
+		}
+	}
+
+#desc: [Country] receives the news about the counter-offer
+	country_event = {
+		id = 49803
+		title = "EVTNAME49803"
+		desc = "EVTDESC49803"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49803" #Accept the offer
+			
+			treasury = 15000
+			random_owned = {
+				limit = {
+					NOT = {
+						has_building = bank
+					}
+				}
+				bank = 1
+			}
+			FROM = { 
+				country_event = { id = 49804 days = 30 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49803" #Deny the offer
+			
+			FROM = {
+				country_event = { id = 49805 days = 30 }
+			}
+		}
+	}
+
+#desc: Information about the counter-offer - [Country] accepts
+	country_event = {
+		id = 49804
+		title = "EVTNAME49804"
+		desc = "EVTDESC49804"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49804" #Neat
+			
+			treasury = -15000
+		}
+	}
+
+#desc: Information about the counter-offer - [Country] refuses
+	country_event = {
+		id = 49805
+		title = "EVTNAME49805"
+		desc = "EVTDESC49805"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49805" #End negotiations
+			
+			prestige = -5
+		}
+
+		option = {
+			name = "EVTOPTA49805" #Make a last counter-offer (Offer two banks, a sum of $40,000, and a small amount cleared off the debt)
+
+			FROM = {
+				country_event = { id = 49806 days = 30 }
+			}
+		}
+	}
+
+#desc: The second British counter-offer
+	country_event = {
+		id = 49806
+		title = "EVTNAME49806"
+		desc = "EVTDESC49806"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49806" #Accept the offer
+			
+			treasury = 40000
+			random_owned = {
+				limit = {
+					NOT = {
+						has_building = bank
+					}
+				}
+				bank = 1
+			}
+			random_owned = {
+				limit = {
+					NOT = {
+						has_building = bank
+					}
+				}
+				bank = 1
+			}
+			FROM = { 
+				country_event = { id = 49807 days = 30 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49806" #Deny the offer
+			
+			FROM = {
+				country_event = { id = 49808 days = 30 }
+			}
+		}
+	}
+
+#desc: [Country] accepts the second counter-offer
+	country_event = {
+		id = 49807
+		title = "EVTNAME49807"
+		desc = "EVTDESC49807"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49807" #Nice
+			
+			treasury = -40000
+		}
+	}
+
+#desc: [Country] refuses the second counter-offer
+	country_event = {
+		id = 49808
+		title = "EVTNAME49808"
+		desc = "EVTDESC49808"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49808" #End negotiations
+
+			prestige = -7
+		}
+
+		option = {
+			name = "EVTOPTB49808" #Threaten
+			
+			FROM = {
+				country_event = { id = 49812 days = 30 }
+			}
+		}
+	}
+
+#desc: Britain insists
+	country_event = {
+		id = 49809
+		title = "EVTNAME49809"
+		desc = "EVTDESC49809"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49809" #Back down and accept the treaty
+
+			FROM = { 
+				country_event = { id = 49801 days = 30 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB49809" #Refuse
+			
+			FROM = {
+				country_event = { id = 49810 days = 30 }
+			}
+		}
+	}
+
+#desc: [Country] keeps refusing
+	country_event = {
+		id = 49810
+		title = "EVTNAME49810"
+		desc = "EVTDESC49810"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49810" #End negotiations
+
+			prestige = -10
+		}
+
+		option = {
+			name = "EVTOPTB49810" #Threaten
+			
+			FROM = {
+				country_event = { id = 49812 days = 30 }
+			}
+		}
+	}
+
+#desc: Information about the event - negative response
+	country_event = {
+		id = 49811
+		title = "EVTNAME49811"
+		desc = "EVTDESC49811"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49811" #Back down and end negotiations
+			
+			prestige = -6
+		}
+
+		option = {
+			name = "EVTOPTB49811" #Threaten
+			
+			badboy = 0.5
+			FROM = {
+				country_event = { id = 49812 days = 30 }
+			}
+		}
+	}
+
+#desc: The British threat
+	country_event = {
+		id = 49812
+		title = "EVTNAME49812"
+		desc = "EVTDESC49812"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49812" #Submit to the demands
+			
+			prestige = -6
+		}
+
+		option = {
+			name = "EVTOPTB49812" #Refuse the demands
+			
+			FROM = {
+				country_event = { id = 49813 days = 30 }
+			}
+		}
+	}
+
+#desc: [Country] refuses to the threat
+	country_event = {
+		id = 49813
+		title = "EVTNAME49813"
+		desc = "EVTDESC49813"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49813" #End negotiations
+			
+			prestige = -15
+		}
+
+		option = {
+			name = "EVTOPTB49813" #Send ultimatum and send ships to La Plata (If France is still blocking La Plata, a special, new event chain can be unlocked to open La Plata)
+			
+			FROM = {
+				country_event = { id = 49814 days = 30 }
+			}
+		}
+	}
+
+#desc: The British ultimatum
+	country_event = {
+		id = 49814
+		title = "EVTNAME49814"
+		desc = "EVTDESC49814"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49814" #Submit to the demands
+			
+			prestige_factor = -0.5
+			FROM = {
+				country_event = { id = 49801 days = 30 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTC49814" #Confront them
+			
+			FROM = {
+				country_event = { id = 49815 days = 30 }
+			}
+		}
+	}
+
+#desc: The British ultimatum - [Country] refuses to the ultimatum
+	country_event = {
+		id = 49815
+		title = "EVTNAME49815"
+		desc = "EVTDESC49815"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49815" #Block La Plata (opens a special event chain if France or any other country is blocking La Plata)
+			
+			casus_belli = {
+				target = FROM
+				type = gunboat
+				months = 24
+			}
+			FROM = {
+				country_event = { id = 49816 days = 30 }
+			}
+			random_country = {
+				any_country = {
+					limit = {
+						NOT = { tag = THIS }
+						has_country_flag = is_blockading_la_plata
+					}
+					country_event = { id = 49817 days = 20 }
+				}
+			}			
+		}
+
+		option = {
+			name = "EVTOPTC49815" #Back down and end negotiations
+			
+			FROM = {
+				country_event = { id = 49818 days = 30 }
+			}
+		}
+	}
+
+#desc: The British blockade
+	country_event = {
+		id = 49816
+		title = "EVTNAME49816"
+		desc = "EVTDESC49816"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		immediate = {
+			add_country_modifier = { name = naval_blockade duration = -1 }
+			war_exhaustion = 5
+		}
+
+		option = {
+			name = "EVTOPTA49816" #Surrender
+			
+			badboy = -2.5
+			prestige_factor = -0.9
+			FROM = {
+				country_event = { id = 49819 days = 20 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTA49816" #Prepare the armies
+
+			casus_belli = {
+				target = FROM
+				type = humiliate
+				months = 12
+			}
+		}
+	}
+
+#desc: The British blockade - if any other countries are already blockading La Plata, they can team up against [country]
+	country_event = {
+		id = 49817
+		title = "EVTNAME49817"
+		desc = "EVTDESC49817"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49817" #Yes
+
+			random_country = {
+				any_country = {
+					limit = {
+						NOT = { tag = THIS }
+						has_country_flag = is_blockading_la_plata
+					}
+					relation = { who = THIS value = 75 }
+				}
+			}			
+		}
+	}
+
+#desc: The British ultimatum - The British decide to back down
+	country_event = {
+		id = 49818
+		title = "EVTNAME49818"
+		desc = "EVTDESC49818"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49818" #Nice
+
+			prestige = 15
+		}
+	}
+
+#desc: The British blockade - [Country] surrenders
+	country_event = {
+		id = 49819
+		title = "EVTNAME49819"
+		desc = "EVTDESC49819"
+		picture = world_anti_slavery_convention
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49819" #Neat
+
+			prestige_factor = 0.05
+			FROM = {
+				remove_country_modifier = atlantic_slave_trade
+			}
 		}
 	}
