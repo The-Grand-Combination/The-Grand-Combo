@@ -3391,8 +3391,105 @@
 		option = {
 			name = "EVTOPTA49750" #Ok
 
-			prestige_factor = 0.1
 			change_variable = { which = influence value = -5 }
+			random_country = {
+				any_country = {
+					limit = {
+						has_country_modifier = delegating_diplomacy
+						NOT = {
+							has_country_modifier = diplomatic_delegate
+						}
+					}
+					create_alliance = FROM
+				}
+			}
+		}
+	}
+
+	#desc: Call to arms - optional join
+	country_event = {
+		id = 49751
+		title = "EVTNAME49751"
+		desc = "EVTDESC49751"
+		picture = arc_victory
+		
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49751" #Accept
+
+			change_variable = { which = influence value = -5 }
+			random_country = {
+				any_country = {
+					limit = {
+						NOT = { tag = THIS }
+						has_country_modifier = diplomatic_delegate
+						NOT = { has_country_modifier = delegating_diplomacy }
+					}
+					create_alliance = THIS
+				}
+				any_country = {
+					limit = {
+						NOT = {
+							has_country_modifier = delegating_diplomacy 
+							has_country_modifier = diplomatic_delegate
+						}
+						war_countries = {
+							OR = {
+								has_country_modifier = diplomatic_delegate
+								has_country_modifier = delegating_diplomacy
+							}
+						}
+					}
+					relation = { who = THIS value = -200 }
+				}
+			}
+		}
+		option = {
+			name = "EVTOPTB49751" #Refuse
+
+			change_variable = { which = influence value = 5 }
+			random_country = {
+				any_country = {
+					limit = {
+						OR = {
+							has_country_modifier = delegating_diplomacy
+							has_country_modifier = diplomatic_delegate
+						}
+					}
+					relation = { who = THIS value = -150 }
+				}
+				any_country = {
+					limit = {
+						NOT = {
+							has_country_modifier = delegating_diplomacy 
+							has_country_modifier = diplomatic_delegate
+						}
+						war_countries = {
+							OR = {
+								has_country_modifier = diplomatic_delegate
+								has_country_modifier = delegating_diplomacy
+							}
+						}
+					}
+					relation = { who = THIS value = 50 }
+				}
+			}
+		}
+	}
+
+	#desc: Call to arms - enemy countries get notified
+	country_event = {
+		id = 49752
+		title = "EVTNAME49752"
+		desc = "EVTDESC49752"
+		picture = arc_victory
+		
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49752" #Ok
+
 		}
 	}
 
@@ -3987,5 +4084,693 @@
 			FROM = {
 				remove_country_modifier = atlantic_slave_trade
 			}
+		}
+	}
+
+#desc: The Treaty of $CAPITAL$ - country joins the confederation
+	country_event = {
+		id = 49889
+		title = "EVTNAME49889"
+		desc = "EVTDESC49889"
+		news = yes
+		news_title = "EVTNAME49889_NEWS_TITLE"
+		news_desc_long = "EVTDESC49889_NEWS_LONG"
+		news_desc_medium = "EVTDESC49889_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC49889_NEWS_SHORT"
+		picture = arc_victory
+		major = yes
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49889" #Oh no
+
+		}
+	}
+
+#desc: The Treaty of $CAPITAL$ - special event that breaks up Bolivia
+	country_event = {
+		id = 49890
+		title = "EVTNAME49890"
+		desc = "EVTDESC49890"
+		news = yes
+		news_title = "EVTNAME49890_NEWS_TITLE"
+		news_desc_long = "EVTDESC49890_NEWS_LONG"
+		news_desc_medium = "EVTDESC49890_NEWS_MEDIUM"
+		news_desc_short = "EVTDESC49890_NEWS_SHORT"
+		picture = arc_victory
+		major = yes
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA49890" #Oh no - become Chuquisaca
+
+			all_core = { add_core = ARC }
+			bol_la_paz_claims = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APZ
+				secede_province = APZ
+			}
+			bol_cochabamba_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ACB
+				secede_province = ACB
+			}
+			bol_chuquisaca_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AQS
+				secede_province = AQS
+			}
+			bol_potosi_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APS
+				secede_province = APS
+			}
+			bol_oruro_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AOU
+				secede_province = AOU
+			}
+			BOL_2317 = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ASC
+				secede_province = ASC
+			}
+			random_country = { # WIP: The Beni can either be assigned to a new country, or go to any other existing country
+				any_country = { # If Bolivia has created Beni, then the region will go to the new country
+					limit = {
+						tag = THIS
+						has_country_flag = beni_has_been_created
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ABN
+						secede_province = ABN
+					}
+				}
+				any_country = { # If not, and they own the adjacent uncolonized provinces, then the region will go to Santa Cruz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { owned_by = THIS }
+						3825 = { owned_by = THIS }
+						ASC = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ASC
+						secede_province = ASC
+					}
+				}
+				any_country = { # If not, and the provinces are empty, then the region will go to La Paz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { empty = yes }
+						3825 = { empty = yes }
+						APZ = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = APZ
+						secede_province = APZ
+					}
+				}
+				any_country = { # If neither La Paz or Santa Cruz exist, and the provinces are empty, then the region will become a national territory
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						APZ = { exists = no }
+						ASC = { exists = no }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ARC
+						secede_province = ARC
+					}
+				}
+			}
+			change_tag_no_core_switch = AQS
+		}
+		option = {
+			name = "EVTOPTB49890" #Oh no - become La Paz
+
+			all_core = { add_core = ARC }
+			bol_la_paz_claims = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APZ
+				secede_province = APZ
+			}
+			bol_cochabamba_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ACB
+				secede_province = ACB
+			}
+			bol_chuquisaca_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AQS
+				secede_province = AQS
+			}
+			bol_potosi_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APS
+				secede_province = APS
+			}
+			bol_oruro_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AOU
+				secede_province = AOU
+			}
+			BOL_2317 = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ASC
+				secede_province = ASC
+			}
+			random_country = { # WIP: The Beni can either be assigned to a new country, or go to any other existing country
+				any_country = { # If Bolivia has created Beni, then the region will go to the new country
+					limit = {
+						tag = THIS
+						has_country_flag = beni_has_been_created
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ABN
+						secede_province = ABN
+					}
+				}
+				any_country = { # If not, and they own the adjacent uncolonized provinces, then the region will go to Santa Cruz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { owned_by = THIS }
+						3825 = { owned_by = THIS }
+						ASC = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ASC
+						secede_province = ASC
+					}
+				}
+				any_country = { # If not, and the provinces are empty, then the region will go to La Paz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { empty = yes }
+						3825 = { empty = yes }
+						APZ = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = APZ
+						secede_province = APZ
+					}
+				}
+				any_country = { # If neither La Paz or Santa Cruz exist, and the provinces are empty, then the region will become a national territory
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						APZ = { exists = no }
+						ASC = { exists = no }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ARC
+						secede_province = ARC
+					}
+				}
+			}
+			change_tag_no_core_switch = APZ
+		}
+		option = {
+			name = "EVTOPTC49890" #Oh no - become Santa Cruz
+
+			all_core = { add_core = ARC }
+			bol_la_paz_claims = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APZ
+				secede_province = APZ
+			}
+			bol_cochabamba_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ACB
+				secede_province = ACB
+			}
+			bol_chuquisaca_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AQS
+				secede_province = AQS
+			}
+			bol_potosi_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APS
+				secede_province = APS
+			}
+			bol_oruro_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AOU
+				secede_province = AOU
+			}
+			BOL_2317 = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ASC
+				secede_province = ASC
+			}
+			random_country = { # WIP: The Beni can either be assigned to a new country, or go to any other existing country
+				any_country = { # If Bolivia has created Beni, then the region will go to the new country
+					limit = {
+						tag = THIS
+						has_country_flag = beni_has_been_created
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ABN
+						secede_province = ABN
+					}
+				}
+				any_country = { # If not, and they own the adjacent uncolonized provinces, then the region will go to Santa Cruz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { owned_by = THIS }
+						3825 = { owned_by = THIS }
+						ASC = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ASC
+						secede_province = ASC
+					}
+				}
+				any_country = { # If not, and the provinces are empty, then the region will go to La Paz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { empty = yes }
+						3825 = { empty = yes }
+						APZ = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = APZ
+						secede_province = APZ
+					}
+				}
+				any_country = { # If neither La Paz or Santa Cruz exist, and the provinces are empty, then the region will become a national territory
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						APZ = { exists = no }
+						ASC = { exists = no }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ARC
+						secede_province = ARC
+					}
+				}
+			}
+			change_tag_no_core_switch = ASC
+		}
+		option = {
+			name = "EVTOPTD49890" #Oh no - become Potosi
+
+			all_core = { add_core = ARC }
+			bol_la_paz_claims = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APZ
+				secede_province = APZ
+			}
+			bol_cochabamba_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ACB
+				secede_province = ACB
+			}
+			bol_chuquisaca_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AQS
+				secede_province = AQS
+			}
+			bol_potosi_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APS
+				secede_province = APS
+			}
+			bol_oruro_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AOU
+				secede_province = AOU
+			}
+			BOL_2317 = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ASC
+				secede_province = ASC
+			}
+			random_country = { # WIP: The Beni can either be assigned to a new country, or go to any other existing country
+				any_country = { # If Bolivia has created Beni, then the region will go to the new country
+					limit = {
+						tag = THIS
+						has_country_flag = beni_has_been_created
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ABN
+						secede_province = ABN
+					}
+				}
+				any_country = { # If not, and they own the adjacent uncolonized provinces, then the region will go to Santa Cruz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { owned_by = THIS }
+						3825 = { owned_by = THIS }
+						ASC = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ASC
+						secede_province = ASC
+					}
+				}
+				any_country = { # If not, and the provinces are empty, then the region will go to La Paz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { empty = yes }
+						3825 = { empty = yes }
+						APZ = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = APZ
+						secede_province = APZ
+					}
+				}
+				any_country = { # If neither La Paz or Santa Cruz exist, and the provinces are empty, then the region will become a national territory
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						APZ = { exists = no }
+						ASC = { exists = no }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ARC
+						secede_province = ARC
+					}
+				}
+			}
+			change_tag_no_core_switch = APS
+		}
+		option = {
+			name = "EVTOPTE49890" #Oh no - become Cochabamba
+
+			all_core = { add_core = ARC }
+			bol_la_paz_claims = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APZ
+				secede_province = APZ
+			}
+			bol_cochabamba_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ACB
+				secede_province = ACB
+			}
+			bol_chuquisaca_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AQS
+				secede_province = AQS
+			}
+			bol_potosi_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = APS
+				secede_province = APS
+			}
+			bol_oruro_region = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = AOU
+				secede_province = AOU
+			}
+			BOL_2317 = {
+				limit = {
+					owned_by = THIS
+					# Audax Validator "." Ignore_NEXT
+					is_core = THIS
+				}
+				add_core = ASC
+				secede_province = ASC
+			}
+			random_country = { # WIP: The Beni can either be assigned to a new country, or go to any other existing country
+				any_country = { # If Bolivia has created Beni, then the region will go to the new country
+					limit = {
+						tag = THIS
+						has_country_flag = beni_has_been_created
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ABN
+						secede_province = ABN
+					}
+				}
+				any_country = { # If not, and they own the adjacent uncolonized provinces, then the region will go to Santa Cruz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { owned_by = THIS }
+						3825 = { owned_by = THIS }
+						ASC = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ASC
+						secede_province = ASC
+					}
+				}
+				any_country = { # If not, and the provinces are empty, then the region will go to La Paz
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						2320 = { empty = yes }
+						3825 = { empty = yes }
+						APZ = { exists = yes }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = APZ
+						secede_province = APZ
+					}
+				}
+				any_country = { # If neither La Paz or Santa Cruz exist, and the provinces are empty, then the region will become a national territory
+					limit = {
+						tag = THIS
+						NOT = { has_country_flag = beni_has_been_created }
+						APZ = { exists = no }
+						ASC = { exists = no }
+					}
+					BOL_3553 = {
+						limit = {
+							owned_by = THIS
+							# Audax Validator "." Ignore_NEXT
+							is_core = THIS
+						}
+						add_core = ARC
+						secede_province = ARC
+					}
+				}
+			}
+			change_tag_no_core_switch = ACB
 		}
 	}
