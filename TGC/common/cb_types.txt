@@ -2089,6 +2089,14 @@ liberate_country = {
 			THIS = { has_global_flag = wakhan_treaty }
 			THIS = { has_global_flag = persia_treaty }
 			THIS = { ai = no }
+			THIS = {
+				has_country_flag = the_centralization_debate
+				NOT = { exists = ATR }
+				OR = {
+					has_country_modifier = diplomatic_delegate
+					has_country_modifier = delegating_diplomacy
+				}
+			}
 			FROM = { NOT = { any_core = { is_core = THIS } } }
 			FROM = { involved_in_crisis = yes }
 		}
@@ -6964,9 +6972,9 @@ arg_civil_war_federal = { #Install a friendly federalist government
 	construction_speed = 2.5
 	crisis = no
 
-	badboy_factor = 2
+	badboy_factor = 1
 	prestige_factor = 1
-	peace_cost_factor = 5
+	peace_cost_factor = 1
 	penalty_factor = 1
 
 	break_truce_prestige_factor = 1
@@ -7014,7 +7022,7 @@ arg_civil_war_federal = { #Install a friendly federalist government
 	on_add = {
 		move_issue_percentage = {
 			from = jingoism
-			to = anti-military
+			to = anti_military
 			value = 0.02
 		}
 	}
@@ -7058,9 +7066,9 @@ arg_civil_war_unitary = { #Install a friendly unitarian government
 	construction_speed = 2.5
 	crisis = no
 
-	badboy_factor = 2
+	badboy_factor = 1
 	prestige_factor = 1
-	peace_cost_factor = 5
+	peace_cost_factor = 1
 	penalty_factor = 1
 
 	break_truce_prestige_factor = 1
@@ -7108,7 +7116,7 @@ arg_civil_war_unitary = { #Install a friendly unitarian government
 	on_add = {
 		move_issue_percentage = {
 			from = jingoism
-			to = anti-military
+			to = anti_military
 			value = 0.02
 		}
 	}
@@ -7142,6 +7150,94 @@ arg_civil_war_unitary = { #Install a friendly unitarian government
 			}
 		}
 		country_event = 49701
+	}
+}
+
+join_confederation_cb = { #Make a country part of the Argentine Confederation
+	sprite_index = 22
+	is_triggered_only = yes
+	months = 12
+	construction_speed = 1.0
+	crisis = no
+
+	badboy_factor = 2
+	prestige_factor = 1
+	peace_cost_factor = 1
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 36
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = {
+		THIS = {
+			OR = {
+				has_country_flag = confederal_national_government
+				has_country_modifier = diplomatic_delegate
+			}
+			NOT = {
+				has_country_modifier = neutrality
+				is_vassal = yes
+			}
+		}
+		OR = {
+			AND = {
+				ATR = { exists = yes }
+				has_country_flag = former_lpl_member
+				civilized = yes
+				NOT = { rank = 16 }
+				is_vassal = no
+			}
+			AND = {
+				ATR = { exists = no }
+				has_country_flag = former_lpl_member
+				civilized = yes
+				NOT = { rank = 16 }
+				is_vassal = no
+			}
+		}
+		NOT = {
+			has_country_modifier = neutrality
+		}
+	}
+
+	po_remove_prestige = yes
+
+	war_name = WAR_CONFEDERATION_JOIN_NAME
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = anti_military
+			value = 0.1
+		}
+	}
+
+	on_po_accepted = {
+		random_country = {
+			any_country = {
+				limit = {
+					NOT = {
+						tag = THIS
+						tag = BOL
+						tag = URU
+						tag = PRG
+					}
+				}
+				country_event = { id = 49889 days = 10 }
+			}
+			any_country = {
+				limit = {
+					tag = BOL
+				}
+				country_event = { id = 49890 days = 10 }
+			}
+		}
 	}
 }
 
