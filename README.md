@@ -140,8 +140,6 @@ The features listed here are just a fraction of what TGC has to offer, it's a fu
 
 4. From the ZIP move everything into the mod folder.
 
-5. Start the game, select 'The Grand Combination'.
-
 <br clear="left"/>
 
 By the end of the process, your /mod folder should look like the picture above, and you be able to select the mod in the Launcher.
@@ -154,13 +152,35 @@ By the end of the process, your /mod folder should look like the picture above, 
 
 ![64](https://user-images.githubusercontent.com/32886642/209701835-8fccabf5-35d0-4613-9d8e-5aaba237a2fe.png)
 
-For Increased Performace(64-bit PCs):
+For Increased Performace on 64-bit PCs):
 1. Download laa_2_0_4.zip from the site: https://www.techpowerup.com/forums/threads/large-address-aware.112556/
 2. Open the .exe
-3. Select V2game.exe
+3. Select your V2game.exe
 4. Check "Large Address Aware Flag"
 5. Save
 6. Enjoy! the game now should run twice as fast now for any mod
+
+![lowram](https://user-images.githubusercontent.com/32886642/220321810-fc6d60fa-f18e-412c-adc6-f28c68561122.png)
+
+If you have a low end pc or laptop and is running low on ram, this patch will make your game run on less than 2gbs of ram.
+
+1. After installing TGC, go to your "Victoria 2/mod" folder
+2. Enter the "TGCLowRam" folder
+3. Copy the "CompressedFlagCache.zip" file
+
+![firststep](https://user-images.githubusercontent.com/32886642/220323241-6c9573c7-e0c4-4e4c-a325-51ce119ffe4f.png)
+
+4. Go to your flag cache folder at "Documents\Paradox Interactive\Victoria II\TGC\gfx\flags"
+
+If you have not ran TGC yet, you will need to create this folder.
+
+5. Delete all the contents inside the /flags folder
+6. Paste the "CompressedFlagCache.zip" file you copied inside said folder
+7. Unpack the contents of the .zip into the /flags folder
+
+Now your /flags folder should look like this, and TGC game will use considerably less ram:
+
+![step2](https://user-images.githubusercontent.com/32886642/220329532-06d66615-ea7c-4646-b60e-4d4963a89046.png)
 
 ![Acknowledgements](https://user-images.githubusercontent.com/32886642/209702062-2863718f-663a-4f62-9982-1ca68908a65a.png)
 

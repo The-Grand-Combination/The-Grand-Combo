@@ -1,6 +1,6 @@
 ## Flavor ##
 
-	country_event = {
+	country_event = { 
 		id = 32500
 
 		title = "EVTNAME32500"
@@ -234,7 +234,7 @@
 			year = 1837
 			experimental_railroad = 1
 			994 = { has_building = railroad }
-			NOT = { year = 1850 }
+			NOT = { year = 1850 }              
 		}
 
 		mean_time_to_happen = {
@@ -1155,24 +1155,34 @@ country_event = {
 
 	trigger = {
 		primary_culture = russian
-		OR = { 
-			tag = RUS
-			tag = SOV
-		}
 		war = no
 		has_global_flag = hungarian_revolution_occurred
 		exists = HUN
 		NOT = { truce_with = HUN }
+		OR = {
+		AND = {
+			year = 1849
+			month = 3
+			AUS = { war_exhaustion = 5 }
+		}
+		OR = {
+			#year = 1848
+			AUS = { war_exhaustion = 25 } #this is if revolt starts in 47, austria losing badly
+			AUS = { national_provinces_occupied = .25 }
+		}
+		}
+		NOT = { exists = POL } #If the Poles are revolting, Russia won't get this event until that revolt is quashed
+		NOT = { exists = LIT }
 		AUS = {
 			NOT = { has_country_flag = austria_let_hungary_go }
 			NOT = { truce_with = RUS }
 			war_with = HUN
-			war_exhaustion = 5
+			war_exhaustion = 5 #This is so Austria is actually having trouble winning
 		}
 	}
 
 	mean_time_to_happen = {
-		months = 2
+		months = 1
 		modifier = {
 			factor = 3
 			num_of_revolts = 1
@@ -1216,9 +1226,13 @@ country_event = {
 
 		ai_chance = {
 			factor = 90
+			#modifier = { #this could be misleading
+			#	factor = 0.5
+			#	HUN = { national_provinces_occupied = .25 }
+			#}
 			modifier = {
-				factor = 0.5
-				HUN = { national_provinces_occupied = .25 }
+				factor = 50 #this is so if autocracy's about to fall, Russia swoops in for sure
+				AUS = { national_provinces_occupied = .25 }
 			}
 			modifier = {
 				factor = 0.5
@@ -1269,6 +1283,10 @@ country_event = {
 			modifier = {
 				factor = 2
 				NOT = { relation = { who = AUS value = 0 } }
+			}
+			modifier = {
+				factor = 0.25
+				AUS = { num_of_revolts = 1 }
 			}
 			modifier = {
 				factor = 0.25
@@ -2404,12 +2422,8 @@ country_event = {
 		desc = "EVTDESC32537"
 		picture = "mysticism_in_russia"
 
-		trigger = {
-			primary_culture = russian
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
+		trigger = {                           
+			tag = RUS
 			has_country_flag = monarchy_gov
 			year = 1870
 			average_consciousness = 3
@@ -2424,16 +2438,15 @@ country_event = {
 			modifier = {
 				factor = 0.9
 				year = 1875
-				}
-
+			}
 			modifier = {
 				factor = 0.6
 				year = 1885
-				}
+			}
 			modifier = {
 				factor = 0.1
 				year = 1895
-				}
+			}
 		}
 
 		option = {
@@ -2475,18 +2488,14 @@ country_event = {
 
 		trigger = {
 			has_country_flag = come_see_me_grigori
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
 			has_country_flag = monarchy_gov
-			year = 1900
+			year = 1897
 		}
 
 
 		fire_only_once = yes
 
-		mean_time_to_happen = { months = 6 }
+		mean_time_to_happen = { months = 12 }
 
 		option = {
 			name = "EVTOPTA32538"
@@ -2507,10 +2516,6 @@ country_event = {
 
 		trigger = {
 			has_country_flag = grigori_arrived
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
 			has_country_flag = monarchy_gov
 			NOT = { year = 1930 }
 		}
@@ -2547,10 +2552,6 @@ country_event = {
 
 		trigger = {
 			has_country_flag = grigori_will_be_exiled
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
 			has_country_flag = monarchy_gov
 		}
 
@@ -2577,19 +2578,14 @@ country_event = {
 
 		trigger = {
 			has_country_flag = grigori_in_power
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
 			has_country_flag = monarchy_gov
 			war = yes
 			war_exhaustion = 5
-			NOT = { year = 1930 }
 		}
 
 		fire_only_once = yes
 
-		mean_time_to_happen = { months = 1 }
+		mean_time_to_happen = { months = 6 }
 
 		option = {
 			name = "EVTOPTA32541"
@@ -2609,18 +2605,13 @@ country_event = {
 
 		trigger = {
 			has_country_flag = tsar_in_the_front
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
 			has_country_flag = monarchy_gov
-			NOT = { year = 1930 }
 			war = yes
 		}
 
 		fire_only_once = yes
 
-		mean_time_to_happen = { months = 4 }
+		mean_time_to_happen = { months = 6 }
 
 		option = {
 			name = "EVTOPTA32542"
@@ -2652,17 +2643,11 @@ country_event = {
 
 		trigger = {
 			has_country_flag = rasputin_killed_by_nobles
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
-			has_country_flag = monarchy_gov
-			NOT = { year = 1930 }
 		}
 
 		fire_only_once = yes
 
-		mean_time_to_happen = { months = 12 }
+		mean_time_to_happen = { months = 6 }
 
 		option = {
 			name = "EVTOPTA32543"
@@ -2683,18 +2668,11 @@ country_event = {
 
 		trigger = {
 			has_country_flag = rasputin_killed_by_peasants
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
-			has_country_flag = monarchy_gov
-			average_militancy = 1
-			NOT = { year = 1930 }
 		}
 
 		fire_only_once = yes
 
-		mean_time_to_happen = { months = 12 }
+		mean_time_to_happen = { months = 6 }
 
 		option = {
 			name = "EVTOPTA32543"
@@ -2728,17 +2706,11 @@ country_event = {
 
 		trigger = {
 			has_country_flag = rasputin_survived
-			OR = { 
-				tag = RUS
-				tag = SOV
-			}
-			has_country_flag = monarchy_gov
-			NOT = { year = 1930 }
 		}
 
 		fire_only_once = yes
 
-		mean_time_to_happen = { months = 12 }
+		mean_time_to_happen = { months = 6 }
 
 		option = {
 			name = "EVTOPTA32545"
@@ -3101,9 +3073,7 @@ country_event = {
 
 		option = {
 			name = "EVTOPTA32513"
-
-			1049 = { change_province_name = "Novorossiysk" add_core = RUS }
-			1049 = { state_scope = { change_region_name = "Yekaterinodar" } }
+			1049 = { change_province_name = "Novorossiysk" add_core = RUS state_scope = { change_region_name = "Yekaterinodar" } }
 			1103 = { secede_province = TCA }
 			1048 = { add_core = RUS }
 
@@ -3116,42 +3086,6 @@ country_event = {
 					}
 				}
 				militancy = 9
-			}
-			random_pop = {
-				limit = {
-					is_state_religion = no
-					OR = {
-						has_pop_culture = circassian
-						has_pop_culture = chechen
-					}
-					location = {
-						OR = {
-							is_core = CIR
-							is_core = DAG
-							is_core = CHY
-						}
-					}
-					NOT = { type = farmers }
-				}
-				move_pop = 908
-			}
-			random_pop = {
-				limit = {
-					is_state_religion = no
-					OR = {
-						has_pop_culture = circassian
-						has_pop_culture = chechen
-					}
-					location = {
-						OR = {
-							is_core = CIR
-							is_core = DAG
-							is_core = CHY
-						}
-					}
-					NOT = { type = farmers }
-				}
-				move_pop = 908
 			}
 			any_owned = {
 				limit = {
@@ -3185,6 +3119,8 @@ country_event = {
 		desc = "EVTDESC325104"
 		picture = "circassian_exodus"
 
+		fire_only_once = yes
+
 		trigger = {
 			tag = RUS
 			CIR = { exists = no }
@@ -3198,54 +3134,15 @@ country_event = {
 
 		mean_time_to_happen = { days = 1 }
 
-		fire_only_once = yes
-
 		option = {
 			name = "EVTOPTA325104"
-
 			badboy = 1
-			random_pop = {
-				limit = {
-					is_state_religion = no
-					OR = {
-						has_pop_culture = circassian
-						has_pop_culture = chechen
-					}
-					location = {
-						OR = {
-							is_core = CIR
-							is_core = DAG
-							is_core = CHY
-						}
-					}
-					NOT = { type = farmers }
-				}
-				move_pop = 908
-			}
-			random_pop = {
-				limit = {
-					is_state_religion = no
-					OR = {
-						has_pop_culture = circassian
-						has_pop_culture = chechen
-					}
-					location = {
-						OR = {
-							is_core = CIR
-							is_core = DAG
-							is_core = CHY
-						}
-					}
-					NOT = { type = farmers }
-				}
-				move_pop = 908
-			}
 			any_pop = {
 				limit = {
 					is_state_religion = no
 					OR = {
 						has_pop_culture = circassian
-						has_pop_culture = chechen
+						#has_pop_culture = chechen #Chechens didn't get massacred
 					}
 					location = { is_core = CIR }
 				}
@@ -3257,13 +3154,14 @@ country_event = {
 					25 = { reduce_pop = 0.25 }
 				}
 			}
+			
+			TUR = { country_event = { id = 500125 days = 7 } } #might just move upper/mid strata instead
 
 			ai_chance = { factor = 0.95 }
 		}
 
 		option = {
 			name = "EVTOPTB325104"
-
 			any_owned = {
 				limit = { is_core = CIR }
 				add_province_modifier = { name = highlander_raids duration = 3650 }
@@ -3272,7 +3170,6 @@ country_event = {
 					militancy = 9
 				}
 			}
-
 			ai_chance = { factor = 0.05 }
 		}
 	}
@@ -3282,6 +3179,8 @@ country_event = {
 		title = "EVTNAME325105" #Second Circassian War
 		desc = "EVTDESC325105"
 		picture = "2nd_circassian_war"
+
+		fire_only_once = yes
 
 		trigger = {
 			tag = RUS
@@ -3305,11 +3204,8 @@ country_event = {
 
 		mean_time_to_happen = { days = 1 }
 
-		fire_only_once = yes
-
 		option = {
 			name = "EVTOPTA325105"
-
 			set_global_flag = 2nd_caucasian_war
 			any_owned = {
 				limit = {
@@ -3317,7 +3213,7 @@ country_event = {
 					is_core = CIR
 					pop_majority_culture = circassian
 				}
-				secede_province = CIR
+			secede_province = CIR
 			}
 			CIR = { all_core = { add_core = RUS } }
 			DAG = { all_core = { add_core = RUS } }
@@ -3332,9 +3228,9 @@ country_event = {
 				defender_goal = { casus_belli = status_quo }
 				call_ally = no
 			}
-
 			ai_chance = {
 				factor = 100
+
 				modifier = {
 					factor = 60
 					OR = {
@@ -3347,7 +3243,6 @@ country_event = {
 
 		option = {
 			name = "EVTOPTB325105"
-
 			prestige = -50
 			set_country_flag = give_up_caucasus
 			any_owned = {
@@ -3355,21 +3250,19 @@ country_event = {
 					is_core = CIR
 					pop_majority_culture = circassian
 				}
-				secede_province = CIR
+			secede_province = CIR
 			}
-			CIR = {
-				any_pop = {
-					limit = { has_pop_culture = circassian }
-					militancy = -9
+			CIR = { any_pop = { limit = { has_pop_culture = circassian }
+				militancy = -9
 				}
 			}
 			relation = {
 				who = CIR
 				value = 400
-			}
-
+				}
 			ai_chance = {
 				factor = 0
+
 				modifier = {
 					factor = 40
 					OR = {
@@ -3386,6 +3279,7 @@ country_event = {
 		title = "EVTNAME325106" #Imam Shamil Strikes Back
 		desc = "EVTDESC325106"
 		picture = "assault_on_russian_lands"
+
 
 		trigger = {
 			tag = RUS
@@ -3412,13 +3306,12 @@ country_event = {
 			}
 		}
 
-		mean_time_to_happen = { months = 12 }
-
 		fire_only_once = yes
+
+		mean_time_to_happen = { months = 12 }
 
 		option = {
 			name = "EVTOPTA325106"
-
 			set_country_flag = imam_shamil_raid
 			any_owned = {
 				limit = {
@@ -3432,7 +3325,7 @@ country_event = {
 						pop_majority_culture = circassian
 					}
 				}
-				secede_province = DAG
+			secede_province = DAG
 			}
 
 			DAG = {
@@ -3462,7 +3355,6 @@ country_event = {
 
 		option = {
 			name = "EVTOPTB325106"
-
 			prestige = -50
 			set_country_flag = give_up_caucasus
 			any_owned = {
@@ -3487,19 +3379,19 @@ country_event = {
 				}
 			}
 			relation = { who = DAG value = 400 }
-
 			ai_chance = {
 				factor = 0
+
 				modifier = {
 					factor = 0.05
 					OR = {
 						has_country_flag = democracy_gov
 						has_country_flag = constitutional_monarchy_gov
+						}
 					}
 				}
 			}
 		}
-	}
 
 
 	country_event = {
@@ -3528,33 +3420,83 @@ country_event = {
 
 		option = {
 			name = "EVTOPTA325107"
-
 			set_global_flag = dagestani_caucasian_war_ended
 			any_pop = {
 				limit = {
 					has_pop_religion = sunni
 					OR = {
-						has_pop_culture = chechen
+						#has_pop_culture = chechen
 						has_pop_culture = circassian
-						has_pop_culture = dagestani
+						has_pop_culture = tatar
+						#has_pop_culture = dagestani
 					}
 				}
 				militancy = 9
 				random_list = {
-					25 = { reduce_pop = 0.15 }
-					25 = { reduce_pop = 0.2 }
 					25 = { reduce_pop = 0.25 }
 					25 = { reduce_pop = 0.3 }
+					25 = { reduce_pop = 0.35 }
+					25 = { reduce_pop = 0.4 }
 				}
 			}
+			any_pop = {
+                limit = {
+                    has_pop_religion = sunni
+                    OR = {
+                        has_pop_culture = circassian
+						has_pop_culture = tatar
+						has_pop_culture = ossetian
+                        has_pop_culture = chechen
+						has_pop_culture = dagestani
+						}
+                    location = {
+                        OR = {
+                            is_core = CIR
+                            is_core = DAG
+                            is_core = CHY
+                        }
+                    }
+                    NOT = { type = farmers }
+                }
+                move_pop = 876
+            }
+			
+			any_pop = {
+			limit = {
+				has_pop_religion = sunni
+				OR = {
+					has_pop_culture = lezgins
+					has_pop_culture = dargins
+					has_pop_culture = avars
+					has_pop_culture = chechen
+					has_pop_culture = dagestani
+				}
+			}
+			militancy = 9
+			random_list = {
+				25 = { reduce_pop = 0.75 }
+				25 = { reduce_pop = 0.85 }
+				25 = { reduce_pop = 0.95 }
+				25 = { reduce_pop = 0.96 }
+	 	    	}
+		    }
 			any_owned = {
 				limit = { OR = { is_core = DAG is_core = CHY } }
-				add_province_modifier = { name = population_resettlement duration = 1825 }
+				add_province_modifier = { name = russoification duration = 7000 }
 			}
 			any_owned = {
 				limit = { is_core = CIR }
-				add_province_modifier = { name = population_resettlement duration = 720 }
+				add_province_modifier = { name = russoification duration = 7000 }
 			}
+			ai_chance = { factor = 0.95 }
+		}
+		
+		option = {
+			name = "EVTOPTB325104"
+			set_global_flag = dagestani_caucasian_war_ended
+			badboy = -3
+			#somethingsomething TODO
+			ai_chance = { factor = 0.05 }
 		}
 	}
 
@@ -3577,30 +3519,51 @@ country_event = {
 			NOT = { has_country_flag = give_up_caucasus }
 			1052 = { NOT = { has_province_modifier = highlander_raids } }
 		}
-		mean_time_to_happen = { days = 1 }
 
 		fire_only_once = yes
 
+		mean_time_to_happen = { days = 1 }
 
 		option = {
 			name = "EVTOPTA325108"
-
 			any_owned = {
 				limit = {
 					OR = {
-						is_core = DAG
-						is_core = CHY
+					is_core = DAG
+					is_core = CHY
 					}
 				}
-				random_list = {
-					25 = { add_province_modifier = { name = highlander_raids duration = 6205 } }
-					25 = { add_province_modifier = { name = highlander_raids duration = 5475 } }
-					25 = { add_province_modifier = { name = highlander_raids duration = 4380 } }
-					25 = { add_province_modifier = { name = highlander_raids duration = 3650 } }
+
+			random_list = {
+						25 = {
+					add_province_modifier = {
+						name = highlander_raids
+						duration = 6205
+						}
+					}
+					25 = {
+					add_province_modifier = {
+						name = highlander_raids
+						duration = 5475
+						}
+					}
+					25 = {
+					add_province_modifier = {
+						name = highlander_raids
+						duration = 4380
+						}
+					}
+					25 = {
+					add_province_modifier = {
+						name = highlander_raids
+						duration = 3650
+							}
+						}
+					}
 				}
 			}
 		}
-	}
+
 
 ## Trans-Siberian Railway ##
 
@@ -3622,11 +3585,12 @@ country_event = {
 			}
 		}
 
-		mean_time_to_happen = { months = 12 }
+		mean_time_to_happen = {
+			months = 12
+		}
 
 		option = {
 			name = "EVTOPTA5001001"
-
 			set_country_flag = build_the_tsr1
 			random_list = {
 				33 = { treasury = -10000 }
@@ -4203,4 +4167,4370 @@ country_event = {
 				add_province_modifier = { name = drained_marsh duration = -1 }
 			}
 		}
+    }
+	
+	#Russian Pacific Expansion Events
+	#Magnificent Tsar, would you like to hug the Pacific Ocean?
+    country_event = {
+	id = 500114
+	title = "EVTNAME500114"
+	desc = "EVTDESC500114"
+	picture = "russian_pacific_ambition"
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = RUS
+		NOT = {
+			has_country_flag = russian_america_ambition
+			has_country_flag = no_russian_america_ambition
+		}
+		year = 1836
+		month = 6
 	}
+
+	mean_time_to_happen = {
+		months = 3
+		modifier = {
+			factor = 0.8 #increase likelihood to happen
+			year = 1837
+		}
+		modifier = {
+			factor = 0.6 #increase likelihood to happen
+			year = 1838
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500114" #We should revive it
+		#badboy = 5 #redo infamy
+		prestige = 15
+		set_country_flag = russian_america_ambition
+		any_pop = { dominant_issue = { factor = 0.10 value = jingoism } }
+		relation = { who = MEX value = -75 }
+		relation = { who = USA value = -50 }
+		relation = { who = ENG value = -75 }
+		ai_chance = { factor = 0.1 }
+	}
+
+	option = {
+		name = "EVTOPTB500114" #Useless 
+        prestige = -5
+		badboy = -1
+		set_country_flag = no_russian_america_ambition
+		ai_chance = { factor = 99 }
+	}
+}
+
+## Demand California ##
+	country_event = {
+
+		id = 500115
+		title = "EVTNAME500115"
+		desc = "EVTDESC500115"
+		picture = "russian_pacific_ambition"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500115"
+
+			FROM = { country_event = 500116 }
+			prestige = 10
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+				consciousness = -1
+				militancy = -1
+			}
+
+			ai_chance = { factor = 98 }
+		}
+
+		option = {
+			name = "EVTOPTB500115"
+
+			badboy = -2
+			prestige = -15
+			any_pop = {
+				limit = {
+					OR = {
+						type = aristocrats
+						type = officers
+						type = soldiers
+					}
+				}
+				consciousness = 5
+				militancy = 5
+			}
+			any_pop = {
+				limit = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+				}
+				consciousness = 3
+				militancy = 3
+			}
+			FROM = { country_event = 500117 } #TODO
+
+			ai_chance = { factor = 2 }
+		}
+	}
+
+	country_event = {
+
+		id = 500116 #Mexico says no
+		title = "EVTNAME500116"
+		desc = "EVTDESC500116"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500116"
+
+			set_country_flag = war_for_california
+			relation = { who = MEX value = -400 }
+			any_owned = {
+				limit = {
+					continent = north_america
+				}
+				add_core = LSK #Russian America
+			}
+			badboy = 5
+			casus_belli = {
+				target = MEX
+				type = place_in_the_sun
+				months = 12
+			}
+			war = {
+				target = MEX
+				attacker_goal = { #California
+							casus_belli = place_in_the_sun
+							state_province_id = 87
+						}
+			    attacker_goal = { #Baja
+							casus_belli = place_in_the_sun
+							state_province_id = 2139
+						}
+				attacker_goal = { #NEvada
+							casus_belli = place_in_the_sun
+							state_province_id = 94
+						}
+				attacker_goal = { #Yuta
+							casus_belli = place_in_the_sun
+							state_province_id = 97
+						}
+				defender_goal = { casus_belli = status_quo }
+			}
+			ai_chance = { factor = 30 }
+		}
+
+		option = {
+			name = "EVTOPTB500116"
+
+			prestige = -25
+			badboy = -5
+			set_country_flag = no_russian_america_ambition
+			clr_country_flag = russian_america_ambition
+			ai_chance = { factor = 70 }
+		}
+	}
+
+	country_event = { #TODO
+		id = 500117 #Mexico says.. yes?
+		title = "EVTNAME500117"
+		desc = "EVTDESC500117"
+		picture = "election_polls"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500117"
+
+			badboy = 5
+			#oh, madon'
+			FROM = {
+					any_owned = {
+						limit = { 
+							OR = {
+						state_id = 87
+						state_id = 2139
+						} 
+						}
+						secede_province = THIS
+					}
+				}
+			# random_owned = {
+			# 	limit = {
+			# 		tag = MEX
+			# 	}
+			# 	any_owned = {
+			# 		limit = { 
+			# 			OR = {
+			# 			state_id = 87
+			# 			state_id = 2139
+			# 			}
+			# 		}
+			# 		state_scope = { secede_province = RUS }
+			# 	}
+			# }
+			any_owned = {
+				limit = {
+					continent = north_america
+				}
+				add_core = LSK #Russian America
+			}
+		}
+	}
+	
+	# #Russian offer to the US ### SCRAPPED
+	# 	country_event = {
+	# 		id = 500118
+	# 		title = EVTNAME500118
+	# 		desc = EVTDESC500118
+	# 		picture = "boer_war"
+	# 		is_triggered_only = yes
+
+	# 		option = {
+	# 		name = EVTOPTA500118 #yes
+    #         RUS = { set_country_flag = USA_RUS_Canada_COOP }
+	# 		create_alliance = RUS
+	# 		relation = { who = RUS value = 200 }
+	# 		badboy = 15
+	# 		add_accepted_culture = anglo_canadian
+	# 		CAN = { all_core = { add_core = USA } } # Canada
+	# 		MRU = { all_core = { add_core = USA } } # Maritime Union
+	# 		ENG_22 = { add_core = USA } # Alberta
+	# 		ENG_30 = { add_core = USA } # Saskatchewan
+	# 		ENG_36 = { add_core = USA } # Manitoba
+	# 		CAN_46 = { add_core = USA } # Southern Ontario
+	# 		CAN_50 = { add_core = USA } # Northern Ontario
+	# 		CAN_58 = { add_core = USA } # Southern Quebec
+	# 		CAN_60 = { add_core = USA } # Northern Quebec
+	# 		ENG_68 = { add_core = USA } # New Brunswick
+	# 		ENG_74 = { add_core = USA } # Newfoundland
+	# 		ENG_75 = { add_core = USA } # Labrador
+	# 		ENG_28 = { add_core = USA } # Arctic Archipelago
+	# 		#RUS
+	# 		ENG_6 = { add_core = LSK } # Yukon
+	# 		#ENG_9 = { add_core = LSK } # Northwest Territories
+	# 		USA_78 = { remove_core = USA add_core = LSK } # Washington
+	# 		CAN_13 = { remove_core = USA add_core = LSK } # British Columbia
+	# 		USA_81 = { remove_core = USA add_core = CAL } # Oregon
+	# 	    USA_91 = { remove_core = USA add_core = CAL } # Idaho
+	# 		115 = { remove_core = USA add_core = CAL }
+	# 		114 = { remove_core = USA add_core = CAL }
+	# 		113 = { remove_core = USA add_core = CAL }
+	# 		111 = { remove_core = USA add_core = CAL }
+	# 		77 = { remove_core = USA } # San Pierre et Miquelon
+	# 		ENG = { country_event = { id = 500119 days = 10 } }
+	# 		relation = { who = ENG value = -200 }
+		
+	# 	ai_chance = { factor = 60 }
+	# 		}
+			
+	# 		option = {
+	# 		name = "We will pass."
+    #         #set_country_flag = USA_RUS_Canada_COOP
+	# 		relation = { who = RUS value = -100 }
+	# 		relation = { who = ENG value = 100 }
+	# 		RUS = { country_event = { id = 500120 days = 7 } }
+		
+	# 	ai_chance = { factor = 40 }
+	# 		}
+			
+	# 	}
+		
+	# 	#UK notified
+	# 	country_event = {
+	# 		id = 500119
+	# 		title = "EVTNAME500119"
+	# 		desc = "EVTDESC500119"
+	# 		picture = "boer_war"
+	# 		is_triggered_only = yes
+
+	# 		option = {
+	# 			name = EVTOPTA500119
+
+	# 			any_country = {
+	# 				limit = {
+	# 					vassal_of = THIS
+	# 					OR = {
+	# 						tag = CAN # Canada
+	# 						tag = COL # Columbia
+	# 						tag = RPL # Rupert's Land
+	# 						tag = MRU # Maritime Union
+	# 						tag = QUE # Quebec
+	# 						tag = NEW # Newfoundland
+	# 						tag = MTC # Metis Confederacy
+	# 					}
+	# 				}
+	# 				annex_to = THIS
+	# 			}
+	# 			MTC = { annex_to = ENG }
+	# 			RPL = { all_core = { remove_core = RPL } }
+
+	# 			any_owned = {
+	# 				limit = {
+	# 					OR = {
+	# 						region = ENG_9
+	# 						region = CAN_13
+	# 						region = ENG_22
+	# 						region = ENG_30
+	# 						region = ENG_36
+	# 						region = CAN_46
+	# 						region = CAN_50
+	# 						region = CAN_58
+	# 						region = CAN_60
+	# 						region = ENG_68
+	# 						region = ENG_74
+	# 					}
+	# 				}
+	# 				add_core = ENG add_core = CAN
+	# 			}
+	# 			war = {
+	# 				target = RUS
+	# 				attacker_goal = { casus_belli = cut_down_to_size }
+	# 				defender_goal = { casus_belli = cut_down_to_size }
+	# 				call_ally = yes
+	# 			}
+
+	# 			ai_chance = { factor = 100 }
+	# 		}
+	# 	}
+		
+	# #USA says no
+	# 	country_event = {
+	# 		id = 500120
+	# 		title = "EVTNAME500120"
+	# 		desc = "EVTDESC500120"
+	# 		is_triggered_only = yes
+
+	# 		option = {
+	# 			name = "They said no."
+	# 			prestige = -5
+	# 		}
+	# 	}
+		
+	# 	country_event = {
+	# 		id = 500121
+	# 		title = "EVTNAME500121"
+	# 		desc = "EVTDESC500121"
+	# 		major = yes
+	# 		is_triggered_only = yes
+
+	# 		option = {
+	# 			name = "We have lost Canada!"
+	# 			prestige = -30
+	# 			any_owned = {
+	# 				limit = {		
+	# 						is_core = USA
+	# 				}
+	# 				remove_core = THIS
+	# 				secede_province = USA
+	# 			}
+	# 		}
+	# 	}
+		
+		#Mordvinov serfs to america
+		
+		country_event = {
+			id = 500122
+			title = "EVTNAME500122"
+			desc = "EVTDESC500122"
+			picture = "countryside"
+			
+			trigger = {
+			has_country_flag = initiated_mordvinov_plan
+			primary_culture = russian
+		    }
+
+			mean_time_to_happen = { months = 1 }
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA500122"
+				prestige = 2
+			any_owned = {
+				limit = {
+				    is_core = LSK
+					has_pop_type = serfs
+					has_pop_type = labourers
+				}
+				any_pop = { limit = { type = serfs } pop_type = labourers }
+			}
+			any_owned = {
+				limit = {
+				     is_core = LSK
+					has_pop_type = serfs
+					has_pop_type = farmers
+				}
+				any_pop = { limit = { type = serfs } pop_type = farmers }
+			}	
+		    any_pop = {
+				limit = {
+					location = { is_core = LSK }
+					OR = {
+					culture = russian
+					culture = byelorussian
+					culture = ukrainian
+					}
+				}
+				militancy = -10
+				consciousness = -10
+			}
+			}
+		}
+		
+		#Crimean Tatars migrate to Ottoman Empire after the Crimean War
+		country_event = {
+			id = 500123
+			title = "EVTNAME500124"
+            desc = "EVTDESC500123"
+			picture = "crimean_war_ships"
+			is_triggered_only = yes
+ 
+			option = {
+				name = "EVTOPTA500123"
+				prestige = 2
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = TUR_806 # Northern Macedonia
+		             region = TUR_809 # Eastern Rumelia
+		             region = TUR_810 # Northern Bulgaria
+		             region = TUR_811 # Western Bulgaria
+		             region = TUR_674 # Dobrudja
+					 region = TUR_802 # Kosovo
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+				    OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+				}
+				reduce_pop = 1.15
+			    }
+				any_pop = {
+				limit = {
+					is_state_religion = no
+				     }
+				militancy = 2
+			    }
+		        }
+			
+			    any_owned = {
+			    limit = {
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+				}
+				reduce_pop = 1.05
+			    }
+		        }
+			 
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = TUR_806 # Northern Macedonia
+		             region = TUR_809 # Eastern Rumelia
+		             region = TUR_810 # Northern Bulgaria
+		             region = TUR_811 # Western Bulgaria
+		             region = TUR_674 # Dobrudja
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+					OR = {
+						pop_type = officers
+						pop_type = soldiers
+					}
+				}
+				reduce_pop = 1.5
+			    }
+		        }
+			
+			}
+		}
+		
+		#Tatar Emigration #todo elite move to turkey, as well as for circassian genocide
+		country_event = {
+			id = 500124
+			title = "EVTNAME500124"
+            desc = "EVTDESC500123"
+			picture = "crimean_war_ships"
+			
+			fire_only_once = yes
+			
+			trigger = {
+			tag = RUS
+			has_global_flag = crimea_has_happened
+			owns = 967
+			year = 1850
+		    }
+
+			mean_time_to_happen = {
+				months = 2
+			}
+			
+			option = {
+				name = "EVTOPTA500124"
+				prestige = -2
+				badboy = 1
+			    any_owned = {
+			    limit = { 
+			        OR = {
+		             region = RUS_964 # Crimea
+		             region = RUS_968 # Kherson
+		             region = RUS_973 # Tavrida
+					}
+				}
+			    any_pop = {
+				limit = {
+					has_pop_culture = tatar
+				}
+				reduce_pop = 0.4
+			    }
+				any_pop = {
+				limit = {
+					has_pop_culture = tatar
+					NOT = { type = farmers }
+					NOT = { type = labourers }
+				}
+				move_pop = 876
+			}
+		        }
+			TUR = { country_event = { id = 500123 days = 7 } }
+			}
+		}
+	
+	#Circassian Emigration/Expulsion to OE triggered by Genocide in the Caucasus
+	#Represented by enlarging turkish culture numbers on account of game engine limitations (move_pop merging sucks) - migration target type alternative, beware of performance
+		country_event = {
+			id = 500125
+			title = "EVTNAME500125"
+			desc = "EVTDESC500125"
+			picture = "crimean_war_ships"
+			is_triggered_only = yes
+ 
+			option = {
+				name = "EVTOPTA500125"
+				prestige = 2
+			    any_owned = {
+			    limit = { 
+			        OR = {
+					 #Balkans
+		             region = TUR_806 # Northern Macedonia
+		             region = TUR_809 # Eastern Rumelia
+		             region = TUR_810 # Northern Bulgaria
+		             region = TUR_811 # Western Bulgaria
+		             region = TUR_674 # Dobrudja
+					 region = TUR_802 # Kosovo
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					has_pop_culture = turkish
+				}
+				reduce_pop = 1.05
+			    }
+				any_pop = {
+				limit = {
+					is_state_religion = no
+				     }
+				militancy = 3
+			    }
+		        }
+			
+			    any_owned = {
+			    limit = {
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					 region = TUR_873 #konya
+					 province_id = 883
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					has_pop_culture = turkish
+				}
+				reduce_pop = 1.1
+			    }
+		        }
+				
+				any_owned = {
+			    limit = {
+			        OR = {
+					 #Middle East
+					 province_id = 923
+					 province_id = 909
+					 province_id = 908
+					 province_id = 902
+					 province_id = 897
+					}
+				}
+			    any_pop = {
+				limit = {
+				    is_state_religion = yes
+					has_pop_culture = turkish
+				}
+				reduce_pop = 1.25
+			    }
+		        }
+			
+			}
+		}
+		
+		#Austria Betrays Russia
+		country_event = {
+			id = 500126
+			title = "EVTNAME500126"
+			desc = "EVTDESC500126"
+			is_triggered_only = yes
+            picture = "autocracy"
+			option = {
+				name = "EVTOPTA500126"
+				add_country_modifier = { name = austrian_betrayal duration = -1 }
+				prestige = -5
+			}
+		}
+		
+		#Austria Hostile Neutrality
+		country_event = {
+			id = 500127
+			title = "EVTNAME500126"
+			desc = "EVTDESC500127"
+			is_triggered_only = yes
+            picture = "autocracy"
+			option = {
+				name = "EVTOPTA500127"
+				add_country_modifier = { name = austrian_betrayal duration = -1 }
+				prestige = -5
+			}
+		}
+		
+		#Austria stays neutral
+		country_event = {
+			id = 500128
+			title = "EVTNAME500126"
+			desc = "EVTDESC500128"
+			is_triggered_only = yes
+            picture = "autocracy"
+			option = {
+				name = "EVTOPTA500128"
+				add_country_modifier = { name = austrian_betrayal duration = -1 }
+				prestige = -5
+			}
+		}
+		
+	   #Austria honours the Holy Alliance
+		country_event = {
+			id = 500129
+			title = "EVTNAME500126"
+			desc = "EVTDESC500129"
+			is_triggered_only = yes
+            picture = "autocracy"
+			option = {
+				name = "EVTOPTA500129"
+				prestige = 5
+			}
+		}
+		
+		#Russia is bitter at double entendres
+		country_event = {
+			id = 500130
+			title = "EVTNAME500130"
+			desc = "EVTDESC500130"
+			picture = "Orthodox"
+			fire_only_once = yes
+			
+			
+			mean_time_to_happen = { months = 1 }
+			
+			trigger = {
+			tag = RUS
+			has_country_flag = crimean_war
+			owns = 967
+			year = 1850
+		    }
+			option = {
+				name = "EVTOPTA500130"
+				prestige = 5
+			}
+		}
+		
+		#Galicia Lodomeria joins CPL uprising if Austria attacked Russia in Crimean War and lost
+		country_event = {
+			id = 500131
+			title = "Galician Slavs in Uproar"
+			desc = "EVTDESC500130"
+			picture = "january_uprising"
+			#fire_only_once = yes
+			
+			#scrapped for now
+			is_triggered_only = yes
+			
+			#trigger = {
+			#CPL = { exists = yes war_with = RUS }
+			#has_global_flag = treaty_of_paris_russia
+			#has_country_flag = austria_joins_the_allies
+			#has_global_flag = crimea_has_happened
+			#owns = 705
+		    #}
+			option = {
+				name = "Our army is in shambles, we can't do anything."
+				prestige = -30
+			any_owned = {
+			limit = {
+				OR = {
+					is_core = CPL
+					is_core = GLM
+					is_core = PML
+					is_core = BKV
+				       }
+			         }
+			    secede_province = CPL
+		       }
+			   ai_chance = { factor = 50 }
+			}
+			
+			option = {
+				name = "Our army is in shambles, but we shall try."
+				prestige = -10
+			any_owned = {
+			limit = {
+				OR = {
+					is_core = CPL
+					is_core = GLM
+					is_core = PML
+					is_core = BKV
+				       }
+			         }
+			    secede_province = CPL
+		       }
+			   
+			   			war = {
+			target = CPL
+			attacker_goal = { casus_belli = conquest_any }
+			defender_goal = { casus_belli = status_quo }
+		    }
+		    ai_chance = { factor = 50 }
+			   
+			}
+			
+
+		}
+		
+		#Russia reigns supreme in Ottoman Empire
+		country_event = {
+			id = 500132
+			title = "EVTNAME500132"
+			desc = "EVTDESC500132"
+			picture = "treaty_of_paris_1856"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500132"
+				prestige = 10
+				RUS = { country_event = { id = 500133 days = 5 } }
+				BUL = { government = absolute_monarchy ruling_party_ideology = reactionary }
+				diplomatic_influence = { who = TUR value = 400 }
+				relation = { who = TUR value = 400 }
+				
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#Russia notified details Treaty of Ayvansaray
+		country_event = {
+			id = 500133
+			title = "EVTNAME500133"
+			desc = "EVTDESC500133"
+			major = yes
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500133"
+				TUR = { add_country_modifier = { name = humiliated_ottoman_caliph duration = -1 } 
+			    }
+				prestige = 50
+				ARM = {
+				random_owned = {
+				limit = {
+					province_id = 899
+					owned_by = ARM
+				}
+				secede_province = TUR
+			    }
+				
+				any_owned = {
+			limit = {
+			          OR = {
+			          region = TUR_888
+					  region = TUR_890
+					  province_id = 893
+					  province_id = 889
+					  province_id = 2414
+					  province_id = 878
+					  }
+			}
+			add_core = ARM
+		}
+				
+				}
+				any_pop = {
+				limit = {
+				    OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+					is_state_religion = yes
+					}
+				}
+				militancy = -5
+				consciousness = -5
+			    }
+				RUS = { country_event = { id = 500135 days = 5 } }
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#Russia notified Galician Poles join CPL uprising - Scrapped for now
+		country_event = {
+			id = 500134
+			title = "EVTNAME500133" #Galician Slavs in Uproar
+			desc = "EVTDESC500134"
+			picture = "january_uprising"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500134" #We will bring them all home to mother Russia.
+			    ai_chance = { factor = 100 }
+			}
+		}
+       #Russia reigns supreme in Ottoman Empire
+		country_event = {
+			id = 500135
+			title = "EVTNAME500135"
+			desc = "EVTDESC500135"
+			picture = "ottoman"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500135"
+				prestige = 1
+			    ai_chance = { factor = 100 }
+			}
+		}
+		#Mordvinov reforms
+		country_event = {
+			id = 500136
+			title = "EVTNAME500136"
+			desc = "EVTDESC500136"
+			picture = "Administration"
+			
+			fire_only_once = yes
+			
+			trigger = {
+			tag = RUS
+			has_country_flag = absolute_monarchy_gov
+			debt_law = serfdom
+			has_global_flag = treaty_of_paris_russia
+			has_country_flag = initiated_mordvinov_plan
+			owns = 104
+			year = 1856
+			NOT = { year = 1860 }
+		    }
+			option = {
+				name = "EVTOPTA500136" #Allows Alexander reforms after Crimea, when Crimea is won.
+				set_country_flag = mordvinov_was_right
+				add_country_modifier = { name = free_economic_society duration = 5000 }
+				prestige = -5
+				any_pop = {
+				limit = {
+					is_culture_group = east_slavic
+					location = { is_core = THIS }
+				}
+				ideology = { factor = 0.05 value = liberal }
+				consciousness = 2
+				militancy = -1
+			   }
+			    ai_chance = { factor = 0 }
+			}
+			option = {
+				name = "EVTOPTB500136"
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+	### Persia/Afghanistan - These events are currently not in use, great game/central asia needs to be redone in a better way
+		
+	#AFG content
+# 		country_event = {
+# 			id = 500137
+# 			title = "Russia issues Ultimatum"
+# 			desc = "EVTDESC500135"
+# 			picture = "ottoman"
+			
+# 			is_triggered_only = yes
+# 			option = { #TODO
+# 				name = "Accept their Ultimatum"
+# 				prestige = -10
+# 			    ai_chance = { factor = 0 }
+# 			}
+# 			option = {
+# 				name = "Refuse!"
+# 				prestige = 10
+# 				RUS = { country_event = { id = 500138 days = 5 } }
+# 			    ai_chance = { factor = 100 }
+# 			}
+# 		}
+		
+# 	country_event = {
+# 	id = 500138
+# 	title = "EVTNAME99100"
+# 	desc = "EVTDESC99100"
+# 	picture = "anglo_afghan_war"
+
+# 	is_triggered_only = yes
+
+# 	option = {
+# 		name = "EVTOPTA99100"
+# 		#set_country_flag = russian_ultimatum_afg
+# 		prestige = 10
+# 		badboy = 3
+# 		leave_alliance = AFG
+# 		relation = { who = AFG value = -200 }
+# 		diplomatic_influence = { who = AFG value = -200 }
+# 		war = {
+# 			target = AFG
+# 			attacker_goal = { casus_belli = great_game_cb }
+# 			defender_goal = { casus_belli = humiliate }
+# 			call_ally = yes
+# 		}
+
+# 		ai_chance = {
+# 			factor = 100
+# 		}
+# 	}
+
+# 	option = {
+# 		name = "EVTOPTB99100"
+# 		#set_country_flag = anglo_afghan_war
+# 		prestige = -35
+# 		relation = { who = AFG value = 50 }
+# 		relation = { who = RUS value = 50 }
+# 		leave_alliance = PNJ
+# 		any_pop = {
+# 			limit = {
+# 				is_primary_culture = yes
+# 				strata = rich
+# 			}
+# 			militancy = 2
+# 			consciousness = 2
+# 		}
+# 		ai_chance = {
+# 			factor = 0
+# 		}
+# 	}
+# }
+
+# #PER
+# country_event = {
+# 			id = 500139
+# 			title = "Russia issues Ultimatum"
+# 			desc = "EVTDESC500135"
+# 			picture = "ottoman"
+			
+# 			is_triggered_only = yes
+# 			option = {
+# 				name = "Accept their Ultimatum"
+# 				prestige = -10
+# 			    ai_chance = { factor = 0 }
+# 			}
+# 			option = {
+# 				name = "Refuse!"
+# 				prestige = 10
+# 				any_country = {
+# 				limit = {
+# 				    vassal_of = PER
+# 					}
+# 					annex_to = PER
+# 				}
+# 				RUS = { country_event = { id = 500140 days = 5 } }
+# 			    ai_chance = { factor = 100 }
+# 			}
+# 		}
+		
+# 	country_event = {
+# 	id = 500140
+# 	title = "EVTNAME99100"
+# 	desc = "EVTDESC99100"
+# 	picture = "anglo_afghan_war"
+
+# 	is_triggered_only = yes
+
+# 	option = {
+# 		name = "EVTOPTA99100"
+# 		#set_country_flag = russian_ultimatum_afg
+# 		prestige = 10
+# 		badboy = 3
+# 		leave_alliance = PER
+# 		relation = { who = PER value = -200 }
+# 		diplomatic_influence = { who = PER value = -200 }
+# 		war = {
+# 			target = PER
+# 			attacker_goal = { casus_belli = great_game_cb }
+# 			defender_goal = { casus_belli = humiliate }
+# 			call_ally = yes
+# 		}
+
+# 		ai_chance = {
+# 			factor = 100
+# 		}
+# 	}
+
+# 	option = {
+# 		name = "EVTOPTB99100"
+# 		#set_country_flag = anglo_afghan_war
+# 		prestige = -35
+# 		relation = { who = AFG value = 50 }
+# 		relation = { who = RUS value = 50 }
+# 		leave_alliance = PNJ
+# 		any_pop = {
+# 			limit = {
+# 				is_primary_culture = yes
+# 				strata = rich
+# 			}
+# 			militancy = 2
+# 			consciousness = 2
+# 		}
+# 		ai_chance = {
+# 			factor = 0
+# 		}
+# 	}
+# }
+# #ENG deliberates on Persia
+# country_event = {
+# 			id = 500141
+# 			title = "EVTNAME99104"
+# 	        desc = "EVTDESC99104"
+# 			picture = "ottoman"
+			
+# 		is_triggered_only = yes
+		
+# 		option = {
+# 		name = "Recognize Russian dominance"
+# 		prestige = -35
+# 		badboy = -5
+# 		set_global_flag = russia_expands_the_great_game
+# 		set_global_flag = british_retreat_from_persia
+# 		relation = { who = PER value = -200 }
+# 		diplomatic_influence = { who = PER value = -200 }
+# 		relation = { who = AFG value = -200 }
+# 		diplomatic_influence = { who = AFG value = -200 }
+# 		relation = { who = BHR value = -200 }
+# 		diplomatic_influence = { who = BHR value = -200 }
+# 		relation = { who = QAT value = -200 }
+# 		diplomatic_influence = { who = QAT value = -200 }
+# 		relation = { who = OMA value = -200 }
+# 		diplomatic_influence = { who = OMA value = -200 }
+# 		relation = { who = MAK value = -200 }
+# 		diplomatic_influence = { who = MAK value = -200 }
+# 		relation = { who = ABU value = -200 }
+# 		diplomatic_influence = { who = ABU value = -200 }
+# 		relation = { who = KWT value = -200 }
+# 		diplomatic_influence = { who = KWT value = -200 }
+# 		any_owned = {
+# 			limit = {
+# 				is_core = PER
+# 			}
+# 			secede_province = PER
+# 		}
+# 		any_owned = {
+# 			limit = {
+# 				is_core = AFG
+# 			}
+# 			secede_province = AFG
+# 		}
+# 		RUS = {
+# 			prestige = 15
+# 			diplomatic_influence = { who = PER value = 400 }
+# 			relation = { who = PER value = 200 }
+# 			diplomatic_influence = { who = AFG value = 400 }
+# 			relation = { who = AFG value = 200 }
+# 		}
+# 		release = PER
+# 		release_vassal = PER
+# 		ai_chance = {
+# 			factor = 5
+# 			modifier = {
+# 				factor = 25
+# 				has_recently_lost_war = yes
+# 			}
+# 			modifier = {
+# 				factor = 25
+# 				is_disarmed = yes
+# 			}
+# 			modifier = {
+# 				factor = 5
+# 				war_exhaustion = 1
+# 			}
+# 			modifier = {
+# 				factor = 5
+# 				num_of_revolts = 1
+# 			}
+# 			modifier = {
+# 				factor = 100
+# 				has_global_flag = RUS_pacific_achieved
+# 			}
+# 			modifier = {
+# 				factor = 100
+# 				has_global_flag = treaty_of_paris_russia
+# 			}
+# 		}
+# 	}
+# 			option = {
+# 				name = "Reassert our influence in the region"
+# 				set_country_flag = british_oppose_russia_aggressively
+# 				prestige = 20
+# 				RUS = { country_event = { id = 99104 days = 5 } }
+# 			    ai_chance = {
+# 			    factor = 80
+# 			    modifier = {
+# 				factor = 0
+# 				has_global_flag = RUS_pacific_achieved
+# 				has_global_flag = treaty_of_paris_russia
+# 			}
+# 			 modifier = {
+# 				factor = 100
+# 				has_global_flag = treaty_of_paris_1856
+# 			}
+# 			}
+# 		}
+# 	}
+	
+	
+	
+	### Bosnian Question - Russia winning Crimea scenario, triggers a crisis with Austria
+		country_event = {
+			id = 500142
+			title = "EVTNAME500145"
+			desc = "EVTDESC500142" 
+			picture = "bosnia_issue"
+			
+			fire_only_once = yes
+			
+			trigger = {
+			tag = BOS
+			has_global_flag = treaty_of_paris_russia
+			has_country_modifier = bosnian_question
+			neighbour = SER
+			in_sphere = RUS
+			vassal_of = TUR
+			primary_culture = serb
+			owns = 783 #Sarajevo
+			year = 1857
+			NOT = { year = 1870 }
+		    }
+			
+		mean_time_to_happen = {
+		months = 4
+		modifier = {
+			factor = 0.75 #increase likelihood to happen
+			year = 1859
+		}
+		modifier = {
+			factor = 0.5 #increase likelihood to happen
+			year = 1861
+		}
+	    }
+			
+			option = {
+				name = "EVTOPTA500142"
+				set_country_flag = bosnian_question_deliberated
+				RUS = { country_event = { id = 500143 days = 7 } }
+				prestige = 5
+				any_pop = {
+				limit = {
+					has_pop_culture = serb
+					location = { is_core = THIS }
+				}
+				consciousness = 2
+				militancy = -6
+			   }
+			   any_pop = {
+				limit = {
+					has_pop_culture = turkish
+					location = { is_core = THIS }
+				}
+				consciousness = 2
+				militancy = 6
+			   }
+			   
+			   any_pop = {
+				limit = {
+					has_pop_culture = bosniak
+					location = { is_core = THIS }
+				}
+				consciousness = 2
+				militancy = 2
+			   }
+			   
+			    any_pop = {
+				limit = {
+					has_pop_culture = croat
+					location = { is_core = THIS }
+				}
+				consciousness = 2
+			   }
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500142"
+				prestige = -15
+				any_owned = { limit = { is_core = BOS } add_province_modifier = { name = nationalist_agitation duration = 1080 } }
+			    ai_chance = { factor = 0 }
+			}
+		}
+	#Appeal to the Tsar
+		country_event = {
+			id = 500143
+			title = "EVTNAME500145"
+			desc = "EVTDESC500143"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500143"
+				TUR = { country_event = { id = 500144 days = 7 } }
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500143"
+				relation = { who = FROM value = -50 }
+				relation = { who = BOS value = -50 }
+				relation = { who = TUR value = 50 }
+				prestige = -10
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#TUR gets to "decide" what to do lol whadayagonnado listen to daddy russia but add an option for player to cause war
+		country_event = {
+			id = 500144
+			title = "EVTNAME500145"
+			desc = "EVTDESC500144"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500144"
+				RUS = { country_event = { id = 500146 days = 7 } }
+				prestige = -25
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500144"
+				#TODO
+				prestige = 10
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#Russia informed Porte gives the ok
+		country_event = {
+			id = 500146
+			title = "EVTNAME500146"
+			desc = "EVTDESC500146"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500146"
+				BOS = { annex_to = SER }
+				619 = { owner = { country_event = { id = 500145 days = 7 } } }
+				#KUK = { country_event = { id = 500145 days = 7 } }
+				prestige = 10
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#AUS opportunity to contest Bosnia unifying with Serbia
+		country_event = {
+			id = 500145
+			title = "EVTNAME500145"
+			desc = "EVTDESC500145"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500145" #ignore it
+				RUS = { country_event = { id = 500148 days = 7 } }
+				prestige = -20
+				any_owned = { limit = { OR = { is_core = SER is_core = CRO is_core = VOJ is_core = YUG is_core = BOS } } add_province_modifier = { name = nationalist_agitation duration = 1000 } }
+                
+				ai_chance = { 
+					factor = 50 
+				modifier = {
+				factor = 50
+				has_recently_lost_war = no
+			    }
+				}
+			}
+			option = {
+				name = "EVTOPTB500145" #warpath
+				RUS = { country_event = { id = 500147 days = 7 } }
+				prestige = 20
+				
+			    ai_chance = { 
+					factor = 50 			
+				modifier = {
+				factor = 0
+				is_greater_power = no
+			    } 
+				modifier = {
+				factor = 0.5
+				has_country_flag = austria_joins_the_allies
+				has_recently_lost_war = yes
+			    } 
+				modifier = {
+				factor = 0
+				has_recently_lost_war = yes
+			    }
+			}
+			}
+		}
+		
+		#Austria declares war, invades Serbia
+		country_event = {
+			id = 500147
+			title = "EVTNAME500147"
+			desc = "EVTDESC500147"
+			picture = "balkan_victory"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500147"
+				FROM = {
+				casus_belli = {
+					target = SER
+					type = liberate_country
+					months = 50
+				}
+			    war = {
+				target = SER
+				attacker_goal = { casus_belli = liberate_country country = BOS }
+				defender_goal = { casus_belli = humiliate country = SER }
+				    }
+		        }
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#Russia informed Austria backs out
+		country_event = {
+			id = 500148
+			title = "EVTNAME500148"
+			desc = "EVTDESC500148"
+			picture = "bosnia_issue"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500148"
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#Bulgaria content, roughly based on San Stefano treaty and Constantinople Conference after it (Russian proposals and aims)
+	    #WB wants to unite with EB, petition Russia. If successful, united Bulgaria asks for freedom as a whole (stop being a puppet), rebellion if russia says no
+		country_event = {
+			id = 500149
+			title = "EVTNAME500149"
+			desc = "EVTDESC500149"
+			picture = "twobulgarias"
+			
+			fire_only_once = yes
+			
+			trigger = {
+			tag = MCD
+			has_global_flag = treaty_of_paris_russia
+			neighbour = BUL
+			in_sphere = RUS
+			vassal_of = TUR
+			primary_culture = bulgarian
+			owns = 809 #Sofia
+			year = 1860
+			NOT = { year = 1870 }
+		    }
+			
+		mean_time_to_happen = {
+		months = 6
+		modifier = {
+			factor = 0.75 #increase likelihood to happen
+			year = 1862
+		}
+		modifier = {
+			factor = 0.55 #increase likelihood to happen
+			year = 1864
+		}
+	    }
+			
+			option = {
+				name = "EVTOPTA500149"
+				#set_country_flag = bosnian_question_deliberated
+				RUS = { country_event = { id = 500150 days = 7 } }
+				prestige = 5
+				any_pop = {
+				limit = {
+					has_pop_culture = bulgarian
+				}
+				consciousness = 2
+				militancy = -6
+			   }
+			   any_pop = {
+				limit = {
+				    OR = {
+					has_pop_culture = turkish
+					has_pop_culture = pomak
+					}
+				}
+				consciousness = 2
+				militancy = 6
+			   }
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500149"
+				prestige = 5
+			    ai_chance = { factor = 0 }
+			}
+		}
+		# Russia asked to decide - tell our friend on the Boshporus to lean on it
+		country_event = {
+			id = 500150
+			title = "EVTNAME500150"
+			desc = "EVTDESC500150"
+			picture = "BUL_revolt_1836"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500150"
+				TUR = { country_event = { id = 500151 days = 7 } }
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+			option = { #todo
+				name = "EVTOPTB500150"
+				relation = { who = FROM value = -50 }
+				relation = { who = BUL value = -50 }
+				relation = { who = TUR value = 50 }
+				MCD = { any_owned = { limit = { OR = { is_core = BUL is_core = MCD } } add_province_modifier = { name = nationalist_agitation duration = 1800 } } }
+				prestige = -10
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#Ottoman Porte Faite Accompli
+		country_event = {
+			id = 500151
+			title = "EVTNAME500150"
+			desc = "EVTDESC500150"
+			picture = "ottoman"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500144"
+				RUS = { country_event = { id = 500152 days = 7 } }
+				prestige = -25
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500144"
+				#todo
+				prestige = 10
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#Russia informed Porte gives the ok on Bulgaria
+		country_event = {
+			id = 500152
+			title = "EVTNAME500146"
+			desc = "EVTDESC500146" #todo
+			picture = "twobulgarias"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500152"
+				MCD = { annex_to = BUL }
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#Bulgaria after unification considers pursuing more autonomy - asks to be released from puppet status
+		country_event = {
+			id = 500153
+			title = "EVTNAME500153"
+			desc = "EVTDESC500154"
+			picture = "sanstefano1877"
+			
+			fire_only_once = yes
+
+			mean_time_to_happen = {
+				months = 6
+				modifier = {
+					factor = 0.85 #increase likelihood to happen
+					year = 1868
+				}
+				modifier = {
+					factor = 0.55 #increase likelihood to happen
+					year = 1872
+				}
+			}
+			
+			trigger = {
+				tag = BUL
+				has_global_flag = treaty_of_paris_russia
+				in_sphere = RUS
+				vassal_of = RUS
+				owns = 809 #Sofia
+				year = 1866
+				#NOT = { year = 1870 }
+			    }
+			option = {
+				name = "EVTOPTA500153"
+				RUS = { country_event = { id = 500154 days = 7 } }
+				prestige = 5
+			    ai_chance = { factor = 98 }
+			}
+			option = {
+				name = "EVTOPTB500153"
+				relation = { who = RUS value = 200 }
+				prestige = -5
+			    ai_chance = { factor = 2 }
+			}
+		}
+		
+		#Russia is informed,, they're not happy
+		country_event = {
+			id = 500154
+			title = "EVTNAME500154"
+			desc = "EVTDESC500154"
+			picture = "sanstefano1877"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500154"
+				release_vassal = BUL
+				prestige = -5
+			    ai_chance = { factor = 20 }
+			}
+			option = {
+				name = "EVTOPTB500154"
+				#todo
+				prestige = 5
+				BUL = { country_event = { id = 500155 days = 7 } }
+			    ai_chance = { factor = 80 }
+			}
+		}
+		
+		#Bulgaria decides whether to take the issue to the battlefield
+		country_event = {
+			id = 500155
+			title = "EVTNAME500155"
+			desc = "EVTDESC500154"
+			picture = "BUL_revolt_1836"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500155"
+				RUS = { country_event = { id = 500156 days = 7 } }
+				prestige = 10
+			    ai_chance = { factor = 20 }
+			}
+			option = {
+				name = "EVTOPTB500155"
+				#todo
+				prestige = -5
+				relation = { who = RUS value = 200 }
+			    ai_chance = { factor = 80 }
+			}
+		}
+		
+		#Bulgaria Revolts
+		country_event = {
+			id = 500156
+			title = "EVTNAME500156"
+			desc = "EVTDESC500156"
+			picture = "bulgaria_army"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500156" #todo punishment path, make bulgaria cede parts of macedonia to the serbs
+				release_vassal = BUL
+				leave_alliance = BUL
+			    diplomatic_influence = { who = BUL value = -200 }
+			    relation = { who = BUL value = -200 }
+			    casus_belli = {
+				target = BUL
+				type = make_puppet
+				months = 30
+			}
+			war = {
+				target = BUL
+				attacker_goal = { casus_belli = make_puppet }
+				defender_goal = { casus_belli = become_independent }
+			}
+			    ai_chance = { factor = 100 }
+			}
+		}
+
+        
+		
+		#Romania asks for sea access - Russia holds Dobrudzha
+		country_event = {
+			id = 500157
+			title = "EVTNAME500157" #sea please?
+			desc = "EVTDESC500157"
+			picture = "treaty_port"
+			
+			fire_only_once = yes
+			
+			trigger = {
+                tag = URP
+                has_global_flag = treaty_of_paris_russia
+				in_sphere = RUS
+				OR = {
+					674 = { owned_by = RUS }
+					675 = { owned_by = RUS }
+					818 = { owned_by = RUS }
+					3431 = { owned_by = RUS }
+            		3432 = { owned_by = RUS }
+				}
+				year = 1862
+				#NOT = { year = 1870 }
+		   	 }
+			
+			mean_time_to_happen = {
+				months = 5
+				modifier = {
+					factor = 0.95 #increase likelihood to happen
+					year = 1863
+				}
+				modifier = {
+					factor = 0.45 #increase likelihood to happen
+					year = 1865
+				}
+	  		  }
+			
+			option = {
+				name = "EVTOPTA500157" #"Ask for Sea Access"
+				RUS = { country_event = { id = 500158 days = 7 } }
+				prestige = 5
+			    ai_chance = { factor = 99 }
+			}
+			option = {
+				name = "EVTOPTB500157" #"EVTOPTB500157"
+				prestige = -5
+			    ai_chance = { factor = 1 }
+			}
+		}
+		
+		#Russia gets Romanian ask
+		country_event = {
+			id = 500158
+			title = "EVTNAME500158"
+			desc = "EVTDESC500158"
+			picture = "romanian_indepence"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500158"
+				3432 = { secede_province = URP }
+				prestige = -5
+			    ai_chance = { factor = 10 }
+			}
+			option = {
+				name = "EVTOPTB500158"
+				#todo
+				prestige = 5
+				URP = { country_event = { id = 500159 days = 7 } }
+			    ai_chance = { factor = 90 }
+			}
+		}
+		#Romania told no, rebellion?
+		country_event = {
+			id = 500159
+			title = "EVTNAME500159"
+			desc = "EVTDESC500159"
+			picture = "romanian_indepence"
+			
+			is_triggered_only = yes
+			option = {
+    			name = "EVTOPTA500159"
+				set_country_flag = romanian_rebellion_on_the_danube
+				badboy = 1
+				leave_alliance = RUS
+			    RUS = { diplomatic_influence = { who = URP value = -200 } }
+			    relation = { who = RUS value = -200 }
+			    casus_belli = {
+				target = RUS
+				type = acquire_state
+				months = 30
+			}
+			war = {
+				target = RUS
+				attacker_goal = {
+					casus_belli = acquire_state
+					state_province_id = 674
+				}
+				defender_goal = { casus_belli = make_puppet country = URP }
+			}
+			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+			
+			    ai_chance = { factor = 50 }
+			}
+			option = {
+				name = "EVTOPTB500159"
+				#todo
+				prestige = -5
+			    ai_chance = { factor = 50 }
+			}
+			
+		}
+		
+	#500160-500168 Bosnian Annexation Crisis 1908 Balkans txt
+	
+	#Russia decides the faith of Danubian Principalities
+		country_event = {
+			id = 500169
+			title = "EVTNAME500169"
+			desc = "EVTDESC500169"
+			picture = "romanian_indepence"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500169"
+				URP = { annex_to = THIS }
+				any_owned = { limit = { OR = { is_core = URP is_core = WAL is_core = MOL } } add_province_modifier = { name = nationalist_agitation duration = 3600 } }
+				prestige = 10
+				badboy = 8
+			    ai_chance = { factor = 5 }
+			}
+			option = {
+				name = "EVTOPTB500169"
+				MOL_673 = { secede_province = THIS add_province_modifier = { name = nationalist_agitation duration = 1095 } }
+				URP = { change_tag = WAL }
+				WAL = { any_owned = { add_core = WAL } }
+				create_vassal = WAL
+				diplomatic_influence = { who = WAL value = 200 }
+				prestige = 5
+				badboy = 4
+			    ai_chance = { factor = 75 }
+			}
+			option = {
+				name = "EVTOPTC500169"
+				inherit = URP
+				MOL_676 = { remove_core = MOL }
+				MOL_673 = { add_core = MOL }
+				WAL_665 = { add_core = WAL }
+				WAL_666 = { add_core = WAL }
+				release = MOL
+				release = WAL
+				diplomatic_influence = { who = WAL value = 200 }
+				diplomatic_influence = { who = MOL value = 200 }
+				prestige = 5
+				badboy = 2
+			    ai_chance = { factor = 10 }
+			}
+			option = {
+				name = "EVTOPTD500169"
+				diplomatic_influence = { who = URP value = 200 }
+				prestige = 5
+				badboy = -3
+			    ai_chance = { factor = 10 }
+			}
+		}
+		
+		#500170-500187 GEC
+		
+#New Capital?
+country_event = {
+	id = 500188
+	title = "EVTNAME500188" #"EVTNAME500188"
+	desc = "EVTDESC500188"
+	major = yes
+	trigger = {
+		tag = RUS
+		capital = 994
+		#Black Sea coast
+		2774 = { any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } }
+		2775 = { any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } }
+		2776 = { any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } }
+		2777 = { any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } }
+		owns = 994 #St Petersburg
+		owns = 967 #Sevastopol
+		owns = 968 #Odessa
+		owns = 958 #Kiev
+		owns = 1008 #Moscow
+		owns = 1039 #Tsaritsyn
+		owns = 1047 #Rostov
+		owns = 960 #Tsarigrad - Constantinople
+		has_global_flag = dismantle_ottomans
+	}
+
+	mean_time_to_happen = { months = 2 }
+
+	fire_only_once = yes
+	option = {
+		name = "EVTOPTA500188" #"Moscow" #Moscow
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		1008 = { add_province_modifier = { name = recently_built_city duration = 700 } any_pop = { militancy = -2 } }
+		capital = 1008
+
+		ai_chance = { factor = 40 }
+	}
+
+	option = {
+		name = "EVTOPTB500188" #"Sevastopol" #Sevastopol
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		967 = { add_province_modifier = { name = recently_built_city duration = 700 } any_pop = { militancy = -1 } }
+		capital = 967
+
+		ai_chance = { factor = 2 }
+	}
+
+	option = {
+		name = "EVTOPTC500188" #"Odessa" #Odessa
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		968 = { add_province_modifier = { name = recently_built_city duration = 700 } add_province_modifier = { name = capital_of_the_motherland duration = -1 } any_pop = { militancy = -1 } }
+		capital = 968
+
+		ai_chance = { factor = 2 }
+	}
+
+	option = {
+		name = "EVTOPTD500188" #"Kiev" #Kiev
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		958 = { add_province_modifier = { name = recently_built_city duration = 700 } any_pop = { militancy = -1 } }
+		capital = 958
+
+		ai_chance = { factor = 5 }
+	}
+	
+	option = {
+		name = "EVTOPTE500188" #"Tsaritsyn" #Tsaritsyn
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		1039 = { add_province_modifier = { name = recently_built_city duration = 700 } any_pop = { militancy = -1 } }
+		capital = 1039
+
+		ai_chance = { factor = 10 }
+	}
+	
+	option = {
+		name = "EVTOPTF500188" #"Rostov" #Rostov
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		1047 = { add_province_modifier = { name = recently_built_city duration = 700 } any_pop = { militancy = -1 } }
+		capital = 1047
+
+		ai_chance = { factor = 2 }
+	}
+	
+	option = {
+		name = "EVTOPTG500188" #"Tsarigrad" #Constantinople for all the romeaboos..
+
+		capital_scope = { any_pop = { consciousness = 2 } }
+		960 = { add_province_modifier = { name = recently_built_city duration = 700 } any_pop = { militancy = -1 } }
+		capital = 960
+
+		ai_chance = { factor = 2 }
+	}
+
+	option = {
+		name = "EVTOPTH500188" #"Remain in St Petersburg" #Don't change
+
+		ai_chance = { factor = 39 }
+	}
+}
+
+		#Hagia Sophia done
+		country_event = {
+			id = 500189
+			title = "EVTNAME500189"
+			desc = "EVTDESC500189"
+			picture = "Orthodox"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500189"
+				prestige = 50
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#Manchuria/Zheltorossiya content
+		country_event = {
+			id = 500190
+			title = "EVTNAME500190" #Russians issue the ultimatum
+			desc = "EVTDESC500190"		
+			picture = "asian_administration"
+
+			is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA80110" #accept
+			set_global_flag = harbin_convention
+            prestige = -50
+			RUS = { country_event = 500191 }
+			random_country = {
+				limit = {
+						vassal_of = THIS
+						substate_of = THIS
+						capital = 1555
+				}
+				annex_to = THIS
+			}
+			random_owned = {
+					limit = { OR = { #Zheltorossiya/Russian Manchuria ambition
+						region = CHI_1479
+						region = CHI_1552
+						}
+					}
+					secede_province = RUS
+				}
+			ai_chance = {
+				factor = 5
+				modifier = {
+					factor = 0.5
+					NOT = { war_exhaustion = 10 }
+					1082 = { owner = { part_of_sphere = no } }
+				}
+				modifier = {
+					factor = 0.75
+					NOT = { war_exhaustion = 5 }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB80110" #refuse
+			prestige = 10
+			RUS = { country_event = { id = 500192 days = 7 } }
+			JAP = { country_event = { id = 500272 days = 1 } }#JAP intervention possibility
+			relation = { who = FROM value = -300 }
+			random_country = {
+				limit = {
+					substate_of = THIS
+					primary_culture = manchu
+					capital = 1555
+				}
+				annex_to = THIS
+			}
+
+			ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 1.1
+					NOT = { war_exhaustion = 25 }
+					1082 = { owner = { part_of_sphere = no } }
+				}
+				modifier = {
+					factor = 0.5
+					any_greater_power = { war_with = THIS }
+				}
+				modifier = {
+					factor = 0
+					national_provinces_occupied = 0.25
+				}
+				modifier = {
+					factor = 0.5
+					war_exhaustion = 25
+				}
+			}
+		}
+	}
+	
+	country_event = { #China caves in
+		id = 500191
+		title = "EVTNAME80101"
+		desc = "EVTDESC80101"
+		picture = "asian_administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA80101"
+			prestige = 10
+			create_vassal = MGL
+			relation = { who = FROM value = 50 }
+		}
+	}
+
+	country_event = {
+		id = 500192
+		title = "EVTNAME80102" #China refuses to give up its Manchu territory
+		desc = "EVTDESC80102"
+		picture = "asian_administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA80102"
+			set_country_flag = chinese_refuse_manchurian_ultimatum
+			prestige = -10
+			relation = { who = FROM value = -100 }
+			diplomatic_influence = { who = FROM value = -100 }
+			casus_belli = {
+			target = FROM
+			type = war_reparations
+			months = 40
+		    }
+		    war = {
+			target = QNG
+			attacker_goal = { #Manchuria
+							casus_belli = acquire_any_state
+							state_province_id = 1553
+						}
+			attacker_goal = { 
+							casus_belli = acquire_any_state
+							state_province_id = 1479
+						}
+			attacker_goal = { 
+							casus_belli = take_puppet
+							country = MGL
+						}
+			defender_goal = { casus_belli = status_quo }
+		    }
+			#1613 = { add_core = RUS } #no cores, easy there bud
+			#1188 = { add_core = RUS }
+			#CHI_1552 = { add_core = RUS } # Heilongjiang
+            #CHI_1479 = { add_core = RUS } # Fengtian
+			# CHI_1532 = { add_core = MGL } # Inner Mongolia 1820
+			# 1599 = { add_core = MGL } # Inner Mongolia
+			# 1488 = { add_core = MGL } # Inner Mongolia
+			# 1576 = { add_core = MGL } # Inner Mongolia
+			# 1572 = { add_core = MGL } # Inner Mongolia
+			# 1573 = { add_core = MGL } # Inner Mongolia
+			# 1561 = { add_core = MGL } # Inner Mongolia
+			# 1491 = { add_core = MGL } # Inner Mongolia
+			
+		}
+	}
+	
+	
+	###Greeks angry over Russians taking *their* holeh city, want Ionia, Smyrna, Bursa
+	   
+		country_event = {
+			id = 500193
+			title = "EVTNAME500193"
+			desc = "EVTDESC500193"
+			picture = "crete_revolt"
+			
+			fire_only_once = yes
+			
+			trigger = {
+			tag = GRE
+			has_global_flag = treaty_of_paris_russia
+			has_global_flag = dismantle_ottomans
+	        neighbour = BUL #This means groBsBulgarium is active
+			in_sphere = RUS
+			860 = { owned_by = RUS }
+		    }
+			mean_time_to_happen = { months = 5 }
+
+			option = {
+				name = "EVTOPTA500193"
+				#set_country_flag = bosnian_question_deliberated
+				RUS = { country_event = { id = 500194 days = 120 } }
+				prestige = 5
+				any_pop = {
+				limit = {
+					has_pop_culture = greek
+				}
+				consciousness = 1
+				militancy = -6
+			   }
+			   any_pop = {
+				limit = {
+				    OR = {
+					has_pop_culture = turkish
+					has_pop_culture = pomak
+					}
+				}
+				consciousness = 2
+				militancy = 6
+			   }
+			   TUR_863 = { add_province_modifier = { name = nationalist_agitation duration = 3650 } }
+			   TUR_869 = { add_province_modifier = { name = nationalist_agitation duration = 3650 } }
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500193"
+			    ai_chance = { factor = 0 }
+			}
+		}
+		#Tell our friend on the Boshporus to lean on it
+		country_event = {
+			id = 500194
+			title = "EVTNAME500194"
+			desc = "EVTDESC500194"
+			picture = "crete_revolt"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500194"
+				TUR = { country_event = { id = 500195 days = 7 } }
+				diplomatic_influence = { who = GRE value = 200 }
+				any_pop = {
+				limit = {
+				    OR = {
+					has_pop_culture = turkish
+					has_pop_culture = tatar
+					}
+				}
+				consciousness = 2
+				militancy = 5
+			   }
+			   relation = { who = TUR value = -200 }
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500194"
+				relation = { who = FROM value = -200 }
+			    diplomatic_influence = { who = FROM value = -200 }
+				leave_alliance = FROM
+				treasury = -50000
+				TUR = { treasury = 50000 }
+				ENG = { diplomatic_influence = { who = GRE value = 200 } create_alliance = GRE } #todo event
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#whadayagonnado
+		country_event = {
+			id = 500195
+			title = "EVTNAME500195"
+			desc = "EVTDESC500195" #todo
+			picture = "crete_revolt"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500195"
+				RUS = { country_event = { id = 500196 days = 7 } }
+				add_country_modifier = { name = caliph_powerless_figurehead duration = 3365 }
+			    prestige = -50
+			    random_owned = {
+				limit = { province_id = 863 }
+				state_scope = { any_owned = { secede_province = GRE } }
+			    }
+				random_owned = {
+				limit = { province_id = 869 }
+				state_scope = { any_owned = { secede_province = GRE } }
+			    }
+				any_pop = {
+				militancy = 5
+				consciousness = 3
+			    }
+			    ai_chance = { factor = 100 }
+			}
+			option = {
+				name = "EVTOPTB500195"
+				#todo
+				prestige = 10
+			    ai_chance = { factor = 0 }
+			}
+		}
+		
+		#Russia informed Ionia falls to Greek Rebels
+		country_event = {
+			id = 500196
+			title = "EVTNAME500196"
+			desc = "EVTDESC500196" 
+			picture = "crete_revolt"
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500196"
+			GRE = {
+			add_country_modifier = {
+				name = nationalist_balkans
+				duration = -1
+			 }
+			 prestige = 10
+		     }
+				prestige = 5
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+	#Faith of Armenia(s) #TODO a rebellion path
+		country_event = {
+			id = 500197
+			title = "EVTNAME500197"
+			desc = "EVTDESC500197"
+			picture = "caucasus_range2"
+			 
+			fire_only_once = yes
+			
+			trigger = {
+			tag = RUS
+			has_global_flag = treaty_of_paris_russia
+			has_global_flag = dismantle_ottomans
+			neighbour = ARM
+			ARM = {
+			in_sphere = RUS
+			vassal_of = RUS }
+			860 = { owned_by = RUS }
+			885 = { owned_by = RUS }
+		    }
+
+			mean_time_to_happen = { months = 6 }
+			
+			option = {
+				name = "EVTOPTA500197"
+				add_accepted_culture = armenian
+				ARM = { annex_to = THIS }
+				CLC = { annex_to = THIS }
+				badboy = 8
+			    ai_chance = { factor = 5 }
+			}
+			option = {
+				name = "EVTOPTB500197"
+				release = ARM
+				CLC = { annex_to = ARM }
+				relation = { who = ARM value = 400 }
+				diplomatic_influence = { who = ARM value = 200 }
+				prestige = 10
+				badboy = -5
+			    ai_chance = { factor = 75 }
+			}
+			option = {
+				name = "EVTOPTC500197"
+				CLC = { annex_to = ARM }
+				relation = { who = ARM value = -50 }
+				badboy = 1
+			    ai_chance = { factor = 10 }
+			}
+			option = {
+				name = "EVTOPTD500197"
+				relation = { who = ARM value = -50 }
+				relation = { who = CLC value = -50 }
+			    ai_chance = { factor = 10 }
+			}
+		}
+		
+	# #deciding organization of oregon, b.columbia etc
+	# country_event = {
+	# id = 500199
+
+	# title = "EVTNAME44332"
+	# desc = "EVTDESC44332"
+	# picture = "danishgovernment"
+	
+	# fire_only_once = yes
+
+	# trigger = {
+	# 	war = no
+	# 	tag = RUS
+	# 	year = 1865
+	# 	any_owned_province = { is_core = CAL }
+	# 	NOT = { exists = CAL }
+	# 	is_possible_vassal = CAL
+	# 	owns = 78
+	# 	owns = 81
+	# 	owns = 1
+	# }
+
+	# mean_time_to_happen = {
+	# 	months = 6
+	# 	modifier = {
+	# 		factor = 0.9
+	# 		any_state = {
+	# 			any_owned_province = { is_core = CAL }
+	# 			average_militancy = 3
+	# 		}
+	# 	}
+	# 	modifier = {
+	# 		factor = 0.8
+	# 		any_state = {
+	# 			any_owned_province = { is_core = CAL }
+	# 			average_militancy = 4
+	# 		}
+	# 	}
+	# }
+	
+	
+	#         option = {
+	# 			name = "Organize everything into a joint Governorate"
+	# 			LSK = { all_core = { add_core = CAL } }
+	# 			3366 = { remove_core = LSK remove_core = CAL } #Keeping direct ownership of a warm port is of strategic value for Russia for gameplay purposes
+	# 		    ai_chance = { factor = 5 }
+	# 		}
+	# 		option = {
+	# 			name = "Expand Californian Governorate up to 54th parallel"
+	# 			USA_78 = { add_core = CAL remove_core = LSK } # Washington
+	#         	USA_81 = { add_core = CAL remove_core = LSK } # Oregon
+	# 			CAN_13 = { add_core = CAL remove_core = LSK } # B.C.
+	# 			3366 = { remove_core = LSK remove_core = CAL } #Keeping direct ownership of a warm port is of strategic value for Russia for gameplay purposes
+	# 		    ai_chance = { factor = 75 }
+	# 		}
+	# 		option = {
+	# 			name = "Expand Californian Governorate up to Oregon"
+	# 			USA_78 = { add_core = CAL remove_core = LSK } # Washington
+	#         	USA_81 = { add_core = CAL remove_core = LSK } # Oregon
+	# 			3366 = { remove_core = LSK remove_core = CAL } #Keeping direct ownership of a warm port is of strategic value for Russia for gameplay purposes
+	# 		    ai_chance = { factor = 10 }
+	# 		}
+	# 		option = {
+	# 			name = "Keep them intact as is"
+	# 		    ai_chance = { factor = 10 }
+	# 		}
+	
+	
+	# }
+	
+	#Russian America asks for self-rule ### Use Alaska tag instead of California
+	country_event = {
+	id = 500198
+
+	title = "EVTNAME500198"
+	desc = "EVTDESC500198"
+	picture = "danishgovernment"
+
+	major = yes
+
+	trigger = {
+		war = no
+		tag = RUS
+		year = 1880
+		has_country_flag = russian_america_ambition
+		any_owned_province = { is_core = LSK }
+		NOT = { exists = LSK }
+		is_possible_vassal = LSK
+	}
+
+	mean_time_to_happen = {
+		months = 8
+		modifier = {
+			factor = 2
+			has_country_flag = LSK_independence_refused
+		}
+		modifier = {
+			factor = 0.9
+			any_state = {
+				any_owned_province = { is_core = LSK }
+				average_militancy = 3
+			}
+		}
+		modifier = {
+			factor = 0.8
+			any_state = {
+				any_owned_province = { is_core = LSK }
+				average_militancy = 4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			year = 1900
+			NOT = { has_country_flag = LSK_independence_refused }
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500198"
+		clr_country_flag = LSK_independence_refused
+		prestige = -20
+		badboy = -5
+		any_pop = {
+			limit = { location = { is_core = LSK } }
+			militancy = -10
+		}
+		add_accepted_culture = alaskan
+		LSK = { all_core = { remove_core = THIS remove_core = ENG } }
+		3366 = { remove_core = LSK remove_core = CAL add_core = RUS } #this is so RUS keeps one naval base at least
+		any_owned = { limit = { is_core = LSK } secede_province = LSK }
+		create_vassal = LSK
+		LSK = {
+			government = dominion
+			prestige = -80
+			primary_culture = alaskan
+		}
+		relation = {
+			who = LSK
+			value = 200
+		}
+		diplomatic_influence = {
+			who = LSK
+			value = 200
+		}
+		any_pop = {
+			consciousness = 1
+		}
+		ai_chance = {
+			factor = 80
+			modifier = {
+				factor = 0
+				OR = {
+					has_country_flag = presidential_dictatorship_gov
+					has_country_flag = fascist_gov
+					government = proletarian_dictatorship
+					government = bourgeois_dictatorship
+				}
+			}
+			modifier = {
+				factor = 0.25
+				has_country_flag = absolute_monarchy_gov
+			}
+			modifier = {
+				factor = 1.5
+				has_country_flag = democracy_gov
+			}
+			modifier = {
+				factor = 0.5
+				war_policy = jingoism
+			}
+			modifier = {
+				factor = 0.75
+				war_policy = pro_military
+			}
+			modifier = {
+				factor = 1.25
+				war_policy = anti_military
+			}
+			modifier = {
+				factor = 1.5
+				war_policy = pacifism
+			}
+			modifier = {
+				factor = 1.2
+				militancy = 3
+			}
+			modifier = {
+				factor = 1.2
+				militancy = 5
+			}
+			modifier = {
+				factor = 2.0
+				exists = CAN
+			}
+
+		}
+	}
+	option = {
+		name = "EVTOPTB500198"
+		set_country_flag = LSK_independence_refused
+		any_owned = {
+			limit = { is_core = LSK }
+			any_pop = {
+				militancy = 3
+			}
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 1.75
+				has_country_flag = monarchy_gov
+			}
+			modifier = {
+				factor = 0.5
+				has_country_flag = democracy_gov
+			}
+			modifier = {
+				factor = 1.5
+				war_policy = jingoism
+			}
+			modifier = {
+				factor = 1.25
+				war_policy = pro_military
+			}
+			modifier = {
+				factor = 0.75
+				war_policy = anti_military
+			}
+			modifier = {
+				factor = 0.5
+				war_policy = pacifism
+			}
+			modifier = {
+				factor = 0.8
+				militancy = 3
+			}
+			modifier = {
+				factor = 0.8
+				militancy = 5
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTC500198"
+		clr_country_flag = LSK_independence_refused
+		prestige = -20
+		badboy = -5
+		any_pop = {
+			limit = { location = { is_core = LSK } }
+			militancy = -10
+		}
+		LSK = {
+			all_core = { remove_core = THIS remove_core = RUS }
+		}
+		release_vassal = LSK
+		LSK = {
+			prestige = -80
+			government = dominion
+		}
+		relation = {
+			who = LSK
+			value = 200
+		}
+		diplomatic_influence = {
+			who = LSK
+			value = 200
+		}
+		any_pop = {
+			consciousness = 1
+		}
+		change_tag_no_core_switch = LSK
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+	
+	country_event = {
+		id = 500201
+		title = "EVTNAME80110" #Inner Mongolia goes to Russian puppet MGL
+		desc = "EVTDESC80110"
+		picture = "asian_administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA80110"
+			any_owned = {
+				limit = { is_core = MGL }
+				secede_province = MGL
+			}
+			
+			ai_chance = {
+				factor = 100
+			}
+		}
+		
+		}
+		
+	#Turkish Nationalists Revolt against the Caliph and the Russians
+    country_event = {
+	id = 500203
+	title = "EVTNAME500203"
+	desc = "EVTDESC500203"
+	picture = "ottoman"
+	
+	trigger = {
+		tag = TUR
+		year = 1885
+		OR = {
+			average_consciousness = 3
+			average_militancy = 3
+		}
+		has_country_modifier = humiliated_ottoman_caliph
+		OR = {
+		has_country_modifier = caliph_powerless_figurehead
+		year = 1890
+		869 = { owned_by = GRE } #smyrna
+		}
+	}
+	
+	fire_only_once = yes
+
+	mean_time_to_happen = { 
+		months = 24
+		modifier = {
+		factor = 0.5
+		OR = {
+		average_militancy = 6
+		average_consciousness = 6
+		}
+		}
+	}
+	
+	
+	option = {
+				name = "EVTOPTA500203"
+				ruling_party_ideology = anarcho_liberal
+				government = presidential_dictatorship #Military Junta
+				set_global_flag = turkish_revolt_go_boom
+				money = 250000
+				RUS = { country_event = { id = 500204 days = 60 } }
+				any_pop = {
+				militancy = -8
+				consciousness = -7
+			}
+			any_pop = {
+			limit = {
+				#location = { NOT = { is_core = TUR } }
+				is_primary_culture = no
+				is_accepted_culture = no
+			}
+			militancy = 5
+			consciousness = 5
+		}
+				prestige = 5
+	add_country_modifier = { name = win_or_die_oe duration = 1500 }
+	add_country_modifier = { name = turk_revolt duration = 1500 }
+	remove_country_modifier = no_more_war
+			    ai_chance = { factor = 95 }
+			}
+			# option = {
+			# 	name = "Fall back"
+			# 	#todo
+			# 	prestige = -5
+			#     ai_chance = { factor = 0 }
+			# }
+		}
+
+
+		#Turkey revolts
+		country_event = {
+			id = 500204
+			title = "EVTNAME500204"
+			desc = "EVTDESC500204"
+			major = yes
+			
+			is_triggered_only = yes
+			option = {
+				name = "EVTOPTA500204" 
+				release_vassal = TUR
+				leave_alliance = TUR
+			    diplomatic_influence = { who = TUR value = -200 }
+			    relation = { who = TUR value = -200 }
+			war = {
+				target = TUR
+				attacker_goal = { casus_belli = conquest }
+				defender_goal = { casus_belli = acquire_all_cores }
+			}
+			    ai_chance = { factor = 100 }
+			}
+		}
+		
+		#500205-50219 #500220 in GEC 
+		
+### Curonia purchase/claim: Gambia, Tobago
+country_event = {
+	id = 500221
+	title = "EVTNAME500221" #From decision courland_gambia, FROM's ultimatum to THIS: Secede Gambia
+	desc = "EVTDESC500221"
+	picture = "senegambia_event"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500221"
+		any_owned = {
+			limit = {
+				province_id = 1785
+			}
+			remove_core = THIS
+		}
+		relation = { who = FROM value = 50 }
+		prestige = -10
+		FROM = {
+			country_event = 500222
+		}
+		ai_chance = {
+			factor = 60 
+			modifier = {
+				factor = 0.8
+				FROM = { is_greater_power = no }
+			}
+			modifier = {
+				factor = 1.8
+				is_greater_power = no
+			}
+			modifier = {
+				factor = 1.5
+				alliance_with = FROM
+			}
+			modifier = {
+				factor = 1.5
+				relation = { who = FROM value = 150 }
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB500221"
+		relation = { who = FROM value = -200 }
+		FROM = {
+			country_event = 500223
+		}
+		prestige = 15
+		ai_chance = {
+			factor = 40 
+			modifier = {
+				factor = 1.3
+				FROM = { is_greater_power = no }
+			}
+			modifier = {
+				factor = 0.2
+				is_greater_power = no
+			}
+			modifier = {
+				factor = 0.1
+				NOT = { relation = { who = FROM value = 0 } }
+			}
+		}
+	}
+}
+country_event = {
+	id = 500222
+	title = "EVTNAME500222"
+	desc = "EVTDESC500222"
+	picture = "senegambia_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500222OPTA"
+		FROM = {
+			any_owned = {
+				limit = {
+					province_id = 1785
+				}
+				secede_province = THIS
+			}
+		}
+		relation = { who = FROM value = 50 }
+		prestige = 10
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 500223
+	title = "EVTNAME500223"
+	desc = "EVTDESC500223"
+	picture = "senegambia_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500223OPTA"
+		relation = { who = FROM value = -200 }
+		add_casus_belli = {
+			target = FROM
+			type = place_in_the_sun
+			months = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#From event 500224, FROM's offer THIS: Buying Tobago
+country_event = {
+	id = 500224
+	title = "EVTNAME500224" 
+	desc = "EVTDESC500224"
+	picture = "courland_tobago_event"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500224"
+		money = 100000
+		any_owned = {
+			limit = {
+				province_id = 2237
+			}
+			remove_core = THIS
+		}
+		relation = { who = FROM value = 50 }
+		FROM = { country_event = 500225 }
+		ai_chance = {
+			factor = 60 
+			modifier = {
+				factor = 0.8
+				FROM = { is_greater_power = no }
+			}
+			modifier = {
+				factor = 1.8
+				is_greater_power = no
+			}
+			modifier = {
+				factor = 1.5
+				alliance_with = FROM
+			}
+			modifier = {
+				factor = 1.5
+				relation = { who = FROM value = 150 }
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB500224"
+		relation = { who = FROM value = -200 }
+		FROM = { country_event = 500226 }
+		ai_chance = {
+			factor = 40 
+			modifier = {
+				factor = 1.3
+				FROM = { is_greater_power = no }
+			}
+			modifier = {
+				factor = 0.2
+				is_greater_power = no
+			}
+			modifier = {
+				factor = 0.1
+				NOT = { relation = { who = FROM value = 0 } }
+			}
+		}
+	}
+}
+country_event = {
+	id = 500225
+	title = "EVTNAME500225"
+	desc = "EVTDESC500225"
+	picture = "courland_tobago_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500225OPTA"
+		FROM = {
+			any_owned = {
+				limit = {
+					province_id = 2237
+				}
+				secede_province = THIS
+			}
+		}
+		relation = { who = FROM value = 50 }
+		prestige = 10
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 500226
+	title = "EVTNAME500226"
+	desc = "EVTDESC500226"
+	picture = "courland_tobago_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500226OPTA"
+		relation = { who = FROM value = -200 }
+		add_casus_belli = {
+			target = FROM
+			type = place_in_the_sun
+			months = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Gambia, decide to purchase or demand
+country_event = {
+	id = 500227
+	title = "EVTNAME500227"
+	desc = "EVTDESC500227"
+	picture = "senegambia_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500227OPTA"
+		1785 = { owner = { country_event = 500221 } }
+		ai_chance = {
+			factor = 100
+		}
+	}
+	
+	option = {
+		name = "EVT500227OPTB"
+		1785 = { owner = { country_event = 500228 } }
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#From event 500227, FROM's offer THIS: Buying Senegal
+country_event = {
+	id = 500228
+	title = "EVTNAME500228" 
+	desc = "EVTDESC500228"
+	picture = "senegambia_event"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500228"
+		money = 250000
+		any_owned = {
+			limit = {
+				province_id = 1785
+			}
+			remove_core = THIS
+		}
+		relation = { who = FROM value = 50 }
+		FROM = { country_event = 500229 }
+		ai_chance = {
+			factor = 60 
+			modifier = {
+				factor = 0.8
+				FROM = { is_greater_power = no }
+			}
+			modifier = {
+				factor = 1.8
+				is_greater_power = no
+			}
+			modifier = {
+				factor = 1.5
+				alliance_with = FROM
+			}
+			modifier = {
+				factor = 1.5
+				relation = { who = FROM value = 150 }
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB500228"
+		relation = { who = FROM value = -200 }
+		FROM = { country_event = 500230 }
+		ai_chance = {
+			factor = 40 
+			modifier = {
+				factor = 1.3
+				FROM = { is_greater_power = no }
+			}
+			modifier = {
+				factor = 0.2
+				is_greater_power = no
+			}
+			modifier = {
+				factor = 0.1
+				NOT = { relation = { who = FROM value = 0 } }
+			}
+		}
+	}
+}
+country_event = {
+	id = 500229
+	title = "EVTNAME500229"
+	desc = "EVTDESC500229"
+	picture = "senegambia_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500229OPTA"
+		FROM = {
+			any_owned = {
+				limit = {
+					province_id = 1785
+				}
+				secede_province = THIS
+			}
+		}
+		relation = { who = FROM value = 50 }
+		prestige = 10
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 500230
+	title = "EVTNAME500230"
+	desc = "EVTDESC500230"
+	picture = "senegambia_event"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT500230OPTA"
+		relation = { who = FROM value = -200 }
+		add_casus_belli = {
+			target = FROM
+			type = place_in_the_sun
+			months = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+#Alexander II Assassination 
+### Design decision: While initially thought as leaving it up to random_list chance whether Alexander lives or dies, now the player decides the outcome and future of Tsardom. 
+#In AI scenario will almost always die.
+country_event = {
+
+	id = 500231
+
+	title = "EVTNAME500231"
+	desc = "EVTDESC500231"
+	picture = "tsar_assassination"
+
+	trigger = {
+		year = 1878
+		tag = RUS
+		has_country_flag = monarchy_gov
+		war = no
+		is_ideology_enabled = socialist #Narodnaya Volya
+		any_owned_province = {
+			average_militancy = 4
+		}
+		NOT = { has_country_flag = alexanderii_assassinated } 
+		NOT = { has_country_flag = alexanderii_lifeattempt } 
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	immediate = {
+		set_country_flag = alexanderii_lifeattempt
+	}
+
+	fire_only_once = yes #can't believe I forgot this
+
+	option = {
+		name = "EVTOPTA500231"
+		country_event = {id = 500235 days = 1 }
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+country_event = {
+
+	id = 500232
+
+	title = "EVTNAME500232"
+	desc = "EVTDESC500232"
+	news = yes
+	news_title = "EVTNAME500232_NEWS_TITLE"
+	news_desc_long = "EVTDESC500232_NEWS_LONG"
+	news_desc_medium = "EVTDESC500232_NEWS_MEDIUM"
+	news_desc_short = "EVTDESC500232_NEWS_SHORT"
+	picture = "alexander2_dead"
+	major = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = alexanderii_assassinated
+		clr_country_flag = tsaralexander2
+	}
+
+	option = {
+		name = "EVTOPTA500232" #Scrap the Constitution Plans, Manifesto on Unshakable Autocracy
+			any_pop = { #Death of the Tsar produces loyalty
+				limit = {
+					is_culture_group = east_slavic
+					location = { is_core = THIS }
+				}
+				ideology = { factor = 0.05 value = reactionary }
+			}
+			country_event = {id = 500234 days = 7 }
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+
+	# option = {
+	# 	name = "EVTOPTB90016" #Forgive path? Vladimir the Forgiver LOL
+
+	# 	prestige = -50
+
+	# 	ai_chance = {
+	# 		factor = 0
+	# 	}
+	# }
+}
+
+	#Melikov's Constitution - Reformist path
+	#For now there will be no scripted changes and it will be up to the player to carry them further. 
+	#landed_voting represents the "it is the first step towards the constitution" - Alexander II
+	country_event = {
+		id = 500233
+		title = "EVTNAME500233"
+		desc = "EVTDESC500233"
+		picture = "melikovconstitution"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500233" 
+			political_reform = landed_voting
+			political_reform = free_press
+			any_pop = {
+				limit = {
+					is_culture_group = east_slavic
+					#location = { is_core = THIS }
+				}
+				ideology = { factor = 0.1 value = liberal }
+				consciousness = 5 
+			}
+			clr_country_flag = vote_reform_blocker
+			clr_country_flag = soc_reform_blocker
+		}
+    }
+
+
+	#Manifesto on Unshakable Autocracy
+	country_event = {
+		id = 500234
+		title = "EVTNAME500234"
+		desc = "EVTDESC500234"
+		picture = "narodnaya_Volya_terrorists_hanged"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA500234"  #Scrap the Constitution Plans, Manifesto on Unshakable Autocracy
+			prestige = 10
+			badboy = 2
+			set_country_flag = vote_reform_blocker #This will not allow Autocracy to suddenly disappear due to militancy
+			set_country_flag = soc_reform_blocker 
+			ruling_party_ideology = reactionary
+			political_reform = none_voting
+			political_reform = state_press
+			political_reform = appointed
+			political_reform = state_controlled
+			political_reform = underground_parties
+			political_reform = mandatory_service
+			government = absolute_monarchy 
+			add_country_modifier = { name = decadent_autocracy duration = -1 }
+			any_pop = {
+				militancy = -1
+				consciousness = 3
+				scaled_militancy = {
+					ideology = reactionary
+					factor = -3
+				}
+
+				scaled_militancy = {
+					ideology = conservative
+					factor = -1
+				}
+
+				scaled_consciousness = {
+					ideology = conservative
+					factor = -2
+				}
+
+				scaled_consciousness = {
+					ideology = reactionary
+					factor = -4
+				}
+
+				scaled_consciousness = {
+					ideology = liberal
+					factor = 2
+				}
+				scaled_consciousness = {
+					ideology = anarcho_liberal
+					factor = 4
+				}
+				scaled_consciousness = {
+					ideology = socialist
+					factor = 4
+				}
+				scaled_consciousness = {
+					ideology = communist
+					factor = 6
+				}
+			}
+			set_country_flag = the_manifesto
+
+		ai_chance = {
+			factor = 100
+			}
+		}
+}
+
+country_event = {
+
+	id = 500235
+
+	title = "EVTNAME500235"
+	desc = "EVTDESC500235"
+	picture = "alexanderii_bomb"
+
+	trigger = {
+		year = 1878
+		tag = RUS
+		has_country_flag = monarchy_gov
+		war = no
+		is_ideology_enabled = socialist #Narodnaya Volya
+		any_owned_province = {
+			average_militancy = 4
+		}
+		NOT = { has_country_flag = alexanderii_assassinated } 
+		NOT = { has_country_flag = alexanderii_lifeattempt } 
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	immediate = {
+		set_country_flag = alexanderii_lifeattempt
+	}
+
+	option = {
+		name = "EVTOPTB500235" #He Dies
+		country_event = {id = 500232 days = 1 } #Return to Autocracy
+		ai_chance = {
+			factor = 90
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500235" #He Lives
+		country_event = { id = 500233 days = 7 } #Step towards the Constitution, Melikov Draft
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+
+#Nicholas I Reign and Autocracy
+country_event = {
+
+	id = 500236
+
+	trigger = {
+		tag = RUS
+		year = 1836
+		month = 2
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		days = 10
+	}
+
+	title = "EVTNAME500236"
+	desc = "EVTDESC500236"
+	picture = "nickyone"
+
+	option = {
+		name = "EVTOPTA500236"
+			##Orthodoxy, Autocracy, Nationality
+			prestige = 1
+			any_pop = { 
+				limit = {
+					is_culture_group = east_slavic 
+					OR = {
+						type = aristocrats
+						type = officers
+						type = bureaucrats
+					}
+				}
+			ideology = { value = reactionary factor = 0.15 }
+			}
+			any_pop = { 
+				limit = {
+					is_culture_group = east_slavic 
+					OR = {
+						type = aristocrats
+						type = officers
+						type = bureaucrats
+					}
+				}
+			ideology = { value = conservative factor = 0.15 }
+			}
+			any_pop = { #People love the Tsar
+				limit = {
+					is_culture_group = east_slavic 
+				}
+			ideology = { value = reactionary factor = 0.02 }
+			}
+			set_country_flag = pol_reform_blocker
+			set_country_flag = soc_reform_blocker
+			ruling_party_ideology = reactionary
+			country_event = { id = 500238 days = 2 }
+	}
+}
+
+#Nicholas I dies, Alexander II succeeds
+country_event = {
+
+	id = 500237
+	news = yes
+	news_desc_long = "EVTDESC500237_NEWS_LONG"
+	news_desc_medium = "EVTDESC500237_NEWS_MEDIUM"
+	news_desc_short = "EVTDESC500237_NEWS_SHORT"
+
+	trigger = {
+		tag = RUS
+		has_country_flag = monarchy_gov
+		year = 1855
+		month = 1
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		days = 30
+
+		modifier = {
+			factor = 0.5 #increase likelihood to happen
+			has_country_flag = crimean_war
+		}
+
+		modifier = {
+			factor = 0.5 #increase likelihood to happen
+			war = yes
+		}
+	}
+
+	title = "EVTNAME500237"
+	desc = "EVTDESC500237"
+	picture = "nickyone_alextwo"
+
+	option = {
+		name = "EVTOPTA500237"
+		any_pop = {
+			scaled_consciousness = {
+				factor = 3
+				ideology = liberal
+			}
+			scaled_consciousness = {
+				factor = 2
+				ideology = conservative
+			}
+		}
+		any_pop = { 
+				limit = {
+					is_culture_group = east_slavic 
+					#NOT = {
+					#	type = aristocrats
+					#	type = officers
+					#	type = bureaucrats
+					#}
+				}
+			ideology = { value = liberal factor = 0.1 }
+			}
+		clr_country_flag = pol_reform_blocker #this will allow manual reforms, but first go through decision chain
+		#clr_country_flag = soc_reform_blocker These are moved to Alex reforming decisions
+		set_country_flag = tsaralexander2
+		country_event = 500281 #Decide on the Flag again
+		ruling_party_ideology = conservative
+		remove_country_modifier = orthodoxy_autocracy_nationality
+		remove_country_modifier = gendarme_of_europe
+		clr_country_flag = orthodoxy_autocracy_nationality
+		add_country_modifier = { name = total_reform duration = 365 }
+	}
+}
+
+country_event = {
+
+	id = 500238
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500238"
+	desc = "EVTDESC500238"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500238"
+			##Orthodoxy, Autocracy, Nationality
+			prestige = 5
+			add_country_modifier = { name = orthodoxy_autocracy_nationality duration = 8000 } 
+			set_country_flag = orthodoxy_autocracy_nationality
+			add_country_modifier = { name = gendarme_of_europe duration = 8000 } #Enable Autocracy CB
+			country_event = { id = 500239 days = 2 }
+	}
+}
+
+#Player introduction
+
+country_event = {
+
+	id = 500239
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500239"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500239"
+			country_event = { id = 500240 }
+	}
+
+	option = {
+		name = "EVTOPTB500239"
+			country_event = { id = 500241 }
+	}
+
+	option = {
+		name = "EVTOPTG500239"
+			country_event = { id = 500284 }
+	}
+
+	option = {
+		name = "EVTOPTC500239"
+			country_event = { id = 500242 }
+	}
+
+	option = {
+		name = "EVTOPTD500239"
+			country_event = { id = 500243 }
+	}
+
+	option = {
+		name = "EVTOPTE500239"
+		treasury = -1
+		ai_chance = {
+		factor = 100
+		}
+	}
+}
+
+country_event = {
+
+	id = 500240
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500240"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500241
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500241"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500242
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500242"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500243
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500243"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+country_event = {
+
+	id = 500284
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500239"
+	desc = "EVTDESC500284"
+	picture = "russiazenith1830" 
+
+	option = {
+		name = "EVTOPTA500240"
+		country_event = { id = 500239 }
+	}
+
+	option = {
+		name = "EVTOPTF500239"
+	}
+}
+
+#Clashes between Anglo and Russian settlers on the Rockies border
+country_event = {
+
+	id = 500244
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500245"
+	desc = "EVTDESC500245"
+	picture = "1843_GreatMigration"  #russian america
+
+	option = {
+		name = "EVTOPTA500245"
+		any_owned = { 
+			limit = {
+			any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } }	
+			}
+			add_province_modifier = { name = border_clashes duration = 7200 }
+		}
+		#any_owned_province = { limit = { any_neighbor_province = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } } add_province_modifier = { name = border_clashes duration = 7200 } }
+	}
+}
+country_event = {
+
+	id = 500245
+
+	is_triggered_only = yes
+
+	title = "EVTNAME500245"
+	desc = "EVTDESC500245"
+	picture = "1843_GreatMigration"  #russian america
+
+	option = {
+		name = "EVTOPTA500245"
+		any_owned = { 
+			limit = {
+			any_neighbor_province = { OR = { owned_by = ENG owner = { vassal_of = ENG } owned_by = USA owner = { vassal_of = USA } } }	
+			}
+			add_province_modifier = { name = border_clashes duration = 7200 }
+		}
+		#any_owned_province = { limit = { any_neighbor_province = { OR = { owned_by = ENG owner = { vassal_of = ENG } } } } add_province_modifier = { name = border_clashes duration = 7200 } }
+		#any_owned_province = { limit = { any_neighbor_province = { OR = { owned_by = USA owner = { vassal_of = USA } } } } add_province_modifier = { name = border_clashes duration = 7200 } }
+
+		any_country = { 
+					limit = { OR = { tag = USA tag = ENG tag = UNB tag = RPL } }
+					relation = { who = THIS value = -50 }
+					country_event = { id = 500244 }
+					}
+	}
+}
+
+country_event = {
+
+	id = 500246
+
+	trigger = {
+		tag = USA
+		has_global_flag = crimea_has_happened
+		has_country_flag = hasmanifestdestiny
+		RUS = { has_country_flag = rossiskiy_kalyforniya war = yes }
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 2
+		modifier = { 
+			factor = 0.5
+			RUS = { war_exhaustion = 10 }
+		}
+		modifier = { 
+			factor = 0.4
+			RUS = { war_with = ENG }
+		}
+	}
+
+	title = "EVTNAME500246"
+	desc = "EVTDESC500246"
+	picture = "1843_GreatMigration"
+
+	option = {
+		name = "EVTOPTA500246"
+		war = {
+				target = RUS
+				attacker_goal = { casus_belli = acquire_all_cores country = USA }
+				defender_goal = { casus_belli = status_quo }
+			}
+			add_country_modifier = { name = rocky_war_timer duration = 1460 }
+		any_country = { 
+					limit = { AND = { tag = ENG war_with = RUS } }
+					relation = { who = THIS value = 50 }
+					country_event = 500247 #Evict Russia from America, split by historical parallel
+					}
+		RUS = { country_event = { id = 500249 days = 1 } }
+	}
+}
+
+#Britain Informed
+country_event = {
+	id = 500247
+	title = "EVTNAME500247"
+	desc = "EVTDESC500247"
+	picture = "russian_pacific_ambition"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500247" #yes
+		#trigger oregon events here
+	}
+}
+
+country_event = {
+	id = 500248
+	title = "EVTNAME500248"
+	desc = "EVTDESC500248"
+	picture = "russian_pacific_ambition"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500248" #All is Lost in America
+		#Historical 44 split
+		any_owned = {
+					limit = { 
+						OR = {
+						region = MEX_85 #cali
+						region = USA_78 #washington
+						region = USA_91 #Idaho
+						region = USA_81 #Oregon 
+						region = MEX_2139 #baja
+						region = MEX_94 #nev
+						region = MEX_97 #uta
+						is_core = USA #failsafe
+						}
+					}
+					remove_core = LSK 
+					secede_province = USA
+				}
+		any_owned = {
+					limit = { 
+						OR = {
+						region = CAN_13 #B.C.
+						region = USA_1 #Alaska
+						is_core = RPL #failsafe for more
+						is_core = COL #same
+						is_core = CAN
+						}
+					}
+					remove_core = LSK 
+					secede_province = ENG
+				}
+		prestige = -200
+		any_pop = {
+				limit = {
+					OR = {
+					is_primary_culture = yes
+					is_accepted_culture = yes
+					}
+				}
+				militancy = 5
+				consciousness = 5
+			}
+	end_war = USA
+	}	
+}
+country_event = { #Explanation of the war, outline if they lose control of provinces, Russian America is getting annexed
+	id = 500249
+	title = "EVTNAME500249"
+	desc = "EVTDESC500249"
+	picture = "russian_pacific_ambition"
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500249" 
+	}
+}
+
+#More Crimea
+	country_event = {
+			id = 500252
+			title = "EVTNAME500252"
+			desc = "EVTDESC500252"
+			picture = "Orthodox"
+			fire_only_once = yes
+			
+			
+			mean_time_to_happen = { days = 10 }
+			
+			trigger = {
+			tag = RUS
+			has_country_flag = crimean_war
+			has_country_modifier = austrian_betrayal
+			OR = {
+			alliance_with = AUS
+			relation = { who = AUS value = 50 }
+			alliance_with = KUK
+			relation = { who = KUK value = 50 }
+			  }
+			alliance_with = GCF
+			relation = { who = GCF value = 50 }
+			NOT = { is_sphere_leader_of = AUS is_sphere_leader_of = KUK }
+		    }
+
+			option = {
+				name = "EVTOPTA500252"
+				relation = { who = AUS value = -400 }
+				leave_alliance = AUS
+				relation = { who = KUK value = -400 }
+				leave_alliance = KUK
+				relation = { who = GCF value = -400 }
+				leave_alliance = GCF
+			}
+		}
+	#500259 in Canada 500260 - 500270 GEC
+
+### Oregon Expansion ###
+	#Description: The Oregon Trail - Russian colonists will slowly progress inland
+	#TBD Yukon and further inland
+	country_event = {
+
+		id = 500271
+		title = "EVTNAME44125"
+		desc = "EVTDESC500245"
+		picture = "1843_GreatMigration"
+
+		trigger = {
+			tag = RUS
+			year = 1840
+			has_country_flag = snatch_oregon_rus
+			OR = {
+				AND = { 91 = { empty = yes } owns = 92 }
+				AND = { 80 = { empty = yes } owns = 79 }
+				AND = { 114 = { empty = yes } owns = 91 }
+				AND = { 20 = { empty = yes } owns = 13 }
+				AND = { 21 = { empty = yes } owns = 20 }
+				AND = { 19 = { empty = yes } owns = 21 }
+				AND = { 16 = { empty = yes } owns = 19 }
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 3
+			modifier = {
+				factor = 0.8
+				year = 1840
+			}
+			modifier = {
+				factor = 0.5
+				year = 1843
+			}
+			modifier = {
+				factor = 0.5
+				state_n_government = 1
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.9
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.8
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.7
+			}
+			modifier = {
+				factor = 0.9
+				administration_spending = 0.6
+			}
+		}
+
+		option = {
+			name = "EVTOPTA500245"
+			random_owned = {
+				limit = {
+					16 = { empty = yes }
+					19 = { owned_by = THIS }
+				}
+				16 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					19 = { empty = yes }
+					21 = { owned_by = THIS }
+				}
+				19 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					21 = { empty = yes }
+					20 = { owned_by = THIS }
+				}
+				21 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					20 = { empty = yes }
+					13 = { owned_by = THIS }
+				}
+				20 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					114 = { empty = yes }
+					91 = { owned_by = THIS }
+				}
+				114 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					80 = { empty = yes }
+					79 = { owned_by = THIS }
+				}
+				80 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					91 = { empty = yes }
+					92 = { owned_by = THIS }
+				}
+				91 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			random_owned = {
+				limit = {
+					80 = { empty = yes }
+					79 = { owned_by = THIS }
+				}
+				80 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = LSK }
+			}
+			country_event = { id = 500245 days = 1 } #Represent border clashes
+		}
+	}
+
+country_event = { #Japan-Russia Rivalry over Manchuria and China
+	id = 500272
+	title = "EVTNAME500272" #spaghettis
+	desc = "EVTDESC500272"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500261"
+		RUS = { country_event = { id = 500273 days = 10 } }
+		relation = {
+			who = FROM
+			value = 50
+		}
+		#create_alliance = FROM
+		diplomatic_influence = {
+			who = FROM
+			value = 50
+		}
+		ai_chance = { factor = 95 }
+	}
+	
+	option = {
+		name = "EVTOPTB500261"
+		relation = {
+			who = QNG
+			value = -100
+		}
+		relation = {
+			who = RUS
+			value = 100
+		}
+		ai_chance = { factor = 5 }
+	}
+}
+
+country_event = { #Russia informed about Japanese intervention in Manchuria
+	id = 500273
+	title = "EVTNAME500273" 
+	desc = "EVTDESC500273"
+	picture = "cyprus_convention"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500273" #Japan sides with China
+		relation = { who = FROM value = -200 }
+		leave_alliance = FROM
+		FROM = {
+			war = {
+				target = THIS
+				attacker_goal = { casus_belli = humiliate } #this should be about Korea and Manchuria but can't code it with such certainty
+				defender_goal = { casus_belli = humiliate }
+			}
+		}
+		ai_chance = { factor = 100 }
+	}
+}
+
+	country_event = {
+			id = 500274 #Autocracy modifiers removed by revolution
+			title = "EVTNAME500274"
+			desc = "EVTDESC500274"
+			picture = "Orthodox"
+			fire_only_once = yes
+		
+			mean_time_to_happen = { days = 10 }
+			
+			trigger = {
+			tag = RUS
+			year = 1880
+			OR = {
+			has_country_modifier = decadent_autocracy
+			has_country_modifier = decadent_autocracy2
+			}
+			NOT = { has_country_flag = absolute_monarchy_gov }
+		    }
+
+			option = {
+				name = "EVTOPTA500252"
+				remove_country_modifier = decadent_autocracy
+				remove_country_modifier = decadent_autocracy2
+				clr_country_flag = pol_reform_blocker
+				clr_country_flag = soc_reform_blocker
+			}
+		}
+country_event = {
+
+		id = 500280 #Synod of Polotsk
+
+		title = "EVTNAME500280"
+		desc = "EVTDESC500280"
+		picture = "Orthodox"
+
+		trigger = {
+			primary_culture = russian
+			has_country_flag = monarchy_gov
+			year = 1838       
+		}
+
+		mean_time_to_happen = {
+			months = 5
+			modifier = {
+				factor = 0.15 #increase likelihood to happen
+				year = 1839
+			}
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA500280"
+			set_country_flag = synod_of_polotsk
+			prestige = 10
+		}
+	}
+country_event = {
+
+		id = 500281 #Choose our flag
+
+		title = "EVTNAME500281"
+		desc = "EVTDESC500281"
+		picture = "Orthodox"
+
+		trigger = {
+			primary_culture = russian
+			has_country_flag = monarchy_gov     
+		}
+
+		mean_time_to_happen = {
+			months = 5
+			modifier = {
+				factor = 0.15 #increase likelihood to happen
+				year = 1837
+			}
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTB500281"
+			government = absolute_monarchy2 #Black Yellow Red
+			set_country_flag = 2nd_monarchygov
+			ai_chance = {
+				factor = 1 #AI will pick this in 1856
+				modifier = { 
+					factor = 0 
+					NOT = { has_country_flag = absolute_monarchy_gov } 
+				}
+				modifier = { 
+					factor = 100
+					has_country_flag = tsaralexander2
+				}
+			}
+		}
+		option = {
+			name = "EVTOPTA500281"
+			government = absolute_monarchy #White, Blue, Red with Double Headed Eagle in Corner 
+			clr_country_flag = 2nd_monarchygov
+			ai_chance = {
+				factor = 1 #AI will pick this in 1896
+				modifier = { 
+					factor = 0 
+					NOT = { has_country_flag = absolute_monarchy_gov } 
+				}
+				modifier = { 
+					factor = 100
+					NOT = { has_country_flag = tsaralexander2 } 
+				}
+			}
+		}
+		option = {
+			name = "EVTOPTC500281" #fail safe in case russia is no longer an absolute monarchy
+			ai_chance = {
+				factor = 1 #AI will pick this if its not absolute monarchy
+				modifier = { 
+					factor = 100
+					NOT = { has_country_flag = absolute_monarchy_gov }
+				}
+			}
+		}
+	}
+
+#Leipzig Congress 2
+country_event = {
+	id = 500282
+	title = "EVTNAME500282"
+	desc = "EVTDESC500282"
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500282"
+
+		relation = { who = FROM value = -400 }
+	}
+}
+
+#Reactionary pushback to Alexanders reforms
+	country_event = {
+			id = 500285
+			title = "EVTNAME500285"
+			desc = "EVTDESC500285"
+			picture = "alex2reform"
+			fire_only_once = yes
+			
+			
+			mean_time_to_happen = { months = 12 }
+			
+			trigger = {
+			primary_culture = russian
+			has_country_flag = monarchy_gov
+			OR = {
+			has_country_modifier = total_reform
+			has_country_flag = tsaralexander2
+			}
+			has_country_flag = alexander_reforms
+			NOT = { year = 1875 }
+			NOT = { has_country_flag = pol_reform_blocker }
+		    }
+
+			option = {
+				name = "EVTOPTA500285" #We will continue reforms!
+				add_country_modifier = { name = total_reform duration = 730 }
+				labourers = {
+				consciousness = 1
+				militancy = -3
+				}
+				farmers = {
+				consciousness = 1
+				militancy = -3
+				}
+				aristocrats = {
+				consciousness = 3
+				militancy = 2
+				}
+				any_pop = { ideology = { factor = 0.02 value = liberal } }
+				ai_chance = {
+				factor = 90
+				modifier = {
+					factor = 0
+					has_country_flag = alexlifeattempt1866
+				}
+			}
+			}
+
+			option = {
+				name = "EVTOPTB500285" #Perhaps they are right
+				remove_country_modifier = total_reform 
+				#roll back some of the changes here
+				set_country_flag = pol_reform_blocker
+				set_country_flag = soc_reform_blocker
+				labourers = {
+				consciousness = 1
+				militancy = 3
+				}
+				farmers = {
+				consciousness = 1
+				militancy = 3
+				}
+				aristocrats = {
+				consciousness = -3
+				militancy = -8
+				}
+				any_pop = { ideology = { factor = 0.1 value = conservative } }
+				random_owned = {
+				limit = { owner = { school_reforms = low_schools } }
+				owner = { social_reform = no_schools }
+				}
+				random_owned = {
+				limit = { owner = { school_reforms = acceptable_schools } }
+				owner = { social_reform = low_schools }
+				}
+				random_owned = {
+				limit = { owner = { press_rights = censored_press } }
+				owner = { political_reform = state_press }
+				}
+				random_owned = { #this is in case, god forbid, AI let them vote
+				limit = { owner = { vote_franschise = landed_voting } }
+				owner = { political_reform = none_voting }
+				}
+			ai_chance = {
+				factor = 10
+				modifier = {
+					factor = 50
+					has_country_flag = alexlifeattempt1866
+				}
+			}
+			}
+		}
+
+#1866 Attempt At Alexander's life
+country_event = {
+
+	id = 500286
+
+	title = "EVTNAME500286"
+	desc = "EVTDESC500286"
+	picture = "alex1866attempt"
+
+	trigger = {
+		year = 1865
+		primary_culture = russian
+		has_country_flag = monarchy_gov
+		has_country_flag = tsaralexander2
+		any_owned_province = {
+			average_militancy = 3
+		}
+		NOT = { has_country_flag = alexlifeattempt1866 } 
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	fire_only_once = yes
+
+	immediate = {
+		set_country_flag = alexlifeattempt1866
+	}
+
+	option = {
+		name = "EVTOPTA500286"
+		country_event = {id = 500235 days = 2 }
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+country_event = {
+
+	id = 500287
+
+	title = "EVTNAME500287"
+	desc = "EVTDESC500287"
+	picture = "alex1866attempt"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500287"
+		remove_country_modifier = redemption_payments
+		treasury = -500000
+		labourers = {
+			money = 50
+			consciousness = -1
+			militancy = -9
+		}
+		farmers = {
+			money = 50
+			consciousness = 1
+			militancy = -9
+		}
+		upper_house = {
+			ideology = liberal
+			value = 0.5
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "EVTOPTB500287"
+		prestige = -1
+		labourers = {
+			consciousness = 1
+			militancy = 2
+		}
+		farmers = {
+			consciousness = 1
+			militancy = 2
+		}
+		upper_house = {
+			ideology = conservative
+			value = 0.5
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+#1900s
+country_event = {
+
+	id = 500288
+
+	title = "EVTNAME500288"
+	desc = "EVTDESC500288"
+	picture = "autocracy"
+
+	trigger = {
+		mass_politics = 1
+		primary_culture = russian
+		has_country_flag = absolute_monarchy_gov
+		any_owned_province = {
+			average_militancy = 6
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA500288"
+		add_country_modifier = { name = decadent_autocracy2 duration = -1 } #until revolution
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+country_event = {
+
+	id = 500289
+
+	title = "EVTNAME500289"
+	desc = "EVTDESC500289"
+	picture = "alex2reform"
+
+	trigger = {
+		primary_culture = russian
+		has_country_flag = absolute_monarchy_gov
+		has_country_flag = tsaralexander2
+		has_country_flag = alexander_reforms
+		NOT = { has_country_flag = pol_reform_blocker }
+	}
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	fire_only_once = yes
+
+
+ option = {
+        name = "EVTOPTA500289"
+		random_owned = {
+				limit = { owner = { school_reforms = low_schools } }
+				owner = { social_reform = acceptable_schools }
+			}
+		random_owned = {
+				limit = { owner = { school_reforms = no_schools } }
+				owner = { social_reform = low_schools }
+			}
+        any_pop = {
+            limit = {
+                type = clergymen
+                or = {
+                    is_primary_culture = yes
+                    is_accepted_culture = yes
+                }
+            }
+        reduce_pop = 1.15 # Grown by 10%
+        }
+    }
+}
+#1905 Revolution

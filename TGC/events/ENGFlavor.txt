@@ -14,7 +14,12 @@ country_event = {
 		tag = ENG
 		year = 1838
 		has_country_flag = monarchy_gov
-		is_sphere_leader_of = HAN
+		HAN = {
+			OR = {
+				exists = no
+				vassal_of = THIS
+			}
+		}
 	}
 
 	major = yes
@@ -27,6 +32,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA36898"
 		release_vassal = HAN
+		leave_alliance = HAN
 		diplomatic_influence = {
 			who = HAN
 			value = -200
@@ -4368,8 +4374,8 @@ country_event = {
 			619 = { owned_by = GER }
 			PRU_575 = { owned_by = FRA }
 			SPA_492 = { owned_by = FRA }
-			CAN_46 = { NOT = { OR = { owned_by = ENG owned_by = CAN } } } # Southern Ontario
-		    CAN_58 = { NOT = { OR = { owned_by = ENG owned_by = CAN } } } # Southern Quebec
+			58 = { NOT = { OR = { owned_by = ENG owned_by = CAN owned_by = RPL } } } # Southern Quebec
+			46 = { NOT = { OR = { owned_by = ENG owned_by = CAN owned_by = RPL } } } # Southern Ontario
 			2468 = { NOT = { OR = { owned_by = ENG owned_by = AST } } } # New South Wales
 			2087 = { NOT = { OR = { owned_by = ENG owned_by = SAF } } } # Cape Town
 			3263 = { NOT = { OR = { owned_by = ENG owned_by = EIC } } } # Fort William Bengal
@@ -4409,3 +4415,215 @@ country_event = {
 		}
 	}
 }
+
+
+#These are GP events designed against AI doing illogical things like allying Germany or Russia if they're challenging Britain #1 spot
+country_event = {
+	id = 999590
+	title = "EVTNAME999590"
+	desc = "EVTDESC999590"
+	major = yes
+
+	trigger = {
+		NOT = { has_global_flag = french_rhineland_win_crisis }
+		tag = ENG
+		OR = {
+		exists = GER
+		exists = GCF
+		}
+		OR = {
+		549 = { owner = { industrial_score = THIS } } #More industry than GBR
+		619 = { owned_by = GER } #Vienna
+		FRA_412 = { #Lorraine
+					NOT = {
+						owned_by = FRA
+					}
+				}
+			}
+		NOT = { has_global_flag = treaty_of_paris_russia } #Germany is an ally, not a foe if Russia is a big threaterino MUH INDIA
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA999590" #KRAUT ALARM ME OLE CHAPS
+		add_country_modifier = { name = german_threat duration = -1 }
+		any_greater_power = {
+			limit = { primary_culture = north_german }
+			relation = {
+				who = ENG
+				value = -400
+			}
+		}
+	ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "EVTOPTB999590" #nonsense, germany is a friend
+		any_greater_power = {
+			limit = { primary_culture = north_german }
+			relation = {
+				who = ENG
+				value = 100
+			}
+		}
+	ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 999591
+	title = "EVTNAME999590"
+	desc = "EVTDESC999590"
+
+	trigger = {
+		has_country_modifier = german_threat
+		tag = ENG
+		ai = yes
+		NOT = { has_global_flag = treaty_of_paris_russia } #Germany is an ally, not a foe if Russia is a big threaterino MUH INDIA
+		alliance_with = GER
+		alliance_with = GCF
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVTOPTA999591"
+		any_greater_power = {
+			limit = { primary_culture = north_german }
+			relation = {
+				who = ENG
+				value = -400
+			}
+			leave_alliance = THIS
+		}
+	}
+}
+
+country_event = {
+	id = 999592
+	title = "EVTNAME999592"
+	desc = "EVTDESC999592"
+
+	trigger = {
+		has_global_flag = treaty_of_paris_russia
+		tag = ENG
+		ai = yes
+		NOT = { has_global_flag = triple_entente_alliance }
+		alliance_with = RUS
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVTOPTA999592"
+		any_greater_power = {
+			limit = { primary_culture = russian }
+			relation = {
+				who = ENG
+				value = -400
+			}
+			leave_alliance = ENG
+		}
+		any_greater_power = {
+			limit = { NOT = { truce_with = ENG } NOT = { tag = RUS } }
+			relation = {
+				who = ENG
+				value = 25
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 999593
+	title = "EVTNAME999592"
+	desc = "EVTDESC999592"
+
+	trigger = {
+		has_global_flag = treaty_of_paris_russia
+		NOT = { has_country_modifier = triple_entente }
+		is_greater_power = yes
+		OR = {
+			primary_culture = british
+			AND = {
+				primary_culture = french
+				FRA_411 = {
+						owned_by = FRA
+				} #if they lost alsace they're not gonna care about russian ME domination
+			}
+			is_culture_group = germanic
+		}
+		ai = yes
+		OR = {
+			has_country_modifier = russian_menace
+			RUS = { has_country_modifier = outraged_europe_rus }
+		}
+		alliance_with = RUS
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVTOPTA999592"
+		any_greater_power = {
+			limit = { primary_culture = russian }
+			relation = {
+				who = THIS
+				value = -400
+			}
+			leave_alliance = THIS
+		}
+		any_greater_power = {
+			limit = { NOT = { truce_with = THIS } NOT = { tag = RUS } }
+			relation = {
+				who = THIS
+				value = 25
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 999594
+	title = "EVTNAME999592"
+	desc = "EVTDESC999592"
+
+	trigger = {
+		has_global_flag = french_rhineland_win_crisis
+	    OR = {
+		tag = ENG
+		AND = {
+		is_culture_group = germanic
+		is_greater_power = yes
+		}
+		}
+		ai = yes
+		NOT = { has_global_flag = triple_entente_alliance }
+		alliance_with = FRA
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVTOPTA999592"
+		any_greater_power = {
+			limit = { primary_culture = french }
+			relation = {
+				who = THIS
+				value = -400
+			}
+			leave_alliance = THIS
+		}
+		any_greater_power = {
+			limit = { NOT = { truce_with = THIS } NOT = { tag = FRA } }
+			relation = {
+				who = THIS
+				value = 50
+			}
+		}
+	}
+}
+

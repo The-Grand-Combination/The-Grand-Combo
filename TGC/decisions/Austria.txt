@@ -290,8 +290,13 @@ political_decisions = {
 			war = no
 			OR = {
 				mass_politics = 1
-				BOS = { num_of_revolts = 1 }
+				AND = {
+				OR = {
 				BOS = { average_militancy = 6 }
+				BOS = { num_of_revolts = 1 }
+				}
+				year = 1890
+				}
 				year = 1908
 			}
 		}
@@ -336,8 +341,123 @@ political_decisions = {
 						is_culture_group = south_slavic
 					}
 				}
-				relation = { who = THIS value = -50 }
+				relation = { who = THIS value = -100 }
 			}
+			SER = { country_event = { id = 500160 days = 5 } }
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	bosnian_annexation_to_croatia = {
+		picture = treaty_signing
+
+		potential = {
+			OR = {
+				AND = {
+					tag = GCF
+					capital = 619 #Vienna
+					HAN = {
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									in_sphere = THIS
+									OR = {
+										is_vassal = no
+										vassal_of = THIS
+									}
+									war = no
+									is_greater_power = no
+								}
+							}
+						}
+					}
+				}
+				AND = {
+				    owns = 619
+					tag = GER
+					is_greater_power = yes
+				}
+			}
+			CRO = {
+				ai = yes
+				exists = yes
+				vassal_of = THIS
+				owns = 771
+			}
+			BOS = {
+				ai = yes
+				exists = yes
+				vassal_of = THIS
+			}
+			NOT = { has_country_flag = annexed_bosnia }
+		}
+
+		allow = {
+			war = no
+			OR = {
+				mass_politics = 1
+				AND = {
+				OR = {
+				BOS = { average_militancy = 6 }
+				BOS = { num_of_revolts = 1 }
+				}
+				year = 1890
+				}
+				year = 1908
+			}
+		}
+
+		effect = {
+			set_country_flag = annexed_bosnia
+			prestige = 10
+			badboy = 5
+			CRO = { inherit = BOS }
+			relation = {
+			who = CRO
+			value = 400
+		    }
+			#random_owned = { #todo sandzak compromise
+			#	limit = {
+			#		NOT = { is_core = THIS }
+			#		NOT = { any_core = { primary_culture = THIS } }
+			#		province_id = 804
+			#		TUR = { exists = yes owns = 802 owns = 803 }
+			#	}
+			#	secede_province = TUR
+			#}
+			#random_owned = {
+			#	limit = {
+			#		NOT = { is_core = THIS }
+			#		NOT = { any_core = { primary_culture = THIS } }
+			#		province_id = 2577
+			#		TUR = { exists = yes owns = 802 owns = 803 }
+			#	}
+			#	secede_province = TUR
+			#}
+			#random_owned = {
+			#	limit = {
+			#		NOT = { is_core = THIS }
+			#		NOT = { any_core = { primary_culture = THIS } }
+			#		province_id = 3321
+			#		TUR = { exists = yes owns = 802 owns = 803 }
+			#	}
+			#	secede_province = SER
+			#}
+			any_country = {
+				limit = {
+					OR = {
+						tag = TUR
+						tag = RUS
+						is_culture_group = south_slavic
+					}
+				}
+				relation = { who = THIS value = -200 }
+			}
+			SER = { country_event = { id = 500160 days = 5 } }
 		}
 
 		ai_will_do = {
@@ -1045,7 +1165,10 @@ political_decisions = {
 
 		allow = {
 			war = no
+			OR = {
 			is_greater_power = yes
+			PRU = { ai = yes }
+			}
 			nationalism_n_imperialism = 1
 		}
 
@@ -1144,6 +1267,148 @@ political_decisions = {
 				country_event = 11101
 			}
 			FRA = { country_event = 72752 }
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	#Unites Germany in the face of Russian Domination
+		leipzig_congress2 = {
+		picture = german_confederation
+
+		potential = {
+			primary_culture = south_german
+			OR = {
+				tag = AUS
+				tag = KUK
+			}
+			NOT = {
+				exists = GCF
+				exists = GER
+				exists = RHI
+			}
+			AND = {
+				has_global_flag = treaty_of_paris_russia
+				702 = { owned_by = RUS } #Lvov
+				706 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Varshava
+				705 = { owned_by = RUS } #Premysl
+				OR = {
+				695 = { owned_by = RUS } #Konigsberg
+				699 = { owned_by = RUS } #Poznan
+				664 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Bucharest
+				794 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Belgrade
+				682 = { owned_by = RUS } #Breslau
+				}
+			}
+			NOT = { has_global_flag = leipzig_congress }
+		}
+
+		allow = {
+			war = no
+			OR = {
+			is_greater_power = yes
+			PRU = { ai = yes }
+			}
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			badboy = 5
+			CRO = { all_core = { add_core = HUN } }
+			any_owned = {
+				limit = {
+					OR = {
+						is_core = HUN
+						is_core = CRO
+					}
+					NOT = { is_core = DLM }
+				}
+				remove_core = KUK
+			}
+			KUK = { all_core = { add_core = AUS } }
+			GER = { all_core = { add_core = GCF } }
+			RHI = { all_core = { add_core = GCF } }
+			GCF = { all_core = { remove_core = GER } }
+			change_tag = GCF
+			inherit = NGF
+			inherit = SGF
+			add_accepted_culture = north_german
+			remove_accepted_culture = hungarian
+			set_global_flag = leipzig_congress
+			set_global_flag = 3hurrahs
+			any_country = {
+				limit = {
+					is_culture_group = germanic
+					exists = no
+					NOT = { tag = PRU }
+					NOT = { tag = BAN }
+					NOT = { tag = UBD }
+					NOT = { tag = STH }
+					NOT = { tag = LIV }
+					NOT = { tag = COU }
+					NOT = { has_country_flag = post_colonial_country }
+					OR = {
+						all_core = { owned_by = THIS }
+						tag = NGF
+						tag = SGF
+					}
+				}
+				country_event = 11105
+			}
+			any_country = {
+				limit = {
+					is_culture_group = germanic
+					exists = yes
+					OR = {
+						is_culture_group = germanic
+						AND = {
+							is_culture_group = germanic
+							in_sphere = THIS
+						}
+						tag = SCH
+						AND = {
+							tag = BAV
+							ai = yes
+						}
+						AND = {
+							tag = PRU
+							ai = yes
+						}
+					}
+					NOT = {
+						tag = KUK
+						tag = AUS
+						tag = DNB
+						tag = BAN
+						tag = UBD
+						tag = STH
+						tag = LIV
+						tag = COU
+						tag = VLG
+						tag = LIE
+						tag = SIE
+						capital_scope = { continent = africa }
+						capital_scope = { continent = west_africa }
+						capital_scope = { continent = central_africa }
+						capital_scope = { continent = east_africa }
+						capital_scope = { continent = south_west_africa }
+						capital_scope = { continent = asia }
+					}
+					NOT = {
+						vassal_of = FRA
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+						vassal_of = PRU
+					}
+					NOT = { has_country_flag = post_colonial_country }
+				}
+				country_event = 11101
+			}
+			RUS = { country_event = 500282 }
 		}
 
 		ai_will_do = {
@@ -1803,6 +2068,45 @@ political_decisions = {
 			}
 			prestige = 50
 			set_country_flag = grunderzeit
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	#Crimean War Danubian Pricnipalities
+	annex_danubian_principalities = {
+		potential = {
+			owns = 655
+			OR = {
+				tag = AUS
+				tag = KUK
+			}
+			has_global_flag = crimea_has_happened
+			NOT = { has_country_flag = aus_annex_danubian_principalities }
+		}
+
+		allow = {
+			war = no
+			has_global_flag = treaty_of_paris_1856
+			OR = {
+				has_country_flag = austria_stays_put_but_warns_russia
+				has_country_flag = austria_joins_the_allies
+			}
+			OR = {
+			is_sphere_leader_of = WAL
+			is_sphere_leader_of = MOL
+			is_sphere_leader_of = URP
+			URP = { in_sphere = FRA }
+			}
+		}
+
+		effect = {
+			set_country_flag = aus_annex_danubian_principalities
+			relation = { who = RUS value = -100 }
+			relation = { who = TUR value = -50 }
+			FRA = { country_event = { id = 500253 days = 3 } } #Can we pretty please keep it? If AUS joined the coalition, they can annex, if not, GPs tell them to gtfo
 		}
 
 		ai_will_do = {
