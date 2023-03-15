@@ -545,6 +545,173 @@ political_decisions = {
 
 		ai_will_do = { factor = 1 }
 	}
+	
+	#eastern yugoslavia
+	create_yugoslavia_rus = {
+		picture = create_yugoslavia
+		potential = {
+		    has_global_flag = treaty_of_paris_russia
+			is_greater_power = yes
+			tag = RUS
+			NOT = {
+				exists = YUG
+				is_culture_group = south_slavic
+				has_global_flag = yugoslavia_formed
+				#has_global_flag = disable_unite_as_puppet
+			}
+			OR = {
+				any_owned_province = { is_core = BOS }
+				any_owned_province = { is_core = BUL }
+				any_owned_province = { is_core = SER }
+				is_sphere_leader_of = BOS
+				is_sphere_leader_of = BUL
+				is_sphere_leader_of = SER
+			}
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			has_global_flag = great_eastern_crisis
+			war = no
+			860 = { owned_by = THIS }
+			794 = { #Belgrade
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
+				}
+			}
+			783 = { #Sarajevo
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
+				}
+			}
+			809 = { #Sofya
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
+				}
+			}
+			
+			806 = { #Skoplje
+				owner = {
+					OR = {
+						tag = THIS
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					NOT = { truce_with = THIS }
+					war = no
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = yugoslavia_formed #make an event where russia decides who is head boss, bulgars or serbs
+			prestige = 20
+			badboy = 3
+			SER = { all_core = { add_core = YUG } }
+			BUL = { all_core = { add_core = YUG } }
+			BOS = { all_core = { add_core = YUG } }
+			YUG = {
+			primary_culture = bulgarian
+			capital = 809 #sofya
+			add_accepted_culture = serb
+			#remove_accepted_culture = slovene #we will leave it in. no content past this, so if RUS wants to expand Yugoslavia it must liberate CRO/SLV cores, they will apply to join Yugo individually
+			#remove_accepted_culture = croat 
+			}
+			any_country = {
+				limit = {
+					OR = {
+						tag = SER
+						tag = BOS
+						tag = BUL
+					}
+					ai = yes
+					in_sphere = THIS
+				}
+				annex_to = THIS
+			}
+			any_country = {
+				limit = {
+					NOT = { is_culture_group = south_slavic }
+					in_sphere = THIS
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+					war = no
+					any_owned_province = { is_core = YUG }
+				}
+				any_owned = {
+					limit = { is_core = YUG	}
+					secede_province = THIS
+				}
+			}
+			any_owned = {
+				limit = {
+					is_core = THIS
+					is_core = YUG
+				}
+				remove_core = YUG
+			}
+			release_vassal = YUG
+			create_alliance = YUG
+			diplomatic_influence = {
+				who = YUG
+				value = 400
+			}
+			any_country = {
+				limit = {
+					OR = {
+						tag = AUS
+						tag = KUK
+						tag = DNB
+						tag = HUN
+						tag = TUR
+					}
+					NOT = { tag = THIS }
+				}
+				relation = {
+					who = THIS
+					value = -50
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 
 	create_zapadoslavia = {
 		picture = create_zapadoslavia
