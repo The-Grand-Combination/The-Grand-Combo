@@ -45,7 +45,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTB5000000"
-		prestige = 15
+		prestige = 30
 		TUR = { relation = { who = THIS value = -200 } country_event = 13202 }
 		AUS = {
 			casus_belli = { target = SER type = add_to_sphere months = 36 }
@@ -92,7 +92,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA5000001"
 
-		prestige = 5
+		prestige = 10
 		any_pop = { consciousness = -1 }
 
 		random_owned = {
@@ -314,7 +314,7 @@ country_event = {
 	}
 
 	immediate = {
-		prestige = -15
+		prestige = -30
 		badboy = 3
 		CRE = { government = democracy }
 	}
@@ -371,5 +371,330 @@ country_event = {
 		ai_chance = {
 			factor = 0
 		}
+	}
+}
+
+#Bosnian Annexation Crisis 1908
+country_event = {
+	id = 500160
+	title = "EVTNAME500160"
+	desc = "EVTDESC500160" #done
+	picture = "bosnia_issue"
+
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500160"
+		set_country_flag = bosnian_question_1908_deliberated
+		RUS = { country_event = { id = 500161 days = 7 } }
+		prestige = 10
+		any_pop = {
+		limit = {
+			has_pop_culture = serb
+			location = { is_core = THIS }
+		}
+		consciousness = 3
+		militancy = -6
+		}
+		ai_chance = { factor = 97 }
+	}
+
+	option = {
+		name = "EVTOPTB500160"
+		prestige = -20
+		any_pop = {
+			limit = {
+				has_pop_culture = serb
+				location = { is_core = THIS }
+			}
+			consciousness = 2
+			militancy = 5
+		}
+		ai_chance = { factor = 3 }
+	}
+}
+	   
+#Serbia appeals to Russia to contest the Annexation
+country_event = {
+	id = 500161
+	title = "EVTNAME500161"
+	desc = "EVTDESC500161"
+	picture = "bosnia_issue"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500161"
+		any_country = {
+			limit = {
+				has_country_flag = annexed_bosnia
+			}
+			country_event = { id = 500164 days = 6 }
+			leave_alliance = RUS
+			leave_alliance = SER
+			relation = { who = THIS value = -200 }
+		}
+		SER = { country_event = { id = 500163 days = 7 }
+        relation = { who = THIS value = 200 }				}
+		prestige = 50
+		ai_chance = { factor = 10 } #10
+	}
+	
+	#option = { #TODO
+	#	name = "EVTOPTB500161"
+	#	SER = { country_event = { id = 500162 days = 5 } }
+	#	#619 = { owner = { relation = { who = THIS value = -25 } } }
+	#	prestige = -5
+	#    ai_chance = { factor = 5 }
+	#}
+	
+	option = {
+		name = "EVTOPTC500161"
+		SER = { country_event = { id = 500162 days = 5 } }
+		619 = { owner = { relation = { who = THIS value = -25 } } }
+		prestige = -30
+		ai_chance = { factor = 90 } #90
+	}
+}
+		
+#Serbia gets informed that Russia instructs them to back down
+country_event = {
+	id = 500162
+	title = "EVTNAME500162"
+	desc = "EVTDESC500162" # done
+	picture = "bosnia_issue"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500162"
+		#RUS = { country_event = { id = 50016 days = 7 } } #informed serbia backed down todo
+		prestige = -10
+		relation = { who = RUS value = -50 }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB500162"
+		leave_alliance = RUS
+		relation = { who = RUS value = -200 }
+		THIS = { diplomatic_influence = { who = RUS value = -200 } }
+		war = {
+			target = AUS
+			attacker_goal = { casus_belli = acquire_any_state
+							state_province_id = 781 }
+			attacker_goal = { casus_belli = acquire_all_cores
+							 country = AUS }
+		    defender_goal = { casus_belli = make_puppet country = SER }
+		}
+		prestige = 10
+		ai_chance = { factor = 0 }
+	}
+}
+		
+#Serbia informed Russia has their back
+country_event = {
+	id = 500163
+	title = "EVTNAME500163"
+	desc = "EVTDESC500163" # done
+	picture = "austrian_telegram"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500163"
+		#add mobilization modifier boost
+		prestige = 5
+		ai_chance = { factor = 100 }
+	}
+}
+		
+#AUS gets the Russian Ultimatum
+country_event = {
+	id = 500164
+	title = "EVTNAME500164"
+	desc = "EVTDESC500164"
+	picture = "austrian_telegram"
+
+	major = yes
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500164"
+		RUS = { country_event = { id = 500165 days = 7 } }
+		prestige = 100
+		ai_chance = { factor = 90 }
+	}
+	
+	option = {
+		name = "EVTOPTB500164"
+		RUS = { country_event = { id = 500166 days = 7 } }
+		release = BOS
+		diplomatic_influence = { who = BOS value =-200 }
+		diplomatic_influence = { who = SER value =-200 }
+		diplomatic_influence = { who = BUL value =-200 }
+		prestige = -100
+		ai_chance = { factor = 10 }
+	}
+}
+		
+#Austria rejects the ultimatum, one last chance to prevent millions of people to die
+country_event = {
+	id = 500165
+	title = "EVTNAME500165"
+	desc = "EVTDESC500165"
+	picture = "the_great_war"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500165"
+		any_country = {
+			limit = {
+				NOT = {
+					tag = THIS
+					tag = FROM
+					alliance_with = AUS
+					alliance_with = KUK
+					relation = { who = THIS value = 0 }
+				}
+				capital_scope = { continent = europe }
+				is_greater_power = yes
+			}
+			country_event = { id = 500167 days = 3 } 
+		}
+		any_country = {
+			limit = {
+				has_country_flag = annexed_bosnia
+			}
+			country_event = { id = 500168 days = 8 }
+			relation = { who = THIS value = -200 }
+		}
+		ai_chance = { factor = 80 }
+	}
+			
+	option = {
+		name = "EVTOPTB500165"
+		prestige = -100
+		ai_chance = { factor = 20 }
+	}
+}
+		
+#Russia informed Austria backs out
+country_event = {
+	id = 500166
+	title = "EVTNAME500166"
+	desc = "EVTDESC500166" #done
+	picture = "bosnia_issue"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA500166"
+		prestige = 100
+		diplomatic_influence = { who = BOS value = 400 }
+		ai_chance = { factor = 100 }
+	}
+}
+		
+#other GPs help
+country_event = {
+	id = 500167
+	title = "EVTNAME500167"
+	desc = "EVTDESC500167" #done
+	picture = "the_great_war"
+
+	is_triggered_only = yes
+
+	major = yes
+	
+	option = {
+		name = "EVTOPTA500167"
+		prestige = 25
+		create_alliance = RUS
+		leave_alliance = AUS
+		leave_alliance = KUK
+		relation = { who = RUS value = 400 }
+		relation = { who = AUS value = -200 }
+		ai_chance = {
+			factor = 30 
+			modifier = {
+				factor = 0
+				alliance_with = GER
+			}
+			modifier = {
+			factor = 100
+			tag = FRA
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTC500167" #support austria
+		prestige = 25
+		relation = { who = RUS value = -400 }
+		relation = { who = AUS value = 200 }
+		create_alliance = AUS
+		create_alliance = KUK
+		leave_alliance = RUS
+		ai_chance = { 
+		factor = 15
+		modifier = {
+			factor = 100
+			tag = GER
+			}
+		modifier = {
+			factor = 0
+			alliance_with = RUS
+			} 
+		}
+	}
+
+	option = {
+		name = "EVTOPTB500167"
+		prestige = -25
+		relation = { who = RUS value = -100 }
+		ai_chance = { factor = 30
+		modifier = {
+			factor = 25
+			tag = ENG
+			}
+		modifier = {
+			factor = 25
+			tag = ITA
+			}
+		}
+	}
+}
+		
+#Austria rejects the ultimatum, one last chance to prevent millions of people to die
+country_event = {
+	id = 500168
+	title = "EVTNAME500168"
+	desc = "EVTDESC500168"
+	major = yes
+
+	is_triggered_only = yes
+			
+	option = {
+		name = "EVTOPTA500168"
+		RUS = {
+			casus_belli = {
+				target = THIS
+				type = free_allied_cores
+				months = 50
+			}
+			war = {
+				target = THIS
+				attacker_goal = { casus_belli = dismantle_cb }
+				defender_goal = { casus_belli = dismantle_cb }
+				call_ally = yes
+			}
+		}
+		prestige = 50
+		ai_chance = { factor = 100 }
 	}
 }

@@ -118,11 +118,8 @@ political_decisions = {
 		alert = no
 		picture = enslave_the_serfs_image
 		potential = {
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				has_country_flag = semi_constitutional_monarchy_gov
-			}
 			debt_law = serfdom
+			has_country_flag = can_enslave_serfs # Absolute and semiconstitutional monarchies
 			any_pop = { type = serfs }
 		}
 
@@ -182,22 +179,22 @@ political_decisions = {
 		alert = no
 		potential = {
 			rank = 16
-			OR = {
-				NOT = { tag = USA }
-				NOT = { has_country_modifier = the_slavery_debate_modifier }
+			NOT = {
+				tag = USA
+				has_country_modifier = the_slavery_debate_modifier
 			}
 			slavery = yes_slavery
 			NOT = { has_country_modifier = slavery_propaganda }
 		}
 
 		allow = {
-			prestige = 100
+			prestige = 200
 			war = no
 			money = 25000
 		}
 
 		effect = {
-			prestige = -15
+			prestige = -30
 			badboy = 2
 			plurality = -5
 			treasury = -25000
@@ -226,10 +223,7 @@ political_decisions = {
 	abolish_slavery = {
 		picture = enslave_the_serfs_image
 		potential = {
-			OR = {
-				has_country_flag = constitutional_monarchy_gov
-				has_country_flag = democracy_gov
-			}
+			has_country_flag = can_abolish_slavery # Democracies and constitutional monarchies
 			NOT = { slavery = no_slavery }
 			NOT = { any_pop = { type = slaves } }
 			year = 1886
@@ -532,7 +526,7 @@ political_decisions = {
 				clr_global_flag = slave_trade_reinstated
 				clr_country_flag = slave_trade_leader
 				clr_country_flag = the_slavery_debate
-				prestige = 10
+				prestige = 20
 				badboy = -7
 				remove_country_modifier = the_slavery_debate_modifier
 				remove_country_modifier = atlantic_slave_trade
@@ -564,7 +558,7 @@ political_decisions = {
 
 #from MiniMod-General.txt
 
-	remove_kebab = {
+	remove_undesireables = { #Balkan/Anatolia Liberation Wars violence against Non-Christians
 		picture = remove_undesireables
 		alert = no
 		potential = {
@@ -585,22 +579,26 @@ political_decisions = {
 				tag = PNT
 			}
 			ideological_thought = 1
-			NOT = { has_country_modifier = kebabbies }
+			NOT = { has_country_modifier = remove_undesireables }
+			NOT = { has_country_flag = violence_against_turks }
 		}
 
 		allow = {
 			ideological_thought = 1
+			NOT = { citizenship_policy = full_citizenship }
+		    NOT = { has_country_flag = democracy_gov }
 		}
 
 		effect = {
-			add_country_modifier = { name = kebabbies duration = 3650 }
+			add_country_modifier = { name = remove_undesireables duration = 3650 }
 			add_country_modifier = { name = local_balkan_assim duration = 1080 }
+			set_country_flag = violence_against_turks
 			any_pop = {
 				limit = { culture = turkish }
 				reduce_pop = 0.35
 				militancy = 9
 				consciousness = 6
-			}
+			} #An event to increase growth in Turkey triggered by this, representing refugees. Alternative: migrationtarget
 			any_pop = {
 				limit = {
 					is_primary_culture = no
@@ -644,78 +642,12 @@ political_decisions = {
 		}
 	}
 
-	remove_undesireables = {
-		alert = no
-		potential = {
-			OR = {
-				government = fascist_dictatorship
-				has_country_flag = absolute_monarchy_gov
-				has_country_flag = semi_constitutional_monarchy_gov
-				government = presidential_dictatorship
-				has_country_flag = communist_gov
-			}
-			ideological_thought = 1
-			NOT = { has_country_modifier = kebabbies }
-			NOT = {
-				tag = YUG
-				tag = SER
-				tag = ALB
-				tag = BUL
-				tag = SLO
-				tag = HUN
-				tag = CRO
-				tag = BOS
-				tag = MON
-				tag = GRE
-			}
-		}
-		allow = {
-			ideological_thought = 1
-		}
-		effect = {
-			add_country_modifier = { name = kebabbies duration = 3650 }
-			any_pop = {
-				limit = {
-					location = { is_colonial = no }
-					is_primary_culture = no
-					is_accepted_culture = no
-				}
-				reduce_pop = 0.65
-				militancy = 9
-				consciousness = 5
-			}
-			any_pop = {
-				limit = {
-					OR = {
-						is_primary_culture = yes
-						is_accepted_culture = yes
-					}
-				}
-				scaled_militancy = { ideology = fascist factor = -8 }
-				scaled_militancy = { ideology = reactionary factor = -4 }
-				scaled_militancy = { ideology = socialist factor = 4 }
-				scaled_militancy = { ideology = communist factor = 1 }
-				scaled_militancy = { ideology = conservative factor = -1 }
-				scaled_militancy = { ideology = liberal factor = 6 }
-				scaled_militancy = { ideology = anarcho_liberal factor = 7 }
-			}
-		}
-
-		ai_will_do = { factor = 0 }
-	}
-
 ## Internment Camps ##
 
 	internment_camps = {
 		picture = boer_war_camps2
 		potential = {
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = theocracy
-				government = fascist_dictatorship
-				government = presidential_dictatorship
-				has_country_flag = communist_gov
-			}
+			has_country_flag = authoritarian_government
 			revolution_n_counterrevolution = 1
 			NOT = { has_country_modifier = internment_camps_modifier }
 			#OR = {
@@ -731,13 +663,6 @@ political_decisions = {
 				has_country_modifier = law_changed_by_force
 				has_country_modifier = national_confusion
 				has_recently_lost_war = yes
-			}
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = theocracy
-				government = fascist_dictatorship
-				government = presidential_dictatorship
-				has_country_flag = communist_gov
 			}
 			OR = {
 				ruling_party_ideology = reactionary
@@ -2469,13 +2394,7 @@ political_decisions = {
 	genocide_minorities = {
 		picture = genocide_minorities
 		potential = {
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = theocracy
-				government = fascist_dictatorship
-				government = presidential_dictatorship
-				has_country_flag = communist_gov
-			}
+			has_country_flag = authoritarian_government
 			revolution_n_counterrevolution = 1
 			NOT = { has_country_flag = preparations_to_kill }
 		}
@@ -2485,13 +2404,7 @@ political_decisions = {
 			NOT = { any_owned_province = { has_province_modifier = genocide } }
 			invention = rhetoric_of_hate
 			money = 100000
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = theocracy
-				government = fascist_dictatorship
-				government = presidential_dictatorship
-				has_country_flag = communist_gov
-			}
+			has_country_flag = authoritarian_government
 			OR = {
 				ruling_party_ideology = reactionary
 				ruling_party_ideology = fascist
@@ -2625,10 +2538,8 @@ political_decisions = {
 #from Communism.txt
 	kill_the_commies = {
 		potential = {
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = fascist_dictatorship
-			}
+			has_country_flag = authoritarian_government
+			NOT = { has_country_flag = communist_gov }
 			is_ideology_enabled = socialist
 			is_ideology_enabled = communist
 			average_militancy = 7
@@ -2656,7 +2567,7 @@ political_decisions = {
 		}
 
 		ai_will_do = {
-			factor = 0.5
+			factor = 0
 			modifier = {
 				factor = 2
 				num_of_revolts = 1
