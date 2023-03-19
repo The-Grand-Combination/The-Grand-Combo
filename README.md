@@ -39,6 +39,7 @@ Banks and Universities provide the player with new playstyles and methods to spe
 Our two new PoPs: Pioneers and Tribesmen allow for a never-seen experience when it comes to expanding and colonizing new lands. Pioneers, who are usually seen in lands ripe for colonization are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarily unique PoPs, in the sense that they are harder to integrate into western society, and have no plans in working with settlers. Why would a native pick up a hoe and start farming as soon as someone steps into their lands? These two new PoPs open room to vast possibilities in terms of flavor, immersion, and gameplay, something which you may never see in any other mod.
 
 <br clear="left"/>
+
 ![econbanner](https://user-images.githubusercontent.com/32886642/226188364-36d72f32-d641-473a-82c7-1aee69c71ccd.png)
 ![Econ1](https://user-images.githubusercontent.com/32886642/226188370-fdda9e06-40f4-4b54-8466-ea113a464536.png)
 
