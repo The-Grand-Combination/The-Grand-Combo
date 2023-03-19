@@ -38,8 +38,11 @@ Banks and Universities provide the player with new playstyles and methods to spe
 
 Our two new PoPs: Pioneers and Tribesmen allow for a never-seen experience when it comes to expanding and colonizing new lands. Pioneers, who are usually seen in lands ripe for colonization are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarily unique PoPs, in the sense that they are harder to integrate into western society, and have no plans in working with settlers. Why would a native pick up a hoe and start farming as soon as someone steps into their lands? These two new PoPs open room to vast possibilities in terms of flavor, immersion, and gameplay, something which you may never see in any other mod.
 
-
 <br clear="left"/>
+![image](https://user-images.githubusercontent.com/32886642/226187040-a87d276f-1ccb-4188-a7a7-8e2fbc174ab7.png)
+![image](https://user-images.githubusercontent.com/32886642/226187094-59b754e0-2656-44f7-beae-04fcc9ba125e.png)
+
+TGC's Economy won't stagnate, quite the contrary, it will get stronger as the game goes on. There's no Liquidity Crisis or stagnation on TGC.
 
 ![polling](https://user-images.githubusercontent.com/32886642/209735696-2d36c43b-fdb0-497c-a7ae-c9983106f57d.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
