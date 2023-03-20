@@ -9,7 +9,7 @@ TGC is a complete game overhaul that started as an attempt to merge all the vari
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
-TGC has the currently largest, most accurate, and well-made Victoria II map from Vanilla and all other mods, including an expanded 25% larger map with hundreds, if not thousands, of additional provinces, an improved map projection, enhanced coastlines and borders, and a slew of other improvements. As of our motto, "No detail in history is too small to not be represented
+TGC has the currently largest, most accurate, and well-made Victoria II map from Vanilla and all other mods, including an expanded 25% larger map with hundreds, if not thousands, of additional provinces, an improved map projection, enhanced coastlines and borders, flavor, new pops, buildings completely revamped and fixed economy and much much more. As of our motto, "No detail in history is too small to not be represented
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
@@ -38,8 +38,13 @@ Banks and Universities provide the player with new playstyles and methods to spe
 
 Our two new PoPs: Pioneers and Tribesmen allow for a never-seen experience when it comes to expanding and colonizing new lands. Pioneers, who are usually seen in lands ripe for colonization are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarily unique PoPs, in the sense that they are harder to integrate into western society, and have no plans in working with settlers. Why would a native pick up a hoe and start farming as soon as someone steps into their lands? These two new PoPs open room to vast possibilities in terms of flavor, immersion, and gameplay, something which you may never see in any other mod.
 
-
 <br clear="left"/>
+
+![econbanner](https://user-images.githubusercontent.com/32886642/226188364-36d72f32-d641-473a-82c7-1aee69c71ccd.png)
+![Econ1](https://user-images.githubusercontent.com/32886642/226188370-fdda9e06-40f4-4b54-8466-ea113a464536.png)
+
+
+TGC's Economy won't stagnate, quite the contrary, it will get stronger as the game goes on. There's no Liquidity Crisis or stagnation on TGC. You can keep playing after 1900 and expect the Roaring Tweenties to really be "Roaring", as the economy will keep growing more and more.
 
 ![polling](https://user-images.githubusercontent.com/32886642/209735696-2d36c43b-fdb0-497c-a7ae-c9983106f57d.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
@@ -122,7 +127,7 @@ With the Endonymic Localization submod, by Guy from the Land of Phillip II, coun
 
 ![more](https://user-images.githubusercontent.com/32886642/209707903-f3fa035a-d1c5-429e-8c5e-4d1b1f48f8e5.png)
 
-The features listed here are just a fraction of what TGC has to offer, it's a full overhaul after all. New map, new provinces, tons of flavor, interesting but non railroady event chains, improved reform system, useful submods, adjusted economy, no liquidity crisis, new mechanics like improved pop growth, ideological spread, improved assimilation mechanics and much much more. 
+The features listed here are just a fraction of what TGC has to offer, it's a full overhaul after all. New map, new provinces, tons of flavor, interesting but non railroady event chains, improved reform system, useful submods, fixed economy, no liquidity crisis, new mechanics like improved pop growth, ideological spread, improved assimilation mechanics and much much more. 
 
 ## Installation and Technical stuff
 
