@@ -2,12 +2,32 @@ political_decisions = {
 
 	ap_state_of_emergency = {
 		potential = {
-			exists = yes
 			has_global_flag = zombie_mod
+			NOT = { has_country_modifier = ap_state_of_emergency }
 		}
 		allow = {
-			has_country_flag = zombie_outbreak
+			OR = { has_country_flag = zombie_outbreak any_neighbor_country = { has_country_flag = zombie_outbreak } }
 			NOT = { has_country_modifier = ap_state_of_emergency }
+		}
+		effect = {
+			country_event = 123456026
+			political_reform = none_voting
+			political_reform = appointed
+		}
+
+		ai_will_do = { factor = 1
+						modifier = { factor = 0 NOT = { has_country_flag = zombie_outbreak } }
+		}
+	}
+
+	
+	ap_end_state_of_emergency = {
+		potential = {
+			has_global_flag = zombie_mod
+			has_country_modifier = ap_state_of_emergency
+		}
+		allow = {
+			has_country_modifier = ap_state_of_emergency
 		}
 		effect = {
 			country_event = 123456026
@@ -26,6 +46,7 @@ political_decisions = {
 			NOT = { has_country_modifier = ap_lock_down }
 		}
 		allow = {
+			has_country_modifier = ap_state_of_emergency
 			NOT = { has_country_modifier = ap_lock_down }
 		}
 		effect = {
@@ -38,7 +59,7 @@ political_decisions = {
 
 	ap_remove_lock_down = {
 		potential = {
-			exists = yes
+			has_country_modifier = ap_lock_down
 		}
 		allow = {
 			has_country_modifier = ap_lock_down
@@ -60,6 +81,7 @@ political_decisions = {
 		allow = {
 			has_country_flag = zombie_outbreak
 		}
+
 		effect = {
 			treasury = 50000
 			militancy = 8
@@ -67,7 +89,7 @@ political_decisions = {
 			set_country_flag = assets_siezed
 		}
 
-		ai_will_do = { factor = 1 modifier = }
+		ai_will_do = { factor = 0 }
 	}
 }
 
