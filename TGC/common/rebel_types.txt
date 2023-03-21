@@ -6390,3 +6390,133 @@ anarchist_rebels = {
 		country_event = 800052
 	}
 }
+
+# Apocalypse 1836
+
+zombie_rebels = {
+	icon = 4
+
+	area = all
+	break_alliance_on_win = no
+	
+	government = {
+		proletarian_dictatorship = presidential_dictatorship
+		presidential_dictatorship = absolute_monarchy
+		bourgeois_dictatorship = absolute_monarchy
+		fascist_dictatorship = presidential_dictatorship
+		absolute_monarchy = absolute_monarchy
+		absolute_monarchy2 = absolute_monarchy2
+		prussian_constitutionalism = absolute_monarchy
+		prussian_constitutionalism2 = absolute_monarchy2
+		hms_government = absolute_monarchy
+		hms_government2 = absolute_monarchy2
+		dominion = presidential_dictatorship
+		democracy = presidential_dictatorship
+		democracy2 = presidential_dictatorship
+		federal_democracy = presidential_dictatorship
+		theocracy = theocracy
+		colonial_company = absolute_monarchy
+		trade_unions_congress = presidential_dictatorship
+	}
+
+	defection = none
+	independence = none
+	defect_delay = 8
+	
+	allow_all_cultures = yes
+	allow_all_religions = yes
+	allow_all_ideologies = yes
+
+	ideology = liberal
+	
+	resilient = yes
+	reinforcing = yes
+	general = yes
+	smart = no
+	unit_transfer = yes
+
+	occupation_mult = 1.0
+
+	will_rise = {
+		factor = 0.1
+		modifier = {
+			factor = 1
+			location = { has_province_modifier = zombie_outbreak }
+		}
+		modifier = {
+			factor = 0
+			location = {
+				NOT = { has_province_modifier = zombie_outbreak }
+			}
+		}
+		modifier = {
+			factor = 0
+			country = { has_country_flag = zombie_outbreak_defeat }
+		}
+	}
+	
+	spawn_chance = {
+		factor = 500
+		modifier = {
+			factor = 500
+			location = { has_province_modifier = zombie_outbreak }
+		}
+		modifier = {
+			factor = 0
+			location = {
+				 NOT = { has_province_modifier = zombie_outbreak } 
+			}
+		}
+		modifier = {
+			factor = 0
+			country = { has_country_flag = zombie_outbreak_defeat }
+		}
+	}
+ 
+	movement_evaluation = {
+		factor = 1
+		modifier = {
+			factor = 0.1
+			units_in_province = 1
+		}
+		modifier = {
+			factor = 0.001
+			controlled_by = REB
+		}
+
+	}
+
+ 	siege_won_trigger = { 
+		NOT = {
+			has_province_modifier = zombie_outbreak
+		}
+	}
+	
+	siege_won_effect = {
+		any_pop = {
+			reduce_pop = 0.8
+			militancy = 8
+			consciousness = -3
+		}
+		add_province_modifier = { 
+			name = "zombie_outbreak"
+			duration = 5000
+		}
+	}
+
+	demands_enforced_trigger = {
+
+		all_land_provinces = { OR = { controlled_by = REB controlled_by = ZOM } }
+	
+	}
+
+	demands_enforced_effect = {
+		any_country = {
+			limit = {
+				has_country_flag = zombie_outbreak
+				NOT = { tag = ZOM }
+			}
+		}
+		country_event = 12345024
+	}
+}
