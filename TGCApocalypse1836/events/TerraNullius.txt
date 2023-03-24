@@ -6,50 +6,42 @@ province_event = {      #Zombify province
 	trigger = {
 		owner = {exists = yes }
 		NOT = { owner = { tag = ZOM } }
-		province_control_days = 720
+		province_control_days = 365
 		has_province_modifier = zombie_outbreak
 		controlled_by = REB
 		exists = ZOM
-		ZOM = {
-			has_country_modifier = accepts_new_provinces
-		}
 	}
 
 	mean_time_to_happen = {
-		months = 1
-
-		modifier = {
-			factor = 0.75
-			has_empty_adjacent_province = yes
-		}
-		
+		days = 10
 	}
 
-	immediate = { JAN = {
+	immediate = { 
+				JAN = {
 					change_variable = {
 							which = zombified_provinces
 							value = 1
+					}
+				}
+				any_pop = {
+					reduce_pop = 0.8
+					militancy = 8
+					consciousness = -3
+				}
+				change_controller = ZOM
+				secede_province = ZOM
+				ZOM = {
+					remove_country_modifier = do_not_annex
+					add_country_modifier = {
+						name = do_not_annex
+						duration = 31
 					}
 				}
 	}
 
 	option = {
 		name = "Damn!"
-		any_pop = {
-			reduce_pop = 0.4
-			militancy = 8
-			consciousness = -3
-		}
 		owner = { prestige = -3 }
-		change_controller = ZOM
-		secede_province = ZOM
-		ZOM = {
-			remove_country_modifier = do_not_annex
-			add_country_modifier = {
-				name = do_not_annex
-				duration = 31
-			}
-		}
 	}
 }
 
@@ -63,20 +55,20 @@ country_event = { #note, this must be a country event, otherwise it might happen
 		exists = yes
 		NOT = { exists = ZOM }
 		any_owned_province = {
-			province_control_days = 720
+			province_control_days = 365
 			has_province_modifier = zombie_outbreak
 			controlled_by = REB
 		}
 	}
 
 	mean_time_to_happen = {
-		months = 1
+		days = 1
 	}
 
 	immediate = {		
 		random_owned = {
 			limit = {
-				province_control_days = 720
+				province_control_days = 365
 				has_province_modifier = zombie_outbreak
 				controlled_by = REB
 			}
