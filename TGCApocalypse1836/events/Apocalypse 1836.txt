@@ -20,6 +20,8 @@ country_event = {
 		days = 10
 	}
 
+	immediate = { JAN = { set_variable = { which = zombified_provinces value = 0 } }  set_global_flag = zombie_mod }
+
 	option = {
 		name = "EVTOPTA66001"
 		random_country = {
@@ -73,9 +75,7 @@ country_event = {
 		modifier = { factor = 9 has_country_modifier = ap_lock_down }
 	}
 
-	immediate = {
-		set_global_flag = zombie_mod
-	}
+	immediate = { set_global_flag = outbreak_ongoing }
 
 	option = {
 		name = "EVTOPTA66002"
@@ -212,29 +212,6 @@ country_event = {
 	}
 }
 
-#Global Defeat
-country_event = {
-	id = 66024
-	title = "EVTNAME66024"
-	desc = "EVTDESC66024"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "Oh uh."
-		clr_country_flag = zombie_outbreak
-		set_country_flag = zombie_outbreak_defeat
-		any_pop = {
-			reduce_pop = 0.1
-			consciousness = -5
-			militancy = -10
-		}
-		any_owned_province = {
-			remove_province_modifier = zombie_outbreak
-		}
-	}
-}
-
 ##### Added 12/18/11 #####
 
 #Add State of Emergency Modifier
@@ -294,7 +271,7 @@ country_event = {
 				has_province_modifier = zombie_outbreak
 			}
 			any_pop = {
-				reduce_pop = 0.90
+				reduce_pop = 0.5
 				consciousness = -3
 				militancy = 10
 			}
@@ -352,9 +329,11 @@ country_event = {
 	mean_time_to_happen = { days = 10 }
 
 	immediate = {
-		any_country = { country_event = 66033  clr_country_flag = zombie_outbreak clr_country_flag = assets_siezed }
+		any_country = { country_event = 66033 clr_country_flag = zombie_outbreak clr_country_flag = assets_siezed }
 		all_land_provinces = { remove_province_modifier = zombie_outbreak }
+		clr_global_flag = outbreak_ongoing
 		set_global_flag = global_victory
+		set_variable = { which = zombified_provinces value = 0 }
 	}
 
 	option = {
@@ -363,8 +342,7 @@ country_event = {
 
 }
 
-#Global Victory
-
+#Global Victory Event
 country_event = {
 	id = 66033
 	title = "EVTNAME66033"
@@ -395,7 +373,6 @@ country_event = {
 
 #Country Defeat
 #The player can realocate
-
 country_event = {
 	id = 66034
 	title = "EVENTNAME66034"
@@ -460,7 +437,6 @@ country_event = {
 }
 
 #Conquest of the wasteland
-
 country_event = {
 	id = 66036
 	title = "EVENTNAME66036"
@@ -471,12 +447,13 @@ country_event = {
 		exists = yes
 		has_country_flag = zombie_outbreak_victory
 		any_owned_province = { has_empty_adjacent_province = yes }
+		NOT = { has_global_flag = outbreak_ongoing }
 	}
 
 	is_triggered_only = yes
 
 	mean_time_to_happen = {
-		months = 24
+		months = 100
 		
 		modifier = { factor = 0.5 has_country_modifier = ap_agressive_rebuild }
 		modifier = { factor = 0.7 has_country_modifier = ap_temperace_rebuild }
@@ -489,7 +466,9 @@ country_event = {
 		modifier = { factor 0.8 administration_spending = 0.8 }
 		modifier = { factor 0.7 administration_spending = 0.9 }
 
+		modifier = { factor = 0.1 has_country_flag = scouts_activated }
 	}
+
 	option = {
 		name = "EVENTOPTA66036"
 
@@ -499,6 +478,7 @@ country_event = {
 		random_province = {
 			limit = { has_empty_adjacent_province = yes }
 			add_province_modifier = { name = ap_expedition duration = -1 }
+			clr_country_flag = scouts_activated
 		}
 	}
 
