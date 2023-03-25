@@ -14,8 +14,8 @@ defines = {
 		GREAT_NATIONS_COUNT = 8,
 		GREATNESS_DAYS = 365, 	   -- how many days until country risks losing status as great nation
 		BADBOY_LIMIT = 25,
-		MAX_BUREAUCRACY_PERCENTAGE = 0.02, -- More than max percent bureaucrats of population will give no additional benefits
-		BUREAUCRACY_PERCENTAGE_INCREMENT = 0.001, -- For each social administrative reform level, this is added to MAX_BUREAUCRACY_PERCENTAGE
+		MAX_BUREAUCRACY_PERCENTAGE = 0.025, -- More than max percent bureaucrats of population will give no additional benefits
+		BUREAUCRACY_PERCENTAGE_INCREMENT = 0.002, -- For each social administrative reform level, this is added to MAX_BUREAUCRACY_PERCENTAGE
 		MIN_CRIMEFIGHT_PERCENT = 0.1,
 		MAX_CRIMEFIGHT_PERCENT = 0.99,
 		ADMIN_EFFICIENCY_CRIMEFIGHT_PERCENT = 0.5, -- Crimefight depends on both state admin eff. and admin spending, admin spending percent effect is set to (1-ADMIN_EFFICIENCY_CRIMEFIGHT_PERCENT)
@@ -25,7 +25,7 @@ defines = {
 		CAMPAIGN_EVENT_STATE_SCALE = -3,	-- every non-colonial state reduces by 3 days.
 		CAMPAIGN_DURATION = 6,	-- a campaign lasts these amount of months
 		COLONIAL_RANK = 16, -- Minimum rank a nation must have to send colonists
-		COLONY_TO_STATE_PRESTIGE_GAIN = 2, -- Prestige gain when turning colony to state
+		COLONY_TO_STATE_PRESTIGE_GAIN = 4, -- Prestige gain when turning colony to state
 		COLONIAL_LIFERATING = 35,
 		BASE_GREATPOWER_DAILY_INFLUENCE = 0.275, -- Influence value which is distributed each day
 		AI_SUPPORT_REFORM = 0.025, -- At least this many % needs to support a reform for the AI to take it
@@ -34,7 +34,7 @@ defines = {
 		PROVINCE_OVERSEAS_PENALTY = 0.03, -- Each province req. this many goods flagged as overseas penalty
 		NONCORE_TAX_PENALTY = -0.075, -- -5% for each non-core in state
 		BASE_TARIFF_EFFICIENCY = 0.05, -- baseline tariff efficiency
-		COLONY_FORMED_PRESTIGE = 1, -- prestige from founding a colony.
+		COLONY_FORMED_PRESTIGE = 2, -- prestige from founding a colony.
 		CREATED_CB_VALID_TIME = 12,  -- how many months
 		LOYALTY_BOOST_ON_PARTY_WIN = 0.1,
 		MOVEMENT_RADICALISM_BASE = 25,
@@ -44,7 +44,7 @@ defines = {
 		SUPPRESS_BUREAUCRAT_FACTOR = 0.5,
 		WRONG_REFORM_MILITANCY_IMPACT = 2,
 		SUPPRESSION_RADICALISATION_HIT = 10, -- % base added to a movements radicalness
-		INVESTMENT_SCORE_FACTOR = 0.001, -- how much foreign investment money counts towards your industry score
+		INVESTMENT_SCORE_FACTOR = 0.01, -- how much foreign investment money counts towards your industry score #This has been increased
 		UNCIV_TECH_SPREAD_MAX = 0.15, --Max techs an unciv will get on westernizing
 		UNCIV_TECH_SPREAD_MIN = 0.10, --Minimum techs an unciv will get on westernizing
 		MIN_DELAY_BETWEEN_REFORMS = 6, -- months
@@ -113,18 +113,20 @@ defines = {
 		CIV_BASE_SHARE_FACTOR = 0.75,
 		UNCIV_BASE_SHARE_FACTOR = 1,				
 		FACTORY_PAYCHECKS_LEFTOVER_FACTOR = 0.5, -- % of how much we pay to the pops and capitalists, from the leftovers. MODIFIED, Vanilla value = 0.3 
-		MAX_FACTORY_MONEY_SAVE = 3000,	-- how much money is stored maximum in a factory.
+		MAX_FACTORY_MONEY_SAVE = 1000,	-- how much money is stored maximum in a factory.
 		SMALL_DEBT_LIMIT = 20000,
 		FACTORY_UPGRADE_EMPLOYEE_FACTOR = 0.75, -- determines how close to the employee limit we need to be before "upgrade all" will upgrade/expand a given factory (1 = 100%).
-		RGO_SUPPLY_DEMAND_FACTOR_HIRE_HI = 0.2,	-- how fast pops are Hired when there is a high demand
-		RGO_SUPPLY_DEMAND_FACTOR_HIRE_LO = 0.02,	-- how fast pops are Hired when there is a medium demand
-		RGO_SUPPLY_DEMAND_FACTOR_FIRE = 0.2,		-- how fast pops are Fired when there is a low demand
-		EMPLOYMENT_HIRE_LOWEST = 0.01,				-- we Hire pops no slower then x% of total required per day
-		EMPLOYMENT_FIRE_LOWEST = 0.01,				-- we Fire pops no slower then x% of total required per day
-		TRADE_CAP_LOW_LIMIT_LAND = 0.1, 				-- the lowest % the slider can go for land units
-		TRADE_CAP_LOW_LIMIT_NAVAL = 0.2, 			-- the lowest % the slider can go for naval units
+
+		RGO_SUPPLY_DEMAND_FACTOR_HIRE_HI = 0.07,	-- how fast pops are Hired when there is a high demand
+		RGO_SUPPLY_DEMAND_FACTOR_HIRE_LO = 0.005,	-- how fast pops are Hired when there is a medium demand
+		RGO_SUPPLY_DEMAND_FACTOR_FIRE = 0.001,		-- how fast pops are Fired when there is a low demand
+		EMPLOYMENT_HIRE_LOWEST = 0.001,				-- we Hire pops no slower then x% of total required per day
+		EMPLOYMENT_FIRE_LOWEST = 0.001,				-- we Fire pops no slower then x% of total required per day
+		
+		TRADE_CAP_LOW_LIMIT_LAND = 0.20, 				-- the lowest % the slider can go for land units
+		TRADE_CAP_LOW_LIMIT_NAVAL = 0.1, 			-- the lowest % the slider can go for naval units
 		TRADE_CAP_LOW_LIMIT_CONSTRUCTIONS = 0.15, 		-- the lowest % the slider can go for constructions
-		FACTORY_PURCHASE_MIN_FACTOR = 0.50,			-- the lowest % of its daily needs a factory will purchase
+		FACTORY_PURCHASE_MIN_FACTOR = 0.25,			-- the lowest % of its daily needs a factory will purchase
 		FACTORY_PURCHASE_DRAWDOWN_FACTOR = 0.01		-- the % a factory will reduce its input purchases each day if it did not sell all its goods (also used for scaling up production if all goods are sold)
 	},
 
@@ -179,7 +181,7 @@ defines = {
 		AI_SPECIAL_PROPORTION = 0.15, -- fraction of brigades that should be engineers and tanks
 		AI_ESCORT_RATIO = 2.0, -- ratio of escorts to transports in invasion fleets
 		AI_ARMY_TAXBASE_FRACTION = 0.2, -- max of tax base that AI will spend on army supply costs (based on peacetime costs)
-		AI_NAVY_TAXBASE_FRACTION = 0.2, -- max of tax base that AI will spend on navy supply costs (based on peacetime costs)
+		AI_NAVY_TAXBASE_FRACTION = 0.05, -- max of tax base that AI will spend on navy supply costs (based on peacetime costs) nerfed
 		AI_BLOCKADE_RANGE = 2000, -- max distance the AI will send out blockade fleets from their home base
 		RECON_UNIT_RATIO = 0.1, -- the % of units in the army that must have a recon value to get the full bonus
 		ENGINEER_UNIT_RATIO = 0.1, -- the % of units in the army that must have a fort attack value to get the full bonus
@@ -625,15 +627,15 @@ defines = {
 		IMMIGRATION_SCALE = 0.005,
 
 		PROMOTION_SCALE = 0.002,
-		PROMOTION_ASSIMILATION_CHANCE = 0.0005,
+		PROMOTION_ASSIMILATION_CHANCE = 0.05,
 		LUXURY_THRESHOLD = 500,
-		BASE_GOODS_DEMAND = 0.8,
-		BASE_POPGROWTH = 0.000085,
+		BASE_GOODS_DEMAND = 0.8, --0.8
+		BASE_POPGROWTH = 0.0001,
 		MIN_LIFE_RATING_FOR_GROWTH = 30,
-		LIFE_RATING_GROWTH_BONUS = 0.000085,
+		LIFE_RATING_GROWTH_BONUS = 0.0001,
 		LIFE_NEED_STARVATION_LIMIT = 0.5,
 
-		MIL_LACK_EVERYDAY_NEED = 0.1,
+		MIL_LACK_EVERYDAY_NEED = 0.05, -- was 0.1
 		MIL_HAS_EVERYDAY_NEED = -0.1,
 		MIL_HAS_LUXURY_NEED = -0.2,
 		MIL_NO_LIFE_NEED = 0.2,
@@ -657,9 +659,9 @@ defines = {
 
 		NATIONAL_FOCUS_DIVIDER = 400000.0,
 
-		POP_SAVINGS = 0.03,
+		POP_SAVINGS = 0.018,
 
-		STATE_CREATION_ADMIN_LIMIT = 0.01,
+		STATE_CREATION_ADMIN_LIMIT = 0.015,
 		MIL_TO_JOIN_REBEL = 8, -- Rebels over this will join a faction
 		MIL_TO_JOIN_RISING = 9, -- Rebels over this will join a general rising
 		MIL_TO_AUTORISE = 9, -- Rebels over this rise no matter what
@@ -668,12 +670,12 @@ defines = {
 																	-- (if value < 1.0, the MIL will be increased) (Beware! value must be > 0)
 
 		POP_TO_LEADERSHIP = 0.0001, -- how much leadership every 1000 officers gives each day.
-		ARTISAN_MIN_PRODUCTIVITY = 5, -- Minimum efficiency of an artisan
+		ARTISAN_MIN_PRODUCTIVITY = 5, -- Minimum efficiency of an artisan 5 to 1
 		SLAVE_GROWTH_DIVISOR = 10.0, -- Slaves have N times lower growth
 
 		MIL_HIT_FROM_CONQUEST = 4, -- how much militancy grows in a province if taken without being core.
 		LUXURY_CON_CHANGE = 0.001, -- con boost from over-buying luxury goods
-		INVENTION_IMPACT_ON_DEMAND = 0.008, -- how much each invention in a country increases demand for a product in percent. MODIFIED, vanilla value = 0.005. 
+		INVENTION_IMPACT_ON_DEMAND = 0.015, -- how much each invention in a country increases demand for a product in percent. MODIFIED, vanilla value = 0.005. 
 		ARTISAN_SUPPRESSED_COLONIAL_GOODS_CATEGORY = 0, -- Goods category index not produced in colonies
 		ISSUE_MOVEMENT_JOIN_LIMIT = 8,
 		ISSUE_MOVEMENT_LEAVE_LIMIT = 7,

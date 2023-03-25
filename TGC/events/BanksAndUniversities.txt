@@ -20,8 +20,12 @@ province_event = {
 	desc = "AIEVENT"
 
 	trigger = {
-        owner = { money = 50000
+        owner = { money = 150000
 			      ai = yes }
+		NOT = { has_province_modifier = university_cooldown }
+
+		OR = { state_scope = { any_owned_province = { NOT = { has_building = university } } } 
+		       has_building = university }
     }
 
 	mean_time_to_happen =  {
@@ -68,7 +72,7 @@ province_event = {
         modifier = { factor = 0.7                                       #Higher chance if province has other economic buildings
                     has_building = infrastructure }
 
-        modifier = { factor = 0.3                                       #Bigger chance to upgrade rather than building new one
+        modifier = { factor = 0.2                                       #Bigger chance to upgrade rather than building new one
                     has_building = university }
 
         modifier = { factor = 0.8                                       #Increase chance if the AI is reasearching university tech        
@@ -87,76 +91,10 @@ province_event = {
 	option = {
 		name = "AIEVENT" 
 		university = +1
-        owner = { treasury = -10250 }
 
-		random_pop = {                                       #Paying workers
-			limit = { strata = poor	}				  
-			money = 500       		  	                     #I took this idea from u/Bearhobag's tax refund script
-		}								                     #This way, the money does not go to waste and gets injected back into the economy
-		random_pop = {										 #This will also make the economy healthier.
-			limit = { strata = poor	}	
-			money = 500									
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = middle	}
-			money = 750
-		}
-		random_pop = {
-			limit = { strata = middle }
-			money = 750
-		}
-		random_pop = {
-			limit = { strata = middle }
-			money = 750
-		}
-		random_pop = {
-			limit = { strata = rich }
-			money = 1000
-		}
-		random_pop = {
-			limit = { strata = rich }
-			money = 1000
-		}
+		add_province_modifier = { name = university_cooldown duration = 600 }
+
+        owner = { treasury = -10000 }
 	}
 }  
 
@@ -168,7 +106,8 @@ province_event = {
 	desc = "AIEVENT"
 
 	trigger = { 
-        owner = { money = 10000
+		NOT = { has_province_modifier = bank_cooldown }
+        owner = { money = 50000
                   NOT = { economic_policy = laissez_faire }             
 				  exists = yes									        #The game can and will check administration_spending of tags that dont exist, and then it will CTD, so the "exists = yes" is necessary.
 				  administration_spending = 0.5                         #It's maybe the only use case for exists = yes as a common event trigger, and, supposedly, this only happens with the administration_spending check.
@@ -244,25 +183,11 @@ province_event = {
 
 	option = {
 		name = "AIEVENT" 
-        owner = { treasury = -3000 }
 		bank = +1
 
-		random_pop = {                     #Paying workers
-			limit = { strata = poor	}							
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = poor	}
-			money = 500
-		}
-		random_pop = {
-			limit = { strata = middle }
-			money = 1000
-		}
-		random_pop = {
-			limit = { strata = rich }
-			money = 1000
-		}
+		add_province_modifier = { name = bank_cooldown duration = 600 }
+
+		treasury = -3000
 	}
 }
 
@@ -286,11 +211,15 @@ province_event = {
                      NOT = { owner = { administration_spending = 0.2 } } }
 		modifier = { factor = 0.5
                      NOT = { owner = { administration_spending = 0.1 } } }
+		modifier = { factor = 5
+                     owner = { administration_spending = 0.8 } }
+		modifier = { factor = 10
+                     owner = { administration_spending = 1 } }
 		modifier = {      
-			factor = 1.5                                                        
+			factor = 2                                                        
 			year = 1860 }
 		modifier = {
-			factor = 1.5                    #The more the time passes, more banks the player, and AI, will have
+			factor = 2                    #The more the time passes, more banks the player, and AI, will have
 			year = 1870 }				    #those events would get too spammy and annoying
 		modifier = {
 			factor = 2
@@ -346,10 +275,10 @@ province_event = {
 			NOT = { rank = 8 }
 		}
 		modifier = {
-			factor = 1.5
+			factor = 2
 			year = 1860 }
 		modifier = {                                      #The more the time passes, more universities the player, and AI, will have
-			factor = 1.5								  #this would generate way too much prestige and research
+			factor = 2									  #this would generate way too much prestige and research
 			year = 1870 }
 		modifier = {
 			factor = 2
@@ -364,7 +293,7 @@ province_event = {
 	option = {
 		name = "EVTOPTA6203"
 		owner = {
-			prestige = 1
+			prestige = 2
 			years_of_research = 0.2
 		}
 		ai_chance = { factor = 50 }
@@ -373,7 +302,7 @@ province_event = {
 	option = {
 		name = "EVTOPTB6203"
 		owner = {
-			prestige = 2                      
+			prestige = 4                      
 			years_of_research = 0.1
 		}
 		ai_chance = { factor = 50 }
@@ -390,6 +319,8 @@ country_event = {                   #A tunned down version of u/Bearhobag's tax 
 		money = 800000				#I decided to limit this to the AI, I don't want the player to be bothered with it.
         ai = yes			        #By all means, the player shoulnd't even notice this happenening at all
 	}
+
+	is_triggered_only = yes         
 
 	mean_time_to_happen = {
 		months = 1
@@ -419,69 +350,455 @@ country_event = {                   #A tunned down version of u/Bearhobag's tax 
 		money = -15000
 
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = poor }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = poor }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = poor }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = poor }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = poor }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = poor }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = middle }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = middle }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = rich }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = rich }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = rich }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = poor }
+			limit = { NOT = { cash_reserves = 3 } strata = rich }
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = middle } 
+			limit = { NOT = { cash_reserves = 3 } strata = rich } 
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = middle } 
+			limit = { NOT = { cash_reserves = 3 } strata = rich } 
 			money = 1000
 		}
 		random_pop = {
-			limit = { NOT = { cash_reserves = 500 } strata = middle } 
+			limit = { NOT = { cash_reserves = 3 } strata = rich } 
 			money = 1000
 		}
 	}
 }
 
+country_event = {                   
+	id = 6208       
+	title = "MONEY_EVENT"               
+	desc = "AIEVENT"                
+	                													
+	is_triggered_only = yes
 
+	option = {
+		name = "AIEVENT"
+		
+        any_country = { limit = { civilized = yes NOT = { enlightenment_thought = 1 }}
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 } }
 
+		any_country = { limit = { enlightenment_thought = 1 NOT = { ideological_thought = 1 } }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 10 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25 } }
 
+		any_country = { limit = { ideological_thought = 1 NOT = { state_n_government = 1 } }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 20 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 20 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 20 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 20 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25  }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.25  }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 } }
+		
+		any_country = { limit = { ideological_thought = 1 NOT = { state_n_government = 1 } }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 30 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 30 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 30 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 30 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 0.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 } }
+			
+		any_country = { limit = { state_n_government = 1 NOT = { nationalism_n_imperialism = 1 } }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 } }
+		
+		any_country = { limit = { nationalism_n_imperialism = 1 NOT = { revolution_n_counterrevolution = 1 } }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 3 } }
+		
+		any_country = { limit = {  revolution_n_counterrevolution = 1 NOT = { mass_politics = 1 } }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 4 } }
+		
+		any_country = { limit = { mass_politics = 1 NOT = { the_police_state = 1 }} 
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 1.5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 5 } }
+		
+		any_country = { limit = { the_police_state = 1 } 
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.2 luxury_needs = 0.8 } } money = 5 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { type = aristocrats NOT = { cash_reserves = 1.5 luxury_needs = 0.8 } } money = 50 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 2 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 2 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 } 
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 }
+						any_pop = { limit = { NOT = { type = slaves cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 strata = rich strata = middle type = soldiers } } money = 7 } }
+					
+					
+		country_event = { id = 6208 days = 1 }
+	}
+}
 
+country_event = {                   	
+	id = 6209
+	title = "EVTNAME6209"               
+	desc = "EVTDESC6209"             
+	                													
+	trigger = { tag = JAN }
+	#is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA6209"
+		JAN = { country_event = { id = 6208 days = 1 } 
+		}
+	}
+}
+
+country_event = {                   	
+	id = 6210
+	title = "EVTNAME6209"               
+	desc = "EVTDESC6209"             
+	                													
+	trigger = { tag = JAN }
+	fire_only_once = yes
+
+	#immediate = { country_event = 51 country_event = 52 }
+
+	option = {
+		name = "Initialization"
+		JAN = { country_event = { id = 51 days = 0 } } 
+		JAN = { country_event = { id = 52 days = 0 } }
+		prestige =-1
+	}
+}
