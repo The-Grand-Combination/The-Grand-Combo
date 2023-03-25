@@ -1,15 +1,27 @@
-province_event = {      #Zombify province
+province_event = {   #Zombify province
 	id = 66100
 	title = "EVTNAME66025"
 	desc = "EVTDESC66025"
 
 	trigger = {
-		owner = {exists = yes }
-		NOT = { owner = { tag = ZOM } }
-		province_control_days = 365
-		has_province_modifier = zombie_outbreak
-		controlled_by = REB
-		exists = ZOM
+		OR = {
+			AND = {
+				NOT = { has_global_flag = plague_inc_mode }
+				NOT = { owner = { tag = ZOM } }
+				province_control_days = 365
+				has_province_modifier = zombie_outbreak
+				controlled_by = REB
+				exists = ZOM
+			}
+
+			AND = {
+				has_global_flag = plague_inc_mode 
+				NOT = { owner = { tag = ZOM } }
+				province_control_days = 60
+				controlled_by = ZOM
+				exists = ZOM
+			}
+		}
 	}
 
 	mean_time_to_happen = {
@@ -24,19 +36,18 @@ province_event = {      #Zombify province
 					}
 				}
 				any_pop = {
-					reduce_pop = 0.8
+					reduce_pop = 0.5
 					militancy = 8
 					consciousness = -3
 				}
 				change_controller = ZOM
 				secede_province = ZOM
 				ZOM = {
-					remove_country_modifier = do_not_annex
 					add_country_modifier = {
 						name = do_not_annex
 						duration = 31
 					}
-				}
+		        }
 	}
 
 	option = {
@@ -86,7 +97,7 @@ country_event = { #note, this must be a country event, otherwise it might happen
 			remove_country_modifier = accepts_provinces
 			add_country_modifier = {
 				name = do_not_annex
-				duration = 30
+				duration = 15
 			}
 			country_event = { id = 66202 days = 31 }
 		} 
@@ -102,50 +113,61 @@ country_event = {
 	title = "EVTNAME66200"
 	desc = "EVTDESC66200"
 
+	is_triggered_only = yes  
+
 	trigger = {
+		NOT = { has_global_flag = plague_inc_mode }
 		OR = {
 			AND = { exists = yes tag = ZOM NOT = { has_country_modifier = do_not_annex } year = 1843 }
 			AND = { OR = { NOT = { total_pops = 10 } } NOT = { tag = JAN } ai = yes }
-			AND = { tag = ZOM num_of_cities = 350 }
 			has_country_flag = force_nullus
 		}
+		NOT = { JAN = has_country_modifier = ap_tn_timer }
 	}
 
 	mean_time_to_happen = {
-		days = 1
+		years = 2
+	}
+
+	immediate = {
+		clr_country_flag = force_nullus
+		any_owned_province = {
+			change_controller = THIS
+		}
+		FROM = { inherit = THIS }
 	}
 
 	option = {
 		name = "Zombies deleted"
-		clr_country_flag = force_nullus
-		FROM = { inherit = THIS }
 	}
 }
+
 
 province_event = {
 	id = 66201
 	title = "EVTNAME66200"
 	desc = "EVTDESC66200"
 
-	is_triggered_only = yes 
-
 	trigger = {
+		NOT = { has_global_flag = plague_inc_mode }
 		owner = { tag = ZOM }
-		province_control_days = 335
+		province_control_days = 600
 	}
 
 	mean_time_to_happen = {
-		days = 10
+		days = 30
 	}
 
 	immediate = {
-		secede_province = FROM
+		change_controller = THIS
+		FROM = { inherit = THIS }
 	}
 
 	option = {
-		name = "OK"
+		name = "Zombies deleted"
 	}
 }
+
 
 country_event = {
 	id = 66203
