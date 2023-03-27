@@ -17,7 +17,7 @@ province_event = {   #Zombify province
 			AND = {
 				has_global_flag = plague_inc_mode 
 				NOT = { owner = { tag = ZOM } }
-				province_control_days = 60
+				province_control_days = 10
 				controlled_by = ZOM
 				exists = ZOM
 			}
@@ -25,7 +25,15 @@ province_event = {   #Zombify province
 	}
 
 	mean_time_to_happen = {
-		days = 10
+		months = 2
+		modifier = { 
+			factor = 0.1 
+			OR = { 
+				has_global_flag = plague_inc_mode 
+				has_empty_adjacent_province = yes
+				any_neighbor_province = { owner = { tag = ZOM } } 
+			}
+		}
 	}
 
 	immediate = { 
@@ -88,7 +96,7 @@ country_event = { #note, this must be a country event, otherwise it might happen
 		}
 		ZOM = {
 			remove_country_modifier = accepts_provinces
-			country_event = { id = 66202 days = 31 }
+			country_event = { id = 66104 days = 31 }
 		} 
 	}
 
@@ -97,54 +105,18 @@ country_event = { #note, this must be a country event, otherwise it might happen
 	}
 }
 
-country_event = {
-	id = 66200
-	title = "EVTNAME66200"
-	desc = "EVTDESC66200"
-
-	is_triggered_only = yes  
-
-	trigger = {
-		NOT = { has_global_flag = plague_inc_mode }
-		ai = yes
-		OR = {
-			AND = { ai = yes tag = ZOM  NOT = { has_country_modifier = do_not_annex } year = 1843 }
-			AND = { OR = { NOT = { total_pops = 10 } } NOT = { tag = JAN } ai = yes }
-			has_country_flag = force_nullus
-		}
-		NOT = { JAN = has_country_modifier = ap_tn_timer }
-	}
-
-	mean_time_to_happen = {
-		years = 2
-	}
-
-	immediate = {
-		clr_country_flag = force_nullus
-		any_owned_province = {
-			change_controller = THIS
-		}
-		FROM = { inherit = THIS }
-	}
-
-	option = {
-		name = "Zombies deleted"
-	}
-}
-
-
 province_event = {
-	id = 66201
+	id = 66102
 	title = "EVTNAME66200"
 	desc = "EVTDESC66200"
 
 	trigger = {
 		owner = { tag = ZOM ai = yes }
-		province_control_days = 600
+		province_control_days = 500
 	}
 
 	mean_time_to_happen = {
-		days = 30
+		days = 100
 	}
 
 	immediate = {
@@ -157,9 +129,8 @@ province_event = {
 	}
 }
 
-
 country_event = {
-	id = 66203
+	id = 66103
 	title = "EVTNAME66201"
 	desc = "EVTDESC66201"
 	
@@ -184,7 +155,7 @@ country_event = {
 }
 
 country_event = {
-	id = 66202
+	id = 66104
 	title = "The wasteland spread."
 	desc = "Spread."
 
