@@ -308,6 +308,13 @@ political_decisions = {
 				has_country_modifier = punitive_effects
 				has_country_modifier = no_more_war
 			}
+			466 = { owner = {
+				        NOT = { relation = { who = THIS value = 10 } }
+				        NOT = { alliance_with = THIS }
+				        NOT = { is_sphere_leader_of = THIS }
+						NOT = { overlord = { is_sphere_leader_of = THIS } }
+						    }
+						}
 		}
 
 		effect = {
@@ -321,6 +328,25 @@ political_decisions = {
 				limit = { owns = 465 }
 				leave_alliance = THIS
 				relation = { who = THIS value = -100 }
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			
+			modifier = {
+				factor = 0
+				relation = { who = ITA value = -100 }
+			}
+			
+			modifier = {
+				factor = 0
+				721 = { NOT = { is_core = ITA } }
+			}
+
+			modifier = {
+				factor = 0
+				badboy = 0.8
 			}
 		}
 	}
@@ -348,6 +374,13 @@ political_decisions = {
 				has_country_modifier = punitive_effects
 				has_country_modifier = no_more_war
 			}
+			721 = { owner = {
+				        NOT = { relation = { who = THIS value = 10 } }
+				        NOT = { alliance_with = THIS }
+				        NOT = { is_sphere_leader_of = THIS }
+						NOT = { overlord = { is_sphere_leader_of = THIS } }
+						    }
+						}
 		}
 
 		effect = {
@@ -366,6 +399,11 @@ political_decisions = {
 			modifier = {
 				factor = 0
 				466 = { NOT = { is_core = ITA } }
+			}
+			
+			modifier = {
+				factor = 0
+				relation = { who = ITA value = -100 }
 			}
 
 			modifier = {
@@ -1205,6 +1243,7 @@ rename_bourbon_island = {
 
 		allow = {
 			owns = 1380
+			DAI = { exists = no }
 			revolution_n_counterrevolution = 1
 		}
 
@@ -3620,10 +3659,71 @@ rename_bourbon_island = {
 						is_core = USA
 						NOT = { is_core = ULA }
 						NOT = { is_core = FCA } #French Canada
+						NOT = { is_core = UOR } #Oregon
+						NOT = { is_core = COL } #Columbia
+						NOT = { state_id = 248 } #Maine
+						NOT = { state_id = 247 } #Vermont.. seriously what are you doing with so many yankees smh?
+						NOT = { state_id = 159 } #Wisconsin
+						NOT = { state_id = 173 } #Michigan
+						NOT = { state_id = 163 } #Illinois
+						NOT = { state_id = 171 } #Indiana
+						NOT = { state_id = 178 } #Ohio
+						NOT = { state_id = 155 } #Minnesota
 					}
-					remove_core = USA
-					remove_core = CSA
+					#remove_core = USA
+					#remove_core = CSA
 					add_core = ULA
+				}
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	organize_american_provinces_fca = {
+		picture = CAL_greater_california
+		potential = {
+			has_global_flag = treaty_of_new_york
+			primary_culture = french
+			is_greater_power = yes
+		}
+
+		allow = {
+			war = no
+			any_owned_province = { 
+				continent = north_america
+				OR = {
+					is_core = UOR
+					is_core = COL
+					is_core = USA
+					is_core = LSK #Let French Canada gobble up Alaska, if player owns it
+				}
+				NOT = { is_core = ULA }
+				NOT = { is_core = FCA }
+		}
+		}
+
+		effect = {
+			  any_owned = {
+					limit = {
+						continent = north_america
+							OR = {
+								is_core = UOR
+								is_core = COL
+								is_core = LSK
+								state_id = 171 #Indiana
+								state_id = 163 #Illinois
+								state_id = 173 #Michigan
+								state_id = 159 #Wisconsin
+								state_id = 247 #Vermont
+								state_id = 248 #Maine
+								state_id = 155 #Minnesota
+								state_id = 178 #Ohio.. stop going west dude smh
+							}
+						NOT = { is_core = ULA }
+						NOT = { province_id = 156 } #That one weird ULA salient
+						NOT = { is_core = FCA } #French Canada
+					}
+					add_core = FCA
 				}
 		}
 
@@ -4262,6 +4362,7 @@ rename_bourbon_island = {
 			465 = { remove_core = ITA }
 			466 = { remove_core = ITA }
 			472 = { remove_core = ITA }
+			3362 = { remove_core = ITA }
 			any_owned = {
 				limit = { is_core = ITA  }
 				secede_province = ITA
