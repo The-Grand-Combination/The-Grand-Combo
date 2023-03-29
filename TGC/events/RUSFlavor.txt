@@ -1162,8 +1162,8 @@ country_event = {
 		OR = {
 		AND = {
 			year = 1849
-			month = 3
-			AUS = { war_exhaustion = 5 }
+			month = 1
+			#AUS = { war_exhaustion = 5 }
 		}
 		OR = {
 			#year = 1848
@@ -4300,28 +4300,15 @@ country_event = {
 				add_core = LSK #Russian America
 			}
 			badboy = 5
-			casus_belli = {
-				target = MEX
-				type = place_in_the_sun
-				months = 12
-			}
+			#casus_belli = {
+			#	target = MEX
+			#	type = place_in_the_sun
+			#	months = 12
+			#}
 			war = {
 				target = MEX
 				attacker_goal = { #California
-							casus_belli = place_in_the_sun
-							state_province_id = 87
-						}
-			    attacker_goal = { #Baja
-							casus_belli = place_in_the_sun
-							state_province_id = 2139
-						}
-				attacker_goal = { #NEvada
-							casus_belli = place_in_the_sun
-							state_province_id = 94
-						}
-				attacker_goal = { #Yuta
-							casus_belli = place_in_the_sun
-							state_province_id = 97
+							casus_belli = mexico_concession_rus #This is now using a scripted CB because AI is dumb as fuck and converts half of these colonies to states in 30s/40s
 						}
 				defender_goal = { casus_belli = status_quo }
 			}
@@ -4962,6 +4949,7 @@ country_event = {
 				prestige = 10
 				RUS = { country_event = { id = 500133 days = 5 } }
 				BUL = { government = absolute_monarchy ruling_party_ideology = reactionary }
+				create_vassal = URP
 				diplomatic_influence = { who = TUR value = 400 }
 				relation = { who = TUR value = 400 }
 				
@@ -5596,7 +5584,7 @@ country_event = {
 			primary_culture = bulgarian
 			owns = 809 #Sofia
 			year = 1860
-			NOT = { year = 1870 }
+			#NOT = { year = 1870 }
 		    }
 			
 		mean_time_to_happen = {
@@ -5720,7 +5708,7 @@ country_event = {
 					year = 1868
 				}
 				modifier = {
-					factor = 0.55 #increase likelihood to happen
+					factor = 0.15 #increase likelihood to happen
 					year = 1872
 				}
 			}
@@ -5759,6 +5747,7 @@ country_event = {
 			option = {
 				name = "EVTOPTA500154"
 				release_vassal = BUL
+				badboy = -3
 				prestige = -5
 			    ai_chance = { factor = 20 }
 			}
@@ -5834,8 +5823,8 @@ country_event = {
 			fire_only_once = yes
 			
 			trigger = {
-                tag = URP
                 has_global_flag = treaty_of_paris_russia
+				tag = URP
 				in_sphere = RUS
 				OR = {
 					674 = { owned_by = RUS }
@@ -5883,8 +5872,9 @@ country_event = {
 			is_triggered_only = yes
 			option = {
 				name = "EVTOPTA500158"
-				3432 = { secede_province = URP }
+				3432 = { remove_core = RUS secede_province = URP }
 				prestige = -5
+				badboy = -3
 			    ai_chance = { factor = 10 }
 			}
 			option = {
@@ -5908,7 +5898,7 @@ country_event = {
 				set_country_flag = romanian_rebellion_on_the_danube
 				badboy = 1
 				leave_alliance = RUS
-			    RUS = { diplomatic_influence = { who = URP value = -200 } }
+			    RUS = { release_vassal = URP diplomatic_influence = { who = URP value = -200 } }
 			    relation = { who = RUS value = -200 }
 			    casus_belli = {
 				target = RUS
@@ -5972,6 +5962,7 @@ country_event = {
 				MOL_673 = { add_core = MOL }
 				WAL_665 = { add_core = WAL }
 				WAL_666 = { add_core = WAL }
+				TUR_674 = { remove_core = WAL }
 				release = MOL
 				release = WAL
 				diplomatic_influence = { who = WAL value = 200 }
@@ -5983,6 +5974,7 @@ country_event = {
 			option = {
 				name = "EVTOPTD500169"
 				diplomatic_influence = { who = URP value = 200 }
+				TUR_674 = { remove_core = WAL remove_core = ROM remove_core = URP }
 				create_vassal = URP
 				prestige = 5
 				badboy = -3
@@ -6206,8 +6198,8 @@ country_event = {
 
 		option = {
 			name = "EVTOPTA80101"
-			prestige = 10
-			create_vassal = MGL
+			prestige = 20
+			#create_vassal = MGL
 			relation = { who = FROM value = 50 }
 		}
 	}
@@ -6241,10 +6233,10 @@ country_event = {
 							casus_belli = acquire_any_state
 							state_province_id = 1479
 						}
-			attacker_goal = { 
-							casus_belli = take_puppet
-							country = MGL
-						}
+			#attacker_goal = { 
+			#				casus_belli = take_puppet
+			#				country = MGL
+			#			}
 			defender_goal = { casus_belli = status_quo }
 		    }
 			#1613 = { add_core = RUS } #no cores, easy there bud
@@ -6546,17 +6538,18 @@ country_event = {
 	major = yes
 
 	trigger = {
+		has_country_flag = russian_america_ambition
 		war = no
 		tag = RUS
 		year = 1880
-		has_country_flag = russian_america_ambition
 		any_owned_province = { is_core = LSK }
 		NOT = { exists = LSK }
 		is_possible_vassal = LSK
+		owns = 104
 	}
 
 	mean_time_to_happen = {
-		months = 8
+		months = 12
 		modifier = {
 			factor = 2
 			has_country_flag = LSK_independence_refused
@@ -6591,19 +6584,23 @@ country_event = {
 			limit = { location = { is_core = LSK } }
 			militancy = -10
 		}
-		add_accepted_culture = alaskan
+		remove_accepted_culture = alaskan
 		LSK = { all_core = { remove_core = THIS remove_core = ENG } }
-		3366 = { remove_core = LSK remove_core = CAL add_core = RUS } #this is so RUS keeps one naval base at least
+		3366 = { remove_core = LSK add_core = RUS } #this is so RUS keeps one naval base at least
+		14 = { remove_core = LSK add_core = RUS } #this is so RUS keeps some naval bases
+		1 = { remove_core = LSK add_core = RUS } #this is so RUS keeps some naval bases
 		any_owned = { limit = { is_core = LSK } secede_province = LSK }
 		create_vassal = LSK
 		LSK = {
 			government = dominion
-			prestige = -80
+			prestige = -100
 			primary_culture = alaskan
+			remove_accepted_culture = russian
+			capital = 104
 		}
 		relation = {
 			who = LSK
-			value = 200
+			value = 400
 		}
 		diplomatic_influence = {
 			who = LSK
@@ -6717,6 +6714,7 @@ country_event = {
 			limit = { location = { is_core = LSK } }
 			militancy = -10
 		}
+		remove_accepted_culture = alaskan
 		LSK = {
 			all_core = { remove_core = THIS remove_core = RUS }
 		}
@@ -6724,6 +6722,8 @@ country_event = {
 		LSK = {
 			prestige = -80
 			government = dominion
+			capital = 104
+			remove_accepted_culture = russian
 		}
 		relation = {
 			who = LSK
@@ -7934,10 +7934,6 @@ country_event = { #Explanation of the war, outline if they lose control of provi
 			title = "EVTNAME500252"
 			desc = "EVTDESC500252"
 			picture = "Orthodox"
-			fire_only_once = yes
-			
-			
-			mean_time_to_happen = { days = 10 }
 			
 			trigger = {
 			tag = RUS
@@ -7948,11 +7944,13 @@ country_event = { #Explanation of the war, outline if they lose control of provi
 			relation = { who = AUS value = 50 }
 			alliance_with = KUK
 			relation = { who = KUK value = 50 }
-			  }
 			alliance_with = GCF
 			relation = { who = GCF value = 50 }
+			 }
 			NOT = { is_sphere_leader_of = AUS is_sphere_leader_of = KUK }
 		    }
+			
+			mean_time_to_happen = { days = 10 }
 
 			option = {
 				name = "EVTOPTA500252"
@@ -8571,4 +8569,72 @@ country_event = {
         }
     }
 }
+
+country_event = {
+
+	id = 500290
+
+	title = "EVTNAME500290"
+	desc = "EVTDESC500290"
+	picture = "danishgovernment"
+
+	trigger = {
+		has_country_flag = russian_america_ambition
+		tag = RUS
+		year = 1900
+		LSK = { exists = yes vassal_of = RUS }
+		owns = 3366
+		owns = 14
+	}
+
+	mean_time_to_happen = {
+		months = 24
+	}
+
+	option = {
+		name = "EVTOPTA500290"
+		badboy = -3
+		any_pop = {
+			limit = { location = { is_core = LSK } }
+			militancy = -10
+		}
+		3366 = { add_core = LSK remove_core = RUS } 
+		14 = { add_core = LSK remove_core = RUS }
+		1 = { add_core = LSK remove_core = RUS } 
+		any_owned = { limit = { is_core = LSK } secede_province = LSK }
+		relation = {
+			who = LSK
+			value = 50
+		}
+		diplomatic_influence = {
+			who = LSK
+			value = 50
+		}
+		ai_chance = {
+			factor = 80
+		}
+	}
+	option = {
+		name = "EVTOPTB500290"
+		any_owned = {
+			limit = { is_core = LSK }
+			any_pop = {
+				militancy = 3
+			}
+		}
+		relation = {
+			who = LSK
+			value = -50
+		}
+		diplomatic_influence = {
+			who = LSK
+			value = -50
+		}
+		ai_chance = {
+			factor = 20
+		}
+	}
+}
+#500291 - Hawaii Fort Elizabeth
+#500292 - Djibouti Cossack Expedition to Ethiopia
 #1905 Revolution

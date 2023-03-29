@@ -1322,6 +1322,7 @@ political_decisions = {
 		    #nationalism_n_imperialism = 1
 			has_country_flag = tsaralexander2
 			NOT = { has_country_flag = pol_reform_blocker }
+			NOT = { has_country_modifier = total_reform }
 			OR = {
 				has_country_flag = constitutional_monarchy_gov #through revolution?
 				OR = {
@@ -1669,6 +1670,12 @@ political_decisions = {
 					}
 				}
 			}
+			NOT = { has_global_flag = convention_of_peking }
+		}
+
+		allow = {
+			war = no
+			NOT = { truce_with = QNG }
 			QNG = {
 				neighbour = RUS
 				OR = {
@@ -1683,12 +1690,6 @@ political_decisions = {
 					1082 = { owner = { in_sphere = RUS } }
 				}
 			}
-			NOT = { has_global_flag = convention_of_peking }
-		}
-
-		allow = {
-			war = no
-			NOT = { truce_with = QNG }
 			OR = {
 				QNG = { war = yes }
 				has_global_flag = taiping_has_been_defeated
@@ -1722,12 +1723,12 @@ political_decisions = {
 		potential = {
 			primary_culture = russian
 			is_greater_power = yes
-			year = 1860 #todo separate south of amur treaty and these shenanigans
-			has_global_flag = peking_con
 			NOT = { has_global_flag = chuguchak_done }
 		}
 
 		allow = {
+			year = 1860 #todo separate south of amur treaty and these shenanigans
+			has_global_flag = convention_of_peking
 		    1082 = {
 			owner = {
 					OR = {
@@ -1735,6 +1736,7 @@ political_decisions = {
 						vassal_of = QNG
 						substate_of = QNG
 						ai = yes
+						vassal_of = RUS
 					}
 				}
 			}
@@ -1745,6 +1747,7 @@ political_decisions = {
 						vassal_of = QNG
 						substate_of = QNG
 						ai = yes
+						vassal_of = RUS
 					}
 				}
 			}
@@ -1755,6 +1758,8 @@ political_decisions = {
 						vassal_of = QNG
 						substate_of = QNG
 						ai = yes
+						tag = RUS #in the weird scenario where one of central asian states takes these, and RUS gets it through puppet then annex
+						vassal_of = RUS
 					}
 				}
 			}
@@ -1765,6 +1770,8 @@ political_decisions = {
 						vassal_of = QNG
 						substate_of = QNG
 						ai = yes
+						tag = RUS
+						vassal_of = RUS
 					}
 				}
 			}
@@ -1800,7 +1807,7 @@ political_decisions = {
 		}
 	}
 
-    #Until 1900s get content attention and 1904/5 War gets done, this simplified version will do
+    #Until 1900s get content, this simplified version of Russian-Japanese rivalry will do
 	manchurian_ultimatum = {
 		picture = peking_convention
 		potential = {
@@ -1825,26 +1832,24 @@ political_decisions = {
 				}
 			}
 			QNG = {
-				neighbour = RUS
-				has_global_flag = taiping_has_been_defeated
 				has_global_flag = convention_of_peking
-				has_global_flag = peking_con
 				exists = yes
 			}
 			NOT = { has_global_flag = manchurian_ultimatum }
 		}
 
 		allow = {
-			has_country_flag = build_the_manchurian_railway1
+			has_country_flag = build_the_manchurian_railway1 #Owns Port Arthur
 			has_country_flag = mongolian_protectorate
 		    steel_railroad = 1
 		    MGL = { in_sphere = THIS }
-		    year = 1880
-			war = no
 			NOT = { truce_with = QNG }
 			OR = {
+				QNG = { has_country_flag = boxers_appeared }
+				AND = {
 				QNG = { war = yes }
-				has_global_flag = taiping_has_been_defeated
+				year = 1895
+				}
 			}
 		}
 
@@ -1852,6 +1857,14 @@ political_decisions = {
 			set_global_flag = manchurian_ultimatum
 			relation = { who = JAP value = -100 } #Path to intervene
 			QNG = { country_event = 500190 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { year = 1904 }
+			}
 		}
 	}
 
@@ -2230,6 +2243,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Russia Won Crimea, Won GEC, Compromised with other GPs
 	dismantle_ottomans = {
 		picture = "eastern_crisis_dismantle_ottomans"
 		potential = {
@@ -4083,11 +4097,25 @@ political_decisions = {
 
 		allow = {
 			war = no
-			owns = 89
-			owns = 104
+			89 = {
+				OR = {
+					owned_by = THIS
+					owner = { tag = LSK }
+					}
+				}
+			104 = {
+				OR = {
+					owned_by = THIS
+					owner = { tag = LSK }
+					}
+				}
 			any_owned_province = { #This is so Russia can add more colonies into Russian America outside the scope of flavour
 				continent = north_america
 				NOT = { is_core = LSK }
+				NOT = { province_id = 1723 }
+				NOT = { province_id = 3366 } #Fort Ross
+				NOT = { province_id = 14 } #Vancouver
+				NOT = { province_id = 1 }
 			}
 		}
 
@@ -4096,6 +4124,10 @@ political_decisions = {
 					limit = {
 						continent = north_america
 						NOT = { is_core = LSK }
+						NOT = { province_id = 1723 } #Panama Canal
+						NOT = { province_id = 3366 } #Fort Ross
+						NOT = { province_id = 14 }
+						NOT = { province_id = 1 }
 					}
 					add_core = LSK
 				}
@@ -4274,7 +4306,8 @@ political_decisions = {
 						is_core = LSK
 						NOT = { terrain = desert terrain = arctic terrain = montane_tundra }
 					}
-					add_province_modifier = { name = population_resettlement duration = 1800 }
+					add_province_modifier = { name = population_resettlement duration = 545 }
+					add_province_modifier = { name = russoification duration = 10950 }
 				}
 		}
 
