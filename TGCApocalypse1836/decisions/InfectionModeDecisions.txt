@@ -1,5 +1,6 @@
 political_decisions = {
 
+	#State of emergency 
 	ap_state_of_emergency = {
 		potential = {
 			has_global_flag = infection_mode
@@ -19,6 +20,7 @@ political_decisions = {
 				name = "ap_state_of_emergency"
 				duration = -1
 			}
+			any_owned_province = { any_pop = { militancy = 1 } }
 		}
 
 		ai_will_do = { factor = 1
@@ -49,18 +51,19 @@ political_decisions = {
 		potential = {
 			has_global_flag = infection_mode
 			NOT = { has_global_flag = global_victory }
-			NOT = { has_country_modifier = ap_lock_down }
+			NOT = { has_country_modifier = ap_lock_down_modifier }
 		}
 		allow = {
-			NOT = { has_country_modifier = ap_lock_down }
+			NOT = { has_country_modifier = ap_lock_down_modifier }
 		}
 		effect = {
 			country_event = 66029
 			add_country_modifier = {
-				name = "ap_lock_down"
+				name = "ap_lock_down_modifier"
 				duration = -1
 			}
 			political_reform = closed_borders
+			any_owned_province = { any_pop = { militancy = 1 } }
 		}
 
 		ai_will_do = { factor = 0 }
@@ -68,14 +71,14 @@ political_decisions = {
 
 	ap_remove_lock_down = {
 		potential = {
-			has_country_modifier = ap_lock_down
+			has_country_modifier = ap_lock_down_modifier
 		}
 		allow = {
-			has_country_modifier = ap_lock_down
+			has_country_modifier = ap_lock_down_modifier
 		}
 		effect = {
 			political_reform = open_borders
-			remove_country_modifier = "ap_lock_down"
+			remove_country_modifier = "ap_lock_down_modifier"
 		}
 
 		ai_will_do = { factor = 0 }
@@ -85,14 +88,16 @@ political_decisions = {
 		potential = {
 			has_global_flag = infection_mode
 			NOT = { has_global_flag = global_victory }
-			NOT = { has_country_modifier = ap_quarantine }
+			NOT = { has_country_modifier = ap_quarantine_modifier }
 		}
 		allow = {
-			NOT = { has_country_modifier = ap_quarantine }
+			NOT = { has_country_modifier = ap_quarantine_modifier }
 		}
 		effect = {
 			country_event = 66038
-			add_country_modifier = { name = "ap_quarantine" duration = -1 }
+			add_country_modifier = { name = "ap_quarantine_modifier" duration = -1 }
+			any_owned_province = { any_pop = { militancy = 1 } }
+			any_owned_province = { limit = { has_province_modifier = zombie_outbreak } any_pop = { militancy = 2 } }
 		}
 		ai_will_do = { factor = 0 }
 	}
@@ -100,9 +105,9 @@ political_decisions = {
 	ap_remove_quarantine = {
 		potential = {
 			has_global_flag = infection_mode
-			has_country_modifier = ap_quarantine
+			has_country_modifier = ap_quarantine_modifier
 		}
-		allow = { has_country_modifier = ap_quarantine }
+		allow = { has_country_modifier = ap_quarantine_modifier }
 		effect = {
 			remove_country_modifier = "ap_quarantine"
 		}
