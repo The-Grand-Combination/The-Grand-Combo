@@ -1,0 +1,174 @@
+province_event = {   #Zombify province
+	id = 66100
+	title = "EVTNAME66025"
+	desc = "EVTDESC66025"
+
+	trigger = {
+		OR = {
+			AND = {
+				NOT = { has_global_flag = plague_inc_mode }
+				NOT = { owner = { tag = ZOM } }
+				province_control_days = 550
+				has_province_modifier = zombie_outbreak
+				controlled_by = REB
+				exists = ZOM
+			}
+
+			AND = {
+				has_global_flag = plague_inc_mode 
+				NOT = { owner = { tag = ZOM } }
+				province_control_days = 30
+				controlled_by = ZOM
+				exists = ZOM
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 2
+		modifier = { 
+			factor = 0.1 
+			OR = { 
+				has_global_flag = plague_inc_mode 
+				has_empty_adjacent_province = yes
+				any_neighbor_province = { owner = { tag = ZOM } } 
+			}
+		}
+	}
+
+	immediate = { 
+				JAN = {
+					change_variable = {
+							which = zombified_provinces
+							value = 1
+					}
+				}
+				any_pop = {
+					reduce_pop = 0.5
+					militancy = 8
+					consciousness = -3
+				}
+				change_controller = ZOM
+				secede_province = ZOM
+				ZOM = { money = 5000 }
+	}
+
+	option = {
+		name = "Damn!"
+		owner = { prestige = -3 }
+	}
+}
+
+country_event = { #note, this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
+	id = 66101
+	title = "EVTNAME66101"
+	desc = "EVTDESC66101"
+	picture = plague
+
+	trigger = {
+		exists = yes
+		NOT = { exists = ZOM }
+		NOT = { JAN = { has_country_modifier = do_not_annex } }
+		any_owned_province = {
+			province_control_days = 365
+			has_province_modifier = zombie_outbreak
+			controlled_by = REB
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	immediate = {		
+		random_owned = {
+			limit = {
+				province_control_days = 365
+				has_province_modifier = zombie_outbreak
+				controlled_by = REB
+			}
+			any_pop = {
+				reduce_pop = 0.4
+				militancy = 8
+				consciousness = -3
+			}
+			owner = { prestige = -3 }
+			change_controller = ZOM
+			secede_province = ZOM
+		}
+		ZOM = {
+			remove_country_modifier = accepts_provinces
+			country_event = { id = 66104 days = 31 }
+		} 
+	}
+
+	option = {
+		name = "Damn!"
+	}
+}
+
+#Uncolonize province
+province_event = {
+	id = 66102
+	title = "EVTNAME66200"
+	desc = "EVTDESC66200"
+
+	trigger = {
+		NOT = { has_global_flag = plague_inc_mode }
+		owner = { tag = ZOM ai = yes }
+		province_control_days = 500
+	}
+
+	mean_time_to_happen = {
+		days = 100
+	}
+
+	immediate = {
+		JAN = { set_country_modifier = { name = do_not_annex duration = 30 } }
+		change_controller = THIS
+		FROM = { inherit = THIS }
+	}
+
+	option = {
+		name = "Zombies deleted"
+	}
+}
+
+country_event = {
+	id = 66103
+	title = "EVTNAME66201"
+	desc = "EVTDESC66201"
+	
+	trigger = {
+		tag = ZOM
+		has_country_modifier = accepts_new_provinces
+		OR = {
+			num_of_cities = 100 #75
+			war = yes #it's probably best to also suspend province defection to ZOM if ZOM is at war with some other country
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 10
+	}
+
+	immediate = { remove_country_modifier = accepts_new_provinces }
+	
+	option = {
+		name = "OK"
+	}
+}
+
+country_event = {
+	id = 66104
+	title = "The wasteland spread."
+	desc = "Spread."
+
+	is_triggered_only = yes
+
+	immediate = { add_country_modifier = { name = accepts_new_provinces duration = -1 } }
+	
+	option = {
+		name = "OK"
+	}
+}

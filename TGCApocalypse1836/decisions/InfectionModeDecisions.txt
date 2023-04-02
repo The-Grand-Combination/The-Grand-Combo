@@ -1,0 +1,168 @@
+political_decisions = {
+
+	#State of emergency 
+	ap_state_of_emergency = {
+		potential = {
+			has_global_flag = infection_mode
+			NOT = { has_country_modifier = ap_state_of_emergency }
+			NOT = { has_global_flag = global_victory }
+		}
+
+		allow = {
+			OR = { has_country_flag = zombie_outbreak any_neighbor_country = { has_country_flag = zombie_outbreak } }
+		}
+
+		effect = {
+			country_event = 66026
+			political_reform = none_voting
+			political_reform = appointed
+			add_country_modifier = {
+				name = "ap_state_of_emergency"
+				duration = -1
+			}
+			any_owned_province = { any_pop = { militancy = 1 } }
+		}
+
+		ai_will_do = { factor = 1
+						modifier = { factor = 0 NOT = { has_country_flag = zombie_outbreak } }
+		}
+	}
+
+	#End State of Emergency
+	ap_end_state_of_emergency = {
+		potential = {
+			has_country_modifier = ap_state_of_emergency
+		}
+		allow = {
+			has_country_modifier = ap_state_of_emergency
+		}
+		effect = {
+			country_event = 66027
+			remove_country_modifier = "ap_state_of_emergency"
+			remove_country_modifier = "ap_state_of_emergency_abuse"
+		}
+
+		ai_will_do = { factor = 1
+						modifier = { factor = 0 has_country_flag = zombie_outbreak }
+		}
+	}
+	
+	#Close the borders, reduce infection from other countries
+	ap_lock_down = {
+		potential = {
+			has_global_flag = infection_mode
+			NOT = { has_global_flag = global_victory }
+			NOT = { has_country_modifier = ap_lock_down_modifier }
+		}
+		allow = {
+			NOT = { has_country_modifier = ap_lock_down_modifier }
+		}
+		effect = {
+			country_event = 66029
+			add_country_modifier = {
+				name = "ap_lock_down_modifier"
+				duration = -1
+			}
+			political_reform = closed_borders
+			any_owned_province = { any_pop = { militancy = 1 } }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+	
+	#Reopen the borders
+	ap_remove_lock_down = {
+		potential = {
+			has_country_modifier = ap_lock_down_modifier
+		}
+		allow = {
+			has_country_modifier = ap_lock_down_modifier
+		}
+		effect = {
+			political_reform = open_borders
+			remove_country_modifier = "ap_lock_down_modifier"
+		}
+
+		ai_will_do = { factor = 0 }
+	} 
+
+	#Quarantine, reduce internal spread
+	ap_quarantine = {
+		potential = {
+			has_global_flag = infection_mode
+			NOT = { has_global_flag = global_victory }
+			NOT = { has_country_modifier = ap_quarantine_modifier }
+		}
+		allow = {
+			NOT = { has_country_modifier = ap_quarantine_modifier }
+		}
+		effect = {
+			country_event = 66038
+			add_country_modifier = { name = "ap_quarantine_modifier" duration = -1 }
+			any_owned_province = { any_pop = { militancy = 1 } }
+			any_owned_province = { limit = { has_province_modifier = zombie_outbreak } any_pop = { militancy = 2 } }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	#Remove Quarantine
+	ap_remove_quarantine = {
+		potential = {
+			has_global_flag = infection_mode
+			has_country_modifier = ap_quarantine_modifier
+		}
+		allow = { has_country_modifier = ap_quarantine_modifier }
+		effect = {
+			remove_country_modifier = "ap_quarantine_modifier"
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	#Take money from the people to aid the fight
+	ap_sieze_assets = {
+		potential = {
+			has_global_flag = infection_mode
+			NOT = { has_global_flag = global_victory }
+			NOT = { has_country_flag = assets_siezed }
+		}
+		allow = {
+			has_country_flag = zombie_outbreak
+		}
+
+		effect = {
+			treasury = 50000
+			militancy = 5
+			consciousness = 8
+			set_country_flag = assets_siezed
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Scout for new land
+	ap_scouts = {
+		potential = {
+			has_global_flag = global_victory
+			NOT = { has_global_flag = plague_inc_mode }
+		}
+		allow = {
+			money = 50000
+		}
+
+		effect = {
+			treasury = -50000
+			set_country_flag = scouts_activated
+		}
+		ai_will_do = { factor = 0 }
+	}
+}
+
+	
+
+
+
+
+
+
+
+
