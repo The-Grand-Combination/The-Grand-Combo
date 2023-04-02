@@ -834,12 +834,13 @@
 				type = cut_down_to_size
 				months = 30
 			}
-			1186 = { add_core = RUS }
-			1188 = { add_core = RUS }
-			1190 = { add_core = RUS }
-			1208 = { add_core = RUS }
-			1189 = { add_core = RUS }
-			1185 = { add_core = RUS }
+			1081 = { add_core = RUS }
+			1082 = { add_core = RUS }
+			1083 = { add_core = RUS }
+			1084 = { add_core = RUS }
+			1085 = { add_core = RUS }
+			2617 = { add_core = RUS }
+			2697 = { add_core = RUS }
 		}
 	}
 
@@ -953,8 +954,8 @@
 					}
 					OR = {
 						any_owned_province = { is_core = RUS }
-						any_owned_province = { is_core = KAZ }
-						any_owned_province = { is_core = KOK }
+						#any_owned_province = { is_core = KAZ }
+						#any_owned_province = { is_core = KOK }
 					}
 				}
 				country_event = 80103
@@ -964,7 +965,7 @@
 				secede_province = RUS
 			}
 			ai_chance = {
-				factor = 85
+				factor = 90
 				modifier = {
 					factor = 0.5
 					NOT = { war_exhaustion = 10 }
@@ -996,7 +997,7 @@
 			any_owned = { limit = { is_core = MCK } add_core = QNG }
 
 			ai_chance = {
-				factor = 20
+				factor = 10
 				modifier = {
 					factor = 1.1
 					NOT = { war_exhaustion = 25 }
@@ -1017,6 +1018,231 @@
 			}
 		}
 	}
+	
+###############TREATY OF TARBAGATAY###############
+country_event = {
+	id = 888888006
+	title = "EVTNAME888888006" #The Treaty of Tarbagatay
+	desc = "EVTDESC888888006"
+	picture = "asian_administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT888888006OPTA"
+		RUS = { country_event = 888888007 }
+		any_country = {
+			limit = {
+				OR = {
+					vassal_of = THIS
+					substate_of = THIS
+				}
+				any_owned_province = { is_core = RUS }
+			}
+			country_event = 888888009
+		}
+		any_owned = {
+			limit = { is_core = RUS }
+			secede_province = RUS
+		}
+		1188 = {
+			remove_core = QNG
+			remove_core = XIN
+			remove_core = CHI
+		}
+		1186 = {
+			remove_core = QNG
+			remove_core = XIN
+			remove_core = CHI
+		}
+		1190 = {
+			remove_core = QNG
+			remove_core = XIN
+			remove_core = CHI
+		}
+		ai_chance = {
+			factor = 90
+			modifier = {
+				factor = 0.5
+				NOT = { war_exhaustion = 10 }
+				1596 = { owner = { part_of_sphere = no } }
+			}
+			modifier = {
+				factor = 0.75
+				NOT = { war_exhaustion = 5 }
+			}
+		}
+	}
+	
+	option = {
+		name = "EVT888888006OPTB"
+		prestige = 10
+		RUS = { country_event = 888888008 }
+		relation = { who = FROM value = -300 }
+		random_country = {
+			limit = {
+				OR = {
+					vassal_of = THIS
+					substate_of = THIS
+				}
+				OR = {
+					# primary_culture = hanhui
+					# primary_culture = turkic_minor
+					tag = XIN
+					tag = ALT
+				}
+				# OR = {
+					# capital = 1600
+					# capital = 1596
+					# capital = 1068
+				# }
+			}
+			annex_to = THIS
+		}
+		
+		any_owned = { limit = { is_core = XIN } add_province_modifier = { name = nationalist_agitation duration = 365 } }
+		any_owned = { limit = { is_core = XIN } add_core = THIS }
+		any_owned = { limit = { is_core = ALT } add_province_modifier = { name = nationalist_agitation duration = 365 } }
+		any_owned = { limit = { is_core = ALT } add_core = THIS }
+		
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 1.1
+				NOT = { war_exhaustion = 25 }
+				1596 = { owner = { part_of_sphere = no } }
+			}
+			modifier = {
+				factor = 0.5
+				any_greater_power = { war_with = THIS }
+			}
+			modifier = {
+				factor = 0
+				national_provinces_occupied = 0.25
+			}
+			modifier = {
+				factor = 0.5
+				war_exhaustion = 25
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 888888007
+	title = "EVTNAME888888007"
+	desc = "EVTDESC888888007"
+	picture = "asian_administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT888888007OPTA"
+		prestige = 10
+		relation = { who = FROM value = 50 }
+	}
+}
+
+country_event = {
+	id = 888888008
+	title = "EVTNAME888888008"
+	desc = "EVTDESC888888008"
+	picture = "asian_administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT888888008OPTA"
+		prestige = -10
+		relation = { who = FROM value = -100 }
+		diplomatic_influence = { who = FROM value = -100 }
+		casus_belli = {
+			target = FROM
+			type = cut_down_to_size
+			months = 30
+		}
+	}
+}
+
+country_event = {
+	id = 888888009
+	title = "EVTNAME888888009" #The Amban's Demand - Qing vassals to hand over territory to Russia
+	desc = "EVTDESC888888009"
+	picture = "asian_administration"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT888888009OPTA"
+		prestige = -5
+		any_pop = { militancy = 3 }
+		any_owned = {
+			limit = { is_core = RUS }
+			secede_province = RUS
+		}
+		random_owned = { limit = { owner = { tag = ALT } } RUS = { inherit = THIS } }
+		
+		FROM = { any_owned = { limit = { is_core = XIN } add_province_modifier = { name = nationalist_agitation duration = 365 } } }
+		FROM = { any_owned = { limit = { is_core = XIN NOT = { is_core = RUS } } add_core = FROM } }
+		
+		FROM = { any_owned = { limit = { is_core = ALT } add_province_modifier = { name = nationalist_agitation duration = 365 } } }
+		FROM = { any_owned = { limit = { is_core = ALT NOT = { is_core = RUS } } add_core = FROM } }
+		
+		ai_chance = {
+			factor = 95
+			modifier = {
+				factor = 0.25
+				NOT = { in_sphere = RUS }
+				part_of_sphere = yes
+			}
+		}
+	}
+	
+	option = {
+		name = "EVT888888009OPTB"
+		prestige = 5
+		any_pop = { militancy = -6 }
+		leave_alliance = FROM
+		relation = { who = RUS value = -100 }
+		FROM = { country_event = 888888010 }
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 2
+				FROM = { war = yes }
+			}
+			modifier = {
+				factor = 2
+				any_greater_power = { war_with = FROM }
+			}
+			modifier = {
+				factor = 0
+				in_sphere = RUS
+			}
+			modifier = {
+				factor = 0.05
+				NOT = { in_sphere = RUS }
+				part_of_sphere = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 888888010
+	title = "EVTNAME888888010"
+	desc = "EVTDESC888888010"
+	picture = "rebellion"
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVT888888010OPTA"
+		prestige = -10
+		release_vassal = FROM
+		relation = { who = FROM value = -100 }
+	}
+}
 
 ## Mongolian Protectorate ##
 
