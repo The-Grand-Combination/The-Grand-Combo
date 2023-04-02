@@ -364,13 +364,23 @@
 					BIG_TEXAS = { add_core = TEX }
 					TEX = { all_core = { remove_core = USA } }
 				}
+				UNB = {
+					random_owned = {
+						limit = { region = BIG_TEXAS }
+						BIG_TEXAS = { add_core = TEX }
+						TEX = { all_core = { remove_core = UNB } }
+					}
+				}
+				release = TEX
 				random_owned = {
 					limit = { owner = { is_greater_power = yes } }
-					owner = { release_vassal = TEX }
+					owner = { create_vassal = TEX }
 				}
-				random_owned = {
-					limit = { owner = { is_greater_power = no } }
-					owner = { release = TEX }
+				UNB = {
+					random_owned = {
+						limit = { is_core = TEX }
+						secede_province = TEX
+					}
 				}
 			## New Mexico ##
 				random_owned = {
@@ -388,12 +398,37 @@
 						}
 						add_core = UNM
 					}
-					UNM = { all_core = { remove_core = USA  remove_core = DES } } #I don't want bigass Deseret
+					UNM = { all_core = { remove_core = USA remove_core = DES } } #I don't want bigass Deseret
+				}
+				UNB = {
+					random_owned = {
+						limit = { 
+							OR = { 
+								region = MEX_100
+								region = MEX_103
+							}
+						}
+						MEX_100 = { add_core = UNM } # Arizona
+						any_owned = {
+							limit = { 
+								region = MEX_103 # New Mexico
+								NOT = { is_core = TEX }
+							}
+							add_core = UNM
+						}
+						UNM = { all_core = { remove_core = UNB remove_core = DES } }
+					}
 				}
 				release = UNM
 				random_owned = { 
 					limit = { owner = { is_greater_power = yes } }
 					owner = { create_vassal = UNM } #release_vassal = UNM doesn't work because the UNM's capital is owned by Texas
+				}
+				UNB = {
+					random_owned = {
+						limit = { is_core = UNM }
+						secede_province = UNM
+					}
 				}
 			## California ##
 				random_owned = {
@@ -407,10 +442,29 @@
 					MEX_94 = { add_core = CAL } # Nevada
 					CAL = { all_core = { remove_core = USA remove_core = DES } }
 				}
+				UNB = {
+					random_owned = {
+						limit = {
+							OR = {
+								region = MEX_85
+								region = MEX_94
+							}
+						}
+						MEX_85 = { add_core = CAL } # California
+						MEX_94 = { add_core = CAL } # Nevada
+						CAL = { all_core = { remove_core = UNB remove_core = DES } }
+					}
+				}
 				release = CAL
 				random_owned = { 
 					limit = { owner = { is_greater_power = yes } }
 					owner = { create_vassal = CAL } #for this I've no explanation but it wasn't working with release_vassal either
+				}
+				UNB = {
+					random_owned = {
+						limit = { is_core = CAL }
+						secede_province = CAL
+					}
 				}
 			## Oregon ##
 				random_owned = {
@@ -429,7 +483,7 @@
 					any_owned = {
 						limit = {
 							region = USA_111 # Wyoming
-							NOT = { OR = { is_core = TEX is_core = ULA province_id = 110 } } #110 goes to DES and it may not have a core on it
+							NOT = { is_core = TEX is_core = ULA province_id = 110 } #110 goes to DES and it may not have a core on it
 						}
 						add_core = UOR
 					}
@@ -442,13 +496,47 @@
 					}
 					UOR = { all_core = { remove_core = USA remove_core = DES } }
 				}
+				UNB = {
+					random_owned = {
+						limit = {
+							OR = {
+								region = USA_78
+								region = USA_81
+								region = USA_91
+								region = USA_111
+								region = USA_116
+							}
+						}
+						USA_78 = { add_core = UOR } # Washington
+						USA_81 = { add_core = UOR } # Oregon
+						USA_91 = { add_core = UOR } # Idaho
+						any_owned = {
+							limit = {
+								region = USA_111 # Wyoming
+								NOT = { is_core = TEX is_core = ULA province_id = 110 } #110 goes to DES and it may not have a core on it
+							}
+							add_core = UOR
+						}
+						any_owned = {
+							limit = {
+								region = USA_116 # Montana
+								NOT = { is_core = ULA }
+							}
+							add_core = UOR
+						}
+						UOR = { all_core = { remove_core = UNB remove_core = DES } }
+					}
+				}
+				release = UOR
 				random_owned = {
 					limit = { owner = { is_greater_power = yes } }
-					owner = { release_vassal = UOR }
+					owner = { create_vassal = UOR }
 				}
-				random_owned = {
-					limit = { owner = { is_greater_power = no } }
-					owner = { release = UOR }
+				UNB = {
+					random_owned = {
+						limit = { is_core = UOR }
+						secede_province = UOR
+					}
 				}
 			## Deseret ##
 				random_owned = {
@@ -463,26 +551,56 @@
 					any_owned = {
 						limit = {
 							region = USA_106 # Colorado
-							NOT = { OR = { is_core = TEX is_core = ULA } }
+							NOT = { is_core = TEX is_core = ULA }
 						}
 						add_core = DES
 					}
 					any_owned = {
 						limit = {
 							region = USA_111 #Wyoming
-							NOT = { OR = { is_core = TEX is_core = ULA is_core = UOR } }
+							NOT = { is_core = TEX is_core = ULA is_core = UOR }
 						}
 						add_core = DES
 					}
 					DES = { all_core = { remove_core = USA } }
 				}
+				UNB = {
+					random_owned = {
+						limit = { 
+							OR = { 
+								region = MEX_97 
+								region = USA_106
+								region = USA_111
+							}
+						}
+						MEX_97 = { add_core = DES } # Utah
+						any_owned = {
+							limit = {
+								region = USA_106 # Colorado
+								NOT = { is_core = TEX is_core = ULA }
+							}
+							add_core = DES
+						}
+						any_owned = {
+							limit = {
+								region = USA_111 #Wyoming
+								NOT = { is_core = TEX is_core = ULA is_core = UOR }
+							}
+							add_core = DES
+						}
+						DES = { all_core = { remove_core = UNB } }
+					}
+				}
+				release = DES
 				random_owned = {
 					limit = { owner = { is_greater_power = yes } }
-					owner = { release_vassal = DES }
+					owner = { create_vassal = DES }
 				}
-				random_owned = {
-					limit = { owner = { is_greater_power = no } }
-					owner = { release = DES }
+				UNB = {
+					random_owned = {
+						limit = { is_core = DES }
+						secede_province = DES
+					}
 				}
 			## Rio Grande ##
 				random_owned = {
