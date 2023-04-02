@@ -125,7 +125,7 @@ defines = {
 		
 		TRADE_CAP_LOW_LIMIT_LAND = 0.20, 				-- the lowest % the slider can go for land units
 		TRADE_CAP_LOW_LIMIT_NAVAL = 0.1, 			-- the lowest % the slider can go for naval units
-		TRADE_CAP_LOW_LIMIT_CONSTRUCTIONS = 0.15, 		-- the lowest % the slider can go for constructions
+		TRADE_CAP_LOW_LIMIT_CONSTRUCTIONS = 0.3, 		-- the lowest % the slider can go for constructions
 		FACTORY_PURCHASE_MIN_FACTOR = 0.25,			-- the lowest % of its daily needs a factory will purchase
 		FACTORY_PURCHASE_DRAWDOWN_FACTOR = 0.01		-- the % a factory will reduce its input purchases each day if it did not sell all its goods (also used for scaling up production if all goods are sold)
 	},
@@ -627,12 +627,12 @@ defines = {
 		IMMIGRATION_SCALE = 0.005,
 
 		PROMOTION_SCALE = 0.002,
-		PROMOTION_ASSIMILATION_CHANCE = 0.0005,
+		PROMOTION_ASSIMILATION_CHANCE = 0.05,
 		LUXURY_THRESHOLD = 500,
 		BASE_GOODS_DEMAND = 0.8, --0.8
 		BASE_POPGROWTH = 0.0001,
 		MIN_LIFE_RATING_FOR_GROWTH = 30,
-		LIFE_RATING_GROWTH_BONUS = 0.00011,
+		LIFE_RATING_GROWTH_BONUS = 0.0001,
 		LIFE_NEED_STARVATION_LIMIT = 0.5,
 
 		MIL_LACK_EVERYDAY_NEED = 0.05, -- was 0.1
