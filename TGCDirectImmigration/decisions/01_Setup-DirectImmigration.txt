@@ -7,28 +7,35 @@ political_decisions = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			has_country_flag = looking_through_overrides
+			#has_country_flag = looking_through_overrides
 			ai = no
 			NOT = { has_country_flag = direct_immigration }
 		}
 
 		allow = {
+		ai = no
+		money = 31000
+		state_n_government = 1
+		NOT = { has_country_modifier = direct_immigration_program }
+		OR = {
+		NOT = { citizenship_policy = full_citizenship }
+		NOT = { has_country_flag = democracy_gov }
+		}
 		}
 
 		effect = {
 			set_country_flag = direct_immigration
-			activate_technology = basic_chemistry
-			any_country = {
-				limit = {
-					has_country_flag = new_world_nation
-					ai = yes
-					exists = yes
-				}
-				capital_scope = {
-					# Audax Validator "." Ignore_NEXT
-					immigrator = 1
-				}
-			}
+			treasury = -30000
+			badboy = 0.5
+			add_country_modifier = { name = direct_immigration_program duration = 365 }
+			set_variable = { which = has_province_selector value = 0 }
+			all_land_provinces = { #failsafe in case AI builds it
+			# Audax Validator "." Ignore_NEXT
+			province_selector = -3
+			# Audax Validator "." Ignore_NEXT
+			immigrator = -3
+			remove_province_modifier = forced_expulsion
+		}
 		}
 
 		ai_will_do = { factor = 0 }
@@ -39,12 +46,14 @@ political_decisions = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			has_country_flag = looking_through_overrides
+			#has_country_flag = looking_through_overrides
 			ai = no
 			has_country_flag = direct_immigration
+			NOT = { has_country_flag = show_dm_options }
 		}
 
 		allow = {
+		
 		}
 
 		effect = {
@@ -55,14 +64,40 @@ political_decisions = {
 	}
 
 	#Move Accepted Pops (previosly education spending is 100%)
+	
+	override_direct_immigration_move_primary_pops = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			#has_country_flag = looking_through_overrides
+			ai = no
+			has_country_flag = direct_immigration
+			NOT = { has_country_flag = direct_immigration_move_primary_pops }
+			NOT = { has_country_flag = direct_immigration_move_accepted_pops }
+			NOT = { has_country_flag = show_dm_options }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = direct_immigration_move_primary_pops
+			clr_country_flag = direct_immigration_move_accepted_pops
+		}
+
+		ai_will_do = { factor = 0 }
+	}	
+
 	override_direct_immigration_move_accepted_pops = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			has_country_flag = looking_through_overrides
+			#has_country_flag = looking_through_overrides
 			ai = no
 			has_country_flag = direct_immigration
+			has_country_flag = direct_immigration_move_primary_pops
 			NOT = { has_country_flag = direct_immigration_move_accepted_pops }
+			NOT = { has_country_flag = show_dm_options }
 		}
 
 		allow = {
@@ -70,6 +105,7 @@ political_decisions = {
 
 		effect = {
 			set_country_flag = direct_immigration_move_accepted_pops
+			clr_country_flag = direct_immigration_move_primary_pops
 		}
 
 		ai_will_do = { factor = 0 }
@@ -80,10 +116,11 @@ political_decisions = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			has_country_flag = looking_through_overrides
+			#has_country_flag = looking_through_overrides
 			ai = no
 			has_country_flag = direct_immigration
 			has_country_flag = direct_immigration_move_accepted_pops
+			NOT = { has_country_flag = show_dm_options }
 		}
 
 		allow = {
@@ -91,6 +128,7 @@ political_decisions = {
 
 		effect = {
 			clr_country_flag = direct_immigration_move_accepted_pops
+			clr_country_flag = direct_immigration_move_primary_pops
 		}
 
 		ai_will_do = { factor = 0 }
@@ -101,10 +139,11 @@ political_decisions = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			has_country_flag = looking_through_overrides
+			#has_country_flag = looking_through_overrides
 			ai = no
 			has_country_flag = direct_immigration
 			NOT = { has_country_flag = direct_immigration_move_pops_to_colonies }
+			NOT = { has_country_flag = show_dm_options }
 		}
 
 		allow = {
@@ -122,10 +161,11 @@ political_decisions = {
 		picture = cogs_yellow
 		alert = no
 		potential = {
-			has_country_flag = looking_through_overrides
+			#has_country_flag = looking_through_overrides
 			ai = no
 			has_country_flag = direct_immigration
 			has_country_flag = direct_immigration_move_pops_to_colonies
+			NOT = { has_country_flag = show_dm_options }
 		}
 
 		allow = {
@@ -138,4 +178,71 @@ political_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
+	#Preference by religion
+	#Move non accepted religion
+	override_direct_immigration_move_not_state_religion = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			#has_country_flag = looking_through_overrides
+			ai = no
+			has_country_flag = direct_immigration
+			NOT = { has_country_flag = direct_immigration_move_not_state_religion }
+			NOT = { has_country_flag = show_dm_options }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = direct_immigration_move_not_state_religion
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Cancel moving them by religion
+	override_direct_immigration_move_not_state_religion_disable = {
+		picture = cogs_yellow
+		alert = no
+		potential = {
+			#has_country_flag = looking_through_overrides
+			ai = no
+			has_country_flag = direct_immigration
+			has_country_flag = direct_immigration_move_not_state_religion
+			NOT = { has_country_flag = show_dm_options }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			clr_country_flag = direct_immigration_move_not_state_religion
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#Direct Assimilation - This is now done with Immigrator building
+
+	#override_start_direct_assimilation = {
+	#	picture = cogs_yellow
+	#	alert = no
+	#	potential = {
+	#		ai = no
+	#	}
+#
+	#	allow = {
+	#		NOT = { has_country_modifier = assimilation_campaign_in_progress }
+	#		money = 31000
+	#	}
+#
+	#	effect = {
+	#		country_event = 980007
+	#		set_country_flag = active_assimilation_campaign
+	#	}
+#
+	#	ai_will_do = { factor = 0 }
+	#}
+#
 }

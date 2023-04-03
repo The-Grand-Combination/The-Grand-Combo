@@ -1,0 +1,553 @@
+#A mysterious plague, outbreak, for single player games
+country_event = {
+	id = 66001
+	title = "EVTNAME66001"
+	desc = "EVTDESC66001"
+	picture = first_contact
+
+	fire_only_once = yes
+	
+	trigger = {
+		ai = no
+		has_global_flag = single_player_game
+	}
+
+	mean_time_to_happen = {
+		days = 10
+	}
+
+	immediate = { JAN = { set_variable = { which = zombified_provinces value = 0 } }  set_global_flag = zombie_mod QNG = { activate_technology = classicism_n_early_romanticism } any_country = { activate_technology = classicism_n_early_romanticism } }
+
+	option = {
+		name = "EVTOPTA66001"
+		set_global_flag = infection_mode
+		random_country = {
+			limit = {
+				civilized = yes
+				is_vassal = no
+				rank = 20
+				number_of_states = 3
+			}
+			country_event = 66202
+		}
+	}
+
+	option = {
+		name = "EVTOPTB66001"
+		set_global_flag = infection_mode
+		random_country = {
+			limit = {
+				civilized = yes
+				is_vassal = no
+				rank = 20
+				number_of_states = 3
+			}
+			country_event = {
+					id = 66202
+					days = 3650
+				}
+		}
+	}
+
+	option = {
+		name = "EVTOPTC66001"
+		set_global_flag = plague_inc_mode
+		capital_scope = {
+			secede_province = ZOM
+			any_neighbor_province = {
+				secede_province = ZOM
+				any_neighbor_province = {
+					secede_province = ZOM
+				}
+			}
+		}
+		change_tag_no_core_switch = ZOM
+	}
+
+	option = {
+		name = "EVTOPTD66001"
+		set_global_flag = plague_inc_mode
+		random_country = {
+			limit = { ai = yes rank = 16 number_of_cities = 6 }
+			country_event = 66003
+		}
+	}
+}
+
+#A mysterious plague, outbreak, for multiplayer player games
+country_event = {
+	id = 66002
+	title = "EVTNAME66001"
+	desc = "EVTDESC66001"
+	picture = first_contact
+
+	fire_only_once = yes
+	
+	trigger = {
+		ai = no
+		has_country_flag = multi_player_host
+	}
+
+	mean_time_to_happen = {
+		days = 10
+	}
+
+	immediate = { JAN = { set_variable = { which = zombified_provinces value = 0 } } set_global_flag = zombie_mod }
+
+	option = {
+		name = "EVTOPTA66001"
+		set_global_flag = infection_mode
+		random_country = {
+			limit = {
+				civilized = yes
+				is_vassal = no
+				rank = 20
+				number_of_states = 3
+			}
+			country_event = 66202
+		}
+	}
+
+	option = {
+		name = "EVTOPTB66001"
+		set_global_flag = infection_mode
+		random_country = {
+			limit = {
+				civilized = yes
+				is_vassal = no
+				rank = 20
+				number_of_states = 3
+			}
+			country_event = {
+					id = 66202
+					days = 3650
+				}
+		}
+	}
+
+	option = {
+		name = "EVTOPTC66001"
+		set_global_flag = plague_inc_mode
+		capital_scope = {
+			secede_province = ZOM
+			any_neighbor_province = {
+				secede_province = ZOM
+				any_neighbor_province = {
+					secede_province = ZOM
+				}
+			}
+		}
+		change_tag_no_core_switch = ZOM
+	}
+
+	option = {
+		name = "EVTOPTD66001"
+		set_global_flag = plague_inc_mode
+		random_country = {
+			limit = { ai = yes rank = 16 number_of_cities = 6 }
+			country_event = 66003
+		}
+	}
+
+	option = {
+		name = "EVTOPTE66001"
+		set_global_flag = plague_inc_mode
+		random_country = {
+			limit = { ai = no }
+			country_event = 66002
+		}
+	}
+}
+
+#Plague Inc mode for the AI
+country_event = {
+	id = 66003
+	title = "EVTNAME66001"
+	desc = "EVTDESC66001"
+	picture = first_contact
+
+	is_triggered_only = yes 
+
+	option = {
+		name = "EVTOPTD66001"
+		capital_scope = {
+				secede_province = ZOM
+				any_neighbor_province = {
+					secede_province = ZOM
+					any_neighbor_province = {
+						secede_province = ZOM
+					}
+				}
+			}
+		change_tag_no_core_switch = ZOM
+	}
+}
+
+#Province Victory
+province_event = {
+	id = 66014
+	title = "EVTNAME66014"
+	desc = "EVTDESC66014"
+
+	trigger = {
+		has_province_modifier = zombie_outbreak
+		NOT = {
+			controlled_by = REB
+			country_units_in_province = REB
+		}
+		units_in_province = 1
+	}
+
+	mean_time_to_happen = {
+		months = 1
+		modifier = {
+			factor = 1.25
+			any_neighbor_province = {
+				has_province_modifier = zombie_outbreak
+			}
+		}
+	}
+
+	option = {
+		name = "Excellent."
+		remove_province_modifier = zombie_outbreak
+		any_pop = {
+			consciousness = 2
+			militancy = -8
+		}
+	}
+}
+
+#Country Victory
+country_event = {
+	id = 66015
+	title = "EVTNAME66015"
+	desc = "EVTDESC66015"
+	picture = prosper
+
+	trigger = {
+		has_country_flag = zombie_outbreak
+		NOT = {
+			any_owned_province = {
+				has_province_modifier = zombie_outbreak
+			}
+			has_country_flag = zombie_outbreak_victory
+			num_of_revolts = 1
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = "Excellent."
+		clr_country_flag = zombie_outbreak
+		set_country_flag = zombie_outbreak_victory
+		any_pop = {
+			consciousness = -5
+			militancy = -8
+		}
+	}
+}
+
+##### Added 12/18/11 #####
+
+#Add State of Emergency Modifier
+country_event = {
+	id = 66026
+	title = "EVTNAME66026"
+	desc = "EVTDESC66026"
+	picture = "rebellion"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "A worthy sacrifice."
+	}
+}
+
+#Remove State of Emergency Modifier
+country_event = {
+	id = 66027
+	title = "EVTNAME66027"
+	desc = "EVTDESC66027"
+	picture = "military_reform"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "Excellent."
+	}
+}
+
+#The Zombies are back!
+#Zombies are somehow back after a victory
+
+country_event = {
+	id = 66028
+	title = "EVTNAME66028"
+	desc = "EVTDESC66028"
+	picture = disease
+
+	trigger = {
+		any_owned_province = {
+			has_province_modifier = zombie_outbreak
+		}
+		has_country_flag = zombie_outbreak_victory
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = {
+		name = "Curses!"
+		clr_country_flag = zombie_outbreak_victory
+		set_country_flag = zombie_outbreak
+		any_owned_province = {
+			limit = {
+				has_province_modifier = zombie_outbreak
+			}
+			any_pop = {
+				consciousness = 3
+				militancy = 3
+			}
+		}
+	}
+}
+
+# Added 31/12/2022, by wyrm.
+# Thanks ZomgK3tchup for the decade old code, I will put it to good use.
+
+# Lock Down
+country_event = {
+	id = 66029
+	title = "EVTNAME66029"
+	desc = "EVTDESC66029"
+	picture = "rebellion"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA66029"
+	}
+}
+
+# Remove lock down
+country_event = {
+	id = 66030
+	title = "EVTNAME66030"
+	desc = "EVTDESC66030"
+	picture = "rebellion"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA66030"
+	}
+}
+
+#Global Victory check
+
+country_event = { 
+	id = 66031
+	title = "global_victory_trigger"
+	desc = "global_victory_trigger"
+	picture = rebuild_society
+
+	trigger = {
+		ZOM = { exists = no }
+		year = 1850
+		NOT = { JAN = { has_country_modifier = ap_zm_timer } }
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = { days = 10 }
+
+	immediate = {
+		any_country = { country_event = 66033 clr_country_flag = zombie_outbreak clr_country_flag = assets_siezed }
+		all_land_provinces = { remove_province_modifier = zombie_outbreak }
+		clr_global_flag = infection_mode
+		set_global_flag = global_victory
+		set_variable = { which = zombified_provinces value = 0 }
+	}
+
+	option = {
+		name = "global_victory"
+	}
+
+}
+
+#Global Victory Event
+country_event = {
+	id = 66033
+	title = "EVTNAME66033"
+	desc = "EVTDESC66033"
+	picture = rebuild_society
+
+	is_triggered_only = yes
+
+	option = { 
+		name = "EVTOPTA66033"
+		add_country_modifier = { name = ap_rebuild_society duration = 10000 }
+		add_country_modifier = { name = ap_conservative_rebuild duration = 10000 }
+	}
+
+	option = { 
+		name = "EVTOPTB66033"
+		add_country_modifier = { name = ap_rebuild_society duration = 10000 }
+		add_country_modifier = { name = ap_temperace_rebuild duration = 10000 }
+	}
+
+	option = { 
+		name = "EVTOPTC66033"
+		add_country_modifier = { name = ap_rebuild_society duration = 10000 }
+		add_country_modifier = { name = ap_agressive_rebuild duration = 10000 }
+	}
+
+}
+
+#Country Defeat
+#The player can realocate
+country_event = {
+	id = 66034
+	title = "EVTNAME66034"
+	desc = "EVTDESC66034"
+	picture = country_defeat
+
+	trigger = {
+		ai = no
+		has_country_flag = zombie_outbreak
+		NOT = { 
+				has_country_flag = zombie_outbreak_defeat
+				any_owned_province = { NOT = { has_province_modifier = zombie_outbreak } } 
+				any_owned_province = { NOT = { controlled_by = REB } }
+		}
+	}
+
+	option = {
+		name = "EVTOPTA66034"
+		prestige = 1
+	}
+
+	option = {
+		name = "EVTOPTB66034"
+		random_country = { 
+			limit = { ai = yes any_owned_province = { NOT = { controlled_by = REB } } NOT = { tag = ZOM } }
+			random_owned = {
+				limit = { NOT = { controlled_by = REB } }
+				change_controller = THIS
+			    secede_province = THIS
+				add_province_modifier = { name = ap_refuge duration = 90 }
+				add_province_modifier = { name = ap_pop_boom duration = 1 }
+			}
+		} 
+	}
+}
+
+#Triggers if the player don't turn off the state of emergency after the infection is over
+country_event = {
+	id = 66035
+	title = "EVTNAME66035"
+	desc = "EVTDESC66035"
+	picture = military_reform
+
+	trigger = {
+		has_country_flag = zombie_outbreak_victory
+		has_country_flag = ap_state_of_emergency
+		NOT = { has_country_flag = ap_state_of_emergency_abuse }
+	}
+
+	option = {
+		name = "EVTOPTA66035"
+		remove_country_modifier = "ap_state_of_emergency"
+		prestige = 10
+	}
+
+	option = {
+		name = "EVTOPTB66035"
+		add_country_modifier = { name = ap_state_of_emergency_abuse duration = -1 }
+		militancy = 2
+		consciousness = 2
+	}
+}
+
+#Conquest of the wasteland
+country_event = {
+	id = 66036
+	title = "EVTNAME66036"
+	desc = "EVTDESC66036"
+	picture = retake_the_wasteland
+
+	trigger = {
+		exists = yes
+		has_country_flag = zombie_outbreak_victory
+		any_owned_province = { has_empty_adjacent_province = yes }
+		NOT = { has_global_flag = infection_mode }
+	}
+
+	is_triggered_only = yes
+
+	mean_time_to_happen = {
+		months = 100
+		
+		modifier = { factor = 0.5 has_country_modifier = ap_agressive_rebuild }
+		modifier = { factor = 0.7 has_country_modifier = ap_temperace_rebuild }
+		modifier = { factor = 0.9 NOT = { has_country_modifier = ap_lock_down } }
+
+		modifier = { factor = 0.1 has_country_flag = scouts_activated }
+	}
+
+	option = {
+		name = "EVTOPTA66036"
+
+		prestige = 15
+		money = -50000
+
+		random_province = {
+			limit = { has_empty_adjacent_province = yes }
+			add_province_modifier = { name = ap_expedition duration = -1 }
+			owner = { clr_country_flag = scouts_activated }
+		}
+	}
+
+	option = {
+		name = "EVTOPTB66036"
+	}
+}
+
+#Expedition
+province_event = {
+	id = 66037
+	title = "EVTNAME66037"
+	desc = "EVTDESC66037"
+
+	trigger = {
+		has_province_modifier = ap_expedition
+	}
+
+	mean_time_to_happen = { days = 30 }
+
+	immediate = { remove_province_modifier = ap_expedition }
+
+	option = {
+		name = "EVTOPTA66037"
+		random_empty_neighbor_province = { secede_province = THIS }
+	}
+}
+
+# Quarantine
+country_event = {
+	id = 66038
+	title = "EVTNAME66038"
+	desc = "EVTDESC66038"
+	picture = quarantine
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA66038"
+	}
+}
