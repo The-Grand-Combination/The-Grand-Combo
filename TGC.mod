@@ -1,6 +1,6 @@
 name = "TGC - The Grand Combination"
 path = "mod/TGC"
-user_dir = "TGC"
+user_dir = "TGCBigMap"
 replace_path = "common"
 replace_path = "decisions"
 replace_path = "events"
