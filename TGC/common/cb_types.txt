@@ -132,6 +132,9 @@ rhine_crisis_french
 rhine_crisis_german
 crimean_war_cb
 crimean_war_defender
+end_slave_trade
+french_conquest_of_louisiana_france
+french_conquest_of_louisiana_usa
 }
 
 # Great War CB's
@@ -8001,6 +8004,193 @@ webster_ashburton_cb = {
 	on_add = {}
 
 	war_name = WAR_WEBSTER_ASHBURTON
+}
+
+end_slave_trade = {
+	sprite_index = 34
+	is_triggered_only = yes
+	months = 36
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 0.5
+	peace_cost_factor = 15
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = {
+		THIS = {
+			tag = ENG
+			slavery = no_slavery
+		}
+		has_country_flag = slave_trade_leader
+	}
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		clr_global_flag = slave_trade_reinstated
+		clr_country_flag = slave_trade_leader
+		clr_country_flag = the_slavery_debate
+		remove_country_modifier = the_slavery_debate_modifier
+		remove_country_modifier = atlantic_slave_trade
+		add_country_modifier = { name = national_confusion duration = 365 }
+		any_country = {
+			limit = { has_country_flag = slave_trader }
+			clr_country_flag = slave_trader
+			set_country_flag = slave_trade_ended
+		}
+	}
+
+	on_add = { any_pop = { scaled_consciousness = { factor = -2 slavery = no_slavery } } }
+
+	war_name = WAR_END_SLAVE_TRADE
+}
+
+french_conquest_of_louisiana_france = {
+	sprite_index = 35
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 70
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		set_global_flag = treaty_of_new_york
+		## Louisiana cores ##
+		LOUISIANA_TERRITORY = { add_core = ULA }
+		ULA = { all_core = { remove_core = FCA remove_core = CAN} }
+		## Territory swap #
+		THIS = { treasury = -75000 }
+		113 = { remove_core = CAN remove_core = ENG remove_core = FCA remove_core = ULA } #So it doesn't end up being annexed by France if USA didn't do the Oregon Treaty
+		USA = {
+			remove_accepted_culture = cajun
+			any_owned = {
+				limit = {
+					OR = {
+						is_core = ULA
+						is_core = ACA
+						is_core = CAN
+						is_core = FCA
+					}
+				}
+				secede_province = THIS
+			}
+			treasury = 75000
+		}
+		UNB = {
+			any_owned = {
+				limit = {
+					OR = {
+						is_core = ULA
+						is_core = ACA
+						is_core = CAN
+						is_core = FCA
+					}
+				}
+				secede_province = THIS
+			}
+		}
+		#any_owned = { #this makes no sense if player conquered more before this war or with this war, they'll just lose those states
+		#	limit = {
+		#		is_core = USA
+		#		NOT = {
+		#			is_core = ACA
+		#			is_core = ULA
+		#			is_core = CAN
+		#			is_core = FCA
+		#		}
+		#	}
+		#	secede_province = USA
+		#	remove_core = THIS
+		#}
+		## Turn all these states into colonies ##
+		THIS = {
+			any_owned = {
+				limit = {
+					is_core = ULA
+					NOT = {
+						region = USA_139
+						region = USA_144
+						region = USA_148
+						region = USA_129
+					}
+				}
+				secede_province = UTI
+			}
+			inherit = UTI
+		}
+	}
+
+	on_add = { }
+
+	war_name = CONQUEST_OF_LOUISIANA	
+}
+
+french_conquest_of_louisiana_usa = {
+	sprite_index = 1
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 25
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+	po_reparations = yes
+
+	on_po_accepted = { }
+	
+	on_add = { }
+
+	war_name = CONQUEST_OF_LOUISIANA
 }
 
 rhine_crisis_german = {
