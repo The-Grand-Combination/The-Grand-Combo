@@ -205,3 +205,149 @@ country_event = {
 		ai_chance = { factor = 0 }
 	}
 }
+
+#Pan Latin Union Events
+
+	#Initial Event
+	country_event = {
+
+		id = 10412
+		title = "EVTNAME10412"
+		desc = "EVTDESC10412"
+		picture = "napoleon3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10412"
+			add_country_modifier = { name = outraged_europe_fra duration = 20000 }
+			any_country = {
+				limit = {
+					is_culture_group = germanic
+					capital_scope = { continent = europe }
+				}
+				relation = { who = THIS value = -200 }
+			}
+			random_country = {
+				limit = {
+					tag = RUS
+					has_country_flag = monarchy_gov
+				}
+				relation = { who = THIS value = -100 }
+			}
+			random_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = monarchy_gov
+				}
+				relation = { who = THIS value = -200 }
+			}
+			any_country = {
+				limit = {
+					is_greater_power = yes
+					OR = {
+					tag = ENG
+					is_culture_group = germanic
+					tag = RUS
+					}
+				}
+				country_event = { id = 10413 days = 5 } #u are so ded
+			}
+			any_owned = {
+				limit = {
+					OR = { 
+					AND = {
+					OR = {
+						is_core = SPA
+						is_core = ITA
+						is_core = POR
+						}
+					terrain = mountain
+					}
+					pop_majority_culture = basque
+					pop_majority_culture = galician
+					}
+				}
+			add_province_modifier = { name = nationalist_agitation duration = 10900 }
+			}
+		}
+	}
+
+	#War of the Eighth Coalition
+		country_event = {
+		id = 10413
+		title = "EVTNAME10413"
+		desc = "EVTDESC10413"
+		picture = "napoleon3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10413" #Intervene
+			FROM = {
+				country_event = { id = 10414 days = 1 }
+			}
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = cut_down_to_size } #Custom CB
+				defender_goal = { casus_belli = status_quo } #Custom CB?
+				call_ally = yes
+			}
+			add_country_modifier = { name = french_threat duration = 20000 }
+			set_country_flag = intervened_latin_union
+			any_country = {
+				limit = {
+					is_greater_power = yes
+					capital_scope = { continent = europe }
+					NOT = { tag = FROM }
+				}
+				relation = { who = THIS value = 100 }
+			}
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB10414" #Leave them be
+			ai_chance = { factor = 0 }
+		}
+	}
+	#Inform Latin Union - XYZ intervenes!
+	country_event = {
+		id = 10414
+		title = "EVTNAME10414"
+		desc = "EVTDESC10414"
+		picture = "napoleon3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10414"
+		}
+	}
+	#War Lost - Countries get Released
+	country_event = {
+		id = 10415
+		title = "EVTNAME10415"
+		desc = "EVTDESC10415"
+		picture = "napoleon3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10415"
+		}
+	}
+
+	#War Won - Europe Reacts: German Confederation forms
+	country_event = {
+		id = 10416
+		title = "EVTNAME10416"
+		desc = "EVTDESC10416"
+		picture = "napoleon3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10416"
+			set_global_flag = eighth_coalition_pushed_back
+		}
+	}
