@@ -909,7 +909,7 @@ political_decisions = {
     }
 
 	embrace_pan_latinism = {
-		picture = establish_panfrenchism
+		picture = latinflag
 		potential = {
 			NOT = { has_global_flag = pan_latinism }
 			has_country_modifier = louis_napoleon_iii
@@ -935,7 +935,7 @@ political_decisions = {
 	}
 
 	proclaim_latin_union = {
-		picture = establish_panfrenchism
+		picture = unionlatin
 		potential = {
 			has_global_flag = pan_latinism
 			has_country_modifier = louis_napoleon_iii
@@ -1027,7 +1027,8 @@ political_decisions = {
 			}
 			517 = { add_core = LTU }
 			change_tag = LTU
-			political_reform = federalism
+			political_reform = confederalism
+			add_country_modifier = { name = political_crisis duration = 3600 }
 			add_accepted_culture = portuguese
 			add_accepted_culture = spanish
 			add_accepted_culture = catalan
@@ -1156,8 +1157,92 @@ political_decisions = {
 		}
 		ai_will_do = { factor = 0 }
 	}
-	#Roadmap: Official Languages. Language Unification (?). Local Autonomy and Integration. Sphere Latam
-	#Language Question: French Superiority; Status quo - Standardization of three main languages: French, Italian, Spanish; Neo-Latin Modernization: Standardization of language across the four Romance-speaking countries
+
+	reintroduce_napoleonic_code = {
+		picture = codecivil
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			has_country_modifier = disorganized_union
+			money = 300000
+		}
+		effect = {
+			treasury = -300000
+			remove_country_modifier = disorganized_union
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+		}
+	}
+
+	question_of_administration = {
+		picture = departament
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			NOT = { has_country_modifier = disorganized_union }
+			centralization = confederalism
+			money = 300000
+		}
+		effect = {
+			treasury = -300000
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+			political_reform = regionalism
+		}
+	}
+
+	question_of_administration2 = {
+		picture = departament
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			money = 300000
+			centralization = regionalism
+		}
+		effect = {
+			money = 300000
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+			political_reform = federalism
+		}
+	}
+
+	question_of_language = {
+		picture = latinlanguage
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			OR = {
+			centralization = federalism
+			centralization = regionalism
+			}
+			invention = biased_multiculturalism
+			invention = social_darwinism
+			money = 500000
+		}
+		effect = {
+			treasury = -500000
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+			#event to pick the language path
+		}
+	}
+
+	#Done - Roadmap: Official Languages. Language Unification (?). Local Autonomy and Integration. 
+	#Latam Influence
+	#Done - Language Question: French Superiority; Status quo - Standardization of three main languages: French, Italian, Spanish; Neo-Latin Modernization: Standardization of language across the four Romance-speaking countries
 	#South Italy integration
 	#Europe reaction if they don't dismantle LTU: GCF and Scandinavia form, Switzerland Collapse and Civil War
 }

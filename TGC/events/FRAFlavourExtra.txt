@@ -217,7 +217,7 @@ country_event = {
 		id = 10412
 		title = "EVTNAME10412"
 		desc = "EVTDESC10412"
-		picture = "napoleon3"
+		picture = "the_great_war"
 
 		is_triggered_only = yes
 
@@ -281,7 +281,7 @@ country_event = {
 		id = 10413
 		title = "EVTNAME10413"
 		desc = "EVTDESC10413"
-		picture = "napoleon3"
+		picture = "the_great_war"
 
 		is_triggered_only = yes
 
@@ -318,7 +318,7 @@ country_event = {
 		id = 10414
 		title = "EVTNAME10414"
 		desc = "EVTDESC10414"
-		picture = "napoleon3"
+		picture = "the_great_war"
 
 		is_triggered_only = yes
 
@@ -331,12 +331,41 @@ country_event = {
 		id = 10415
 		title = "EVTNAME10415" #TBD brother
 		desc = "EVTDESC10415"
-		picture = "napoleon3"
+		picture = "allied_victory"
 
-		is_triggered_only = yes
+		trigger = {
+			tag = LTU
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+			NOT = { has_country_flag = 8th_coalition }
+			war = no 
+			has_recently_lost_war = yes
+			is_disarmed = yes
+			OR = {
+			truce_with = PRU
+			truce_with = AUS
+			truce_with = ENG
+			truce_with = RUS
+			}
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = { days = 20 }
 
 		option = {
 			name = "EVTOPTA10415"
+			release = SPA
+			release = POR
+			release = ITA
+			release = BEL
+			release = SWI
+			prestige = -400
+			badboy = -50
+			change_tag = FRA
+			clr_country_flag = is_latin_union
+			clr_global_flag = created_empire_latine
+			clr_global_flag = pan_latinism
 		}
 	}
 
@@ -345,12 +374,396 @@ country_event = {
 		id = 10416
 		title = "EVTNAME10416" #tbd
 		desc = "EVTDESC10416"
-		picture = "napoleon3"
+		picture = "allied_victory"
 
-		is_triggered_only = yes
+		trigger = {
+			tag = LTU
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+			NOT = { has_country_flag = 8th_coalition }
+			war = no 
+			has_recently_lost_war = no
+			is_disarmed = no
+			OR = {
+			truce_with = PRU
+			truce_with = AUS
+			truce_with = ENG
+			truce_with = RUS
+			}
+		}
+
+		fire_only_once = yes
+
+		mean_time_to_happen = { days = 20 }
 
 		option = {
 			name = "EVTOPTA10416"
 			set_global_flag = eighth_coalition_pushed_back
+			random_country = {
+				limit = {
+					tag = NET
+					exists = yes
+					ai = yes
+				}
+			set_country_flag = gcf_join_latin_threat
+			}
+			random_country = { #Swiss Civil War - TO BE DONE
+				limit = {
+					tag = SWI
+					exists = yes
+					ai = yes
+				}
+			set_country_flag = latin_german_civil_war
+			}
+			random_country = { #Scandinavia Formation
+				limit = {
+					tag = DEN
+					exists = yes
+					ai = yes
+				}
+			country_event = 10419
+			}
+		}
+	}
+
+	#Question of Language
+	country_event = {
+		id = 10417
+		title = "EVTNAME10417" #tbd
+		desc = "EVTDESC10417"
+		picture = "nationalists"
+
+		is_triggered_only = yes
+
+		option = { #Una Faccia, una Razza!
+			name = "EVTOPTA10417"
+			set_global_flag = neolatin_standardization
+			primary_culture = neolatin
+			remove_accepted_culture = arpitan
+			remove_accepted_culture = breton
+			remove_accepted_culture = occitan
+			remove_accepted_culture = rhinelander
+			remove_accepted_culture = spanish
+			remove_accepted_culture = portuguese
+			remove_accepted_culture = catalan
+			remove_accepted_culture = north_italian
+			remove_accepted_culture = south_italian
+			remove_accepted_culture = french
+			any_owned = {
+				limit = {
+					is_core = THIS
+					OR = {
+						is_core = BRT
+						is_core = WLL
+						is_core = CAT
+						is_core = CRS
+						is_core = ITA
+						is_core = SPA
+						is_core = POR
+						is_core = FRA
+						is_core = SWI
+						AND = {
+							is_core = LUX
+							THIS = { has_country_flag = chose_door_one }
+						}
+						AND = {
+							is_core = RHI
+							THIS = { has_country_flag = chose_door_one }
+						}
+						culture = occitan
+					}
+					NOT = { terrain = mountain } #Redneck Resistance
+				}
+				add_province_modifier = {
+					name = french_cultural_unity
+					duration = -1
+				}
+			}
+			random_owned = {
+				limit = {
+					BRT = { exists = no }
+				}
+				BRT = { all_core = { remove_core = BRT } }
+			}
+			random_owned = {
+				limit = {
+					WLL = { exists = no }
+				}
+				WLL = { all_core = { remove_core = WLL } }
+			}
+			random_owned = {
+				limit = {
+					SWI = { exists = no }
+				}
+				SWI = { all_core = { remove_core = SWI } }
+			}
+			random_owned = {
+				limit = {
+					OCC = { exists = no }
+				}
+				OCC = { all_core = { remove_core = OCC } }
+			}
+			random_owned = {
+				limit = {
+					CAT = { exists = no }
+				}
+				CAT = { all_core = { remove_core = CAT } }
+			}
+			random_owned = {
+				limit = {
+					GLC = { exists = no }
+				}
+				GLC = { all_core = { remove_core = GLC } }
+			}
+			random_owned = {
+				limit = {
+					SPA = { exists = no }
+				}
+				SPA = { primary_culture = neolatin }
+			}
+			random_owned = {
+				limit = {
+					FRA = { exists = no }
+				}
+				FRA = { primary_culture = neolatin }
+			}
+			random_owned = {
+				limit = {
+					ITA = { exists = no }
+				}
+				ITA = { primary_culture = neolatin }
+			}
+			random_owned = {
+				limit = {
+					POR = { exists = no }
+				}
+				POR = { primary_culture = neolatin }
+			}
+			any_country = {
+				limit = {
+					tag = LUX
+					exists = yes
+					vassal_of = THIS
+				}
+				primary_culture = neolatin
+			}
+			any_country = {
+				limit = {
+					tag = RHI
+					exists = yes
+					vassal_of = THIS
+				}
+				primary_culture = neolatin
+			}
+			country_event = { id = 10418 days = 3 }
+		}
+		option = { #French Primacy
+			name = "EVTOPTB10417"
+			set_global_flag = french_occupiers
+			primary_culture = french
+			remove_accepted_culture = arpitan
+			remove_accepted_culture = breton
+			remove_accepted_culture = occitan
+			remove_accepted_culture = rhinelander
+			remove_accepted_culture = spanish
+			remove_accepted_culture = portuguese
+			remove_accepted_culture = catalan
+			remove_accepted_culture = north_italian
+			remove_accepted_culture = south_italian
+			any_owned = {
+				limit = {
+					is_core = THIS
+					OR = {
+						is_core = BRT
+						is_core = WLL
+						is_core = CAT
+						is_core = CRS
+						is_core = ITA
+						is_core = SPA
+						is_core = POR
+						is_core = FRA
+						is_core = SWI
+						AND = {
+							is_core = LUX
+							THIS = { has_country_flag = chose_door_one }
+						}
+						AND = {
+							is_core = RHI
+							THIS = { has_country_flag = chose_door_one }
+						}
+						culture = occitan
+					}
+					NOT = { terrain = mountain } #Redneck Resistance
+				}
+				add_province_modifier = {
+					name = french_cultural_unity
+					duration = -1
+				}
+			}
+			random_owned = {
+				limit = {
+					BRT = { exists = no }
+				}
+				BRT = { all_core = { remove_core = BRT } }
+			}
+			random_owned = {
+				limit = {
+					WLL = { exists = no }
+				}
+				WLL = { all_core = { remove_core = WLL } }
+			}
+			random_owned = {
+				limit = {
+					SWI = { exists = no }
+				}
+				SWI = { all_core = { remove_core = SWI } }
+			}
+			random_owned = {
+				limit = {
+					OCC = { exists = no }
+				}
+				OCC = { all_core = { remove_core = OCC } }
+			}
+			random_owned = {
+				limit = {
+					CAT = { exists = no }
+				}
+				CAT = { all_core = { remove_core = CAT } }
+			}
+		}
+		option = { #Quadriune Official Language - French - Italian - Spanish
+			name = "EVTOPTC10417"
+			set_global_flag = quadriune_latin_language
+			primary_culture = french
+			remove_accepted_culture = arpitan
+			remove_accepted_culture = breton
+			remove_accepted_culture = occitan
+			remove_accepted_culture = rhinelander
+			#remove_accepted_culture = spanish
+			#remove_accepted_culture = portuguese
+			remove_accepted_culture = catalan
+			#remove_accepted_culture = north_italian
+			remove_accepted_culture = south_italian
+			any_owned = {
+				limit = {
+					is_core = THIS
+					OR = {
+						is_core = BRT
+						is_core = WLL
+						is_core = CAT
+						is_core = CRS
+						is_core = ITA
+						is_core = SPA
+						is_core = POR
+						is_core = FRA
+						is_core = SWI
+						AND = {
+							is_core = LUX
+							THIS = { has_country_flag = chose_door_one }
+						}
+						AND = {
+							is_core = RHI
+							THIS = { has_country_flag = chose_door_one }
+						}
+						culture = occitan
+					}
+					NOT = { terrain = mountain } #Redneck Resistance
+				}
+				add_province_modifier = {
+					name = french_cultural_unity
+					duration = -1
+				}
+			}
+			random_owned = {
+				limit = {
+					BRT = { exists = no }
+				}
+				BRT = { all_core = { remove_core = BRT } }
+			}
+			random_owned = {
+				limit = {
+					WLL = { exists = no }
+				}
+				WLL = { all_core = { remove_core = WLL } }
+			}
+			random_owned = {
+				limit = {
+					SWI = { exists = no }
+				}
+				SWI = { all_core = { remove_core = SWI } }
+			}
+			random_owned = {
+				limit = {
+					OCC = { exists = no }
+				}
+				OCC = { all_core = { remove_core = OCC } }
+			}
+			random_owned = {
+				limit = {
+					CAT = { exists = no }
+				}
+				CAT = { all_core = { remove_core = CAT } }
+			}
+			random_owned = {
+				limit = {
+					SIC = { exists = no }
+				}
+				SIC = { all_core = { remove_core = PAP } }
+			}
+			random_owned = {
+				limit = {
+					PAP = { exists = no }
+				}
+				PAP = { all_core = { remove_core = PAP } }
+			}
+			random_owned = {
+				limit = {
+					GLC = { exists = no }
+				}
+				GLC = { all_core = { remove_core = GLC } }
+			}
+		}
+	}
+
+	#Spawning Neolatin culture
+	country_event = {
+		id = 10418
+		title = "EVTNAME10418"
+		desc = "EVTDESC10418"
+		picture = "nationalists"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10418"
+			425 = { add_province_modifier = { name = assimilation_technique_go_brr duration = 1095 } assimilate = yes }
+			749 = { add_province_modifier = { name = assimilation_technique_go_brr duration = 1095 } assimilate = yes }
+			487 = { add_province_modifier = { name = assimilation_technique_go_brr duration = 1095 } assimilate = yes }
+			521 = { add_province_modifier = { name = assimilation_technique_go_brr duration = 1095 } assimilate = yes }
+			726 = { add_province_modifier = { name = assimilation_technique_go_brr duration = 1095 } assimilate = yes }
+		}
+	}
+
+	#Scandinavia
+	country_event = {
+		id = 10419
+		title = "EVTNAME10419"
+		desc = "EVTDESC10419"
+		picture = "nationalists"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA10419"
+			SWE = { all_core = { add_core = SCA } }
+			NOR = { all_core = { add_core = SCA } }
+			DEN = { all_core = { add_core = SCA } }
+			inherit = NOR
+			inherit = SWE
+			change_tag = SCA
+			political_reform = federalism
+			add_accepted_culture = swedish
+			add_accepted_culture = norwegian
+			add_accepted_culture = icelandic
 		}
 	}
