@@ -38,6 +38,7 @@ political_decisions = {
 			}
 			NOT = {
 				has_country_flag = mendizabal_confiscated
+				has_country_modifier = church_property_confiscation
 			}
 		}
 
@@ -1706,6 +1707,139 @@ political_decisions = {
 			factor = 1
 		}
 	}
+	
+	embrace_pan_hispanism = {
+		picture = panhispanism
+		potential = {
+			NOT = { has_global_flag = pan_hispanism }
+			OR = {
+				tag = SPA
+				tag = IBR
+			}
+			is_greater_power = yes
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+			OR = {
+			AND = {
+			has_country_flag = 2nd_monarchygov
+			is_sphere_leader_of = VNS
+			is_sphere_leader_of = VNG
+			is_sphere_leader_of = VLP
+			is_sphere_leader_of = VOP
+			is_sphere_leader_of = CGC
+			}
+			AND = {
+			NOT = { has_country_flag = 2nd_monarchygov } # Not Carlist Spain
+			is_sphere_leader_of = VNZ
+			is_sphere_leader_of = CLM
+			is_sphere_leader_of = MEX
+			is_sphere_leader_of = BRZ
+			is_sphere_leader_of = ARG
+			is_sphere_leader_of = BOL
+			}
+			}
+		}
+
+		effect = {
+			set_global_flag = pan_hispanism
+			set_country_flag = leader_of_panihispanismo
+			#set_country_flag = embraced_all_romance_cultures
+			prestige = 10
+			#badboy = 5
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+	
+	latin_customs_union_SPA = {
+        picture = lcu
+        potential = {
+			has_global_flag = pan_hispanism
+			has_country_flag = leader_of_panihispanismo
+			NOT = { has_global_flag = latin_customs_union_exists_spa }
+        }
+        allow = {
+			has_country_flag = joined_lmu
+			OR = {
+			is_sphere_leader_of = POR
+			POR = { exists = no }
+			}
+			OR = {
+			AND = {
+			has_country_flag = 2nd_monarchygov
+			is_sphere_leader_of = VNS
+			is_sphere_leader_of = VNG
+			is_sphere_leader_of = VLP
+			is_sphere_leader_of = VOP
+			is_sphere_leader_of = CGC
+			}
+			AND = {
+			NOT = { has_country_flag = 2nd_monarchygov } # Not Carlist Spain
+			is_sphere_leader_of = VNZ
+			is_sphere_leader_of = CLM
+			is_sphere_leader_of = MEX
+			is_sphere_leader_of = BRZ
+			is_sphere_leader_of = ARG
+			is_sphere_leader_of = BOL
+			}
+			}
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 25
+            add_country_modifier = {
+                name = latin_customs_union
+                duration = -1
+            }
+            set_global_flag = latin_customs_union_exists_spa
+			set_country_flag = joined_lcu
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+	latin_customs_union_SPA_min = {
+        picture = lmu
+        potential = {
+            has_global_flag = latin_customs_union_exists_spa
+			OR = {
+				is_culture_group = iberian
+				is_culture_group = italian #In case Spain conquers/has influence in Italy
+				is_culture_group = latin_american_cultures
+				}
+			NOT = { has_country_flag = joined_lcu }
+		}
+        allow = {
+			OR = {
+			SPA = { is_sphere_leader_of = THIS }
+			IBR = { is_sphere_leader_of = THIS }
+			}
+			has_country_flag = joined_lmu
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 3
+            add_country_modifier = {
+                name = latin_customs_union
+                duration = -1
+            }
+            set_country_flag = joined_lcu
+			any_country = {
+				limit = {
+					has_country_flag = joined_lcu
+				}
+				relation = { who = THIS value = 100 }
+			}
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
 
 	colony_rebel_again = {
 		picture = spain_reconquest
