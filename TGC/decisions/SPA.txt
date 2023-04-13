@@ -1114,6 +1114,99 @@ political_decisions = {
 	}
 	
 	#Copied Mexican Flavour onto New Spain Viceroyalty - Carlist Spain can now reclaim it via cores
+		#Description: If Mexico refutes the American Manifest Destiny and becomes a Great Power, they can extend their claims to include the Oregon territory and Spanish claims up to the 61st parallel.
+	the_pacific_reclamation_spa = {
+		picture = cascadia_bioregion
+		potential = {
+			has_global_flag = reconquista
+			OR = {
+				tag = SPA
+				tag = IBR
+			}
+			is_greater_power = yes
+			NOT = { has_global_flag = pacific_reclamation_vns }
+		}
+
+		allow = {
+			VNS = { vassal_of = THIS }
+			NOT = {
+				relation = { who = USA value = 100 }
+				alliance_with = USA
+			}
+		}
+
+		effect = {
+			set_global_flag = pacific_reclamation_vns
+			prestige = 60
+			badboy = 12
+			## Owners of 1, 13 and 78 or their overlords get relations hit ##
+				random_country = {
+					limit = {
+						owns = 78
+						is_vassal = no
+					}
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = {
+						owns = 78
+						is_vassal = yes
+					}
+					overlord = { relation = { who = THIS value = -300 } }
+				}
+				random_country = {
+					limit = {
+						owns = 13
+						is_vassal = no
+						NOT = { owns = 78 }
+					}
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = {
+						owns = 13
+						is_vassal = yes
+						NOT = { owns = 78 }
+					}
+					overlord = { relation = { who = THIS value = -300 } }
+				}
+				random_country = {
+					limit = {
+						owns = 1
+						NOT = { owns = 13 }
+						is_vassal = no
+						NOT = { owns = 78 }
+					}
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = {
+						owns = 1
+						NOT = { owns = 13 }
+						is_vassal = yes
+						NOT = { owns = 78 }
+					}
+					overlord = { relation = { who = THIS value = -300 } }
+				}
+			USA_78 = { add_core = VNS } # Washington
+			USA_81 = { add_core = VNS } # Oregon
+			USA_91 = { add_core = VNS } # Idaho
+			111 = { add_core = VNS } # Wyoming
+			113 = { add_core = VNS }
+			114 = { add_core = VNS } # Montana
+			CAN_13 = { # Colombia
+				limit = {
+					# Audax Validator "." Ignore_NEXT
+					NOT = { province_id = 18 }
+				}
+				add_core = VNS
+			}
+			1 = { add_core = VNS } # Alaska
+			2 = { add_core = VNS }
+			3 = { add_core = VNS }
+		}
+	}
+	
 	#Description: If Mexico refutes the American Manifest Destiny and becomes a Great Power, they can extend their claims to include the Louisiana territory.
 	mexican_louisiana2 = {
 		picture = new_france_louisiana
