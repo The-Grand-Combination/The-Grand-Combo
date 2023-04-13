@@ -1206,4 +1206,200 @@ country_event = {
 		}
 	}
 
+	#Switzerland Civil War
+	country_event = {
+	id = 10423
+	title = "EVTNAME10424"
+	desc = "EVTDESC10424"
+	fire_only_once = yes
+	major = yes
+
+	trigger = {
+		has_global_flag = created_empire_latine
+		LTU = { 
+			exists = yes 
+			war = no
+			NOT = { truce_with = GCF }
+		}
+		GCF = { exists = yes }
+		tag = SWI
+		has_country_flag = latin_german_civil_war
+		NOT = { has_country_flag = swiss_civil_war }
+	}
+
+	mean_time_to_happen = {
+		months = 3
+	}
+
+	option = {
+		name = "EVTOPTA10423"
+
+		prestige = -50
+		remove_country_modifier = neutrality
+		SWI_607 = { add_core = SDB secede_province = SDB }
+		SWI_2568 = { add_core = SDB secede_province = SDB }
+		611 = { add_core = SDB secede_province = SDB }
+		inherit = NCT
+		war = {
+			target = SDB
+			attacker_goal = { casus_belli = civil_war }
+			defender_goal = { casus_belli = status_quo }
+		}
+		3250 = { change_controller = SWI }
+		SDB = {
+			primary_culture = arpitan
+			religion = catholic
+			}
+		set_country_flag = swiss_civil_war
+		ai_chance = { factor = 1 }
+	}
+}
+
+country_event = {
+	id = 10424
+	title = "EVTNAME10424"
+	desc = "EVTDESC10424"
+	picture = "theatre"
+	fire_only_once = yes
+
+	trigger = {
+		has_global_flag = created_empire_latine
+		tag = LTU
+		SWI = { has_country_flag = swiss_civil_war }
+		SDB = { exists = yes }
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	option = { #Intervene - Player can use intervention in war thing
+		name = "EVTOPTA10424"
+		prestige = 5
+		diplomatic_influence = { who = SDB value = 400 }
+		relation = { who = SDB value = 400 }
+		#619 = { owner = { country_event = 10424 } }
+		ai_chance = { factor = 75 }
+	}
+	option = { #Don't intervene
+		name = "EVTOPTB10424"
+		prestige = -5
+		diplomatic_influence = { who = SWI value = 50 }
+		relation = { who = SWI value = 50 }
+		diplomatic_influence = { who = SDB value = -200 }
+		relation = { who = SDB value = -200 }
+		ai_chance = { factor = 25 }
+	}
+}
+
+country_event = {
+	id = 10425
+	title = "EVTNAME10424"
+	desc = "EVTDESC10424"
+	picture = "theatre"
+
+	trigger = {
+		has_global_flag = created_empire_latine
+		tag = GCF
+		SWI = { has_country_flag = swiss_civil_war }
+		LTU = { war_with = SWI }
+	}
+
+	fire_only_once = yes 
+
+	mean_time_to_happen = {
+		days = 5
+	}
+
+	option = { #Intervene
+		name = "EVTOPTA10424"
+
+		prestige = 5
+		diplomatic_influence = { who = SWI value = 400 }
+		relation = { who = SWI value = 400 }
+		create_alliance = SWI
+		war = {
+			target = LTU
+			attacker_goal = { casus_belli = humiliate }
+			defender_goal = { casus_belli = humiliate }
+			call_ally = yes
+		}
+		ai_chance = { factor = 90 }
+	}
+
+	option = { #Don't intervene
+		name = "EVTOPTB10424"
+		prestige = -5
+		diplomatic_influence = { who = SWI value = -200 }
+		relation = { who = SWI value = -200 }
+		ai_chance = { factor = 10 }
+	}
+}
+
+country_event = {
+	id = 10426
+	title = "EVTNAME10426"
+	desc = "EVTDESC10426"
+	picture = "theatre"
+
+	trigger = {
+		has_global_flag = created_empire_latine
+		tag = LTU
+		SWI = { has_country_flag = swiss_civil_war NOT = { war_with = SDB } }
+		has_recently_lost_war = no
+		truce_with = GCF
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		days = 3
+	}
+
+	option = { #Annex French and Italian Switzerland, allow remaining cantons remain with Switzerland and reinstitute neutrality
+		name = "EVTOPTA10426"
+		SDB = { all_core = { remove_core = SDB remove_core = SWI } }
+		inherit = SDB
+		SWI = {
+			prestige = -50
+			relation = { who = GCF value = -200 }
+			add_country_modifier = { name = neutrality duration = -1 }
+		}
+		GCF = { diplomatic_influence = { who = SWI value = -200 } }
+	}
+
+	option = { #Annex French and Italian Switzerland, annex Bern and Brig
+		name = "EVTOPTB10426"
+		SDB = { all_core = { remove_core = SDB remove_core = SWI } }
+		inherit = SDB
+		badboy = 3
+		3478 = { secede_province = LTU }
+		605 = { secede_province = LTU }
+		3272 = { secede_province = LTU }
+		SWI_603 = { add_province_modifier = nationalist_agitation duration = 7200 }
+		GCF = { inherit = SWI }
+	}
+	option = { #Annex French and Italian Switzerland, annex Luzern and Basel
+		name = "EVTOPTC10426"
+		SDB = { all_core = { remove_core = SDB remove_core = SWI } }
+		inherit = SDB
+		badboy = 8
+		3478 = { secede_province = LTU }
+		605 = { secede_province = LTU }
+		3272 = { secede_province = LTU }
+		604 = { secede_province = LTU }
+		606 = { secede_province = LTU }
+		GCF = { inherit = SWI }
+		SWI_603 = { add_province_modifier = nationalist_agitation duration = 7200 }
+	}
+	option = { #Annex entire Switzerland
+		name = "EVTOPTB10426"
+		SDB = { all_core = { remove_core = SDB remove_core = SWI } }
+		inherit = SWI
+		badboy = 15
+		SWI_603 = { add_province_modifier = nationalist_agitation duration = 10900 }
+		3314 = { secede_province = GCF }
+	}
+}
+
 	
