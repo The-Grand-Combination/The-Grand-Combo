@@ -54,7 +54,7 @@ province_event = {   #Zombify province
 					}
 				}
 				any_pop = {
-					reduce_pop = 0.5
+					reduce_pop = 0.8
 					militancy = 8
 					consciousness = -3
 				}
@@ -98,7 +98,7 @@ country_event = { #note, this must be a country event, otherwise it might happen
 				controlled_by = REB
 			}
 			any_pop = {
-				reduce_pop = 0.4
+				reduce_pop = 0.8
 				militancy = 8
 				consciousness = -3
 			}
@@ -126,25 +126,24 @@ province_event = {
 
 	trigger = {
 		NOT = { has_global_flag = plague_inc_mode }
+		NOT = { JAN = { has_country_modifier = ap_tn_timer } }
 		owner = { tag = ZOM ai = yes }
-		province_control_days = 500
+		province_control_days = 365
 	}
 
 	mean_time_to_happen = {
-		days = 100
-		modifier = { factor = 0.8 num_of_cities = 50 }
-		modifier = { factor = 0.6 num_of_cities = 100 }
-		modifier = { factor = 0.5 num_of_cities = 150 }
+		days = 150
+		modifier = { factor = 0.1 has_empty_adjacent_province = yes }
 	}
 
 	immediate = {
-		JAN = { set_country_modifier = { name = do_not_annex duration = 30 } }
-		#change_controller = THIS
-		FROM = { inherit = THIS }
+		JAN = { set_country_modifier = { name = do_not_annex duration = 5 } }
+		JAN = { set_country_modifier = { name = ap_tn_timer duration = 5 } }
 	}
 
 	option = {
 		name = "Zombies deleted"
+		secede_province = null
 	}
 }
 
@@ -184,5 +183,18 @@ country_event = {
 	
 	option = {
 		name = "OK"
+	}
+}
+
+country_event = {
+	id = 66105
+	title = "Uncolonize capital"
+	desc = "Uncolonize capital"
+
+	is_triggered_only = yes
+	
+	option = {
+		name = "OK"	
+		capital_scope = { secede_province = null }
 	}
 }
