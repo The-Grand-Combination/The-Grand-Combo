@@ -38,6 +38,7 @@ political_decisions = {
 			}
 			NOT = {
 				has_country_flag = mendizabal_confiscated
+				has_country_modifier = church_property_confiscation
 			}
 		}
 
@@ -46,7 +47,7 @@ political_decisions = {
 		}
 
 		effect = {
-			treasury = 25000
+			add_tax_relative_income = 150
 			prestige = 20
 			relation = {
 				who = PAP
@@ -198,6 +199,7 @@ political_decisions = {
 			OR = {
 				tag = SPA
 				tag = IBR
+				has_country_flag = is_latin_union
 			}
 			has_country_flag = monarchy_gov
 			NOT = { has_country_flag = moroccan_question }
@@ -382,6 +384,7 @@ political_decisions = {
 			NOT = {
 				tag = KPB
 				exists = IBR
+				tag = LTU
 				has_global_flag = created_iberia
 			}
 		}
@@ -700,6 +703,7 @@ political_decisions = {
 			OR = {
 				tag = SPA
 				tag = IBR
+				has_country_flag = is_latin_union
 			}
 			nationalism_n_imperialism = 1
 			has_country_flag = monarchy_gov
@@ -749,6 +753,7 @@ political_decisions = {
 			OR = {
 				tag = SPA
 				tag = IBR
+				has_country_flag = is_latin_union
 			}
 			OR = {
 			slavery = yes_slavery
@@ -1109,21 +1114,119 @@ political_decisions = {
 	}
 	
 	#Copied Mexican Flavour onto New Spain Viceroyalty - Carlist Spain can now reclaim it via cores
+		#Description: If Mexico refutes the American Manifest Destiny and becomes a Great Power, they can extend their claims to include the Oregon territory and Spanish claims up to the 61st parallel.
+	the_pacific_reclamation_spa = {
+		picture = cascadia_bioregion
+		potential = {
+			has_global_flag = reconquista
+			OR = {
+				tag = SPA
+				tag = IBR
+			}
+			is_greater_power = yes
+			NOT = { has_global_flag = pacific_reclamation_vns }
+		}
+
+		allow = {
+			VNS = { vassal_of = THIS }
+			NOT = {
+				relation = { who = USA value = 100 }
+				alliance_with = USA
+			}
+		}
+
+		effect = {
+			set_global_flag = pacific_reclamation_vns
+			prestige = 60
+			badboy = 8
+			## Owners of 1, 13 and 78 or their overlords get relations hit ##
+				random_country = {
+					limit = {
+						owns = 78
+						is_vassal = no
+					}
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = {
+						owns = 78
+						is_vassal = yes
+					}
+					overlord = { relation = { who = THIS value = -300 } }
+				}
+				random_country = {
+					limit = {
+						owns = 13
+						is_vassal = no
+						NOT = { owns = 78 }
+					}
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = {
+						owns = 13
+						is_vassal = yes
+						NOT = { owns = 78 }
+					}
+					overlord = { relation = { who = THIS value = -300 } }
+				}
+				random_country = {
+					limit = {
+						owns = 1
+						NOT = { owns = 13 }
+						is_vassal = no
+						NOT = { owns = 78 }
+					}
+					relation = { who = THIS value = -300 }
+				}
+				random_country = {
+					limit = {
+						owns = 1
+						NOT = { owns = 13 }
+						is_vassal = yes
+						NOT = { owns = 78 }
+					}
+					overlord = { relation = { who = THIS value = -300 } }
+				}
+			USA_78 = { add_core = VNS } # Washington
+			USA_81 = { add_core = VNS } # Oregon
+			USA_91 = { add_core = VNS } # Idaho
+			111 = { add_core = VNS } # Wyoming
+			113 = { add_core = VNS }
+			114 = { add_core = VNS } # Montana
+			CAN_13 = { # Colombia
+				limit = {
+					# Audax Validator "." Ignore_NEXT
+					NOT = { province_id = 18 }
+				}
+				add_core = VNS
+			}
+			1 = { add_core = VNS } # Alaska
+			2 = { add_core = VNS }
+			3 = { add_core = VNS }
+		}
+	}
+	
 	#Description: If Mexico refutes the American Manifest Destiny and becomes a Great Power, they can extend their claims to include the Louisiana territory.
 	mexican_louisiana2 = {
 		picture = new_france_louisiana
 		potential = {
 			has_global_flag = reconquista
-			tag = SPA
+			OR = {
+				tag = SPA
+				tag = IBR
+			}
 			is_greater_power = yes
+			NOT = { has_global_flag = spanish_louisiana }
 		}
 
 		allow = {
 			VNS = { vassal_of = THIS }
 			nationalism_n_imperialism = 1
-			USA_78 = { owned_by = VNS }
-			USA_81 = { owned_by = VNS }
-			USA_91 = { owned_by = VNS }
+			104 = { OR = { owned_by = VNS owned_by = THIS } } #San Francisco
+			USA_78 = { OR = { owned_by = VNS owned_by = THIS empty = yes } }
+			USA_81 = { OR = { owned_by = VNS owned_by = THIS empty = yes } }
+			USA_91 = { OR = { owned_by = VNS owned_by = THIS empty = yes } }
 		}
 
 		effect = {
@@ -1154,8 +1257,12 @@ political_decisions = {
 		picture = map_florida
 		potential = {
 			has_global_flag = reconquista
-			tag = SPA
+			OR = {
+				tag = SPA
+				tag = IBR
+			}
 			is_greater_power = yes
+			NOT = { has_global_flag = spanish_florida }
 		}
 
 		allow = {
@@ -1694,6 +1801,150 @@ political_decisions = {
 			factor = 1
 		}
 	}
+	
+	embrace_pan_hispanism = {
+		picture = panhispanism
+		potential = {
+			NOT = { has_global_flag = pan_hispanism }
+			OR = {
+				tag = SPA
+				tag = IBR
+			}
+			is_greater_power = yes
+		}
+
+		allow = {
+			nationalism_n_imperialism = 1
+			OR = {
+			AND = {
+			has_country_flag = 2nd_monarchygov
+			is_sphere_leader_of = VNS
+			is_sphere_leader_of = VNG
+			is_sphere_leader_of = VLP
+			is_sphere_leader_of = VOP
+			is_sphere_leader_of = CGC
+			}
+			AND = {
+			NOT = { has_country_flag = 2nd_monarchygov } # Not Carlist Spain
+			is_sphere_leader_of = VNZ
+			is_sphere_leader_of = CLM
+			is_sphere_leader_of = MEX
+			is_sphere_leader_of = BRZ
+			is_sphere_leader_of = ARG
+			is_sphere_leader_of = BOL
+			}
+			}
+		}
+
+		effect = {
+			set_global_flag = pan_hispanism
+			set_country_flag = leader_of_panihispanismo
+			#set_country_flag = embraced_all_romance_cultures
+			prestige = 10
+			#badboy = 5
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+	
+	latin_customs_union_SPA = {
+        picture = lcu
+        potential = {
+			OR = {
+				tag = SPA
+				tag = IBR 
+			}
+			NOT = { has_global_flag = latin_customs_union_exists_spa }
+        }
+        allow = {
+			has_global_flag = pan_hispanism
+			has_country_flag = joined_lmu
+			OR = {
+				is_sphere_leader_of = POR
+				POR = { exists = no }
+			}
+			OR = {
+				AND = {
+					has_country_flag = 2nd_monarchygov
+					is_sphere_leader_of = VNS
+					is_sphere_leader_of = VNG
+					is_sphere_leader_of = VLP
+					is_sphere_leader_of = VOP
+					is_sphere_leader_of = CGC
+				}
+				AND = {
+					NOT = { has_country_flag = 2nd_monarchygov } # Not Carlist Spain
+					is_sphere_leader_of = VNZ
+					is_sphere_leader_of = CLM
+					is_sphere_leader_of = MEX
+					is_sphere_leader_of = BRZ
+					is_sphere_leader_of = ARG
+					is_sphere_leader_of = BOL
+				}
+			}
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 25
+            add_country_modifier = {
+                name = latin_customs_union
+                duration = -1
+            }
+			add_country_modifier = {
+                name = global_baby_boom_small
+                duration = 1800
+            }
+            set_global_flag = latin_customs_union_exists_spa
+			set_country_flag = joined_lcu
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+	latin_customs_union_SPA_min = {
+        picture = lmu
+        potential = {
+            has_global_flag = latin_customs_union_exists_spa
+			OR = {
+				is_culture_group = iberian
+				is_culture_group = italian #In case Spain conquers/has influence in Italy
+				is_culture_group = latin_american_cultures
+				}
+			NOT = { has_country_flag = joined_lcu }
+		}
+        allow = {
+			OR = {
+			SPA = { is_sphere_leader_of = THIS }
+			IBR = { is_sphere_leader_of = THIS }
+			}
+			has_country_flag = joined_lmu
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 3
+            add_country_modifier = {
+                name = latin_customs_union
+                duration = -1
+            }
+			add_country_modifier = {
+                name = global_baby_boom_small
+                duration = 1800
+            }
+            set_country_flag = joined_lcu
+			any_country = {
+				limit = {
+					has_country_flag = joined_lcu
+				}
+				relation = { who = THIS value = 100 }
+			}
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
 
 	colony_rebel_again = {
 		picture = spain_reconquest
@@ -1821,6 +2072,7 @@ political_decisions = {
 			NOT = {
 				exists = IBR
 				tag = KPB
+				tag = LTU
 				is_culture_group = iberian
 				has_global_flag = created_iberia
 			}
@@ -1940,7 +2192,10 @@ political_decisions = {
 	annex_cm = {
 		picture = cuotomisto
 		potential = {
+			OR = {
 			tag = SPA
+			has_country_flag = is_latin_union
+			}
 			NOT = { has_country_flag = annexed_cm }
 		}
 

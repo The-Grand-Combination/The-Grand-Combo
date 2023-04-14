@@ -434,7 +434,7 @@ defines = {
 		CANCELGIVEMILACCESS_RELATION_ON_ACCEPT = -10,
 		CANCELGIVEMILACCESS_DIPLOMATIC_COST = 1,
 
-		WARSUBSIDY_RELATION_ON_ACCEPT = 20,
+		WARSUBSIDY_RELATION_ON_ACCEPT = 40,
 		WARSUBSIDY_DIPLOMATIC_COST = 1,
 		CANCELWARSUBSIDY_RELATION_ON_ACCEPT = 0,
 		CANCELWARSUBSIDY_DIPLOMATIC_COST = 0,
@@ -517,7 +517,7 @@ defines = {
 		DISHONORED_CALLALLY_PRESTIGE_PENALTY = -3,
 		BASE_TRUCE_MONTHS = 12,
 		MAX_INFLUENCE = 100,
-		WARSUBSIDIES_PERCENT = 0.30, -- How many percent of imports you are going to pay each day(mil. constructions and mil. maintainence)
+		WARSUBSIDIES_PERCENT = 0.3, -- How many percent of imports you are going to pay each day(mil. constructions and mil. maintainence)
 		NEIGHBOUR_BONUS_INFLUENCE_PERCENT = 0.50, -- Bonus to neighbouring countries when influencing
 		SPHERE_NEIGHBOUR_BONUS_INFLUENCE_PERCENT = 0.2, -- Bonus to countries in your sphere neighbouring when influencing
 		OTHER_CONTINENT_BONUS_INFLUENCE_PERCENT = -0.50, -- Malus to countries in another continent
