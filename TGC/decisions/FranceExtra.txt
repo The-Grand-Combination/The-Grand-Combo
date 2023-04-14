@@ -1275,10 +1275,132 @@ political_decisions = {
 			country_event = 10417
 		}
 	}
+	
+	#Counter-Balancing - if player Germany forms super Germany, Latin Union will form
+	paris_congress_ltu = {
+		picture = german_confederation
+		potential = {
+			primary_culture = french
+			OR = {
+				exists = GCF
+				exists = GER
+			}
+			NOT = {
+				exists = LTU
+			}
+			619 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			549 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			641 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
+			FRA_412 = {
+				NOT = { owned_by = FRA }
+			}
+			NOT = { has_global_flag = paris_congress_ltu }
+		}
 
-	#Done - Roadmap: Official Languages. Language Unification (?). Local Autonomy and Integration. 
-	#Latam Influence
-	#Done - Language Question: French Superiority; Status quo - Standardization of three main languages: French, Italian, Spanish; Neo-Latin Modernization: Standardization of language across the four Romance-speaking countries
-	#South Italy integration
-	#Europe reaction if they don't dismantle LTU: GCF and Scandinavia form, Switzerland Collapse and Civil War
+		allow = {
+			war = no
+			is_greater_power = yes
+			SPA = { ai = yes }
+			POR = { ai = yes }
+			OR = {
+				ITA = { ai = yes }
+				ITA = { exists = no }
+			}
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			badboy = 5
+			FRA = { all_core = { add_core = LTU } }
+			ITA = { all_core = { add_core = LTU } }
+			SPA = { all_core = { add_core = LTU } }
+			POR = { all_core = { add_core = LTU } }
+			change_tag = LTU
+			inherit = SPA
+			inherit = POR
+			inherit = ITA
+			political_reform = confederalism
+			political_reform = four_year_draft
+			#add_country_modifier = { name = political_crisis duration = 3600 }
+			add_accepted_culture = portuguese
+			add_accepted_culture = spanish
+			add_accepted_culture = catalan
+			add_accepted_culture = galician
+			add_accepted_culture = north_italian
+			add_accepted_culture = south_italian
+			add_accepted_culture = sardinian
+			government = democracy
+			political_reform = universal_voting
+			political_reform = state_equal_weight
+			political_reform = yes_meeting
+			political_reform = free_press
+			political_reform = all_trade_unions
+			political_reform = secret_ballots
+			political_reform = all_voting_pops
+			set_global_flag = paris_congress_ltu
+			set_country_flag = is_latin_union
+			any_country = {
+				limit = {
+				OR = {
+					is_culture_group = iberian
+					is_culture_group = italian
+					}
+					exists = yes
+					NOT = {
+						tag = MNC
+						tag = SMR
+						tag = SDB
+						tag = NCT
+						tag = SWI
+						has_country_modifier = neutrality
+						capital_scope = { continent = africa }
+						capital_scope = { continent = west_africa }
+						capital_scope = { continent = central_africa }
+						capital_scope = { continent = east_africa }
+						capital_scope = { continent = south_west_africa }
+						capital_scope = { continent = asia }
+					}
+					NOT = {
+						vassal_of = GCF
+					}
+					NOT = {
+						vassal_of = GER
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+						vassal_of = SPA
+						vassal_of = ITA
+						vassal_of = POR
+					}
+					NOT = { has_country_flag = post_colonial_country }
+				}
+				country_event = 11101
+			}
+			GCF = { country_event = 10430 }
+			GER = { country_event = 10430 }
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }
