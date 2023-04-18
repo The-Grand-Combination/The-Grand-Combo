@@ -1611,4 +1611,132 @@ country_event = {
 	}
 }
 
+	# Generic event to Inherit
+	country_event = {
+		id = 10431
+		title = "EVTNAME98650"
+		desc = "EVTDESC98650"
+		picture = "Celebration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA98650"
+
+			any_country = {
+				limit = {
+					OR = {
+						is_sphere_leader_of = THIS
+						is_our_vassal = THIS
+					}
+					NOT = { tag = FROM }
+				}
+				relation = { who = FROM value = -50 }
+				casus_belli = { target = FROM type = humiliate months = 12 }
+			}
+			FROM = { inherit = THIS }
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					NOT = { vassal_of = FROM }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB98650"
+
+			clr_country_flag = wants_to_unify
+			prestige = 2
+			FROM = { country_event = 10432 }
+			any_pop = {
+				limit = { is_primary_culture = yes }
+				militancy = 3
+				consciousness = 2
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					has_country_flag = wants_to_unify
+				}
+				modifier = {
+					factor = 1.5
+					NOT = {
+						relation = { who = FROM value = 0 }
+					}
+				}
+				modifier = {
+					factor = 0.75
+					in_sphere = FROM
+				}
+				modifier = {
+					factor = 0
+					vassal_of = FROM
+				}
+			}
+		}
+	}
+
+	# Refused
+	country_event = {
+		id = 10432
+		title = "EVTNAME98651"
+		desc = "EVTDESC98651"
+		picture = "administration"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA98651"
+
+			leave_alliance = FROM
+			relation = { who = FROM value = -200 }
+			diplomatic_influence = { who = FROM value = -200 }
+			war = {
+				target = FROM
+				attacker_goal = { casus_belli = conquest_any }
+				defender_goal = { casus_belli = status_quo }
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 2
+					war_policy = jingoism
+				}
+				modifier = {
+					factor = 1.5
+					war_policy = pro_military
+				}
+				modifier = {
+					factor = 0
+					war_policy = pacifism
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB98651"
+
+			prestige = -10
+			relation = { who = FROM value = 50 }
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 1.5
+					war_policy = anti_military
+				}
+				modifier = {
+					factor = 0.5
+					war_policy = jingoism
+				}
+			}
+		}
+	}
+
 	
