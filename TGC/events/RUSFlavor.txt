@@ -2562,10 +2562,11 @@ country_event = {
 
 #1841 Rebellion in Guria
 province_event = {
-
+			
 	id = 32535
 	title = "EVTNAME32535"
 	desc = "EVTDESC32535"
+	picture = "prov_uprising"
 
 	trigger = {
 		NOT = { owner = { tag = TUR } }
@@ -6647,6 +6648,7 @@ country_event = {
 			vassal_of = RUS }
 			860 = { owned_by = RUS }
 			885 = { owned_by = RUS }
+			invention = the_dark_continent
 		    }
 
 			mean_time_to_happen = { months = 6 }
@@ -7001,7 +7003,7 @@ country_event = {
 	
 	trigger = {
 		tag = TUR
-		year = 1885
+		year = 1890
 		OR = {
 			average_consciousness = 3
 			average_militancy = 3
@@ -7009,7 +7011,7 @@ country_event = {
 		has_country_modifier = humiliated_ottoman_caliph
 		OR = {
 		has_country_modifier = caliph_powerless_figurehead
-		year = 1890
+		year = 1900
 		869 = { owned_by = GRE } #smyrna
 		}
 	}
@@ -7557,6 +7559,7 @@ country_event = {
 				ideology = { factor = 0.1 value = liberal }
 				consciousness = 5 
 			}
+			ruling_party_ideology = liberal
 			clr_country_flag = vote_reform_blocker
 			clr_country_flag = soc_reform_blocker
 		}
@@ -7643,26 +7646,7 @@ country_event = {
 	desc = "EVTDESC500235"
 	picture = "alexanderii_bomb"
 
-	trigger = {
-		year = 1878
-		tag = RUS
-		has_country_flag = monarchy_gov
-		war = no
-		is_ideology_enabled = socialist #Narodnaya Volya
-		any_owned_province = {
-			average_militancy = 4
-		}
-		NOT = { has_country_flag = alexanderii_assassinated } 
-		NOT = { has_country_flag = alexanderii_lifeattempt } 
-	}
-
-	mean_time_to_happen = {
-		months = 6
-	}
-
-	immediate = {
-		set_country_flag = alexanderii_lifeattempt
-	}
+	is_triggered_only = yes
 
 	option = {
 		name = "EVTOPTB500235" #He Dies
@@ -8546,11 +8530,11 @@ country_event = {
 			mean_time_to_happen = { 
 				months = 12 
 				modifier = {
-					factor = 0.5
+					factor = 0.7
 					year = 1863
 				}
 				modifier = {
-					factor = 0.25
+					factor = 0.6
 					year = 1866
 				}
 			}
@@ -8747,17 +8731,19 @@ country_event = {
 		any_owned_province = {
 			average_militancy = 5
 		}
+		NOT = { has_country_modifier = decadent_autocracy2 }
 	}
 
 	mean_time_to_happen = {
 		months = 6
 	}
 
-	fire_only_once = yes
-
 	option = {
 		name = "EVTOPTA500288"
 		add_country_modifier = { name = decadent_autocracy2 duration = -1 } #until revolution
+		set_country_flag = pol_reform_blocker
+		set_country_flag = vote_reform_blocker
+		set_country_flag = soc_reform_blocker
 		ai_chance = {
 			factor = 100
 		}
@@ -8878,3 +8864,91 @@ country_event = {
 #500291 - Hawaii Fort Elizabeth
 #500292 - Djibouti Cossack Expedition to Ethiopia
 #1905 Revolution
+
+# Proletkult
+country_event = {
+
+	id = 500293
+
+	title = "EVTNAME500293"
+	desc = "EVTDESC500293"
+	picture = "communist_crowd"
+
+	trigger = {
+		has_country_flag = communist_gov
+		OR = { 
+			tag = RUS
+			tag = SOV
+		}
+		OR = {
+			invention = avantgarde_art
+			invention = avantgarde_music
+			invention = avantgarde_literature
+		}
+		year = 1910
+		NOT = { has_country_modifier = national_confusion }
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	option = {
+		name = "EVTOPTA500293"
+		prestige = 10
+		add_tax_relative_income = -30
+		poor_strata = {
+			consciousness = 2
+			ideology = {
+				value = socialist
+				factor = 0.03
+			}
+		}
+		nationalvalue = nv_productivity
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 0.25
+				NOT = { money = 100000 }
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB500293"
+		prestige = 10
+		add_tax_relative_income = -30
+		poor_strata = {
+			consciousness = 1
+			ideology = {
+				value = communist
+				factor = 0.03
+			}
+		}
+		nationalvalue = nv_productivity
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 0.25
+				NOT = { money = 100000 }
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTC500293"
+		any_pop = {
+			scaled_militancy = { ideology = reactionary factor = -2 }
+			scaled_militancy = { ideology = conservative factor = -1 }
+			scaled_militancy = { ideology = socialist factor = 2 }
+		}
+		
+		ai_chance = {
+			factor = 30
+		}
+	}
+}

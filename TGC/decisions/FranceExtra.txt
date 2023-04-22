@@ -11,7 +11,10 @@ political_decisions = {
 					}
 				}
 			}
-			tag = FRA
+			OR = {
+				has_country_flag = is_latin_union
+				tag = FRA
+			}
 			NOT = { has_country_flag = nzl_master }
 		}
 
@@ -349,7 +352,10 @@ political_decisions = {
 	claim_australia = { # TODO redo this
 		picture = "imperial_japanese_navy"
 		potential = {
+			OR = {
+			has_country_flag = is_latin_union
 			tag = FRA
+			}
 			NZF = {
 				OR = {
 					all_core = {
@@ -382,7 +388,10 @@ political_decisions = {
 		picture = "dreams_of_empire"
 		potential = {
 			has_country_flag = fra_claimed_australia
+			OR = {
+			has_country_flag = is_latin_union
 			tag = FRA
+			}
 			owns = 2476
 			owns = 2468
 			owns = 2483
@@ -765,4 +774,675 @@ political_decisions = {
 
 		ai_will_do = { factor = 1 }
 	}
+	
+	#Pan-Latin Content
+	latin_monetary_union_FRA = {
+        picture = lmu
+        potential = {
+            NOT = {
+                has_country_flag = joined_lmu
+            }
+			OR = {
+				tag = FRA
+				tag = ITA
+				tag = BEL
+				tag = SWI
+				tag = SPA
+				tag = ROM
+				tag = GRE
+				AND = {
+					OR = {
+						is_culture_group = iberian
+						is_culture_group = italian
+						is_culture_group = latin_american_cultures #Napoleon's Pan Latinism
+						primary_culture = acadian
+						primary_culture = cajun
+						primary_culture = french_australian
+						primary_culture = french_canadian
+					}
+				has_global_flag = pan_latinism
+				}
+				AND = {
+					OR = {
+						is_culture_group = iberian
+						is_culture_group = italian
+						is_culture_group = latin_american_cultures
+					}
+				has_global_flag = pan_hispanism
+				}
+			}
+        }
+        allow = {
+			OR = {
+			has_global_flag = pan_hispanism
+			has_global_flag = pan_latinism
+            year = 1865
+			}
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 5
+            add_country_modifier = {
+                name = latin_monetary_union
+                duration = -1
+            }
+            set_country_flag = joined_lmu
+			any_country = {
+				limit = {
+					has_country_flag = joined_lmu
+				}
+				relation = { who = THIS value = 50 }
+			}
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+	latin_customs_union_FRA = {
+        picture = lcu
+        potential = {
+            has_global_flag = pan_latinism
+			has_country_flag = embraced_all_romance_cultures
+			NOT = { has_global_flag = latin_customs_union_exists_fra }
+        }
+        allow = {
+			has_country_flag = joined_lmu
+			is_sphere_leader_of = SPA
+			is_sphere_leader_of = POR
+			OR = {
+			is_sphere_leader_of = SAR
+			is_sphere_leader_of = ITA
+			}
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 25
+            add_country_modifier = {
+                name = latin_customs_union
+                duration = -1
+            }
+			add_country_modifier = {
+                name = global_baby_boom_small
+                duration = 1080
+            }
+            set_global_flag = latin_customs_union_exists_fra
+			set_country_flag = joined_lcu
+			any_country = {
+				limit = {
+					OR = {
+						is_culture_group = iberian
+						is_culture_group = italian
+						is_culture_group = latin_american_cultures
+					}
+				relation = { who = THIS value = 50 }
+				}
+			}
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+	latin_customs_union = {
+        picture = lmu
+        potential = {
+            has_global_flag = latin_customs_union_exists_fra
+			OR = {
+				is_culture_group = iberian
+				is_culture_group = italian
+				is_culture_group = latin_american_cultures
+				primary_culture = acadian
+				primary_culture = cajun
+				primary_culture = french_australian
+				primary_culture = french_canadian
+				tag = BEL
+				tag = ROM
+				}
+			NOT = { has_country_flag = joined_lcu }
+		}
+        allow = {
+			OR = {
+			FRA = { is_sphere_leader_of = THIS }
+			LTU = { is_sphere_leader_of = THIS }
+			}
+			has_country_flag = joined_lmu
+            invention = silver_standard
+        }
+
+        effect = {
+            prestige = 3
+            add_country_modifier = {
+                name = latin_customs_union
+                duration = -1
+            }
+			add_country_modifier = {
+                name = global_baby_boom_small
+                duration = 1800
+            }
+            set_country_flag = joined_lcu
+			any_country = {
+				limit = {
+					has_country_flag = joined_lcu
+				}
+				relation = { who = THIS value = 100 }
+			}
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+	embrace_pan_latinism = {
+		picture = latinflag
+		potential = {
+			NOT = { has_global_flag = pan_latinism }
+			has_country_modifier = louis_napoleon_iii
+			has_country_flag = 2nd_empire
+			#owns = 412
+			tag = FRA
+			is_greater_power = yes
+		}
+
+		allow = {
+			war_policy = jingoism
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			set_global_flag = pan_latinism
+			set_country_flag = embraced_all_romance_cultures
+			prestige = 10
+			badboy = 5
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	proclaim_latin_union = {
+		picture = unionlatin
+		potential = {
+			NOT = { has_global_flag = extra_flavour_disabled }
+			has_global_flag = pan_latinism
+			has_country_modifier = louis_napoleon_iii
+			has_country_flag = 2nd_empire
+			tag = FRA
+			is_greater_power = yes
+		}
+
+		allow = {
+			war_policy = jingoism
+			nationalism_n_imperialism = 1
+			has_global_flag = latin_customs_union_exists_fra
+			war = no
+			SPA = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+						}
+						owner = {
+							vassal_of = THIS
+							war = no
+						}
+					}
+				}
+			}
+			POR = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+						}
+						owner = {
+							vassal_of = THIS
+							war = no
+						}
+					}
+				}
+			}
+			OR = {
+				ITA = {
+					all_core = {
+						OR = {
+							owned_by = THIS
+							owner = {
+								vassal_of = THIS
+								war = no
+							}
+						}
+					}
+				}
+			has_country_flag = french_outside_italy #French Formed Italy, Plombieres Napoleon
+			}
+			FRA = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							war = no
+						}
+						owner = {
+							vassal_of = THIS
+							war = no
+						}
+						empty = yes #In case player claims Australia decision
+					}
+				}
+			}
+		}
+
+		effect = {
+			set_global_flag = created_empire_latine
+			set_country_flag = is_latin_union
+			prestige = 300
+			badboy = 30
+			all_core = { add_core = LTU }
+			SPA = {
+				all_core = { add_core = LTU }
+			}
+			POR = {
+				all_core = { add_core = LTU }
+			}
+			ITA = {
+				all_core = { add_core = LTU }
+			}
+			517 = { add_core = LTU }
+			change_tag = LTU
+			political_reform = confederalism
+			add_country_modifier = { name = political_crisis duration = 3600 }
+			add_country_modifier = { name = disorganized_union duration = -1 }
+			add_accepted_culture = portuguese
+			add_accepted_culture = spanish
+			add_accepted_culture = catalan
+			#add_accepted_culture = basque
+			add_accepted_culture = north_italian
+			#add_accepted_culture = south_italian
+			#add_accepted_culture = romanian
+			#add_accepted_culture = sardinian
+			government = prussian_constitutionalism
+			#If Either of these three are not puppets, France will have to militarily overthrow their countries to take over
+			random_country = {
+				limit = {
+					tag = SPA
+					exists = yes
+				}
+				country_event = 10427
+			}
+			random_country = {
+				limit = {
+					tag = POR
+					exists = yes
+				}
+				country_event = 10431
+			}
+			random_country = {
+				limit = {
+					tag = CAT
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = CAT }
+			}
+			random_country = {
+				limit = {
+					tag = CAT
+					exists = yes
+					ai = no
+				}
+				country_event = 98650
+			}
+			random_country = {
+				limit = {
+					tag = BSQ
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = BSQ }
+			}
+			random_country = {
+				limit = {
+					tag = BSQ
+					exists = yes
+					ai = no
+				}
+				country_event = 98650
+			}
+			# any_country = {
+			# 	limit = {
+			# 		NOT = { is_culture_group = iberian }
+			# 		in_sphere = THIS
+			# 	}
+			# 	any_owned = {
+			# 		limit = { is_core = FRA }
+			# 		secede_province = THIS
+			# 	}
+			# }
+			random_country = {
+				limit = {
+					tag = SAR
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = SAR }
+			}
+			random_country = {
+				limit = {
+					tag = VEN
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = VEN }
+			}
+			random_country = {
+				limit = {
+					tag = PAP
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = PAP }
+			}
+			random_country = {
+				limit = {
+					tag = SIC
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = SIC }
+			}
+			random_country = {
+				limit = {
+					tag = TUS
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = TUS }
+			}
+			random_country = {
+				limit = {
+					tag = LOM
+					exists = yes
+					ai = yes
+				}
+				THIS = { inherit = LOM }
+			}
+			any_country = {
+				limit = {
+					OR = {
+						primary_culture = north_italian
+						primary_culture = south_italian
+					}
+					NOT = {
+						tag = SMR
+						#tag = MNC
+						#tag = PAP
+						#tag = SIC
+					}
+					in_sphere = THIS
+				}
+				annex_to = THIS
+			}
+			any_pop = {
+				limit = { OR = { is_culture_group = iberian is_culture_group = pan_french is_culture_group = italian } }
+				militancy = -4
+			}
+			set_global_flag = 8th_coalition_assembles #Europe Reacts
+			add_country_modifier = { name = no_more_war duration = 150 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	reintroduce_napoleonic_code = {
+		picture = codecivil
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+			NOT = { has_country_flag = reintroduce_napoleonic_code }
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			has_country_modifier = disorganized_union
+			money = 300000
+		}
+		effect = {
+			treasury = -300000
+			remove_country_modifier = disorganized_union
+			set_country_flag = reintroduce_napoleonic_code
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+		}
+	}
+
+	question_of_administration = {
+		picture = departament
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+			NOT = { has_country_flag = question_of_administration }
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			NOT = { has_country_modifier = disorganized_union }
+			centralization = confederalism
+			money = 300000
+		}
+		effect = {
+			treasury = -300000
+			set_country_flag = question_of_administration
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+			political_reform = regionalism
+		}
+	}
+
+	question_of_administration2 = {
+		picture = departament
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+			NOT = { has_country_flag = question_of_administration2 }
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			money = 300000
+			centralization = regionalism
+		}
+		effect = {
+			money = 300000
+			set_country_flag = question_of_administration2
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+			political_reform = federalism
+		}
+	}
+
+	question_of_language = {
+		picture = latinlanguage
+		potential = {
+			has_global_flag = created_empire_latine
+			has_country_flag = is_latin_union
+			NOT = { has_country_flag = lang_question_solved }
+		}
+		allow = {
+			NOT = { has_country_modifier = political_crisis }
+			NOT = { has_country_modifier = implementing_reforms }
+			OR = {
+			centralization = federalism
+			centralization = regionalism
+			}
+			invention = biased_multiculturalism
+			invention = social_darwinism
+			money = 500000
+		}
+		effect = {
+			treasury = -500000
+			set_country_flag = lang_question_solved
+			add_country_modifier = { name = implementing_reforms duration = 1460 }
+			country_event = 10417
+		}
+	}
+	
+	#Counter-Balancing - if player Germany forms super Germany, Latin Union will form
+	paris_congress_ltu = {
+		picture = german_confederation
+		potential = {
+			primary_culture = french
+			OR = {
+				exists = GCF
+				exists = GER
+			}
+			NOT = {
+				exists = LTU
+			}
+			619 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			549 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			641 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
+			FRA_412 = {
+				NOT = { owned_by = FRA }
+			}
+			NOT = { has_global_flag = paris_congress_ltu }
+		}
+
+		allow = {
+			war = no
+			is_greater_power = yes
+			SPA = { ai = yes }
+			POR = { ai = yes }
+			OR = {
+				ITA = { ai = yes }
+				ITA = { exists = no }
+			}
+			nationalism_n_imperialism = 1
+		}
+
+		effect = {
+			badboy = 5
+			FRA = { all_core = { add_core = LTU } }
+			ITA = { all_core = { add_core = LTU } }
+			SPA = { all_core = { add_core = LTU } }
+			POR = { all_core = { add_core = LTU } }
+			change_tag = LTU
+			inherit = SPA
+			inherit = POR
+			inherit = ITA
+			political_reform = confederalism
+			#add_country_modifier = { name = political_crisis duration = 3600 }
+			add_accepted_culture = portuguese
+			add_accepted_culture = spanish
+			add_accepted_culture = catalan
+			add_accepted_culture = galician
+			add_accepted_culture = north_italian
+			add_accepted_culture = south_italian
+			add_accepted_culture = sardinian
+			government = democracy
+			political_reform = universal_voting
+			political_reform = state_equal_weight
+			political_reform = yes_meeting
+			political_reform = free_press
+			political_reform = all_trade_unions
+			political_reform = secret_ballots
+			political_reform = all_voting_pops
+			set_global_flag = paris_congress_ltu
+			set_country_flag = is_latin_union
+			any_country = {
+				limit = {
+				OR = {
+					is_culture_group = iberian
+					is_culture_group = italian
+					}
+					exists = yes
+					ai = yes
+					NOT = {
+						tag = MNC
+						tag = SMR
+						tag = SDB
+						tag = NCT
+						tag = SWI
+						has_country_modifier = neutrality
+						capital_scope = { continent = africa }
+						capital_scope = { continent = west_africa }
+						capital_scope = { continent = central_africa }
+						capital_scope = { continent = east_africa }
+						capital_scope = { continent = south_west_africa }
+						capital_scope = { continent = asia }
+					}
+					NOT = {
+						vassal_of = GCF
+					}
+					NOT = {
+						vassal_of = GER
+					}
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+						vassal_of = SPA
+						vassal_of = ITA
+						vassal_of = POR
+					}
+					NOT = { has_country_flag = post_colonial_country }
+				}
+				country_event = 11101
+			}
+			GCF = { country_event = 10430 }
+			GER = { country_event = 10430 }
+			#Militarization
+			set_country_flag = militarized_society_threat
+			political_reform = mandatory_service
+			any_pop = {
+            	limit = {
+            		type = soldiers
+           				OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+							}
+						}
+						reduce_pop = 1.15 # Grown by 15%
+			}
+			any_pop = {
+            	limit = {
+           			OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				dominant_issue = {
+					value = jingoism
+					factor = 0.25 
+				}
+				dominant_issue = {
+					value = pro_military
+					factor = 0.25 
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }

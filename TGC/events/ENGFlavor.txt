@@ -1545,17 +1545,19 @@ country_event = {
 	}
 }
 
-province_event = {
-
+country_event = {
+			
 	id = 36938
+	title = "EVTNAME36938"
+	desc = "EVTDESC36938"
+	picture = "BengaliNovel"
 
 	trigger = {
-		province_id = 1251 #Calcutta
+		owns = 1251 #Calcutta
 		year = 1864
 		NOT = {
 			year = 1867
 			}
-
 	}
 
 	fire_only_once = yes
@@ -1575,20 +1577,10 @@ province_event = {
 		}
 	}
 
-	title = "EVTNAME36938"
-	desc = "EVTDESC36938"
-	picture = "BengaliNovel"
 
 	option = {
 		name = "EVTOPTA36938"
-		any_pop = {
-			limit = {
-				has_pop_religion = hindu
-				}
-			militancy = 1
-			consciousness = 2
-			}
-
+		 1251 = { any_pop = { limit = { has_pop_religion = hindu } militancy = 1 consciousness = 2 } }
 	}
 
 }
@@ -2009,9 +2001,11 @@ country_event = {
 }
 
 province_event = {
+			
 	id = 36963
 	title = "EVTNAME36963"
 	desc = "EVTDESC36963"
+	picture = "prov_new_state"
 
 	trigger = {
 		province_id = 1909
@@ -2880,10 +2874,12 @@ country_event = {
 
 #The End of the Gold Rush
 province_event = {
+			
 
 	id = 315001
 	title = "EVTNAME315001"
 	desc = "EVTDESC315001"
+	picture = "prov_goldrush"
 
 	trigger = {
 		trade_goods = precious_metal
@@ -4433,13 +4429,14 @@ country_event = {
 		}
 		OR = {
 		549 = { owner = { industrial_score = THIS } } #More industry than GBR
-		619 = { owned_by = GER } #Vienna
+		619 = { OR = { owned_by = GCF owned_by = GER } } #Vienna
 		FRA_412 = { #Lorraine
 					NOT = {
 						owned_by = FRA
 					}
 				}
 			}
+		NOT = { has_global_flag = leipzig_congress }
 		NOT = { has_global_flag = treaty_of_paris_russia } #Germany is an ally, not a foe if Russia is a big threaterino MUH INDIA
 	}
 
@@ -4555,6 +4552,7 @@ country_event = {
 				}				#if they lost alsace they're not gonna care about russian ME domination
 				619 = { owner = { OR = { tag = KUK tag = AUS tag = DNB } } } #If Super Germany forms, France won't care about Ottomans anymore
 			}
+			tag = LTU
 			is_culture_group = germanic
 		}
 		ai = yes
@@ -4589,13 +4587,20 @@ country_event = {
 
 country_event = {
 	id = 999594
-	title = "EVTNAME999592"
+	title = "EVTNAME999594"
 	desc = "EVTDESC999592"
 
 	trigger = {
+		OR = {
 		has_global_flag = french_rhineland_win_crisis
+		has_country_modifier = french_threat
+		FRA = { has_country_modifier = outraged_europe_fra }
+		LTU = { has_country_modifier = outraged_europe_fra }
+		}
 	    OR = {
 		tag = ENG
+		tag = RUS
+		tag = SCA
 		AND = {
 		is_culture_group = germanic
 		is_greater_power = yes
@@ -4603,15 +4608,19 @@ country_event = {
 		}
 		ai = yes
 		NOT = { has_global_flag = triple_entente_alliance }
+		OR = {
 		alliance_with = FRA
+		alliance_with = LTU
+		}
+		NOT = { has_global_flag = paris_congress_ltu }
 	}
 
 	mean_time_to_happen = { days = 1 }
 
 	option = {
-		name = "EVTOPTA999592"
+		name = "EVTOPTA999594"
 		any_greater_power = {
-			limit = { primary_culture = french }
+			limit = { OR = { primary_culture = french primary_culture = neolatin } }
 			relation = {
 				who = THIS
 				value = -400
@@ -4619,7 +4628,7 @@ country_event = {
 			leave_alliance = THIS
 		}
 		any_greater_power = {
-			limit = { NOT = { truce_with = THIS } NOT = { tag = FRA } }
+			limit = { NOT = { truce_with = THIS } NOT = { tag = FRA } NOT = { tag = LTU } }
 			relation = {
 				who = THIS
 				value = 50
@@ -4630,7 +4639,7 @@ country_event = {
 
 country_event = {
 	id = 999595
-	title = "EVTNAME999592"
+	title = "EVTNAME999595"
 	desc = "EVTDESC999592"
 
 	is_triggered_only = yes
@@ -4642,6 +4651,97 @@ country_event = {
 			relation = {
 				who = THIS
 				value = 200
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 999596
+	title = "EVTNAME999590"
+	desc = "EVTDESC999590"
+
+	trigger = {
+			619 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			549 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			641 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
+		OR = {
+			tag = ENG
+			tag = RUS
+			tag = SCA
+			tag = FRA
+			tag = LTU
+			AND = {
+				tag = ITA
+				OR = {
+					AUS_726 = {
+						OR = {
+							owned_by = GCF
+							owned_by = GER
+						}
+					}
+					AUS_729 = {
+						OR = {
+							owned_by = GCF
+							owned_by = GER
+						}
+					}
+					AUS_729 = {
+						OR = {
+							owned_by = GCF
+							owned_by = GER
+						}
+					}
+				}
+			}
+		}
+		NOT = { has_global_flag = leipzig_congress }
+		ai = yes
+		OR = {
+			alliance_with = GCF
+			alliance_with = GER
+		}
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVTOPTA999591"
+		any_greater_power = {
+			limit = { 
+				OR = {
+					tag = GCF
+					tag = GER
+				}
+			 }
+			relation = {
+				who = THIS
+				value = -400
+			}
+			leave_alliance = THIS
+		}
+		any_greater_power = {
+			limit = { NOT = { truce_with = ENG } NOT = { tag = GER } NOT = { tag = GCF } }
+			relation = {
+				who = THIS
+				value = 100
 			}
 		}
 	}
