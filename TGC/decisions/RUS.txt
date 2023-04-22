@@ -64,6 +64,17 @@ political_decisions = {
 				leave_alliance = THIS
 			}
 			random_country = {
+				limit = { #As the Initiator of the war, France/LTU will always join
+					OR = {
+						tag = FRA
+						tag = LTU
+					}
+				}
+				diplomatic_influence = { who = TUR value = 100 }
+				create_alliance = TUR
+				leave_alliance = THIS
+			}
+			random_country = {
 				limit = {
 				    OR = {
 					tag = SAR
@@ -333,6 +344,7 @@ political_decisions = {
 			money = 100001
 			OR = {
 				has_recently_lost_war = yes
+				year = 1870
 				ai = yes
 			}
 		}
@@ -385,6 +397,24 @@ political_decisions = {
 					activate_technology = iron_steamers
 					political_reform = mandatory_service
 					treasury = -100000
+				994 = {
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				sub_unit = { type = steam_transport value = current }
+				}
 				}
 			}
 			random_owned = {
@@ -393,8 +423,15 @@ political_decisions = {
 					activate_technology = battleship_column_doctrine
 					activate_technology = steamers
 					treasury = -150000
+				994 = {
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				sub_unit = { type = ironclad value = current }
+				}
 				}
 			}
+			
 			set_country_flag = russian_naval_reform
 		}
 
@@ -1322,6 +1359,7 @@ political_decisions = {
 		    #nationalism_n_imperialism = 1
 			has_country_flag = tsaralexander2
 			NOT = { has_country_flag = pol_reform_blocker }
+			NOT = { has_country_modifier = total_reform }
 			OR = {
 				has_country_flag = constitutional_monarchy_gov #through revolution?
 				OR = {
@@ -1421,6 +1459,7 @@ political_decisions = {
 		effect = {
 			set_country_flag = alexander_reforms
 			clr_country_flag = pol_reform_blocker
+			clr_country_flag = vote_reform_blocker
 			clr_country_flag = soc_reform_blocker  #This will now allow for manual reforms
 			war_exhaustion = -5
 			tech_school = army_tech_school
@@ -1463,17 +1502,17 @@ political_decisions = {
 				owner = { political_reform = yes_meeting }
 			}
 
-			random_owned = {
-				limit = { owner = { upper_house_composition = appointed } } #zemstva
-				owner = { political_reform = state_equal_weight }
-			}
+			#random_owned = {
+			#	limit = { owner = { upper_house_composition = appointed } } #zemstva, maybe regionalism instead? --depracated
+			#	owner = { political_reform = state_equal_weight } 
+			#}
 
 			any_pop = {
 				militancy = -2
 				consciousness = -4
 			}
 
-			add_country_modifier = { name = total_reform duration = 2920 } #this may be too long, look into it
+			add_country_modifier = { name = total_reform duration = 2920 }
 			any_owned = {
 				limit = {
 					is_core = RUS
@@ -1554,6 +1593,9 @@ political_decisions = {
 			political_reform = underground_parties
 			political_reform = mandatory_service
 			government = absolute_monarchy
+			set_country_flag = vote_reform_blocker
+			set_country_flag = pol_reform_blocker
+			set_country_flag = soc_reform_blocker
 			add_country_modifier = { name = decadent_autocracy duration = -1 }
 			any_pop = {
 				militancy = -1
@@ -1606,7 +1648,7 @@ political_decisions = {
 			}
 			modifier = {
 				factor = 0
-				has_country_flag = alexanderii
+				has_country_flag = tsaralexander2
 			}
 		}
 	}
@@ -1676,7 +1718,7 @@ political_decisions = {
 			war = no
 			NOT = { truce_with = QNG }
 			QNG = {
-				neighbour = RUS
+				#neighbour = RUS
 				OR = {
 					has_global_flag = taiping_has_been_defeated
 					has_country_flag = arrow_incident
@@ -1707,6 +1749,8 @@ political_decisions = {
 		effect = {
 			set_global_flag = convention_of_peking
 			1081 = { add_core = RUS }
+			1082 = { add_core = RUS }
+			1083 = { add_core = RUS }
 			1084 = { add_core = RUS }
 			1085 = { add_core = RUS }
 			2617 = { add_core = RUS }
@@ -1714,38 +1758,43 @@ political_decisions = {
 			QNG = { country_event = 80110 }
 		}
 	}
-
-	protocol_of_chuguchak = {
-
+	
+	treaty_of_tarbagatay = {
 		picture = chuguchak
-
 		potential = {
 			primary_culture = russian
 			is_greater_power = yes
 			NOT = { has_global_flag = chuguchak_done }
+			OR = {
+				QNG = {
+					exists = yes
+				}
+				TPG = {
+					exists = yes
+				}
+			}
 		}
 
 		allow = {
-			year = 1860 #todo separate south of amur treaty and these shenanigans
-			has_global_flag = peking_con
-		    1082 = {
-			owner = {
-					OR = {
-						tag = QNG
-						vassal_of = QNG
-						substate_of = QNG
-						ai = yes
-						vassal_of = RUS
-					}
+			#year = 1860
+			has_global_flag = convention_of_peking
+			NOT = {
+				OR = {
+					truce_with = QNG
+					truce_with = TPG
 				}
 			}
 			1208 = {
 			owner = {
 					OR = {
 						tag = QNG
+						tag = TPG
 						vassal_of = QNG
+						vassal_of = TPG
 						substate_of = QNG
-						ai = yes
+						substate_of = TPG
+						#ai = yes
+						tag = RUS
 						vassal_of = RUS
 					}
 				}
@@ -1754,9 +1803,12 @@ political_decisions = {
 			owner = {
 					OR = {
 						tag = QNG
+						tag = TPG
 						vassal_of = QNG
+						vassal_of = TPG
 						substate_of = QNG
-						ai = yes
+						substate_of = TPG
+						#ai = yes
 						tag = RUS #in the weird scenario where one of central asian states takes these, and RUS gets it through puppet then annex
 						vassal_of = RUS
 					}
@@ -1766,9 +1818,12 @@ political_decisions = {
 			owner = {
 					OR = {
 						tag = QNG
+						tag = TPG
 						vassal_of = QNG
+						vassal_of = TPG
 						substate_of = QNG
-						ai = yes
+						substate_of = TPG
+						#ai = yes
 						tag = RUS
 						vassal_of = RUS
 					}
@@ -1780,33 +1835,30 @@ political_decisions = {
 		effect = {
 
 		set_global_flag = chuguchak_done
-
-		1082 = { add_core = RUS
-			secede_province = RUS }
-
-		1083 = { add_core = RUS
-			secede_province = RUS }
-
-		1068 = { add_core = RUS
-			secede_province = RUS }
-
-		1186 = { secede_province = RUS }
-
-		1188 = { secede_province = RUS }
-
-		1190 = { secede_province = RUS }
-
-		1208 = { secede_province = RUS }
-
-		1189 = { secede_province = RUS }
-
-		1185 = { secede_province = RUS }
-
-
+		1068 = { add_core = RUS }
+		1186 = { add_core = RUS }
+		1188 = { add_core = RUS }
+		1190 = { add_core = RUS }
+		1208 = { add_core = RUS }
+		1189 = { add_core = RUS }
+		1185 = { add_core = RUS }
+			any_country = {
+				limit = {
+					OR = {
+						tag = QNG
+						tag = TPG
+					}
+					exists = yes
+				}
+				country_event = 888888006
+			}
+		}
+		ai_will_do = {
+			factor = 1
 		}
 	}
 
-    #Until 1900s get content attention and 1904/5 War gets done, this simplified version will do
+    #Until 1900s get content, this simplified version of Russian-Japanese rivalry will do
 	manchurian_ultimatum = {
 		picture = peking_convention
 		potential = {
@@ -1831,26 +1883,24 @@ political_decisions = {
 				}
 			}
 			QNG = {
-				neighbour = RUS
-				has_global_flag = taiping_has_been_defeated
 				has_global_flag = convention_of_peking
-				has_global_flag = peking_con
 				exists = yes
 			}
 			NOT = { has_global_flag = manchurian_ultimatum }
 		}
 
 		allow = {
-			has_country_flag = build_the_manchurian_railway1
+			has_country_flag = build_the_manchurian_railway1 #Owns Port Arthur
 			has_country_flag = mongolian_protectorate
 		    steel_railroad = 1
 		    MGL = { in_sphere = THIS }
-		    year = 1880
-			war = no
 			NOT = { truce_with = QNG }
 			OR = {
+				QNG = { has_country_flag = boxers_appeared }
+				AND = {
 				QNG = { war = yes }
-				has_global_flag = taiping_has_been_defeated
+				year = 1895
+				}
 			}
 		}
 
@@ -1858,6 +1908,14 @@ political_decisions = {
 			set_global_flag = manchurian_ultimatum
 			relation = { who = JAP value = -100 } #Path to intervene
 			QNG = { country_event = 500190 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { year = 1904 }
+			}
 		}
 	}
 
@@ -2236,6 +2294,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
+	#Russia Won Crimea, Won GEC, Compromised with other GPs
 	dismantle_ottomans = {
 		picture = "eastern_crisis_dismantle_ottomans"
 		potential = {
@@ -2569,6 +2628,9 @@ political_decisions = {
 		effect = {
 			set_global_flag = convention_of_peking
 			CHI_1082 = {
+				add_core = RUS
+			}
+			RUS_1072 = {
 				add_core = RUS
 			}
 			TPG = {
@@ -4089,11 +4151,25 @@ political_decisions = {
 
 		allow = {
 			war = no
-			owns = 89
-			owns = 104
+			89 = {
+				OR = {
+					owned_by = THIS
+					owner = { tag = LSK }
+					}
+				}
+			104 = {
+				OR = {
+					owned_by = THIS
+					owner = { tag = LSK }
+					}
+				}
 			any_owned_province = { #This is so Russia can add more colonies into Russian America outside the scope of flavour
 				continent = north_america
 				NOT = { is_core = LSK }
+				NOT = { province_id = 1723 }
+				NOT = { province_id = 3366 } #Fort Ross
+				NOT = { province_id = 14 } #Vancouver
+				NOT = { province_id = 1 }
 			}
 		}
 
@@ -4102,6 +4178,10 @@ political_decisions = {
 					limit = {
 						continent = north_america
 						NOT = { is_core = LSK }
+						NOT = { province_id = 1723 } #Panama Canal
+						NOT = { province_id = 3366 } #Fort Ross
+						NOT = { province_id = 14 }
+						NOT = { province_id = 1 }
 					}
 					add_core = LSK
 				}
@@ -4280,7 +4360,8 @@ political_decisions = {
 						is_core = LSK
 						NOT = { terrain = desert terrain = arctic terrain = montane_tundra }
 					}
-					add_province_modifier = { name = population_resettlement duration = 1800 }
+					add_province_modifier = { name = population_resettlement duration = 545 }
+					add_province_modifier = { name = russoification duration = 10950 }
 				}
 		}
 
@@ -4540,20 +4621,24 @@ political_decisions = {
 				AND = {
 					invention = pit_coal
 					invention = coke
-					drilling_and_blasting = 1 #1870
-					industrial_score = 800
-					NOT = { has_country_flag = the_manifesto }
+					advanced_metallurgy = 1 #1890
+					industrial_score = 3000
+					NOT = { has_country_modifier = decadent_autocracy }
+					NOT = { has_country_flag = absolute_monarchy_gov }
 				}
 				AND = {
 					ai = no
-					year = 1870
-					industrial_score = 1500
-					NOT = { has_country_flag = the_manifesto }
+					invention = pit_coal
+					invention = coke
+					advanced_metallurgy = 1 #1890+
+					industrial_score = 4000
+					NOT = { has_country_modifier = decadent_autocracy }
+					NOT = { has_country_flag = absolute_monarchy_gov }
 				}
-				AND = { #This is so Autocratic Russia doesn't get freebies it shouldn't, until the Witte system being an exception (1890s arguably the only competent Tsar's Minister)
-					has_country_flag = the_manifesto
-					year = 1895
-				}
+				#AND = { #This is so Autocratic Russia doesn't get freebies it shouldn't, until the Witte system being an exception (1890s arguably the only competent Tsar's Minister)
+				#	has_country_flag = the_manifesto
+				#	year = 1895
+				#}
 			}
 			money = 500000
 		}
@@ -4627,20 +4712,22 @@ political_decisions = {
 				AND = {
 					invention = pit_coal
 					invention = coke
-					drilling_and_blasting = 1 #1870
-					industrial_score = 1000
-					NOT = { has_country_flag = the_manifesto }
+					electric_furnace = 1 #1900+
+					industrial_score = 4000
+					NOT = { has_country_modifier = decadent_autocracy }
+					NOT = { has_country_flag = absolute_monarchy_gov }
 				}
 				AND = {
 					ai = no
-					year = 1870
-					industrial_score = 1500
-					NOT = { has_country_flag = the_manifesto }
+					electric_furnace = 1
+					industrial_score = 6000
+					NOT = { has_country_modifier = decadent_autocracy }
+					NOT = { has_country_flag = absolute_monarchy_gov }
 				}
-				AND = { #This is so Autocratic Russia doesn't get freebies it shouldn't, until the Witte system being an exception (1890s arguably the only competent Tsar's Minister)
-					has_country_flag = the_manifesto
-					year = 1910
-				}
+				#AND = { #This is so Autocratic Russia doesn't get freebies it shouldn't, until the Witte system being an exception (1890s arguably the only competent Tsar's Minister)
+				#	has_country_flag = the_manifesto
+				#	year = 1910
+				#}
 			}
 			money = 500000
 		}
@@ -4660,7 +4747,7 @@ political_decisions = {
 					NOT = { has_province_modifier = central_ukraine_modifier }
 				}
 				#trade_goods = coal triggered by events
-				add_province_modifier = { name = central_ukraine_modifier duration = 18250 }
+				add_province_modifier = { name = central_ukraine_modifier duration = -1 }
 			}
 
 			any_owned = {
@@ -4982,7 +5069,7 @@ political_decisions = {
 						tag = WSF
 					}
 					is_greater_power = yes
-					has_country_flag = baltic_concessions
+					#has_country_flag = baltic_concessions
 				}
 			}
 			invention = manifest_destiny

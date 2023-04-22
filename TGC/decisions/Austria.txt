@@ -111,7 +111,7 @@ political_decisions = {
 						revolt_percentage = .25
 					}
 				}
-				NOT = { year = 1867 }
+				#NOT = { year = 1867 }
 			}
 		}
 	}
@@ -1156,9 +1156,15 @@ political_decisions = {
 			NOT = {
 				exists = GCF
 				exists = GER
-				exists = RHI
+				#exists = RHI
+			}
+			OR = {
+			AND = {
+			exists = LTU
+			has_global_flag = eighth_coalition_pushed_back
 			}
 			FRA = { has_country_flag = annexed_rhineland }
+			}
 			NOT = { has_global_flag = leipzig_congress }
 		}
 
@@ -1216,10 +1222,14 @@ political_decisions = {
 			}
 			any_country = {
 				limit = {
+				OR = {
 					is_culture_group = germanic
+					has_country_flag = gcf_join_latin_threat
+					}
 					exists = yes
 					OR = {
 						is_culture_group = germanic
+						has_country_flag = gcf_join_latin_threat
 						AND = {
 							is_culture_group = germanic
 							in_sphere = THIS
@@ -1246,6 +1256,8 @@ political_decisions = {
 						tag = VLG
 						tag = LIE
 						tag = SIE
+						tag = SWI
+						has_country_modifier = neutrality
 						capital_scope = { continent = africa }
 						capital_scope = { continent = west_africa }
 						capital_scope = { continent = central_africa }
@@ -1256,6 +1268,9 @@ political_decisions = {
 					NOT = {
 						vassal_of = FRA
 					}
+					NOT = {
+						vassal_of = LTU
+					}
 					OR = {
 						is_vassal = no
 						vassal_of = THIS
@@ -1265,7 +1280,38 @@ political_decisions = {
 				}
 				country_event = 11101
 			}
+			#capital = 559 Temporarily disabled as many decision condition content to 619 or 549 being the capital shrug
 			FRA = { country_event = 72752 }
+			LTU = { country_event = 72752 }
+			#Militarization
+			set_country_flag = militarized_society_threat
+			political_reform = mandatory_service
+			any_pop = {
+            	limit = {
+            		type = soldiers
+           				OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+							}
+						}
+						reduce_pop = 1.15 # Grown by 15%
+			}
+			any_pop = {
+            	limit = {
+           			OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				dominant_issue = {
+					value = jingoism
+					factor = 0.25 
+				}
+				dominant_issue = {
+					value = pro_military
+					factor = 0.25 
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -1286,19 +1332,23 @@ political_decisions = {
 			NOT = {
 				exists = GCF
 				exists = GER
-				exists = RHI
 			}
 			AND = {
 				has_global_flag = treaty_of_paris_russia
-				702 = { owned_by = RUS } #Lvov
 				706 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Varshava
-				705 = { owned_by = RUS } #Premysl
 				OR = {
-				695 = { owned_by = RUS } #Konigsberg
-				699 = { owned_by = RUS } #Poznan
-				664 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Bucharest
-				794 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Belgrade
-				682 = { owned_by = RUS } #Breslau
+				702 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Lvov
+				705 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Premysl
+				}
+				OR = {
+				695 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Konigsberg
+				699 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Poznan
+				682 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Breslau
+				690 = { OR = { owned_by = RUS owner = { vassal_of = RUS } } } #Danzig
+				}
+				OR = {
+				664 = { OR = { owned_by = RUS owner = { vassal_of = RUS } owner = { in_sphere = RUS } } } #Bucharest
+				794 = { OR = { owned_by = RUS owner = { vassal_of = RUS } owner = { in_sphere = RUS } } } #Belgrade
 				}
 			}
 			NOT = { has_global_flag = leipzig_congress }
@@ -1388,6 +1438,8 @@ political_decisions = {
 						tag = VLG
 						tag = LIE
 						tag = SIE
+						tag = SWI
+						has_country_modifier = neutrality
 						capital_scope = { continent = africa }
 						capital_scope = { continent = west_africa }
 						capital_scope = { continent = central_africa }
@@ -1407,7 +1459,37 @@ political_decisions = {
 				}
 				country_event = 11101
 			}
+			#capital = 599 Temporarily disabled as many decision condition content to 619 or 549 being the capital shrug
 			RUS = { country_event = 500282 }
+			#Militarization
+			set_country_flag = militarized_society_threat
+			political_reform = mandatory_service
+			any_pop = {
+            	limit = {
+            		type = soldiers
+           				OR = {
+							is_primary_culture = yes
+							is_accepted_culture = yes
+							}
+						}
+						reduce_pop = 1.15 # Grown by 15%
+			}
+			any_pop = {
+            	limit = {
+           			OR = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+				}
+				dominant_issue = {
+					value = jingoism
+					factor = 0.25 
+				}
+				dominant_issue = {
+					value = pro_military
+					factor = 0.25 
+				}
+			}
 		}
 
 		ai_will_do = {

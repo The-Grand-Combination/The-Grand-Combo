@@ -131,12 +131,55 @@ country_event = {
 		random_country = { 
 			limit = { 
 				year = 1920
-				set_global_flag = rebel_tech_4
+				NOT = { has_global_flag = rebel_tech_4 }
 			}
 			REB = {
 				activate_technology = bolt_action_rifles
 			}
-			NOT = { has_global_flag = rebel_tech_4 }
+			set_global_flag = rebel_tech_4
+		}
+
+		ASIAN_PLANTATIONS = { limit = { owner = { civilized = yes }                ## Asian RGO normalization
+										owner = { investment_banks = 1 }
+										NOT = { terrain = small_island }
+										NOT = { terrain = desert }
+										NOT = { terrain = semidesert }
+										NOT = { terrain = dryhills }
+										NOT = { terrain = coral_island }
+										NOT = { province_id = 1320 }
+										NOT = { province_id = 2517 }
+										NOT = { province_id = 1464 }
+										NOT = { province_id = 1637 }
+										NOT = { has_province_modifier = plantation } 
+							}
+							add_province_modifier = { name = plantation duration = -1 }
+		}
+
+		all_land_provinces = { limit = { OR = { continent = africa                 ## African RGO normalization
+												continent = south_west_africa
+												continent = east_africa
+												continent = west_africa
+												continent = central_africa
+											}
+											owner = { civilized = yes }
+											owner = { investment_banks = 1 }
+											NOT = { terrain = small_island }
+											NOT = { terrain = desert }
+											NOT = { terrain = semidesert }
+											NOT = { terrain = dryhills }
+											NOT = { province_id = 2590 }
+											NOT = { province_id = 1689 }
+											NOT = { province_id = 1954 }
+											NOT = { province_id = 1955 }
+											NOT = { province_id = 2123 }
+											NOT = { province_id = 2124 }
+											NOT = { province_id = 1177 }
+											NOT = { region = ENG_2125 }
+											NOT = { region = POR_2134 }
+											NOT = { region = ENG_2132 }
+											NOT = { has_province_modifier = plantation }
+							}
+							add_province_modifier = { name = plantation duration = -1 }
 		}
 	}
 }
@@ -320,6 +363,81 @@ country_event = {
 				serfs = { pop_type = farmers }
 			}
 		}	
+		#Government Campaigns
+		#Roughly, for each owned province that has an active campaign, monthly scaled tax-based money will get deducted from player
+		#It uses all_land_provinces scope to owner because scoping by country simply does not work 
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = infamy_removal }
+			}
+			owner = { add_tax_relative_income = -0.025 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = more_colonial_settlement }
+			}
+			owner = { add_tax_relative_income = -0.025 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = more_internal_migration }
+			}
+			owner = { add_tax_relative_income = -0.025 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = less_emigration }
+			}
+			owner = { add_tax_relative_income = -0.025 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = research_campaign }
+			}
+			owner = { add_tax_relative_income = -0.025 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = birthrate_push_low }
+			}
+			owner = { add_tax_relative_income = -0.025 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = birthrate_push_medium }
+			}
+			owner = { add_tax_relative_income = -0.05 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = birthrate_push_high }
+			}
+			owner = { add_tax_relative_income = -0.075 }
+		}
+		all_land_provinces = { 
+			limit = {
+				owner = { ai = no }
+				is_colonial = no
+				owner = { has_country_modifier = direct_immigration_program }
+			}
+			owner = { add_tax_relative_income = -0.05 }
+		}
 		#Missing government flags
 		any_country = {
 			limit = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
@@ -930,6 +1048,14 @@ country_event = {
 			}
 			country_event = 6016813
 		}
+		#Vassals of non-existing countries get freed
+		#any_country = {
+		#	limit = {
+		#		OR = { is_vassal = yes is_substate = yes }
+		#		overlord = { exists = no }
+		#	}
+		#	country_event = 6016815
+		#}
 		#####################
 		#	OPTIMIZATION	#
 		#####################

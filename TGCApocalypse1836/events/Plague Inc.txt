@@ -1,0 +1,161 @@
+country_event = {
+    id = 66300
+    title = "EVTNAME66300"
+    desc = "EVTDESC66300"
+    picture = "dark_leader"
+    
+    fire_only_once = yes
+
+    trigger = { has_global_flag = plague_inc_mode tag = ZOM }
+    
+    mean_time_to_happen = { days = 1 }
+
+    immediate = {   any_owned = { any_pop = { pop_type = soldiers } }
+                    any_country = { limit = { exists = yes } modify_relation = { tag = ZOM relation = -200 } } 
+                    set_variable = {
+							which = holy_cities
+							value = 1
+					}
+                    activate_technology = classicism_n_early_romanticism
+                }
+
+    option = {
+        name = "EVTOPTA66300"
+        add_country_modifier = { name = "ap_plague_inc" duration = -1 }
+        add_country_modifier = { name = "has_political_leader" duration = -1 }
+        set_global_flag = herald_awaken
+        money = 100000
+    }
+}
+
+country_event = {
+    id = 66301
+    title = "EVTNAME66301"
+    desc = "EVTDESC66301"
+    picture = "dark_leader"
+
+    mean_time_to_happen = { days = 30 }
+
+    fire_only_once = yes
+
+    trigger = { TAG = ZOM has_country_modifier = "ap_plague_inc" any_neighbor_country = { NOT = { war_with = THIS } } }
+
+    option = {
+        name = "EVTOPTA66301"
+        any_neighbor_country = { limit = { NOT = { war_with = THIS } }
+                                war = { target = THIS 
+                                        attacker_goal = { casus_belli = plague_cleanse } 
+                                        defender_goal = { casus_belli = plague_spreader } }
+        }
+    }
+}
+
+country_event = {
+    id = 66302
+    title = "EVTNAME66302"
+    desc = "EVTDESC66302"
+    picture = "global_defeat"
+
+    trigger = { 
+        NOT = { tag = ZOM }
+        ZOM = { check_variable = { which = holy_cities value = 5 } } 
+        NOT = { has_country_modifier = ap_countdown }
+    }
+
+    option = {
+        name = "EVTOPTA66302"
+        add_country_modifier = { name = ap_countdown duration = 60 }
+    }
+}
+
+
+country_event = {
+    id = 66303
+    title = "EVTNAME66303"
+    desc = "EVTDESC66303"
+    picture = "global_defeat"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA66303"
+        any_owned_province = { secede_province = ZOM }
+    }
+}
+
+country_event = { 
+	id = 66304
+	title = "EVTNAME66304"
+	desc = "EVTDESC66304"
+	picture = rebuild_society
+
+	trigger = {
+        tag = ZOM
+		ZOM = { NOT = { any_owned_province = { controlled_by = ZOM } } }
+        has_global_flag = plague_inc_mode
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = { days = 10 }
+
+	immediate = {
+		clr_global_flag = herald_awaken
+		set_global_flag = global_victory
+		set_variable = { which = zombified_provinces value = 0 }
+	}
+
+	option = {
+		name = "EVTOPTA66304"
+        any_country = { country_event = 66305 }
+        any_owned_province = { change_controller = THIS FROM = { inherit = THIS } } 
+	}
+}
+
+country_event = {
+	id = 66305
+	title = "EVTNAME66033"
+	desc = "EVTDESC66033"
+	picture = rebuild_society
+
+	is_triggered_only = yes
+
+	option = { 
+		name = "EVTOPTA66033"
+		add_country_modifier = { name = ap_rebuild_society duration = 1000 }
+		add_country_modifier = { name = ap_conservative_rebuild duration = 1000 }
+	}
+
+	option = { 
+		name = "EVTOPTB66033"
+		add_country_modifier = { name = ap_rebuild_society duration = 1000 }
+		add_country_modifier = { name = ap_temperace_rebuild duration = 1000 }
+	}
+
+	option = { 
+		name = "EVTOPTC66033"
+		add_country_modifier = { name = ap_rebuild_society duration = 1000 }
+		add_country_modifier = { name = ap_agressive_rebuild duration = 1000 }
+	}
+}
+
+country_event = {
+	id = 66306
+	title = "EVTNAME66033"
+	desc = "EVTDESC66033"
+	picture = rebuild_society
+
+	fire_only_once = yes
+    
+    trigger = {
+        tag = JAN
+        ZOM = { exists = no }
+        has_global_flag = plague_inc_mode
+        year = 1837
+    }
+
+	option = { 
+		name = "EVTOPTA66033"
+		any_country = { country_event = 66305 }
+	}
+}
