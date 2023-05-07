@@ -14,8 +14,8 @@ defines = {
 		GREAT_NATIONS_COUNT = 8,
 		GREATNESS_DAYS = 365, 	   -- how many days until country risks losing status as great nation
 		BADBOY_LIMIT = 25,
-		MAX_BUREAUCRACY_PERCENTAGE = 0.025, -- More than max percent bureaucrats of population will give no additional benefits
-		BUREAUCRACY_PERCENTAGE_INCREMENT = 0.002, -- For each social administrative reform level, this is added to MAX_BUREAUCRACY_PERCENTAGE
+		MAX_BUREAUCRACY_PERCENTAGE = 0.02, -- More than max percent bureaucrats of population will give no additional benefits
+		BUREAUCRACY_PERCENTAGE_INCREMENT = 0.001, -- For each social administrative reform level, this is added to MAX_BUREAUCRACY_PERCENTAGE
 		MIN_CRIMEFIGHT_PERCENT = 0.1,
 		MAX_CRIMEFIGHT_PERCENT = 0.99,
 		ADMIN_EFFICIENCY_CRIMEFIGHT_PERCENT = 0.5, -- Crimefight depends on both state admin eff. and admin spending, admin spending percent effect is set to (1-ADMIN_EFFICIENCY_CRIMEFIGHT_PERCENT)
@@ -630,9 +630,9 @@ defines = {
 		PROMOTION_ASSIMILATION_CHANCE = 0.05,
 		LUXURY_THRESHOLD = 500,
 		BASE_GOODS_DEMAND = 0.8, --0.8
-		BASE_POPGROWTH = 0.0001,
+		BASE_POPGROWTH = 0.00009,
 		MIN_LIFE_RATING_FOR_GROWTH = 30,
-		LIFE_RATING_GROWTH_BONUS = 0.0001,
+		LIFE_RATING_GROWTH_BONUS = 0.00009,
 		LIFE_NEED_STARVATION_LIMIT = 0.5,
 
 		MIL_LACK_EVERYDAY_NEED = 0.05, -- was 0.1
@@ -661,7 +661,7 @@ defines = {
 
 		POP_SAVINGS = 0.018,
 
-		STATE_CREATION_ADMIN_LIMIT = 0.015,
+		STATE_CREATION_ADMIN_LIMIT = 0.012,
 		MIL_TO_JOIN_REBEL = 8, -- Rebels over this will join a faction
 		MIL_TO_JOIN_RISING = 9, -- Rebels over this will join a general rising
 		MIL_TO_AUTORISE = 9, -- Rebels over this rise no matter what

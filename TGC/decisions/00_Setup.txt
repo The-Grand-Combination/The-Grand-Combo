@@ -1684,18 +1684,23 @@ political_decisions = {
 				ai = yes
 				NOT = { has_country_modifier = soldier_fix }
 				year = 1845
-				NOT = { tag = USA }
+				NOT = { tag = USA } #not europe
 			}
 
 			allow = {
 				ai = yes
 				is_disarmed = no
-				has_recently_lost_war = no
-				money = 200000
+				OR = {
+					revanchism = 0.1
+					has_recently_lost_war = no
+				}
+				money = 100001
 				NOT = { has_country_modifier = no_more_war }
 				OR = {
 					war_policy = jingoism
 					war_policy = pro_military
+					has_country_flag = militarized_society_threat
+					revanchism = 0.1
 				}
 				OR = {
 					AND = {
@@ -1704,21 +1709,32 @@ political_decisions = {
 					}
 					AND = {
 						conscription = two_year_draft
-						NOT = { soldiers = 0.02 }
-					}
-					AND = {
-						conscription = four_year_draft
 						NOT = { soldiers = 0.025 }
 					}
 					AND = {
+						conscription = four_year_draft
+						NOT = { soldiers = 0.035 }
+					}
+					AND = {
 						conscription = mandatory_service
-						NOT = { soldiers = 0.03 }
+						NOT = { soldiers = 0.04 }
 					}
 				}
 			}
 
 			effect = {
 			treasury = -100000
+			steel = 500
+			cement = 500
+			machine_parts = 200
+			#This will help them build the units quicker
+			artillery = 250
+			canned_food = 250
+			ammunition = 250
+			small_arms = 250
+			regular_clothes = 100
+			liquor = 100
+			luxury_clothes = 50
 			any_pop = {
             	limit = {
             		type = soldiers
@@ -1730,6 +1746,7 @@ political_decisions = {
 						reduce_pop = 1.2 # Grown by 20%
 			}
 	        add_country_modifier = { name = soldier_fix duration = 1800 }
+			add_country_modifier = { name = militarization_of_society duration = 7200 }
 			}
 
 			ai_will_do = { factor = 1 }
