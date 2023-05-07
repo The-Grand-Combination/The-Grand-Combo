@@ -8714,40 +8714,6 @@ country_event = {
 	}
 }
 
-#1900s
-country_event = {
-
-	id = 500288
-
-	title = "EVTNAME500288"
-	desc = "EVTDESC500288"
-	picture = "autocracy"
-
-	trigger = {
-		#has_country_modifier = decadent_autocracy
-		primary_culture = russian
-		has_country_flag = absolute_monarchy_gov
-		year = 1900
-		any_owned_province = {
-			average_militancy = 5
-		}
-	}
-
-	mean_time_to_happen = {
-		months = 6
-	}
-
-	fire_only_once = yes
-
-	option = {
-		name = "EVTOPTA500288"
-		add_country_modifier = { name = decadent_autocracy2 duration = -1 } #until revolution
-		ai_chance = {
-			factor = 100
-		}
-	}
-}
-
 country_event = {
 
 	id = 500289
@@ -8861,7 +8827,6 @@ country_event = {
 }
 #500291 - Hawaii Fort Elizabeth
 #500292 - Djibouti Cossack Expedition to Ethiopia
-#1905 Revolution
 
 # Proletkult
 country_event = {
@@ -8947,6 +8912,730 @@ country_event = {
 		
 		ai_chance = {
 			factor = 30
+		}
+	}
+}
+
+#1905 Revolution
+
+country_event = {
+
+	id = 500294 #Sunday Demonstration for Absolutist Russia
+
+	title = "EVTNAME500294"
+	desc = "EVTDESC500294"
+	picture = "bloody_sunday"
+
+	trigger = {
+		has_country_flag = absolute_monarchy_gov
+		tag = RUS
+		war_exhaustion = 25
+		has_recently_lost_war = yes
+		is_ideology_enabled = communist
+		year = 1900
+		NOT = { has_country_flag = bloodysunday } #Just to make sure Bloody Sunday doesn't happen twice if Russia changes government type
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	immediate = {
+		set_country_flag = bloodysunday
+	}
+
+	option = {
+		name = "EVTOPTA500294" #Shoot at the protestors
+		set_country_flag = 1905_revolution
+		random_owned = {
+			limit = {
+				is_capital = yes
+			}
+			state_scope = {
+				random_pop = {
+					limit = {
+						OR = {
+							type = craftsmen
+							type = labourers
+						}
+					}
+					reduce_pop = 0.90
+				}
+			}
+		}
+		labourers = {
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = socialist
+				factor = 0.10
+			}
+			ideology = {
+				value = communist
+				factor = 0.10
+			}
+		}
+		craftsmen = {
+			consciousness = 5
+			militancy = 5
+			ideology = {
+				value = socialist
+				factor = 0.10
+			}
+			ideology = {
+				value = communist
+				factor = 0.10
+			}
+		}
+		country_event = { #News Spread
+			id = 500296
+			days = 7
+		}
+	}
+}
+
+country_event = {
+
+	id = 500295 #Sunday Demonstration for Semi-Constitutionalist Russia
+
+	title = "EVTNAME500295"
+	desc = "EVTDESC500295"
+	picture = "bloody_sunday"
+
+	trigger = {
+		has_country_flag = semi_constitutional_monarchy_gov
+		tag = RUS
+		war_exhaustion = 50
+		average_consciousness = 4
+		average_militancy = 3
+		has_recently_lost_war = yes
+		year = 1900
+		is_ideology_enabled = communist
+		NOT = { has_country_flag = bloodysunday }
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 6
+	}
+
+	immediate = {
+		set_country_flag = bloodysunday
+	}
+
+	option = {
+		name = "EVTOPTA500295" #Disperse the protestors
+		set_country_flag = 1905_revolution
+		random_owned = {
+			limit = {
+				is_capital = yes
+			}
+			state_scope = {
+				random_pop = {
+					limit = {
+						OR = {
+							type = craftsmen
+							type = labourers
+						}
+					}
+					reduce_pop = 0.95
+				}
+			}
+		}
+		labourers = {
+			consciousness = 5
+			militancy = 3
+			ideology = {
+				value = socialist
+				factor = 0.10
+			}
+			ideology = {
+				value = communist
+				factor = 0.10
+			}
+		}
+		craftsmen = {
+			consciousness = 5
+			militancy = 3
+			ideology = {
+				value = socialist
+				factor = 0.10
+			}
+			ideology = {
+				value = communist
+				factor = 0.10
+			}
+		}
+		country_event = { #News Spread
+			id = 500296
+			days = 7
+		}
+	}
+	option = {
+		name = "EVTOPTB500295" #Accept the Petition
+		war_exhaustion = -10
+		poor_strata = {
+			militancy = -4
+		}
+		political_reform = universal_voting
+		political_reform = free_press
+		political_reform = population_equal_weight
+		political_reform = proportional_representation
+		political_reform = all_trade_unions
+		political_reform = yes_meeting
+		social_reform = eight_hours
+	}
+}
+country_event = {
+
+	id = 500296 #News of Bloody Sunday Spread
+
+	title = "EVTNAME500296"
+	desc = "EVTDESC500296"
+	picture = "workers_revolution"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500296"
+		any_owned_province = {
+			limit = {
+				is_colonial = no
+			}
+			state_scope = {
+				add_province_modifier = { name = province_strike duration = 1095 }
+			}
+		}
+	}
+}
+country_event = {
+
+	id = 500297 #Soldiers Mutinies
+
+	title = "EVTNAME500297"
+	desc = "EVTDESC500297"
+	picture = "soldiers_eating"
+
+	trigger = {
+		has_country_flag = 1905_revolution
+		NOT = { has_country_flag = 1905_revolution_has_ended }
+		any_owned_province = {
+			NOT = { poor_strata_everyday_needs = 0.9 }
+			average_militancy = 3
+			any_pop = {
+				type = soldiers
+				militancy = 4
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 18
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 5
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 6
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 7
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 8
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 9
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500297" #Round them up
+		random_owned_province = {
+			limit = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 4
+				}
+			}
+			state_scope = {
+				any_pop = {
+					limit = {
+						type = soldiers
+					}
+					militancy = 2
+					reduce_pop = 0.95
+				}
+			}
+		}
+		ai_chance = {
+			factor = 65
+			modifier = {
+				factor = 1.4
+				ruling_party_ideology = reactionary
+			}
+			modifier = {
+				factor = 1.4
+				has_country_flag = absolute_monarchy_gov
+			}
+			modifier = {
+				factor = 1.4
+				NOT = { average_militancy = 2 }
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 2
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 0.5
+				num_of_revolts = 1
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB500297" #Promise Reforms
+		prestige = -10
+		random_owned_province = {
+			limit = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = soldiers
+					militancy = 4
+				}
+			}
+			state_scope = {
+				any_pop = {
+					limit = {
+						type = soldiers
+					}
+					militancy = -2
+					consciousness = 2
+				}
+			}
+		}
+		ai_chance = {
+			factor = 35
+			modifier = {
+				factor = 1.2
+				ruling_party_ideology = liberal
+			}
+			modifier = {
+				factor = 1.2
+				has_country_flag = constitutional_monarchy_gov
+			}
+			modifier = {
+				factor = 0.6
+				NOT = { average_militancy = 2 }
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 2
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 1.5
+				num_of_revolts = 1
+			}
+		}
+	}
+}
+
+country_event = {
+
+	id = 500298 #Peasant Riots
+
+	title = "EVTNAME500298"
+	desc = "EVTDESC500298"
+	picture = "peasant_riot"
+
+	trigger = {
+		has_country_flag = 1905_revolution
+		NOT = { has_country_flag = 1905_revolution_has_ended }
+		any_owned_province = {
+			NOT = { poor_strata_everyday_needs = 0.9 }
+			average_militancy = 3
+			any_pop = {
+				type = farmers
+				militancy = 4
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		months = 18
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 5
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 6
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 7
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 8
+				}
+			}
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_province = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 9
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500298" #Round them up
+		random_owned_province = {
+			limit = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 4
+				}
+			}
+			state_scope = {
+				any_pop = {
+					limit = {
+						type = farmers
+					}
+					militancy = 2
+					reduce_pop = 0.98
+				}
+				add_province_modifier = { name = peasant_revolt duration = 180 }
+			}
+		}
+		ai_chance = {
+			factor = 65
+			modifier = {
+				factor = 1.4
+				ruling_party_ideology = reactionary
+			}
+			modifier = {
+				factor = 1.4
+				has_country_flag = absolute_monarchy_gov
+			}
+			modifier = {
+				factor = 1.4
+				NOT = { average_militancy = 2 }
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 2
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 0.5
+				num_of_revolts = 1
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB500298" #Promise Reforms
+		prestige = -10
+		random_owned_province = {
+			limit = {
+				NOT = { poor_strata_everyday_needs = 0.9 }
+				average_militancy = 3
+				any_pop = {
+					type = farmers
+					militancy = 4
+				}
+			}
+			state_scope = {
+				any_pop = {
+					limit = {
+						type = farmers
+					}
+					militancy = -2
+					consciousness = 2
+				}
+			}
+		}
+		ai_chance = {
+			factor = 35
+			modifier = {
+				factor = 1.2
+				ruling_party_ideology = liberal
+			}
+			modifier = {
+				factor = 1.2
+				has_country_flag = constitutional_monarchy_gov
+			}
+			modifier = {
+				factor = 0.6
+				NOT = { average_militancy = 2 }
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 2
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 1.5
+				num_of_revolts = 1
+			}
+		}
+	}
+}
+
+country_event = {
+
+	id = 500299 #Saint Petersburg Soviet
+
+	title = "EVTNAME500299"
+	desc = "EVTDESC500299"
+	picture = "petersburg_soviet"
+
+	trigger = {
+		has_country_flag = 1905_revolution
+		NOT = { has_country_flag = 1905_revolution_has_ended }
+		average_militancy = 4
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 12
+		modifier = {
+			factor = 0.8
+			average_militancy = 6
+		}
+		modifier = {
+			factor = 0.8
+			average_militancy = 6
+		}
+		modifier = {
+			factor = 0.6
+			num_of_revolts = 1
+		}
+	}
+
+	option = {
+		name = "EVTOPTA500299"
+		any_pop = {
+			scaled_militancy = { ideology = communist factor = 3 }
+			scaled_militancy = { ideology = socialist factor = 1 }
+		}
+	}
+}
+
+country_event = {
+
+	id = 500300 #Victory of The Revolution
+
+	title = "EVTNAME500300"
+	desc = "EVTDESC500300"
+	picture = "crisis_revolution_enabled"
+
+	trigger = {
+		has_country_flag = 1905_revolution
+		NOT = { has_country_flag = absolute_monarchy_gov }
+		NOT = { has_country_flag = semi_constitutional_monarchy_gov }
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA500300"
+		set_country_flag = 1905_revolution_has_ended
+		any_pop = {
+			militancy = -3
+		}
+		any_owned_province = {
+			remove_province_modifier = peasant_revolt
+			remove_province_modifier = province_strike
+		}
+	}
+}
+
+country_event = {
+
+	id = 500301 #Reactionary Pushback
+
+	title = "EVTNAME500301"
+	desc = "EVTDESC500301"
+	picture = "failed_revolution"
+
+	trigger = {
+		has_country_flag = 1905_revolution
+		NOT = { average_militancy = 3 }
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		months = 12
+	}
+
+	option = {
+		name = "EVTOPTA500301"
+		set_country_flag = 1905_revolution_has_ended
+		add_country_modifier = { name = decadent_autocracy2 duration = -1 } #until revolution
+		upper_house = { ideology = reactionary value = 0.20 }
+		upper_house = { ideology = conservative value = 0.40 }
+		any_owned_province = {
+			remove_province_modifier = peasant_revolt
+			remove_province_modifier = province_strike
+		}
+		any_pop = {
+			limit = {
+				OR = {
+					has_pop_culture = ashkenazi
+					pop_majority_ideology = communist
+					pop_majority_ideology = socialist
+				}
+			}
+			reduce_pop = 0.98
+		}
+		rich_strata = {
+			consciousness = -4
+			militancy = -4
+			ideology = {
+				value = reactionary
+				factor = 0.2
+			}
+			ideology = {
+				value = liberal
+				factor = -0.2
+			}
+		}
+		middle_strata = {
+			consciousness = -4
+			militancy = -4
+			ideology = {
+				value = conservative
+				factor = 0.2
+			}
+		}
+		poor_strata = {
+			consciousness = -4
+			militancy = -4
+			ideology = {
+				value = socialist
+				factor = -0.1
+			}
+			ideology = {
+				value = communist
+				factor = -0.1
+			}
 		}
 	}
 }
