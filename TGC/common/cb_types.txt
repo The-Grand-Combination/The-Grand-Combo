@@ -8018,7 +8018,7 @@ end_slave_trade = {
 	constructing_cb = no
 
 	badboy_factor = 0
-	prestige_factor = 0.5
+	prestige_factor = 1.5
 	peace_cost_factor = 15
 	penalty_factor = 1
 
@@ -8035,7 +8035,6 @@ end_slave_trade = {
 
 	can_use = {
 		THIS = {
-			tag = ENG
 			slavery = no_slavery
 		}
 		has_country_flag = slave_trade_leader
@@ -8091,40 +8090,42 @@ french_conquest_of_louisiana_france = {
 
 	on_po_accepted = {
 		set_global_flag = treaty_of_new_york
+		
 		## Louisiana cores ##
-		LOUISIANA_TERRITORY = { add_core = ULA }
-		ULA = { all_core = { remove_core = FCA remove_core = CAN} }
+			LOUISIANA_TERRITORY = { add_core = ULA }
+			ULA = { all_core = { remove_core = FCA remove_core = CAN } }
+		
 		## Territory swap #
-		THIS = { treasury = -75000 }
-		113 = { remove_core = CAN remove_core = ENG remove_core = FCA remove_core = ULA } #So it doesn't end up being annexed by France if USA didn't do the Oregon Treaty
-		USA = {
-			remove_accepted_culture = cajun
-			any_owned = {
-				limit = {
-					OR = {
-						is_core = ULA
-						is_core = ACA
-						is_core = CAN
-						is_core = FCA
+			THIS = { treasury = -75000 }
+			113 = { remove_core = CAN remove_core = ENG remove_core = FCA remove_core = ULA } #So it doesn't end up being annexed by France if USA didn't do the Oregon Treaty
+			USA = {
+				remove_accepted_culture = cajun
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = ULA
+							is_core = ACA
+							is_core = CAN
+							is_core = FCA
+						}
 					}
+					secede_province = THIS
 				}
-				secede_province = THIS
+				treasury = 75000
 			}
-			treasury = 75000
-		}
-		UNB = {
-			any_owned = {
-				limit = {
-					OR = {
-						is_core = ULA
-						is_core = ACA
-						is_core = CAN
-						is_core = FCA
+			UNB = {
+				any_owned = {
+					limit = {
+						OR = {
+							is_core = ULA
+							is_core = ACA
+							is_core = CAN
+							is_core = FCA
+						}
 					}
+					secede_province = THIS
 				}
-				secede_province = THIS
 			}
-		}
 		#any_owned = { #this makes no sense if player conquered more before this war or with this war, they'll just lose those states
 		#	limit = {
 		#		is_core = USA
@@ -8138,22 +8139,79 @@ french_conquest_of_louisiana_france = {
 		#	secede_province = USA
 		#	remove_core = THIS
 		#}
+		
 		## Turn all these states into colonies ##
-		THIS = {
-			any_owned = {
-				limit = {
-					is_core = ULA
-					NOT = {
-						region = USA_139
-						region = USA_144
-						region = USA_148
-						region = USA_129
+			THIS = {
+				any_owned = {
+					limit = {
+						is_core = ULA
+						NOT = {
+							region = USA_139
+							region = USA_144
+							region = USA_148
+							region = USA_129
+						}
 					}
+					secede_province = UTI
 				}
-				secede_province = UTI
+				inherit = UTI
 			}
-			inherit = UTI
-		}
+		
+		## Move pops ##
+			random_owned = {
+				limit = { owner = { any_pop = { has_pop_culture = french_canadian } } }
+				any_pop = {
+					limit = { has_pop_culture = french_canadian }
+					move_pop = 65  # Quebec City
+				}
+			}
+			random_owned = {
+				limit = { owner = { any_pop = { has_pop_culture = cajun } } }
+				any_pop = {
+					limit = { has_pop_culture = cajun }
+					move_pop = 139 # New Orleans
+				}
+			}
+			random_owned = {
+				limit = { owner = { any_pop = { has_pop_culture = acadian } } }
+				any_pop = {
+					limit = { has_pop_culture = acadian }
+					move_pop = 71 # Halifax
+				}
+			}
+		
+		## Southern Ontario as a state ##
+			random_country = {
+				limit = {
+					OR = { tag = CAN tag = FCA }
+					exists = yes
+					any_owned_province = { region = CAN_46 }
+				}
+				remove_accepted_culture = anglo_canadian
+				any_owned = {
+					limit = {
+						region = CAN_46
+						NOT = {
+							province_id = 50
+							province_id = 51
+						}
+					}
+					remove_core = CAN
+					remove_core = FCA
+					add_core = USA
+					secede_province = USA
+				}
+			}
+			random_owned = {
+				limit = { region = CAN_46 }
+				owner = { add_accepted_culture = anglo_canadian }
+				CAN_46 = {
+					is_slave = no
+					change_region_name = "Southern Ontario"
+				}
+			}
+		set_country_flag = treaty_of_new_york_implemented
+		country_event = 4489019	# Western Collapse (I HATE IT I HATE IT I HATE IT I HATE IT I HATE IT)
 	}
 
 	on_add = { }
@@ -8171,7 +8229,7 @@ french_conquest_of_louisiana_usa = {
 	
 	badboy_factor = 0
 	prestige_factor = 1
-	peace_cost_factor = 25
+	peace_cost_factor = 20
 	penalty_factor = 1
 
 	break_truce_prestige_factor = 1
@@ -8195,6 +8253,231 @@ french_conquest_of_louisiana_usa = {
 	on_add = { }
 
 	war_name = CONQUEST_OF_LOUISIANA
+}
+
+war_of_the_americas_ussa = {
+	sprite_index = 2
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 85
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		set_global_flag = USS_USA_win
+		
+		# Mexico gets its old territories back
+			MEX_85 = { add_core = MEX }	# California
+			MEX_94 = { add_core = MEX } # Nevada
+			MEX_97 = { add_core = MEX } # Utah
+			MEX_100 = { add_core = MEX } # Arizona
+			MEX_103 = { add_core = MEX } # New Mexico
+			USA_126 = { add_core = MEX } # Kansas
+			TEX_132 = { add_core = MEX }# Texas
+			110 = { add_core = MEX } # Wyoming
+			107 = { add_core = MEX }
+			108 = { add_core = MEX } # Colorado
+			103 = { add_core = MEX }
+			135 = { add_core = MEX }
+			128 = { add_core = MEX } # Kansas
+			129 = { add_core = MEX } # Oklahoma
+			any_owned = {
+				limit = { is_core = MEX }
+				remove_core = USA
+				secede_province = MEX
+			}
+		
+		# Take most of Florida
+			any_owned = {
+				limit = {
+					region = USA_200
+					NOT = { province_id = 198 }
+				}
+				remove_core = USA
+				add_core = USS
+				secede_province = USS
+			}
+
+		# New England becomes independent
+			USA_232 = { add_core = NEN }
+			any_owned = {
+				limit = { is_core = NEN }
+				remove_core = USA
+				secede_province = NEN
+			}
+
+		# Oregon becomes independent
+			any_owned = {
+				limit = {
+					OR = {
+						region = CAN_13 # British Columbia
+						region = USA_78 # Washington
+						region = USA_81 # Oregon
+						region = USA_91 # Idaho
+					}
+				}
+				remove_core = USA
+				add_core = UOR
+				secede_province = UOR
+			}
+
+		# Dakota becomes independent
+			any_owned = {
+				limit = {
+					OR = {
+						province_id = 111 # Wyoming
+						province_id = 112
+						province_id = 113
+						region = USA_116 # Montana
+						province_id = 106 # Colorado
+						region = USA_118 # North Dakota
+						region = USA_121 # South Dakota
+						region = USA_124 # Nebraska
+						province_id = 126 # Kansas
+						province_id = 127
+					}
+				}
+				remove_core = USA
+				add_core = DAK
+				secede_province = DAK
+			}
+
+		# Return cores, release vassals, USSA gets influence.
+			any_country = {
+				limit = {
+					NOT = { tag = USA }
+					OR = {
+						vassal_of = USA
+						in_sphere = USA
+					}
+					any_core = {
+						owned_by = USA
+						NOT = { is_core = USA }
+					}
+					exists = yes
+				}
+				country_event = 5084910 
+			}
+
+		# Take all of USA's overseas territories
+			any_owned = {
+				limit = { is_overseas = yes }
+				secede_province = USS
+			}
+	}
+}
+
+war_of_the_americas_usa = {
+	sprite_index = 2
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 85
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		set_global_flag = USS_USA_lose
+
+		# Release and puppet La Plata
+			release = LPL
+			LPL = { all_core = { remove_core = USS } }
+			USA = { 
+				create_vassal = LPL
+				diplomatic_influence = { who = LPL value = 200 }
+				relation = { who = LPL value = 100 }
+			}
+		
+		# Release and puppet Gran Colombia
+			release = GCO
+			GCO = { all_core = { remove_core = USS } }
+			USA = { 
+				create_vassal = GCO
+				diplomatic_influence = { who = GCO value = 200 }
+				relation = { who = GCO value = 100 }
+			}
+			
+		# Release and puppet Peru-Bolivia
+			release = PBC
+			PBC = { all_core = { remove_core = USS } }
+			USA = { 
+				create_vassal = PBC
+				diplomatic_influence = { who = PBC value = 200 }
+				relation = { who = PBC value = 100 }
+			}
+			
+		# Release and puppet Brazil
+			release = BRZ
+			BRZ = { all_core = { remove_core = USS } }
+			USA = { 
+				create_vassal = BRZ
+				diplomatic_influence = { who = BRZ value = 200 }
+				relation = { who = BRZ value = 100 }
+			}
+
+		# Return cores, release vassals, USA gets influence
+			any_country = {
+				limit = {
+					NOT = { tag = USS }
+					OR = {
+						any_core = {
+							OR = {
+								owned_by = USS
+								is_core = USS
+							}
+						}
+						vassal_of = USS
+						in_sphere = USS
+					}
+				}
+				country_event = 5596858
+			}
+
+			all_core = { remove_core = USS }
+				USA = {
+					country_event = {
+						id = 6261783 # Inherit
+						days = 3
+					}
+				}
+	}
 }
 
 rhine_crisis_german = {
