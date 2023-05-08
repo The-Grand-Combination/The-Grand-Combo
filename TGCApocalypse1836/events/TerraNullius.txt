@@ -61,12 +61,12 @@ province_event = {   #Zombify province
 				change_controller = ZOM
 				secede_province = ZOM
 				ZOM = { money = 5000 }
+				add_province_modifier = { name = ap_prov_timer duration = 30 }
 	}
 
 	option = {
-		name = "Damn!"
-		owner = { prestige = -3 }
-	}
+		name = "DAMN"
+		owner = { prestige = -3 plurality = -5 }
 }
 
 country_event = { #note, this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
@@ -79,6 +79,7 @@ country_event = { #note, this must be a country event, otherwise it might happen
 		exists = yes
 		NOT = { exists = ZOM }
 		NOT = { JAN = { has_country_modifier = do_not_annex } }
+		NOT = { JAN = { has_country_modifier = ap_tn_timer } }
 		any_owned_province = {
 			province_control_days = 365
 			has_province_modifier = zombie_outbreak
@@ -113,7 +114,7 @@ country_event = { #note, this must be a country event, otherwise it might happen
 	}
 
 	option = {
-		name = "Damn!"
+		name = "DAMN"
 	}
 }
 
@@ -125,25 +126,24 @@ province_event = {
 	picture = "prov_test"
 
 	trigger = {
-		NOT = { has_global_flag = plague_inc_mode }
+		NOT = { has_global_flag = plague_inc_mode 
+				has_province_modifier = ap_prov_timer
+				units_in_province = 1
+				JAN = { has_country_modifier = ap_tn_timer }
+		}
 		owner = { tag = ZOM ai = yes }
-		province_control_days = 365
-		units_in_province = no
-		NOT = { JAN = { has_country_modifier = ap_tn_timer } }
 	}
 
 	mean_time_to_happen = {
-		days = 200
-		modifier = { factor = 0.8 owner = { num_of_cities = 50 } }
-		modifier = { factor = 0.4 owner = { num_of_cities = 100 } }
-		modifier = { factor = 0.2 owner = { num_of_cities = 150 } }
+		days = 365
 	}
 
+	allow_multiple_instances = no
+
 	immediate = {
-		JAN = { set_country_modifier = { name = do_not_annex duration = 30 } }
 		JAN = { set_country_modifier = { name = ap_tn_timer duration = 5 } }
-		change_controller = ZOM
-		FROM = { inherit = THIS }
+		JAN = { set_country_modifier = { name = do_not_annex duration = 30 } }
+		secede_province = FROM
 	}
 
 	option = {
@@ -192,13 +192,15 @@ country_event = {
 
 country_event = {
 	id = 66105
-	title = "Uncolonize capital"
-	desc = "Uncolonize capital"
+	title = "CRASHTITLE"
+	desc = "CRASHDESC"
 
-	is_triggered_only = yes
+	trigger = { ai = no }
+
+	mean_time_to_happen = { day = 30 }
+	fire_only_once = yes
 	
 	option = {
 		name = "OK"	
-		capital_scope = { secede_province = null }
 	}
 }

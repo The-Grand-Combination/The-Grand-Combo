@@ -559,6 +559,7 @@ acquire_all_cores = {
 
 	on_po_accepted = {
 		country_event =	2650	# Territorial Loss event
+		plurality = -2
 	}
 }
 
@@ -1522,6 +1523,7 @@ unification_humiliate_cb = {
 
 	on_po_accepted = {
 		prestige_factor = -0.2
+		plurality = -2
 		country_event = 99996
 	}
 }
@@ -1600,6 +1602,7 @@ unification_GP_humiliate = {
 
 	on_po_accepted = {
 		prestige_factor = -0.2
+		plurality = -2
 	}
 }
 
@@ -2183,6 +2186,7 @@ free_peoples = {
 
 	on_po_accepted = {
 		country_event =	2651	# Territorial Loss event
+		plurality = -2
 	}
 }
 
@@ -2494,6 +2498,7 @@ liberate_country = {
 
 	on_po_accepted = {
 		country_event =	2651	# Territorial Loss event
+		plurality = -2
 		random_owned = {
 			limit = { owner = { tag = TUR has_global_flag = italy_fights_turk war_with = ITA } }
 			ITA = { country_event = 900009 }
@@ -3221,16 +3226,13 @@ cut_down_to_size = {
 
 	can_use = {
 		war_with = THIS
-		#OR = {
-		#	AND = { THIS = { any_owned_province = { port = yes } } any_owned_province = { port = yes } }
-		#	neighbour = THIS
-		#	war_with = THIS
-		#	any_neighbor_country = { OR = { vassal_of = THIS substate_of = THIS in_sphere = THIS } }
-		#}
 		OR = { #Limits the amount of times the AI loves adding this
 			ai = no
 			# Audax Validator "." Ignore_NEXT
-			war_score = 50
+			AND = {
+				war_score = -50
+				THIS = { war_score = 50 }
+			}
 		}
 		is_vassal = no
 		is_disarmed = no
@@ -3239,19 +3241,6 @@ cut_down_to_size = {
 			civilized = yes
 			NOT = { has_country_modifier = neutrality }
 		}
-		OR = {
-			war_with = THIS
-			THIS = { NOT = { has_country_modifier = no_more_war } }
-		}
-		OR = {
-			THIS = { government = fascist_dictatorship }
-			THIS = { has_country_flag = communist_gov }
-			THIS = { civilized = no }
-			war_with = THIS
-			NOT = { relation = { who = THIS value = 0 } }
-			THIS = { ai = no }
-		}
-
 		OR = {
 			NOT = { has_country_flag = dismantle_declared }
 			THIS = { NOT = { has_country_flag = in_great_war } }
