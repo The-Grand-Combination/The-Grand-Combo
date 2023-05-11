@@ -156,7 +156,7 @@ country_event = {
 		}
 
 		all_land_provinces = { limit = { OR = { continent = africa                 ## African RGO normalization
-												continent = south_west_africa
+												continent = south_africa
 												continent = east_africa
 												continent = west_africa
 												continent = central_africa
@@ -180,6 +180,45 @@ country_event = {
 											NOT = { has_province_modifier = plantation }
 							}
 							add_province_modifier = { name = plantation duration = -1 }
+		}
+		# Baseline Prestige Updater
+		any_country = {
+			limit = {
+				NOT = { has_country_flag = recognized_independent_state }
+				exists = yes
+				is_vassal = no
+			}
+			set_country_flag = recognized_independent_state
+			prestige = 1000
+		}
+		any_country = {
+			limit = {
+				has_country_flag = recognized_independent_state
+				OR = {
+					is_vassal = yes
+					exists = no
+				}
+			}
+			clr_country_flag = recognized_independent_state
+			prestige = -1000
+		}
+		# Bankruptcy Handler for Baseline Prestige
+		any_country = {
+			limit = {
+				in_default = yes
+				has_country_flag = recognized_independent_state
+				NOT = { has_country_flag = recognized_independent_state_in_default } 
+			}
+			set_country_flag = recognized_independent_state_in_default
+			prestige = -1000
+			prestige = 1000
+		}
+		any_country = {
+			limit = {
+				has_country_flag = recognized_independent_state_in_default
+				in_default = no
+			}
+			clr_country_flag = recognized_independent_state_in_default
 		}
 	}
 }
@@ -207,7 +246,7 @@ country_event = {
 							continent = central_africa
 							continent = west_africa
 							continent = east_africa
-							continent = south_west_africa
+							continent = south_africa
 						}
 					}
 					NOT = {
@@ -239,7 +278,7 @@ country_event = {
 							continent = central_africa
 							continent = west_africa
 							continent = east_africa
-							continent = south_west_africa
+							continent = south_africa
 						}
 					}
 					NOT = {
