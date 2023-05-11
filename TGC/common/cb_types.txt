@@ -135,6 +135,10 @@ crimean_war_defender
 end_slave_trade
 french_conquest_of_louisiana_france
 french_conquest_of_louisiana_usa
+war_of_the_americas_usa
+war_of_the_americas_ussa
+french_conquest_of_canada_france
+french_conquest_of_canada_uk
 }
 
 # Great War CB's
@@ -8023,9 +8027,7 @@ end_slave_trade = {
 	always = no
 
 	can_use = {
-		THIS = {
-			slavery = no_slavery
-		}
+		THIS = { slavery = no_slavery }
 		has_country_flag = slave_trade_leader
 	}
 
@@ -8244,6 +8246,93 @@ french_conquest_of_louisiana_usa = {
 	war_name = CONQUEST_OF_LOUISIANA
 }
 
+french_conquest_of_canada_france = {
+	sprite_index = 35
+	is_triggered_only = yes
+	months = 12
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 50
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = { }
+
+	po_remove_prestige = yes
+
+	on_po_accepted = { set_global_flag = FRA_ENG_canada_win }
+
+	on_add = { }
+
+	war_name = CONQUEST_OF_CANADA
+}
+
+french_conquest_of_canada_uk = {
+	sprite = 7
+	is_triggered_only = yes
+	months = 60
+	crisis = no
+	constructing_cb = no
+	
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 35
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = { NOT = { FRA = { has_country_flag = demanded_quebec } } }
+
+	on_po_accepted = {
+		any_owned = {
+			limit = {
+				is_overseas = yes
+				NOT = {
+					region = FRA_1700
+					region = ALD_1704
+					region = ALD_1708
+					region = ALD_1713
+					region = ALD_1713
+					region = ALD_1714
+					region = ALD_1718
+				}
+			}
+			remove_core = FRA
+			secede_province = THIS
+		}
+		clr_country_flag = french_america
+		set_country_flag = no_french_america
+		remove_accepted_culture = french_canadian
+		remove_accepted_culture = cajun
+		ULA = { all_core = { remove_core = ULA } }
+		ACA = { all_core = { remove_core = ACA } }
+	}
+
+	on_add = { }
+
+	war_name = { STOP_FRENCH_COLONIAL_AMBITIONS }
+}
+
 war_of_the_americas_ussa = {
 	sprite_index = 2
 	is_triggered_only = yes
@@ -8373,6 +8462,10 @@ war_of_the_americas_ussa = {
 				secede_province = USS
 			}
 	}
+
+	on_add = { }
+
+	war_name = { WAR_OF_THE_AMERICAS }
 }
 
 war_of_the_americas_usa = {
@@ -8460,13 +8553,17 @@ war_of_the_americas_usa = {
 			}
 
 			all_core = { remove_core = USS }
-				USA = {
-					country_event = {
-						id = 6261783 # Inherit
-						days = 3
-					}
+			USA = {
+				country_event = {
+					id = 6261783 # Inherit
+					days = 3
 				}
+			}
 	}
+
+	on_add = { }
+
+	war_name = { WAR_OF_THE_AMERICAS }
 }
 
 rhine_crisis_german = {
