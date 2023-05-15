@@ -57,6 +57,7 @@ reclaim_the_empire
 restore_british_raj
 unification_casus_belli
 civil_war
+acw_intervention
 unification_annex_casus_belli
 annex_core_country
 unification_add_to_sphere
@@ -89,6 +90,7 @@ install_fascism_make_puppet
 install_communism_make_puppet
 install_democracy_make_puppet
 gunboat
+end_slave_trade
 cut_down_to_size
 cut_down_to_size_boxer
 cut_down_to_size_taiping
@@ -132,7 +134,6 @@ rhine_crisis_french
 rhine_crisis_german
 crimean_war_cb
 crimean_war_defender
-end_slave_trade
 french_conquest_of_louisiana_france
 french_conquest_of_louisiana_usa
 war_of_the_americas_usa
@@ -8468,6 +8469,8 @@ french_conquest_of_canada_uk = {
 
 	can_use = { NOT = { FRA = { has_country_flag = demanded_quebec } } }
 
+	po_remove_prestige = yes
+	
 	on_po_accepted = {
 		any_owned = {
 			limit = {
@@ -8495,7 +8498,7 @@ french_conquest_of_canada_uk = {
 
 	on_add = { }
 
-	war_name = { STOP_FRENCH_COLONIAL_AMBITIONS }
+	war_name = STOP_FRENCH_COLONIAL_AMBITIONS
 }
 
 war_of_the_americas_ussa = {
@@ -8630,7 +8633,7 @@ war_of_the_americas_ussa = {
 
 	on_add = { }
 
-	war_name = { WAR_OF_THE_AMERICAS }
+	war_name = WAR_OF_THE_AMERICAS
 }
 
 war_of_the_americas_usa = {
@@ -8728,7 +8731,7 @@ war_of_the_americas_usa = {
 
 	on_add = { }
 
-	war_name = { WAR_OF_THE_AMERICAS }
+	war_name = WAR_OF_THE_AMERICAS
 }
 
 rhine_crisis_german = {
@@ -8870,6 +8873,65 @@ rhine_crisis_french = {
 	on_add = {}
 
 	war_name = WAR_RHINE_CRISIS
+}
+
+acw_intervention = {
+	sprite_index = 37
+	is_triggered_only = yes
+	months = 24
+	crisis = no
+	constructing_cb = no
+
+	badboy_factor = 0
+	prestige_factor = 1
+	peace_cost_factor = 60
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	always = no
+
+	can_use = {
+		tag = USA
+		war_with = CSA
+		NOT = { slavery = no_slavery }
+	}
+
+	po_remove_prestige = yes
+
+	on_po_accepted = {
+		end_war = CSA
+		clr_country_flag = ongoing_acw_intervention
+		THIS = {
+			random_owned = { 
+				limit = { 
+					owner = {
+						OR = {
+							tag = ENG 
+							has_country_flag = french_total_victory
+						} 
+					} 
+				}
+				USA_248 = { 
+					add_core = THIS 
+					remove_core = USA 
+					secede_province = THIS 
+				}
+			}
+		}
+	}
+
+	on_add = { THIS = { set_country_flag = ongoing_acw_intervention } }
+
+	war_name = ACW_INTERVENTION
+
 }
 
 #Status Quo
