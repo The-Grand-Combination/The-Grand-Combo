@@ -375,3 +375,74 @@
 			any_pop = { militancy = -1 }
 		}
 	}
+
+	#Description: Death of Dom Pedro II - remain a monarchy or become a democracy
+	country_event = {
+		id = 8011
+		title = "EVTNAME8011"
+		desc = "EVTDESC8011"
+		picture = "BRZ_pedro_death"
+
+		trigger = {
+			has_country_modifier = dom_pedro_ii
+			year = 1880
+			has_country_flag = monarchy_gov
+		}
+
+		mean_time_to_happen = { years = 15
+								modifier = { factor = 0.5 year = 1890 }
+								modifier = { factor = 0.5 year = 1895 }
+								modifier = { factor = 0.5 year = 1900 }
+								modifier = { factor = 0.2 year = 1905 }
+								modifier = { factor = 0.1 year = 1910 }
+		}
+
+		fire_only_once = yes
+
+		immediate = { remove_country_modifier = dom_pedro_ii }
+
+		# He will be missed.
+		option = {
+			name = "EVTOPTA8011"
+
+			prestige = 10
+			plurality = -1
+			add_country_modifier = { name = national_instability duration = 365 }
+			aristocrats = {
+				militancy = 3
+				consciousness = 3
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 0
+					part_of_sphere = yes
+					sphere_owner = { has_country_flag = democracy_gov }
+				}
+			}
+		}
+
+		# Abolish Monarchy
+		option = {
+			name = "EVTOPT8011"
+			prestige = -20
+			plurality = -10
+			government = democracy
+			ruling_party_ideology = liberal
+			add_country_modifier = { name = small_immigration_boom_country duration = 365 }
+			## Government Flags ##
+			clr_country_flag = communist_gov
+			clr_country_flag = absolute_monarchy_gov
+			clr_country_flag = semi_constitutional_monarchy_gov
+			clr_country_flag = constitutional_monarchy_gov
+			set_country_flag = democracy_gov
+			clr_country_flag = presidential_dictatorship_gov
+			clr_country_flag = fascist_gov
+			clr_country_flag = anarcho_liberal_gov
+
+			ai_chance = { factor = 50
+				modifier = { factor = 0 is_greater_power = yes }
+			}
+		}
+	}
