@@ -376,7 +376,7 @@
 		}
 	}
 
-	#Description: Death of Dom Pedro II - remain a monarchy or become a democracy
+	#Death of Dom Pedro II - remain a monarchy or become a democracy
 	country_event = {
 		id = 8011
 		title = "EVTNAME8011"
@@ -389,7 +389,7 @@
 			has_country_flag = monarchy_gov
 		}
 
-		mean_time_to_happen = { years = 15
+		mean_time_to_happen = { years = 20
 								modifier = { factor = 0.5 year = 1890 }
 								modifier = { factor = 0.5 year = 1895 }
 								modifier = { factor = 0.5 year = 1900 }
@@ -404,7 +404,6 @@
 		# He will be missed.
 		option = {
 			name = "EVTOPTA8011"
-
 			prestige = 10
 			plurality = -1
 			add_country_modifier = { name = national_instability duration = 365 }
@@ -446,3 +445,86 @@
 			}
 		}
 	}
+
+	#A Retired Emperor - Sanity check event to remove the Dom Pedro II modifier if Brazil is not a monarchy.
+	country_event = {
+
+		id = 8012
+		title = "EVTNAME8012"
+		desc = "EVTDESC8012"
+		picture = "DPII"
+
+		trigger = {
+			has_country_modifier = dom_pedro_ii
+			NOT = {
+				has_country_flag = monarchy_gov
+			}
+		}
+
+		mean_time_to_happen = { days = 7 }
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA8012"
+			remove_country_modifier = dom_pedro_ii
+		}
+	}
+
+#Revolução Farroupilha 
+
+	# Custom Civil War System
+	country_event = {
+		id = 8100
+		title = "EVTNAME8100"
+		desc = "EVTDESC8100"
+		picture = "batalha_farroupilha"
+
+		trigger = {
+			has_global_flag = farroupilha_ongoing
+			tag = BRZ
+			war_with = RGS
+			RGS = { any_owned_province = { NOT = { province_id = 2461 } controlled_by = THIS province_control_days = 90 } }
+		}
+
+		allow_multiple_instances = no
+
+		option = {
+			name = "EVTOPTA8100"
+			plurality = 0.1
+			RGS = { any_owned = { limit = { NOT = { province_id = 2461 } controlled_by = THIS province_control_days = 90 }
+								  secede_province = THIS
+				 	}
+			}
+		}
+	}
+	
+	#Reverse Flip
+	country_event = {
+		id = 8101
+		title = "EVTNAME8101"
+		desc = "EVTDESC8101"
+		picture = "farrapos_charge"
+
+		trigger = {
+			has_global_flag = farroupilha_ongoing
+			tag = BRZ
+			war_with = RGS
+			any_owned_province = { controlled_by = RGS OR = { is_core = RGS is_core = RJL } province_control_days = 90 }
+		}
+
+		allow_multiple_instances = no
+
+		option = {
+			name = "EVTOPTA8101"
+			plurality = 0.1
+			any_owned = { limit = { controlled_by = RGS OR = { is_core = RGS is_core = RJL } province_control_days = 90 }
+								  secede_province = RGS
+			}
+		}
+	}
+
+
+
+
+
