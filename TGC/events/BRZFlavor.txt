@@ -5,20 +5,19 @@
 		title = "DOMPEDROCORONATIONCHECK"
 		desc = "DOMPEDROCORONATIONCHECK"
 
-		allow_multiple_instances = no
-
 		trigger = { tag = JAN 
 					has_global_flag = majority_coup_ongoing    
-					has_global_flag = majority_coup_ongoing2 }
+		}
 
 		mean_time_to_happen = { days = 1 
 								modifier = { exists = yes factor = 0.1 }
 		}
 
-		immediate = { clr_global_flag = majority_coup_ongoing }
+		allow_multiple_instances = no
 
 		option = {
 			name = "SENDEVENTTOBRAZIL"
+			clr_global_flag = majority_coup_ongoing
 			any_country = { limit = { tag = BRZ NOT = { year = 1840 } } country_event = 8002 }
 			any_country = { limit = { tag = BRZ year = 1840 NOT = { year = 1844 } } country_event = 8004 }
 		}
@@ -39,13 +38,14 @@
 
 		option = {
 			name = "EVTOPTA8002"
+			clr_global_flag = majority_coup_ongoing
 			country_event = { id = 8003 days = 30 }
 			ai_chance = { factor = 20 }
 		}
 
 		option = {
 			name = "EVTOPTB8002"
-			clr_global_flag = majority_coup_ongoing2
+			clr_global_flag = majority_coup_ongoing
 			ai_chance = { factor = 80 }
 		}
 		
@@ -542,15 +542,14 @@
 
 		option = {
 			name = "EVTOPTA8102"
-			2461 = { secede_province = RJL }
 			create_alliance = RJL
-			BRZ = { country_event = 8103 }
+			BRZ = { 2461 = { secede_province = RJL } country_event = 8103 }
 		}
 
 		option = {
 			name = "EVTOPTB8102"
 			plurality = -0.1
-			2461 = { secede_province = THIS }
+			BRZ = { 2461 = { secede_province = RGS } }
 		}
 	}
 
@@ -599,6 +598,40 @@
 		}
 	}
 
+	country_event = {
+		id = 8010
+		title = "FARRAPOSNEGOTIATION"
+		desc = "FARRAPOSNEGOTIATION"
+
+		trigger = { tag = JAN 
+					has_global_flag = farroupilha_negotiating }
+
+		mean_time_to_happen = { days = 1 }
+		
+		allow_multiple_instances = no
+
+		option = {
+			name = "SENDEVENTTOBRAZIL"
+			BRZ = { country_event = 8011 }
+		}
+	}
+
+	country_event = {
+		id = 8011
+		title = "FARRAPOSNEGOTIATION"
+		desc = "FARRAPOSNEGOTIATION"
+
+		is_triggered_only = yes
+
+		allow_multiple_instances = no
+
+		option = {
+			name = "Farroupilha Negotiation"
+			clr_global_flag = farroupilha_negotiating
+		}
+	}
+
+
 ## Cabanos
 
 	# Custom Civil War System
@@ -606,22 +639,23 @@
 		id = 8150
 		title = "EVTNAME8150"
 		desc = "EVTDESC8150"
-		picture = ""
+		picture = "cabanos_battle"
 
 		trigger = {
 			#has_global_flag = cabanagem_ongoing
 			tag = BRZ
 			war_with = GPR
-			GPR = { any_owned_province = { controlled_by = THIS province_control_days = 90 } }
+			GPR = { any_owned_province = { controlled_by = THIS province_control_days = 15 } }
 		}
 
 		allow_multiple_instances = no
 
 		option = {
 			name = "EVTOPTA8100"
-			GPR = { any_owned = { limit = { controlled_by = THIS province_control_days = 90 } 
+			GPR = { any_owned = { limit = { controlled_by = THIS province_control_days = 15 }
 								  secede_province = THIS
 								  THIS = { plurality = 0.1 }
+								  state_scope = { any_pop = { militancy = -0.5 } }
 				 	}
 			}
 		}
@@ -632,7 +666,7 @@
 		id = 8151
 		title = "EVTNAME8151"
 		desc = "EVTDESC8151"
-		picture = ""
+		picture = "cabanos"
 
 		trigger = {
 			#has_global_flag = cabanagem_ongoing
@@ -647,9 +681,10 @@
 
 		option = {
 			name = "EVTOPTA8100"
-			random_owned = { limit = { controlled_by = GPR is_core = GPR province_control_days = 80 any_neighbor_province = { owned_by = GPR } } 
+			random_owned = { limit = { controlled_by = GPR is_core = GPR province_control_days = 80 any_neighbor_province = { owned_by = GPR } }
+								  state_scope = { any_pop = { militancy = 2 consciousness = 1 } }
 								  secede_province = GPR
-								  THIS = { plurality = -0.1 }
+								  THIS = { plurality = -0.5 }
 				 	}
 			}
 	}
