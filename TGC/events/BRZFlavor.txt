@@ -707,8 +707,8 @@
 			name = "EVTOPTA8105"
 			define_general = {
 				name = "Giuseppe Garibaldi"
-				personality = heroic
-				background = rising_star
+				personality = bold
+				background = keen
 			}
 			small_arms = 25
 			canned_food = 25
@@ -748,15 +748,15 @@
 
 		option = {
 			name = "Farroupilha Negotiation"
-			political_reform = federalism
-			any_pop = { limit = { pop_majority_ideology = conservative } militancy = 4 }
-			any_pop = { limit = { pop_majority_ideology = reactionary } militancy = 6 }
-			any_pop = { limit = { pop_majority_ideology = liberal } militancy = -3 }
 			end_war = RGS
-			RGS = { inherit = THIS }
+			inherit = RGS
+			political_reform = federalism
 			add_country_modifier = { name = farrapos_compromise_strong duration = 3650 }
 			plurality = -5
 			prestige = -5
+			any_pop = { limit = { pop_majority_ideology = conservative } militancy = 4 }
+			any_pop = { limit = { pop_majority_ideology = reactionary } militancy = 6 }
+			any_pop = { limit = { pop_majority_ideology = liberal } militancy = -3 }
 			set_country_flag = farrapos_demands_enforced
 			clr_global_flag = farroupilha_negotiating
 		}
@@ -780,14 +780,14 @@
 
 		option = {
 			name = "Farroupilha Negotiation"
+			end_war = RGS
+			inherit = RGS
+			plurality = -2
+			prestige = -2
+			add_country_modifier = { name = farrapos_compromise_mild duration = 3650 }
 			any_pop = { limit = { pop_majority_ideology = conservative } militancy = 2 }
 			any_pop = { limit = { pop_majority_ideology = reactionary } militancy = 4 }
 			any_pop = { limit = { pop_majority_ideology = liberal } militancy = -1 }
-			end_war = RGS
-			RGS = { inherit = THIS }
-			add_country_modifier = { name = farrapos_compromise_mild duration = 3650 }
-			plurality = -2
-			prestige = -2
 			set_country_flag = farrapos_demands_enforced
 			clr_global_flag = farroupilha_negotiating
 		}
@@ -811,12 +811,11 @@
 
 		option = {
 			name = "Farroupilha Negotiation"
+			end_war = RGS
+			inherit = RGS
 			any_pop = { limit = { pop_majority_ideology = conservative } militancy = 1 }
 			any_pop = { limit = { pop_majority_ideology = reactionary } militancy = 2 }
 			any_pop = { limit = { pop_majority_ideology = liberal } militancy = -1 }
-			end_war = RGS
-			RGS = { inherit = THIS }
-			add_country_modifier = { name = farrapos_compromise_mild duration = 1825 }
 			set_country_flag = farrapos_demands_enforced
 			clr_global_flag = farroupilha_negotiating
 		}
@@ -845,12 +844,21 @@
 
 		option = {
 			name = "End Selection"
-			any_country = { limit = { tag = BRZ owns = 2463 } 
+			#Brazil win, total victory
+			any_country = { limit = { tag = BRZ owns = 2463 NOT = { OR = { has_country_modifier = farrapos_compromise_strong has_country_modifier = farrapos_compromise_mild } } } 
 							country_event = 8111
 			}
-
+			#RGS win
 			any_country = { limit = { tag = RGS exists = yes } 
 							country_event = 8112
+			}
+			#Brazil win via treaty, bad treaty
+			any_country = { limit = { tag = BRZ owns = 2463 has_country_modifier = farrapos_compromise_strong }
+							country_event = 8114
+			}
+			#Brazil win via treaty, ok treaty
+			any_country = { limit = { tag = BRZ owns = 2463 has_country_modifier = farrapos_compromise_mild }
+							country_event = 8115
 			}
 		}
 	}
@@ -912,6 +920,39 @@
 			set_country_flag = a_revolution_won
 		}
 	}
+
+	#The end of the farroupilha, bad treaty
+	country_event = {
+		id = 8114
+		title = "Brazilbros....."
+		desc = "it's over"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "Brazilbros"
+			plurality = -3
+			prestige = -3
+			set_country_flag = a_revolution_won
+		}
+	}
+
+	#The end of the farroupilha, ok treaty
+	country_event = {
+		id = 8115
+		title = "Brazilbros....."
+		desc = "it's over"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "Brazilbros"
+			plurality = -3
+			prestige = -3
+			set_country_flag = a_revolution_won
+		}
+	}
+	
 
 	#The Juliana Question, if RGS win but kept Juliana they have an last chance to free it
 	country_event = {
