@@ -4747,3 +4747,182 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = 999597
+	title = "EVTNAME999597"
+	desc = "EVTDESC999597"
+	picture = "the_great_war"
+	major = yes
+
+	trigger = {
+		has_country_flag = retaken_thirteen_colonies
+		has_country_modifier = american_dominions
+		NEN = { exists = yes vassal_of = THIS }
+		FSA = { exists = yes vassal_of = THIS }
+		CSA = { exists = yes vassal_of = THIS }
+		OR = {
+			FSA = { has_country_modifier = patriot_open_revolts }
+			CSA = { has_country_modifier = patriot_open_revolts }
+		}
+		year = 1870 #tbd
+	}
+
+	mean_time_to_happen = {
+		months = 60
+		modifier = {
+			factor = 1.1
+			CSA = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 1.1
+			FSA = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 1.1
+			NEN = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 1.1
+			TEX = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 0.9
+			FSA = { has_country_modifier = patriot_open_revolts }
+		}
+		modifier = {
+			factor = 0.9
+			NEN = { has_country_modifier = patriot_open_revolts }
+		}
+		modifier = {
+			factor = 0.9
+			CSA = { has_country_modifier = patriot_open_revolts }
+		}
+		modifier = {
+			factor = 0.9
+			TEX = { has_country_modifier = patriot_open_revolts }
+		}
+	}
+
+	option = {
+		name = "EVTOPTA999597" #So it begins
+		any_country = {
+			limit = { vassal_of = THIS OR = { primary_culture = yankee primary_culture = texan primary_culture = dixie } }
+			country_event = 999598
+		}
+		prestige = -50
+	}
+}
+
+country_event = {
+	id = 999598
+	title = "EVTNAME999598"
+	desc = "EVTDESC999598"
+	picture = "the_great_war"
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA999598" #Start the Second American war of Independence
+		remove_country_modifier = under_the_british_crown
+		remove_country_modifier = patriot_open_revolts
+		remove_country_modifier = loyalists_surge
+		add_tax_relative_income = 30
+		 war = {
+			target = ENG
+			attacker_goal = { casus_belli = become_independent }
+			defender_goal = { casus_belli = make_puppet }
+		}
+		ai_chance = {
+				factor = 80
+				modifier = {
+					factor = 0.5
+					has_country_modifier = loyalists_surge
+				}
+				modifier = {
+					factor = 3
+					has_country_modifier = patriot_open_revolts
+				}
+				modifier = {
+					factor = 0.25
+					tag = NEN
+				}
+				modifier = {
+					factor = 10
+					tag = FSA
+				}
+			}
+
+	}
+	option = {
+		name = "EVTOPTB999598" #Stay loyal
+		ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 5
+					has_country_modifier = loyalists_surge
+				}
+				modifier = {
+					factor = 0.5
+					has_country_modifier = patriot_open_revolts
+				}
+				modifier = {
+					factor = 1.1
+					tag = NEN
+				}
+			}
+	}
+}
+
+country_event = {
+	id = 999599
+	title = "EVTNAME999599"
+	desc = "EVTDESC999599"
+	picture = "1854_Alamo"	
+
+	trigger = {
+		has_country_modifier = under_the_british_crown
+		NOT = { has_country_modifier = patriot_open_revolts }
+		NOT = { has_country_modifier = loyalists_surge }
+		year = 1855
+	}
+
+	mean_time_to_happen = {
+		months = 36
+	}
+
+	option = {
+		name = "EVTOPTA999599"
+		add_country_modifier = { name = patriot_open_revolts duration = 3600 }
+		relation = { who = ENG value = -200 }
+		ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 1.25
+					tag = FSA
+				}
+				modifier = {
+					factor = 1.2
+					tag = CSA
+				}
+				modifier = {
+					factor = 1.1
+					tag = TEX
+				}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB999599"
+		add_country_modifier = { name = loyalists_surge duration = 3600 }
+		relation = { who = ENG value = 100 }
+		ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 1.25
+					tag = NEN
+				}
+		}
+	}
+}
+
