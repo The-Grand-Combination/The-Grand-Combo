@@ -1,4 +1,5 @@
 ## Dom Pedro II and early troubles, by Wyrm, may 2023
+
 	#Sends and event to JAN to decide which year is it
 	#This event is activated whenever the player selects the coup decision
 	#And then chooses the coorect coup event to send.
@@ -19,7 +20,7 @@
 
 		option = {
 			name = "SENDEVENTTOBRAZIL"
-			clr_global_flag = majority_coup_ongoing
+			clr_global_flag = majority_coup_ongoing                                                         #IF emulation 
 			any_country = { limit = { tag = BRZ NOT = { year = 1840 } } country_event = 8002 }
 			any_country = { limit = { tag = BRZ year = 1840 NOT = { year = 1844 } } country_event = 8004 }
 		}
@@ -290,9 +291,11 @@
 		picture = "dom_pedro_ages"
 
 		trigger = { year = 1844
-					NOT = { year = 1845 militancy = 2 }
+					NOT = { year = 1845 month = 3 militancy = 2 }
 					has_country_flag = child_emperor
 		}
+
+		mean_time_to_happen = { days = 1 }
 
 		fire_only_once = yes
 
@@ -559,8 +562,6 @@
 			USA = { relation = { who = THIS value = 15 } }
 		}
 	}
-	
-	
 
 #Revolução Farroupilha 
 
@@ -632,7 +633,7 @@
 		option = {
 			name = "EVTOPTA8102"
 			create_alliance = RJL
-			BRZ = { 2461 = { secede_province = RJL } country_event = 8103 }
+			BRZ = { country_event = 8103 }
 		}
 
 		option = {
@@ -653,6 +654,7 @@
 
 		option = {
 			name = "EVTOPTA8103"
+			2461 = { secede_province = RJL }
 			RJL = { add_casus_belli = {
 					target = BRZ
 					type = conquest
@@ -752,7 +754,22 @@
 									set_country_flag = farroupilha_negotiation1 }
 			}
 			
-			BRZ = { country_event = 8107 }
+		    any_country = { limit = { tag = RGS num_of_cities = 5 NOT = { has_country_flag = negotiation_sent } }
+							BRZ = { country_event = 8107 }
+							RGS = { set_country_flag = negotiation_sent }
+			}
+
+			any_country = { limit = { tag = RGS num_of_cities = 3 NOT = { has_country_flag = negotiation_sent } } 
+							BRZ = { country_event = 8107 }
+							RGS = { set_country_flag = negotiation_sent }
+			}
+
+			any_country = { limit = { tag = RGS num_of_cities = 1 NOT = { has_country_flag = negotiation_sent } } 
+							BRZ = { country_event = 8107 }
+							RGS = { set_country_flag = negotiation_sent }
+			}
+
+			RGS = { clr_country_flag = negotiation_sent }
 		}
 	}
 
