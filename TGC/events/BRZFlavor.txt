@@ -570,8 +570,7 @@
 		picture = "batalha_farroupilha"
 
 		trigger = {
-			has_global_flag = farroupilha_ongoing
-			tag = BRZ
+			has_country_flag = farroupilha_ongoing
 			war_with = RGS
 			RGS = { any_owned_province = { NOT = { province_id = 2461 } controlled_by = THIS province_control_days = 90 } }
 		}
@@ -596,8 +595,7 @@
 		picture = "farrapos_charge"
 
 		trigger = {
-			has_global_flag = farroupilha_ongoing
-			tag = BRZ
+			has_country_flag = farroupilha_ongoing
 			war_with = RGS
 			any_owned_province = { controlled_by = RGS is_core = RGS province_control_days = 90 }
 		}
@@ -621,7 +619,7 @@
 		picture = "tomada_da_laguna"
 
 		trigger = {
-			has_global_flag = farroupilha_ongoing
+			BRZ = { has_country_flag = farroupilha_ongoing }
 			tag = RGS
 			war_with = BRZ
 			2461 = { controlled_by = THIS province_control_days = 90 }
@@ -671,8 +669,7 @@
 		picture = "queda_da_laguna"
 
 		trigger = {
-			has_global_flag = farroupilha_ongoing
-			tag = BRZ
+			has_country_flag = farroupilha_ongoing
 			OR = { war_with = RGS 
 				   war_with = RJL }
 			2461 = { OR = { owned_by = RGS owned_by = RJL } controlled_by = THIS province_control_days = 90 }
@@ -731,6 +728,28 @@
 
 		option = {
 			name = "SENDEVENTTOBRAZIL"
+			any_country = { limit = { tag = BRZ has_country_flag = farroupilha_negotiation0 } 
+							2703 = { secede_province = THIS }
+							2703 = { state_scope = { change_region_name = "They are §Yreluctant§! to negotiate, we have negotiated once and failed, we should be careful the next time.§b" } }
+							2703 = { secede_province = QQQ }
+							BRZ = { clr_country_flag = farroupilha_negotiation0
+									set_country_flag = farroupilha_negotiation1 }
+			}
+			any_country = { limit = { tag = BRZ has_country_flag = farroupilha_negotiation1 } 
+							2703 = { secede_province = THIS }
+							2703 = { state_scope = { change_region_name = "They are §Rskeptical§! about negotiation, we have negotiated twice and failed, if we fail again I doubt they will want to try again.§b" } }
+							2703 = { secede_province = QQQ }
+							BRZ = { clr_country_flag = farroupilha_negotiation1
+									set_country_flag = farroupilha_negotiation2 }
+			}
+			any_country = { limit = { tag = BRZ has_country_flag = farroupilha_negotiation2 } 
+							2703 = { secede_province = THIS }
+							2703 = { state_scope = { change_region_name = "We tried negotiating §Rway too many times§!!. They want to negotiate no more.§b" } }
+							2703 = { secede_province = QQQ }
+							BRZ = { clr_country_flag = farroupilha_negotiation2
+									set_country_flag = farroupilha_negotiation3 }
+			}
+			
 			BRZ = { country_event = 8107 }
 		}
 	}
@@ -834,7 +853,7 @@
 		title = "FARRAPOSEND"
 		desc = "FARRAPOSEND"
 
-		trigger = { has_global_flag = farroupilha_ongoing 
+		trigger = { BRZ = { has_country_flag = farroupilha_ongoing }
 					tag = JAN
 					NOT = { BRZ = { war_with = RGS } }
 		}
@@ -842,6 +861,8 @@
 		mean_time_to_happen = { days = 1 }
 
 		fire_only_once = yes
+
+		immediate = { BRZ = { clr_country_flag = farroupilha_ongoing } }
 
 		option = {
 			name = "End Selection"
@@ -876,7 +897,6 @@
 			name = "We prevailed"
 			plurality = 5
 			prestige = 5
-			clr_global_flag = farroupilha_ongoing 
 		}
 
 		option = {
@@ -884,7 +904,6 @@
 			plurality = 3
 			any_pop = { militancy = -1 }
 			prestige = 5
-			clr_global_flag = farroupilha_ongoing 
 		}
 	}
 
@@ -902,7 +921,6 @@
 			prestige = 10
 			BRZ = { country_event = 8113 }
 			country_event = { id = 8114 days = 10 }
-			clr_global_flag = farroupilha_ongoing 
 		}
 	}
 
