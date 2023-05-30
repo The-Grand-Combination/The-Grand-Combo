@@ -1,3 +1,5 @@
+#The triggers in the potentials were optmized in this file, be careful messing with them.
+#The optmization was made with a good deegre of accuracy and it's mostly fine, but revision wouldnt be a bad idea
 political_decisions = {
 
 ### Forming Austria-Hungary ###
@@ -233,6 +235,7 @@ political_decisions = {
 		picture = treaty_signing
 
 		potential = {
+			is_greater_power = yes
 			primary_culture = south_german
 			OR = {
 				tag = AUS
@@ -355,6 +358,8 @@ political_decisions = {
 		picture = treaty_signing
 
 		potential = {
+			is_greater_power = yes
+			is_culture_group = germanic
 			OR = {
 				AND = {
 					tag = GCF
@@ -370,7 +375,6 @@ political_decisions = {
 										vassal_of = THIS
 									}
 									war = no
-									is_greater_power = no
 								}
 							}
 						}
@@ -379,7 +383,6 @@ political_decisions = {
 				AND = {
 				    owns = 619
 					tag = GER
-					is_greater_power = yes
 				}
 			}
 			CRO = {
@@ -1076,11 +1079,16 @@ political_decisions = {
 	#Lets AI Austria Take Sigmaringen if they win brother's war/white peace AI Prussia
 	peace_of_prague = {
 		picture = gtfo
-
 		potential = {
 			tag = AUS
-			ai = yes
-			PRU = { ai = yes }
+			NOT = {
+				has_country_flag = brothers_war_loser
+				exists = NGF
+				exists = GER
+				exists = GCF
+				exists = SGF
+			}
+			NOT = { has_country_flag = ai_demand_sigmaringen }
 			OR = {
 				SGM = {
 					exists = yes
@@ -1090,23 +1098,14 @@ political_decisions = {
 					exists = yes
 					is_vassal = no
 				}
-				AND = {
-					NOT = { exists = SGM }
-					594 = { owned_by = PRU } #Sigmaringen
-				}
-			}
-			NOT = {
-				exists = NGF
-				exists = SGF
-				exists = GER
-				exists = GCF
-				has_country_flag = brothers_war_loser
+				594 = { owned_by = PRU } #Sigmaringen, SGM
 			}
 			OR = {
 				BAV = { in_sphere = THIS }
 				BAD = { in_sphere = THIS }
 			}
-			NOT = { has_country_flag = ai_demand_sigmaringen }
+			ai = yes
+			PRU = { ai = yes }
 		}
 
 		allow = {
@@ -1159,11 +1158,11 @@ political_decisions = {
 				#exists = RHI
 			}
 			OR = {
-			AND = {
-			exists = LTU
-			has_global_flag = eighth_coalition_pushed_back
-			}
-			FRA = { has_country_flag = annexed_rhineland }
+				AND = {
+				exists = LTU
+				has_global_flag = eighth_coalition_pushed_back
+				}
+				FRA = { has_country_flag = annexed_rhineland }
 			}
 			NOT = { has_global_flag = leipzig_congress }
 		}
@@ -1320,7 +1319,7 @@ political_decisions = {
 	}
 
 	#Unites Germany in the face of Russian Domination
-		leipzig_congress2 = {
+	leipzig_congress2 = {
 		picture = german_confederation
 
 		potential = {
@@ -1506,17 +1505,14 @@ political_decisions = {
 			OR = {
 				AND = {
 					tag = HUN
-					state_n_government = 1
 					AUS = { NOT = { rank = 16 } }
 				}
 				AND = {
 					tag = AUS
-					state_n_government = 1
 					HUN = { NOT = { rank = 16 } }
 				}
 			}
-			exists = AUS
-			exists = HUN
+			state_n_government = 1
 			OR = {
 				623 = { is_core = AUS }
 				624 = { is_core = HUN }
@@ -1531,6 +1527,8 @@ political_decisions = {
 					624 = { owned_by = AUS }
 				}
 			}
+			exists = HUN
+			exists = AUS
 			NOT = { has_country_flag = austro_hungarian_border_treaty_tried }
 		}
 
@@ -2080,6 +2078,7 @@ political_decisions = {
 
 		potential = {
 			owns = 641
+			NOT = { has_global_flag = budapest_founded }
 			OR = {
 				tag = KUK
 				tag = AUS
@@ -2088,7 +2087,6 @@ political_decisions = {
 				tag = GCF
 				tag = GER
 			}
-			NOT = { has_global_flag = budapest_founded }
 		}
 
 		allow = {
@@ -2160,8 +2158,8 @@ political_decisions = {
 				tag = AUS
 				tag = KUK
 			}
-			has_global_flag = crimea_has_happened
 			NOT = { has_country_flag = aus_annex_danubian_principalities }
+			has_global_flag = crimea_has_happened
 		}
 
 		allow = {
