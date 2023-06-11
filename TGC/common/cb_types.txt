@@ -47,6 +47,8 @@ dismantle_cb
 dismantle_cb_add
 dismantle_cb_add_new
 colonial_competition
+arg_civil_war_unitary
+arg_civil_war_federal
 acquire_all_cores
 acquire_core_state
 restore_austrian_empire
@@ -1783,7 +1785,7 @@ take_from_sphere = {
 					capital_scope = { continent = west_africa }
 					capital_scope = { continent = central_africa }
 					capital_scope = { continent = east_africa }
-					capital_scope = { continent = south_africa }
+					capital_scope = { continent = south_west_africa }
 				}
 				civilized = no
 			}
@@ -2258,6 +2260,14 @@ liberate_country = {
 			THIS = { has_global_flag = wakhan_treaty }
 			THIS = { has_global_flag = persia_treaty }
 			THIS = { ai = no }
+			THIS = {
+				has_country_flag = the_centralization_debate
+				NOT = { exists = ATR }
+				OR = {
+					has_country_modifier = diplomatic_delegate
+					has_country_modifier = delegating_diplomacy
+				}
+			}
 			FROM = { NOT = { any_core = { is_core = THIS } } }
 			FROM = { involved_in_crisis = yes }
 		}
@@ -2777,7 +2787,7 @@ monroe_doctrine = {
 			capital_scope = { continent = west_africa }
 			capital_scope = { continent = central_africa }
 			capital_scope = { continent = east_africa }
-			capital_scope = { continent = south_africa }
+			capital_scope = { continent = south_west_africa }
 			capital_scope = { continent = asia }
 			capital_scope = { continent = oceania }
 			capital_scope = { continent = australia_new_zealand }
@@ -3399,13 +3409,6 @@ great_game_cb = {
 					}
 				}
 			}
-			AND = { #If either conventions over Persia or Afghanistan escalate to war, and one side wins, it will allow them to use this CB to puppet outside their historical sphere
-				OR = { tag = PER tag = AFG tag = SIN tag = KAL tag = MAK tag = LAS tag = CRL tag = KOK tag = BUK tag = KAZ tag = BDK tag = KHI }
-				OR = {
-				THIS = { tag = RUS has_country_flag = great_game_won }
-				THIS = { tag = ENG has_country_flag = great_game_won }
-				}
-			}
 		}
 		THIS = {
 			is_greater_power = yes
@@ -3420,7 +3423,6 @@ great_game_cb = {
 			}
 			NOT = {
 				has_country_flag = no_more_great_game
-				has_country_flag = great_game_lost
 				has_country_modifier = punitive_effects
 				badboy = 0.85
 			}
@@ -4236,7 +4238,7 @@ demand_concession_casus_belli = {
 				capital_scope = { continent = central_africa }
 				capital_scope = { continent = west_africa }
 				capital_scope = { continent = east_africa }
-				capital_scope = { continent = south_africa }
+				capital_scope = { continent = south_west_africa }
 			}
 		}
 		NOT = { has_country_modifier = neutrality }
@@ -4658,7 +4660,7 @@ annex_africa = {
 			capital_scope = { continent = central_africa }
 			capital_scope = { continent = west_africa }
 			capital_scope = { continent = east_africa }
-			capital_scope = { continent = south_africa }
+			capital_scope = { continent = south_west_africa }
 		}
 		OR = {
 			AND = {
@@ -4757,7 +4759,7 @@ annex_africa_full = {
 			capital_scope = { continent = central_africa }
 			capital_scope = { continent = west_africa }
 			capital_scope = { continent = east_africa }
-			capital_scope = { continent = south_africa }
+			capital_scope = { continent = south_west_africa }
 		}
 		OR = {
 			AND = {
@@ -4940,16 +4942,7 @@ establish_protectorate_casus_belli = {
 				THIS = { any_owned_province = { port = yes } }
 			}
 		}
-		THIS = { 
-			OR = {
-				total_amount_of_ships = 10
-				capital_scope = { continent = africa }
-				capital_scope = { continent = central_africa }
-				capital_scope = { continent = west_africa }
-				capital_scope = { continent = east_africa }
-				capital_scope = { continent = south_africa } 
-			}
-		}
+		THIS = { total_amount_of_ships = 10 }
 		OR = {
 			AND = {
 				THIS = { nationalism_n_imperialism = 1 }
@@ -4973,16 +4966,12 @@ establish_protectorate_casus_belli = {
 					#	capital_scope = { continent = central_africa }
 					#	capital_scope = { continent = west_africa }
 					#	capital_scope = { continent = east_africa }
-					#	capital_scope = { continent = south_africa }
+					#	capital_scope = { continent = south_west_africa }
 					#}
 					AND = {
 						OR = {
 							has_global_flag = berlin_conference
 							has_global_flag = colonial_cassus_belli_africa_enabled
-							AND = {
-								THIS = { primary_culture = boer }
-								capital_scope = { continent = south_africa }
-							}
 						}
 						OR = {
 							NOT = { number_of_states = 12 }
@@ -4991,7 +4980,7 @@ establish_protectorate_casus_belli = {
 								capital_scope = { continent = central_africa }
 								capital_scope = { continent = west_africa }
 								capital_scope = { continent = east_africa }
-								capital_scope = { continent = south_africa }
+								capital_scope = { continent = south_west_africa }
 							}
 						}
 					}
@@ -5260,7 +5249,7 @@ make_puppet = {
 				capital_scope = { continent = west_africa }
 				capital_scope = { continent = central_africa }
 				capital_scope = { continent = east_africa }
-				capital_scope = { continent = south_africa }
+				capital_scope = { continent = south_west_africa }
 			}
 			civilized = yes
 			civilization_progress = 0.7
@@ -6922,6 +6911,13 @@ war_reparations = {
 		# any_country = {
 			# limit = {
 				# exists = no
+				# has_country_flag = existing_country
+			# }
+			# clr_country_flag = existing_country
+		# }
+		# any_country = {
+			# limit = {
+				# exists = no
 				# has_country_flag = vassal_nation_cb
 			# }
 			# clr_country_flag = vassal_nation_cb
@@ -6988,6 +6984,13 @@ take_puppet = {
 	war_name = WAR_NAME
 
 	on_add = {
+		any_country = {
+			limit = {
+				exists = no
+				has_country_flag = existing_country
+			}
+			clr_country_flag = existing_country
+		}
 		any_country = {
 			limit = {
 				exists = no
@@ -7211,6 +7214,13 @@ liberate_puppet = {
 		any_country = {
 			limit = {
 				exists = no
+				has_country_flag = existing_country
+			}
+			clr_country_flag = existing_country
+		}
+		any_country = {
+			limit = {
+				exists = no
 				has_country_flag = vassal_nation_cb
 			}
 			clr_country_flag = vassal_nation_cb
@@ -7227,7 +7237,7 @@ liberate_puppet = {
 		any_country = {
 			limit = {
 				exists = yes
-				NOT = { has_country_flag = existing_country } #This seems to have been a legitimate use of the existing_country flag, needs checking but cant have been working correctly even before me starting to fix stuff
+				NOT = { has_country_flag = existing_country }
 				is_vassal = no
 				in_sphere = THIS
 			}
@@ -7498,7 +7508,7 @@ monroe2 = {
 			capital_scope = { continent = africa }
 			capital_scope = { continent = west_africa }
 			capital_scope = { continent = east_africa }
-			capital_scope = { continent = south_africa }
+			capital_scope = { continent = south_west_africa }
 			capital_scope = { continent = central_africa }
 			capital_scope = { continent = asia }
 			capital_scope = { continent = oceania }
@@ -7569,7 +7579,7 @@ USS_monroe = {
 			capital_scope = { continent = africa }
 			capital_scope = { continent = west_africa }
 			capital_scope = { continent = east_africa }
-			capital_scope = { continent = south_africa }
+			capital_scope = { continent = south_west_africa }
 			capital_scope = { continent = asia }
 			capital_scope = { continent = oceania }
 			capital_scope = { continent = australia_new_zealand }
