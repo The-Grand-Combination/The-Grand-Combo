@@ -5,22 +5,16 @@
 	#And then chooses the coorect coup event to send.
 	country_event = {
 		id = 8001
-		title = "DOMPEDROCORONATIONCHECK"
+		title = "Coup of Majority"
 		desc = "DOMPEDROCORONATIONCHECK"
 
-		trigger = { tag = JAN 
-					has_global_flag = majority_coup_ongoing    
-		}
-
-		mean_time_to_happen = { days = 1 
-								modifier = { exists = yes factor = 0.1 }
-		}
+		is_triggered_only = yes
 
 		allow_multiple_instances = no
 
 		option = {
 			name = "SENDEVENTTOBRAZIL"
-			clr_global_flag = majority_coup_ongoing                                                         #IF emulation 
+			clr_global_flag = majority_coup_ongoing #IF emulation 
 			any_country = { limit = { tag = BRZ NOT = { year = 1840 } } country_event = 8002 }
 			any_country = { limit = { tag = BRZ year = 1840 NOT = { year = 1844 } } country_event = 8004 }
 		}
@@ -327,6 +321,7 @@
 			remove_country_modifier = dom_pedro_ii
 			remove_country_modifier = regency_modifier
 			government = democracy
+			plurality = -10
 			add_country_modifier = { name = small_immigration_boom_country duration = 365 }
 			add_country_modifier = { name = republican_winds duration = 3650 }
 			
@@ -349,6 +344,7 @@
 
 		option = {
 			name = "EVTOPTB8009"
+			ai_chance = { factor = 90 }
 		}
 	}
 
@@ -421,7 +417,10 @@
 				factor = 50
 				modifier = {
 					factor = 0
-					part_of_sphere = yes
+					sphere_owner = { has_country_flag = democracy_gov }
+				}
+				modifier = {
+					factor = 0
 					sphere_owner = { has_country_flag = democracy_gov }
 				}
 			}
@@ -430,22 +429,30 @@
 		# Abolish Monarchy
 		option = {
 			name = "EVTOPT8011"
-			prestige = -20
-			plurality = -10
+			prestige = 20
+			plurality = -5
 			government = democracy
 			add_country_modifier = { name = small_immigration_boom_country duration = 365 }
+			election = yes
 			## Government Flags ##
+			set_country_flag = democracy_gov
 			clr_country_flag = communist_gov
 			clr_country_flag = absolute_monarchy_gov
 			clr_country_flag = semi_constitutional_monarchy_gov
 			clr_country_flag = constitutional_monarchy_gov
-			set_country_flag = democracy_gov
 			clr_country_flag = presidential_dictatorship_gov
 			clr_country_flag = fascist_gov
 			clr_country_flag = anarcho_liberal_gov
 
 			ai_chance = { factor = 50
-				modifier = { factor = 0 is_greater_power = yes }
+				modifier = { factor = 0 rank = 8 }
+				modifier = { factor = 0.5 rank = 16 }
+				modifier = { factor = 0.5 plurality = 50 }
+				modifier = { factor = 0.5 plurality = 70 }
+				modifier = { factor = 2 NOT = { plurality = 25 } }
+				modifier = { factor = 4 NOT = { plurality = 15 } } #evil, just like real life
+				modifier = { factor = 2 NOT = { rank = 25 } }
+				modifier = { factor = 4 NOT = { rank = 45 } }
 			}
 		}
 	}
@@ -659,7 +666,7 @@
 					attacker_goal = { casus_belli = conquest }
 					defender_goal = { casus_belli = status_quo }
 			}
-			plurality = -0.5
+			plurality = -1
 		}
 	}
 
@@ -684,7 +691,7 @@
 		}
 	}
 
-	#Garibaldi can become a general for RGS
+	#Garibaldi becomes a general for RGS
 	country_event = {
 
 		id = 8105
@@ -717,14 +724,10 @@
 	#Farrapos Negotiation trigger
 	country_event = {
 		id = 8106
-		title = "FARRAPOSNEGOTIATION"
+		title = "Farrapos Negotiation"
 		desc = "FARRAPOSNEGOTIATION"
 
-		trigger = { BRZ = { has_country_flag = farroupilha_ongoing }
-					tag = JAN 
-					has_global_flag = farroupilha_negotiating }
-
-		mean_time_to_happen = { days = 1 }
+		is_triggered_only = yes
 		
 		allow_multiple_instances = no
 
@@ -758,12 +761,12 @@
 			}
 
 			any_country = { limit = { tag = RGS num_of_cities = 3 NOT = { has_country_flag = negotiation_sent } } 
-							BRZ = { country_event = 8107 }
+							BRZ = { country_event = 8108 }
 							RGS = { set_country_flag = negotiation_sent }
 			}
 
 			any_country = { limit = { tag = RGS num_of_cities = 1 NOT = { has_country_flag = negotiation_sent } } 
-							BRZ = { country_event = 8107 }
+							BRZ = { country_event = 8109 }
 							RGS = { set_country_flag = negotiation_sent }
 			}
 
