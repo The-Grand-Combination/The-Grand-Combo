@@ -181,69 +181,6 @@ country_event = {
 							}
 							add_province_modifier = { name = plantation duration = -1 }
 		}
-		
-		# Baseline Prestige Updater
-		any_country = {
-			limit = {
-				NOT = { has_country_flag = recognized_independent_state }
-				total_pops = 250000
-				civilized = yes
-				exists = yes
-				NOT = { has_country_modifier = neutrality }
-				is_vassal = no
-			}
-			set_country_flag = recognized_independent_state
-			prestige = -1000
-			prestige = 1000
-		}
-		any_country = {
-			limit = {
-				has_country_flag = recognized_independent_state
-				OR = {
-					is_vassal = yes
-					exists = no
-					civilized = no
-					has_country_modifier = neutrality
-					NOT = { total_pops = 250000 }
-				}
-			}
-			clr_country_flag = recognized_independent_state
-			prestige = -2000
-		}
-		any_country = {
-			limit = {
-				has_country_flag = recognized_independent_state
-				total_pops = 250000
-				NOT = { has_country_modifier = neutrality }
-				civilized = yes
-				NOT = { prestige = 1000 }
-				is_vassal = no
-			}
-			prestige = -1000
-			prestige = 1000
-		}
-		# Bankruptcy Handler for Baseline Prestige
-		any_country = {
-			limit = {
-				in_default = yes
-				has_country_flag = recognized_independent_state
-				total_pops = 250000
-				NOT = { has_country_modifier = neutrality }
-				civilized = yes
-				NOT = { has_country_flag = recognized_independent_state_in_default } 
-			}
-			set_country_flag = recognized_independent_state_in_default
-			prestige = -1000
-			prestige = 1000
-		}
-		any_country = {
-			limit = {
-				has_country_flag = recognized_independent_state_in_default
-				in_default = no
-			}
-			clr_country_flag = recognized_independent_state_in_default
-		}
-		
 	}
 }
 
@@ -258,6 +195,73 @@ country_event = {
 	option = {
 		name = "EVTOPTA52"
 		country_event = { id = 52 days = 30 }
+		#Pearl Season
+		#Pearl Season Starts
+		any_country = { limit = { tag = JAN month = 4 }
+			1162 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+			1165 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+			1167 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+			2664 = {
+				random_list = {
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+				}
+			}
+		}
+		#Pearl Season Ends
+		any_country = {
+			limit = { owns = 1162 1162 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+			1162 = { trade_goods = fruit }
+		}
+		any_country = {
+			limit = { owns = 1165 1165 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+			1165 = { trade_goods = fish }
+		}
+		any_country = {
+			limit = { owns = 1167 1167 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+			1167 = { trade_goods = fish }
+		}
+		any_country = {
+			limit = { owns = 2664 2664 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+			2664 = { trade_goods = fish }
+		}
+		
+		#Override Campaign failsafe 
+		clr_global_flag = override_campaigns
+		any_country = { limit = { OR = { has_country_modifier = infamy_removal 
+										has_country_modifier = more_colonial_settlement
+										has_country_modifier = more_internal_migration
+										has_country_modifier = less_emigration
+										has_country_modifier = research_campaign
+										has_country_modifier = birthrate_push_low
+										has_country_modifier = birthrate_push_medium
+										has_country_modifier = birthrate_push_high
+										has_country_flag = direct_immigration } } 
+						set_global_flag = override_campaigns
+		}
 		#Archeology check
 		any_country = { limit = { OR = {	has_country_modifier = mycenaean_excavations_modifier
 											has_country_modifier = egyptian_excavations
@@ -447,89 +451,6 @@ country_event = {
 				serfs = { pop_type = farmers }
 			}
 		}	
-		#Government Campaigns
-		#Roughly, for each owned province that has an active campaign, monthly scaled tax-based money will get deducted from player
-		#It uses all_land_provinces scope to owner because scoping by country simply does not work 
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = infamy_removal }
-			}
-			owner = { add_tax_relative_income = -3 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = more_colonial_settlement }
-			}
-			owner = { add_tax_relative_income = -3 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = more_internal_migration }
-			}
-			owner = { add_tax_relative_income = -3 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = less_emigration }
-			}
-			owner = { add_tax_relative_income = -3 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = research_campaign }
-			}
-			owner = { add_tax_relative_income = -3 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = birthrate_push_low }
-			}
-			owner = { add_tax_relative_income = -3 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = birthrate_push_medium }
-			}
-			owner = { add_tax_relative_income = -4.5 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no }
-				is_capital = yes
-				owner = { has_country_modifier = birthrate_push_high }
-			}
-			owner = { add_tax_relative_income = -6 }
-		}
-		#Moved to Direct Migration Submod
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no has_country_flag = direct_immigration }
-				is_colonial = no
-				has_building = province_selector
-			}
-			owner = { add_tax_relative_income = -0.75 }
-		}
-		all_land_provinces = { 
-			limit = {
-				owner = { ai = no has_country_flag = direct_immigration }
-				has_building = immigrator
-			}
-			owner = { add_tax_relative_income = -0.15 }
-		}
 		#Missing government flags
 		any_country = {
 			limit = {
@@ -1402,6 +1323,23 @@ country_event = {
 
 		any_country = { 
 			limit = { has_country_modifier = let_the_chips_fall }
+		}
+
+	#	Nations with multiple tags
+		#	Belgium
+		any_country = {
+			limit = {
+				has_country_flag = is_real_belgium
+				exists = no
+			}
+			clr_global_flag = belgium_exists
+		}
+		any_country = {
+			limit = {
+				has_country_flag = is_real_belgium
+				exists = yes
+			}
+			set_global_flag = belgium_exists
 		}
 	}
 }
