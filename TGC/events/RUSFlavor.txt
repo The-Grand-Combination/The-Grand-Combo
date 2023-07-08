@@ -2958,10 +2958,20 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA325461"
-		1208 = { remove_core = AFG }
+		1208 = { remove_core = AFG } # Khorug
+		3636 = { remove_core = AFG } # Karakul
+		3638 = { remove_core = AFG } # Barchidev
+		random_owned = {
+			limit = { owner = { owns = 3636 } }
+			owner = { random_country = { limit = { tag = FROM owns = 3635 } 3636 = { secede_province = THIS } } }
+		}
+		random_owned = {
+			limit = { owner = { owns = 3638 } }
+			owner = { random_country = { limit = { tag = FROM owns = 3635 } 3638 = { secede_province = THIS } } }
+		}
 		random_owned = {
 			limit = { owner = { owns = 1208 } }
-			owner = { random_country = { limit = { tag = FROM owns = 1207 } 1208 = { secede_province = THIS } } }
+			owner = { random_country = { limit = { tag = FROM owns = 3636 } 1208 = { secede_province = THIS } } }
 		}
 		random_country = { limit = { is_sphere_leader_of = THIS NOT = { tag = FROM } } relation = { who = FROM value = 50 } }
 		relation = { who = FROM value = 50 }
@@ -3286,7 +3296,7 @@ country_event = {
 
 		trigger = {
 			tag = RUS
-			CIR = { exists = no }
+			C4R = { exists = no }
 			DAG = { exists = no }
 			OR = {
 				owns = 1056
@@ -3300,15 +3310,20 @@ country_event = {
 
 		option = {
 			name = "EVTOPTA32513"
-			1049 = { change_province_name = "Novorossiysk" add_core = RUS state_scope = { change_region_name = "Yekaterinodar" } }
-			1103 = { secede_province = TCA }
-			1048 = { add_core = RUS }
+			### Old Ubykhia/Novorossiysk (1049) ###
+			1049 = { change_province_name = "Novorossiysk" }
+			RUS_1049 = { add_core = RUS } # Chernomorye
+			1051 = { state_scope = { change_region_name = "Maykop" } }
+			RUS_1051 = { add_core = RUS } # Levoberezhny Kuban/Maykop
+			### Old Yekaterinodar (1048) ###
+			1048 = { state_scope =  { change_region_name = "Yekaterinodar" } }
+			RUS_1048 = { add_core = RUS } # Levoberezhny Kuban/Yekaterinodar
 
 			any_pop = {
 				limit = {
 					OR = {
 						has_pop_culture = circassian
-						has_pop_culture = dagestani
+						#has_pop_culture = dagestani
 						has_pop_culture = chechen
 					}
 				}
@@ -3317,13 +3332,19 @@ country_event = {
 			any_owned = {
 				limit = {
 					OR = {
-						province_id = 1051
-						province_id = 1052
-						province_id = 1053
-						province_id = 1054
-						province_id = 1055
-						province_id = 1056
-						province_id = 1057
+						### Old Maykop (1051) ###
+						region = RUS_3668 # Upper Kuban
+						### Old Derbent (1052) ###
+						region = RUS_1052 # Derbent City
+						region = RUS_3672 # Central Dagestan
+						### Old Khunzakh (1053) ###
+						region = RUS_3429 # Northern Dagestan
+						### Old Vladikavkaz (1054) and old Pyatigorsk (1056) ###
+						region = RUS_1054 # Vladikavkaz
+						### Old Grozny (1055) ###
+						region = RUS_1055 # Grozny
+						### Old Kizylyar (1057) ###
+						region = RUS_3689 # Mozdok
 					}
 				}
 				random_list = {
@@ -3451,7 +3472,7 @@ country_event = {
 			}
 			war = {
 				target = CIR
-				attacker_goal = { casus_belli = annex_core_country }
+				attacker_goal = { casus_belli = circassian_war }
 				defender_goal = { casus_belli = status_quo }
 				call_ally = no
 			}
@@ -3522,7 +3543,7 @@ country_event = {
 			NOT = { has_global_flag = dagestani_caucasian_war_ended }
 			any_owned_province = {
 				OR = {
-					pop_majority_culture = dagestani
+					#pop_majority_culture = dagestani
 					pop_majority_culture = chechen
 				}
 				average_militancy = 8
@@ -3547,7 +3568,7 @@ country_event = {
 						is_core = CHY
 					}
 					OR = {
-						pop_majority_culture = dagestani
+						#pop_majority_culture = dagestani
 						pop_majority_culture = chechen
 						pop_majority_culture = circassian
 					}
@@ -3572,7 +3593,7 @@ country_event = {
 
 			war = {
 				target = DAG
-				attacker_goal = { casus_belli = conquest_any }
+				attacker_goal = { casus_belli = caucasus_war }
 				defender_goal = { casus_belli = status_quo }
 				call_ally = no
 			}
@@ -3591,7 +3612,7 @@ country_event = {
 						is_core = CHY
 					}
 					OR = {
-						pop_majority_culture = dagestani
+						#pop_majority_culture = dagestani
 						pop_majority_culture = chechen
 						pop_majority_culture = circassian
 					}
@@ -3674,7 +3695,7 @@ country_event = {
 						has_pop_culture = tatar
 						has_pop_culture = ossetian
                         has_pop_culture = chechen
-						has_pop_culture = dagestani
+						# has_pop_culture = dagestani
 						}
                     location = {
                         OR = {
@@ -3696,7 +3717,7 @@ country_event = {
 					has_pop_culture = dargins
 					has_pop_culture = avars
 					has_pop_culture = chechen
-					has_pop_culture = dagestani
+					# has_pop_culture = dagestani
 				}
 			}
 			militancy = 9
@@ -4846,8 +4867,9 @@ country_event = {
 			    limit = {
 			        OR = {
 					 #Anatolia
-		             region = TUR_863 #hudin
-					 region = TUR_876 #ankara
+		             region = TUR_863 # Hudin
+					 region = TUR_876 # Ankara
+					 region = TUR_880 # Kastamonu
 					}
 				}
 			    any_pop = {
@@ -4985,11 +5007,12 @@ country_event = {
 			    any_owned = {
 			    limit = {
 			        OR = {
-					 #Anatolia
-		             region = TUR_863 #hudin
-					 region = TUR_876 #ankara
-					 region = TUR_873 #konya
-					 province_id = 883
+					 	#Anatolia
+		            	region = TUR_863 # Hudin
+						region = TUR_876 # Ankara
+						region = TUR_880 # Kastamonu
+						region = TUR_873 # Konya
+						province_id = 883
 					}
 				}
 			    any_pop = {
@@ -5208,14 +5231,17 @@ country_event = {
 				
 				any_owned = {
 			limit = {
-			          OR = {
-			          region = TUR_888
-					  region = TUR_890
-					  province_id = 893
-					  province_id = 889
-					  province_id = 2414
-					  province_id = 878
-					  }
+			    OR = {
+			    	region = TUR_888
+					region = TUR_890
+					province_id = 893
+					province_id = 889
+					province_id = 2414
+					province_id = 3610
+					province_id = 3613
+					province_id = 878
+					province_id = 3665
+				}
 			}
 			add_core = ARM
 		}
@@ -6639,16 +6665,17 @@ country_event = {
 			fire_only_once = yes
 			
 			trigger = {
-			tag = RUS
-			has_global_flag = treaty_of_paris_russia
-			has_global_flag = dismantle_ottomans
-			neighbour = ARM
-			ARM = {
-			in_sphere = RUS
-			vassal_of = RUS }
-			860 = { owned_by = RUS }
-			885 = { owned_by = RUS }
-			invention = the_dark_continent
+				tag = RUS
+				has_global_flag = treaty_of_paris_russia
+				has_global_flag = dismantle_ottomans
+				neighbour = ARM
+				ARM = {
+					in_sphere = RUS
+					vassal_of = RUS
+				}
+				860 = { owned_by = RUS }
+				885 = { owned_by = RUS }
+				invention = the_dark_continent
 		    }
 
 			mean_time_to_happen = { months = 6 }
@@ -7494,11 +7521,6 @@ country_event = {
 
 	title = "EVTNAME500232"
 	desc = "EVTDESC500232"
-	news = yes
-	news_title = "EVTNAME500232_NEWS_TITLE"
-	news_desc_long = "EVTDESC500232_NEWS_LONG"
-	news_desc_medium = "EVTDESC500232_NEWS_MEDIUM"
-	news_desc_short = "EVTDESC500232_NEWS_SHORT"
 	picture = "alexander2_dead"
 	major = yes
 
@@ -8054,7 +8076,7 @@ country_event = {
 			}
 			add_country_modifier = { name = rocky_war_timer duration = 1460 }
 		any_country = { 
-					limit = { AND = { tag = ENG war_with = RUS } }
+					limit = { tag = ENG war_with = RUS }
 					relation = { who = THIS value = 50 }
 					country_event = 500247 #Evict Russia from America, split by historical parallel
 					}
