@@ -422,37 +422,62 @@ acquire_core_state = {
 		THIS = {
 			NOT = { has_country_modifier = no_more_war }
 		}
-		NOT = { has_country_modifier = neutrality has_country_modifier = mediating_political_solution }
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		NOT = { has_country_modifier = neutrality has_country_modifier = mediating_political_solution has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 	}
 
 	allowed_states = {
-		any_owned_province = { is_core = THIS }
-		#NOT = { any_owned_province = { is_capital = yes } }
 		OR = {
-			THIS = { ai = no }
 			AND = {
-				THIS = { any_owned_province = { port = yes } }
-				any_owned_province = { port = yes }
-			}
-			any_owned_province = { any_neighbor_province = { owned_by = THIS } }
-		}
-		# DEVNOTE anzu-3278: Temporary hacky fix so that the USA AI doesn't just add individual state core cbs and win the Mex-Am war with ugly borders. Will probably be deprecated when the Mex-Am war is changed to have a scripted peace.
-		NOT = {
-			AND = {
-				THIS = { tag = USA }
-				any_owned_province = {
+				THIS = {
+					has_country_modifier = diplomatic_delegate
+					NOT = { has_global_flag = argentina_has_unified }
+				}
+				any_owned_province = { 
+					NOT = {
+						owner = {
+							OR = {
+								has_country_modifier = delegating_diplomacy
+								has_country_flag = the_centralization_debate
+							}
+						}
+					}
 					OR = {
-						region = TEX_132	# Texas
-						region = MEX_94		# Nevada
-						region = MEX_97		# Utah
-						region = MEX_85		# California
-						region = USA_106	# Colorado
-						region = USA_111	# Wyoming
-						region = USA_126	# Kansas
-						region = USA_129	# Oklahoma
-						region = MEX_100	# Arizona
-						region = MEX_103	# New Mexico
+						is_core = ARG
+						is_core = ARC
+						is_core = LPL
+					}
+				}
+			}
+			AND = {
+				any_owned_province = { is_core = THIS }
+				#NOT = { any_owned_province = { is_capital = yes } }
+				OR = {
+					THIS = { ai = no }
+					AND = {
+						THIS = { any_owned_province = { port = yes } }
+						any_owned_province = { port = yes }
+					}
+					any_owned_province = { any_neighbor_province = { owned_by = THIS } }
+				}
+				# DEVNOTE anzu-3278: Temporary hacky fix so that the USA AI doesn't just add individual state core cbs and win the Mex-Am war with ugly borders. Will probably be deprecated when the Mex-Am war is changed to have a scripted peace.
+				NOT = {
+					AND = {
+						THIS = { tag = USA }
+						any_owned_province = {
+							OR = {
+								region = TEX_132	# Texas
+								region = MEX_94		# Nevada
+								region = MEX_97		# Utah
+								region = MEX_85		# California
+								region = USA_106	# Colorado
+								region = USA_111	# Wyoming
+								region = USA_126	# Kansas
+								region = USA_129	# Oklahoma
+								region = MEX_100	# Arizona
+								region = MEX_103	# New Mexico
+							}
+						}
 					}
 				}
 			}
@@ -514,10 +539,12 @@ acquire_all_cores = {
 			THIS = { NOT = { has_country_flag = in_great_war } }
 			THIS = { ai = no }
 		}
-		NOT = { has_country_modifier = neutrality has_country_modifier = mediating_political_solution }
+		NOT = { has_country_modifier = neutrality has_country_modifier = mediating_political_solution has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
 		THIS = {
 			NOT = {
 				has_country_modifier = neutrality
+				has_country_modifier = delegating_diplomacy
+				has_country_modifier = diplomatic_delegate
 				AND = {
 					war_policy = pacifism
 					war = no
@@ -531,6 +558,15 @@ acquire_all_cores = {
 	}
 
 	allowed_states = {
+		THIS = {
+			has_country_modifier = diplomatic_delegate
+			NOT = { has_global_flag = argentina_has_unified }
+			OR = {
+				all_land_provinces = { is_core = ARG }
+				all_land_provinces = { is_core = ARC }
+				all_land_provinces = { is_core = LPL }
+			}
+		}
 		any_owned_province = { is_core = THIS }
 		#NOT = { any_owned_province = { is_capital = yes } }
 		OR = {
@@ -1337,23 +1373,53 @@ annex_core_country = {
 	good_relation_militancy_factor = 1
 
 	can_use = {
-		any_owned_province = { is_core = THIS }
-		NOT = {
-			any_owned_province = {
-				NOT = { is_core = THIS }
+		OR = {
+			AND = {
+				THIS = {
+					has_country_modifier = diplomatic_delegate
+					NOT = { has_global_flag = argentina_has_unified }
+				}
+				any_owned_province = { 
+					NOT = {
+						owner = {
+							OR = {
+								has_country_modifier = delegating_diplomacy
+								has_country_flag = the_centralization_debate
+							}
+						}
+					}
+					OR = {
+						is_core = ARG
+						is_core = ARC
+						is_core = LPL
+					}
+				}
+				NOT = {
+					any_owned_province = {
+						NOT = { is_core = THIS }
+					}
+				}
+			}
+			AND = {
+				any_owned_province = { is_core = THIS }
+				NOT = {
+					any_owned_province = {
+						NOT = { is_core = THIS }
+					}
+				}
+				OR = {
+					war_with = THIS
+					THIS = { NOT = { has_country_modifier = punitive_effects } }
+				}
+				OR = {
+					NOT = { has_country_flag = dismantle_declared }
+					THIS = { NOT = { has_country_flag = in_great_war } }
+					THIS = { ai = no }
+				}
+				NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
+				THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 			}
 		}
-		OR = {
-			war_with = THIS
-			THIS = { NOT = { has_country_modifier = punitive_effects } }
-		}
-		OR = {
-			NOT = { has_country_flag = dismantle_declared }
-			THIS = { NOT = { has_country_flag = in_great_war } }
-			THIS = { ai = no }
-		}
-		NOT = { has_country_modifier = neutrality }
-		THIS = { NOT = { has_country_modifier = neutrality } }
 	}
 
 	po_annex = yes
@@ -1872,8 +1938,8 @@ free_peoples = {
 			FROM = { involved_in_crisis = yes }
 			THIS = { ai = no }
 		}
-		NOT = { has_country_modifier = neutrality }
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 	}
 
 	# THIS - us
@@ -2242,8 +2308,8 @@ liberate_country = {
 			has_global_flag = wakhan_treaty
 			has_global_flag = persia_treaty
 		}
-		NOT = { has_country_modifier = neutrality }
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		NOT = { has_country_modifier = neutrality NOT = { has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
+		THIS = { NOT = { has_country_modifier = neutrality NOT = { has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } } }
 	}
 
 	# THIS - us
@@ -2555,8 +2621,8 @@ free_allied_cores = {
 			THIS = { NOT = { has_country_flag = in_great_war } }
 			THIS = { ai = no }
 		}
-		NOT = { has_country_modifier = neutrality }
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 	}
 
 	# THIS - us
@@ -3694,8 +3760,8 @@ place_in_the_sun = {
 			NOT = { relation = { who = THIS value = 0 } }
 			THIS = { ai = no }
 		}
-		THIS = { NOT = { has_country_modifier = neutrality } }
-		NOT = { has_country_modifier = neutrality }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = diplomatic_delegate has_country_modifier = delegating_diplomacy } }
+		NOT = { has_country_modifier = neutrality has_country_modifier = diplomatic_delegate has_country_modifier = delegating_diplomacy }
 		NOT = { primary_culture = misri }
 		#AND = { THIS = { ai = yes } NOT = { primary_culture = misri } }  #fix so retard AI stops taking sudan during oriental crisis
 	}
@@ -3791,7 +3857,7 @@ acquire_state = {
 			neighbour = THIS
 			AND = { war_with = THIS ai = no }
 		}
-		NOT = { has_country_modifier = neutrality }
+		NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
 		any_state = {
 			is_colonial = no
 			NOT = { any_owned_province = { is_capital = yes } }
@@ -3800,7 +3866,7 @@ acquire_state = {
 			THIS = { civilized = no }
 			civilized = yes
 		}
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 		OR = {
 			war_with = THIS
 			THIS = { NOT = { has_country_modifier = no_more_war } }
@@ -4469,8 +4535,8 @@ conquest = {
 				}
 			}
 		}
-		NOT = { has_country_modifier = neutrality }
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 		OR = {
 			war_with = THIS
 			THIS = { NOT = { has_country_modifier = no_more_war } }
@@ -7044,9 +7110,9 @@ liberate_puppet = {
 
 	can_use = {
 		THIS = { is_greater_power = yes }
-		NOT = { has_country_modifier = neutrality }
+		NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate }
 		number_of_states = 2
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = delegating_diplomacy has_country_modifier = diplomatic_delegate } }
 		OR = {
 			war_with = THIS
 			THIS = { NOT = { has_country_modifier = no_more_war } }
@@ -7279,6 +7345,7 @@ arg_civil_war_federal = { #Install a friendly federalist government
 		}
 		civilized = yes
 		is_vassal = no
+		has_country_flag = the_centralization_debate
 		NOT = {
 			AND = {
 				THIS = {
@@ -7366,11 +7433,16 @@ arg_civil_war_unitary = { #Install a friendly unitarian government
 			OR = {
 				ruling_party_ = ARG_liberal
 				ruling_party_ = ARG_liberal_1
+				AND = {
+					ruling_party_ideology = anarcho_liberal
+					has_global_flag = unitary_radical_alliance
+				}
 			}
 			has_country_flag = the_centralization_debate
 			NOT = { has_country_modifier = neutrality }
 			is_vassal = no
 		}
+		has_country_flag = the_centralization_debate
 		civilized = yes
 		is_vassal = no
 		NOT = {
@@ -7500,23 +7572,23 @@ join_confederation_cb = { #Make a country part of the Argentine Confederation
 	}
 
 	on_po_accepted = {
+		set_country_flag = foreign_member_of_arc
 		random_country = {
 			any_country = {
 				limit = {
-					NOT = {
-						tag = THIS
-						tag = BOL
-						tag = URU
-						tag = PRG
-					}
+					tag = BOL
+					has_country_flag = foreign_member_of_arc
+					has_country_flag = former_lpl_member
 				}
-				country_event = { id = 49889 days = 10 }
+				country_event = { id = 49890 days = 15 }
 			}
 			any_country = {
 				limit = {
-					tag = BOL
+					NOT = { tag = BOL }
+					has_country_flag = foreign_member_of_arc
+					has_country_flag = former_lpl_member
 				}
-				country_event = { id = 49890 days = 10 }
+				country_event = { id = 49889 days = 10 }
 			}
 		}
 	}
@@ -7666,8 +7738,8 @@ take_capital = {
 
 	can_use = {
 		THIS = { ai = no } #AI will never use this CB as its way too unpredictable
-		NOT = { has_country_modifier = neutrality }
-		THIS = { NOT = { has_country_modifier = neutrality } }
+		NOT = { has_country_modifier = neutrality has_country_modifier = diplomatic_delegate has_country_modifier = delegating_diplomacy }
+		THIS = { NOT = { has_country_modifier = neutrality has_country_modifier = diplomatic_delegate has_country_modifier = delegating_diplomacy } }
 		number_of_states = 2 # annex if you want their last state
 		any_owned_province = {
 			NOT = { is_core = THIS }
