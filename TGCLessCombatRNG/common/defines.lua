@@ -180,8 +180,8 @@ defines = {
 		AI_SUPPORT_PROPORTION = 0.6, -- fraction of brigades that should be artillery and other support units
 		AI_SPECIAL_PROPORTION = 0.15, -- fraction of brigades that should be engineers and tanks
 		AI_ESCORT_RATIO = 2.0, -- ratio of escorts to transports in invasion fleets
-		AI_ARMY_TAXBASE_FRACTION = 0.2, -- max of tax base that AI will spend on army supply costs (based on peacetime costs)
-		AI_NAVY_TAXBASE_FRACTION = 0.05, -- max of tax base that AI will spend on navy supply costs (based on peacetime costs) nerfed
+		AI_ARMY_TAXBASE_FRACTION = 0.4, -- max of tax base that AI will spend on army supply costs (based on peacetime costs)
+		AI_NAVY_TAXBASE_FRACTION = 0.1, -- max of tax base that AI will spend on navy supply costs (based on peacetime costs) nerfed
 		AI_BLOCKADE_RANGE = 2000, -- max distance the AI will send out blockade fleets from their home base
 		RECON_UNIT_RATIO = 0.1, -- the % of units in the army that must have a recon value to get the full bonus
 		ENGINEER_UNIT_RATIO = 0.1, -- the % of units in the army that must have a fort attack value to get the full bonus
@@ -727,9 +727,9 @@ defines = {
 		PEACE_ALLY_FORCE_BALANCE_MULT = 0, -- Multiplies PEACE_FORCE_BALANCE_FACTOR for allies in a war
 		AGGRESSION_BASE = 5, -- general AI aggression
 		AGGRESSION_UNCIV_BONUS = 10, -- additional AI civ aggression against uncivs
-		FLEET_SIZE = 50, -- AI will attempt to keep fleets of roughly this size (fewer fleets generally results in more competent naval AI)
-		MIN_FLEETS = 1, -- Minimum amount of main fleets the AI will divide its navy into (does not include specialized fleets such as blockades and naval invasions)
-		MAX_FLEETS = 10, -- Maximal amount of main fleets the AI will divide its navy into (does not include specialized fleets such as blockades and naval invasions)
+		FLEET_SIZE = 85, -- AI will attempt to keep fleets of roughly this size (fewer fleets generally results in more competent naval AI)
+		MIN_FLEETS = 2, -- Minimum amount of main fleets the AI will divide its navy into (does not include specialized fleets such as blockades and naval invasions)
+		MAX_FLEETS = 20, -- Maximal amount of main fleets the AI will divide its navy into (does not include specialized fleets such as blockades and naval invasions)
 		MONTHS_BEFORE_DISBAND = 8, -- Months from start date before AI will disband armies/navies (to avoid disbands because of early economic turmoil)
 	},
 
