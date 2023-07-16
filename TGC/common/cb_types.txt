@@ -8657,40 +8657,58 @@ plague_cleanse = {
 }
 
 # Acquire All Claimed provinces
-acquire_all_claims = {
-	sprite_index = 5
+acquire_claim = {
+	sprite_index = 25
 	is_triggered_only = no
-	months = 0.1
-	constructing_cb = no
-	crisis = no
+	months = 12
 
-	badboy_factor = 0
+	construction_speed = 0.75
+
+	badboy_factor = 0.5
 	prestige_factor = 2
-	peace_cost_factor = 0.7
+	peace_cost_factor = 0.8
 	penalty_factor = 1
-	always = yes
 
-	break_truce_prestige_factor = 5
-	break_truce_infamy_factor = 2
-	break_truce_militancy_factor = 2
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
 	truce_months = 48
 
 	good_relation_prestige_factor = 1
 	good_relation_infamy_factor = 1
 	good_relation_militancy_factor = 1
 
-	allowed_countries = { 
+	can_use = {
+		NOT = { has_country_modifier = neutrality }
+		THIS = { NOT = { has_country_modifier = neutrality } }
+	}
+
+	# THIS - us
+	# FROM - country scope is possible match?
+	# war target country of goal is scope
+	allowed_countries = {
+		any_owned_province = { is_core = FROM }
 		FROM = {
 			exists = no
-			is_our_vassal = THIS
-			#has_country_flag = is_claim_nation
+			is_our_vassal = FROM
+			has_country_flag = is_claim_nation
 			NOT = {
 				any_core = { owned_by = THIS }
 			}
 		}
 	}
 
-	war_name = WAR_ALL_CORES_NAME
+	# THIS - us
+	# FROM - country scope is possible match?
+	# war target country of goal's state
+	allowed_states = {
+		#NOT = { any_owned_province = { is_capital = yes } }
+		any_owned_province = { is_core = FROM }
+	}
+
+	po_transfer_provinces = yes
+
+	war_name = WAR_FREE_ALLIED_CORE_NAME
 
 	on_add = {
 		move_issue_percentage = {
@@ -8701,7 +8719,7 @@ acquire_all_claims = {
 	}
 
 	on_po_accepted = {
-		country_event =	2650
-		plurality = -2
+		country_event =	2651	# Territorial Loss event
+		#any_owned_province = { }
 	}
 }
