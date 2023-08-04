@@ -1227,13 +1227,11 @@
 		}
 
 		option = {
-			name = "EVTDESC8160"
-			BRZ_2432 = { any_owned_province = {
-						 any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = poor } militancy = 4 }
-						 any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = rich } militancy = 8 }
-						 add_province_modifier = { name = liberal_agitation duration = 1825 }
-						 add_province_modifier = { name = praeiros duration = 1825 }
-						 }
+			name = "EVTOPTA8160"
+			2432 = { 	add_province_modifier = { name = liberal_agitation duration = 1825 }
+						add_province_modifier = { name = praeiros duration = 1825 }
+						any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = poor } militancy = 4 }
+					 	any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = rich } militancy = 8 }		 	
 			}
 		}
 	}
@@ -1248,19 +1246,9 @@
 		trigger = {
 			owned_by = BRZ
 			has_province_modifier = praeiros
-			OR = { region = BRZ_2401
-				   region = BRZ_2408
-				   region = BRZ_2410
-				   region = BRZ_2416
-				   region = BRZ_2421
-				   region = BRZ_2426
-				   region = BRZ_2428
-				   region = BRZ_2429
-				   region = BRZ_2432
-				   region = BRZ_2439 }
 		}
 		mean_time_to_happen = { 
-			months = 36
+			months = 1
 			modifier = { factor = 0.2
 						 has_global_flag = cabanagem_won 
 			}
@@ -1298,16 +1286,73 @@
 								 region = BRZ_2432
 								 region = BRZ_2439 
 							} 
+							owned_by = THIS
 				}
-				any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = poor } militancy = 4 }
-				any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = rich } militancy = 8 }
 				add_province_modifier = { name = liberal_agitation duration = 1825 }
 				add_province_modifier = { name = praeiros duration = 1825 }
+				any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = poor } militancy = 4 }
+				any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 } strata = rich } militancy = 8 }
 			}
 		}
 	}
 
+	#Praeiros break out
+	country_event = {
+		id = 8162
+		title = "EVTNAME8162"
+		desc = "EVTDESC8162"
+		picture = "praeiros1"
 
+		trigger = {
+			tag = BRZ
+			any_owned_province = { has_province_modifier = praeiros controlled_by = REB }
+		}
+
+		fire_only_once = yes 
+
+		mean_time_to_happen = { 
+			months = 10
+			modifier = { factor = 0.2
+						 has_global_flag = cabanagem_won 
+			}
+			modifier = { factor = 0.2
+						 has_global_flag = farrapos_won 
+			}
+			modifier = { factor = 0.4
+						 NOT = { plurality = 10 }
+			}
+			modifier = { factor = 0.6
+						 NOT = { plurality = 15 }
+			}
+			modifier = { factor = 0.8
+						 NOT = { plurality = 20 }
+			}
+			modifier = { factor = 1.5
+						 plurality = 50
+			}
+			modifier = { factor = 2
+						 plurality = 60
+			}
+		}
+
+		option = {
+			name = "EVTOPTA8162"
+			any_owned = { limit = { has_province_modifier = praeiros } 
+						  secede_province = PNB
+			}
+			relation = { who = PNB value = -200 }
+		}
+
+		option = {
+			name = "EVTOPTB8162"
+			any_owned = { limit = { has_province_modifier = praeiros } 
+						  secede_province = PNB
+			}
+			relation = { who = PNB value = -200 }
+
+			change_tag = PNB
+		}
+	}
 
 	#Claim Rio Parana
 	country_event = {
