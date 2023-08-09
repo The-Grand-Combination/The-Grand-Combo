@@ -1191,7 +1191,7 @@
 		id = 8160
 		title = "EVTNAME8160"
 		desc = "EVTDESC8160"
-		picture = "praeiros1"
+		picture = "praieiros"
 
 		trigger = {
 			tag = BRZ
@@ -1241,18 +1241,19 @@
 		id = 8161
 		title = "EVTNAME8161"
 		desc = "EVTDESC8161"
-		picture = "praeiros1"
+		picture = "prov_praieiros"
 
 		trigger = {
 			owned_by = BRZ
 			has_province_modifier = praeiros
 		}
+		
 		mean_time_to_happen = { 
-			months = 1
-			modifier = { factor = 0.2
+			months = 60
+			modifier = { factor = 0.1
 						 has_global_flag = cabanagem_won 
 			}
-			modifier = { factor = 0.2
+			modifier = { factor = 0.1
 						 has_global_flag = farrapos_won 
 			}
 			modifier = { factor = 0.4
@@ -1301,7 +1302,7 @@
 		id = 8162
 		title = "EVTNAME8162"
 		desc = "EVTDESC8162"
-		picture = "praeiros1"
+		picture = "praieiros"
 
 		trigger = {
 			tag = BRZ
@@ -1337,22 +1338,192 @@
 
 		option = {
 			name = "EVTOPTA8162"
-			any_owned = { limit = { has_province_modifier = praeiros } 
+			any_owned = { limit = { has_province_modifier = praeiros }
+						  owner = { plurality = -0.5 } 
 						  secede_province = PNB
 			}
 			relation = { who = PNB value = -200 }
+			add_country_modifier = { name = no_more_war duration = 150 }
+			PNB = { add_country_modifier = { name = no_more_war duration = 150 } 
+					leadership = 40
+					treasury = 20000
+					small_arms = 75
+					cotton = 25
+					ammunition = 50
+					canned_food = 50
+					artillery = 50
+			}
+			country_event = { id = 8163 days = 151 }
 		}
 
 		option = {
 			name = "EVTOPTB8162"
 			any_owned = { limit = { has_province_modifier = praeiros } 
+						  owner = { plurality = -0.5 }
 						  secede_province = PNB
 			}
 			relation = { who = PNB value = -200 }
-
+			add_country_modifier = { name = no_more_war duration = 150 }
+			PNB = { add_country_modifier = { name = no_more_war duration = 150 } 
+					leadership = 40
+					treasury = 20000
+					small_arms = 75
+					cotton = 25
+					ammunition = 50
+					canned_food = 50
+					artillery = 50
+			}
+			country_event = { id = 8163 days = 151 }
 			change_tag = PNB
 		}
 	}
+
+	#Praeiros War Start
+	country_event = {
+		id = 8163
+		title = "EVTNAME8163"
+		desc = "EVTDESC8163"
+		picture = "praieiros"
+
+		is_triggered_only = yes
+
+		option = { 
+			name = "EVTOPTA8163"
+			any_pop = {
+				consciousness = -2
+				militancy = -1
+			}
+			war = {
+				target = PNB
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = status_quo } 
+			}
+			set_global_flag = praeiros_civil_war_ongoing
+			ai_chance = { factor = 80 }
+		}
+
+		option = { 
+			name = "EVTOPTB8163"
+			any_pop = {
+				consciousness = -2
+				militancy = -2
+			}
+			set_global_flag = praeiros_won
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	#Praeiros War Check
+	country_event = {
+		id = 8175
+		title = "Praeiros War Check"
+		desc = ""
+
+		trigger = { tag = JAN
+					has_global_flag = praeiros_civil_war_ongoing
+					NOT = { BRZ = { war_with = PNB } }
+		}
+
+		fire_only_once = yes
+		mean_time_to_happen = { days = 1 }
+
+		option = { 
+			name = ""
+			clr_global_flag = praeiros_civil_war_ongoing
+			#If Emulation to check who won
+			any_country = {
+				limit = { tag = BRZ PNB = { exists = no } }
+				country_event = 8176
+			}
+			any_country = {
+				limit = { tag = BRZ PNB = { exists = yes } }
+				country_event = 8177
+				PNB = { country_event = 8178 }
+			}
+		}
+	}
+
+	#Praeiros Final, Brazilian Victory
+	country_event = {
+		id = 8176
+		title = "EVTNAME8176"
+		desc = "EVTNAME8176"
+		picture = "brazil_prevails"
+
+		is_triggered_only = yes
+
+		option = { 
+			name = "EVTOPTA1876"
+			plurality = 8
+			prestige = 5
+			any_owned = { limit = {  OR = { region = BRZ_2401
+								 			region = BRZ_2408
+								 			region = BRZ_2410
+								 			region = BRZ_2416
+								 			region = BRZ_2421
+								 			region = BRZ_2426
+											region = BRZ_2428
+								 			region = BRZ_2429
+								 			region = BRZ_2432
+								 			region = BRZ_2439 } }
+							any_pop = { militancy = -2 consciousness = -1 }
+			}	
+		}
+
+		option = { 
+			name = "EVTOPTA1876"
+			plurality = 4
+			prestige = 5
+			any_owned = { limit = {  OR = { region = BRZ_2401
+								 			region = BRZ_2408
+								 			region = BRZ_2410
+								 			region = BRZ_2416
+								 			region = BRZ_2421
+								 			region = BRZ_2426
+											region = BRZ_2428
+								 			region = BRZ_2429
+								 			region = BRZ_2432
+								 			region = BRZ_2439 } }
+							any_pop = { militancy = -4 consciousness = -2 }
+			}	
+		}
+	}
+
+	#Praeiros Final, Brazilian Defeat
+	country_event = {
+		id = 8177
+		title = "EVTNAME8177"
+		desc = "EVTNAME8177"
+		picture = "praieiros"
+
+		is_triggered_only = yes
+
+		option = { 
+				plurality = -10
+				prestige = 5
+				name = "EVTOPTA1877"
+		}
+	}
+
+	#Praeiros Final, Brazilian Defeat, Praeiros Break up
+	country_event = {
+		id = 8178
+		title = "EVTNAME8178"
+		desc = "EVTNAME8178"
+		picture = "praieiros"
+
+		is_triggered_only = yes
+
+		option = { 
+				name = "EVTOPTA1878"
+				release = MAR
+				release = BAH
+				any_owned = { limit = { OR = { region = BRZ_2410 region = BRZ_2408 } secede_province = MAR } }
+				any_owned = { limit = { OR = { region = BRZ_2439 } } secede_province = BAH }
+				any_owned = { limit = { OR = { region = BRZ_2401 region = BRZ_2401 } } secede_province = GPR }
+		}
+	}
+
 
 	#Claim Rio Parana
 	country_event = {
