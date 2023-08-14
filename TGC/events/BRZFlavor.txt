@@ -1147,7 +1147,6 @@
 		}
 	}
 
-
 	#The End of the Cabanagem, bad ending
 	country_event = {
 		id = 8153
@@ -1168,7 +1167,7 @@
 		option = {
 			name = "EVTOPTA8153"
 			prestige = -5
-			plurality = -5
+			plurality = -7
 			badboy = -1
 			GPR = { any_owned = { remove_core = BRZ } }
 			clr_country_flag = cabanagem_ongoing
@@ -1306,13 +1305,18 @@
 
 		trigger = {
 			tag = BRZ
-			any_owned_province = { has_province_modifier = praeiros controlled_by = REB }
+			OR = { any_owned_province = { has_province_modifier = praeiros controlled_by = REB }
+				   any_owned_province = { has_province_modifier = praeiros average_militancy = 8 }
+			}	   
 		}
 
 		fire_only_once = yes 
 
 		mean_time_to_happen = { 
 			months = 10
+			modifier = { factor = 0.1 
+						 any_owned_province = { has_province_modifier = praeiros controlled_by = REB }
+			}
 			modifier = { factor = 0.2
 						 has_global_flag = cabanagem_won 
 			}
@@ -1408,7 +1412,8 @@
 				consciousness = -2
 				militancy = -2
 			}
-			set_global_flag = praeiros_won
+			plurality = -5
+			set_global_flag = praeiros_civil_war_ongoing
 			ai_chance = { factor = 10 }
 		}
 	}
@@ -1437,6 +1442,7 @@
 			}
 			any_country = {
 				limit = { tag = BRZ PNB = { exists = yes } }
+				set_global_flag = praeiros_won
 				country_event = 8167
 				PNB = { country_event = 8168 }
 			}
@@ -1499,9 +1505,9 @@
 		is_triggered_only = yes
 
 		option = { 
-				plurality = -10
-				prestige = -5
 				name = "EVTOPTA1867"
+				plurality = -10
+				prestige = -10
 		}
 	}
 
@@ -1518,7 +1524,6 @@
 				name = "EVTOPTA1878"
 				release = MAR
 				release = BAH
-				#any_owned = { limit = { OR = { region = BRZ_2429 region = BRZ_2428 region = BRZ_2432 } } secede_province = PNB }
 				any_owned = { limit = { OR = { region = BRZ_2410 region = BRZ_2426 province_id = 2423 } } secede_province = MAR }
 				any_owned = { limit = { OR = { region = BRZ_2401 region = BRZ_2408 region = ENG_1979 region = NET_2240 region = FRA_2241 region = VNZ_2278 } } secede_province = GPR }
 				any_owned = { limit = { OR = { province_id = 2422 province_id = 2421 } } secede_province = MAR }
@@ -1538,8 +1543,7 @@
 					NOT = { plurality = 25 }
 					OR = { AND = { has_global_flag = cabanagem_won
 								   has_global_flag = farrapos_won
-								   has_global_flag = praeiros_won 
-								   has_recently_lost_war = yes }
+								   has_global_flag = praeiros_won }
 						   AND = { NOT = { plurality = 15 }
 						                   has_recently_lost_war = yes
 										   has_global_flag = farrapos_won
