@@ -1751,6 +1751,7 @@ country_event = {
 						}
 						573 = { owned_by = THIS }
 						575 = { owned_by = THIS }
+						3603 = { owned_by = THIS }
 					}
 				}
 			}
@@ -2176,65 +2177,7 @@ country_event = {
 			picture = "threehurrahs"
 			major = yes
 
-			trigger = {
-				#OR = {
-					tag = AUS
-					#tag = KUK Austria-Hungary should NOT have this path open
-				#}
-				prestige = 90
-				nationalism_n_imperialism = 1
-				is_greater_power = yes
-				war = no
-				OR = {
-					GER = {
-						all_core = {
-							OR = {
-								owned_by = THIS
-								owner = {
-								in_sphere = THIS
-								OR = {
-									is_vassal = no
-									vassal_of = THIS
-									overlord = {
-										in_sphere = THIS
-										has_country_flag = german_confederation_member
-									}
-								}
-								war = no
-							}
-							}
-						}
-					}
-					AND = {
-						ai = yes
-						has_country_flag = ai_demand_sigmaringen
-						has_country_flag = inherit_sgf
-						PRU = {
-							ai = yes
-							exists = yes
-						}
-						NOT = { exists = NGF }
-					}
-				}
-				any_owned_province = {
-					NOT = {
-						is_core = AUS
-						is_core = GER
-						is_colonial = yes
-					}
-				}
-				NOT = { has_country_flag = austrian_destiny }
-				NOT = {
-					exists = GER
-					exists = GCF
-					has_country_flag = austrian_destiny
-				}
-				NOT = { badboy = 0.5 }
-			}
-
-			mean_time_to_happen = {
-				days = 10
-			}
+			is_triggered_only = yes
 
 			# Full Greater Germany (plus non-German parts of Austria)
 			option = {
@@ -4951,7 +4894,7 @@ country_event = {
 		picture = "Beethoven"
 
 		trigger = {
-			owns = 575
+			owns = 3603
 			has_country_flag = beethovenfest
 			ENG = { has_country_flag = beethovenfest }
 			FRA = { has_country_flag = beethovenfest }
@@ -5657,11 +5600,10 @@ country_event = {
 
 	# Weaver begin
 	province_event = {
-
 		id = 200049
 		title = "EVTNAME200049"
 		desc = "EVTDESC200049"
-		picture = "Weberaufstand"
+		picture = "prov_weavers"
 
 		trigger = {
 			owner = {
@@ -6119,7 +6061,7 @@ country_event = {
 	picture = "Beethoven"
 
 	trigger = {
-		owns = 575
+		owns = 3603
 		is_culture_group = germanic
 		year = 1845
 		war = no
@@ -6156,6 +6098,36 @@ country_event = {
 			}
 			country_event = 200024
 		}
+	}
+}
+
+#Punctation of Olmutz - If Germany has not formed during the Revolution, Prussia gets its wings clipped 
+country_event = {
+	id = 200053
+	title = "EVTNAME200053"
+	desc = "EVTDESC200053"
+	picture = Frankfurt
+	fire_only_once = yes
+
+	trigger = {
+		owns = 549
+		NOT = { tag = GER }
+		NOT = { tag = GCF }
+		NOT = { has_global_flag = extra_flavour_disabled }
+		year = 1850
+	}
+
+	mean_time_to_happen = { months = 3 }
+
+	option = {
+		name = "EVTOPTA200053" #We had missed our window
+		prestige = -30
+		badboy = -3
+		add_country_modifier = {
+			name = punctation_of_olmutz
+			duration = 1800
+		}
+		relation = { who = AUS value = 50 }
 	}
 }
 

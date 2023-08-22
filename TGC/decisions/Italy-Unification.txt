@@ -18,7 +18,10 @@ political_decisions = {
 				tag = SAR
 				tag = SVY
 			}
+			OR = {
 			is_vassal = no
+			vassal_of = FRA
+			}
 			NOT = { exists = ITA }
 			has_country_flag = camillo_cavour_appointed
 			NOT = { has_country_flag = plombieres }
@@ -972,6 +975,7 @@ political_decisions = {
 			NOT = {
 				is_culture_group = italian
 				exists = ITA
+				exists = LTU
 			}
 			NOT = {
 				has_country_flag = austrian_outside_italy
@@ -1074,13 +1078,7 @@ political_decisions = {
 			tag = FRA
 			has_country_modifier = louis_napoleon_iii
 			is_greater_power = yes
-			has_global_flag = plombieres
 			#NOT = { has_global_flag = plombieres_refused }
-			NOT = {
-				exists = ITA
-				has_country_flag = austrian_outside_italy
-				has_country_flag = french_outside_italy
-			}
 			ITA = {
 				any_core = {
 					OR = {
@@ -1092,9 +1090,46 @@ political_decisions = {
 					}
 				}
 			}
+			NOT = {
+				exists = ITA
+				exists = LTU
+				has_country_flag = austrian_outside_italy
+				has_country_flag = french_outside_italy
+			}
 		}
 
 		allow = {
+			OR = { #Plombieres formed-Italy OR France holding Venice/Lombardy either personally or through sphere/vassal. So for example if France helps Italian minors beat Austria in '48, they don't have to work with Cavour
+				has_global_flag = plombieres 
+					AND = {
+						726 = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									in_sphere = THIS
+									OR = {
+										is_vassal = no
+										vassal_of = THIS
+									}
+								}
+							}
+						}
+						VEN = {
+							all_core = {
+								OR = {
+									owned_by = THIS
+									owner = {
+										in_sphere = THIS
+										OR = {
+											is_vassal = no
+											vassal_of = THIS
+										}
+									}
+								}
+							}
+						}
+					}
+			}
 			war = no
 			nationalism_n_imperialism = 1
 			ITA = {
@@ -1177,6 +1212,7 @@ political_decisions = {
 			MOD = { all_core = { add_core = SAR } }
 			RMG = { all_core = { add_core = SAR } }
 			VEN = { all_core = { add_core = SAR } }
+			AUS_726 = { add_core = SAR }
 			TUS_744 = { add_core = TUS remove_core = SAR }
 			751 = { add_core = TUS }
 			752 = { add_core = TUS }
@@ -1185,6 +1221,7 @@ political_decisions = {
 			749 = { add_core = PAP }
 			3374 = { add_core = PAP }
 			3375 = { add_core = PAP }
+			3479 = { add_core = SAR remove_core = TUS }
 			release_vassal = PAP
 			release_vassal = SIC
 			release_vassal = TUS
@@ -1263,6 +1300,8 @@ political_decisions = {
 		allow = {
 			war = no
 			truce_with = SAR
+			NOT = { truce_with = FRA }
+			NOT = { truce_with = LTU }
 			has_recently_lost_war = no
 		}
 
@@ -1273,7 +1312,7 @@ political_decisions = {
 				remove_core = ITA
 			}
 			SAR = {	prestige = -30 }
-			FRA = { country_event = 72764 }
+			425 = { owner = { country_event = 72764 } }
 		}
 
 		ai_will_do = { factor = 1 }
@@ -1283,7 +1322,7 @@ political_decisions = {
 	french_outside_italy_sm = {
 		picture = san_marino
 		potential = {
-			tag = FRA
+			#tag = FRA
 			has_country_modifier = louis_napoleon_iii
 			is_greater_power = yes
 			has_country_flag = french_outside_italy

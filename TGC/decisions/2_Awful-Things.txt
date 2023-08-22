@@ -2,7 +2,7 @@ political_decisions = {
 
 ## Slavery ##
 
-	#Description: Slave countries can enslave their African and Asian Minor pops.
+	#Description: Slave countries can enslave their African diaspora pops.
 	enslave_the_free = {
 		picture = slaves_cotton
 		alert = no
@@ -10,11 +10,7 @@ political_decisions = {
 			slavery = yes_slavery
 			civilized = yes
 			any_pop = {
-				OR = {
-					is_culture_group = african_diaspora_cultures
-					# has_pop_culture = african_minor
-					has_pop_culture = asian_minor
-				}
+				is_culture_group = african_diaspora_cultures
 				OR = {
 					pop_type = farmers
 					pop_type = labourers
@@ -45,17 +41,14 @@ political_decisions = {
 				consciousness = 3
 			}
 
-			## Enslave African and Asian Minor pops ##
+			## Enslave African diaspora pops ##
 				any_pop = {
 					limit = {
-						OR = {
-							is_culture_group = african_diaspora_cultures
-							# has_pop_culture = african_minor
-							has_pop_culture = asian_minor
-						}
+						is_culture_group = african_diaspora_cultures
 						OR = {
 							pop_type = farmers
 							pop_type = labourers
+							pop_type = craftsmen
 						}
 						is_primary_culture = no
 						is_accepted_culture = no
@@ -65,23 +58,20 @@ political_decisions = {
 					militancy = 7
 					consciousness = 7
 				}
-				any_pop = {
-					limit = {
-						OR = {
-							is_culture_group = african_diaspora_cultures
-							# has_pop_culture = african_minor
-							has_pop_culture = asian_minor
-						}
-						pop_type = craftsmen
-						is_primary_culture = no
-						is_accepted_culture = no
-						location = { state_scope = { is_slave = yes } }
-					}
-					pop_type = slaves
-					# pop_type = slaves_factory
-					militancy = 7
-					consciousness = 7
-				}
+				# Factory slaves aren't in the mod (yet?), so craftsmen become normal slaves just like everyone else
+				#any_pop = {
+				#	limit = {
+				#		is_culture_group = african_diaspora_cultures
+				#		pop_type = craftsmen
+				#		is_primary_culture = no
+				#		is_accepted_culture = no
+				#		location = { state_scope = { is_slave = yes } }
+				#	}
+				#	pop_type = slaves
+				#	# pop_type = slaves_factory
+				#	militancy = 7
+				#	consciousness = 7
+				#}
 		}
 
 		ai_will_do = {
@@ -341,8 +331,8 @@ political_decisions = {
 					}
 					add_casus_belli = {
 						target = THIS
-						type = cut_down_to_size
-						months = 360
+						type = end_slave_trade
+						months = 36
 					}
 					relation = { who = THIS value = -200 }
 				}
@@ -647,23 +637,22 @@ political_decisions = {
 	internment_camps = {
 		picture = boer_war_camps2
 		potential = {
+			invention = rhetoric_of_hate
 			has_country_flag = authoritarian_government
 			revolution_n_counterrevolution = 1
 			NOT = { has_country_modifier = internment_camps_modifier }
-			#OR = {
-			#	has_country_flag = government_decisions_on
-			#	ai = yes
-			#}
 		}
 
 		allow = {
 			war = no
+			money = 100000
 			capital_scope = { is_core = THIS }
 			NOT = {
 				has_country_modifier = law_changed_by_force
 				has_country_modifier = national_confusion
 				has_recently_lost_war = yes
 			}
+			invention = rhetoric_of_hate
 			OR = {
 				ruling_party_ideology = reactionary
 				ruling_party_ideology = fascist
@@ -674,6 +663,8 @@ political_decisions = {
 		effect = {
 			plurality = -50
 			add_country_modifier = { name = internment_camps_modifier duration = -1 }
+			add_country_modifier = { name = law_changed_by_force duration = 1500 }
+			add_tax_relative_income = -365
 			set_country_flag = government_busy_with_something
 			set_country_flag = internment_camps_open
 			set_variable = { which = evidence_count value = 0 }
@@ -689,8 +680,6 @@ political_decisions = {
 				limit = { has_province_modifier = national_assimilation }
 				owner = { country_event = 2611 }
 			}
-			country_event = { id = 4433 days = 2 }
-			country_event = { id = 4434 days = 3 }
 		}
 
 		ai_will_do = { factor = 0 }
@@ -702,7 +691,9 @@ political_decisions = {
 			has_country_modifier = internment_camps_modifier
 		}
 
-		allow = { }
+		allow = {
+		NOT = { has_country_modifier = law_changed_by_force }
+		}
 
 		effect = {
 			### Law Changed By Force Cooldown ###
@@ -826,7 +817,7 @@ political_decisions = {
 			set_country_flag = interning_decisions_open
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = { factor = 0 }
 	}
 
 	internment_camps_decisions_close = {
@@ -843,6 +834,38 @@ political_decisions = {
 		}
 
 		ai_will_do = { factor = 0 }
+	}
+	
+	internment_camps_intern_religions = {
+		picture = boer_war_camps2
+		potential = {
+			has_country_modifier = internment_camps_modifier
+			has_country_flag = interning_decisions_open
+		}
+
+		allow = { }
+
+		effect = {
+			set_country_flag = interning_religions
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+	
+	internment_camps_intern_cultures = {
+		picture = boer_war_camps2
+		potential = {
+			has_country_modifier = internment_camps_modifier
+			has_country_flag = interning_decisions_open
+		}
+
+		allow = { }
+
+		effect = {
+			set_country_flag = interning_cultures
+		}
+
+		ai_will_do = { factor = 1 }
 	}
 
 	## Religious ##
@@ -2394,6 +2417,7 @@ political_decisions = {
 	genocide_minorities = {
 		picture = genocide_minorities
 		potential = {
+			invention = rhetoric_of_hate
 			has_country_flag = authoritarian_government
 			revolution_n_counterrevolution = 1
 			NOT = { has_country_flag = preparations_to_kill }
@@ -2413,12 +2437,12 @@ political_decisions = {
 		}
 
 		effect = {
-			add_tax_relative_income = -0.1
+			add_tax_relative_income = -365
 			plurality = -50
 			set_country_flag = preparations_to_kill
 			random_owned = {
 				limit = { owner = { has_country_modifier = signed_the_geneva_convention } }
-				owner = { badboy = 3 }
+				owner = { badboy = 10 }
 			}
 			any_owned = {
 				limit = { has_province_modifier = national_assimilation }

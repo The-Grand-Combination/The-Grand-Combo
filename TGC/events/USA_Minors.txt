@@ -252,85 +252,6 @@
 
 ### Louisiana ###
 
-	#Description: The Treaty of New York - if the French retake Louisiana, move Francophone pops to French territory, the USA gets Southern Ontario as a state, accepts Anglo-Canadian and gets Western Collapse
-	country_event = {
-		id = 99971
-		title = "EVTNAME99971"
-		desc = "EVTDESC99971"
-		picture = "treaty"
-		major = yes
-
-		trigger = {
-			tag = USA
-			has_global_flag = treaty_of_new_york
-			war = no
-			NOT = { has_country_flag = treaty_of_new_york_implemented }
-		}
-
-		fire_only_once = yes
-
-		option = {
-			name = "EVTOPTA99971"
-
-			## Move pops ##
-				random_owned = {
-					limit = { owner = { any_pop = { has_pop_culture = french_canadian } } }
-					any_pop = {
-						limit = { has_pop_culture = french_canadian }
-						move_pop = 65  # Quebec City
-					}
-				}
-				random_owned = {
-					limit = { owner = { any_pop = { has_pop_culture = cajun } } }
-					any_pop = {
-						limit = { has_pop_culture = cajun }
-						move_pop = 139 # New Orleans
-					}
-				}
-				random_owned = {
-					limit = { owner = { any_pop = { has_pop_culture = acadian } } }
-					any_pop = {
-						limit = { has_pop_culture = acadian }
-						move_pop = 71 # Halifax
-					}
-				}
-
-			## Southern Ontario as a state ##
-				random_country = {
-					limit = {
-						OR = { tag = CAN tag = FCA }
-						exists = yes
-						any_owned_province = { region = CAN_46 }
-					}
-					remove_accepted_culture = anglo_canadian
-					any_owned = {
-						limit = {
-							region = CAN_46
-							NOT = {
-								province_id = 50
-								province_id = 51
-							}
-						}
-						remove_core = CAN
-						remove_core = FCA
-						add_core = USA
-						secede_province = USA
-					}
-				}
-				random_owned = {
-					limit = { region = CAN_46 }
-					owner = { add_accepted_culture = anglo_canadian }
-					CAN_46 = {
-						is_slave = no
-						change_region_name = "Southern Ontario"
-					}
-				}
-
-			set_country_flag = treaty_of_new_york_implemented
-			country_event = 4489019
-		}
-	}
-
 	#Description: Western Collapse - If Louisiana claims all former Louisianan territory and owns it, or if the Treaty of New York is enforced, the western states will become vassals/independent
 	country_event = {
 		id = 4489019
@@ -391,13 +312,7 @@
 						}
 					}
 					MEX_100 = { add_core = UNM } # Arizona
-					any_owned = {
-						limit = { 
-							region = MEX_103 # New Mexico
-							NOT = { is_core = TEX }
-						}
-						add_core = UNM
-					}
+					MEX_103 = { add_core = UNM } # New Mexico
 					UNM = { all_core = { remove_core = USA remove_core = DES } } #I don't want bigass Deseret
 				}
 				UNB = {
@@ -409,13 +324,7 @@
 							}
 						}
 						MEX_100 = { add_core = UNM } # Arizona
-						any_owned = {
-							limit = { 
-								region = MEX_103 # New Mexico
-								NOT = { is_core = TEX }
-							}
-							add_core = UNM
-						}
+						MEX_103 = { add_core = UNM } # New Mexico
 						UNM = { all_core = { remove_core = UNB remove_core = DES } }
 					}
 				}
@@ -548,20 +457,8 @@
 						}
 					}
 					MEX_97 = { add_core = DES } # Utah
-					any_owned = {
-						limit = {
-							region = USA_106 # Colorado
-							NOT = { is_core = TEX is_core = ULA }
-						}
-						add_core = DES
-					}
-					any_owned = {
-						limit = {
-							region = USA_111 #Wyoming
-							NOT = { is_core = TEX is_core = ULA is_core = UOR }
-						}
-						add_core = DES
-					}
+					USA_106 = { add_core = DES } # Colorado
+					USA_111 = { add_core = DES } # Wyoming
 					DES = { all_core = { remove_core = USA } }
 				}
 				UNB = {
@@ -574,20 +471,8 @@
 							}
 						}
 						MEX_97 = { add_core = DES } # Utah
-						any_owned = {
-							limit = {
-								region = USA_106 # Colorado
-								NOT = { is_core = TEX is_core = ULA }
-							}
-							add_core = DES
-						}
-						any_owned = {
-							limit = {
-								region = USA_111 #Wyoming
-								NOT = { is_core = TEX is_core = ULA is_core = UOR }
-							}
-							add_core = DES
-						}
+						USA_106 = { add_core = DES } # Colorado
+						USA_111 = { add_core = DES } # Wyoming
 						DES = { all_core = { remove_core = UNB } }
 					}
 				}
@@ -602,6 +487,10 @@
 						secede_province = DES
 					}
 				}
+				UOR = { any_owned = { remove_core = DES } } # For some reason any_owned, which works perfectly with the other tags, with DES and UNM it doesn't
+				TEX = { any_owned = { remove_core = DES } } # Those fuor lines are a cleanup, as Deseret already has caused me so many problems with cores
+				FRA = { any_owned = { remove_core = DES } } # Don't remove them unless you find a smarter way of handling this whole event
+				ULA = { all_core = { add_core = USA } } # This in particular is to give America back its cores on Colorado and Wyoming
 			## Rio Grande ##
 				random_owned = {
 					limit = {

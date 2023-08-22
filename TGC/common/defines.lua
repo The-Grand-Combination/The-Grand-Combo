@@ -15,7 +15,7 @@ defines = {
 		GREATNESS_DAYS = 365, 	   -- how many days until country risks losing status as great nation
 		BADBOY_LIMIT = 25,
 		MAX_BUREAUCRACY_PERCENTAGE = 0.025, -- More than max percent bureaucrats of population will give no additional benefits
-		BUREAUCRACY_PERCENTAGE_INCREMENT = 0.002, -- For each social administrative reform level, this is added to MAX_BUREAUCRACY_PERCENTAGE
+		BUREAUCRACY_PERCENTAGE_INCREMENT = 0.001, -- For each social administrative reform level, this is added to MAX_BUREAUCRACY_PERCENTAGE
 		MIN_CRIMEFIGHT_PERCENT = 0.1,
 		MAX_CRIMEFIGHT_PERCENT = 0.99,
 		ADMIN_EFFICIENCY_CRIMEFIGHT_PERCENT = 0.5, -- Crimefight depends on both state admin eff. and admin spending, admin spending percent effect is set to (1-ADMIN_EFFICIENCY_CRIMEFIGHT_PERCENT)
@@ -434,7 +434,7 @@ defines = {
 		CANCELGIVEMILACCESS_RELATION_ON_ACCEPT = -10,
 		CANCELGIVEMILACCESS_DIPLOMATIC_COST = 1,
 
-		WARSUBSIDY_RELATION_ON_ACCEPT = 20,
+		WARSUBSIDY_RELATION_ON_ACCEPT = 40,
 		WARSUBSIDY_DIPLOMATIC_COST = 1,
 		CANCELWARSUBSIDY_RELATION_ON_ACCEPT = 0,
 		CANCELWARSUBSIDY_DIPLOMATIC_COST = 0,
@@ -517,7 +517,7 @@ defines = {
 		DISHONORED_CALLALLY_PRESTIGE_PENALTY = -3,
 		BASE_TRUCE_MONTHS = 12,
 		MAX_INFLUENCE = 100,
-		WARSUBSIDIES_PERCENT = 0.30, -- How many percent of imports you are going to pay each day(mil. constructions and mil. maintainence)
+		WARSUBSIDIES_PERCENT = 0.3, -- How many percent of imports you are going to pay each day(mil. constructions and mil. maintainence)
 		NEIGHBOUR_BONUS_INFLUENCE_PERCENT = 0.50, -- Bonus to neighbouring countries when influencing
 		SPHERE_NEIGHBOUR_BONUS_INFLUENCE_PERCENT = 0.2, -- Bonus to countries in your sphere neighbouring when influencing
 		OTHER_CONTINENT_BONUS_INFLUENCE_PERCENT = -0.50, -- Malus to countries in another continent
@@ -630,9 +630,9 @@ defines = {
 		PROMOTION_ASSIMILATION_CHANCE = 0.05,
 		LUXURY_THRESHOLD = 500,
 		BASE_GOODS_DEMAND = 0.8, --0.8
-		BASE_POPGROWTH = 0.0001,
+		BASE_POPGROWTH = 0.00009,
 		MIN_LIFE_RATING_FOR_GROWTH = 30,
-		LIFE_RATING_GROWTH_BONUS = 0.0001,
+		LIFE_RATING_GROWTH_BONUS = 0.00009,
 		LIFE_NEED_STARVATION_LIMIT = 0.5,
 
 		MIL_LACK_EVERYDAY_NEED = 0.05, -- was 0.1
@@ -661,7 +661,7 @@ defines = {
 
 		POP_SAVINGS = 0.018,
 
-		STATE_CREATION_ADMIN_LIMIT = 0.015,
+		STATE_CREATION_ADMIN_LIMIT = 0.012,
 		MIL_TO_JOIN_REBEL = 8, -- Rebels over this will join a faction
 		MIL_TO_JOIN_RISING = 9, -- Rebels over this will join a general rising
 		MIL_TO_AUTORISE = 9, -- Rebels over this rise no matter what

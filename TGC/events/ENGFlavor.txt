@@ -1545,17 +1545,19 @@ country_event = {
 	}
 }
 
-province_event = {
-
+country_event = {
+			
 	id = 36938
+	title = "EVTNAME36938"
+	desc = "EVTDESC36938"
+	picture = "BengaliNovel"
 
 	trigger = {
-		province_id = 1251 #Calcutta
+		owns = 1251 #Calcutta
 		year = 1864
 		NOT = {
 			year = 1867
 			}
-
 	}
 
 	fire_only_once = yes
@@ -1575,20 +1577,10 @@ province_event = {
 		}
 	}
 
-	title = "EVTNAME36938"
-	desc = "EVTDESC36938"
-	picture = "BengaliNovel"
 
 	option = {
 		name = "EVTOPTA36938"
-		any_pop = {
-			limit = {
-				has_pop_religion = hindu
-				}
-			militancy = 1
-			consciousness = 2
-			}
-
+		 1251 = { any_pop = { limit = { has_pop_religion = hindu } militancy = 1 consciousness = 2 } }
 	}
 
 }
@@ -2009,9 +2001,11 @@ country_event = {
 }
 
 province_event = {
+			
 	id = 36963
 	title = "EVTNAME36963"
 	desc = "EVTDESC36963"
+	picture = "prov_new_state"
 
 	trigger = {
 		province_id = 1909
@@ -2595,9 +2589,10 @@ country_event = {
 				limit = {
 					owner = { ai = yes neighbour = RUS }
 					OR = {
-						region = RUS_1196
-						region = KHI_1191
-						region = KOK_1190
+						region = RUS_1196 # Turkmenia
+						region = KHI_1191 # Uzbekia
+						region = BUK_1198 # Bukhara
+						region = KOK_1190 # Fergana
 					}
 				}
 				secede_province = RUS
@@ -2880,10 +2875,12 @@ country_event = {
 
 #The End of the Gold Rush
 province_event = {
+			
 
 	id = 315001
 	title = "EVTNAME315001"
 	desc = "EVTDESC315001"
+	picture = "prov_goldrush"
 
 	trigger = {
 		trade_goods = precious_metal
@@ -2892,7 +2889,7 @@ province_event = {
 			province_id = 2481
 			province_id = 2472
 			province_id = 2470
-			province_id = 2334
+			province_id = 2329
 			province_id = 2400
 		}
 		year = 1875
@@ -2918,7 +2915,7 @@ province_event = {
 		modifier = {
 			factor = 10000
 			OR = {
-				province_id = 2334
+				province_id = 2329
 				province_id = 2400
 			}
 			NOT = { year = 1905 }
@@ -3004,8 +3001,8 @@ province_event = {
 			}
 		}
 
-		owner = { random_owned = { limit = { owner = { owns = 2334 2334 = { NOT = { trade_goods = wool } } } }
-			owner = { 2334 = { trade_goods = wool } }
+		owner = { random_owned = { limit = { owner = { owns = 2329 2329 = { NOT = { trade_goods = wool } } } }
+			owner = { 2329 = { trade_goods = wool } }
 			}
 		}
 	}
@@ -4433,13 +4430,14 @@ country_event = {
 		}
 		OR = {
 		549 = { owner = { industrial_score = THIS } } #More industry than GBR
-		619 = { owned_by = GER } #Vienna
+		619 = { OR = { owned_by = GCF owned_by = GER } } #Vienna
 		FRA_412 = { #Lorraine
 					NOT = {
 						owned_by = FRA
 					}
 				}
 			}
+		NOT = { has_global_flag = leipzig_congress }
 		NOT = { has_global_flag = treaty_of_paris_russia } #Germany is an ally, not a foe if Russia is a big threaterino MUH INDIA
 	}
 
@@ -4555,6 +4553,7 @@ country_event = {
 				}				#if they lost alsace they're not gonna care about russian ME domination
 				619 = { owner = { OR = { tag = KUK tag = AUS tag = DNB } } } #If Super Germany forms, France won't care about Ottomans anymore
 			}
+			tag = LTU
 			is_culture_group = germanic
 		}
 		ai = yes
@@ -4589,13 +4588,20 @@ country_event = {
 
 country_event = {
 	id = 999594
-	title = "EVTNAME999592"
+	title = "EVTNAME999594"
 	desc = "EVTDESC999592"
 
 	trigger = {
+		OR = {
 		has_global_flag = french_rhineland_win_crisis
+		has_country_modifier = french_threat
+		FRA = { has_country_modifier = outraged_europe_fra }
+		LTU = { has_country_modifier = outraged_europe_fra }
+		}
 	    OR = {
 		tag = ENG
+		tag = RUS
+		tag = SCA
 		AND = {
 		is_culture_group = germanic
 		is_greater_power = yes
@@ -4603,15 +4609,19 @@ country_event = {
 		}
 		ai = yes
 		NOT = { has_global_flag = triple_entente_alliance }
+		OR = {
 		alliance_with = FRA
+		alliance_with = LTU
+		}
+		NOT = { has_global_flag = paris_congress_ltu }
 	}
 
 	mean_time_to_happen = { days = 1 }
 
 	option = {
-		name = "EVTOPTA999592"
+		name = "EVTOPTA999594"
 		any_greater_power = {
-			limit = { primary_culture = french }
+			limit = { OR = { primary_culture = french primary_culture = neolatin } }
 			relation = {
 				who = THIS
 				value = -400
@@ -4619,7 +4629,7 @@ country_event = {
 			leave_alliance = THIS
 		}
 		any_greater_power = {
-			limit = { NOT = { truce_with = THIS } NOT = { tag = FRA } }
+			limit = { NOT = { truce_with = THIS } NOT = { tag = FRA } NOT = { tag = LTU } }
 			relation = {
 				who = THIS
 				value = 50
@@ -4630,7 +4640,7 @@ country_event = {
 
 country_event = {
 	id = 999595
-	title = "EVTNAME999592"
+	title = "EVTNAME999595"
 	desc = "EVTDESC999592"
 
 	is_triggered_only = yes
@@ -4643,6 +4653,276 @@ country_event = {
 				who = THIS
 				value = 200
 			}
+		}
+	}
+}
+
+country_event = {
+	id = 999596
+	title = "EVTNAME999590"
+	desc = "EVTDESC999590"
+
+	trigger = {
+			619 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			549 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+				}
+			}
+			641 = {
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
+		OR = {
+			tag = ENG
+			tag = RUS
+			tag = SCA
+			tag = FRA
+			tag = LTU
+			AND = {
+				tag = ITA
+				OR = {
+					AUS_726 = {
+						OR = {
+							owned_by = GCF
+							owned_by = GER
+						}
+					}
+					AUS_729 = {
+						OR = {
+							owned_by = GCF
+							owned_by = GER
+						}
+					}
+					AUS_729 = {
+						OR = {
+							owned_by = GCF
+							owned_by = GER
+						}
+					}
+				}
+			}
+		}
+		NOT = { has_global_flag = leipzig_congress }
+		ai = yes
+		OR = {
+			alliance_with = GCF
+			alliance_with = GER
+		}
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = {
+		name = "EVTOPTA999591"
+		any_greater_power = {
+			limit = { 
+				OR = {
+					tag = GCF
+					tag = GER
+				}
+			 }
+			relation = {
+				who = THIS
+				value = -400
+			}
+			leave_alliance = THIS
+		}
+		any_greater_power = {
+			limit = { NOT = { truce_with = ENG } NOT = { tag = GER } NOT = { tag = GCF } }
+			relation = {
+				who = THIS
+				value = 100
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 999597
+	title = "EVTNAME999597"
+	desc = "EVTDESC999597"
+	picture = "the_great_war"
+	major = yes
+
+	trigger = {
+		has_country_flag = retaken_thirteen_colonies
+		has_country_modifier = american_dominions
+		NEN = { exists = yes vassal_of = THIS }
+		FSA = { exists = yes vassal_of = THIS }
+		CSA = { exists = yes vassal_of = THIS }
+		OR = {
+			FSA = { has_country_modifier = patriot_open_revolts }
+			CSA = { has_country_modifier = patriot_open_revolts }
+		}
+		year = 1870 #tbd
+	}
+
+	mean_time_to_happen = {
+		months = 60
+		modifier = {
+			factor = 1.1
+			CSA = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 1.1
+			FSA = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 1.1
+			NEN = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 1.1
+			TEX = { has_country_modifier = loyalists_surge }
+		}
+		modifier = {
+			factor = 0.9
+			FSA = { has_country_modifier = patriot_open_revolts }
+		}
+		modifier = {
+			factor = 0.9
+			NEN = { has_country_modifier = patriot_open_revolts }
+		}
+		modifier = {
+			factor = 0.9
+			CSA = { has_country_modifier = patriot_open_revolts }
+		}
+		modifier = {
+			factor = 0.9
+			TEX = { has_country_modifier = patriot_open_revolts }
+		}
+	}
+
+	option = {
+		name = "EVTOPTA999597" #So it begins
+		any_country = {
+			limit = { vassal_of = THIS OR = { primary_culture = yankee primary_culture = texan primary_culture = dixie } }
+			country_event = 999598
+		}
+		prestige = -50
+	}
+}
+
+country_event = {
+	id = 999598
+	title = "EVTNAME999598"
+	desc = "EVTDESC999598"
+	picture = "the_great_war"
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA999598" #Start the Second American war of Independence
+		remove_country_modifier = under_the_british_crown
+		remove_country_modifier = patriot_open_revolts
+		remove_country_modifier = loyalists_surge
+		add_tax_relative_income = 30
+		 war = {
+			target = ENG
+			attacker_goal = { casus_belli = become_independent }
+			defender_goal = { casus_belli = make_puppet }
+		}
+		ai_chance = {
+				factor = 80
+				modifier = {
+					factor = 0.5
+					has_country_modifier = loyalists_surge
+				}
+				modifier = {
+					factor = 3
+					has_country_modifier = patriot_open_revolts
+				}
+				modifier = {
+					factor = 0.25
+					tag = NEN
+				}
+				modifier = {
+					factor = 10
+					tag = FSA
+				}
+			}
+
+	}
+	option = {
+		name = "EVTOPTB999598" #Stay loyal
+		ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 5
+					has_country_modifier = loyalists_surge
+				}
+				modifier = {
+					factor = 0.5
+					has_country_modifier = patriot_open_revolts
+				}
+				modifier = {
+					factor = 1.1
+					tag = NEN
+				}
+			}
+	}
+}
+
+country_event = {
+	id = 999599
+	title = "EVTNAME999599"
+	desc = "EVTDESC999599"
+	picture = "1854_Alamo"	
+
+	trigger = {
+		has_country_modifier = under_the_british_crown
+		NOT = { has_country_modifier = patriot_open_revolts }
+		NOT = { has_country_modifier = loyalists_surge }
+		year = 1855
+	}
+
+	mean_time_to_happen = {
+		months = 36
+	}
+
+	option = {
+		name = "EVTOPTA999599"
+		add_country_modifier = { name = patriot_open_revolts duration = 3600 }
+		relation = { who = ENG value = -200 }
+		ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 1.25
+					tag = FSA
+				}
+				modifier = {
+					factor = 1.2
+					tag = CSA
+				}
+				modifier = {
+					factor = 1.1
+					tag = TEX
+				}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB999599"
+		add_country_modifier = { name = loyalists_surge duration = 3600 }
+		relation = { who = ENG value = 100 }
+		ai_chance = {
+				factor = 50
+				modifier = {
+					factor = 1.25
+					tag = NEN
+				}
 		}
 	}
 }
