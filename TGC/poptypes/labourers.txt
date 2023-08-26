@@ -59,7 +59,7 @@ country_migration_target = {
 	}
 
 	modifier = {
-		factor = 0.5
+		factor = -10
 		any_owned_province = {
 			has_recent_imigration = 15
 		}
@@ -75,10 +75,84 @@ country_migration_target = {
 	}
 
 	modifier = {
-		factor = 10
-		any_owned = {
+		factor = 3
+		any_owned_province = {
+			AND = {
+				work_available = { worker = craftsmen }
+				NOT = {
+					unemployment_by_type = {
+						type = craftsmen
+						value = 0.5
+					}
+				}
+			}
+		}
+	}
+
+	modifier = {
+		factor = 1.1
+		any_owned_province = {
+			has_factories = no
+		}
+	}
+
+	modifier = {
+		factor = 1.5
+		any_owned_province = {
 			trade_goods = precious_metal
 		}
+	}
+
+	#religion
+	modifier = {
+		factor = -1.5
+		THIS = {
+			OR = {
+				has_pop_religion = catholic
+				has_pop_religion = protestant
+			}
+		}
+		has_country_flag = sunni_country
+	}
+	modifier = {
+		factor = 4.5
+		THIS = {
+			has_pop_religion = catholic
+		}
+		has_country_flag = catholic_country
+	}
+
+	modifier = {
+		factor = -0.5
+		THIS = { militancy = 5 }
+		THIS = {
+			country = {
+				any_neighbor_country = {
+					exists = yes
+				}
+			}
+		}
+	}
+
+	modifier = {
+		factor = 0.1
+		THIS = {
+			location = { continent = europe }
+		}
+		capital_scope = { continent = europe }
+	}
+
+	modifier = {
+		factor = 0.5
+		AND = {
+			num_of_ports = 1
+			NOT = { any_owned_province = { has_building = naval_base } }
+		}
+	}
+
+	modifier = {
+		factor = -0.5
+		total_num_of_ports = 0
 	}
 
 	## Mexico fix
@@ -89,7 +163,7 @@ country_migration_target = {
 	}
 
 	modifier = { 
-		factor = 0.2
+		factor = -0.75
 		war = yes
 	}
 
@@ -97,8 +171,6 @@ country_migration_target = {
 		factor = 0.8
 		has_recently_lost_war = yes
 	}
-
-
 
 	#Stability
 	modifier = {
@@ -110,11 +182,11 @@ country_migration_target = {
 		NOT = { plurality = 25 }
 	}
 	modifier = {
-		factor = 0.2
+		factor = 0.1
 		NOT = { plurality = 15 }
 	}
 	modifier = {
-		factor = 0.1
+		factor = 0
 		NOT = { plurality = 5 }
 	}
 
@@ -168,7 +240,7 @@ country_migration_target = {
 	## Culture Groups and related cultures ##
 	#Self
 	modifier = {
-		factor = 5
+		factor = 4
 		is_culture_group = THIS
 	}
 	#Highest Compability
@@ -244,6 +316,16 @@ country_migration_target = {
 			}
 		}
 	}
+	modifier = {
+		factor = 0.5
+		OR = {
+			# Audax Validator "." Ignore_NEXT
+			AND = {
+				THIS = { is_culture_group = pan_french }
+				is_culture_group = latin_american_cultures
+			}
+		}
+	}
 }
 
 
@@ -254,14 +336,25 @@ migration_target = {
 		factor = 0.8
 		has_recent_imigration = yes
 	}
+
 	modifier = {
 		factor = 15
 		has_building = naval_base
 	}
+
 	modifier = {
 		factor = 15
-		trade_goods = precious_metal
+		AND = {
+			trade_goods = precious_metal
+			OR = {
+				has_province_modifier = gold_rush
+				has_province_modifier = california_gold_rush
+				has_province_modifier = boer_gold
+				has_province_modifier = witwatersrand_gold_rush
+			}
+		}
 	}
+
 	modifier = {
 		factor = 3.5
 		AND = {
@@ -288,7 +381,7 @@ migration_target = {
 		is_capital = yes
 	}
 	modifier = {
-		factor = 1.2
+		factor = 5.5
 		has_pop_culture = THIS
 	}
 	modifier = {
