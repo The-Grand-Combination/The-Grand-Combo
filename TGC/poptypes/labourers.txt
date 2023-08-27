@@ -59,13 +59,6 @@ country_migration_target = {
 	}
 
 	modifier = {
-		factor = -10
-		any_owned_province = {
-			has_recent_imigration = 15
-		}
-	}
-
-	modifier = {
 		factor = 10
 		NOT = {
 			any_owned_province = {
@@ -76,13 +69,21 @@ country_migration_target = {
 
 	modifier = {
 		factor = 3
-		any_owned_province = {
-			AND = {
-				work_available = { worker = craftsmen }
-				NOT = {
-					unemployment_by_type = {
-						type = craftsmen
-						value = 0.5
+		AND = {
+			THIS = {
+				OR = {
+					pop_majority_ideology = liberal
+					pop_majority_ideology = anarcho_liberal
+				}
+			}
+			any_owned_province = {
+				AND = {
+					work_available = { worker = craftsmen }
+					NOT = {
+						unemployment_by_type = {
+							type = craftsmen
+							value = 0.5
+						}
 					}
 				}
 			}
@@ -90,9 +91,36 @@ country_migration_target = {
 	}
 
 	modifier = {
-		factor = 1.1
-		any_owned_province = {
-			has_factories = no
+		factor = 2.5
+		AND = {
+			THIS = {
+				OR = {
+					pop_majority_ideology = conservative
+					pop_majority_ideology = reactionary
+				}
+			}
+			any_owned_province = {
+				has_factories = no
+			}
+		}
+	}
+
+	modifier = {
+		factor = 5.5
+		AND = {
+			THIS = {
+				OR = {
+					pop_majority_ideology = liberal
+					pop_majority_ideology = anarcho_liberal
+					pop_majority_ideology = Socialist
+					pop_majority_issue = no_slavery
+					pop_majority_issue = freedom_of_womb
+				}
+			}
+			OR = {
+				slavery = freedom_of_womb
+				slavery = no_slavery
+			}
 		}
 	}
 
@@ -114,12 +142,21 @@ country_migration_target = {
 		}
 		has_country_flag = sunni_country
 	}
+
 	modifier = {
 		factor = 4.5
 		THIS = {
 			has_pop_religion = catholic
 		}
 		has_country_flag = catholic_country
+	}
+
+	modifier = {
+		factor = 4.5
+		THIS = {
+			has_pop_religion = protestant
+		}
+		has_country_flag = protestant_country
 	}
 
 	modifier = {
@@ -151,7 +188,7 @@ country_migration_target = {
 	}
 
 	modifier = {
-		factor = -0.5
+		factor = -5
 		total_num_of_ports = 0
 	}
 
@@ -170,24 +207,6 @@ country_migration_target = {
 	modifier = {
 		factor = 0.8
 		has_recently_lost_war = yes
-	}
-
-	#Stability
-	modifier = {
-		factor = 0.6
-		NOT = { plurality = 35 }
-	}
-	modifier = {
-		factor = 0.4
-		NOT = { plurality = 25 }
-	}
-	modifier = {
-		factor = 0.1
-		NOT = { plurality = 15 }
-	}
-	modifier = {
-		factor = 0
-		NOT = { plurality = 5 }
 	}
 
 	## Unemployment ##
@@ -243,6 +262,7 @@ country_migration_target = {
 		factor = 4
 		is_culture_group = THIS
 	}
+
 	#Highest Compability
 	modifier = {
 		factor = 4
@@ -250,15 +270,49 @@ country_migration_target = {
 			# Audax Validator "." Ignore_NEXT
 			AND = {
 				THIS = { has_pop_culture = spanish }
-				AND = { is_culture_group = latin_american_cultures NOT = { is_primary_culture = brazilian} }
+				AND = { 
+					is_culture_group = latin_american_cultures
+					NOT = { is_primary_culture = brazilian}
+				}
 			}
 			AND = {
 				THIS = { has_pop_culture = portuguese }
 				AND = { is_primary_culture = brazilian }
 			}
-			
+			AND = {
+				THIS = { is_culture_group = pan_british }
+				OR = {
+					is_culture_group = american_cultures
+					is_culture_group = neo_european_cultures
+					NOT = { is_primary_culture = alaskan }
+				}
+			}
+			AND = {
+				THIS = { is_culture_group = germanic }
+				OR = {
+					is_culture_group = american_cultures
+					is_primary_culture = anglo_canadian
+					is_primary_culture = australian
+					is_primary_culture = boer
+				}
+			}
 		}
 	}
+
+	#American Migration to Texas
+	modifier = {
+		factor = 30
+		AND = {
+			THIS = {
+				OR = {
+					has_pop_culture = yankee
+					has_pop_culture = dixie
+				}
+			}
+			has_country_flag = pioneer_state
+		}
+	}
+
 	#High Compatibility
 	modifier = {
 		factor = 3
@@ -270,13 +324,18 @@ country_migration_target = {
 			}
 			AND = {
 				THIS = { has_pop_culture = dutch }
-				primary_culture = boer
+				OR = {
+					is_culture_group = american_cultures
+					primary_culture = boer
+				}
 			}
 			AND = {
 				THIS = { is_culture_group = pan_french }
-				OR = { primary_culture = french_canadian 
-						primary_culture = cajun 
-						primary_culture = french_australian }
+				OR = {
+					primary_culture = french_canadian 
+					primary_culture = cajun 
+					primary_culture = french_australian
+				}
 			}
 			AND = {
 				THIS = { is_culture_group = pan_british }
@@ -287,8 +346,16 @@ country_migration_target = {
 				}
 			}
 			AND = {
-				OR = { THIS = { is_culture_group = south_slavic } THIS = { is_culture_group = east_slavic } THIS = { is_culture_group = polish_culture_group } }
-				OR = {  is_culture_group = south_slavic is_culture_group = east_slavic is_culture_group = polish_culture_group }
+				OR = {
+					THIS = { is_culture_group = south_slavic }
+					THIS = { is_culture_group = east_slavic }
+					THIS = { is_culture_group = polish_culture_group }
+				}
+				OR = {
+					is_culture_group = south_slavic
+					is_culture_group = east_slavic
+					is_culture_group = polish_culture_group
+				}
 			}
 		}
 	}
@@ -300,6 +367,13 @@ country_migration_target = {
 			# Audax Validator "." Ignore_NEXT
 			AND = {
 				THIS = { is_culture_group = italian }
+				is_culture_group = latin_american_cultures
+			}
+		}
+		OR = {
+			# Audax Validator "." Ignore_NEXT
+			AND = {
+				THIS = { is_culture_group = germanic }
 				is_culture_group = latin_american_cultures
 			}
 		}
@@ -316,13 +390,50 @@ country_migration_target = {
 			}
 		}
 	}
+
+	#Very Low Compatibility
 	modifier = {
-		factor = 0.5
+		factor = -10
+		THIS = { has_pop_culture = british }
+		is_primary_culture = french
+	}
+
+	#No Compatibility
+	modifier = {
+		factor = 0
+		THIS = { is_culture_group = african_diaspora_cultures }
 		OR = {
-			# Audax Validator "." Ignore_NEXT
-			AND = {
-				THIS = { is_culture_group = pan_french }
-				is_culture_group = latin_american_cultures
+			is_culture_group = germanic
+			is_culture_group = beneluxian
+			is_culture_group = scandinavian
+			is_culture_group = pan_british
+			is_culture_group = italian
+			is_culture_group = iberian
+			is_culture_group = pan_french
+			is_culture_group = pan_romanian
+			is_culture_group = pan_albanian
+			is_culture_group = hungarian_culture_group
+			is_culture_group = south_slavic
+			is_culture_group = polish_culture_group
+			is_culture_group = czecho_slovak_culture_group
+			is_culture_group = east_slavic
+			is_culture_group = baltic
+		}
+	}
+
+	modifier = {
+		factor = 0.01
+		THIS = {
+			country = {
+				has_country_flag = new_world_nation
+			}
+		}
+		NOT = {
+			capital_scope = {
+				continent = north_america
+			}
+			capital_scope = {
+				continent = south_america
 			}
 		}
 	}
@@ -331,6 +442,7 @@ country_migration_target = {
 
 migration_target = {
 	factor = 0.01
+
 	## Total Pops ##
 	modifier = {
 		factor = 0.8
@@ -359,7 +471,7 @@ migration_target = {
 	}
 
 	modifier = {
-		factor = 3.5
+		factor = 7.5
 		AND = {
 			work_available = { worker = labourers }
 			NOT = {
@@ -370,33 +482,106 @@ migration_target = {
 			}
 		}
 	}
+
+	modifier = {
+		factor = 4.5
+		trade_goods = iron
+	}
+
+	modifier = {
+		factor = 7.5
+
+	}
+
 	modifier = {
 		factor = 0
 		is_overseas = yes
 		country = { border_policy = closed_borders }
 	}
+
 	modifier = {
 		factor = 1.5
 		any_core = { is_primary_culture = THIS }
 	}
+
 	modifier = {
 		factor = 1.5
 		is_capital = yes
 	}
+
 	modifier = {
 		factor = 5.5
 		has_pop_culture = THIS
 	}
+
 	modifier = {
-		factor = 1.2
+		factor = 2.2
 		# Audax Validator "." Ignore_NEXT
 		has_pop_religion = THIS
 	}
+
 	modifier = {
-		factor = 1.05
+		factor = 3.5
 		is_coastal = yes
 	}
 
+	modifier = {
+		factor = 0.7
+		terrain = savanna
+	}
+
+	modifier = {
+		factor = 0.6
+		OR = {
+			terrain = mountain
+			terrain = montane_forest
+		}
+	}
+
+	modifier = {
+		factor = 0.2
+		OR = {
+			terrain = marsh
+			terrain = swamp_forest
+			terrain = boreal #this is taiga
+			terrain = caribbean_island
+		}
+	}
+
+	modifier = {
+		factor = 0.1
+		OR = {
+			terrain = jungle
+			terrain = boreal #this is taiga
+			terrain = mangrove_island
+			terrain = dry_island
+			terrain = coral_island
+			terrain = small_island
+			terrain = arctic #These are here for sickos that go out and strike for gold
+			terrain = polar_island
+			terrain = montane_tundra
+		}
+	}
+
+	modifier = {
+		factor = 0.01
+		OR = {
+			terrain = boreal #this is taiga
+			terrain = mangrove_island
+			terrain = dry_island
+			terrain = coral_island
+			terrain = small_island
+			terrain = caribbean_island
+			terrain = jungle #this one is up for debate, but pops love going there so I'd rather just zero it
+			terrain = mangrove_island
+		}
+		OR = {
+		NOT = { year = 1910 } #After 1910 they might do something dumb like, move to Las Vegas
+		##NOT = { has_building = immigrator }
+		NOT = { trade_goods = precious_metal } #Dumbos will still move to look for gold
+		NOT = { trade_goods = precious_goods }
+		}
+	}
 
 	modifier = {
 		factor = 0

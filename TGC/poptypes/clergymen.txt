@@ -88,13 +88,6 @@ country_migration_target = {
 	}
 
 	modifier = {
-		factor = -10
-		any_owned_province = {
-			has_recent_imigration = 15
-		}
-	}
-
-	modifier = {
 		factor = 10
 		NOT = {
 			any_owned_province = {
@@ -111,6 +104,25 @@ country_migration_target = {
 	}
 
 	modifier = {
+		factor = 5.5
+		AND = {
+			THIS = {
+				OR = {
+					pop_majority_ideology = liberal
+					pop_majority_ideology = anarcho_liberal
+					pop_majority_ideology = Socialist
+					pop_majority_issue = no_slavery
+					pop_majority_issue = freedom_of_womb
+				}
+			}
+			OR = {
+				slavery = freedom_of_womb
+				slavery = no_slavery
+			}
+		}
+	}
+
+	modifier = {
 		factor = -1.5
 		THIS = {
 			OR = {
@@ -120,6 +132,7 @@ country_migration_target = {
 		}
 		has_country_flag = sunni_country
 	}
+
 	modifier = {
 		factor = 4.5
 		THIS = {
@@ -258,9 +271,10 @@ country_migration_target = {
 	## Culture Groups and related cultures ##
 	#Self
 	modifier = {
-		factor = 5
+		factor = 4
 		is_culture_group = THIS
 	}
+
 	#Highest Compability
 	modifier = {
 		factor = 4
@@ -268,15 +282,49 @@ country_migration_target = {
 			# Audax Validator "." Ignore_NEXT
 			AND = {
 				THIS = { has_pop_culture = spanish }
-				AND = { is_culture_group = latin_american_cultures NOT = { is_primary_culture = brazilian} }
+				AND = { 
+					is_culture_group = latin_american_cultures
+					NOT = { is_primary_culture = brazilian}
+				}
 			}
 			AND = {
 				THIS = { has_pop_culture = portuguese }
 				AND = { is_primary_culture = brazilian }
 			}
-			
+			AND = {
+				THIS = { is_culture_group = pan_british }
+				OR = {
+					is_culture_group = american_cultures
+					is_culture_group = neo_european_cultures
+					NOT = { is_primary_culture = alaskan }
+				}
+			}
+			AND = {
+				THIS = { is_culture_group = germanic }
+				OR = {
+					is_culture_group = american_cultures
+					is_primary_culture = anglo_canadian
+					is_primary_culture = australian
+					is_primary_culture = boer
+				}
+			}
 		}
 	}
+
+	#American Migration to Texas
+	modifier = {
+		factor = 30
+		AND = {
+			THIS = {
+				OR = {
+					has_pop_culture = yankee
+					has_pop_culture = dixie
+				}
+			}
+			has_country_flag = pioneer_state
+		}
+	}
+
 	#High Compatibility
 	modifier = {
 		factor = 3
@@ -288,13 +336,18 @@ country_migration_target = {
 			}
 			AND = {
 				THIS = { has_pop_culture = dutch }
-				primary_culture = boer
+				OR = {
+					is_culture_group = american_cultures
+					primary_culture = boer
+				}
 			}
 			AND = {
 				THIS = { is_culture_group = pan_french }
-				OR = { primary_culture = french_canadian 
-						primary_culture = cajun 
-						primary_culture = french_australian }
+				OR = {
+					primary_culture = french_canadian 
+					primary_culture = cajun 
+					primary_culture = french_australian
+				}
 			}
 			AND = {
 				THIS = { is_culture_group = pan_british }
@@ -305,8 +358,16 @@ country_migration_target = {
 				}
 			}
 			AND = {
-				OR = { THIS = { is_culture_group = south_slavic } THIS = { is_culture_group = east_slavic } THIS = { is_culture_group = polish_culture_group } }
-				OR = {  is_culture_group = south_slavic is_culture_group = east_slavic is_culture_group = polish_culture_group }
+				OR = {
+					THIS = { is_culture_group = south_slavic }
+					THIS = { is_culture_group = east_slavic }
+					THIS = { is_culture_group = polish_culture_group }
+				}
+				OR = {
+					is_culture_group = south_slavic
+					is_culture_group = east_slavic
+					is_culture_group = polish_culture_group
+				}
 			}
 		}
 	}
@@ -321,6 +382,13 @@ country_migration_target = {
 				is_culture_group = latin_american_cultures
 			}
 		}
+		OR = {
+			# Audax Validator "." Ignore_NEXT
+			AND = {
+				THIS = { is_culture_group = germanic }
+				is_culture_group = latin_american_cultures
+			}
+		}
 	}
 
 	#Low Compatibility
@@ -331,6 +399,53 @@ country_migration_target = {
 			AND = {
 				THIS = { is_culture_group = pan_french }
 				is_culture_group = latin_american_cultures
+			}
+		}
+	}
+
+	#Very Low Compatibility
+	modifier = {
+		factor = -10
+		THIS = { has_pop_culture = british }
+		is_primary_culture = french
+	}
+
+	#No Compatibility
+	modifier = {
+		factor = 0
+		THIS = { is_culture_group = african_diaspora_cultures }
+		OR = {
+			is_culture_group = germanic
+			is_culture_group = beneluxian
+			is_culture_group = scandinavian
+			is_culture_group = pan_british
+			is_culture_group = italian
+			is_culture_group = iberian
+			is_culture_group = pan_french
+			is_culture_group = pan_romanian
+			is_culture_group = pan_albanian
+			is_culture_group = hungarian_culture_group
+			is_culture_group = south_slavic
+			is_culture_group = polish_culture_group
+			is_culture_group = czecho_slovak_culture_group
+			is_culture_group = east_slavic
+			is_culture_group = baltic
+		}
+	}
+
+	modifier = {
+		factor = 0.01
+		THIS = {
+			country = {
+				has_country_flag = new_world_nation
+			}
+		}
+		NOT = {
+			capital_scope = {
+				continent = north_america
+			}
+			capital_scope = {
+				continent = south_america
 			}
 		}
 	}

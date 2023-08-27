@@ -531,15 +531,15 @@ migration_chance = {
 			NOT = { life_needs = 0.8 } 
 		}
 		modifier = {
-			factor = 0.3
+			factor = 0.25
 			NOT = { life_needs = 0.4 } 
 		}
 		modifier = {
-			factor = 0.5
+			factor = 0.4
 			NOT = { life_needs = 0.2 } 
 		}
 		modifier = {
-			factor = 0.75
+			factor = 0.55
 			NOT = { life_needs = 0.1 } 
 		}
 	}
@@ -571,13 +571,6 @@ migration_chance = {
 			factor = 0.3
 			AND = {
 				unemployment = 0.9
-				location = { controlled_by = owner }
-			}
-		}
-		modifier = {
-			factor = 0.5
-			AND = {
-				unemployment = 1
 				location = { controlled_by = owner }
 			}
 		}
@@ -614,7 +607,7 @@ migration_chance = {
 			}
 		}
 		modifier = {
-			factor = 1
+			factor = 0.85
 			AND = {
 				unemployment = 0.75
 				location = { NOT = { controlled_by = owner }}
@@ -622,9 +615,14 @@ migration_chance = {
 		}
 	}
 
+	modifier = {
+		factor = 0.3
+		location = { controlled_by_rebels = yes }
+	}
+
 	#Both starving and jobless
 	modifier = {
-		factor = 1.25
+		factor = 0.75
 		AND = { 
 			unemployment = 1
 			NOT = { life_needs = 0.1 }
@@ -640,19 +638,6 @@ migration_chance = {
 	modifier = {
 		factor = 5
 		country = { has_country_flag = more_internal_migration }
-	}
-
-	modifier = {
-		factor = 0.65
-		country = { colonial_policy = settlement }
-	}
-
-	modifier = {
-		factor = 1.2
-		country = {
-			colonial_policy = settlement
-		 	administration_spending = 0.75
-		}
 	}
 }
 
@@ -891,8 +876,39 @@ emigration_chance = {
 			militancy = 8
 		}
 		modifier = {
-			factor = 0.75
+			factor = 0.55
 			militancy = 9
+		}
+	}
+
+	group = {
+		modifier = {
+			factor = 0.01
+			consciousness = 3
+		}
+		modifier = {
+			factor = 0.05
+			consciousness = 4
+		}
+		modifier = {
+			factor = 0.075
+			consciousness = 5
+		}
+		modifier = {
+			factor = 0.15
+			consciousness = 6
+		}
+		modifier = {
+			factor = 0.2
+			consciousness = 7
+		}
+		modifier = {
+			factor = 0.25
+			consciousness = 8
+		}
+		modifier = {
+			factor = 0.3
+			consciousness = 9
 		}
 	}
 
@@ -950,7 +966,33 @@ emigration_chance = {
 	}
 
 	modifier = {
-		factor = 0.45
+		factor = 0.5
+		OR = {
+			pop_majority_ideology = conservative
+			pop_majority_ideology = reactionary
+		}
+		country = {
+			NOT = {
+				ruling_party_ideology = conservative
+				ruling_party_ideology = reactionary
+			}
+		}
+	}
+
+	modifier = {
+		factor = 0.75
+		OR = {
+			pop_majority_ideology = conservative
+			pop_majority_ideology = reactionary
+		}
+		location = {
+			state_scope = { has_factories = yes }
+			NOT = { continent = north_america continent = south_america }
+		}
+	}
+
+	modifier = {
+		factor = 0.25
 		AND = {
 			THIS = {
 				OR = {
@@ -968,7 +1010,7 @@ emigration_chance = {
 	}
 
 	modifier = {
-		factor = -1.5
+		factor = -0.75
 		AND = {
 			OR = {
 				pop_majority_ideology = conservative
@@ -976,27 +1018,75 @@ emigration_chance = {
 			}
 			country = { 
 				OR = {
-					government = military_dictatorship
+					has_country_flag = presidential_dictatorship_gov
 					has_country_flag = absolute_monarchy_gov
+					ruling_party_ideology = reactionary
 				}
 			}
+			life_needs = 0.85
 		}
 	}
 
 	# literacy
-	modifier = {
-		factor = -2.5
-		AND = {
-			NOT = { literacy = 0.25 }
-			life_needs = 0.75
+	group = {
+		modifier = {
+			factor = -2.5
+			AND = {
+				life_needs = 0.75
+				strata = poor
+				NOT = { literacy = 0.05 }
+				year = 1840
+			}
+		}
+		modifier = {
+			factor = -2.5
+			AND = {
+				life_needs = 0.75
+				strata = poor
+				NOT = { literacy = 0.15 }
+				year = 1845
+			}
+		}
+		modifier = {
+			factor = -2.5
+			AND = {
+				life_needs = 0.75
+				strata = poor
+				NOT = { literacy = 0.25 }
+				year = 1855
+			}
+		}
+		modifier = {
+			factor = -2.5
+			AND = {
+				life_needs = 0.75
+				strata = poor
+				NOT = { literacy = 0.35 }
+				year = 1865
+			}
+		}
+		modifier = {
+			factor = -2.5
+			AND = {
+				life_needs = 0.75
+				strata = poor
+				NOT = { literacy = 0.45 }
+				year = 1875
+			}
 		}
 	}
 
 	#Life needs, basic life conditions
 	group = {
 		modifier = {
-			factor = -2.5
-			life_needs = 1
+			factor = -1
+			AND = {
+				life_needs = 1
+				NOT = {
+					strata = middle
+					strata = rich
+				}
+			}
 		}
 		modifier = {
 			factor = 0.5
@@ -1016,27 +1106,29 @@ emigration_chance = {
 		}
 	}
 
+	modifier = {
+		factor = 0.55
+		literacy = 0.5
+		NOT = { everyday_needs = 0.75 }
+	}
+
 	#everyday needs
 	group = {
 		modifier = {
 			factor -0.5
 			AND = {
 				everyday_needs = 0.9
-				NOT = { life_needs = 0.25 }
+				NOT = { life_needs = 0.5 }
 			}
 		}
 		modifier = {
 			factor = 0.1
-			AND = {
-				NOT = { everyday_needs = 0.75 }
-				NOT = { life_needs = 0.1 }
-			}
+			NOT = { everyday_needs = 0.75 }
 		}
 		modifier = {
 			factor = 0.25
 			AND = {
 				NOT = { everyday_needs = 0.6 }
-				NOT = { life_needs = 0.25 }
 				consciousness = 2.5
 			}
 		}
@@ -1044,39 +1136,30 @@ emigration_chance = {
 			factor = 0.3
 			AND = {
 				NOT = { everyday_needs = 0.5 }
-				NOT = { life_needs = 0.25 }
 				consciousness = 4
+			}
+		}
+		modifier = {
+			factor = 0.9
+			AND = {
+				NOT = { everyday_needs = 0.33 }
+				NOT = { strata = poor }
+				consciousness = 6
+			}
+		}
+		modifier = {
+			factor = 1.2
+			AND = {
+				NOT = { everyday_needs = 0.2 }
+				NOT = { strata = poor }
 			}
 		}
 		modifier = {
 			factor = 1.5
 			AND = {
-				NOT = { everyday_needs = 0.33 }
-				NOT = { life_needs = 0.25 }
-				consciousness = 6
-			}
-		}
-		modifier = {
-			factor = 1.75
-			AND = {
-				NOT = { everyday_needs = 0.2 }
-				NOT = { life_needs = 0.25 }
-			}
-		}
-		modifier = {
-			factor = 2
-			AND = {
 				NOT = { everyday_needs = 0.1 }
-				NOT = { life_needs = 0.25 }
+				NOT = { strata = poor }
 			}
-		}
-	}
-
-	modifier = {
-		factor = 0.2
-		AND = {
-			strata = middle
-			NOT = { everyday_needs = 0.5 }
 		}
 	}
 
@@ -1087,69 +1170,68 @@ emigration_chance = {
 			unemployment = 0
 		}
 		modifier = {
-			factor = 0.5
+			factor = 0.2
 			unemployment = 0.2
 			location = { controlled_by = owner }
 		}
 		modifier = {
-			factor = 1.25
+			factor = 0.4
 			unemployment = 0.4
 			location = { controlled_by = owner }
 		}
 		modifier = {
-			factor = 1.5
+			factor = 0.75
 			unemployment = 0.8
 			location = { controlled_by = owner }
 		}
 		modifier = {
-			factor = 1.75
+			factor = 1.25
 			unemployment = 0.9
-			location = { controlled_by = owner }
-		}
-		modifier = {
-			factor = 2
-			unemployment = 1
 			location = { controlled_by = owner }
 		}
 	}
 
 	#Both starving and jobless
 	modifier = {
-		factor = 3.5
-		unemployment = 1
-		NOT = { life_needs = 0.1 }
-		location = { controlled_by = owner }
+		factor = 1
+		AND = {
+			unemployment = 1
+			NOT = { life_needs = 0.1 }
+			location = { controlled_by = owner }
+		}
 	}
 
 	#Both satiated and employeed
 	modifier = {
 		factor = -0.5
-		unemployment = 0
-		life_needs = 1
+		AND = {
+			unemployment = 0
+			life_needs = 1
+			strata = poor
+		}
 	}
 
-	#Not killing small states
-	group = {
-		modifier = {
-			factor = -7
-			NOT = { location = { total_pops = 5000 } }
+	modifier = {
+		factor = -1.5
+		AND = {
+			unemployment = 0
+			everyday_needs = 1
+			strata = middle
 		}
-		modifier = {
-			factor = -6
-			NOT = { location = { total_pops = 10000 } }
+	}
+
+	modifier = {
+		factor = -2
+		AND = {
+			unemployment = 0
+			luxury_needs = 1
+			strata = rich
 		}
-		modifier = {
-			factor = -5
-			NOT = { location = { total_pops = 15000 } }
-		}
-		modifier = {
-			factor = -4
-			NOT = { location = { total_pops = 25000 } }
-		}
-		modifier = {
-			factor = -3
-			NOT = { location = { total_pops = 50000 } }
-		}
+	}
+
+	modifier = {
+		factor = -2
+		location = { trade_goods = precious_metal }
 	}
 
 	#Effects of War
@@ -1177,47 +1259,30 @@ emigration_chance = {
 	}
 
 	modifier = {
-		factor = 0.1
+		factor = 0.05
 		NOT = { location = { controlled_by = owner } }
-	}
-
-	modifier = {
-		factor = 0.5
-		AND = {
-			type = bureaucrats
-			NOT = { country = { administration_spending = 0.5 } }
-		}
-	}
-
-	modifier = {
-		factor = 1.2
-		AND = {
-			type = bureaucrats
-			NOT = { country = { administration_spending = 0.4 } }
-			NOT = { life_needs = 0.5 }
-		}
 	}
 
 	#Closed Borders
 	group = {
 		modifier = {
-			factor = -5
+			factor = -0.5
 			country = { border_policy = closed_borders administration_spending = 0.2 }
 		}
 		modifier = {
-			factor = -10
+			factor = -1.5
 			country = { border_policy = closed_borders administration_spending = 0.4 }
 		}
 		modifier = {
-			factor = -20
+			factor = -3
 			country = { border_policy = closed_borders administration_spending = 0.6 }
 		}
 		modifier = {
-			factor = -30
+			factor = -4
 			country = { border_policy = closed_borders administration_spending = 0.8 }
 		}
 		modifier = {
-			factor = -40
+			factor = -5
 			country = { border_policy = closed_borders administration_spending = 0.99 }
 		}
 	}
@@ -1225,50 +1290,52 @@ emigration_chance = {
 	#Closed Borders
 	group = {
 		modifier = {
-			factor = -5
+			factor = -0.5
 			country = { border_policy = closed_borders military_spending = 0.2 }
 		}
 		modifier = {
-			factor = -10
+			factor = -1.5
 			country = { border_policy = closed_borders military_spending = 0.4 }
 		}
 		modifier = {
-			factor = -20
+			factor = -3
 			country = { border_policy = closed_borders military_spending = 0.6 }
 		}
 		modifier = {
-			factor = -30
+			factor = -4
 			country = { border_policy = closed_borders military_spending = 0.8 }
 		}
 		modifier = {
-			factor = -40
+			factor = -5
 			country = { border_policy = closed_borders military_spending = 0.99 }
 		}
 	}
 	
 	modifier = {
-		factor = -50
+		factor = -2.5
 		country = { has_country_flag = less_emigration }
 	}
 
 	modifier = {
-		factor = -100
+		factor = -5
 		has_country_flag = new_world_nation
 	}
 
 	modifier = {
-		factor = 25
+		factor = 5
 		country = { has_country_flag = preparations_to_kill }
 		is_primary_culture = no
 		is_accepted_culture = no
 	}
 
 	modifier = {
-		factor = -2.5
-		country = {
-			colonial_policy = settlement
-			NOT = { has_country_flag = preparations_to_kill }
-			administration_spending = 0.75
+		factor = -0.5
+		AND = {
+			country = {
+				colonial_policy = settlement
+				NOT = { has_country_flag = preparations_to_kill }
+				administration_spending = 0.75
+			}
 		}
 	}
 
@@ -1280,9 +1347,12 @@ emigration_chance = {
 	}
 
 	modifier = {
-		factor = -1
-		agree_with_ruling_party = 0.5
-		#country = { NOT = { has_country_flag = preparations_to_kill } }
+		factor = -0.25
+		AND = {
+			agree_with_ruling_party = 0.5
+			life_needs = 1
+			#country = { NOT = { has_country_flag = preparations_to_kill } }
+		}
 	}
 
 	modifier = {
@@ -1298,20 +1368,20 @@ emigration_chance = {
 	}
 
 	modifier = {
-		factor = -150
+		factor = -10
 		THIS = { is_culture_group = east_asian }
 		country = { is_culture_group = east_asian civilized = yes }
 		country = { NOT = { has_country_flag = preparations_to_kill } }
 	}
 
 	modifier = {
-		factor = -15
+		factor = -3.5
 		country = { debt_law = serfdom }
 		THIS = { NOT = { is_culture_group = polish_culture_group } }
 	}
 
 	modifier = {
-		factor = -10
+		factor = -1.5
 		country = { debt_law = peonage }
 		THIS = { NOT = { is_culture_group = polish_culture_group } }
 	}
@@ -1337,15 +1407,75 @@ emigration_chance = {
 		}
 	}
 
-	modifier = {
-		factor = -25
-		has_pop_culture = mayan
-	}
-
 	#NOTE: This flag needs some looking into
 	modifier = {
 		factor = -50
 		country = { has_country_flag = micro_nation }
+	}
+
+	#Not killing small states
+	group = {
+		modifier = {
+			factor = -5
+			NOT = { location = { total_pops = 5000 } }
+		}
+		modifier = {
+			factor = -4
+			NOT = { location = { total_pops = 10000 } }
+		}
+		modifier = {
+			factor = -3
+			NOT = { location = { total_pops = 15000 } }
+		}
+		modifier = {
+			factor = -1.5
+			NOT = { location = { total_pops = 25000 } }
+		}
+		modifier = {
+			factor = -1
+			NOT = { location = { total_pops = 50000 } }
+		}
+	}
+
+	#The amount of PoPs that migrate from a province seems to be proportional to the province's population
+	modifier = {
+		factor = -2
+		location = { total_pops = 100000 }
+		NOT = { year = 1860 }
+	}
+
+	modifier = {
+		factor = -4
+		location = { total_pops = 200000 }
+		NOT = { year = 1880 }
+	}
+
+	modifier = {
+		factor = -6
+		location = { total_pops = 300000 }
+		NOT = { year = 1900 }
+	}
+
+	modifier = {
+		factor = -8
+		location = { total_pops = 400000 }
+		NOT = { year = 1920 }
+	}
+
+	modifier = {
+		factor = -5
+		has_pop_culture = dixie
+		OR = {
+			pop_majority_ideology = conservative
+			pop_majority_ideology = reactionary
+			pop_majority_issue = yes_slavery
+		}
+		country = {
+			OR = {
+				slavery = yes_slavery
+				slavery = freedom_of_womb
+			}
+		}
 	}
 }
 
