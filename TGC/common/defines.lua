@@ -54,7 +54,7 @@ defines = {
 		TECH_YEAR_SPAN = 150,
 		TECH_FACTOR_VASSAL = 0.5, -- cost reduction factor if overlord has research the tech
 		MAX_SUPPRESSION = 100,
-		PRESTIGE_HIT_ON_BREAK_COUNTRY = -0.20, -- percentage reduction when country gets taken by rebels
+		PRESTIGE_HIT_ON_BREAK_COUNTRY = -0.10, -- percentage reduction when country gets taken by rebels
 		MIN_MOBILIZE_LIMIT = 3,
 		POP_GROWTH_COUNTRY_CACHE_DAYS = 30, -- period of cached pop growth (used for player)
 		NEWSPAPER_PRINTING_FREQUENCY = 350, -- days frequency when the news attempt to be printed (may not print if not enough facts collected, and retry after another X days)
@@ -480,7 +480,7 @@ defines = {
 		DISARMAMENT_ARMY_HIT = 0.5,
 		REPARATIONS_TAX_HIT = 0.2,
 		PRESTIGE_REDUCTION_BASE = 25,
-		PRESTIGE_REDUCTION = 0.1, -- Base value + % of recipient's prestige
+		PRESTIGE_REDUCTION = 0.05, -- Base value + % of recipient's prestige
 		REPARATIONS_YEARS = 5,
 
 		-- No longer used:
