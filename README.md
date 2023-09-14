@@ -1,4 +1,7 @@
-# The Grand Combination
+# The Grand Combination - Compact Version. 
+
+This version of the modification follows 0.96.6 release, and does not include Caucasus or South America map updates that followed. TGC Compact is for those players with lower end PCs, or those that simply dislike new (and planned) map expansions and a different focus of the mod.
+As the main mod now strives for a bigger map, more provinces and details on it, TGC Compact will remain on the 0.96 Map. It will not produce content of its own nor follow updates from the main mod. It will finish British America rework and Baseline Prestige Mechanics that were begun before the community voted to focus on map deveploment. When necessary, and if major bugs appear, we will strive to fix them when that is possible.
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
