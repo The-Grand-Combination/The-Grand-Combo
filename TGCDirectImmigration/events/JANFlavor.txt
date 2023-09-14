@@ -181,6 +181,54 @@ country_event = {
 							}
 							add_province_modifier = { name = plantation duration = -1 }
 		}
+		# Baseline Prestige Updater
+		any_country = {
+			limit = {
+				NOT = { has_country_flag = recognized_independent_state }
+				exists = yes
+				is_vassal = no
+			}
+			set_country_flag = recognized_independent_state
+			prestige = 1000
+		}
+		any_country = {
+			limit = {
+				has_country_flag = recognized_independent_state
+				OR = {
+					is_vassal = yes
+					exists = no
+				}
+			}
+			clr_country_flag = recognized_independent_state
+			prestige = -2000
+		}
+		any_country = {
+			limit = {
+				has_country_flag = recognized_independent_state
+				NOT = { prestige = 1000 }
+				is_vassal = no
+			}
+			prestige = -1000
+			prestige = 1000
+		}
+		# Bankruptcy Handler for Baseline Prestige
+		any_country = {
+			limit = {
+				in_default = yes
+				has_country_flag = recognized_independent_state
+				NOT = { has_country_flag = recognized_independent_state_in_default } 
+			}
+			set_country_flag = recognized_independent_state_in_default
+			prestige = -1000
+			prestige = 1000
+		}
+		any_country = {
+			limit = {
+				has_country_flag = recognized_independent_state_in_default
+				in_default = no
+			}
+			clr_country_flag = recognized_independent_state_in_default
+		}
 	}
 }
 
