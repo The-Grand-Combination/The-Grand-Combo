@@ -58,6 +58,7 @@ province_event = {   #Zombify province
 					militancy = 8
 					consciousness = -3
 				}
+				life_rating = -30
 				change_controller = ZOM
 				secede_province = ZOM
 				ZOM = { money = 5000 }
@@ -120,64 +121,31 @@ country_event = { #note, this must be a country event, otherwise it might happen
 }
 
 #Uncolonize province
-province_event = {
+country_event = {
 	id = 66102
 	title = "EVTNAME66200"
 	desc = "EVTDESC66200"
 	picture = "prov_test"
 
 	trigger = {
-		NOT = { has_global_flag = plague_inc_mode 
-				units_in_province = 1
-				JAN = { has_country_modifier = ap_tn_timer }
-		}
-		owner = { tag = ZOM ai = yes }
+		tag = ZOM
+		year = 1838
+		NOT = { has_global_flag = uncolonizer_ongoing }
 	}
 
-	mean_time_to_happen = {
-		days = 365
-		modifier = { year = 1839 NOT = { year = 1840 } factor 1.7 }
-		modifier = { year = 1840 NOT = { year = 1841 } factor 1.35 }
-		modifier = { year = 1841 NOT = { year = 1842 } factor 1.2 }
-	}
-
-	allow_multiple_instances = no
-
-	immediate = {
-		JAN = { set_country_modifier = { name = ap_tn_timer duration = 5 } }
-		JAN = { set_country_modifier = { name = do_not_annex duration = 30 } }
-		state_scope = { any_owned = { limit = { owned_by = ZOM } secede_province = QQQ } }
-	}
+	mean_time_to_happen = { months = 6 }
 
 	option = {
 		name = "Zombies deleted"
+		set_global_flag = uncolonizer_ongoing
+		random_owned = { secede_province = --- }
+		any_country = { limit = { tag = JAN ZOM = { exists = no } } clr_global_flag = uncolonizer_ongoing }
+
+		random_owned = { limit = { ZOM = { exist = yes } has_global_flag = uncolonizer_ongoing } THIS = { country_event = { id = 66102 days = 1 } } }
+
 	}
 }
 
-country_event = {
-	id = 66103
-	title = "EVTNAME66201"
-	desc = "EVTDESC66201"
-	
-	trigger = {
-		tag = ZOM
-		has_country_modifier = accepts_new_provinces
-		OR = {
-			num_of_cities = 100 #75
-			war = yes #it's probably best to also suspend province defection to ZOM if ZOM is at war with some other country
-		}
-	}
-	
-	mean_time_to_happen = {
-		days = 10
-	}
-
-	immediate = { remove_country_modifier = accepts_new_provinces }
-	
-	option = {
-		name = "OK"
-	}
-}
 
 country_event = {
 	id = 66104
