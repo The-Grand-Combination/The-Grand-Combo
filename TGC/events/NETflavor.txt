@@ -1089,3 +1089,252 @@
 		}
 
 		#NOTE: 993532 in use
+
+		#Colonial Reconquest
+		country_event = {
+			id = 993533
+			title = "EVTNAME993533" # Dutch Colonies
+			desc = "EVTDESC993533"
+			# picture = "french_canada"  # TODO
+	
+			fire_only_once = yes
+	
+			trigger = {
+				tag = NET
+				is_greater_power = yes
+				war = no
+				has_global_flag = pan_netherlandism
+				NOT = { 
+					has_country_flag = dutch_south_africa
+					has_country_flag = no_dutch_south_africa
+				}
+			}
+	
+			mean_time_to_happen = {
+				months = 1
+				modifier = {
+					factor = 0.01
+					year = 1860
+				}
+			}
+	
+			option = {
+				name = "EVTOPTA993533"
+
+				#badboy = 5  # There is no cbs like french conquest of Haiti
+				prestige = 20
+
+				set_country_flag = dutch_south_africa
+				add_casus_belli = {
+					target = ENG
+					type = dutch_conquest_of_south_africa_uk
+					months = 60
+				}
+				ai_chance = { factor = 0 }
+			}
+	
+			option = {
+				name = "EVTOPTB993533"
+
+				badboy = -2
+				set_country_flag = no_dutch_south_africa
+				ai_chance = { factor = 1 }
+			}
+		}
+
+		country_event = {
+			id = 993534 #Demand SAF - Main Event
+			title = "EVTNAME993534"
+			desc = "EVTDESC993534"
+			picture = "Administration"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA993534"
+
+				FROM = { country_event = 993535 }
+				prestige = 10
+				any_pop = {
+					limit = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					consciousness = -1
+					militancy = -1
+				}
+				any_pop = {
+					limit = { culture = boer }
+					consciousness = 5
+					militancy = 5
+				}
+				ai_chance = { factor = 97 }
+			}
+
+			option = {
+				name = "EVTOPTB993534"
+
+				badboy = -2
+				prestige = -30
+				any_pop = {
+					limit = {
+						OR = {
+							culture = boer
+							type = aristocrats
+							type = officers
+							type = soldiers
+						}
+					}
+					consciousness = 5
+					militancy = 5
+				}
+				any_pop = {
+					limit = {
+						is_primary_culture = yes
+						is_accepted_culture = yes
+					}
+					consciousness = 1
+					militancy = 1
+				}
+				FROM = { country_event = 993536 }
+				ai_chance = { factor = 3 }
+			}
+		}
+
+		country_event = {
+			id = 993535 #Demand SAF - UK says no
+			title = "EVTNAME993535"
+			desc = "EVTDESC993535"
+			picture = "Administration"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA993535"
+
+				set_country_flag = war_for_saf
+				relation = { who = ENG value = -400 }
+				badboy = 5
+				casus_belli = {
+					target = ENG
+					type = dutch_conquest_of_south_africa_net
+					months = 12
+				}
+				war = {
+					target = ENG
+					attacker_goal = { casus_belli = dutch_conquest_of_south_africa_net }
+					defender_goal = { casus_belli = dutch_conquest_of_south_africa_uk }
+					call_ally = yes
+				}
+			}
+
+			option = {
+				name = "EVTOPTB993535"
+
+				prestige = -50
+				badboy = -5
+				set_country_flag = no_dutch_south_africa
+			}
+		}
+
+		country_event = {
+			id = 993536 #Demand SAF - UK says yes
+			title = "EVTNAME993536"
+			desc = "EVTDESC993536"
+			picture = "election_polls"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA993536"
+
+				badboy = 5
+				ENG = {
+					badboy = -8
+					any_owned = {
+						limit = {
+							OR = {
+								is_core = SAF
+								region = ENG_2087  # Cape Colony
+								region = ENG_2096  # Eastern Cape
+								region = ENG_2092  # Northern Cape
+								region = ZUL_2113  # Zululand - Natal
+								region = ORA_2103  # Vrystaat
+								region = TRN_2108  # Transvaal
+							}
+						}
+						remove_core = ENG
+						add_core = SAF
+						secede_province = THIS
+					}
+				}
+				release = SAF
+				UTI = { inherit = SAF }
+				THIS = { inherit = UTI }
+				relation = { who = FROM value = 200 }
+				treasury = -200000
+				FROM = { treasury = 200000 }
+				any_country = {
+					limit = {
+						OR = {
+							tag = NAL
+							tag = TRN
+							tag = ORA
+							tag = ZOU
+						}
+						ai = yes
+						exists = yes
+					}
+					country_event = 993537
+				}
+			}
+		}
+
+		#To boer republics - NET reclaimed South Africa
+		country_event = {
+			id = 993537
+			title = "EVTNAME993537"
+			desc = "EVTDESC993537"
+			#picture = "dominican_revolution"  # TODO - find a proper picture
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA993537"
+
+				UTI = { inherit = THIS }
+				FROM = { inherit = UTI }
+
+				# For tests
+				#THIS = { civilized = no }
+				#FROM = { inherit = THIS }
+				#THIS = { civilized = yes }
+
+				#ai_chance = {
+				#	factor = 100
+				#}
+			}
+
+			# This option is not needed ``as this event is for ai
+			#option = {
+			#	name = "We do not care."
+			#
+			#	prestige = 5
+			#	relation = { who = FROM value = -200 }
+			#	FROM = {
+			#		casus_belli = {
+			#			target = THIS
+			#			type = conquest
+			#			months = 120
+			#		}
+			#		#war = {
+			#		#	target = THIS
+			#		#	attacker_goal = { casus_belli = conquest }
+			#		#	defender_goal = { casus_belli = status_quo }
+			#		#}
+			#	}
+			#	ai_chance = {
+			#		factor = 0
+			#	}
+			#}
+		}
