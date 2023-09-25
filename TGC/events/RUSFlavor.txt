@@ -3683,7 +3683,7 @@ country_event = {
                             is_core = CHY
                         }
                     }
-                    NOT = { type = farmers }
+                    NOT = { type = farmers type = artisans type = labourers type = clergymen }
                 }
                 move_pop = 876
             }
@@ -6528,10 +6528,12 @@ country_event = {
 			   }
 			   TUR_863 = { add_province_modifier = { name = nationalist_agitation duration = 3650 } }
 			   TUR_869 = { add_province_modifier = { name = nationalist_agitation duration = 3650 } }
+			   ANT = { all_core = { add_core = GRE } }
 			    ai_chance = { factor = 100 }
 			}
 			option = {
 				name = "EVTOPTB500193"
+				ANT = { all_core = { add_core = GRE } }
 			    ai_chance = { factor = 0 }
 			}
 		}
@@ -7045,6 +7047,7 @@ country_event = {
 				set_global_flag = turkish_revolt_go_boom
 				money = 250000
 				RUS = { country_event = { id = 500204 days = 60 } }
+				any_owned = { limit = { OR = { is_core = TUR is_core = AZB is_core = KDS } } add_province_modifier = { name = turkish_revolt duration = 1080 } }
 				any_pop = {
 				militancy = -8
 				consciousness = -7
@@ -7062,6 +7065,8 @@ country_event = {
 	add_country_modifier = { name = win_or_die_oe duration = 1500 }
 	add_country_modifier = { name = turk_revolt duration = 1500 }
 	remove_country_modifier = no_more_war
+	remove_country_modifier = caliph_powerless_figurehead
+	remove_country_modifier = tsars_puppet
 			    ai_chance = { factor = 95 }
 			}
 			# option = {
@@ -7092,8 +7097,30 @@ country_event = {
 				attacker_goal = { casus_belli = conquest }
 				defender_goal = { casus_belli = acquire_all_cores }
 			}
-			    ai_chance = { factor = 100 }
+			any_owned = { limit = {
+				is_core = AZB
+				NOT = { pop_majority_culture = russian }
+				NOT = { pop_majority_culture = armenian }
 			}
+			secede_province = AZB
+			}
+			release = AZB
+			war = {
+				target = AZB
+				attacker_goal = { casus_belli = conquest }
+				defender_goal = { casus_belli = acquire_all_cores }
+			}
+			any_owned = { limit = { OR = { is_core = TUR is_core = AZB is_core = KDS } } add_province_modifier = { name = nationalist_agitation duration = 1080 } add_province_modifier = { name = turkish_revolt duration = 1080 } }
+			any_owned = {
+			limit = { continent = oceania } #near east
+				any_pop = {
+					limit = { has_pop_religion = sunni }
+					militancy = 5
+					consciousness = 3
+				}
+			}
+			}
+			    ai_chance = { factor = 100 }
 		}
 		
 		#500205-50219 #500220 in GEC 
@@ -8866,7 +8893,277 @@ country_event = {
 		}
 	}
 }
-#500291 - Hawaii Fort Elizabeth - done by decision
+#500291 Fate of Anatolia
+		country_event = {
+			id = 500291
+			title = "EVTNAME500291"
+			desc = "EVTDESC500291"
+			picture = "caucasus_range2"
+			 
+			fire_only_once = yes
+			
+			trigger = {
+			tag = RUS
+			has_global_flag = treaty_of_paris_russia
+			has_global_flag = dismantle_ottomans
+			neighbour = ARM
+			876 = { owned_by = RUS } #Ankara
+			873 = { owned_by = RUS } #Caesarea
+			860 = { owned_by = RUS } #Constantinople
+			TUR = { exists = no }
+			invention = the_dark_continent
+		    }
+
+			mean_time_to_happen = { months = 12 }
+			
+			option = {
+				name = "EVTOPTA500291" #Anatolian Krai
+				ANT = { government = colonial_company set_country_flag = anatolian_russian_oblast add_accepted_culture = russian add_accepted_culture = armenian }
+				add_accepted_culture = greek
+				any_owned = {
+			    limit = {
+					AND = {
+					owned_by = RUS
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					 region = TUR_873 #konya
+					 province_id = 883
+					 region = TUR_861
+					 region = TUR_860
+					 region = TUR_869
+					}
+					}
+				}
+				add_core = ANT
+				add_province_modifier = { name = core_integration duration = -1 }
+				add_province_modifier = { name = nationalist_agitation duration = 365 }
+			    any_pop = {
+				limit = {
+				    is_state_religion = no
+					has_pop_culture = turkish
+				}
+				reduce_pop = 0.75
+			    }
+				any_pop = {
+				limit = {
+					OR = {
+						is_state_religion = yes
+						has_pop_culture = greek
+						has_pop_culture = armenian
+					}
+				}
+				reduce_pop = 1.15
+			    }
+		        }
+				badboy = 7
+				country_event = 500294
+			    ai_chance = { factor = 25 }
+			}
+			option = {
+				name = "EVTOPTB500291" #Give Anatolia to Greece - no Bosphorus. If Greece is AI, it will become a puppet
+				any_owned = {
+			    limit = {
+					AND = {
+					owned_by = RUS
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					 region = TUR_873 #konya
+					 region = TUR_869
+					}
+					}
+				}
+				add_core = GRE
+			    any_pop = {
+				limit = {
+				    is_state_religion = no
+					has_pop_culture = turkish
+				}
+				reduce_pop = 0.75
+			    }
+				any_pop = {
+				limit = {
+					OR = {
+						is_state_religion = yes
+						has_pop_culture = greek
+						has_pop_culture = armenian
+					}
+				}
+				reduce_pop = 1.15
+			    }
+		        }
+				any_owned_province = { limit = {
+					is_core = GRE
+					NOT = { region = TUR_861 } #These are Bosphorus provinces 
+					NOT = { region = TUR_860 }
+					NOT = { province_id = 865 }
+					NOT = { province_id = 866 }
+					NOT = { province_id = 862 }
+				}
+				relation = { who = GRE value = 200 }
+				random_country = {
+					limit = {
+					tag = GRE
+					ai = yes
+					exists = yes
+					}
+					RUS = { create_vassal = GRE }
+				}
+				badboy = 3
+				}
+			    ai_chance = { factor = 25 }
+			}
+			option = {
+				name = "EVTOPTC500291" #Give Anatolia and Bosphorus to Greece - If Greece is AI, it will become a puppet
+				any_owned = {
+			    limit = {
+					AND = {
+					owned_by = RUS
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					 region = TUR_873 #konya
+					 region = TUR_869
+					 region = TUR_861
+					 region = TUR_860
+					}
+					}
+				}
+				add_core = GRE
+			    any_pop = {
+				limit = {
+				    is_state_religion = no
+					has_pop_culture = turkish
+				}
+				reduce_pop = 0.75
+			    }
+				any_pop = {
+				limit = {
+					OR = {
+						is_state_religion = yes
+						has_pop_culture = greek
+						has_pop_culture = armenian
+					}
+				}
+				reduce_pop = 1.15
+			    }
+		        }
+				any_owned_province = { limit = {
+					is_core = GRE
+				}
+				secede_province = GRE  }
+				relation = { who = GRE value = 200 }
+				random_country = {
+					limit = {
+					tag = GRE
+					ai = yes
+					exists = yes
+					}
+					capital = 860
+					RUS = { create_vassal = GRE }
+				}
+				badboy = -5
+			    ai_chance = { factor = 25 }
+			}
+			option = {
+				name = "EVTOPTD500291" #Release Turks again - NO Boshporus
+				any_owned = {
+			    limit = {
+					AND = {
+					owned_by = RUS
+			        OR = {
+					 #Anatolia
+		             region = TUR_863 #hudin
+					 region = TUR_876 #ankara
+					 region = TUR_873 #konya
+					 region = TUR_869
+					}
+					}
+				}
+				secede_province = TUR
+				}
+				create_vassal = TUR
+				prestige = -100
+				badboy = -20
+			    ai_chance = { factor = 25 }
+			}
+
+		}
+
+	country_event = { #Anatolian Elite deported
+	id = 500294
+
+	title = "EVTNAME500294"
+	desc = "EVTDESC500294"
+	picture = "crimean_war_ships"
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500294"
+		any_owned = {
+			limit = {
+				OR = {
+				is_core = TUR
+				is_core = ANT
+				is_core = ARM
+				is_core = GRE
+				is_core = ROM #Dobruja
+				is_core = PNT
+				is_core = AZB
+				}
+			}
+		any_pop = { #This will demote and deport the Ottoman elite to Central Asia
+				limit = {
+				    is_state_religion = no
+					has_pop_culture = turkish
+					has_pop_culture = azeri
+					OR = {
+					pop_type = aristocrats
+					pop_type = artisans
+					pop_type = craftsmen
+					pop_type = clerks
+					pop_type = officers
+					pop_type = soldiers
+					pop_type = bureaucrats
+					}
+				}
+				reduce_pop = 0.9
+				pop_type = farmers
+				random_list = {
+					25 = { move_pop = 1195 }
+					25 = { move_pop = 1197 }
+					25 = { move_pop = 1199 }
+					25 = { move_pop = 1202 }
+				}
+		}
+		}
+		ai_chance = {
+			factor = 90
+		}
+	}
+	option = {
+		name = "EVTOPTB500294" #leave them be
+		prestige = -5
+		any_owned = {
+			limit = {
+				OR = {
+				is_core = TUR
+				is_core = AZB
+				}
+			}
+		add_province_modifier = { name = nationalist_agitation duration = 3600 }
+		}
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+		
 #500292 - Djibouti Cossack Expedition to Ethiopia
 country_event = {
 
