@@ -6660,7 +6660,7 @@ country_event = {
 				add_accepted_culture = armenian
 				ARM = { annex_to = THIS }
 				CLC = { all_core = { add_core = ARM } annex_to = THIS }
-				any_owned_province = { 
+				any_owned_province = { #turn this into separate event, since it cant apply here 
 					limit = {
 						is_core = ARM
 						NOT = { is_core = RUS }
@@ -8912,7 +8912,6 @@ country_event = {
 			tag = RUS
 			has_global_flag = treaty_of_paris_russia
 			has_global_flag = dismantle_ottomans
-			neighbour = ARM
 			876 = { owned_by = RUS } #Ankara
 			873 = { owned_by = RUS } #Caesarea
 			860 = { owned_by = RUS } #Constantinople
@@ -8950,7 +8949,7 @@ country_event = {
 				    is_state_religion = no
 					has_pop_culture = turkish
 				}
-				reduce_pop = 0.75
+				reduce_pop = 0.6
 			    }
 				any_pop = {
 				limit = {
@@ -8964,6 +8963,13 @@ country_event = {
 			    }
 		        }
 				badboy = 7
+				any_owned_province = { #in case Russia incorporated Armenia
+					limit = {
+						is_core = ARM
+						NOT = { is_core = RUS }
+					}
+					add_province_modifier = { name = core_integration duration = -1 }
+				}
 				country_event = 500294
 			    ai_chance = { factor = 25 }
 			}
@@ -8988,7 +8994,7 @@ country_event = {
 				    is_state_religion = no
 					has_pop_culture = turkish
 				}
-				reduce_pop = 0.75
+				reduce_pop = 0.66
 			    }
 				any_pop = {
 				limit = {
@@ -9045,7 +9051,7 @@ country_event = {
 				    is_state_religion = no
 					has_pop_culture = turkish
 				}
-				reduce_pop = 0.75
+				reduce_pop = 0.66
 			    }
 				any_pop = {
 				limit = {
@@ -9125,9 +9131,12 @@ country_event = {
 			}
 		any_pop = { #This will demote and deport the Ottoman elite to Central Asia
 				limit = {
+				AND = {
 				    is_state_religion = no
+					OR = {
 					has_pop_culture = turkish
 					has_pop_culture = azerbaijani
+					}
 					OR = {
 					pop_type = aristocrats
 					pop_type = artisans
@@ -9136,9 +9145,11 @@ country_event = {
 					pop_type = officers
 					pop_type = soldiers
 					pop_type = bureaucrats
+					pop_type = capitalists
+					pop_type = clergymen
 					}
 				}
-				reduce_pop = 0.9
+				}
 				pop_type = farmers
 				random_list = {
 					25 = { move_pop = 1195 }
