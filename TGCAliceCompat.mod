@@ -1,3 +1,3 @@
-name = "TGC Submod - Performance Addon"
-path = "mod/TGCPerformanceAddon"
+name = "TGC Submod - Project Alice Compatibility Patch"
+path = "mod/TGCAliceCompat"
 dependencies = { "TGC - The Grand Combination" }
