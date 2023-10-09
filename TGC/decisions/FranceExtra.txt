@@ -1301,19 +1301,19 @@ political_decisions = {
 			NOT = {
 				exists = LTU
 			}
-			619 = {
+			619 = { #Vienna
 				OR = {
 					owned_by = GCF
 					owned_by = GER
 				}
 			}
-			549 = {
+			549 = { #Berlin
 				OR = {
 					owned_by = GCF
 					owned_by = GER
 				}
 			}
-			641 = {
+			641 = { #Budapest
 				OR = {
 					owned_by = GCF
 					owned_by = GER
@@ -1323,6 +1323,24 @@ political_decisions = {
 			}
 			FRA_412 = {
 				NOT = { owned_by = FRA }
+			}
+			OR = {
+			AUS_726 = { #Lombardy
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
+			AUS_729 = { #Venice
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
 			}
 			NOT = { has_global_flag = paris_congress_ltu }
 		}
@@ -1342,13 +1360,13 @@ political_decisions = {
 		effect = {
 			badboy = 5
 			FRA = { all_core = { add_core = LTU } }
-			ITA = { all_core = { add_core = LTU } }
-			SPA = { all_core = { add_core = LTU } }
-			POR = { all_core = { add_core = LTU } }
+			#ITA = { all_core = { add_core = LTU } }
+			#SPA = { all_core = { add_core = LTU } }
+			#POR = { all_core = { add_core = LTU } }
 			change_tag = LTU
-			inherit = SPA
-			inherit = POR
-			inherit = ITA
+			#inherit = SPA
+			#inherit = POR
+			#inherit = ITA
 			political_reform = confederalism
 			#add_country_modifier = { name = political_crisis duration = 3600 }
 			add_accepted_culture = portuguese
@@ -1405,6 +1423,7 @@ political_decisions = {
 					}
 					NOT = { has_country_flag = post_colonial_country }
 				}
+				all_core = { add_core = LTU }
 				country_event = 11101
 			}
 			GCF = { country_event = 10430 }
@@ -1445,4 +1464,73 @@ political_decisions = {
 		}
 	}
 
+	dismantle_latin_union = {
+		picture = latinflag
+		potential = {
+			LTU = { exists = yes }
+			ai = no
+			NOT = { is_culture_group = pan_french }
+			is_greater_power = yes
+			capital_scope = { continent = europe }
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			OR = {
+			mass_politics = 1
+			war_policy = jingoism
+			}
+			LTU = { AND = { war_with = THIS national_provinces_occupied = 0.8 war_exhaustion = 75 } }
+			726 = { NOT = { owned_by = LTU } } #Milano
+			729 = { NOT = { owned_by = LTU } } #Venezia
+			FRA_412 = { NOT = { owned_by = LTU } } #Alsace
+			605 = { NOT = { owned_by = LTU } } #Bern
+		}
+
+		effect = {
+			prestige = 300
+			badboy = 5
+			LTU = {
+				end_war = THIS
+				country_event = 10415 #dismantles the Union
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	dismantle_german_confederation = {
+		picture = german_confederation
+		potential = {
+			GCF = { exists = yes }
+			NOT = { is_culture_group = germanic }
+			ai = no
+			is_greater_power = yes
+			capital_scope = { continent = europe }
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			OR = {
+			mass_politics = 1
+			war_policy = jingoism
+			}
+			GCF = { AND = { war_with = THIS national_provinces_occupied = 0.8 war_exhaustion = 75 } }
+			726 = { NOT = { owned_by = GCF } } #Milano
+			729 = { NOT = { owned_by = GCF } } #Venezia
+			FRA_412 = { NOT = { owned_by = GCF } } #Alsace
+			605 = { NOT = { owned_by = GCF } } #Bern
+		}
+
+		effect = {
+			prestige = 300
+			badboy = 5
+			GCF = {
+				end_war = THIS
+				country_event = 9000011 #dismantles GCF
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 }
