@@ -2264,6 +2264,132 @@
 		}
 	}
 
+	## Conflicts with the church ##
+	#Description: Brazil, the Religious Question, bringing the Catholic Church into conflict with the Empire
+	country_event ={
+		id = 8420
+		title = "EVTNAME8420"
+		desc = "EVTDESC8420"
+		picture = "religious_question"
+
+		trigger = {
+			OR = {
+				tag = BRZ
+				tag = KPB
+			}
+			year = 1865
+			war = no
+			has_country_flag = monarchy_gov
+			NOT = {
+				has_country_flag = religious_question_started
+				has_country_flag = religious_question_decided
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 28
+			modifier = {
+				factor = 0.3
+				year = 1870
+			}
+		}
+
+		fire_only_once = yes
+
+		# Side with the Freemasons (historical)
+		option = {
+			name = "EVTOPTA8420"
+			prestige = 10
+			set_country_flag = religious_question_started
+			ai_chance = { factor = 80 }
+		}
+
+		# Side with the Church
+		option = {
+			name = "EVTOPTB8420"
+			prestige = -10
+			set_country_flag = religious_question_decided
+			add_country_modifier = { name = freemason_expulsion_modifier duration = 1825 }
+			ai_chance = { factor = 20 }
+		}
+	}
+
+	#Description: Dom Vital refuses to rescind his interdict, Costa joins in
+	country_event = {
+		id = 8421
+		title = "EVTNAME8421"
+		desc = "EVTDESC8421"
+		picture = "dom_vital"
+
+		trigger = {
+			has_country_flag = religious_question_started
+			NOT = {
+				has_country_flag = religious_question_decided
+				has_country_flag = rq_imprisoned_bishops
+			}
+		}
+
+		mean_time_to_happen = {
+			months = 18
+		}
+
+		fire_only_once = yes
+
+		#Imprison the two bishops (historical)
+		option = {
+			name = "EVTOPTA8421"
+
+			prestige = 10
+			set_country_flag = rq_imprisoned_bishops
+			any_pop = {
+				limit = { has_pop_religion = catholic }
+				consciousness = 2
+				militancy = 1
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		# Accept the interdict, expel the Freemasons
+		option = {
+			name = "EVTOPTB8421"
+
+			prestige = -10
+			set_country_flag = religious_question_decided
+			any_pop = {
+				limit = { has_pop_religion = catholic }
+				consciousness = 1.5
+				militancy = -1
+			}
+			add_country_modifier = { name = freemason_expulsion_modifier duration = -1 }
+			ai_chance = { factor = 20 }
+		}
+	}
+
+	#Description: The Religious Question ends with some disappointment for the monarchy
+	country_event = {
+		id = 8422
+		title = "EVTNAME8422"
+		desc = "EVTDESC8422"
+		picture = "anistia"
+
+		trigger = {
+			has_country_flag = rq_imprisoned_bishops
+			NOT = { has_country_flag = religious_question_decided }
+		}
+
+		mean_time_to_happen = {
+			months = 16
+		}
+
+		# No choice but to free the bishops
+		option = {
+			name = "EVTOPTA8422"
+			set_country_flag = religious_question_decided
+			prestige = -10
+		}
+	}
+
 	country_event = {
 		id = 8500
 		title = "Conquest of the amazon test"
