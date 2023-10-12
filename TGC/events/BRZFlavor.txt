@@ -572,8 +572,7 @@
 		}
 	}
 
-#Revolução Farroupilha 
-
+## Revolução Farroupilha
 	# Custom Civil War System
 	country_event = {
 		id = 8100
@@ -1068,7 +1067,6 @@
 	}
 
 ## Cabanos
-
 	# Custom Civil War System
 	country_event = {
 		id = 8150
@@ -1723,8 +1721,7 @@
 	
 	#8300 reserved for slavery events
 
-	##Random Flavor
-
+##Random Flavor
 	#O Guarani
 	country_event = {
 		id = 8400
@@ -1758,8 +1755,8 @@
 		}
 	}
 
-	#Description: Establishment of the National Academy of Letters - gain prestige
-	country_event = { #original VIP event by Pimparel
+	#Establishment of the National Academy of Letters, original concept by Pimparel
+	country_event = {
 
 		id = 8401
 		title = "EVTNAME8401"
@@ -1906,7 +1903,139 @@
 		}
 	}
 
-	##New Capital, Initial Event
+	#Roosevelt-Rondon Expedition 
+	#Sets in motion a small event chain about Roosevelt Expedition to the amazons
+	country_event = { 
+
+		id = 8406
+		title = "EVTNAME8406"
+		desc = "EVTDESC8406"
+		picture = "RooseveltRondon1"
+
+		trigger = {
+			owns = 2447
+			OR = { 
+				tag = BRZ
+				tag = KPB
+			}
+			year = 1913
+			USA = { has_country_flag = democracy_gov }
+			NOT = { USA = { war_with = THIS } }
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA8406"
+			ai_chance = { factor = 1 }
+			set_country_flag = rosevelt_rondon
+			relation = { who = USA value = +5 }
+		}
+
+		option = {
+			name = "EVTOPTB8406"	
+		}
+	}
+
+	#Roosevelt-Rondon Expedition part 2 
+	country_event = {                 
+
+		id = 8407
+		title = "EVTNAME8407"
+		desc = "EVTDESC8407"
+		picture = "RooseveltRondon2"
+		news_desc_long = "EVT8407_NEWS_LONG"
+		news_desc_medium = "EVT8407_NEWS_MEDIUM"
+		news_desc_short = "EVT8407_NEWS_SHORT"
+		news = yes
+		
+		trigger = {
+			has_country_flag = rosevelt_rondon
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA8407"
+			prestige = 2
+			relation = { who = USA value = 10 }
+			clr_country_flag = rosevelt_rondon
+			set_country_flag = rosevelt_rondon_ending
+		}
+	}
+
+	#Roosevel-Rondon Expedition Good ending
+	country_event = {
+
+		id = 8408
+		title = "EVTNAME8408"
+		desc = "EVTDESC8408"
+		picture = "RooseveltRondonTedSurvives"
+		news_desc_long = "EVT8408_NEWS_LONG"
+		news_desc_medium = "EVT8408_NEWS_MEDIUM"
+		news_desc_short = "EVT8408_NEWS_SHORT"
+		news = yes
+
+		fire_only_once = yes
+
+		trigger = {
+			has_country_flag = rosevelt_rondon_ending
+			year = 1914
+			month = 4	
+		}
+
+		immediate = { clr_country_flag = rosevelt_rondon_ending }
+
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "EVTOPTA8408"
+			years_of_research = 0.2
+			prestige = 10
+			relation = { who = USA value = 10 }
+			random_country = { limit = { tag = USA NOT = { THIS = { tag = USA } } } country_event = 8408 }
+		}
+	}
+
+	#Roosevel-Rondon Expedition Bad Ending
+	country_event = {
+
+		id = 8409
+		title = "EVTNAME8409"
+		desc = "EVTDESC8409"
+		picture = "RooseveltRondonTedDies"
+		news_desc_long = "EVT8409_NEWS_LONG"
+		news_desc_medium = "EVT8409_NEWS_MEDIUM"
+		news_desc_short = "EVT8409_NEWS_SHORT"
+		news = yes
+
+		trigger = {
+			has_country_flag = rosevelt_rondon_ending
+			NOT = { has_global_flag = extra_flavour_disabled }  #IRL he survived, so this bad ending should count as fantasy
+			year = 1914
+			month = 4
+		}
+
+		immediate = { clr_country_flag = rosevelt_rondon_ending }
+
+		mean_time_to_happen = {
+			months = 10
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA8409"
+			years_of_research = 0.2
+			prestige = -6
+			relation = { who = USA value = -15 }
+			random_country = { limit = { tag = USA NOT = { THIS = { tag = USA } } } country_event = 8409 }
+		}
+	}
+
+##New Capital, Initial Event
 	country_event = {
 		id = 8410
 		title = "EVTNAME8410"
