@@ -46,42 +46,37 @@ province_event = {   #Zombify province
 		}
 	}
 
-	immediate = { 
-				JAN = {
-					change_variable = {
-							which = zombified_provinces
-							value = 1
-					}
-				}
-				any_pop = {
-					reduce_pop = 0.8
-					militancy = 8
-					consciousness = -3
-				}
-				life_rating = -30
-				change_controller = ZOM
-				secede_province = ZOM
-				ZOM = { money = 5000 }
-				add_province_modifier = { name = ap_prov_timer duration = 30 }
-	}
-
 	option = {
 		name = "DAMN"
 		owner = { prestige = -3 plurality = -5 }
+		JAN = {
+			change_variable = {
+					which = zombified_provinces
+					value = 1
+			}
+			add_country_modifier = { name = ap_zm_timer duration = 365 }
+		}
+		any_pop = {
+			reduce_pop = 0.8
+			militancy = 8
+			consciousness = -3
+		}
+		change_controller = ZOM
+		secede_province = ZOM
+		ZOM = { money = 5000 }
+		add_province_modifier = { name = ap_prov_timer duration = 30 }
 	}
 }
 
-country_event = { #note, this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
+#Note: this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
+country_event = { 
 	id = 66101
 	title = "EVTNAME66101"
 	desc = "EVTDESC66101"
 	picture = plague
 
 	trigger = {
-		exists = yes
 		NOT = { exists = ZOM }
-		NOT = { JAN = { has_country_modifier = do_not_annex } }
-		NOT = { JAN = { has_country_modifier = ap_tn_timer } }
 		any_owned_province = {
 			province_control_days = 365
 			has_province_modifier = zombie_outbreak
@@ -93,7 +88,10 @@ country_event = { #note, this must be a country event, otherwise it might happen
 		days = 30
 	}
 
-	immediate = {		
+	allow_multiple_instances = no
+
+	option = {
+		name = "DAMN"
 		random_owned = {
 			limit = {
 				province_control_days = 365
@@ -109,54 +107,70 @@ country_event = { #note, this must be a country event, otherwise it might happen
 			change_controller = ZOM
 			secede_province = ZOM
 		}
-		ZOM = {
-			remove_country_modifier = accepts_provinces
-			country_event = { id = 66104 days = 31 }
-		} 
-	}
-
-	option = {
-		name = "DAMN"
+		ZOM = { add_country_modifier = { name = wasteland duration = -1 } }
 	}
 }
 
 #Uncolonize province
-country_event = {
+province_event = {
 	id = 66102
 	title = "EVTNAME66200"
 	desc = "EVTDESC66200"
 	picture = "prov_test"
 
 	trigger = {
-		tag = ZOM
-		year = 1838
-		NOT = { has_global_flag = uncolonizer_ongoing }
+		OR = { owner = { tag = ZOM }
+			  NOT = { total_pops = 30 }
+		}
+		exists = WAS
+		province_control_days = 365
 	}
 
-	mean_time_to_happen = { months = 6 }
+	mean_time_to_happen = { days = 1 }
 
 	option = {
 		name = "Zombies deleted"
-		set_global_flag = uncolonizer_ongoing
-		random_owned = { secede_province = --- }
-		any_country = { limit = { tag = JAN ZOM = { exists = no } } clr_global_flag = uncolonizer_ongoing }
-
-		random_owned = { limit = { ZOM = { exist = yes } has_global_flag = uncolonizer_ongoing } THIS = { country_event = { id = 66102 days = 1 } } }
-
+		any_pop = {
+			militancy = -9 
+			reduce_pop = 0.1
+			secede_province = WAS
+		}
 	}
 }
 
-
+#Note: this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
 country_event = {
-	id = 66104
-	title = "The wasteland spread."
-	desc = "Spread."
+	id = 66103
+	title = "EVTNAME66200"
+	desc = "EVTDESC66200"
+	picture = plague
 
-	is_triggered_only = yes
+	trigger = {
+		tag = ZOM
+		NOT = { exists = WAS }
+		any_owned_province = { province_control_days = 365 }
+	}
 
-	immediate = { add_country_modifier = { name = accepts_new_provinces duration = -1 } }
-	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	allow_multiple_instances = no 
+
 	option = {
-		name = "OK"
+		name = "DAMN"
+		random_owned = {
+			limit = {
+				province_control_days = 365
+			}
+			any_pop = {
+				reduce_pop = 0.1
+				militancy = -9
+				consciousness = -3
+			}
+			secede_province = WAS
+		}
+		WAS = { add_country_modifier = { name = wasteland duration = -1 } }
 	}
 }
+
