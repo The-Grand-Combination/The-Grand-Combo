@@ -142,15 +142,42 @@ political_decisions = {
 	ap_scouts = {
 		potential = {
 			has_global_flag = global_victory
-			NOT = { has_global_flag = plague_inc_mode }
+			NOT = { has_global_flag =  scouts_activated }
 		}
 		allow = {
-			money = 50000
+			any_neighbor_country = { tag = WAS }
 		}
 
 		effect = {
-			treasury = -50000
 			set_country_flag = scouts_activated
+			set_global_flag = override_campaigns
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	ap_scouts_turn_off = {
+		potential = {
+			has_country_flag = scouts_activated
+			NOT = { has_global_flag = plague_inc_mode }
+		}
+		allow = {
+			any_neighbor_country = { tag = WAS }
+		}
+
+		effect = {
+			clr_country_flag = scouts_activated
+			clr_global_flag = override_campaigns
+			any_country = { limit = { OR = { has_country_modifier = infamy_removal 
+												has_country_modifier = more_colonial_settlement
+												has_country_modifier = more_internal_migration
+												has_country_modifier = less_emigration
+												has_country_modifier = research_campaign
+												has_country_modifier = birthrate_push_low
+												has_country_modifier = birthrate_push_medium
+												has_country_modifier = birthrate_push_high
+												has_country_flag = direct_immigration } } 
+							set_global_flag = override_campaigns
+			}
 		}
 		ai_will_do = { factor = 0 }
 	}
