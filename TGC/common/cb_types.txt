@@ -59,7 +59,6 @@ reclaim_the_empire
 restore_british_raj
 unification_casus_belli
 civil_war
-acw_intervention
 unification_annex_casus_belli
 annex_core_country
 unification_add_to_sphere
@@ -75,7 +74,6 @@ install_communism
 gendarme_of_europe
 unification_humiliate_cb
 take_from_sphere
-restore_neutrality
 free_allied_cores
 liberate_country
 free_peoples
@@ -90,12 +88,10 @@ release_puppet_AI
 great_game_cb
 make_puppet
 join_confederation_cb
-# cb_rr_save_the_republic		Gelre this is a placeholder for you
 install_fascism_make_puppet
 install_communism_make_puppet
 install_democracy_make_puppet
 gunboat
-end_slave_trade
 cut_down_to_size
 cut_down_to_size_boxer
 cut_down_to_size_taiping
@@ -125,7 +121,7 @@ test_end_war
 take_puppet
 # acquire_vassal_core_region
 liberate_puppet
-take_capital
+#take_capital
 #conquest_low
 negotiated_transfer
 great_war_penalty_cb
@@ -141,12 +137,6 @@ crimean_war_cb
 crimean_war_defender
 circassian_war
 caucasus_war
-french_conquest_of_louisiana_france
-french_conquest_of_louisiana_usa
-war_of_the_americas_usa
-war_of_the_americas_ussa
-french_conquest_of_canada_france
-french_conquest_of_canada_uk
 }
 
 # Great War CB's
@@ -1578,7 +1568,7 @@ unification_humiliate_cb = {
 		}
 		NOT = { has_country_modifier = neutrality }
 		THIS = { NOT = { has_country_modifier = neutrality } }
-		THIS = { NOT = { has_country_modifier = punctation_of_olmutz } }
+		THIS = { ai = yes NOT = { has_country_modifier = punctation_of_olmutz } }
 	}
 	po_clear_union_sphere = yes
 
@@ -1659,7 +1649,7 @@ unification_GP_humiliate = {
 		}
 		NOT = { has_country_modifier = neutrality }
 		THIS = { NOT = { has_country_modifier = neutrality } }
-		THIS = { NOT = { has_country_modifier = punctation_of_olmutz } }
+		THIS = { ai = yes NOT = { has_country_modifier = punctation_of_olmutz } }
 	}
 
 	po_remove_prestige = yes
@@ -2888,9 +2878,9 @@ monroe_doctrine = {
 					primary_culture = bolivian
 					primary_culture = chilean
 					primary_culture = peruvian
-					primary_culture = platinean
+					primary_culture = argentinian
 					primary_culture = paraguayan
-					primary_culture = platinean
+					primary_culture = uruguayan
 					primary_culture = brazilian
 					AND = {
 						tag = CUB
@@ -2942,9 +2932,9 @@ monroe_doctrine = {
 				primary_culture = bolivian
 				primary_culture = chilean
 				primary_culture = peruvian
-				primary_culture = platinean
+				primary_culture = argentinian
 				primary_culture = paraguayan
-				primary_culture = platinean
+				primary_culture = uruguayan
 				primary_culture = brazilian
 				AND = {
 					tag = CUB
@@ -4871,7 +4861,10 @@ annex_africa_full = {
 			NOT = { tag = TUR }
 			total_amount_of_ships = 10
 			slavery = no_slavery
-			rank = 16
+			OR = {
+				is_greater_power = yes
+				is_secondary_power = yes
+			}
 		  	NOT = { has_country_modifier = neutrality }
 			NOT = { has_country_flag = zaire_master }
 			#OR = {
@@ -7107,7 +7100,7 @@ take_puppet = {
 				is_vassal = no
 				in_sphere = THIS
 			}
-			#country_event = 9999990 # BUG: Does not exist
+			country_event = 9999990
 			country_event = 19370
 		}
 	}
@@ -7651,6 +7644,10 @@ negotiated_transfer = {
 	}
 
 	allowed_states = {
+		empty = no
+		any_owned_province = {
+            empty = no
+		}
 		NOT = { any_owned_province = { is_capital = yes } }
 	}
 
@@ -7970,9 +7967,9 @@ USS_monroe = {
 					primary_culture = bolivian
 					primary_culture = chilean
 					primary_culture = peruvian
-					primary_culture = platinean
+					primary_culture = argentinian
 					primary_culture = paraguayan
-					primary_culture = platinean
+					primary_culture = uruguayan
 					primary_culture = brazilian
 					primary_culture = caribeno
 					primary_culture = afro_caribeno
@@ -8013,9 +8010,9 @@ USS_monroe = {
 				primary_culture = bolivian
 				primary_culture = chilean
 				primary_culture = peruvian
-				primary_culture = platinean
+				primary_culture = argentinian
 				primary_culture = paraguayan
-				primary_culture = platinean
+				primary_culture = uruguayan
 				primary_culture = brazilian
 				primary_culture = caribeno
 				primary_culture = afro_caribeno
@@ -8605,567 +8602,6 @@ webster_ashburton_cb = {
 	war_name = WAR_WEBSTER_ASHBURTON
 }
 
-end_slave_trade = {
-	sprite_index = 34
-	is_triggered_only = yes
-	months = 36
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1.5
-	peace_cost_factor = 15
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = {
-		THIS = { slavery = no_slavery }
-		has_country_flag = slave_trade_leader
-	}
-
-	po_remove_prestige = yes
-
-	on_po_accepted = {
-		clr_global_flag = slave_trade_reinstated
-		clr_country_flag = slave_trade_leader
-		clr_country_flag = the_slavery_debate
-		remove_country_modifier = the_slavery_debate_modifier
-		remove_country_modifier = atlantic_slave_trade
-		add_country_modifier = { name = national_confusion duration = 365 }
-		any_country = {
-			limit = { has_country_flag = slave_trader }
-			clr_country_flag = slave_trader
-			set_country_flag = slave_trade_ended
-		}
-	}
-
-	on_add = { }
-
-	war_name = WAR_END_SLAVE_TRADE
-}
-
-french_conquest_of_louisiana_france = {
-	sprite_index = 35
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 70
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = {
-		set_global_flag = treaty_of_new_york
-		
-		## Louisiana cores ##
-			LOUISIANA_TERRITORY = { add_core = ULA }
-			ULA = { all_core = { remove_core = FCA remove_core = CAN } }
-		
-		## Territory swap #
-			THIS = { treasury = -75000 }
-			113 = { remove_core = CAN remove_core = ENG remove_core = FCA remove_core = ULA } #So it doesn't end up being annexed by France if USA didn't do the Oregon Treaty
-			USA = {
-				remove_accepted_culture = cajun
-				any_owned = {
-					limit = {
-						OR = {
-							is_core = ULA
-							is_core = ACA
-							is_core = CAN
-							is_core = FCA
-						}
-					}
-					secede_province = THIS
-				}
-				treasury = 75000
-			}
-			UNB = {
-				any_owned = {
-					limit = {
-						OR = {
-							is_core = ULA
-							is_core = ACA
-							is_core = CAN
-							is_core = FCA
-						}
-					}
-					secede_province = THIS
-				}
-			}
-		#any_owned = { #this makes no sense if player conquered more before this war or with this war, they'll just lose those states
-		#	limit = {
-		#		is_core = USA
-		#		NOT = {
-		#			is_core = ACA
-		#			is_core = ULA
-		#			is_core = CAN
-		#			is_core = FCA
-		#		}
-		#	}
-		#	secede_province = USA
-		#	remove_core = THIS
-		#}
-		
-		## Turn all these states into colonies ##
-			THIS = {
-				any_owned = {
-					limit = {
-						is_core = ULA
-						NOT = {
-							region = USA_139
-							region = USA_144
-							region = USA_148
-							region = USA_129
-						}
-					}
-					secede_province = UTI
-				}
-				inherit = UTI
-			}
-		
-		## Move pops ##
-			random_owned = {
-				limit = { owner = { any_pop = { has_pop_culture = french_canadian } } }
-				any_pop = {
-					limit = { has_pop_culture = french_canadian }
-					move_pop = 65  # Quebec City
-				}
-			}
-			random_owned = {
-				limit = { owner = { any_pop = { has_pop_culture = cajun } } }
-				any_pop = {
-					limit = { has_pop_culture = cajun }
-					move_pop = 139 # New Orleans
-				}
-			}
-			random_owned = {
-				limit = { owner = { any_pop = { has_pop_culture = acadian } } }
-				any_pop = {
-					limit = { has_pop_culture = acadian }
-					move_pop = 71 # Halifax
-				}
-			}
-		
-		## Southern Ontario as a state ##
-			random_country = {
-				limit = {
-					OR = { tag = CAN tag = FCA }
-					exists = yes
-					any_owned_province = { region = CAN_46 }
-				}
-				remove_accepted_culture = anglo_canadian
-				any_owned = {
-					limit = {
-						region = CAN_46
-						NOT = {
-							province_id = 50
-							province_id = 51
-						}
-					}
-					remove_core = CAN
-					remove_core = FCA
-					add_core = USA
-					secede_province = USA
-				}
-			}
-			random_owned = {
-				limit = { region = CAN_46 }
-				owner = { add_accepted_culture = anglo_canadian }
-				CAN_46 = {
-					is_slave = no
-					change_region_name = "Southern Ontario"
-				}
-			}
-		set_country_flag = treaty_of_new_york_implemented
-		country_event = 4489019	# Western Collapse (I HATE IT I HATE IT I HATE IT I HATE IT I HATE IT)
-	}
-
-	on_add = { }
-
-	war_name = CONQUEST_OF_LOUISIANA	
-}
-
-french_conquest_of_louisiana_usa = {
-	sprite_index = 1
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-	constructing_cb = no
-
-	
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 20
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-	po_reparations = yes
-
-	on_po_accepted = { }
-	
-	on_add = { }
-
-	war_name = CONQUEST_OF_LOUISIANA
-}
-
-french_conquest_of_canada_france = {
-	sprite_index = 35
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 50
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = { set_global_flag = FRA_ENG_canada_win }
-
-	on_add = { }
-
-	war_name = CONQUEST_OF_CANADA
-}
-
-french_conquest_of_canada_uk = {
-	sprite_index = 7
-	is_triggered_only = yes
-	months = 60
-	crisis = no
-	constructing_cb = no
-	
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 35
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	can_use = { NOT = { FRA = { has_country_flag = demanded_quebec } } }
-
-	po_remove_prestige = yes
-	
-	on_po_accepted = {
-		any_owned = {
-			limit = {
-				is_overseas = yes
-				NOT = {
-					region = FRA_1700
-					region = ALD_1704
-					region = ALD_1708
-					region = ALD_1713
-					region = ALD_1714
-					region = ALD_1718
-				}
-			}
-			remove_core = FRA
-			secede_province = THIS
-		}
-		clr_country_flag = french_america
-		set_country_flag = no_french_america
-		remove_accepted_culture = french_canadian
-		remove_accepted_culture = cajun
-		ULA = { all_core = { remove_core = ULA } }
-		ACA = { all_core = { remove_core = ACA } }
-		QUE = { all_core = { remove_core = QUE } }
-	}
-
-	on_add = { }
-
-	war_name = STOP_FRENCH_COLONIAL_AMBITIONS
-}
-
-war_of_the_americas_ussa = {
-	sprite_index = 2
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 85
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = {
-		set_global_flag = USS_USA_win
-		
-		# Mexico gets its old territories back
-			MEX_85 = { add_core = MEX }	# California
-			MEX_94 = { add_core = MEX } # Nevada
-			MEX_97 = { add_core = MEX } # Utah
-			MEX_100 = { add_core = MEX } # Arizona
-			MEX_103 = { add_core = MEX } # New Mexico
-			USA_126 = { add_core = MEX } # Kansas
-			TEX_132 = { add_core = MEX }# Texas
-			110 = { add_core = MEX } # Wyoming
-			107 = { add_core = MEX }
-			108 = { add_core = MEX } # Colorado
-			103 = { add_core = MEX }
-			135 = { add_core = MEX }
-			128 = { add_core = MEX } # Kansas
-			129 = { add_core = MEX } # Oklahoma
-			any_owned = {
-				limit = { is_core = MEX }
-				remove_core = USA
-				secede_province = MEX
-			}
-		
-		# Take most of Florida
-			any_owned = {
-				limit = {
-					region = USA_200
-					NOT = { province_id = 198 }
-				}
-				remove_core = USA
-				add_core = USS
-				secede_province = USS
-			}
-
-		# New England becomes independent
-			USA_232 = { add_core = NEN }
-			any_owned = {
-				limit = { is_core = NEN }
-				remove_core = USA
-				secede_province = NEN
-			}
-
-		# Oregon becomes independent
-			any_owned = {
-				limit = {
-					OR = {
-						region = CAN_13 # British Columbia
-						region = USA_78 # Washington
-						region = USA_81 # Oregon
-						region = USA_91 # Idaho
-					}
-				}
-				remove_core = USA
-				add_core = UOR
-				secede_province = UOR
-			}
-
-		# Dakota becomes independent
-			any_owned = {
-				limit = {
-					OR = {
-						province_id = 111 # Wyoming
-						province_id = 112
-						province_id = 113
-						region = USA_116 # Montana
-						province_id = 106 # Colorado
-						region = USA_118 # North Dakota
-						region = USA_121 # South Dakota
-						region = USA_124 # Nebraska
-						province_id = 126 # Kansas
-						province_id = 127
-					}
-				}
-				remove_core = USA
-				add_core = DAK
-				secede_province = DAK
-			}
-
-		# Return cores, release vassals, USSA gets influence.
-			any_country = {
-				limit = {
-					NOT = { tag = USA }
-					OR = {
-						vassal_of = USA
-						in_sphere = USA
-					}
-					any_core = {
-						owned_by = USA
-						NOT = { is_core = USA }
-					}
-					exists = yes
-				}
-				country_event = 5084910 
-			}
-
-		# Take all of USA's overseas territories
-			any_owned = {
-				limit = { is_overseas = yes }
-				secede_province = USS
-			}
-	}
-
-	on_add = { }
-
-	war_name = WAR_OF_THE_AMERICAS
-}
-
-war_of_the_americas_usa = {
-	sprite_index = 2
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 85
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = {
-		set_global_flag = USS_USA_lose
-
-		# Release and puppet La Plata
-			release = LPL
-			LPL = { all_core = { remove_core = USS } }
-			USA = { 
-				create_vassal = LPL
-				diplomatic_influence = { who = LPL value = 200 }
-				relation = { who = LPL value = 100 }
-			}
-		
-		# Release and puppet Gran Colombia
-			release = GCO
-			GCO = { all_core = { remove_core = USS } }
-			USA = { 
-				create_vassal = GCO
-				diplomatic_influence = { who = GCO value = 200 }
-				relation = { who = GCO value = 100 }
-			}
-			
-		# Release and puppet Peru-Bolivia
-			release = PBC
-			PBC = { all_core = { remove_core = USS } }
-			USA = { 
-				create_vassal = PBC
-				diplomatic_influence = { who = PBC value = 200 }
-				relation = { who = PBC value = 100 }
-			}
-			
-		# Release and puppet Brazil
-			release = BRZ
-			BRZ = { all_core = { remove_core = USS } }
-			USA = { 
-				create_vassal = BRZ
-				diplomatic_influence = { who = BRZ value = 200 }
-				relation = { who = BRZ value = 100 }
-			}
-
-		# Return cores, release vassals, USA gets influence
-			any_country = {
-				limit = {
-					NOT = { tag = USS }
-					OR = {
-						any_core = {
-							OR = {
-								owned_by = USS
-								is_core = USS
-							}
-						}
-						vassal_of = USS
-						in_sphere = USS
-					}
-				}
-				country_event = 5596858
-			}
-
-		# Inherit what's left
-			all_core = { remove_core = USS }
-			USA = { country_event = 6261783 }
-	}
-
-	on_add = { }
-
-	war_name = WAR_OF_THE_AMERICAS
-}
-
 rhine_crisis_german = {
 	sprite_index = 2
 	is_triggered_only = yes
@@ -9445,412 +8881,6 @@ caucasus_war = {
 	war_name = WAR_RUS_DAG
 }
 
-acw_intervention = {
-	sprite_index = 37
-	is_triggered_only = yes
-	months = 24
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 60
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = {
-		tag = USA
-		war_with = CSA
-		NOT = { slavery = no_slavery }
-	}
-
-	po_remove_prestige = yes
-	po_reparations = yes
-	po_disarmament = yes
-
-	on_po_accepted = {
-		end_war = CSA
-		clr_country_flag = ongoing_acw_intervention
-		THIS = {
-			random_owned = { 
-				limit = { 
-					owner = {
-						OR = {
-							tag = ENG 
-							has_country_flag = french_total_victory
-						} 
-					} 
-				}
-				USA_248 = { 
-					add_core = THIS 
-					remove_core = USA 
-					secede_province = THIS 
-				}
-			}
-		}
-	}
-
-	on_add = { THIS = { set_country_flag = ongoing_acw_intervention } }
-
-	war_name = ACW_INTERVENTION
-
-}
-
-golden_circle_dismantling = {
-	sprite_index = 8
-	is_triggered_only = yes
-	crisis = no
-	constructing_cb = no
-	months = 60
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 60
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = {
-		remove_accepted_culture = central_american
-		# Nations released
-		# Texas
-			random_owned = {
-				limit = { region = TEX_132 } # Texas
-				TEX_132 = { add_core = TEX }
-			}
-			random_owned = {
-				limit = { region = USA_129 } # Oklahoma
-				TEX_132 = { add_core = TEX }
-			}
-			release = TEX
-			TEX = { all_core = { remove_core = CSA } }
-		# Cuba
-			random_owned = {
-				limit = { region = SPA_2209 } # Cuba
-				SPA_2209 = { add_core = CUB }
-			}
-			release = CUB
-			CUB = { all_core = { remove_core = CSA } }
-		# New Africa
-			random_owned = {
-				limit = { region = USA_139 } # Louisiana
-				USA_139 = { add_core = NAF }
-			}
-			release = NAF
-			NAF = { all_core = { remove_core = CSA } }
-		# Rio Grande 
-			random_owned = {
-				limit = { region = MEX_2150 } # Rio Grande
-				MEX_2150 = { add_core = RGR }
-			}
-			random_owned = {
-				limit = { region = MEX_2149 } # Cohauila
-				MEX_2149 = { add_core = RGR }
-			}
-			random_owned = {
-				limit = { region = MEX_2142 } # Chihuahua
-				MEX_2142 = { add_core = RGR }
-			}
-			random_owned = {
-				limit = { region = MEX_2151 } # Durango
-				MEX_2151 = { add_core = RGR }
-			}
-			release = RGR
-			RGR = { all_core = { remove_core = CSA } }
-		# Puerto Rico
-			random_owned = {
-				limit = { province_id = 2222 } # Puerto Rico
-				2222 = { add_core = PRI }
-			}
-			release = PRI
-			PRI = { all_core = { remove_core = CSA } }
-		# Haiti
-			random_owned = {
-				limit = { region = HAI_2213 } # Hispaniola
-				HAI_2213 = { add_core = HAI }
-			}
-			release = HAI
-			HAI = { all_core = { remove_core = CSA } }
-		# Jamaica
-			random_owned = {
-				limit = { province_id = 2217 } # Jamaica
-				2217 = { add_core = JAM }
-			}
-			random_owned = {
-				limit = { province_id = 2218 } # Cayman Islands
-				2218 = { add_core = JAM }
-			}
-			release = JAM
-			JAM = { all_core = { remove_core = CSA } }
-		# Yucatan 
-			random_owned = {
-				limit = { region = MEX_2183 } # Yucatan
-				MEX_2183 = { add_core = YUC }
-			}
-			release = YUC
-			YUC = { all_core = { remove_core = YUC } }
-		# Belize
-			random_owned = {
-				limit = { region = ENG_2187 } # Belize
-				ENG_2187 = { add_core = BLZ }
-			}
-			release = BLZ
-			BLZ = { all_core = { remove_core = CSA } }
-		# Guatemala
-			random_owned = {
-				limit = { region = UCA_2186 } # Guatemala
-				UCA_2186 = { add_core = GUA }
-			}
-			release = GUA
-			GUA = { all_core = { remove_core = CSA } }
-		# El Salvador
-			random_owned = {
-				limit = { region = UCA_2191 } # El Salvador
-				UCA_2191 = { add_core = ELS }
-			}
-			release = ELS
-			ELS = { all_core = { remove_core = CSA } }
-		# Chiapas 
-			random_owned = {
-				limit = { region = MEX_2181 } # Chiapas
-				MEX_2181 = { add_core = CHP }
-			}
-			release = CHP
-			CHP = { all_core = { remove_core = CSA } }
-		# Honduras
-			random_owned = {
-				limit = { region = UCA_2193 } # Honduras
-				UCA_2193 = { add_core = HON }
-			}
-			release = HON
-			HON = { all_core = { remove_core = CSA } }
-		# Nicaragua
-			random_owned = {
-				limit = { region = UCA_2197 } # Nicaragua
-				UCA_2197 = { add_core = NIC }
-			}
-			release = NIC
-			NIC = { all_core = { remove_core = CSA } }
-		# Costa Rica
-			random_owned = {
-				limit = { region = UCA_2201 } # Costa Rica
-				UCA_2201 = { add_core = COS }
-			}
-			release = COS
-			COS = { all_core = { remove_core = CSA } }
-		# Panama
-			random_owned = {
-				limit = { region = CLM_1723 } # Panama
-				CLM_1723 = { add_core = PNM }
-			}
-			release = PNM
-			PNM = { all_core = { remove_core = CSA } }
-		# Bahamas
-			random_owned = {
-				limit = { province_id = 2219 } # Bahamas
-				2219 = { add_core = BHM }
-			}
-			random_owned = {
-				limit = { province_id = 2220 } # Turks and Caicos
-				2220 = { add_core = BHM }
-			}
-			release = BHM
-			BHM = { all_core = { remove_core = CSA } }
-		# Oaxaca
-			random_owned = {
-				limit = { region = MEX_2177 } # Oaxaca
-				MEX_2177 = { add_core = OAX }
-			}
-			release = OAX
-			OAX = { all_core = { remove_core = OAX } }
-		# Mexico
-			any_country = {
-				limit = { tag = MEX exists = yes }
-				CSA = {
-					any_owned = {
-						limit = { is_core = MEX }
-						secede_province = MEX
-					}
-				}
-			}
-			any_country = {
-				limit = { tag = MEX exists = no }
-				CSA = { release = MEX }
-			}
-			MEX = { all_core = { remove_core = CSA } }
-		# Colombia
-			random_owned = {
-				limit = { region = CLM_2251 } # Magdalena
-				CLM_2251 = { add_core = CLM }
-			}
-			random_owned = {
-				limit = { province_id = 2253 } # Aruba
-				2235 = { add_core = CLM }
-			}
-			any_owned = {
-				limit = { is_core = CLM }
-				secede_province = CLM
-			}
-			CLM = { all_core = { remove_core = CSA } }
-		# Venezuela
-			random_owned = {
-				limit = { province_id = 2273 } # Guanare
-				2273 = { add_core = VNZ }
-			}
-			random_owned = {
-				limit = { region = VNZ_2264 } # Caracas
-				VNZ_2264 = { add_core = VNZ }
-			}
-			random_owned = {
-				limit = { region = VNZ_2269 } # Orinoco
-				VNZ_2269 = { add_core = VNZ }
-			}
-			random_owned = {
-				limit = { region = VNZ_2234 } # Maracaibo
-				VNZ_2234 = { add_core = VNZ }
-			}
-			any_owned = {
-				limit = { is_core = VNZ }
-				secede_province = VNZ
-			}
-			VNZ = { all_core = { remove_core = CSA } }
-		# Carribean Federation
-			release = CRB
-			CRB = { all_core = { remove_core = CSA } }
-		# Extra cores cleanup
-			all_land_provinces = { remove_core = CSA }
-			any_owned = { add_core = CSA }
-	}
-
-	on_add = { }
-
-	war_name = GOLDEN_CIRCLE_DISMANTLEMENT
-}
-
-restore_neutrality = {
-	sprite_index = 7
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 1
-	peace_cost_factor = 10
-	penalty_factor = 0.5
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-	po_reparations = yes
-
-	on_po_accepted = {
-		random_owned = {
-			limit = { owner = { has_country_flag = andorra_neutrality_violator } }
-			ADO = {
-				clr_country_flag = neutrality_violated
-				add_country_modifier = neutrality
-				relation = { who = THIS value = 200 }
-			}
-			THIS = { diplomatic_influence = { who = ADO value = 400 } }
-			owner = { clr_country_flag = andorra_neutrality_violator }
-		}
-		random_owned = {
-			limit = { owner = { has_country_flag = athos_neutrality_violator } }
-			ATH = {
-				clr_country_flag = neutrality_violated
-				add_country_modifier = neutrality
-				relation = { who = THIS value = 200 }
-			}
-			THIS = { diplomatic_influence = { who = ATH value = 400 } }
-			owner = { clr_country_flag = athos_neutrality_violator }
-		}
-		random_owned = {
-			limit = { owner = { has_country_flag = belgian_neutrality_violator } }
-			BEL = {
-				clr_country_flag = neutrality_violated
-				add_country_modifier = neutrality
-				relation = { who = THIS value = 200 }
-			}
-			THIS = { diplomatic_influence = { who = BEL value = 400 } }
-			owner = { clr_country_flag = belgian_neutrality_violator }
-		}
-		random_owned = {
-			limit = { owner = { has_country_flag = liechtenstein_neutrality_violator } }
-			LIE = {
-				clr_country_flag = neutrality_violated
-				add_country_modifier = neutrality
-				relation = { who = THIS value = 200 }
-			}
-			THIS = { diplomatic_influence = { who = LIE value = 400 } }
-			owner = { clr_country_flag = liechtenstein_neutrality_violator }
-		}
-		random_owned = {
-			limit = { owner = { has_country_flag = sanmarinese_neutrality_violator } }
-			SMR = {
-				clr_country_flag = neutrality_violated
-				add_country_modifier = neutrality
-				relation = { who = THIS value = 200 }
-			}
-			THIS = { diplomatic_influence = { who = SMR value = 400 } }
-			owner = { clr_country_flag = sanmarinese_neutrality_violator }
-		}
-		random_owned = {
-			limit = { owner = { has_country_flag = swiss_neutrality_violator } }
-			SWI = {
-				clr_country_flag = neutrality_violated
-				add_country_modifier = neutrality
-				relation = { who = THIS value = 200 }
-			}
-			THIS = { diplomatic_influence = { who = SWI value = 400 } }
-			owner = { clr_country_flag = swiss_neutrality_violator }
-		}
-	}
-
-	on_add = { }
-
-	war_name = WAR_RESTORE_NEUTRALITY
-}
-
-#PLaceholder cb for Gelre
-# cb_rr_save_the_republic = {
-# 
-# }
-
 #Status Quo
 status_quo = {
 	sprite_index = 1
@@ -9958,51 +8988,5 @@ plague_cleanse = {
 
 	on_po_accepted = {
 		prestige_factor = -0.2
-	}
-}
-
-# Acquire Core State
-conquest_of_the_wasteland = {
-	sprite_index = 5
-	is_triggered_only = yes
-	months = 12
-
-	construction_speed = 0.8
-
-	badboy_factor = 0
-	prestige_factor = 0
-	peace_cost_factor = 33
-	penalty_factor = 0
-	always = yes
-
-	break_truce_prestige_factor = 0
-	break_truce_infamy_factor = 0
-	break_truce_militancy_factor = 0
-	truce_months = 2
-
-	good_relation_prestige_factor = 0
-	good_relation_infamy_factor = 0
-	good_relation_militancy_factor = 0
-
-	can_use = {
-		tag = WAS
-		#THIS = { has_global_flag = global_victory }
-	}
-
-	allowed_states = {
-		OR = { any_owned_province = { any_neighbor_province = { owner = { tag = THIS } } } 
-			   any_owned_province = { country_units_in_province = THIS }
-		} 
-	}
-
-	po_demand_state = yes
-
-	war_name = WAR_RECONQUEST_OF_THE_WASTELAND
-
-	on_add = {
-	}
-
-	on_po_accepted = {
-		#country_event =	2650	# Territorial Loss event
 	}
 }

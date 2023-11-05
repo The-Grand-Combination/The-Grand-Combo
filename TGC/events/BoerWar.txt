@@ -10,14 +10,13 @@ country_event = {
 	desc = "EVTDESC98200"
 	picture = "pioneer_wagons"
 
-	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
-		year = 1836
 		NOT = { has_global_flag = great_boer_trek }
 		NOT = { has_country_flag = boer_accepted }
 	}
+
+	fire_only_once = yes
 
 	mean_time_to_happen = {
 		days = 5
@@ -43,16 +42,10 @@ country_event = {
 	desc = "EVTDESC98205"
 	picture = "pioneer_wagons"
 
-	fire_only_once = yes
-
 	trigger = {
-		civilized = no
-		owns = 2111
-		owns = 2112
+		tag = ZUL
 		year = 1838
-		month = 11
 		has_global_flag = great_boer_trek
-		NOT = { NAL = { exists = yes } }
 		NOT = {
 			has_country_flag = attack_the_laagers
 			has_country_flag = make_peace_with_the_laagers
@@ -61,103 +54,7 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		days = 1
-	}
-
-	immediate = {
-		any_pop = {
-			limit = { has_pop_culture = boer }
-			literacy = 0.25
-		}
-		any_country = {
-			limit = {
-				OR = {
-					owns = 2096
-					owns = 2097
-					owns = 2098
-					owns = 2099
-					owns = 2113
-				}
-			}
-			any_pop = {
-				limit = {
-					has_pop_culture = boer
-					OR = {
-						location = { province_id = 2096 }  # Port Elizabeth
-						location = { province_id = 2097 }  # Graaf Reinet
-						location = { province_id = 2098 }  # Port Rex
-						location = { province_id = 2099 }  # Methele
-						location = { province_id = 2113 }  # ZUL capital
-					}
-				}
-				money = 250
-				move_pop = 2111
-				#pop_type = pioneers #pioneers
-			}
-		}
-		any_country = {
-			limit = {
-				NOT = { primary_culture = boer }
-			}
-			any_owned = {
-				limit = {
-					OR = {
-						region = ENG_2087
-						region = ENG_2092
-						region = ENG_2096
-						region = ZUL_2113
-					}
-					any_pop = { has_pop_culture = boer }
-				}
-				add_province_modifier = {
-					name = boer_exodus
-					duration = 3650
-				}
-			}
-		}
-		2111 = { secede_province = NAL }
-		2112 = { secede_province = NAL }
-		NAL = {
-			capital = 2111
-			any_state = { is_slave = yes }
-			prestige = -30
-			civilized = yes
-			government = democracy2
-			set_country_flag = 2nd_republicgov
-			define_general = {
-				name = "Andries Pretorius"
-				personality = efficient
-				background = school_of_defense
-			}
-			random_owned = {
-				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
-				owner = {
-					add_country_modifier = { name = unrecognized_country duration = 1825 }
-					set_country_flag = recognized_country
-				}
-			}
-			random_country = {
-				limit = { tag = TRN exists = yes }
-				NAL = {
-					relation = { who = TRN value = 200 }
-					create_alliance = TRN
-				}
-			}
-			random_country = {
-				limit = { tag = ORA exists = yes }
-				NAL = {
-					relation = { who = ORA value = 200 }
-					create_alliance = ORA
-				}
-			}
-			random_country = {
-				limit = { tag = ZOU exists = yes }
-				NAL = {
-					relation = { who = ZOU value = 200 }
-					create_alliance = ZOU
-				}
-			}
-		}
+		months = 6
 	}
 
 	option = {
@@ -165,45 +62,55 @@ country_event = {
 		set_country_flag = attack_the_laagers
 		prestige = 5
 		badboy = 5
-		war = {
-			target = NAL
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
+		any_pop = {
+			limit = { has_pop_culture = boer }
+			literacy = 0.25
 		}
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98206
+		2111 = {
+			any_pop = {
+				limit = { has_pop_culture = boer }
+				reduce_pop = 0.8
+			}
+			add_core = SAF
+			add_core = NAL
 		}
-		ai_chance = { factor = 90 }
+		2112 = {
+			any_pop = {
+				limit = { has_pop_culture = boer }
+				reduce_pop = 0.8
+			}
+			add_core = SAF
+			add_core = NAL
+		}
+		2087 = { owner = { country_event = 98206 } }
+		ai_chance = {
+			factor = 90
+		}
 	}
 
 	option = {
 		name = "EVTOPTB98205"
 		set_country_flag = make_peace_with_the_laagers
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98207
+		any_pop = {
+			limit = { has_pop_culture = boer }
+			literacy = 0.25
 		}
+		2111 = {
+			add_core = SAF
+			add_core = NAL
+		}
+		2112 = {
+			add_core = SAF
+			add_core = NAL
+		}
+		2087 = { owner = { country_event = 98207 } }
 		any_pop = {
 			limit = { has_pop_culture = zulu }
 			militancy = 4
 		}
-		ai_chance = { factor = 10 }
-	}
-
-	option = {
-		name = "EVTOPTC98205"
-		set_country_flag = make_peace_with_the_laagers
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98207
+		ai_chance = {
+			factor = 10
 		}
-		any_pop = {
-			limit = { has_pop_culture = zulu }
-			militancy = 4
-		}
-		change_tag_no_core_switch = NAL
-		ai_chance = { factor = 0 }
 	}
 }
 
@@ -221,27 +128,100 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA98206"
-		set_country_flag = protecting_nal
 		prestige = 5
-		relation = { who = NAL value = 200 }
-		diplomatic_influence = { who = NAL value = 300 }
-		create_alliance = NAL
+		2112 = { secede_province = THIS }
+		2112 = { change_province_name = Weenen }
+		2111 = { secede_province = THIS }
+		2111 = { change_province_name = Pietermaritzburg }
+		release_vassal = NAL
+		relation = { who = ZUL value = -100 }
+		relation = { who = NAL value = -100 }
+		diplomatic_influence = { who = NAL value = 200 }
 		NAL = {
-			# Audax Validator "." Ignore_NEXT
-			war = { attacker_goal = { casus_belli = call_allies_cb } call_ally = yes }
+			prestige = -30
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1825 }
+					set_country_flag = recognized_country
+				}
+			}
 		}
+		any_pop = {
+			limit = {
+				has_pop_culture = boer
+				OR = {
+					location = { province_id = 2097 }
+					location = { province_id = 2096 }
+				}
+			}
+			money = 250
+			move_pop = 2111
+		}
+		2111 = { state_scope = { is_slave = no } }
 		ai_chance = { factor = 100 }
 	}
 
 	option = {
 		name = "EVTOPTB98206"
+		prestige = -5
 		badboy = -2
+		2112 = { secede_province = THIS }
+		2112 = { change_province_name = Weenen }
+		2111 = { secede_province = THIS }
+		2111 = { change_province_name = Pietermaritzburg }
+		release = NAL
+		relation = { who = NAL value = 50 }
+		diplomatic_influence = { who = NAL value = 200 }
+		NAL = {
+			prestige = -30
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1825 }
+					set_country_flag = recognized_country
+				}
+			}
+		}
+		any_pop = {
+			limit = {
+				has_pop_culture = boer
+				OR = {
+					location = { province_id = 2097 }
+					location = { province_id = 2096 }
+				}
+			}
+			money = 250
+			move_pop = 2111
+		}
+		2111 = { state_scope = { is_slave = yes } }
 		ai_chance = { factor = 0 }
 	}
 
 	option = {
-		name = "EVTOPTC98205"
+		name = "EVTOPTC98207"
+		prestige = -5
 		badboy = -2
+		2112 = { secede_province = THIS }
+		2112 = { change_province_name = Weenen }
+		2111 = { secede_province = THIS }
+		2111 = { change_province_name = Pietermaritzburg }
+		release = NAL
+		relation = { who = NAL value = 50 }
+		diplomatic_influence = { who = NAL value = 200 }
+		NAL = { prestige = -30 }
+		any_pop = {
+			limit = {
+				has_pop_culture = boer
+				OR = {
+					location = { province_id = 2097 }
+					location = { province_id = 2096 }
+				}
+			}
+			money = 250
+			move_pop = 2111
+		}
+		2111 = { state_scope = { is_slave = yes } }
 		change_tag_no_core_switch = NAL
 		ai_chance = { factor = 0 }
 	}
@@ -259,28 +239,92 @@ country_event = {
 
 	is_triggered_only = yes
 
-	immediate = {
-		clr_country_flag = protecting_nal
-	}
-
 	option = {
-		name = "EVTOPTA98207"
-		create_vassal = NAL
-		NAL = { country_event = { id = 98264 days = 1 } }
-		ai_chance = { factor = 100 }
+		name = "EVTOPTA98206"
+		2112 = { secede_province = THIS }
+		2112 = { change_province_name = Weenen }
+		2111 = { secede_province = THIS }
+		2111 = { change_province_name = Pietermaritzburg }
+		release = NAL
+		casus_belli ={
+				target = NAL
+				type = make_puppet
+				months = 60
+			}
+		relation = { who = NAL value = -100 }
+		NAL = { prestige = -30 }
+		any_pop = {
+			limit = {
+				has_pop_culture = boer
+				OR = {
+					location = { province_id = 2097 }
+					location = { province_id = 2096 }
+				}
+			}
+			money = 250
+			move_pop = 2111
+		}
+		2111 = { state_scope = { is_slave = yes } }
+		ai_chance = {
+			factor = 90
+		}
 	}
 
 	option = {
 		name = "EVTOPTB98207"
+		prestige = 5
 		badboy = -2
+		2112 = { secede_province = THIS }
+		2112 = { change_province_name = Weenen }
+		2111 = { secede_province = THIS }
+		2111 = { change_province_name = Pietermaritzburg }
+		release = NAL
 		relation = { who = NAL value = 50 }
-		ai_chance = { factor = 0 }
+		diplomatic_influence = { who = NAL value = 100 }
+		NAL = { prestige = -30 }
+		any_pop = {
+			limit = {
+				has_pop_culture = boer
+				OR = {
+					location = { province_id = 2097 }
+					location = { province_id = 2096 }
+				}
+			}
+			money = 250
+			move_pop = 2111
+		}
+		2111 = { state_scope = { is_slave = yes } }
+		ai_chance = {
+			factor = 10
+		}
 	}
 
 	option = {
-		name = "EVTOPTC98205"
-		create_vassal = NAL
-		NAL = { country_event = { id = 98264 days = 1 } }
+		name = "EVTOPTC98207"
+		2112 = { secede_province = THIS }
+		2112 = { change_province_name = Weenen }
+		2111 = { secede_province = THIS }
+		2111 = { change_province_name = Pietermaritzburg }
+		release = NAL
+		casus_belli ={
+				target = NAL
+				type = make_puppet
+				months = 60
+			}
+		relation = { who = NAL value = -100 }
+		NAL = { prestige = -30 }
+		any_pop = {
+			limit = {
+				has_pop_culture = boer
+				OR = {
+					location = { province_id = 2097 }
+					location = { province_id = 2096 }
+				}
+			}
+			money = 250
+			move_pop = 2111
+		}
+		2111 = { state_scope = { is_slave = yes } }
 		change_tag_no_core_switch = NAL
 		ai_chance = { factor = 0 }
 	}
@@ -322,22 +366,28 @@ country_event = {
 		}
 	}
 
-	immediate = {
-		set_country_flag = annexation_of_natal
-	}
-
 	option = {
 		name = "EVTOPTA98210"
+		set_country_flag = annexation_of_natal
 		NAL = { country_event = 98212 }
-		ai_chance = { factor = 90 }
+		ai_chance = {
+			factor = 90
+		}
 	}
 
 	option = {
 		name = "EVTOPTB98210"
+		set_country_flag = annexation_of_natal
+		prestige = -10
 		badboy = -3
 		release_vassal = NAL
-		NAL = { country_event = 98211 }
-		ai_chance = { factor = 10 }
+		NAL = {
+			all_core = { remove_core = THIS }
+			country_event = 98211
+		}
+		ai_chance = {
+			factor = 10
+		}
 	}
 }
 
@@ -348,11 +398,6 @@ country_event = {
 	picture = "celebration"
 
 	is_triggered_only = yes
-
-	immediate = {
-		government = democracy
-		clr_country_flag = 2nd_republicgov
-	}
 
 	option = {
 		name = "EVTOPTA98211"
@@ -366,7 +411,6 @@ country_event = {
 			relation = { who = THIS value = 100 }
 			diplomatic_influence = { who = THIS value = 100 }
 		}
-		ai_chance = { factor = 10 }
 	}
 
 	option = {
@@ -384,7 +428,6 @@ country_event = {
 			}
 			relation = { who = THIS value = -100 }
 		}
-		ai_chance = { factor = 90 }
 	}
 }
 
@@ -408,14 +451,16 @@ country_event = {
 		}
 		relation = { who = FROM value = -200 }
 		FROM = { country_event = 98213 }
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5
+		}
 	}
 
 	option = {
 		name = "EVTOPTB98212"
-		UTI = { inherit = THIS }
+		civilized = no
+		FROM = { inherit = THIS }
 		FROM = {
-			inherit = UTI
 			any_owned = {
 				limit = {
 					is_core = NAL
@@ -426,9 +471,12 @@ country_event = {
 					duration = -1
 				}
 			}
-			#2111 = { any_pop = { limit = { is_culture_group = south_asian } reduce_pop = 3.5 } }  # why?
+			2111 = { any_pop = { limit = { is_culture_group = south_asian } reduce_pop = 3.5 } }
 		}
-		ai_chance = { factor = 95 }
+		NAL = { government = colonial_company }
+		ai_chance = {
+			factor = 95
+		}
 	}
 }
 
@@ -442,9 +490,9 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA98213"
-		relation = { who = FROM value = -400 }
 		diplomatic_influence = { who = FROM value = -400 }
 		leave_alliance = FROM
+		relation = { who = FROM value = -400 }
 		casus_belli ={
 			target = FROM
 			type = conquest_any
@@ -455,15 +503,20 @@ country_event = {
 			attacker_goal = { casus_belli = conquest_any }
 			call_ally = no
 		}
-		ai_chance = { factor = 80 }
+		ai_chance = {
+			factor = 80
+		}
 	}
 
 	option = {
 		name = "EVTOPTB98213"
 		prestige = -20
+		badboy = -3
+		FROM = { all_core = { remove_core = THIS } }
 		release_vassal = NAL
-		NAL = { country_event = 98211 }
-		ai_chance = { factor = 20 }
+		ai_chance = {
+			factor = 20
+		}
 	}
 }
 
@@ -475,53 +528,67 @@ country_event = {
 
 country_event = {
 	id = 98215
-	title = "EVTNAME98205" #The Founding of Winburg
+	title = "EVTNAME98215" #The Orange River Sovereignty
 	desc = "EVTDESC98215"
 	picture = "pioneer_wagons"
 
-	fire_only_once = yes
-
 	trigger = {
-		civilized = no
-		owns = 2102
-		year = 1836
-		month = 9
-		has_global_flag = great_boer_trek
-		NOT = { ORA = { exists = yes } }
+		civilized = yes
+		owns = 2093
+		owns = 2087
+		year = 1845
+		NOT = { year = 1890 }
+		NOT = { has_country_flag = boer_accepted }
 		NOT = {
-			has_country_flag = attack_the_laagers
-			has_country_flag = make_peace_with_the_laagers
+			tag = SAF
+			tag = VLK
 		}
-		2087 = { owner = { NOT = { has_country_flag = boer_accepted } } }
+		NOT = {
+			ORA = { exists = yes }
+			has_global_flag = orange_river_sovereignty
+		}
+		2101 = {
+			OR = {
+				empty = yes
+				owner = {
+					civilized = no
+					war = no
+				}
+				owned_by = THIS
+			}
+		}
 	}
 
 	mean_time_to_happen = {
-		days = 1
+		months = 32
+		modifier = {
+			factor = 0.75
+			TRN = { exists = yes }
+		}
 	}
 
-	immediate = {
-		any_pop = {
-			limit = { has_pop_culture = boer }
-			literacy = 0.25
+	option = {
+		name = "EVTOPTA98215"
+		set_global_flag = orange_river_sovereignty
+		2100 = { change_province_name = "Port St. Johns" }
+		SAF = {
+			primary_culture = british
+			add_accepted_culture = boer
 		}
-		any_country = {
+		any_owned = {
 			limit = {
 				OR = {
-					owns = 2101
-					owns = 2103
+					region = ENG_2087
+					region = ENG_2092
+					region = ENG_2096
+					region = ZUL_2113
 				}
+				NOT = { province_id = 2087 }
+				any_pop = { has_pop_culture = boer }
 			}
-			any_pop = {
-				limit = {
-					has_pop_culture = boer
-					OR = {
-						location = { province_id = 2101 }  # Thaba Nchu
-						location = { province_id = 2103 }  # Lephoi
-					}
-				}
-				money = 250
-				move_pop = 2102
-				#pop_type = pioneers #pioneers
+			add_province_modifier = {
+				name = boer_exodus
+				duration = 3650
 			}
 		}
 		any_country = {
@@ -536,6 +603,7 @@ country_event = {
 						region = ENG_2096
 						region = ZUL_2113
 					}
+					NOT = { province_id = 2087 }
 					any_pop = { has_pop_culture = boer }
 				}
 				add_province_modifier = {
@@ -544,18 +612,43 @@ country_event = {
 				}
 			}
 		}
-		2102 = { secede_province = ORA }
-		ORA = {
-			any_state = { is_slave = yes }
-			prestige = -30
-			civilized = yes
-			government = democracy2
-			set_country_flag = 2nd_republicgov
-			define_general = {
-				name = "Hendrik Potgieter"
-				personality = efficient
-				background = school_of_defense
+		any_country = {
+			limit = {
+				civilized = no
+				any_owned_province = {
+					OR = {
+						province_id = 2101
+						province_id = 2102
+						province_id = 2103
+					}
+				}
 			}
+			country_event = 98216
+		}
+		2101 = {
+			secede_province = THIS
+			add_core = ORA
+			add_core = SAF
+		}
+		2102 = {
+			secede_province = THIS
+			remove_core = MAT
+			add_core = ORA
+			add_core = SAF
+		}
+		2103 = {
+			secede_province = THIS
+			add_core = ORA
+			add_core = SAF
+		}
+		release_vassal = ORA
+		relation = { who = ORA value = 50 }
+		ORA = { prestige = -30 }
+		2101 = {
+			state_scope = { is_slave = yes }
+		}
+		ORA = {
+			prestige = -30
 			random_owned = {
 				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
 				owner = {
@@ -563,78 +656,109 @@ country_event = {
 					set_country_flag = recognized_country
 				}
 			}
-			random_country = {
-				limit = { tag = TRN exists = yes }
-				ORA = {
-					relation = { who = TRN value = 200 }
-					create_alliance = TRN
-				}
-			}
-			random_country = {
-				limit = { tag = NAL exists = yes }
-				ORA = {
-					relation = { who = NAL value = 200 }
-					create_alliance = NAL
-				}
-			}
-			random_country = {
-				limit = { tag = ZOU exists = yes }
-				ORA = {
-					relation = { who = ZOU value = 200 }
-					create_alliance = ZOU
-				}
+			relation = { who = TRN value = 100 }
+			relation = { who = NAL value = 200 }
+			any_pop = {
+				limit = { has_pop_culture = boer }
+				literacy = 0.15
 			}
 		}
+		ai_chance = { factor = 100 }
 	}
 
 	option = {
-		name = "EVTOPTA98205"
-		set_country_flag = attack_the_laagers
-		prestige = 5
-		badboy = 5
-		war = {
-			target = ORA
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
-			#defender_goal = { casus_belli = acquire_core_state state_province_id = 2101 }
+		name = "EVTOPTB98215"
+		set_global_flag = orange_river_sovereignty
+		SAF = {
+			primary_culture = british
+			add_accepted_culture = boer
 		}
-		random_country = {
-			limit = { owns = 2087 }
+		any_owned = {
+			limit = {
+				OR = {
+					region = ENG_2087
+					region = ENG_2092
+					region = ENG_2096
+					region = ZUL_2113
+				}
+				any_pop = { has_pop_culture = boer }
+			}
+			add_province_modifier = {
+				name = boer_exodus
+				duration = 3650
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { primary_culture = boer }
+			}
+			any_owned = {
+				limit = {
+					OR = {
+						region = ENG_2087
+						region = ENG_2092
+						region = ENG_2096
+						region = ZUL_2113
+					}
+					NOT = { province_id = 2087 }
+					any_pop = { has_pop_culture = boer }
+				}
+				add_province_modifier = {
+					name = boer_exodus
+					duration = 3650
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				civilized = no
+				any_owned_province = {
+					OR = {
+						province_id = 2101
+						province_id = 2102
+						province_id = 2103
+					}
+				}
+			}
 			country_event = 98216
 		}
-		ai_chance = {
-			factor = 50
-			modifier = {
-				factor = 0
-				NOT = { number_of_states = 3 }
+		2101 = {
+			secede_province = THIS
+			add_core = ORA
+			add_core = SAF
+		}
+		2102 = {
+			secede_province = THIS
+			remove_core = MAT
+			add_core = ORA
+			add_core = SAF
+		}
+		2103 = {
+			secede_province = THIS
+			add_core = ORA
+			add_core = SAF
+		}
+		release_vassal = ORA
+		relation = { who = ORA value = 50 }
+		ORA = { prestige = -30 }
+		2101 = {
+			state_scope = { is_slave = yes }
+		}
+		ORA = {
+			prestige = -30
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1825 }
+					set_country_flag = recognized_country
+				}
 			}
-		}
-	}
-
-	option = {
-		name = "EVTOPTB98205"
-		set_country_flag = make_peace_with_the_laagers
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98217
-		}
-		any_pop = {
-			limit = { has_pop_culture = sotho }
-			militancy = 4
-		}
-		ai_chance = { factor = 50 }
-	}
-
-	option = {
-		name = "EVTOPTC98215"
-		set_country_flag = make_peace_with_the_laagers
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98217
-		}
-		any_pop = {
-			limit = { has_pop_culture = sotho }
-			militancy = 4
+			relation = { who = TRN value = 100 }
+			relation = { who = NAL value = 200 }
+			any_pop = {
+				limit = { has_pop_culture = boer }
+				literacy = 0.15
+			}
 		}
 		change_tag_no_core_switch = ORA
 		ai_chance = { factor = 0 }
@@ -643,108 +767,92 @@ country_event = {
 
 country_event = {
 	id = 98216
-	title = "EVTNAME98216" #The Battle of Vet River
+	title = "EVTNAME98216" #The Boers Overtake the Orange Valley
 	desc = "EVTDESC98216"
-	picture = "pioneer_wagons"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA98206"
-		set_country_flag = protecting_ora
-		prestige = 5
-		relation = { who = ORA value = 200 }
-		diplomatic_influence = { who = ORA value = 300 }
-		create_alliance = ORA
-		ORA = {
-			# Audax Validator "." Ignore_NEXT
-			war = { attacker_goal = { casus_belli = call_allies_cb } call_ally = yes }
-		}
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB98206"
-		badboy = -2
-		ai_chance = { factor = 0 }
-	}
-
-	option = {
-		name = "EVTOPTC98215"
-		badboy = -2
-		change_tag_no_core_switch = ORA
-		ai_chance = { factor = 0 }
-	}
-}
-
-country_event = {
-	id = 98217
-	title = "EVTNAME98217" #Winsburg Republic
-	desc = "EVTDESC98217"
 	picture = "boer_war"
 
 	is_triggered_only = yes
 
-	immediate = {
-		clr_country_flag = protecting_ora
-	}
-
 	option = {
-		name = "EVTOPTA98207"
-		create_vassal = ORA
-		ORA = { country_event = { id = 98264 days = 1 } }
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB98207"
-		badboy = -2
-		relation = { who = ORA value = 50 }
-		ai_chance = { factor = 0 }
-	}
-
-	option = {
-		name = "EVTOPTC98215"
-		create_vassal = ORA
-		ORA = { country_event = { id = 98264 days = 1 } }
-		change_tag_no_core_switch = ORA
-		ai_chance = { factor = 0 }
+		name = "EVTOPTA98216"
+		prestige = -10
+		any_pop = {
+			limit = { is_primary_culture = yes }
+			dominant_issue = {
+				factor = 0.1
+				value = jingoism
+			}
+		}
+		random_country = {
+			limit = { is_our_vassal = ORA }
+			relation = { who = THIS value = -100 }
+		}
+		relation = { who = ORA value = -200 }
 	}
 }
 
 country_event = {
 	id = 98220
-	title = "EVTNAME98205" #The Potchefstroom Republic
+	title = "EVTNAME98220" #The Transvaal Sovereignty
 	desc = "EVTDESC98220"
 	picture = "pioneer_wagons"
 
-	fire_only_once = yes
-
 	trigger = {
-		civilized = no
-		owns = 2105
-		owns = 2106
-		owns = 2107
-		owns = 2109
-		year = 1837
-		month = 8
-		has_global_flag = great_boer_trek
-		NOT = { TRN = { exists = yes } }
+		owns = 2093
+		civilized = yes
+		year = 1845
+		NOT = { year = 1890 }
+		NOT = { has_country_flag = boer_accepted }
 		NOT = {
-			has_country_flag = attack_the_laagers
-			has_country_flag = make_peace_with_the_laagers
+			tag = SAF
+			tag = VLK
 		}
-		2087 = { owner = { NOT = { has_country_flag = boer_accepted } } }
+		NOT = {
+			TRN = { exists = yes }
+			has_global_flag = transvaal_sovereignty
+		}
+		2105 = {
+			OR = {
+				empty = yes
+				owner = {
+					civilized = no
+					war = no
+				}
+				owned_by = THIS
+			}
+		}
 	}
 
 	mean_time_to_happen = {
-		days = 1
+		months = 40
+		modifier = {
+			factor = 0.5
+			ORA = { exists = yes }
+		}
 	}
 
-	immediate = {
-		any_pop = {
-			limit = { has_pop_culture = boer }
-			literacy = 0.25
+	option = {
+		name = "EVTOPTA98215"
+		set_global_flag = transvaal_sovereignty
+		SAF = {
+			primary_culture = british
+			add_accepted_culture = boer
+		}
+		any_owned = {
+			limit = {
+				OR = {
+					region = ENG_2087
+					region = ENG_2092
+					region = ENG_2096
+					region = ZUL_2113
+				}
+				NOT = { province_id = 2087 }
+				any_pop = { has_pop_culture = boer }
+			}
+			add_province_modifier = {
+				name = boer_exodus
+				duration = 3650
+			}
 		}
 		any_country = {
 			limit = {
@@ -758,6 +866,7 @@ country_event = {
 						region = ENG_2096
 						region = ZUL_2113
 					}
+					NOT = { province_id = 2087 }
 					any_pop = { has_pop_culture = boer }
 				}
 				add_province_modifier = {
@@ -766,22 +875,63 @@ country_event = {
 				}
 			}
 		}
-		2105 = { secede_province = TRN }
-		2106 = { secede_province = TRN }
-		2107 = { secede_province = TRN }
-		2109 = { secede_province = TRN }
-		TRN = {
-			capital = 2105
-			any_state = { is_slave = yes }
-			prestige = -30
-			civilized = yes
-			government = democracy2
-			set_country_flag = 2nd_republicgov
-			define_general = {
-				name = "Hendrik Potgieter"
-				personality = efficient
-				background = school_of_defense
+		any_country = {
+			limit = {
+				civilized = no
+				any_owned_province = {
+					OR = {
+						province_id = 2105
+						province_id = 2106
+						province_id = 2107
+						province_id = 2108
+						province_id = 2109
+						province_id = 2110
+					}
+				}
 			}
+			country_event = 98221
+		}
+
+		2105 = {
+			secede_province = THIS
+			remove_core = BSH
+			add_core = TRN
+			add_core = SAF
+		}
+		2106 = {
+			secede_province = THIS
+			remove_core = BSH
+			add_core = TRN
+			add_core = SAF
+		}
+		2107 = {
+			secede_province = THIS
+			add_core = TRN
+			add_core = SAF
+		}
+		2108 = {
+			add_core = TRN
+			add_core = SAF
+		}
+		2109 = {
+			secede_province = THIS
+			add_core = TRN
+			add_core = SAF
+		}
+		2110 = {
+			#secede_province = THIS
+			remove_core = GAZ
+			add_core = TRN
+			add_core = SAF
+		}
+		release_vassal = TRN
+		relation = { who = TRN value = 50 }
+		TRN = { prestige = -30 }
+		2105 = {
+			state_scope = { is_slave = yes }
+		}
+		TRN = {
+			prestige = -30
 			random_owned = {
 				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
 				owner = {
@@ -789,77 +939,164 @@ country_event = {
 					set_country_flag = recognized_country
 				}
 			}
-			random_country = {
-				limit = { tag = NAL exists = yes }
-				TRN = {
-					relation = { who = NAL value = 200 }
-					create_alliance = NAL
-				}
+			country_event = { id = 95517 days = 5 }
+			relation = { who = ORA value = 100 }
+			relation = { who = NAL value = 200 }
+			relation = { who = ZOU value = 200 }
+			any_pop = {
+				limit = { type = artisans }
+				pop_type = soldiers
+
 			}
-			random_country = {
-				limit = { tag = ORA exists = yes }
-				TRN = {
-					relation = { who = ORA value = 200 }
-					create_alliance = ORA
-				}
+			any_pop = {
+				limit = { has_pop_culture = boer }
+				literacy = 0.15
 			}
-			random_country = {
-				limit = { tag = ZOU exists = yes }
-				TRN = {
-					relation = { who = ZOU value = 200 }
-					create_alliance = ZOU
+			any_pop = {
+				limit = {
+					has_pop_culture = nguni
+					location = {
+						OR = {
+							province_id = 2108
+							province_id = 2107
+						}
+					}
 				}
+				money = 100
+				move_pop = 2071
 			}
 		}
+		ai_chance = { factor = 100 }
 	}
 
 	option = {
-		name = "EVTOPTA98205"
-		set_country_flag = attack_the_laagers
-		prestige = 5
-		badboy = 5
-		war = {
-			target = TRN
-			attacker_goal = { casus_belli = conquest_any }
-			defender_goal = { casus_belli = status_quo }
+		name = "EVTOPTB98220"
+		set_global_flag = transvaal_sovereignty
+		SAF = {
+			primary_culture = british
+			add_accepted_culture = boer
 		}
-		random_country = {
-			limit = { owns = 2087 }
+		any_owned = {
+			limit = {
+				OR = {
+					region = ENG_2087
+					region = ENG_2092
+					region = ENG_2096
+					region = ZUL_2113
+				}
+				NOT = { province_id = 2087 }
+				any_pop = { has_pop_culture = boer }
+			}
+			add_province_modifier = {
+				name = boer_exodus
+				duration = 3650
+			}
+		}
+		any_country = {
+			limit = {
+				NOT = { primary_culture = boer }
+			}
+			any_owned = {
+				limit = {
+					OR = {
+						region = ENG_2087
+						region = ENG_2092
+						region = ENG_2096
+						region = ZUL_2113
+					}
+					NOT = { province_id = 2087 }
+					any_pop = { has_pop_culture = boer }
+				}
+				add_province_modifier = {
+					name = boer_exodus
+					duration = 3650
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				civilized = no
+				any_owned_province = {
+					OR = {
+						province_id = 2105
+						province_id = 2106
+						province_id = 2107
+						province_id = 2108
+						province_id = 2109
+						province_id = 2110
+					}
+				}
+			}
 			country_event = 98221
 		}
-		ai_chance = {
-			factor = 50
-			modifier = {
-				factor = 0
-				NOT = { number_of_states = 2 }
+
+		2105 = {
+			secede_province = THIS
+			remove_core = BSH
+			add_core = TRN
+			add_core = SAF
+		}
+		2106 = {
+			secede_province = THIS
+			remove_core = BSH
+			add_core = TRN
+			add_core = SAF
+		}
+		2107 = {
+			secede_province = THIS
+			add_core = TRN
+			add_core = SAF
+		}
+		2108 = {
+			add_core = TRN
+			add_core = SAF
+		}
+		2109 = {
+			secede_province = THIS
+			add_core = TRN
+			add_core = SAF
+		}
+		release_vassal = TRN
+		relation = { who = TRN value = 50 }
+		TRN = { prestige = -30 }
+		2105 = {
+			state_scope = { is_slave = yes }
+		}
+		TRN = {
+			prestige = -30
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1825 }
+					set_country_flag = recognized_country
+				}
 			}
-		}
-	}
+			country_event = { id = 95517 days = 5 }
+			relation = { who = ORA value = 100 }
+			relation = { who = NAL value = 200 }
+			relation = { who = ZOU value = 200 }
+			any_pop = {
+				limit = { type = artisans }
+				pop_type = soldiers
 
-	option = {
-		name = "EVTOPTB98205"
-		set_country_flag = make_peace_with_the_laagers
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98222
-		}
-		any_pop = {
-			limit = { has_pop_culture = nguni }
-			militancy = 4
-		}
-		ai_chance = { factor = 50 }
-	}
-
-	option = {
-		name = "EVTOPTC98220"
-		set_country_flag = make_peace_with_the_laagers
-		random_country = {
-			limit = { owns = 2087 }
-			country_event = 98222
-		}
-		any_pop = {
-			limit = { has_pop_culture = nguni }
-			militancy = 4
+			}
+			any_pop = {
+				limit = { has_pop_culture = boer }
+				literacy = 0.15
+			}
+			any_pop = {
+				limit = {
+					has_pop_culture = nguni
+					location = {
+						OR = {
+							province_id = 2108
+							province_id = 2107
+						}
+					}
+				}
+				money = 100
+				move_pop = 2071
+			}
 		}
 		change_tag_no_core_switch = TRN
 		ai_chance = { factor = 0 }
@@ -868,148 +1105,38 @@ country_event = {
 
 country_event = {
 	id = 98221
-	title = "EVTNAME98221" #The Battle of the Marico River
+	title = "EVTNAME98221" #The Boers Overtake the Transvaal
 	desc = "EVTDESC98221"
-	picture = "matabele_goes_north"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA98206"
-		set_country_flag = protecting_trn
-		prestige = 5
-		relation = { who = TRN value = 200 }
-		diplomatic_influence = { who = TRN value = 300 }
-		create_alliance = TRN
-		TRN = {
-			# Audax Validator "." Ignore_NEXT
-			war = { attacker_goal = { casus_belli = call_allies_cb } call_ally = yes }
-		}
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB98206"
-		badboy = -2
-		ai_chance = { factor = 0 }
-	}
-
-	option = {
-		name = "EVTOPTC98220"
-		badboy = -2
-		change_tag_no_core_switch = TRN
-		ai_chance = { factor = 0 }
-	}
-}
-
-country_event = {
-	id = 98222
-	title = "EVTNAME98222" #The Transvaal Republic
-	desc = "EVTDESC98222"
-	picture = "potchefstroom_republic"
-
-	is_triggered_only = yes
-
-	immediate = {
-		clr_country_flag = protecting_trn
-	}
-
-	option = {
-		name = "EVTOPTA98207"
-		create_vassal = TRN
-		TRN = { country_event = { id = 98264 days = 1 } }
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB98207"
-		badboy = -2
-		relation = { who = TRN value = 50 }
-		ai_chance = { factor = 0 }
-	}
-
-	option = {
-		name = "EVTOPTC98215"
-		create_vassal = TRN
-		TRN = { country_event = { id = 98264 days = 1 } }
-		change_tag_no_core_switch = TRN
-		ai_chance = { factor = 0 }
-	}
-}
-
-country_event = {
-	id = 98223
-	title = "EVTNAME98223" #The Warden Line - the Proclamation of Orange River Sovereignty
-	desc = "EVTDESC98223"
-	picture = "boer_army"
-
-	#fire_only_once = yes
-	is_triggered_only = yes
-	#allow_multiple_instances = yes
-
-	option = {
-		name = "EVTOPTA98264"
-		any_owned = {
-			limit = { is_core = ORA }
-			secede_province = ORA
-		}
-		#ai_chance = { factor = 1 }
-	}
-
-	# TODO
-	#option = {
-	#	name = "Never!"
-	#	FROM = { country_event = 184823071 }
-	#	ORA = { government = colonial_company }
-	#	ai_chance = { factor = 0 }
-	#}
-}
-
-country_event = {
-	id = 98224
-	title = "EVTNAME98224" #The Establishment of Orange River Sovereignty
-	desc = "EVTDESC98224"
 	picture = "boer_war"
 
 	is_triggered_only = yes
 
-	immediate = {
-		ORA = {
-			any_state = { is_slave = yes }
-			civilized = yes
-			capital = 2101
-		}
-	}
-
 	option = {
-		name = "EVTOPTA98224"
-		random_country = {
-			limit = {
-				tag = ORA
-				is_vassal = no
-			}
-			THIS = { create_vassal = ORA }
+		name = "EVTOPTA98216"
+		prestige = -10
+		2069 = {
+			add_core = MAT
+			secede_province = MAT
+			life_rating = 25
+			any_pop = { limit = { NOT = { has_pop_culture = boer } } literacy = -0.99 }
 		}
-		ORA = { country_event = { id = 98265 days = 1 } }
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB98224"
-		random_country = {
-			limit = {
-				tag = ORA
-				is_vassal = no
+		any_pop = {
+			limit = { is_primary_culture = yes }
+			dominant_issue = {
+				factor = 0.1
+				value = jingoism
 			}
-			THIS = { create_vassal = ORA }
 		}
-		ORA = { country_event = { id = 98265 days = 1 } }
-		change_tag_no_core_switch = ORA
-		ai_chance = { factor = 0 }
+		random_country = {
+			limit = { is_our_vassal = TRN }
+			relation = { who = THIS value = -100 }
+		}
+		relation = { who = TRN value = -200 }
 	}
 }
 
 province_event = {
+			
 	id = 98225
 	title = "EVTNAME98225" #The Boer Exodus
 	desc = "EVTDESC98225"
@@ -1241,13 +1368,6 @@ country_event = {
 
 	is_triggered_only = yes
 
-	immediate = {
-		government = democracy
-		clr_country_flag = 2nd_republicgov
-		remove_accepted_culture = british
-		clr_country_flag = british_accepted		
-	}
-
 	option = {
 		name = "EVTOPTA98230"
 		prestige = -20
@@ -1256,7 +1376,9 @@ country_event = {
 			diplomatic_influence = { who = THIS value = 200 }
 			relation = { who = THIS value = 100 }
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 
 	option = {
@@ -1274,7 +1396,9 @@ country_event = {
 			type = add_to_sphere
 			months = 60
 		}
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 
@@ -1290,13 +1414,6 @@ country_event = {
 
 	is_triggered_only = yes
 
-	immediate = {
-		government = democracy
-		clr_country_flag = 2nd_republicgov
-		remove_accepted_culture = british
-		clr_country_flag = british_accepted		
-	}
-
 	option = {
 		name = "EVTOPTA98230"
 		prestige = -20
@@ -1305,7 +1422,9 @@ country_event = {
 			diplomatic_influence = { who = THIS value = 200 }
 			relation = { who = THIS value = 100 }
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 
 	option = {
@@ -1323,52 +1442,9 @@ country_event = {
 			type = add_to_sphere
 			months = 60
 		}
-		ai_chance = { factor = 0 }
-	}
-}
-
-country_event = {
-	id = 98232
-	title = "EVTNAME98232" #Tugela River Convention
-	desc = "EVTDESC98230"
-	picture = "boer_war"
-
-	is_triggered_only = yes
-
-	immediate = {
-		government = democracy
-		clr_country_flag = 2nd_republicgov
-		remove_accepted_culture = british
-		clr_country_flag = british_accepted		
-	}
-
-	option = {
-		name = "EVTOPTA98230"
-		prestige = -20
-		political_reform = no_slavery
-		FROM = {
-			diplomatic_influence = { who = THIS value = 200 }
-			relation = { who = THIS value = 100 }
+		ai_chance = {
+			factor = 0
 		}
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "EVTOPTB98230"
-		prestige = 10
-		relation = { who = FROM value = -100 }
-		leave_alliance = FROM
-		add_casus_belli = {
-			target = FROM
-			type = make_puppet
-			months = 12
-		}
-		add_casus_belli = {
-			target = FROM
-			type = add_to_sphere
-			months = 60
-		}
-		ai_chance = { factor = 0 }
 	}
 }
 
@@ -2465,82 +2541,6 @@ country_event = {
 	}
 }
 
-# Boer Repiblic wins war against the natives with British intervention - Britain decides what to do
-country_event = {
-	id = 98263
-	title = "EVTNAME98263"
-	desc = "EVTDESC98263"
-	picture = "pioneer_wagons"
-
-	trigger = {
-		war = no
-		has_country_flag = attack_the_laagers
-		has_recently_lost_war = yes
-	}
-
-	mean_time_to_happen = {
-		days = 1
-	}
-
-	option = {
-		name = "EVTOPTA98263"
-		clr_country_flag = attack_the_laagers
-		random_country = {
-			limit = { has_country_flag = protecting_nal }
-			diplomatic_influence = { who = THIS value = -100 }
-			country_event = 98207
-		}
-		random_country = {
-			limit = { has_country_flag = protecting_ora }
-			diplomatic_influence = { who = THIS value = -100 }
-			country_event = 98217
-		}
-		random_country = {
-			limit = { has_country_flag = protecting_trn }
-			diplomatic_influence = { who = THIS value = -100 }
-			country_event = 98222
-		}
-	}
-}
-
-country_event = {
-	id = 98264
-	title = "EVTNAME98264"
-	desc = "EVTDESC98264"
-	picture = "pioneer_wagons"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA98264"
-		leave_alliance = FROM
-		relation = { who = FROM value = -200 }
-		FROM = { diplomatic_influence = { who = THIS value = -200 } }
-		government = democracy2
-		set_country_flag = 2nd_republicgov
-		any_state = { is_slave = yes }
-	}
-}
-
-country_event = {
-	id = 98265
-	title = "EVTNAME98264"
-	desc = "EVTDESC98264"
-	picture = "pioneer_wagons"
-
-	is_triggered_only = yes
-
-	option = {
-		name = "EVTOPTA98264"
-		leave_alliance = FROM
-		government = colonial_company
-		clr_country_flag = 2nd_republicgov
-		any_state = { is_slave = yes }
-		add_accepted_culture = british
-		set_country_flag = british_accepted
-	}
-}
-
 country_event = {
 	id = 317106
 	title = "EVTNAME317106"
@@ -2582,221 +2582,5 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA2037107"
-	}
-}
-
-country_event = {
-	id = 2037110
-	title = "Tech exchange"
-	desc = "Exchanging techs..."
-
-	is_triggered_only = yes
-
-	option = {
-		name = "Lets go!"
-
-		random_owned = {
-			limit = {
-				owner = { NOT = { point_defense_system = 1 } }
-				FROM = {	point_defense_system = 1 }
-			}
-			owner = { activate_technology = point_defense_system }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { strategic_mobility = 1 } }
-				FROM = {	strategic_mobility = 1 }
-			}
-			owner = { activate_technology = strategic_mobility }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { muzzle_loaded_rifles = 1 } }
-				FROM = {	muzzle_loaded_rifles = 1 }
-			}
-			owner = { activate_technology = muzzle_loaded_rifles }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { breech_loaded_rifles = 1 } }
-				FROM = {	breech_loaded_rifles = 1 }
-			}
-			owner = { activate_technology = breech_loaded_rifles }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { iron_muzzle_loaded_artillery = 1 } }
-				FROM = {	iron_muzzle_loaded_artillery = 1 }
-			}
-			owner = { activate_technology = iron_muzzle_loaded_artillery }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { iron_breech_loaded_artillery = 1 } }
-				FROM = {	iron_breech_loaded_artillery = 1 }
-			}
-			owner = { activate_technology = iron_breech_loaded_artillery }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { military_plans = 1 } }
-				FROM = {	military_plans = 1 }
-			}
-			owner = { activate_technology = military_plans }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { military_statistics = 1 } }
-				FROM = {	military_statistics = 1 }
-			}
-			owner = { activate_technology = military_statistics }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { army_professionalism = 1 } }
-				FROM = {	army_professionalism = 1 }
-			}
-			owner = { activate_technology = army_professionalism }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { army_decision_making = 1 } }
-				FROM = {	army_decision_making = 1 }
-			}
-			owner = { activate_technology = army_decision_making }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { high_pressure_steam_engine = 1 } }
-				FROM = {	high_pressure_steam_engine = 1 }
-			}
-			owner = { activate_technology = high_pressure_steam_engine }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { compound_steam_engines = 1 } }
-				FROM = {	compound_steam_engines = 1 }
-			}
-			owner = { activate_technology = compound_steam_engines }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { steam_turbine = 1 } }
-				FROM = {	steam_turbine = 1 }
-			}
-			owner = { activate_technology = steam_turbine }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { interchangeable_parts = 1 } }
-				FROM = {	interchangeable_parts = 1 }
-			}
-			owner = { activate_technology = interchangeable_parts }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { semi_automatization = 1 } }
-				FROM = {	semi_automatization = 1 }
-			}
-			owner = { activate_technology = semi_automatization }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { hot_blast = 1 } }
-				FROM = {	hot_blast = 1 }
-			}
-			owner = { activate_technology = hot_blast }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { regenerative_furnaces = 1 } }
-				FROM = {	regenerative_furnaces = 1 }
-			}
-			owner = { activate_technology = regenerative_furnaces }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { early_railroad = 1 } }
-				FROM = {	early_railroad = 1 }
-			}
-			owner = { activate_technology = early_railroad }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { iron_railroad = 1 } }
-				FROM = {	iron_railroad = 1 }
-			}
-			owner = { activate_technology = iron_railroad }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { medicine = 1 } }
-				FROM = {	medicine = 1 }
-			}
-			owner = { activate_technology = medicine }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { inorganic_chemistry = 1 } }
-				FROM = {	inorganic_chemistry = 1 }
-			}
-			owner = { activate_technology = inorganic_chemistry }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { romanticism = 1 } }
-				FROM = {	romanticism = 1 }
-			}
-			owner = { activate_technology = romanticism }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { idealism = 1 } }
-				FROM = {	idealism = 1 }
-			}
-			owner = { activate_technology = idealism }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { malthusian_thought = 1 } }
-				FROM = {	malthusian_thought = 1 }
-			}
-			owner = { activate_technology = malthusian_thought }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { positivism = 1 } }
-				FROM = {	positivism = 1 }
-			}
-			owner = { activate_technology = positivism }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { ideological_thought = 1 } }
-				FROM = {	ideological_thought = 1 }
-			}
-			owner = { activate_technology = ideological_thought }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { state_n_government = 1 } }
-				FROM = {	state_n_government = 1 }
-			}
-			owner = { activate_technology = state_n_government }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { stock_exchange = 1 } }
-				FROM = {	stock_exchange = 1 }
-			}
-			owner = { activate_technology = stock_exchange }
-		}
-		random_owned = {
-			limit = {
-				owner = { NOT = { ad_hoc_money_bill_printing = 1 } }
-				FROM = {	ad_hoc_money_bill_printing = 1 }
-			}
-			owner = { activate_technology = ad_hoc_money_bill_printing }
-		}
 	}
 }

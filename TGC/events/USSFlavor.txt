@@ -914,8 +914,9 @@
 				primary_culture = bolivian
 				primary_culture = chilean
 				primary_culture = peruvian
-				primary_culture = platinean
+				primary_culture = argentinian
 				primary_culture = paraguayan
+				primary_culture = uruguayan
 			}
 			OR = {
 				is_greater_power = no
@@ -1116,7 +1117,124 @@
 		}
 	}
 
-	## USSA win ## (The "missing" part is in the cb itself)
+	## USSA win ##
+
+		#Description: The dismantling of the USA after the war with the USSA.
+		country_event = {
+			id = 3755286
+			title = EVTNAME3755286
+			desc = EVTDESC3755286
+			major = yes
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA3755286
+
+				prestige = -60
+
+				# Mexico gets its old territories back
+				MEX_85 = { add_core = MEX }	# California
+				MEX_94 = { add_core = MEX } # Nevada
+				MEX_97 = { add_core = MEX } # Utah
+				MEX_100 = { add_core = MEX } # Arizona
+				MEX_103 = { add_core = MEX } # New Mexico
+				USA_126 = { add_core = MEX } # Kansas
+				TEX_132 = { add_core = MEX }# Texas
+				110 = { add_core = MEX } # Wyoming
+				107 = { add_core = MEX }
+				108 = { add_core = MEX } # Colorado
+				103 = { add_core = MEX }
+				135 = { add_core = MEX }
+				128 = { add_core = MEX } # Kansas
+				129 = { add_core = MEX } # Oklahoma
+				any_owned = {
+					limit = { is_core = MEX }
+					remove_core = USA
+					secede_province = MEX
+				}
+
+				# Take most of Florida
+				any_owned = {
+					limit = {
+						region = USA_200
+						NOT = { province_id = 198 }
+					}
+					remove_core = USA
+					add_core = USS
+					secede_province = USS
+				}
+
+				# New England becomes independent
+				USA_232 = { add_core = NEN }
+				any_owned = {
+					limit = { is_core = NEN }
+					remove_core = THIS
+					secede_province = NEN
+				}
+
+				# Oregon becomes independent
+				any_owned = {
+					limit = {
+						OR = {
+							region = CAN_13 # British Columbia
+							region = USA_78 # Washington
+							region = USA_81 # Oregon
+							region = USA_91 # Idaho
+						}
+					}
+					remove_core = THIS
+					add_core = UOR
+					secede_province = UOR
+				}
+
+				# Dakota becomes independent
+				any_owned = {
+					limit = {
+						OR = {
+							province_id = 111 # Wyoming
+							province_id = 112
+							province_id = 113
+							region = USA_116 # Montana
+							province_id = 106 # Colorado
+							region = USA_118 # North Dakota
+							region = USA_121 # South Dakota
+							region = USA_124 # Nebraska
+							province_id = 126 # Kansas
+							province_id = 127
+						}
+					}
+					remove_core = THIS
+					add_core = DAK
+					secede_province = DAK
+				}
+
+				any_country = {
+					limit = {
+						NOT = { tag = THIS }
+						OR = {
+							vassal_of = THIS
+							in_sphere = THIS
+						}
+						any_core = {
+							owned_by = THIS
+							NOT = { is_core = THIS }
+						}
+						exists = yes
+					}
+					country_event = 5084910
+				}
+
+				USS = {
+					country_event = {
+						id = 4102182 # Get the USA's overseas territories
+						days = 3
+					}
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
 
 		#Description: Vassals and spherelings of the USSA get their cores.
 		country_event = {
@@ -1130,11 +1248,11 @@
 			option = {
 				name = EVTOPTA5084910
 
-				USA = {
+				FROM = {
 					any_owned = {
 						limit = {
 							is_core = THIS
-							NOT = { is_core = USA }
+							NOT = { is_core = FROM }
 						}
 						secede_province = THIS
 					}
@@ -1162,6 +1280,26 @@
 			}
 		}
 
+		#Description: The USSA gets the USA's overseas territories.
+		country_event = {
+			id = 4102182
+			title = EVTNAME4102182
+			desc = EVTDESC4102182
+			picture = treaty_of_versailles
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA4102182
+
+				any_owned = {
+					limit = { is_overseas = yes }
+					secede_province = THIS
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
 
 		#Description: Upon being dismantled, the USA becomes New America, centered on Chicago
 		country_event = {
@@ -1197,6 +1335,74 @@
 		}
 
 	## USSA loss ##
+
+		#Description: The dismantling of the USSA after the war with the USA.
+		country_event = {
+			id = 807575
+			title = EVTNAME807575
+			desc = EVTDESC807575
+			major = yes
+
+			is_triggered_only = yes
+
+			option = {
+				name = EVTOPTA807575
+
+				random_owned = {
+					limit = { exists = LPL }
+					LPL = {
+						annex_to = THIS
+						all_core = { remove_core = LPL }
+					}
+				}
+				random_owned = {
+					limit = { exists = GCO }
+					GCO = {
+						annex_to = THIS
+						all_core = { remove_core = GCO }
+					}
+				}
+				random_owned = {
+					limit = { exists = PBC }
+					PBC = {
+						annex_to = THIS
+						all_core = { remove_core = PBC }
+					}
+				}
+				random_owned = {
+					limit = { exists = BRZ }
+					BRZ = { annex_to = THIS }
+				}
+
+				all_core = { remove_core = USS }
+
+				any_country = { # NOTE
+					limit = {
+						NOT = { tag = THIS }
+						OR = {
+							any_core = {
+								OR = {
+									owned_by = THIS
+									is_core = THIS
+								}
+							}
+							vassal_of = THIS
+							in_sphere = THIS
+						}
+					}
+					country_event = 5596858 # Return cores, release vassals, USA gets influence.
+				}
+
+				USA = {
+					country_event = {
+						id = 6261783 # Inherit
+						days = 3
+					}
+				}
+
+				ai_chance = { factor = 100 }
+			}
+		}
 
 		#Description: Vassals, spherelings, and countries with cores owned by the USSA get released and get their cores back, USA gets influence.
 		country_event = {

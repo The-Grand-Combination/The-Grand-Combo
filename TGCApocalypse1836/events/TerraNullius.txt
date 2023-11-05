@@ -46,37 +46,45 @@ province_event = {   #Zombify province
 		}
 	}
 
+	immediate = { 
+				JAN = {
+					change_variable = {
+							which = zombified_provinces
+							value = 1
+					}
+				}
+				any_pop = {
+					reduce_pop = 0.8
+					militancy = 8
+					consciousness = -3
+				}
+				change_controller = ZOM
+				secede_province = ZOM
+				ZOM = { money = 5000 }
+				add_province_modifier = { name = ap_prov_timer duration = 30 }
+	}
+
 	option = {
 		name = "DAMN"
+<<<<<<< HEAD
 		owner = { prestige = -3 plurality = -5 }
-		JAN = {
-			change_variable = {
-					which = zombified_provinces
-					value = 1
-			}
-			add_country_modifier = { name = ap_zm_timer duration = 365 }
-		}
-		any_pop = {
-			reduce_pop = 0.8
-			militancy = 8
-			consciousness = -3
-		}
-		change_controller = ZOM
-		secede_province = ZOM
-		ZOM = { money = 5000 }
-		add_province_modifier = { name = ap_prov_timer duration = 30 }
+=======
+		owner = { prestige = -3 }
+>>>>>>> parent of aee8b0547 (Merge branch 'plurality-rework' into master)
 	}
 }
 
-#Note: this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
-country_event = { 
+country_event = { #note, this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
 	id = 66101
 	title = "EVTNAME66101"
 	desc = "EVTDESC66101"
 	picture = plague
 
 	trigger = {
+		exists = yes
 		NOT = { exists = ZOM }
+		NOT = { JAN = { has_country_modifier = do_not_annex } }
+		NOT = { JAN = { has_country_modifier = ap_tn_timer } }
 		any_owned_province = {
 			province_control_days = 365
 			has_province_modifier = zombie_outbreak
@@ -88,10 +96,7 @@ country_event = {
 		days = 30
 	}
 
-	allow_multiple_instances = no
-
-	option = {
-		name = "DAMN"
+	immediate = {		
 		random_owned = {
 			limit = {
 				province_control_days = 365
@@ -107,7 +112,14 @@ country_event = {
 			change_controller = ZOM
 			secede_province = ZOM
 		}
-		ZOM = { add_country_modifier = { name = wasteland duration = -1 } }
+		ZOM = {
+			remove_country_modifier = accepts_provinces
+			country_event = { id = 66104 days = 31 }
+		} 
+	}
+
+	option = {
+		name = "DAMN"
 	}
 }
 
@@ -119,58 +131,68 @@ province_event = {
 	picture = "prov_test"
 
 	trigger = {
-		OR = { owner = { tag = ZOM }
-			  NOT = { total_pops = 30 }
+		NOT = { has_global_flag = plague_inc_mode 
+				units_in_province = 1
+				JAN = { has_country_modifier = ap_tn_timer }
 		}
-		exists = WAS
-		province_control_days = 365
-	}
-
-	mean_time_to_happen = { days = 1 }
-
-	option = {
-		name = "Zombies deleted"
-		any_pop = {
-			militancy = -9 
-			reduce_pop = 0.1
-			secede_province = WAS
-		}
-	}
-}
-
-#Note: this must be a country event, otherwise it might happen multiple times at once, which can cause a crash
-country_event = {
-	id = 66103
-	title = "EVTNAME66200"
-	desc = "EVTDESC66200"
-	picture = plague
-
-	trigger = {
-		tag = ZOM
-		NOT = { exists = WAS }
-		any_owned_province = { province_control_days = 365 }
+		owner = { tag = ZOM ai = yes }
 	}
 
 	mean_time_to_happen = {
-		days = 1
+		days = 365
+		modifier = { year = 1839 NOT = { year = 1840 } factor 1.7 }
+		modifier = { year = 1840 NOT = { year = 1841 } factor 1.35 }
+		modifier = { year = 1841 NOT = { year = 1842 } factor 1.2 }
 	}
 
-	allow_multiple_instances = no 
+	allow_multiple_instances = no
+
+	immediate = {
+		JAN = { set_country_modifier = { name = ap_tn_timer duration = 5 } }
+		JAN = { set_country_modifier = { name = do_not_annex duration = 30 } }
+		state_scope = { any_owned = { limit = { owned_by = ZOM } secede_province = QQQ } }
+	}
 
 	option = {
-		name = "DAMN"
-		random_owned = {
-			limit = {
-				province_control_days = 365
-			}
-			any_pop = {
-				reduce_pop = 0.1
-				militancy = -9
-				consciousness = -3
-			}
-			secede_province = WAS
-		}
-		WAS = { add_country_modifier = { name = wasteland duration = -1 } }
+		name = "Zombies deleted"
 	}
 }
 
+country_event = {
+	id = 66103
+	title = "EVTNAME66201"
+	desc = "EVTDESC66201"
+	
+	trigger = {
+		tag = ZOM
+		has_country_modifier = accepts_new_provinces
+		OR = {
+			num_of_cities = 100 #75
+			war = yes #it's probably best to also suspend province defection to ZOM if ZOM is at war with some other country
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 10
+	}
+
+	immediate = { remove_country_modifier = accepts_new_provinces }
+	
+	option = {
+		name = "OK"
+	}
+}
+
+country_event = {
+	id = 66104
+	title = "The wasteland spread."
+	desc = "Spread."
+
+	is_triggered_only = yes
+
+	immediate = { add_country_modifier = { name = accepts_new_provinces duration = -1 } }
+	
+	option = {
+		name = "OK"
+	}
+}

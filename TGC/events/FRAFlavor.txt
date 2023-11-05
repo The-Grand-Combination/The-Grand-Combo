@@ -1645,10 +1645,12 @@ country_event = {
 				months = 60
 			}
 		}
-		add_casus_belli = {
-			target = ENG
-			type = french_conquest_of_canada_uk
-			months = 60
+		ENG = {
+			add_casus_belli = {
+				target = FRA
+				type = cut_down_to_size
+				months = 60
+			}
 		}
 		ai_chance = { factor = 0 }
 	}
@@ -1659,7 +1661,6 @@ country_event = {
 		badboy = -1
 		set_country_flag = no_french_america
 		remove_accepted_culture = french_canadian
-		remove_accepted_culture = cajun
 		ULA = { all_core = { remove_core = ULA } }
 		ACA = { all_core = { remove_core = ACA } }
 		ai_chance = { factor = 1 }
@@ -1748,13 +1749,13 @@ country_event = {
 			badboy = 5
 			casus_belli = {
 				target = ENG
-				type = french_conquest_of_canada_france
+				type = cut_down_to_size
 				months = 12
 			}
 			war = {
 				target = ENG
-				attacker_goal = { casus_belli = french_conquest_of_canada_france }
-				defender_goal = { casus_belli = french_conquest_of_canada_uk }
+				attacker_goal = { casus_belli = cut_down_to_size }
+				defender_goal = { casus_belli = cut_down_to_size }
 				call_ally = yes
 			}
 		}
@@ -1765,8 +1766,7 @@ country_event = {
 			prestige = -50
 			badboy = -5
 			set_country_flag = no_french_america
-			remove_accepted_culture = french_canadian 
-			remove_accepted_culture = cajun
+			remove_accepted_culture = french_canadian remove_accepted_culture = cajun
 			ACA = { all_core = { remove_core = ACA } }
 			ULA = { all_core = { remove_core = ULA } }
 		}
@@ -1956,65 +1956,6 @@ country_event = {
 			relation = { who = FROM value = -200 }
 
 			ai_chance = { factor = 0 }
-		}
-	}
-
-	#If the colony of Laos becomes landlocked, Laos will become independent
-	country_event = {
-		id = 100011
-		title = "EVTNAME100011"
-		desc = "EVTDESC100011"
-		picture = "lan_xang"
-
-		trigger = {
-			LUA_1356 = { owned_by = THIS } # Laos
-			civilized = yes
-			NOT = { #These are the bordering states
-				AND = {
-					SIA_1355 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Shan
-					SIA_1358 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Isan
-					SIA_1366 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Cambodia
-					DAI_1369 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Tonkin
-					DAI_1375 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Annam
-					DAI_1380 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Cochinchina
-					SIA_1392 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Ayutthaya
-					CHI_1601 = { OR = { owned_by = THIS owner = { vassal_of = THIS } owner = { in_sphere = THIS } } } # Yunnan
-				}
-			}
-			NOT = { # To not make nations owning only this region randomly turn into Laos, or Laos constantly releasing itself
-				tag = CHK
-				tag = LUA
-				tag = LXA
-				tag = WIA
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 12
-			modifier = { factor = 5
-						 has_global_flag = laos_organized
-			}
-		}
-		
-		option = {
-			name = "EVTOPTA100011"
-
-			prestige = -20
-			release = LXA
-			relation = {
-				who = LXA
-				value = -400
-			}
-			diplomatic_influence = {
-				who = LXA
-				value = -400
-			}
-			LXA = {
-				relation = {
-					who = THIS
-					value = -400
-				}
-			}
 		}
 	}
 
