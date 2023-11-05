@@ -889,8 +889,194 @@ political_decisions = {
 		}
 	}
 
-	#Desc: Influential provinces can conspire to assassinate neighboring enemy leaders
-	kill_enemy_leader = {
+	#desc: [WIP] propaganda campaigns for the soldiers, aligns soldier pops to the country's ruling party ideology
+	soldier_propaganda_campaign = {
+		picture = arc_victory
+		potential = {
+			has_country_flag = the_centralization_debate
+			OR = {
+				has_country_modifier = medium_army_influence
+				has_country_modifier = high_army_influence
+				has_country_modifier = very_high_army_influence
+			}
+			NOT = { has_country_flag = enacted_soldier_propaganda_campaign }
+		}
+
+		allow = {
+			NOT = {
+				any_pop = {
+					type = soldiers
+					militancy = 3
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = enacted_soldier_propaganda_campaign
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_conservative
+					}
+					any_pop = {
+						limit = {
+							type = soldiers
+							NOT = { pop_majority_ideology = conservative }
+						}
+						ideology = {
+							factor = 0.2
+							value = conservative
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_conservative_1
+					}
+					any_pop = {
+						limit = {
+							type = soldiers
+							NOT = { pop_majority_ideology = conservative }
+						}
+						ideology = {
+							factor = 0.1
+							value = conservative
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_liberal_1
+					}
+					any_pop = {
+						limit = {
+							type = soldiers
+							NOT = { pop_majority_ideology = liberal }
+						}
+						ideology = {
+							factor = 0.2
+							value = liberal
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_liberal
+					}
+					any_pop = {
+						limit = {
+							type = soldiers
+							NOT = { pop_majority_ideology = liberal }
+						}
+						ideology = {
+							factor = 0.2
+							value = liberal
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_reactionary
+					}
+					any_pop = {
+						limit = {
+							type = soldiers
+							NOT = { pop_majority_ideology = reactionary }
+						}
+						ideology = {
+							factor = 0.2
+							value = reactionary
+						}
+					}
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_anarcho_liberal
+					}
+					any_pop = {
+						limit = {
+							type = soldiers
+							NOT = { pop_majority_ideology = anarcho_liberal }
+						}
+						ideology = {
+							factor = 0.2
+							value = anarcho_liberal
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#desc: [WIP] consolidate power in the province, reorganizes the province to follow the party's ideals
+	consolidate_caudillo_power = {
+		picture = arc_victory
+		potential = {
+			OR = {
+				has_country_flag = new_coup_government
+				AND = {
+					government = democracy
+					ruling_party_ideology = liberal
+				}
+				AND = {
+					government = democracy2
+					ruling_party_ideology = conservative
+				}
+			}
+			NOT = { has_country_flag = consolidated_power }
+		}
+
+		allow = {
+			NOT = { average_militancy = 2.5 }
+		}
+
+		effect = {
+			set_country_flag = consolidated_power
+			random_country = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_conservative
+						government = democracy2
+					}
+					government = democracy
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_conservative_1
+						government = democracy2
+					}
+					government = democracy
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_liberal_1
+						government = democracy
+					}
+					government = democracy2
+				}
+				any_country = {
+					limit = {
+						tag = THIS
+						ruling_party = ARG_liberal
+						government = democracy
+					}
+					government = democracy2
+				}
+			}
+		}
+	}
+
+	#Desc: Influential provinces can conspire to depose neighboring enemy leaders
+	conspiration_enemy_leader = {
 		picture = arc_death
 		potential = {
 			OR = {
@@ -906,7 +1092,7 @@ political_decisions = {
 		}
 		
 		effect = {
-			set_country_flag = conspiration_to_kill
+			set_country_flag = conspiration_against_neighbor
 		}
 	}
 }
