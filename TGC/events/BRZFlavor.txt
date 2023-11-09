@@ -1810,11 +1810,10 @@
 	
 
 ##Slavery
-
 	#Status Checker
 	country_event = {
 		id = 8300
-		title = "slavery_check"
+		title = "brazil_slavery_updater"
 
 		is_triggered_only = yes
 
@@ -1852,7 +1851,6 @@
 								set_global_flag = brz_slave_01
 								change_variable = { which = brz_slavery_economics value = 15 }
 			}
-
 
 			#Politics
 			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 10 } } }
@@ -1957,29 +1955,110 @@
 							2705 = { state_scope = { change_region_name = "§! The economy pretty much free from slave work. Consequences will be §Bfew§!.§b" } } 
 							2705 = { secede_province = QQQ }
 			}
+
+			random_country = {
+				limit = { OR = { tag = BRZ tag = KPB } slavery = yes_slavery }
+				JAN = { country_event = { id = 3500 days = 15 } }
+			}
 		}
 	}
 
-	country_event = {
-		id = 8305
-		title = "slavery_check"
-		is_triggered_only = yes
-		
+	#Description: Quilombo appears
+	province_event = {
+			
+		id = 8350
+		title = "EVTNAME187913"
+		desc = "EVTDESC187913"
+		picture = "prov_quilombo"
+
+		trigger = {
+			is_state_capital = no
+			state_scope = { is_slave = yes }
+			owner = {
+				is_culture_group = latin_american_cultures
+				OR = { tag = BRZ tag = KPB }
+			}
+			OR = {
+				terrain = hills
+				terrain = mountain
+				terrain = jungle
+			}
+			NOT = { has_province_modifier = quilombo_presence }
+		}
+
+		mean_time_to_happen = {
+			months = 400
+			modifier = {
+				factor = 0.9
+				average_militancy = 2
+			}
+			modifier = {
+				factor = 0.8
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 0.75
+				average_militancy = 8
+			}
+		}
 
 		option = {
-			JAN = { set_variable = {
-					which = brz_slavery_politics
-					value = 20
-				}
-				set_variable = {
-					which = brz_slavery_economics
-					value = 20
-				}
-			}
-			JAN = { country_event = 8300 }
-
+			name = "EVTOPTA187913"
+			add_province_modifier = { name = quilombo_presence duration = 1825 }
 		}
 	}
+
+	#Description: Quilombo found
+	province_event = {
+			
+		id = 8351
+		title = "EVTNAME187908"
+		desc = "EVTDESC187908"
+		picture = "prov_quilombo"
+
+		trigger = {
+			has_province_modifier = quilombo_presence
+			owner = {
+				OR = { tag = BRZ tag = KPB }
+			}
+			country_units_in_province = THIS
+		}
+
+		mean_time_to_happen = {
+			months = 60
+			modifier = {
+				factor = 1.1
+				average_consciousness = 4
+			}
+			modifier = {
+				factor = 1.15
+				average_consciousness = 6
+			}
+			modifier = {
+				factor = 1.2
+				average_consciousness = 8
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 4
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 6
+			}
+			modifier = {
+				factor = 1.2
+				average_militancy = 8
+			}
+		}
+
+		option = {
+			name = "EVTOPTA187908"
+
+			remove_province_modifier = quilombo_presence
+		}
+	}
+
 
 ##Random Flavor
 	#O Guarani
