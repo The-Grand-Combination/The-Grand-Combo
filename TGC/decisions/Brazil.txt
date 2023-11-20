@@ -66,6 +66,36 @@ political_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
+	#Abolish Slavery
+	golden_law = {
+		picture = golden_law
+		potential = {
+			is_core = 2447
+			OR = {
+				tag = BRZ
+				tag = KPB
+			}
+			slavery = yes_slavery
+			NOT = { has_country_flag = studying_slavery }
+		}
+
+		allow = {
+			realism = 1
+			OR = {
+				upper_house = { ideology = liberal value = 0.3 }
+				upper_house = { ideology = socialist value = 0.3 }
+			}
+		}
+
+		effect = {
+			country_event = 8301
+			set_country_flag = studying_slavery
+			brz_politics_check_tooltip = {}
+			brz_economics_check_tooltip = {}
+			
+		}
+	}
+
 	break_the_poncho_verde_treaty = {
 		picture = "negociate_peace_with_RGS"
 		potential = {
@@ -332,34 +362,55 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	#Abolish Slavery
-	golden_law = {
-		picture = golden_law
+	reform_brazil = {
+		picture = rio
 		potential = {
-			is_core = 2447
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			slavery = yes_slavery
-			NOT = { has_country_flag = studying_slavery }
+			primary_culture = brazilian
+			BRZ = { exists = no }
 		}
 
 		allow = {
-			realism = 1
-			OR = {
-				upper_house = { ideology = liberal value = 0.3 }
-				upper_house = { ideology = socialist value = 0.3 }
-			}
+			#any_country = {
+			#	limit = { primary_culture = brazilian }
+			#	OR = { in_sphere = THIS 
+			#		   vassal_of = THIS
+			#	}
+			#}
+			is_greater_power = yes
 		}
 
 		effect = {
-			country_event = 8301
-			set_country_flag = studying_slavery
-			brz_politics_check_tooltip = {}
-			brz_economics_check_tooltip = {}
-			
+			prestige = 15
+			change_tag = BRZ
+			any_country = {
+				limit = { primary_culture = brazilian 
+						  OR = { in_sphere = THIS 
+					             vassal_of = THIS
+				       }
+				}
+				any_owned = { secede_province = THIS }
+			}
 		}
+		ai_will_do = { factor = 1 }
+	}
+
+	relinquish_brazil = {
+		picture = ma_noticia
+		potential = {
+			primary_culture = brazilian
+			NOT = { has_country_flag = relinquished_brazil }
+			BRZ = { exists = no }
+		}
+
+		allow = {
+			always = yes
+		}
+
+		effect = {
+			prestige = 5
+			set_country_flag = relinquished_brazil 
+		}
+		ai_will_do = { factor = 1 }
 	}
 }
 
