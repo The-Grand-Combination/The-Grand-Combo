@@ -348,6 +348,7 @@
 		}
 	}
 
+
 ## Dom Pedro Misc Flavor
 
 	#Dom Pedro II Weds, original VIP event by Pimparel
@@ -569,6 +570,82 @@
 			USA = { relation = { who = THIS value = 15 } }
 		}
 	}
+
+	#Republican Coup
+	country_event = {
+
+		id = 8016
+		title = "EVTNAME8016"
+		desc = "EVTDESC8016"
+		picture = "proclamacao"
+
+		trigger = {
+			has_country_modifier = dom_pedro_ii
+			NOT = { plurality = 30 }
+			slavery = slavery_no
+			OR = {
+				average_militancy = 4
+				average_consciousness = 6
+			}
+			has_country_flag = monarchy_gov
+		}
+
+		mean_time_to_happen = { months = 24 }
+
+		fire_only_once = yes
+
+		# Abdicate
+		option = {
+			name = "EVTOPTA8016"
+			country_event = { id = 8017 days = 2 }
+			ai_chance = { factor = 80 }
+		}
+
+		#Crush the republicans
+		option = {
+			name = "EVTOPTB8016"
+			set_country_flag = fought_the_coup
+			rich_strata = { militancy = 8 consciousness = 7 }
+			middle_strata = { militancy = 2 consciousness = 3 }
+			ai_chance = { factor = 10 }
+		}
+	}
+
+	country_event = {
+
+		id = 8017
+		title = "EVTNAME8017"
+		desc = "EVTDESC8017"
+		picture = "proclamacao2"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA8017"
+			remove_country_modifier = dom_pedro_ii
+			remove_country_modifier = regency_modifier
+			government = democracy
+			plurality = -100
+			plurality = 25
+			add_country_modifier = { name = small_immigration_boom_country duration = 365 }
+			add_country_modifier = { name = republican_winds duration = 3650 }
+			any_pop = { ideology = { factor = 0.02 value = liberal } }
+			any_pop = { limit = { pop_majority_ideology = conservative } militancy = 3 }
+			any_pop = { limit = { pop_majority_ideology = reactionary } militancy = 6 }
+			any_pop = { limit = { pop_majority_ideology = liberal } militancy = -3 }
+			## Government Flags ##
+			clr_country_flag = communist_gov
+			clr_country_flag = absolute_monarchy_gov
+			clr_country_flag = semi_constitutional_monarchy_gov
+			clr_country_flag = constitutional_monarchy_gov
+			set_country_flag = democracy_gov
+			clr_country_flag = presidential_dictatorship_gov
+			clr_country_flag = fascist_gov
+			clr_country_flag = anarcho_liberal_gov
+			set_country_flag = historical_republican_coup 
+		}
+	}
+
 
 ## Revolução Farroupilha
 	# Custom Civil War System
@@ -1543,6 +1620,9 @@
 
 		trigger = { tag = BRZ
 					war = no
+					OR = { has_country_flag = fought_the_coup
+						   has_country_flag = historical_republican_coup
+					}
 					NOT = { plurality = 25 }
 					NOT = { nationalism_n_imperialism = 1 }
 					NOT = { invention = national_fraternity }
@@ -1563,7 +1643,7 @@
 
 		fire_only_once = yes 
 
-		mean_time_to_happen = { month = 1 }
+		mean_time_to_happen = { months = 5 }
 
 		option = { 
 				name = "EVTOPTA8170"
@@ -1592,13 +1672,13 @@
 	country_event = {
 		id = 8171
 		title = "EVTNAME8171"
-		desc = "EVTNAME8171"
+		desc = "EVTDESC8171"
 		picture = "TheEndOfBrazil"
 
 		is_triggered_only = yes 
 
 		option = { 
-				name = "EVTOPTA1870"
+				name = "EVTOPTA1871"
 				any_owned = { limit = { region = BRZ_2446 } secede_province = MGS }
 				any_owned = { limit = { OR = { region = BRZ_2306 region = BRZ_2462 } } secede_province = SPL }
 				any_owned = { limit = { OR = { region = BRZ_2410 region = BRZ_2426 province_id = 2423 } } add_core = CEG secede_province = MAR }
@@ -1624,6 +1704,48 @@
 				all_land_provinces = { limit = { NOT = { owned_by = RIO } } remove_core = RIO }
 				country_event = { days = 15 id = 8172 }
 				
+		}
+	}	
+
+	#Full Collapse, by choice
+	country_event = {
+		id = 8172
+		title = "EVTNAME8172"
+		desc = "EVTDESC8172"
+		picture = "TheEndOfBrazil"
+
+		trigger = { 
+			has_country_flag = fought_the_collapse
+			NOT = { plurality = 20 }
+		}
+
+		mean_time_to_happen =  { months = 12 }
+
+		option = { 
+			name = "EVTOPTA1871"
+			any_owned = { limit = { region = BRZ_2446 } secede_province = MGS }
+			any_owned = { limit = { OR = { region = BRZ_2306 region = BRZ_2462 } } secede_province = SPL }
+			any_owned = { limit = { OR = { region = BRZ_2410 region = BRZ_2426 province_id = 2423 } } add_core = CEG secede_province = MAR }
+			any_owned = { limit = { OR = { region = BRZ_2401 region = BRZ_2408 region = ENG_1979 region = NET_2240 region = FRA_2241 region = VNZ_2278 } } add_core = CEG secede_province = GPR }
+			any_owned = { limit = { OR = { region = BRZ_2416 region = BOL_2317 } } secede_province = MTG }
+			any_owned = { limit = { OR = { region = BRZ_2549 } } secede_province = ACE }
+			any_owned = { limit = { OR = { region = BRZ_2467 region = BRZ_2461 } } secede_province = RGS }
+			any_owned = { limit = { OR = { region = BRZ_2439 } NOT = { province_id = 2449 } } add_core = CEG secede_province = BAH }
+			any_owned = { limit = { OR = { region = BRZ_2429 region = BRZ_2428 region = BRZ_2432 } } add_core = CEG secede_province = PNB }
+
+			random_list = { 10 = { any_owned = { limit = { province_id = 2449 } secede_province = BAH } } 
+							90 = { } }
+
+			random_list = { 40 = { any_owned = { limit = { OR = { province_id = 2422 province_id = 2421 } } secede_province = MTG } }
+							40 = { any_owned = { limit = { OR = { province_id = 2422 province_id = 2421 } } secede_province = MGS } }
+							20 = { any_owned = { limit = { OR = { province_id = 2422 province_id = 2421 } } secede_province = MAR } } }
+
+			random_list = { 33 = { any_owned = { limit = { province_id = 2423 } secede_province = MAR } } 
+							33 = { any_owned = { limit = { province_id = 2423 } secede_province = GPR } } 
+							33 = { any_owned = { limit = { province_id = 2423 } secede_province = MTG } } }
+			
+			change_tag = RIO
+			all_land_provinces = { limit = { NOT = { owned_by = RIO } } remove_core = RIO }
 		}
 	}
 
