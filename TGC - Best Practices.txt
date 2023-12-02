@@ -8,12 +8,11 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 ## General Text Editing Best Practices ##
 - *VERY IMPORTANT* Make sure all files are saved in Windows-1252 (or ANSI) character encoding. Many modern programs will save in UTF-8, which will result in odd characters. Reference for which characters can be displayed by Victoria II: https://en.wikipedia.org/wiki/Windows-1252
 - Comment *every* item with at minimum the localisations of the item, so future modders know what is what.
-- Write in British English
 - Use Spell and Grammar Checks
-- Decision, modifiers, goods, items, etc. code should be in all lower case.
-- Organize the content txt files in alphabetical order, when it makes sense to do so.
+- Decision, modifiers, goods, items, variables, etc. code should be in all lower case.
+- Organize the content txt files in chronological order, when it makes sense to do so. Most likely to be happen early should go first.
 - Exception: Organize decisions and event chains together when they are related.
-- Events/Decisions deemed as ahistorical/fantasy add 'NOT = { has_global_flag = extra_flavour_disabled }' to trigger/potential
+- Events/Decisions deemed as unplausibly ahistorical/fantasy add 'NOT = { has_global_flag = extra_flavour_disabled }' to trigger/potential
 - Events/Decisions deemed as Colonial Railroading add 'NOT = { has_global_flag = colonial_railroading_disabled }' to trigger/potential
 - Where possible in scripts refer to any_owned in regions to reduce reliance on specific province IDs (which change often during map reworks)
 - Any microstate TAGs added should also be added to the option_disable_microstates decision in Setup.txt
@@ -25,7 +24,7 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 
 	- This applies to both potential in decisions and trigger in events. The effect of allow on performance is irrelevant, so prioritize readability when writing it.
 
-	- First or first few conditions should be the ones that will most reduce the set of possible countries/provinces, if possible, just to one.
+	- First or first few conditions should be the ones that will reduce the set of possible countries/provinces the most, if possible, to just one.
 		- For countries, these are conditions like tag, owns, controls, is_our_vassal, is_sphere_leader_of, capital, etc. that can only have one result
 		- For provinces, the only condition like this is province_id
 		- In both situations, flags or modifiers that will only be present in one or a few at any time are also usable here.
@@ -48,8 +47,9 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 ## Effects Best Practices #
 
 	- Prioritize readability.
+		- If a scope only contains one or two (non braced) effects, contain the block to one line only.
 	- Prestige and infamy effects should go first.
-	- Don't use random_list for good stuff, only for bad stuff.
+	- Don't use random_list for good stuff, only for bad stuff (Unless it makes sense to do so, in which case it would be better to contact the team to reach a consensus).
 	- Avoid using any_greater_power as it will display the individual effect up to 8 times, almost certainly using up all the available display space.
 	- The limit = { ... } command works with explicit scopes (state names, pop types...) as well as implicit ones (any_owned, any_pop...).
 	- Use explicit pop type/strata scopes instead of any_pop with limit.
@@ -63,7 +63,7 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 ## Event Best Practices ##
 
 	- Use the most appropriate file in the mod/TGC/events/ folder. As a general rule, self-contained mechanics go into their own files, common events go into common files and country/region specific events go into specific files.
-	- Use localisation for event text rather than text in the code.
+	- Use localisation for event text, avoid putting the text directly in the code at all costs (unless you're testing or debugging).
 	- Event Localizations should be placed in the appropriate files. Each event localization file (that doesn't only hold localizations from a self-contained mechanic) has a number in it, representing the lower bound of ids to go into that file (with the upper bound being the next file). Place the localizations in that file, sorted by id (for easier indexing) and in the order of DESC, NAME, OPTA... (for easier readability). If your editor or some other tool sorts these, make sure that this functionality is turned off so as not to cause trouble (ideally, check the git diff for all files before committing anything).
 	- Write the title and a short one-line description of the event and options (if more than one) if not obvious (look at examples)
 	- For event chains, try to use consecutive numbers or at least numbers in a certain range for ids rather than just random 20 digit numbers.
@@ -76,7 +76,7 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 	- It's okay to reuse localizations from events in the same group, but don't reuse localizations from unrelated events.
 
 	- Event components should always come in the following order (optional in brackets):
-		- Id, Title, Description, Picture, (Major)
+		- Id, Title, Description, Picture, (Major), (News)
 		- Trigger, Mean Time To Happen, (Fire Only Once), (Allow Multiple Instances) / Is Triggered Only
 		- (Immediate), Options
 
@@ -89,7 +89,7 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 ## Event Tips ##
 
 	- Note that country_event = { id = X days = Y } won't work with FROM.
-	- Options that don't have ai_chance set are equally likely. I'm not sure what the behavior is if one of the options has ai_chance set but another doesn't.
+	- Options that don't have ai_chance will make the AI pick the first option every time.
 	- If two events have the same trigger but only one should fire, use immediate instead of option to set the flag preventing the events from firing.
 
 ## Decision Best Practices ##
@@ -134,7 +134,6 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 ## General Best Practices ##
 
 	- Whenever changing something, assume that it was made like it is with good reason, and understand that reason before changing it. Changing stuff without checking how it interacts with other stuff is why bugs happen.
-	- Give flags descriptive names - memory is cheap, developer attention is expensive. Ideally, a flag would have a (who_)did_what or (this_is_)what format for easy understanding, e.g. offered_treaty_of_guadalupe_hidalgo or slave_trader.
 	- Use THIS and FROM instead of tags where appropriate. Note that remove_core doesn't work with FROM.
 	- If you have tested that a piece of code works, but the Validator keeps complaining about it, you can put the following line before it to reduce noise: # Audax Validator "." Ignore_NEXT
 	- If the event/decision makes an assumption, make sure to check for that assumption.
@@ -142,6 +141,11 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 		- If the effect does something to a set of provinces (say, builds railroads), either check to see that you own all of the provinces or limit the effect to those you own, or whether it makes sense for the event/decision to have an effect outside your country.
 	- Before adding an event/decision, check to see whether what you're trying to accomplish is already done somewhere else similarly. E.g. don't make a non-specific "accept natives" decision for Mexico, since Native Integration already exists. Rather, you can write something specific that would lead to the acceptance of a native culture
 	- Generic is better than specific, but a collection of special cases is not generic.
+
+## Variables / Flags Best Practices ##
+
+- Prefer snake case for naming variables (name_them_like_this).
+- Give flags descriptive names - memory is cheap, developer attention is expensive. Ideally, a flag would have a (who_)did_what or (this_is_)what format for easy understanding, e.g. offered_treaty_of_guadalupe_hidalgo or slave_trader.
 
 ## Files Best Practices ##
 	- Discuss with the lead developer(s) any additions or changes to common / inventions / poptypes / technologies / units files.
@@ -156,7 +160,7 @@ Clausewitz Scenario Editor: https://sourceforge.net/projects/eug/
 	- If you have time to research, make sure your localizations are well written. We want our mod to look good, don't we?
 
 ## Map Best Practices ##
-	- Discuss with Hammonia (@Obstination#6820 on Discord) or lead developer(s) any province additions or changes. Ideally, we would like not to have to make any map boundary changes or additions after the next major update (0.2).
+	- Discuss with Hammonia, Kiwi, Perfo (@Obstination#6820, ColdSlav, Perfo06 on Discord) or lead developer(s) any province additions or changes.
 	- Province localisation files for provinces should only have place names that existed in 1836. If this is not possible, try to keep names from 1840 or earlier.
-	- Use the current or 1936 names for provinces in the definition.csv. This is helpful for renaming decisions.
+	- Use the current or 1936 names for provinces in the definition.csv. This is helpful for renaming decisions and finding their current locations in maps.
 	- When changing the map make sure to account for any code that used the changed provinces / states and fix it to account for the changes or new provinces. This includes renaming decisions as well as other content.
