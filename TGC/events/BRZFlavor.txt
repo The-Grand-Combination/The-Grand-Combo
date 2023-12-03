@@ -2107,8 +2107,7 @@
 		}
 	}
 
-	
-	#Brasilic Confederation Portugal Warning
+	#Slavery Updater
 	country_event = {
 		id = 8301
 		title = "EVTNAME8301"
@@ -2129,6 +2128,84 @@
 		option = {
 			name = "EVTOPTB8301"
 			clr_country_flag = studying_slavery
+		}
+	}
+
+	#Triggered for Brazil when the UK passes the Aberdeen Act, insisting that Brazil abolish slavery.
+	country_event = {
+		id = 8305
+		title = "EVTNAME8305"
+		desc = "EVTDESC8305"
+		picture = "Administration"
+
+		is_triggered_only = yes
+
+		# Concede to their demands
+		option = {
+			name = "EVTOPTA8305"
+			prestige = -5
+			set_country_flag = aberdeen_accepted_flag
+			set_country_flag = eusebio_de_queiroz
+			any_pop = {
+				limit = { type = aristocrats }
+				consciousness = 4
+				militancy = 4
+			}
+			clr_country_flag = slave_trader
+			clr_country_flag = slave_trade_leader
+			random_owned = {
+				limit = { owner = { has_country_modifier = atlantic_slave_trade } }
+				owner = { remove_country_modifier = atlantic_slave_trade }
+			}
+			ban_slave_trade = {}
+			ai_chance = {
+				factor = 85
+				modifier = {
+					factor = 0
+					is_greater_power = yes
+				}
+			}
+		}
+
+		#Refuse their demands
+		option = {
+			name = "EVTOPTB8305"
+			prestige = 5
+			any_pop = {
+				limit = { NOT = { type = aristocrats } }
+				consciousness = 2
+				militancy = -2
+			}
+
+			FROM = { country_event = 8306 }
+
+			ai_chance = {
+				factor = 15
+				modifier = {
+					factor = 3
+					is_greater_power = yes
+				}
+			}
+		}
+	}
+
+	#Description: UK notification when Brazil refuses to end slavery after the Aberdeen Act.
+	country_event = {
+		id = 8306
+		title = "EVTNAME8306"
+		desc = "EVTDESC8306"
+		picture = "slaves_freed"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA8306"
+			prestige = -5
+			add_casus_belli = {
+				target = FROM
+				type = cut_down_to_size
+				months = 24
+			}
 		}
 	}
 
