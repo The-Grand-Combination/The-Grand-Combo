@@ -2291,6 +2291,79 @@
 		}
 	}
 
+	#Description: Brazilian Slave Trade events, pre-Aberdeen
+	province_event = {
+		picture = "prov_navio_negreiro"
+		id = 8362
+		title = "EVTNAME8362"
+		desc = "EVTDESC8362"
+
+		trigger = {
+			is_coastal = yes
+			state_scope = { is_slave = yes }
+			owner = {
+				OR = {
+					tag = BRZ
+					tag = KPB
+				}
+				NOT = {
+					has_country_flag = aberdeen_accepted_flag
+					has_country_modifier = atlantic_slave_trade
+				}
+				OR = {
+					slavery = yes_slavery
+					slavery = freedom_of_womb 
+				}
+			}
+			NOT = { has_province_modifier = slave_trade_cooldown_province }
+		}
+
+		mean_time_to_happen = {
+			months = 200
+		}
+
+		# Don't import slaves
+		option = {
+			name = "EVTOPTA8362"
+
+			owner = {
+				prestige = 0.1
+				badboy = -0.1
+			}
+			state_scope = {
+				any_pop = { consciousness = 0.5 }
+				add_province_modifier = { name = slave_trade_cooldown_province duration = 365 }
+			}
+
+			ai_chance = { factor = 20 }
+		}
+
+		# Import slaves
+		option = {
+			name = "EVTOPTB8362"
+
+			owner = {
+				prestige = -0.1
+				badboy = 0.1
+			}
+			state_scope = {
+				any_pop = { militancy = -0.5 }
+				any_pop = {
+					limit = {
+						#OR = {
+							type = slaves
+							#type = slaves_factory
+						#}
+					}
+					reduce_pop = 1.04
+				}
+				add_province_modifier = { name = slave_trade_cooldown_province duration = 1825 }
+			}
+
+			ai_chance = { factor = 80 }
+		}
+	}
+
 
 ##Random Flavor
 	#O Guarani
@@ -3161,4 +3234,24 @@
 		}
 	}
 
-##Slavery
+
+country_event = {
+	id = 8999
+	title = "EVTNAMEId"
+	desc = "EVTDESCId"
+	picture = Picture
+	is_triggered_only = yes_no3
+
+
+	option = {
+		name = "EVTOPTAId"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { 
+							prestige = 500
+						}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+}
