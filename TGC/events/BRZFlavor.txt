@@ -1632,23 +1632,29 @@
 
 		trigger = { tag = BRZ
 					war = no
-					OR = { has_country_flag = fought_the_coup
-						   has_country_flag = historical_republican_coup
-					}
-					NOT = { plurality = 20 }
+
+					NOT = { plurality = 25 }
 					NOT = { nationalism_n_imperialism = 1 }
 					NOT = { invention = national_fraternity }
+
 					OR = { AND = { has_global_flag = cabanagem_won
 								   has_global_flag = farrapos_won
 								   has_global_flag = praieiros_won }
-						   AND = { NOT = { plurality = 15 }
+
+						   AND = { NOT = { plurality = 20 }
+						           OR = { has_country_flag = bad_abolition
+								          has_country_flag = fought_the_coup } }
+
+						   AND = { NOT = { plurality = 20 }
 						                   has_recently_lost_war = yes
 										   has_global_flag = farrapos_won
 										   RGS = { exists = yes }
 										   has_global_flag = cabanagem_won
 										   GPR = { exists = yes } }
+
 						   AND = { NOT = { plurality = 10 }
 						                   has_recently_lost_war = yes }
+
 						   AND = { NOT = { plurality = 5 } }
 					}
 		}
@@ -1719,7 +1725,7 @@
 		}
 	}	
 
-	#Full Collapse, by choice
+	#Full Collapse, by incompetence
 	country_event = {
 		id = 8172
 		title = "EVTNAME8172"
@@ -1847,7 +1853,7 @@
 		id = 8180
 		title = "EVTNAME8180"
 		desc = "EVTDESC8180"
-		picture = Picture
+		picture = espirito_santo
 
 		is_triggered_only = yes
 		
@@ -1858,14 +1864,43 @@
 					country_event = 8181
 					relation = { value = 100 who = THIS }
 			}
-			ai_chance = { factor = 100 }
-			
+			ai_chance = { 
+				factor = 50 
+				modifier = { factor = 2
+							 NOT = { money = 10000 }
+				}
+				modifier = {
+					factor = 2
+					relation = { who = FROM value = 100 }
+				}
+				modifier = {
+					factor = 2
+					relation = { who = FROM value = 200 }
+				}
+			}
 		}
 		
 		option = {
 			name = "EVTOPTB8180"
 			MGS = { country_event = 8182
 					relation = { value = -100 who = THIS }
+			}
+			ai_chance = { 
+				factor = 50
+				modifier = { factor = 2
+							 tag = RIO
+				}
+				modifier = { factor = 2
+							 money = 50000
+				}
+				modifier = {
+					factor = 2
+					NOT = { relation = { who = FROM value = 0 } }
+				}
+				modifier = {
+					factor = 2
+					NOT = { relation = { who = FROM value = -100 } }
+				}
 			}
 		}
 		
@@ -1874,40 +1909,48 @@
 	#Mar das Gerais, accepted
 	country_event = {
 		id = 8181
-		title = "EVTNAME8180"
-		desc = "EVTDESC8180"
-		picture = Picture
+		title = "EVTNAME8181"
+		desc = "EVTDESC8181"
+		picture = espirito_santo
 
 		is_triggered_only = yes
-		
 	
 		option = {
 			name = "EVTOPTA8180"
+			add_country_modifier = { name = espirito_santo_deal duration = 3650 }
 		}
-		
-		option = {
-			name = "EVTOPTB8180"
-			
-		}
+
 	}
 
 	#Mar das Gerais, rejected
 	country_event = {
-		id = 8181
-		title = "EVTNAME8180"
-		desc = "EVTDESC8180"
-		picture = Picture
+		id = 8182
+		title = "EVTNAME8182"
+		desc = "EVTDESC8182"
+		picture = espirito_santo
 
 		is_triggered_only = yes
-		
 	
 		option = {
-			name = "EVTOPTA8180"
+			name = "EVTOPTA8182"
+			set_country_flag = espirito_santo_deal_failed
 		}
 		
 		option = {
-			name = "EVTOPTB8180"
-			
+			name = "EVTOPTB8182"
+			war = {
+				target = FROM
+				attacker_goal = {
+					casus_belli = acquire_state
+					state_province_id = 2449
+				}
+				defender_goal = {
+					casus_belli = status_quo
+				}
+				call_ally = no
+			}
+			badboy = 2
+			prestige = 2
 		}
 		
 	}
@@ -2194,10 +2237,147 @@
 		option = {
 			name = "EVTOPTA8301"
 			clr_country_flag = studying_slavery
+
 		}
 		option = {
 			name = "EVTOPTB8301"
+			#Politics
 			clr_country_flag = studying_slavery
+			prestige = 10
+			badboy = -5
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 1 } } }
+				owner = { 
+					plurality = -20
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 9
+						militancy = 9
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 10 } } }
+				owner = { 
+					plurality = -18
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 8
+						militancy = 8
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 20 } } }
+				owner = { 
+					plurality = -16
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 7
+						militancy = 7
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 30 } } }
+				owner = { 
+					plurality = -15
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 6
+						militancy = 6
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 40 } } }
+				owner = { 
+					plurality = -14
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 5
+						militancy = 5
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 50 } } }
+				owner = { 
+					plurality = -13
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 4
+						militancy = 4
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 60 } } }
+				owner = { 
+					plurality = -12
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 3
+						militancy = 3
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 70 } } }
+				owner = { 
+					plurality = -11
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 2
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 80 } } }
+				owner = { 
+					plurality = -10
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 2
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 90 } } }
+				owner = { 
+					plurality = -9
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 2
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 100 } } }
+				owner = { 
+					plurality = -8
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 2
+					}
+				}
+			}
+
+			any_owned = {
+				limit = { slaves = 0.3 }
+				add_province_modifier = { name = reorganizing_labor duration = 1825 }
+			}
+			any_owned = {
+				limit = { slaves = 0.2 }
+				add_province_modifier = { name = reorganizing_labor duration = 1125 }
+			}
+			any_owned = {
+				limit = { slaves = 0.1 }
+				add_province_modifier = { name = reorganizing_labor duration = 912 }
+			}
+			any_owned = {
+				limit = { slaves = 0.05 }
+				add_province_modifier = { name = reorganizing_labor duration = 750 }
+			}
+			any_owned = {
+				limit = { slaves = 0.01 }
+				add_province_modifier = { name = reorganizing_labor duration = 603 }
+			}
+
+			political_reform = no_slavery
 		}
 	}
 
@@ -3047,7 +3227,7 @@
 		option = {
 			name = "EVTOPTA8421"
 
-			prestige = 10
+			prestige = 5
 			set_country_flag = rq_imprisoned_bishops
 			any_pop = {
 				limit = { has_pop_religion = catholic }
@@ -3062,7 +3242,7 @@
 		option = {
 			name = "EVTOPTB8421"
 
-			prestige = -10
+			prestige = -5
 			set_country_flag = religious_question_decided
 			any_pop = {
 				limit = { has_pop_religion = catholic }
@@ -3106,7 +3286,7 @@
 		picture = "revolt_lash"
 
 		trigger = {
-			is_core = 2447
+			owns = 2447
 			OR = { 
 				tag = BRZ
 				tag = KPB
@@ -3303,4 +3483,3 @@
 			
 		}
 	}
-
