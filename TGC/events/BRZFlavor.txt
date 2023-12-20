@@ -1724,6 +1724,7 @@
 				any_owned = { limit = { OR = { region = BRZ_2467 region = BRZ_2461 } } secede_province = RGS }
 				any_owned = { limit = { OR = { region = BRZ_2439 } } add_core = CEG secede_province = BAH }
 				any_owned = { limit = { OR = { region = BRZ_2429 region = BRZ_2428 region = BRZ_2432 } } add_core = CEG secede_province = PNB }
+				PNB = { government = democracy }
 
 				random_list = { 10 = { any_owned = { limit = { region = BRZ_2449 } secede_province = BAH } } 
 								90 = { } }
@@ -1975,7 +1976,7 @@
 		
 	}
 
-##Expasion 
+##Expasion, 8200-
 	#Claim Rio Parana
 	country_event = {
 		id = 8200
@@ -2006,7 +2007,6 @@
 			name = "EVTOPTA8205"
 		}
 	}
-
 
 	#Brasilic Confederation Release
 	country_event = {
@@ -2075,6 +2075,623 @@
 		}
 	}
 	
+	## Eastern Misiones dispute - 8210
+
+		#Triggered by decision for the owner(s) of East Misiones
+		country_event = {
+			id = 8210
+			title = "EVTNAME8210"
+			desc = "EVTDESC8210"
+			picture = "eastern_misiones_dispute"
+
+			is_triggered_only = yes
+
+			# Accept the situation - lose core
+			option = {
+				name = "EVTOPTA8210"
+
+				2459 = { remove_core = THIS }
+				random_owned = {
+					limit = { CRT = { vassal_of = THIS is_core = 2459 } }
+					2459 = { remove_core = CRT }
+				}
+				2459 = { secede_province = FROM }
+				2462 = { remove_core = THIS }
+				random_owned = {
+					limit = { CRT = { vassal_of = THIS is_core = 2459 } }
+					2462 = { remove_core = CRT }
+				}
+				2462 = { secede_province = FROM }
+				relation = { who = FROM value = 40 }
+
+				any_country = {
+					limit = {
+						OR = {
+							is_core = 2459
+							is_core = 2462
+						}
+					}
+					relation = { who = THIS value = -50 }
+					country_event = 8218
+				}
+
+				FROM = { country_event = 8211 }
+
+				ai_chance = {
+					factor = 50
+					modifier = {
+						factor = 1.5
+						war_policy = pacifism
+					}
+					modifier = {
+						factor = 1.2
+						has_country_flag = democracy_gov
+						FROM = { has_country_flag = democracy_gov }
+					}
+					modifier = {
+						factor = 0.2
+						OR = {
+							war_policy = jingoism
+							war_policy = pro_military
+						}
+					}
+				}
+			}
+
+			# Issue a protest - lose prestige, keep core
+			option = {
+				name = "EVTOPTB8210"
+
+				prestige = -20
+				relation = { who = FROM value = -50 }
+
+				FROM = { country_event = 8212 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 10
+						NOT = { relation = { who = FROM value = 0 } }
+					}
+					modifier = {
+						factor = 0
+						is_vassal = yes
+						FROM = { is_vassal = yes }
+						overlord = { is_our_vassal = FROM } # If they have the same overlord
+					}
+				}
+			}
+
+			# Threaten war - gain infamy
+			option = {
+				name = "EVTOPTC8210"
+
+				badboy = 2
+				relation = { who = FROM value = -200 }
+				random_owned = { limit = { province_id = 2459 } fort = 1 }
+				random_owned = { limit = { province_id = 2462 } fort = 1 }
+
+				FROM = { country_event = 8213 }
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 10
+						military_score = FROM
+						NOT = { relation = { who = FROM value = -75 } }
+					}
+					modifier = {
+						factor = 0
+						is_vassal = yes
+						FROM = { is_vassal = yes }
+						overlord = { is_our_vassal = FROM } # If they have the same overlord
+					}
+				}
+			}
+
+			# Ask the USA (or another GP if USA is not a GP) to arbitrate the dispute - lose infamy
+			option = {
+				name = "EVTOPTD8210"
+
+				badboy = -1
+				random_country = { # Ask the USA
+					limit = {
+						tag = USA
+						is_greater_power = yes
+						is_disarmed = no
+						NOT = { any_greater_power = { war_with = USA } }
+						NOT = { has_global_flag = eastern_misiones_decided } # To prevent this event firing twice
+						NOT = { owns = 2461 owns = 2341 owns = 2554 } # To make sure that one of the disputees isn't picked if they are a GP
+					}
+					country_event = 8215
+				}
+				random_country = { # If the USA is not a GP ask a GP with who you have good relations
+					limit = {
+						is_greater_power = yes
+						USA = { is_greater_power = no }
+						is_disarmed = no
+						war = no
+						OR = {
+							alliance_with = THIS
+							is_sphere_leader_of = THIS
+							relation = { who = THIS value = 100 }
+						}
+						NOT = { has_global_flag = eastern_misiones_decided } # To prevent this event firing twice
+						NOT = { owns = 2461 owns = 2341 owns = 2554 } # To make sure that one of the disputees isn't picked if they are a GP
+					}
+					country_event = 8215
+				}
+				random_country = { # Else ask any GP who is at peace and not disarmed
+					limit = {
+						is_greater_power = yes
+						USA = { is_greater_power = no }
+						is_disarmed = no
+						war = no
+						NOT = {
+							alliance_with = THIS
+							is_sphere_leader_of = THIS
+							relation = { who = THIS value = 100 }
+						}
+						NOT = { has_global_flag = eastern_misiones_decided } # To prevent this event firing twice
+						NOT = { owns = 2461 owns = 2341 owns = 2554 } # To make sure that one of the disputees isn't picked if they are a GP
+					}
+					country_event = 8215
+				}
+
+				ai_chance = {
+					factor = 5
+					modifier = {
+						factor = 10
+						NOT = { relation = { who = FROM value = -75 } }
+					}
+				}
+			}
+		}
+
+		#Description: Triggered for Brazil if the territory is returned
+		country_event = {
+			id = 8211
+			title = "EVTNAME8211"
+			desc = "EVTDESC8211"
+			picture = "celebration"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA8211"
+
+				prestige = 20
+			}
+		}
+
+		#Description: Triggered for Brazil if the owner protests
+		country_event = {
+			id = 8212
+			title = "EVTNAME8212"
+			desc = "EVTDESC8212"
+			picture = "deliberation"
+
+			is_triggered_only = yes
+
+			option = {
+				name = "EVTOPTA8212"
+			}
+		}
+
+		## War ##
+
+			#Description: Triggered for Brazil if the owner threatens war
+			country_event = {
+				id = 8213
+				title = "EVTNAME8213"
+				desc = "EVTDESC8213"
+				picture = "Demonstration"
+
+				is_triggered_only = yes
+
+				immediate = {
+					random_owned = { limit = { province_id = 2459 } 2459 = { secede_province = FROM } }
+					random_owned = { limit = { province_id = 2462 } 2462 = { secede_province = FROM } }
+				}
+
+				# Back off - lose prestige
+				option = {
+					name = "EVTOPTA8213"
+
+					prestige = -30
+					badboy = -1
+					random_owned = { limit = { owner = { tag = RGS } } 2459 = { remove_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2459 = { remove_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2459 = { remove_core = BRZ remove_core = KPB } }
+					random_owned = { limit = { owner = { tag = RGS } } 2462 = { remove_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2462 = { remove_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2462 = { remove_core = BRZ remove_core = KPB } }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 10
+							any_greater_power = { alliance_with = FROM }
+							NOT = { any_greater_power = { alliance_with = THIS } }
+						}
+						modifier = {
+							factor = 0
+							OR = {
+								military_score = FROM
+								NOT = { FROM = { brigades_compare = 1 } }
+							}
+						}
+					}
+				}
+
+				# Go to war
+				option = {
+					name = "EVTOPTB8213"
+
+					badboy = 3
+					set_country_flag = eastern_misiones_war
+
+					# Do I really need this?
+					random_owned = {
+						limit = { 2459 = { owner = { vassal_of = FROM } } }
+						2459 = { secede_province = FROM }
+					}
+					random_owned = {
+						limit = { 2462 = { owner = { vassal_of = FROM } } }
+						2462 = { secede_province = FROM }
+					}
+
+					war = {
+						target = FROM
+						attacker_goal = { casus_belli = acquire_core_state state_province_id = 2461 }
+						defender_goal = { casus_belli = cut_down_to_size }
+						call_ally = no
+					}
+
+					ai_chance = {
+						factor = 40
+						modifier = {
+							factor = 0
+							is_disarmed = yes
+						}
+						modifier = {
+							factor = 2
+							is_greater_power = yes
+						}
+					}
+				}
+			}
+
+			#Description: Triggered for Brazil if during the war for Eastern Misiones they own Rio Grande do Sul and control Misiones - claim all of Misiones or not
+			country_event = {
+				id = 8214
+				title = "EVTNAME8214"
+				desc = "EVTDESC8214"
+				picture = "paraguayan_war"
+
+				trigger = {
+					has_country_flag = eastern_misiones_war
+					owns = 2466
+					2554 = { owner = { war_with = THIS } }
+					controls = 2461
+					OR = {
+						controls = 2459
+						controls = 2462
+					}
+					controls = 2554
+				}
+
+				mean_time_to_happen = {
+					months = 2
+				}
+
+				# Claim all of Misiones
+				option = {
+					name = "EVTOPTA8214"
+
+					badboy = 5
+					random_owned = { limit = { owner = { tag = RGS } } 2341 = { add_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2341 = { add_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2341 = { add_core = BRZ add_core = KPB } }
+					random_owned = { limit = { owner = { tag = RGS } } 2554 = { add_core = RGS } }
+					random_owned = { limit = { owner = { tag = BRZ } } 2554 = { add_core = BRZ } }
+					random_owned = { limit = { owner = { tag = KPB } } 2554 = { add_core = BRZ add_core = KPB } }
+
+					ai_chance = {
+						factor = 20
+						modifier = {
+							factor = 2
+							war_policy = jingoism
+						}
+						modifier = {
+							factor = 0
+							badboy = 0.75
+						}
+					}
+				}
+
+				# Do nothing
+				option = {
+					name = "EVTOPTB8214"
+
+					ai_chance = {
+						factor = 80
+						modifier = {
+							factor = 0.25
+							controls = 2348
+						}
+					}
+				}
+			}
+
+		## Arbitration ##
+
+			#Description: Triggered for the USA if they are asked to arbitrate the dispute
+			country_event = {
+				id = 8215
+				title = "EVTNAME8215"
+				desc = "EVTDESC8215"
+				picture = "eastern_misiones_dispute"
+
+				is_triggered_only = yes
+
+				immediate = { set_global_flag = eastern_misiones_decided }
+
+				# Favor Brazil
+				option = {
+					name = "EVTOPTA8215"
+
+					random_country = { limit = { owns = 2461 } country_event = 8217 }
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 8216 }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 8216 }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 8216 }
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 8216 } }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 8216 } }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 8216 } }
+
+					ai_chance = {
+						factor = 50
+						modifier = {
+							factor = 0.5
+							2461 = { owner = { tag = KPB } }
+						}
+						modifier = {
+							factor = 0.8
+							2461 = {
+								owner = {
+									has_country_flag = monarchy_gov
+								}
+							}
+						}
+						modifier = {
+							factor = 0.7
+							2461 = { owner = { NOT = { has_country_flag = democracy_gov } } }
+						}
+						modifier = {
+							factor = 0
+							2461 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+						}
+					}
+				}
+
+				# Favor Argentina
+				option = {
+					name = "EVTOPTB8215"
+
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = no } country_event = 8217 }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = no } country_event = 8217 }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = no } country_event = 8217 }
+					random_country = { limit = { owns = 2341 owns = 2554 is_vassal = yes } overlord = { country_event = 8217 } }
+					random_country = { limit = { owns = 2341 NOT = { owns = 2554 } is_vassal = yes } overlord = { country_event = 8217 } }
+					random_country = { limit = { NOT = { owns = 2341 } owns = 2554 is_vassal = yes } overlord = { country_event = 8217 } }
+					random_country = { limit = { owns = 2461 } country_event = 8216 }
+
+					ai_chance = {
+						factor = 50
+						modifier = {
+							factor = 0.8
+							OR = {
+								2341 = {
+									owner = {
+										has_country_flag = monarchy_gov
+									}
+								}
+								2554 = {
+									owner = {
+										has_country_flag = monarchy_gov
+									}
+								}
+							}
+						}
+						modifier = {
+							factor = 0.7
+							OR = {
+								2341 = { owner = { NOT = { has_country_flag = democracy_gov } } }
+								2554 = { owner = { NOT = { has_country_flag = democracy_gov } } }
+							}
+						}
+						modifier = {
+							factor = 0
+							OR = {
+								2341 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+								2554 = { owner = { NOT = { relation = { who = THIS value = 0 } } } }
+							}
+						}
+					}
+				}
+
+				# Don't get involved
+				option = {
+					name = "EVTOPTC8215"
+
+					random_country = { limit = { tag = BRZ owns = 2461 } THIS = { diplomatic_influence = { who = BRZ value = -50 } } }
+					random_country = { limit = { tag = KPB owns = 2461 } THIS = { diplomatic_influence = { who = KPB value = -50 } } }
+					random_country = { limit = { tag = RGS owns = 2461 } THIS = { diplomatic_influence = { who = RGS value = -50 } } }
+					diplomatic_influence = { who = FROM value = -50 }
+
+					ai_chance = {
+						factor = 10
+						modifier = {
+							factor = 0
+							OR = {
+								relation = { who = FROM value = 0 }
+								2461 = { owner = { relation = { who = THIS value = 0 } } }
+							}
+						}
+					}
+				}
+			}
+
+			#Description: Triggered for the side whose argument was not favored by the Great Power - remove cores
+			country_event = {
+				id = 8216
+				title = "EVTNAME8216"
+				desc = "EVTDESC8216"
+				picture = "celebration"
+
+				is_triggered_only = yes
+
+				option = {
+					name = "EVTOPTA8216"
+
+					relation = { who = FROM value = -20 }
+
+					random_owned = {
+						limit = { 2459 = { is_core = THIS } }
+						2459 = { remove_core = THIS }
+					}
+					random_owned = {
+						limit = { 2459 = { is_core = CRT } CRT = { vassal_of = THIS } }
+						2459 = { remove_core = CRT }
+					}
+					random_owned = {
+						limit = { 2462 = { is_core = THIS } }
+						2462 = { remove_core = THIS }
+					}
+					random_owned = {
+						limit = { 2462 = { is_core = CRT } CRT = { vassal_of = THIS } }
+						2462 = { remove_core = CRT }
+					}
+				}
+			}
+
+			#Description: Triggered for the side whose argument was favored by the Great Power - gain prestige, provinces
+			country_event = {
+				id = 8217
+				title = "EVTNAME8217"
+				desc = "EVTDESC8217"
+				picture = "treaty"
+
+				is_triggered_only = yes
+
+				option = {
+					name = "EVTOPTA8217"
+
+					prestige = 10
+					relation = { who = FROM value = -20 }
+					FROM = { diplomatic_influence = { who = THIS value = 50 } }
+
+					random_owned = {
+						limit = { province_id = 2461 }
+						2459 = { secede_province = THIS }
+						2462 = { secede_province = THIS }
+					}
+					random_owned = {
+						limit = {
+							2341 = {
+								OR = {
+									owned_by = THIS
+									owner = { vassal_of = THIS }
+								}
+							}
+						}
+						2462 = { secede_province = THIS }
+					}
+					random_owned = {
+						limit = {
+							2341 = {
+								OR = {
+									owned_by = THIS
+									owner = { vassal_of = THIS }
+								}
+							}
+						}
+						2459 = { secede_province = THIS }
+					}
+
+					# TODO Clevelandia
+				}
+			}
+
+		#Description: Triggered for the other countries who have claims in Eastern Misiones - renounce claim, or keep claim
+		country_event = {
+			id = 8218
+			title = "EVTNAME8218"
+			desc = "EVTDESC8218"
+			picture = "eastern_misiones_dispute"
+
+			is_triggered_only = yes
+
+			# Renounce claim
+			option = {
+				name = "EVTOPTA8218"
+
+				relation = { who = FROM value = 100 }
+
+				random_owned = {
+					limit = { 2459 = { is_core = THIS } }
+					2459 = { remove_core = THIS }
+				}
+				random_owned = {
+					limit = { 2462 = { is_core = THIS } }
+					2462 = { remove_core = THIS }
+				}
+
+				ai_chance = { factor = 80 }
+			}
+
+			# Keep claim
+			option = {
+				name = "EVTOPTA8218"
+
+				prestige = 10
+				relation = { who = FROM value = -50 }
+
+				ai_chance = { factor = 20 }
+			}
+		}
+
+		#Description: If any country owns both sides of the conflict they will occupy Eastern Misiones and the issue is resolved
+		country_event = {
+			id = 8219
+			title = "EVTNAME8219"
+			desc = "EVTDESC8219"
+			picture = "eastern_misiones_dispute"
+
+			trigger = {
+				owns = 2461
+				owns = 2341
+				owns = 2554
+				2462 = { empty = yes }
+				2459 = { empty = yes }
+			}
+
+			option = {
+				name = "EVTOPTA8219"
+
+				2459 = { secede_province = THIS }
+				random_owned = {
+					limit = { 2459 = { NOT = { life_rating = 30 } } }
+					2459 = { life_rating = 21 }
+				}
+				2462 = { secede_province = THIS }
+				random_owned = {
+					limit = { 2462 = { NOT = { life_rating = 30 } } }
+					2462 = { life_rating = 21 }
+				}
+			}
+		}
+
 
 ##Slavery
 	#Status Checker
@@ -3229,130 +3846,131 @@
 		}
 	}
 	
-	#The Religious Question, bringing the Catholic Church into conflict with the Empire
-	country_event = {
-		id = 8420
-		title = "EVTNAME8420"
-		desc = "EVTDESC8420"
-		picture = "religious_question"
+	##The Religious Question,8420-8422
+		#The Religious Question, bringing the Catholic Church into conflict with the Empire
+		country_event = {
+			id = 8420
+			title = "EVTNAME8420"
+			desc = "EVTDESC8420"
+			picture = "religious_question"
 
-		trigger = {
-			OR = {
-				tag = BRZ
-				tag = KPB
+			trigger = {
+				OR = {
+					tag = BRZ
+					tag = KPB
+				}
+				year = 1865
+				war = no
+				has_country_flag = monarchy_gov
+				NOT = {
+					has_country_flag = religious_question_started
+					has_country_flag = religious_question_decided
+				}
 			}
-			year = 1865
-			war = no
-			has_country_flag = monarchy_gov
-			NOT = {
+
+			mean_time_to_happen = {
+				months = 28
+				modifier = {
+					factor = 0.3
+					year = 1870
+				}
+			}
+
+			fire_only_once = yes
+
+			# Side with the Freemasons (historical)
+			option = {
+				name = "EVTOPTA8420"
+				prestige = 10
+				set_country_flag = religious_question_started
+				ai_chance = { factor = 80 }
+			}
+
+			# Side with the Church
+			option = {
+				name = "EVTOPTB8420"
+				prestige = -10
+				set_country_flag = religious_question_decided
+				add_country_modifier = { name = freemason_expulsion_modifier duration = 1825 }
+				ai_chance = { factor = 20 }
+			}
+		}
+
+		#The Religious Question: Dom Vital refuses to rescind his interdict, Costa joins in
+		country_event = {
+			id = 8421
+			title = "EVTNAME8421"
+			desc = "EVTDESC8421"
+			picture = "dom_vital"
+
+			trigger = {
 				has_country_flag = religious_question_started
-				has_country_flag = religious_question_decided
+				NOT = {
+					has_country_flag = religious_question_decided
+					has_country_flag = rq_imprisoned_bishops
+				}
+			}
+
+			mean_time_to_happen = {
+				months = 18
+			}
+
+			fire_only_once = yes
+
+			#Imprison the two bishops (historical)
+			option = {
+				name = "EVTOPTA8421"
+
+				prestige = 5
+				set_country_flag = rq_imprisoned_bishops
+				any_pop = {
+					limit = { has_pop_religion = catholic }
+					consciousness = 2
+					militancy = 1
+				}
+
+				ai_chance = { factor = 80 }
+			}
+
+			# Accept the interdict, expel the Freemasons
+			option = {
+				name = "EVTOPTB8421"
+
+				prestige = -5
+				set_country_flag = religious_question_decided
+				any_pop = {
+					limit = { has_pop_religion = catholic }
+					consciousness = 1.5
+					militancy = -1
+				}
+				add_country_modifier = { name = freemason_expulsion_modifier duration = -1 }
+				ai_chance = { factor = 20 }
 			}
 		}
 
-		mean_time_to_happen = {
-			months = 28
-			modifier = {
-				factor = 0.3
-				year = 1870
-			}
-		}
+		#The Religious Question, bad historical ending
+		country_event = {
+			id = 8422
+			title = "EVTNAME8422"
+			desc = "EVTDESC8422"
+			picture = "anistia"
 
-		fire_only_once = yes
-
-		# Side with the Freemasons (historical)
-		option = {
-			name = "EVTOPTA8420"
-			prestige = 10
-			set_country_flag = religious_question_started
-			ai_chance = { factor = 80 }
-		}
-
-		# Side with the Church
-		option = {
-			name = "EVTOPTB8420"
-			prestige = -10
-			set_country_flag = religious_question_decided
-			add_country_modifier = { name = freemason_expulsion_modifier duration = 1825 }
-			ai_chance = { factor = 20 }
-		}
-	}
-
-	#The Religious Question: Dom Vital refuses to rescind his interdict, Costa joins in
-	country_event = {
-		id = 8421
-		title = "EVTNAME8421"
-		desc = "EVTDESC8421"
-		picture = "dom_vital"
-
-		trigger = {
-			has_country_flag = religious_question_started
-			NOT = {
-				has_country_flag = religious_question_decided
+			trigger = {
 				has_country_flag = rq_imprisoned_bishops
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 18
-		}
-
-		fire_only_once = yes
-
-		#Imprison the two bishops (historical)
-		option = {
-			name = "EVTOPTA8421"
-
-			prestige = 5
-			set_country_flag = rq_imprisoned_bishops
-			any_pop = {
-				limit = { has_pop_religion = catholic }
-				consciousness = 2
-				militancy = 1
+				NOT = { has_country_flag = religious_question_decided }
 			}
 
-			ai_chance = { factor = 80 }
-		}
-
-		# Accept the interdict, expel the Freemasons
-		option = {
-			name = "EVTOPTB8421"
-
-			prestige = -5
-			set_country_flag = religious_question_decided
-			any_pop = {
-				limit = { has_pop_religion = catholic }
-				consciousness = 1.5
-				militancy = -1
+			mean_time_to_happen = {
+				months = 16
 			}
-			add_country_modifier = { name = freemason_expulsion_modifier duration = -1 }
-			ai_chance = { factor = 20 }
-		}
-	}
 
-	#The Religious Question, bad historical ending
-	country_event = {
-		id = 8422
-		title = "EVTNAME8422"
-		desc = "EVTDESC8422"
-		picture = "anistia"
-
-		trigger = {
-			has_country_flag = rq_imprisoned_bishops
-			NOT = { has_country_flag = religious_question_decided }
+			# No choice but to free the bishops
+			option = {
+				name = "EVTOPTA8422"
+				set_country_flag = religious_question_decided
+				prestige = -10
+			}
 		}
-
-		mean_time_to_happen = {
-			months = 16
-		}
-
-		# No choice but to free the bishops
-		option = {
-			name = "EVTOPTA8422"
-			set_country_flag = religious_question_decided
-			prestige = -10
-		}
-	}
 
 	#Revolt of the Lash - racial conflict between black ship crews and white officers
 	country_event = {
