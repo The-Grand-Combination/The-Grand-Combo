@@ -2279,7 +2279,6 @@
 		}
 
 		## War ##
-
 			#Description: Triggered for Brazil if the owner threatens war
 			country_event = {
 				id = 8213
@@ -2755,8 +2754,55 @@
 			}
 		}
 	}
+	
+	#Description: Treaty of Petropolis - triggered for countries with a core in Acre to ask them to remove it
+	country_event = {
+		id = 8221
+		title = "EVTNAME8221"
+		desc = "EVTDESC8221"
+		picture = "treaty_of_petropolis"
 
+		is_triggered_only = yes
 
+		# We agree
+		option = {
+			name = "EVTOPTA8221"
+
+			set_country_flag = signed_treaty_of_petropolis
+			badboy = -2
+			BRZ_2549 = { remove_core = THIS }
+			relation = { who = FROM value = 300 }
+			treasury = 1000000
+			random_owned = {
+				limit = {
+					is_core = THIS
+					can_build_in_province = {
+						building = railroad
+						limit_to_world_greatest_level = yes
+					}
+				}
+				infrastructure = 1
+			}
+
+			ai_chance = { factor = 80 }
+		}
+
+		#No
+		option = {
+			name = "EVTOPTB8221"
+
+			badboy = 1
+			relation = { who = BRZ value = -200 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 1.5 is_greater_power = yes }
+				modifier = { factor = 1.8 tag = BRZ }
+				modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
+				modifier = { factor = 0 badboy = 0.95 }
+			}
+		}
+	}
 
 ##Slavery
 	#Status Checker
