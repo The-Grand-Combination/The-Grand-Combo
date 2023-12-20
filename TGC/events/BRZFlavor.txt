@@ -969,7 +969,9 @@
 
 		trigger = { BRZ = { has_country_flag = farroupilha_ongoing }
 					tag = JAN
-					NOT = { BRZ = { war_with = RGS } }
+					OR = { NOT = { BRZ = { war_with = RGS } }
+						   RGS = { exists = no }
+					}
 		}
 
 		mean_time_to_happen = { days = 1 }
@@ -980,6 +982,7 @@
 
 		option = {
 			name = "End Selection"
+			BRZ = { end_war = RGS }
 			#Brazil win, total victory or good treaty
 			any_country = { limit = { tag = BRZ owns = 2463 NOT = { OR = { has_country_modifier = farrapos_compromise_strong has_country_modifier = farrapos_compromise_mild } } } 
 							country_event = 8111
@@ -1976,6 +1979,7 @@
 		
 	}
 
+#
 ##Expasion, 8200-
 	#Claim Rio Parana
 	country_event = {
@@ -2074,6 +2078,7 @@
 			infamy = -5
 		}
 	}
+	
 	
 	## Eastern Misiones dispute - 8210-8219
 
@@ -2689,120 +2694,121 @@
 				}
 			}
 		}
-
+	
+	
 	## Amazon disputes
 	
-	#Description: García Ortiz-Mangabeira Treaty - Amazon border treaty (with Colombia, Ecuador or Peru, depending on who owns the provinces)
-	country_event = {
-		id = 8220
-		title = "EVTNAME8220"
-		desc = "EVTDESC8220"
-		picture = "map_of_colombia"
+		#Garcas Ortiz-Mangabeira Treaty - Amazon border treaty (with Colombia, Ecuador or Peru, depending on who owns the provinces)
+		country_event = {
+			id = 8220
+			title = "EVTNAME8220"
+			desc = "EVTDESC8220"
+			picture = "map_of_colombia"
 
-		is_triggered_only = yes
+			is_triggered_only = yes
 
-		# We agree
-		option = {
-			name = "EVTOPTA8220"
+			# We agree
+			option = {
+				name = "EVTOPTA8220"
 
-			set_country_flag = ortiz_mangabeira_accepted
-			prestige = 10
-			badboy = -1
-			random_owned = {
-				limit = { 3295 = { is_core = THIS } }
-				3295 = { remove_core = THIS }
-			}
-			random_owned = {
-				limit = { province_id = 3295 }
-				secede_province = FROM
-			}
-			random_owned = {
-				limit = { 2263 = { is_core = THIS } }
-				2263 = { remove_core = THIS }
-			}
-			random_owned = {
-				limit = { province_id = 2263 }
-				secede_province = FROM
-			}
-			random_owned = {
-				limit = { 2401 = { is_core = THIS } }
-				2401 = { remove_core = THIS }
-			}
-			random_owned = {
-				limit = { province_id = 2401 }
-				secede_province = FROM
-			}
-
-			relation = { who = FROM value = 300 }
-
-			ai_chance = { factor = 80 }
-		}
-
-		# No
-		option = {
-			name = "EVTOPTB8220"
-
-			set_country_flag = ortiz_mangabeira_refused
-			badboy = 2
-			relation = { who = BRZ value = -400 }
-
-			ai_chance = {
-				factor = 20
-				modifier = { factor = 0 is_greater_power = no }
-				modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
-				modifier = { factor = 0 badboy = 0.95 }
-			}
-		}
-	}
-	
-	#Description: Treaty of Petropolis - triggered for countries with a core in Acre to ask them to remove it
-	country_event = {
-		id = 8221
-		title = "EVTNAME8221"
-		desc = "EVTDESC8221"
-		picture = "treaty_of_petropolis"
-
-		is_triggered_only = yes
-
-		# We agree
-		option = {
-			name = "EVTOPTA8221"
-
-			set_country_flag = signed_treaty_of_petropolis
-			badboy = -2
-			BRZ_2549 = { remove_core = THIS }
-			relation = { who = FROM value = 300 }
-			treasury = 1000000
-			random_owned = {
-				limit = {
-					is_core = THIS
-					can_build_in_province = {
-						building = railroad
-						limit_to_world_greatest_level = yes
-					}
+				set_country_flag = ortiz_mangabeira_accepted
+				prestige = 10
+				badboy = -1
+				random_owned = {
+					limit = { 3295 = { is_core = THIS } }
+					3295 = { remove_core = THIS }
 				}
-				infrastructure = 1
+				random_owned = {
+					limit = { province_id = 3295 }
+					secede_province = FROM
+				}
+				random_owned = {
+					limit = { 2263 = { is_core = THIS } }
+					2263 = { remove_core = THIS }
+				}
+				random_owned = {
+					limit = { province_id = 2263 }
+					secede_province = FROM
+				}
+				random_owned = {
+					limit = { 2401 = { is_core = THIS } }
+					2401 = { remove_core = THIS }
+				}
+				random_owned = {
+					limit = { province_id = 2401 }
+					secede_province = FROM
+				}
+
+				relation = { who = FROM value = 300 }
+
+				ai_chance = { factor = 80 }
 			}
 
-			ai_chance = { factor = 80 }
-		}
+			# No
+			option = {
+				name = "EVTOPTB8220"
 
-		#No
-		option = {
-			name = "EVTOPTB8221"
+				set_country_flag = ortiz_mangabeira_refused
+				badboy = 2
+				relation = { who = BRZ value = -400 }
 
-			badboy = 1
-			relation = { who = BRZ value = -200 }
-
-			ai_chance = {
-				factor = 20
-				modifier = { factor = 1.5 is_greater_power = yes }
-				modifier = { factor = 1.8 tag = BRZ }
-				modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
-				modifier = { factor = 0 badboy = 0.95 }
+				ai_chance = {
+					factor = 20
+					modifier = { factor = 0 is_greater_power = no }
+					modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
+					modifier = { factor = 0 badboy = 0.95 }
+				}
 			}
 		}
-	}
+		
+		#Treaty of Petropolis - triggered for countries with a core in Acre to ask them to remove it
+		country_event = {
+			id = 8221
+			title = "EVTNAME8221"
+			desc = "EVTDESC8221"
+			picture = "treaty_of_petropolis"
+
+			is_triggered_only = yes
+
+			# We agree
+			option = {
+				name = "EVTOPTA8221"
+
+				set_country_flag = signed_treaty_of_petropolis
+				badboy = -2
+				BRZ_2549 = { remove_core = THIS }
+				relation = { who = FROM value = 300 }
+				treasury = 1000000
+				random_owned = {
+					limit = {
+						is_core = THIS
+						can_build_in_province = {
+							building = railroad
+							limit_to_world_greatest_level = yes
+						}
+					}
+					infrastructure = 1
+				}
+
+				ai_chance = { factor = 80 }
+			}
+
+			#No
+			option = {
+				name = "EVTOPTB8221"
+
+				badboy = 1
+				relation = { who = BRZ value = -200 }
+
+				ai_chance = {
+					factor = 20
+					modifier = { factor = 1.5 is_greater_power = yes }
+					modifier = { factor = 1.8 tag = BRZ }
+					modifier = { factor = 0 OR = { in_sphere = FROM vassal_of = FROM } }
+					modifier = { factor = 0 badboy = 0.95 }
+				}
+			}
+		}
 
 ##Slavery
 	#Status Checker
@@ -3417,7 +3423,6 @@
 			ai_chance = { factor = 80 }
 		}
 	}
-
 
 ##Random Flavor
 	#O Guarani
@@ -4083,6 +4088,7 @@
 			}
 		}
 
+#
 	#Revolt of the Lash - racial conflict between black ship crews and white officers
 	country_event = {
 		id = 8425
@@ -4290,7 +4296,6 @@
 			
 		}
 	}
-
 
 	#Description: Conquest of the Amazon - occupy empty provinces.
 	country_event = {
