@@ -6,13 +6,14 @@
             id = 347000
             title = "EVTNAME347000"
             desc = "EVTDESC347000"
-            picture = "questione_della_lingua"
+            picture = questione_della_lingua
 
             trigger = {
                 tag = ITA
                 is_vassal = no
                 has_global_flag = Manzoni
                 NOT = { has_global_flag = extra_flavour_disabled }
+                NOT = { government = theocracy } # It doesn't make sense to have a chain about using Latin if the country already uses it
             }
 
             fire_only_once = yes
@@ -24,19 +25,25 @@
             # Standard Italian
             option = {
                 name = "EVTOPTA34700"
-                any_pop = { 
-                    limit = { type = clergymen }
-                    consciousness = -2
+                set_country_flag = hidden_tooltip
+                random_owned = { 
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = {
+                        any_pop = { 
+                            limit = { type = clergymen }
+                            consciousness = -2
+                        }
+                        prestige = 10
+                    }
                 }
-                prestige = 10
+                clr_country_flag = hidden_tooltip
                 
                 ai_chance = { factor = 100 }
             }
 
-            # Embrace Latin (Everyone is mad because no one understands it)
+            # Embrace Latin
             option = {
                 name = "EVTOPTB347000"
-                any_pop = { militancy = 2 }
                 set_country_flag = roman_larp_start
                 
                 ai_chance = { factor = 0 }
@@ -45,9 +52,9 @@
     ## De Appellandi Modo ## Ludens statuere potest utrum fiat Imperium Romanum an Imperium Catholicum
         country_event = {
             id = 347001
-            title = "EVTNAME3447001"
+            title = "EVTNAME347001"
             desc = "EVTDESC347001"
-            picture = "de_appellandi_modo"
+            picture = de_appellandi_modo
 
             trigger = {
                 has_country_flag = roman_larp_start
@@ -67,19 +74,40 @@
             option = {
                 name = "EVTOPTA347001"
                 set_country_flag = am_restitutus
+                set_country_flag = hidden_tooltip
+                random_owned = {
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = {
+                        any_pop = {
+                            limit = { type = clergymen }
+                            reduce_pop = 0.97
+                        }
+                    }
+                }
+                clr_country_flag = hidden_tooltip
             }
 
             # Honestly, it has never been a good idea
             option = {
                 name = "EVTOPTB347001"
                 clr_country_flag = roman_larp_start
-                any_pop = { militancy = -2 }
             }
             
             # Appellandi Modus Ecclesiasticus
             option = {
                 name = "EVTOPTC347001"
                 set_country_flag = am_ecclesiasticus
+                set_country_flag = hidden_tooltip 
+                random_owned = {
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = {
+                        any_pop = {
+                            limit = { type = clergymen }
+                            reduce_pop = 0.97
+                        }
+                    }
+                }
+                clr_country_flag = hidden_tooltip
             }
         }
     ## Novis Obstantis ## Populus Italianus iratus est quod nemo Latine loqui potest, ludens statuere potest utrum Latinum sermonem tineat an relinquat
@@ -87,14 +115,10 @@
             id = 347002
             title = "EVTNAME347002"
             desc = "EVTDESC347002"
-            picture = "de_appellandi_modo"
+            picture = de_appellandi_modo
 
             trigger = {
                 has_country_flag = roman_larp_start
-                NOT = {
-                    has_country_flag = am_ecclesiasticus
-                    has_country_flag = am_restitutus
-                }
             }
 
             fire_only_once = yes
@@ -112,12 +136,17 @@
             # Omnes occidete!
             option = {
                 name = "EVTOPTB347002"
-                prestige = -50
-                any_pop = { militancy = 2 consciousness = 2 }
-                any_pop = { 
-                    limit = { type = clergymen }
-                    reduce_pop = 0.70
+                set_country_flag = hidden_tooltip
+                random_owned = { 
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = {
+                        any_pop = { 
+                            limit = { type = clergymen }
+                            reduce_pop = 0.70
+                        }
+                    }
                 }
+                clr_country_flag = hidden_tooltip
                 set_country_flag = virum_litteratorum_caedes
             }
         }
@@ -126,7 +155,7 @@
             id = 347003
             title = "EVTNAME347003"
             desc = "EVTDESC347003"
-            picture = "questione_della_lingua"
+            picture = questione_della_lingua
 
             trigger = {
                 has_country_flag = novi_libero_pede
@@ -141,6 +170,137 @@
                 name = "EVTOPTA347003"
                 clr_country_flag = novi_libero_pede
                 clr_country_flag = roman_larp_start
-                any_pop = { militancy = -2 }
+            }
+        }
+    ## Latino sermone publice utemur? ## Rex/Pontifex/Praeses/Dux/Summus scriba ipse, huius linguae magnae facens, regni administrationi ea uti vult
+        country_event = {
+            id = 347004
+            title = "EVTNAME347004"
+            desc = "EVTDESC347004"
+            picture = de_appellandi_modo
+            
+            trigger = {
+                has_country_flag = virum_litteratorum_caedes
+                NOT = { has_country_flag = democracy_gov }
+            }
+
+            fire_only_once = yes
+            
+            mean_time_to_happen = {
+                months = 3
+            }
+
+            immediate = {
+                random_owned = { limit = { owner = { has_country_flag = monarchy_gov NOT = { has_country_flag = 2nd_monarchygov } } } usus_publicus_latini_sermonis_rex_savoia = { } }
+                random_owned = { limit = { owner = { has_country_flag = 2nd_monarchygov } } usus_publicus_latini_sermonis_rex_borbone = { } }
+                random_owned = { limit = { owner = { OR = { government = bourgeois_dictatorship government = presidential_dictatorship } } } usus_publicus_latini_sermonis_praeses = { } }
+                random_owned = { limit = { owner = { government = fascist_dictatorship } } usus_publicus_latini_sermonis_dux = { } }
+                random_owned = { limit = { owner = { has_country_flag = communist_gov } } usus_publicus_latini_sermonis_summus_scriba = { } }
+                usus_publicus_latini_sermonis_coda = { }
+            }
+            
+            option = {
+                name = "EVTOPTA347004" # Minime 
+                set_country_flag = no_usus_publicus
+                set_country_flag = hidden_tooltip
+                random_owned = { 
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = {
+                        any_pop = { 
+                            limit = { type = clergymen } 
+                            militancy = 4
+                        }
+                    }
+                }
+                clr_country_flag = hidden_tooltip
+            }
+            
+            option = {
+                name = "EVTOPTB347004" # Destroy the movement
+                clr_country_flag = roman_larp_start
+                clr_country_flag = virum_litteratorum_caedes
+                set_country_flag = hidden_tooltip
+                random_owned = {
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = { prestige = 20 }
+                }
+                clr_country_flag = hidden_tooltip
+            }
+           
+            option = {
+                name = "EVTOPTC347004" # Ita
+                set_country_flag = usus_publicus
+                set_country_flag = hidden_tooltip
+                random_owned = {
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = {
+                        prestige = -50
+                        any_pop = { limit = { NOT = { pop_majority_ideology = reactionary } } militancy = 2 }
+                        primary_culture = latin
+                        add_accepted_culture = north_italian
+                        add_accepted_culture = south_italian
+                    }
+                }
+                clr_country_flag = hidden_tooltip
+            }
+        }
+    ## Latino sermone utemur? Imperium populi eventum dissimilis habet
+        country_event = {
+            id = 347005
+            title = "EVTNAME347005"
+            desc = "EVTDESC347005"
+            picture = senate_debate
+
+            
+            trigger = {
+                has_country_flag = virum_litteratorum_caedes
+                has_country_flag = democracy_gov
+            }
+            
+            fire_only_once = yes
+
+            mean_time_to_happen = {
+                months = 3
+            }
+
+            option = {
+                name = "EVTOPTA347005" # Res Publica Romana
+                set_country_flag = hidden_tooltip
+                random_owned = {
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = { country_event = 347006 }
+                }
+                clr_country_flag = hidden_tooltip
+            }
+            
+            option = {
+                name = "EVTOPTB347005" # This whole thing is stupid
+                clr_country_flag = roman_larp_start
+                clr_country_flag = virum_litteratorum_caedes
+                set_country_flag = hidden_tooltip
+                random_owned = {
+                    limit = { owner = { has_country_flag = hidden_tooltip } }
+                    owner = { prestige = 20 }
+                }
+                clr_country_flag = hidden_tooltip
+                
+            }
+            
+            option = {
+                name = "EVTOPTC347005" # Alia Romae itinera
+                set_country_flag = usus_publicus
+                set_country_flag = hidden_tooltip
+                    random_owned = {
+                        limit = { owner = { has_country_flag = hidden_tooltip } }
+                        owner = {
+                            government = presidential_dictatorship
+                            prestige = -50
+                            any_pop = { limit = { NOT = { pop_majority_ideology = reactionary } } militancy = 6 }
+                            primary_culture = latin
+                            add_accepted_culture = north_italian
+                            add_accepted_culture = south_italian
+                        }
+                    }
+                clr_country_flag = hidden_tooltip
             }
         }
