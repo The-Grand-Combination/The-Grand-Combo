@@ -197,69 +197,69 @@ political_decisions = {
 		}
 	}
 
-#Description: Valparaiso gains liferating and immigrant attraction.
-valparaiso_harbor = {
-	picture = valparaiso_harbor
-	potential = {
-		owns = 2325 # Valparaiso
-		OR = {
+	#Description: Valparaiso gains liferating and immigrant attraction.
+	valparaiso_harbor = {
+		picture = valparaiso_harbor
+		potential = {
+			owns = 2325 # Valparaiso
+			OR = {
+				tag = CHL
+				tag = PBC
+			}
+			NOT = { is_canal_enabled = 3 }
+			NOT = { has_country_flag = valpariasoharbor_built }
+		}
+
+		allow = {
+			war = no
+			battleship_column_doctrine = 1
+		}
+
+		effect = {
+			prestige = 10
+			2325 = {
+				life_rating = 7
+				add_province_modifier = { name = gateway_to_harbor duration = 3650 }
+			}
+			add_country_modifier = { name = small_immigration_boom_country duration = 730 }
+			set_country_flag = valpariasoharbor_built
+		}
+	}
+
+	#Description: If the PBC is at war with Peru and has recently lost a war (PBC in Chaos decision was taken), Chile can go to war with them to release South Peru.
+	repudiate_the_treaty_of_paucarpata = {
+		picture = peru_bolivia
+		potential = {
 			tag = CHL
-			tag = PBC
+			PBC = {
+				exists = yes
+				war_with = PEU
+				has_recently_lost_war = yes
+				NOT = { truce_with = THIS }
+			}
+			SPU = { vassal_of = PBC }
+			NOT = {
+				has_country_flag = treaty_of_paucarpata_repudiated
+				has_recently_lost_war = yes
+				PBC = { military_score = THIS }
+			}
 		}
-		NOT = { is_canal_enabled = 3 }
-		NOT = { has_country_flag = valpariasoharbor_built }
-	}
 
-	allow = {
-		war = no
-		battleship_column_doctrine = 1
-	}
-
-	effect = {
-		prestige = 10
-		2325 = {
-			life_rating = 7
-			add_province_modifier = { name = gateway_to_harbor duration = 3650 }
+		allow = {
+			war = no
+			is_disarmed = no
 		}
-		add_country_modifier = { name = small_immigration_boom_country duration = 730 }
-		set_country_flag = valpariasoharbor_built
-	}
-}
 
-#Description: If the PBC is at war with Peru and has recently lost a war (PBC in Chaos decision was taken), Chile can go to war with them to release South Peru.
-repudiate_the_treaty_of_paucarpata = {
-	picture = peru_bolivia
-	potential = {
-		tag = CHL
-		PBC = {
-			exists = yes
-			war_with = PEU
-			has_recently_lost_war = yes
-			NOT = { truce_with = THIS }
-		}
-		SPU = { vassal_of = PBC }
-		NOT = {
-			has_country_flag = treaty_of_paucarpata_repudiated
-			has_recently_lost_war = yes
-			PBC = { military_score = THIS }
+		effect = {
+			set_country_flag = treaty_of_paucarpata_repudiated
+			prestige = 10
+			badboy = 2
+			war = {
+				target = PBC
+				attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
+			}
+			any_pop = { dominant_issue = { value = jingoism factor = 0.05 } }
 		}
 	}
-
-	allow = {
-		war = no
-		is_disarmed = no
-	}
-
-	effect = {
-		set_country_flag = treaty_of_paucarpata_repudiated
-		prestige = 10
-		badboy = 2
-		war = {
-			target = PBC
-			attacker_goal = { casus_belli = release_puppet country = SPU } # South Peru
-		}
-		any_pop = { dominant_issue = { value = jingoism factor = 0.05 } }
-	}
-}
 
 }
