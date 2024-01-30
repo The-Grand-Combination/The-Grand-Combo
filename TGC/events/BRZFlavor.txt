@@ -608,6 +608,7 @@
 		}
 	}
 
+	#Republican Coup,2
 	country_event = {
 
 		id = 8017
@@ -644,6 +645,7 @@
 		}
 	}
 
+	#Banish the Imperial Family?
 	country_event = {
 
 		id = 8018
@@ -665,6 +667,7 @@
 		}
 	}
 
+	#A new Flag for brazil
 	country_event = {
 
 		id = 8019
@@ -690,6 +693,239 @@
 		option = {
 			name = "EVTOPTB8019"
 			plurality = -1
+		}
+	}
+
+#KPB Stuff
+	#Portugal Formed KPB decides what to do with Brazil
+	country_event = {
+		id = 8050
+		title = "EVTNAME8050"
+		desc = "EVTDESC8050"
+		picture = kpb
+
+		trigger = {
+			tag = KPB
+			has_country_flag = POR_formed_KPB
+		}
+		
+		mean_time_to_happen = { days = 10 }
+
+		fire_only_once = yes
+
+		#Do nothing, brazilians get a bit mad, portuguese aristocracy gets mad
+		#Will get dismatled if the player dont play well
+		option = {
+			name = "EVTOPTA8050"
+
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = liberal 
+					location = { continent = south_america }
+				}
+				militancy = 4
+				consciousness = 2
+			}
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = conservative 
+					location = { continent = south_america }
+				}
+				consciousness = 2
+			}
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = reactionary 
+					location = { continent = south_america }
+				}
+				militancy = -1
+				consciousness = 1
+			}
+
+			any_pop = { 
+				limit = { 
+					strata = rich 
+					location = { continent = europe }
+				}
+				militancy = 1
+			}
+			any_pop = { 
+				limit = { location = { continent = europe } }
+				consciousness = 2
+			}	
+			
+			set_country_flag = KPB_tightrope
+		}
+		
+		#Move the capital to rio, portuguese people get mad, brazilians like it
+		option = {
+			name = "EVTOPTB8050"
+			capital = 2447
+			any_pop = { 
+				limit = { location = { continent = south_america } }
+				militancy = -3
+				consciousness = -2
+			}
+			any_pop = { 
+				limit = { 
+					location = { continent = europe }
+					pop_majority_ideology = reactionary 
+				}
+				militancy = 3
+				consciousness = 3
+			}	
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = conservative 
+					location = { continent = europe }
+				}
+				militancy = 2
+				consciousness = 2
+			}	
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = liberal 
+					location = { continent = europe }
+				}
+				consciousness = 1
+			}	
+			
+		}
+
+		#Turn Brazil back into a colony, brazilians get big mad, portugal loves it
+		option = {
+			name = "EVTOPTC8050"
+			brazil_colony = { }
+			badboy = 5
+			set_country_flag = colonial_portugal_path
+			set_country_flag = hidden_tooltip 
+			random_owned = {
+				limit = { owner = { has_country_flag = hidden_tooltip } }
+				owner = { 
+					any_owned = { limit = { NOT = { region = BRZ_2447 } continent = south_america }
+						secede_province = BRZ
+					}
+					BRZ = { civilized = no }
+					BRZ = { any_owned = { secede_province = THIS } }
+					BRZ = { civilized = yes }
+				}
+			}
+			clr_country_flag = hidden_tooltip 
+
+			any_pop = { 
+				limit = { location = { continent = europe } }
+				militancy = -3
+				consciousness = -3
+			}
+		
+
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = liberal 
+					location = { continent = south_america }
+				}
+				militancy = 4
+				consciousness = 4
+			}	
+
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = conservative 
+					location = { continent = south_america }
+				}
+				militancy = 2
+				consciousness = 2
+			}	
+
+			any_pop = { 
+				limit = { 
+					pop_majority_ideology = reactionary 
+					location = { continent = south_america }
+				}
+				militancy = 1
+				consciousness = 1
+			}	
+		}
+	}
+
+	country_event = {
+		id = 8051
+		title = "EVTNAME8051"
+		desc = "EVTDESC8051"
+		picture = broken_kpb
+
+		trigger = {
+			tag = KPB
+			NOT = { plurality = 40 }
+			OR = { 
+				AND = { 
+					NOT = { nationalism_n_imperialism = 1 }
+					NOT = { invention = national_fraternity }
+				}
+				AND = {
+					capital_scope = { controlled_by = REB }
+					num_of_revolts = 5
+				}
+			}
+		}
+		
+		mean_time_to_happen = { 
+			months = 24
+			modifier = {
+				factor = 0.8
+				has_country_flag = KPB_tightrope
+			}
+			modifier = {
+				factor = 2
+				NOT = { average_militancy = 1 }
+			}
+			modifier = {
+				factor = 1.2
+				NOT = { average_militancy = 2 }
+			}
+			modifier = {
+				factor = 0.6
+				average_militancy = 5
+			}
+			modifier = {
+				factor = 0.5
+				average_militancy = 7
+			}
+			modifier = {
+				factor = 0.2
+				capital_scope = { controlled_by = REB }
+			}
+		}
+		
+		option = { 
+			name = "EVTOPTA8051"
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = POR_formed_KPB
+					}
+				}
+				any_owned = { limit = { continent = south_america } 
+					secede_province = BRZ
+				}
+				change_tag = POR
+			}
+
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = BRZ_formed_KPB
+					}
+				}
+				any_owned = { limit = { NOT = { continent = south_america } }
+					secede_province = POR
+				}
+				change_tag = BRZ
+			}
+
+			prestige = -10
+			POR = { add_country_modifier = { name = national_confusion duration = 365 } }
+			BRZ = { add_country_modifier = { name = national_confusion duration = 365 } }
 		}
 	}
 
