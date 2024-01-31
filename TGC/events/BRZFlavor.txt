@@ -802,6 +802,7 @@
 		}
 	}
 
+	#The KPB falls appart if the player plays too badly
 	country_event = {
 		id = 8051
 		title = "EVTNAME8051"
@@ -820,6 +821,7 @@
 					capital_scope = { controlled_by = REB }
 					num_of_revolts = 5
 				}
+				NOT = { plurality = 20 }
 			}
 		}
 		
@@ -853,6 +855,7 @@
 		
 		option = { 
 			name = "EVTOPTA8051"
+			prestige = -10
 			random_owned = {
 				limit = {
 					owner = {
@@ -877,11 +880,232 @@
 				change_tag = BRZ
 			}
 
-			prestige = -10
+			BRZ = { all_core = { remove_core = KPB } }
+			POR = { all_core = { remove_core = KPB } }
+
 			POR = { add_country_modifier = { name = national_confusion duration = 365 } }
 			BRZ = { add_country_modifier = { name = national_confusion duration = 365 } }
 		}
 	}
+
+	#KPB decides what to do with slavery if POR formed it and already abolished slavery
+	country_event = {
+		id = 8052
+		title = "EVTNAME8052"
+		desc = "EVTDESC8052"
+		picture = slaves_freed
+
+		is_triggered_only = yes
+		
+		option = { 
+			name = "EVTOPTA8052"
+			clr_country_flag = studying_slavery
+			prestige = 10
+			badboy = -5
+			#Politics
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 1 } } }
+				owner = { 
+					plurality = -25
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 8
+						militancy = 7
+					}
+					set_country_flag = bad_abolition 
+				}
+			}
+		
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 10 } } }
+				owner = { 
+					plurality = -23
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 7
+						militancy = 6
+					}
+					set_country_flag = bad_abolition
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 20 } } }
+				owner = { 
+					plurality = -21
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 7
+						militancy = 5
+					}
+					set_country_flag = bad_abolition
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 30 } } }
+				owner = { 
+					plurality = -19
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 6
+						militancy = 4
+					}
+					set_country_flag = bad_abolition
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 40 } } }
+				owner = { 
+					plurality = -17
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 5
+						militancy = 3
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 50 } } }
+				owner = { 
+					plurality = -15
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 4
+						militancy = 2
+					}
+					set_country_flag = bad_abolition
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 60 } } }
+				owner = { 
+					plurality = -13
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 3
+						militancy = 1
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 70 } } }
+				owner = { 
+					plurality = -11
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 2
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 80 } } }
+				owner = { 
+					plurality = -10
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 2
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 90 } } }
+				owner = { 
+					plurality = -9
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 1
+					}
+				}
+			}
+			random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 100 } } }
+				owner = { 
+					plurality = -8
+					any_pop = {
+						limit = { type = aristocrats }
+						consciousness = 2
+						militancy = 1
+					}
+				}
+			}
+		
+			set_country_flag = hidden_tooltip
+			random_owned = {
+				limit = { owner = { has_country_flag = hidden_tooltip } }
+				owner = {
+					any_owned = {
+						limit = { slaves = 0.3
+									NOT = { has_province_modifier = reorganizing_labor_harsh }
+									NOT = { has_province_modifier = reorganizing_labor_mild }
+									NOT = { has_province_modifier = reorganizing_labor_light }
+									NOT = { has_province_modifier = reorganizing_labor_minimal }
+						}
+						add_province_modifier = { name = reorganizing_labor_harsh duration = 1500 }
+					}
+					any_owned = {
+						limit = { slaves = 0.2
+								NOT = { has_province_modifier = reorganizing_labor_harsh }
+								NOT = { has_province_modifier = reorganizing_labor_mild }
+								NOT = { has_province_modifier = reorganizing_labor_light }
+								NOT = { has_province_modifier = reorganizing_labor_minimal }
+						}
+						add_province_modifier = { name = reorganizing_labor_mild duration = 1250 }
+					}
+					any_owned = {
+						limit = { slaves = 0.1 
+								NOT = { has_province_modifier = reorganizing_labor_harsh }
+								NOT = { has_province_modifier = reorganizing_labor_mild }
+								NOT = { has_province_modifier = reorganizing_labor_light }
+								NOT = { has_province_modifier = reorganizing_labor_minimal }
+						}
+						add_province_modifier = { name = reorganizing_labor_light duration = 1000 }
+					}
+					any_owned = {
+						limit = { slaves = 0.05
+								NOT = { has_province_modifier = reorganizing_labor_harsh }
+								NOT = { has_province_modifier = reorganizing_labor_mild }
+								NOT = { has_province_modifier = reorganizing_labor_light }
+								NOT = { has_province_modifier = reorganizing_labor_minimal }
+						}
+						add_province_modifier = { name = reorganizing_labor_light duration = 750 }
+					}
+					any_owned = {
+						limit = { slaves = 0.02
+								NOT = { has_province_modifier = reorganizing_labor_harsh }
+								NOT = { has_province_modifier = reorganizing_labor_mild }
+								NOT = { has_province_modifier = reorganizing_labor_light }
+								NOT = { has_province_modifier = reorganizing_labor_minimal }
+						}
+						add_province_modifier = { name = reorganizing_labor_minimal duration = 500 }
+					}
+					any_owned = {
+						limit = { slaves = 0.01
+								NOT = { has_province_modifier = reorganizing_labor_harsh }
+								NOT = { has_province_modifier = reorganizing_labor_mild }
+								NOT = { has_province_modifier = reorganizing_labor_light }
+								NOT = { has_province_modifier = reorganizing_labor_minimal }
+						}
+						add_province_modifier = { name = reorganizing_labor_minimal duration = 365 }
+					}
+				}
+			}
+			clr_country_flag = hidden_tooltip
+
+			slavery_end_economic_tooltip = { }
+			break_line_tool_tip = { }
+			remove_country_modifier = the_slavery_debate_modifier
+			remove_country_modifier = lei_do_registro
+			remove_country_modifier = slavery_action_cooldown
+			clr_country_flag = the_slavery_debate
+			remove_country_modifier = mulatto_modifier
+
+			any_owned = {
+				remove_province_modifier = quilombo_presence
+			}
+			political_reform = no_slavery
+		}
+
+		option = { 
+			name = "EVTOPTB8052"
+			any_pop = {
+				limit = { pop_majority_ideology = liberal }
+				militancy = 2
+				consciousness = 2
+			}
+		}
+	}
+
 
 ## Revolução Farroupilha
 	# Custom Civil War System
@@ -3134,43 +3358,43 @@
 		option = {
 			
 			#Registro Modifier
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } has_country_modifier = lei_do_registro }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } has_country_modifier = lei_do_registro }
 								change_variable = { which = brz_slavery_politics value = 2.5 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.25 } NOT = { has_global_flag = brz_slave_25 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.25 } NOT = { has_global_flag = brz_slave_25 } }
 								set_global_flag = brz_slave_25
 								change_variable = { which = brz_slavery_economics value = 5 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.20 } NOT = { has_global_flag = brz_slave_20 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.20 } NOT = { has_global_flag = brz_slave_20 } }
 								set_global_flag = brz_slave_20
 								change_variable = { which = brz_slavery_economics value = 5 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.15 } NOT = { has_global_flag = brz_slave_15 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.15 } NOT = { has_global_flag = brz_slave_15 } }
 								set_global_flag = brz_slave_15
 								change_variable = { which = brz_slavery_economics value = 5 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.10 } NOT = { has_global_flag = brz_slave_10 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.10 } NOT = { has_global_flag = brz_slave_10 } }
 								set_global_flag = brz_slave_10
 								change_variable = { which = brz_slavery_economics value = 10 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.05 } NOT = { has_global_flag = brz_slave_5 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.05 } NOT = { has_global_flag = brz_slave_5 } }
 								set_global_flag = brz_slave_5
 								change_variable = { which = brz_slavery_economics value = 10 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.02 } NOT = { has_global_flag = brz_slave_2 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.02 } NOT = { has_global_flag = brz_slave_2 } }
 								set_global_flag = brz_slave_2
 								change_variable = { which = brz_slavery_economics value = 10 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.01 } NOT = { has_global_flag = brz_slave_1 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.01 } NOT = { has_global_flag = brz_slave_1 } }
 								set_global_flag = brz_slave_1
 								change_variable = { which = brz_slavery_economics value = 10 }
 			}
-			random_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.001 } NOT = { has_global_flag = brz_slave_01 } }
+			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.001 } NOT = { has_global_flag = brz_slave_01 } }
 								set_global_flag = brz_slave_01
 								change_variable = { which = brz_slavery_economics value = 15 }
 			}
 
-			random_owned = { limit = { OR = { BRZ = { exists = yes NOT = { slavery = no_slavery } }
+			any_country = { limit = { OR = { BRZ = { exists = yes NOT = { slavery = no_slavery } }
 									          KPB = { exists = yes NOT = { slavery = no_slavery } } } }
 							JAN = { country_event = { id = 8300 days = 15 } }
 			}
@@ -3754,7 +3978,8 @@
 				}
 				consciousness = 2
 			}
-			change_variable = { which = brz_slavery_politics value = 2 }
+			BRZ = { change_variable = { which = brz_slavery_politics value = 2 } }
+			KPB = { change_variable = { which = brz_slavery_politics value = 2 } }
 			brz_politics_improve =  { }
 		}
 
@@ -3768,7 +3993,8 @@
 				militancy = 2
 			}
 			brz_politics_worsen =  { }
-			change_variable = { which = brz_slavery_politics value = -2 }
+			BRZ = { change_variable = { which = brz_slavery_politics value = -2 } }
+			KPB = { change_variable = { which = brz_slavery_politics value = -2 } }
 		}
 	}
 
