@@ -3415,7 +3415,7 @@
 			
 			#Registro Modifier
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } has_country_modifier = lei_do_registro }
-								change_variable = { which = brz_slavery_politics value = 2.5 }
+								change_variable = { which = brz_slavery_politics value = 0.5 }
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.25 } NOT = { has_global_flag = brz_slave_25 } }
 								set_global_flag = brz_slave_25
@@ -4254,8 +4254,34 @@
 				name = "EVTOPTA8410"
 				prestige_factor = 0.01
 				money = -50000
-				clr_country_flag = searching_for_a_capital_uti
-				set_country_flag = searching_for_a_capital
+				set_country_flag = hidden_tooltip
+				random_owned = {
+					limit = {
+						owner = {
+							owns = 2442
+							owns = 2436
+							owns = 2403 
+							owns = 2450
+							OR = { BRZ = { has_country_flag = bh_built } KPB = { has_country_flag = bh_built } }
+							has_country_flag = hidden_tooltip
+						}
+					}
+					owner = { 	country_event = { id = 8412 days = 365 } 
+								set_country_flag = all_cities
+					}
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							NOT = { has_country_flag = all_cities }
+							has_country_flag = hidden_tooltip
+						}
+					}
+					owner = { 	country_event = { id = 8413 days = 365 } 
+								set_country_flag = all_cities
+					}
+				}
+				clr_country_flag = hidden_tooltip
 				
 			}
 
@@ -4269,45 +4295,6 @@
 			option = {
 				name = "EVTOPTC8410"
 				clr_country_flag =  searching_for_a_capital_uti
-			}
-		}
-
-		#Pick Capital, triggered to JAN to do IF emulation
-		country_event = {
-			id = 8411
-			title = "AIEVENT"
-			desc = "AIEVENT"
-			picture = "old_rio"
-			
-			trigger = { tag = JAN 
-						BRZ = { has_country_flag = searching_for_a_capital }
-			}
-
-			mean_time_to_happen = { 
-				months = 1
-			}
-			
-			fire_only_once = yes 
-
-			option = {
-				name = ""
-				BRZ = { country_event = 8412 }
-				
-				ai_chance = { 
-					factor = 100 
-					modifier = { 
-						factor = 0
-						BRZ = { OR = { NOT = { owns = 2442 }
-									   NOT = { owns = 2436 }
-									   NOT = { owns = 2403 }
-									   NOT = { owns = 2450 } } }
-					}
-				}
-			}
-
-			option = {
-				name = ""
-				BRZ = { country_event = 8413 }
 			}
 		}
 
@@ -4368,24 +4355,10 @@
 			desc = "EVTDESC8413"
 			picture = "brasilia_plans"
 			
-			trigger = {
-				has_country_flag = searching_for_a_capital_grounds
-			}
-
-			mean_time_to_happen = { months = 12 }
-
-			fire_only_once = yes
+			is_triggered_only = yes
 
 			option = {
 				name = "EVTOPTA8413"
-				prestige = 2
-				money = -250000
-				set_country_flag = building_brasilia
-				add_country_modifier = { name = building_brasilia duration = 1095 }
-			}
-
-			option = {
-				name = "EVTOPTB8413"
 				set_country_flag = brasilia_ready
 			}
 		}
@@ -4588,8 +4561,6 @@
 				prestige = -10
 			}
 		}
-
-
 
 	#Revolt of the Lash
 	country_event = {
@@ -5329,6 +5300,37 @@
 				remove_province_modifier = good_sanitation
 			}
 			plurality = -1
+		}
+	}
+
+
+	#Description: Sao Joao del Rei gets renamed to Juiz de Fora
+	country_event = {
+
+		id = 8475
+		title = "EVTNAME50003"
+		desc = "EVTDESC50003"
+		picture = "juiz_de_fora"
+
+		trigger = {
+			owns = 2446
+			has_country_flag = brazil_content
+			year = 1860
+		}
+
+		mean_time_to_happen = { months = 12 }
+
+		fire_only_once = yes
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA50003"
+
+			2446 = {
+				change_province_name = "Juiz de Fora"
+				trade_goods = coffee
+			}
 		}
 	}
 
