@@ -1160,7 +1160,7 @@
 
 		option = {
 			name = "EVTOPTA8103"
-			war = { target = RJL
+			`^ target = RJL
 					attacker_goal = { casus_belli = conquest }
 					defender_goal = { casus_belli = status_quo }
 			}
@@ -3281,6 +3281,7 @@
 			option = {
 				name = "EVTOPTA8240"
 				set_country_flag = santo_amaro_plans_ongoing
+				set_variable = { which = brazil_expansion value = 0 }
 			}
 
 			option = {
@@ -3304,11 +3305,7 @@
 				tag = USA
 				is_greater_power = yes
 				BRZ = {
-					OR = {
-						has_country_flag = santo_amaro_gran_colombia
-						has_country_flag = santo_amaro_la_plata
-						has_country_flag = santo_amaro_plans_peru_bolivia
-					}
+					check_variable = { which = brazil_expansion value = 1 }
 				}
 			}
 
@@ -3366,6 +3363,7 @@
 
 			is_triggered_only = yes 
 
+			#Brazil Accepts
 			option = {
 				name = "EVTOPTA8247"
 				alliance_with = USA
@@ -3374,6 +3372,7 @@
 				set_global_flag = unneasy_alliance
 			}
 
+			#Brazil Refuses
 			option = {
 				name = "EVTOPTA8247"
 				relation = { who = USA value = -200 }
@@ -3405,7 +3404,7 @@
 			}
 		}
 
-		#Brazil Rejects
+		#Brazil Refuses
 		country_event = {
 			id = 8249
 			title = "EVTNAME8249"
@@ -3427,6 +3426,47 @@
 				set_country_flag = the_big_stick_bonks_brazil
 			}
 		}
+
+		#The American-Brazilian War of New World Hegemony
+		country_event = {
+			id = 8250
+			title = "EVTNAME8250"
+			desc = "EVTDESC8250"
+			picture = brazil_ambitions
+
+			trigger = {
+				tag = USA
+				BRZ = {
+					has_country_flag = the_big_stick_bonks_brazil
+					check_variable = { which = brazil_expansion value = 2 }
+				}
+			}
+
+			fire_only_once = yes
+
+			option = {
+				name = "EVTOPTA8250"
+				
+				war = {
+					target = BRZ
+					attacker_goal = {
+						casus_belli = new_world_hegemony
+						
+					}
+					defender_goal = {
+						casus_belli = new_world_hegemony
+
+					}
+					call_ally = yes
+				}
+			}
+
+			option = {
+				name = "EVTOPTA8250"
+				
+			}
+		}
+
 
 ##Slavery
 	#Status Checker
@@ -4389,7 +4429,7 @@
 
 			option = {
 				name = "EVTOPTC8410"
-				clr_country_flag =  searching_for_a_capital_uti
+				clr_country_flag =  searching_for_a_capital
 			}
 		}
 
@@ -4406,7 +4446,7 @@
 			#Belo Horizonte
 			option = {
 				name = "EVTOPTA8412"
-				money = -50000
+				money = -100000
 				set_country_flag = bh_capital
 				capital = 2442
 				2442 = { add_province_modifier = { name = recently_built_city duration = 365 } }
@@ -4414,7 +4454,7 @@
 			#Salvador
 			option = {
 				name = "EVTOPTB8412"
-				money = -75000
+				money = -175000
 				capital = 2436
 				set_country_flag = sv_capital
 				2436 = { add_province_modifier = { name = recently_built_city duration = 365 } }
@@ -4422,7 +4462,7 @@
 			#São Paulo
 			option = {
 				name = "EVTOPTC8412"
-				money = -75000
+				money = -175000
 				capital = 2450
 				2450 = { add_province_modifier = { name = recently_built_city duration = 365 } }
 				set_country_flag = sp_capital
@@ -4430,8 +4470,11 @@
 			#Manaus
 			option = {
 				name = "EVTOPTD8412"
-				money = -150000
+				money = -250000
 				capital = 2403
+				any_owned = { limit = { region = BRZ_2401 } 
+					add_province_modifier = { name = small_immigration_boom_province duration = 365 }
+				}
 				2403 = { add_province_modifier = { name = recently_built_city duration = 365 } }
 				set_country_flag = mn_capital
 			}
