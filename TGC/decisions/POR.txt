@@ -1,51 +1,11 @@
 political_decisions = {
 
-#from POR.txt
-
-morocco_reconquest_por = {
-	picture = "moroccan_reconquest_por"
-
-	potential = { 
-		has_country_flag = disputed_territories_por
-		NOT = { has_country_flag = morocco_reconquest_por }
-	}
-
-	allow = { 
-		is_greater_power = yes
-		has_country_flag = disputed_territories_por
-		nationalism_n_imperialism = 1
-	}
-
-	effect = {  
-		badboy = 6
-		prestige = 10
-		1686 = { add_core = THIS }
-		2590 = { add_core = THIS }
-		1695 = { add_core = THIS }
-		any_country = { 
-			limit = { OR = { owns = 1686 owns = 2590 owns = 1695 } }
-			relation = { who = THIS value = -50 }
-		}
-		set_country_flag = morocco_reconquest_por
-	}
-
-	ai_will_do = { 
-		factor = 1
-		modifier = {
-			factor = 0
-			badboy = 0.7
-		}
-	}
-}
    disputed_territories_por = {
         picture = "disputed_territories"
 
         potential = { 
 			owns = 521
-			OR = {
-				tag = POR
-				tag = KPB
-			}
+			has_country_flag = portugal_content
 			NOT = { has_country_flag = disputed_territories_por }
 		}
 
@@ -67,6 +27,12 @@ morocco_reconquest_por = {
 
 			3287 = { add_core = THIS }
 			3325 = { add_core = THIS }
+			set_country_flag = hidden_tooltip
+			random_owned = { limit = { owner = { has_country_flag = hidden_tooltip tag = KPB } } 
+				3287 = { add_core = POR }
+				3325 = { add_core = POR }
+			}
+			clr_country_flag = hidden_tooltip
 			
 			set_country_flag = disputed_territories_por
 		}
@@ -76,15 +42,62 @@ morocco_reconquest_por = {
 		}
 	}
 
-	portugal-brazil = {
+	morocco_reconquest_por = {
+		picture = "moroccan_reconquest_por"
+
+		potential = { 
+			has_country_flag = disputed_territories_por
+			NOT = { has_country_flag = morocco_reconquest_por }
+		}
+
+		allow = { 
+			is_greater_power = yes
+			has_country_flag = disputed_territories_por
+			nationalism_n_imperialism = 1
+			3287 = { owned_by = THIS }
+			3325 = { owned_by = THIS }
+		}
+
+		effect = {  
+			badboy = 6
+			prestige = 10
+			1686 = { add_core = THIS }
+			2590 = { add_core = THIS }
+			1695 = { add_core = THIS }
+			set_country_flag = hidden_tooltip
+			random_owned = { limit = { owner = { has_country_flag = hidden_tooltip tag = KPB } } 
+					1686 = { add_core = POR }
+					2590 = { add_core = POR }
+					1695 = { add_core = POR }
+			}
+			clr_country_flag = hidden_tooltip
+			any_country = { 
+				limit = { OR = { owns = 1686 owns = 2590 owns = 1695 } }
+				relation = { who = THIS value = -50 }
+			}
+			set_country_flag = morocco_reconquest_por
+		}
+
+		ai_will_do = { 
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.7
+			}
+		}
+	}
+
+	portugal_brazil = {
 		picture = dreams_of_empire
 		potential = {
 			has_country_flag = can_form_kpb
-			BRZ = { owns = 2447 }
+			NOT = { tag = KPB }
 		}
 
+		
 		allow = {
 			state_n_government = 1
+			plurality = 50
 			OR = {
 				POR = {
 					OR = {
@@ -102,26 +115,43 @@ morocco_reconquest_por = {
 		}
 
 		effect = {
+			set_country_flag = hidden_tooltip
+			random_owned = {
+				limit = { owner = { tag = POR BRZ = { slavery = yes_slavery } has_country_flag = hidden_tooltip } }
+				owner = { political_reform = yes_slavery }
+			}
+			clr_country_flag = hidden_tooltip
 			random_owned = {
 				limit = { owner = { tag = POR } }
-				BRZ = { annex_to = THIS }
+				owner = { set_country_flag = POR_formed_KPB
+						  BRZ = { annex_to = THIS } }
 			}
 			random_owned = {
 				limit = { owner = { tag = BRZ } }
-				POR = { annex_to = THIS }
+				owner = { set_country_flag = BRZ_formed_KPB
+				          set_country_flag = 2nd_monarchygov
+				          government = prussian_constitutionalism2 
+						  POR = { annex_to = THIS } }
 			}
 			BRZ = { all_core = { add_core = KPB } }
 			POR = { all_core = { add_core = KPB } }
-			capital = 2447
 			set_country_flag = new_world_nation
 			change_tag = KPB
 			add_accepted_culture = brazilian
 			add_accepted_culture = portuguese
 			add_accepted_culture = galician
+			set_country_flag = hidden_tooltip
+			random_owned = {
+				limit = { owner = { slavery = yes_slavery has_country_flag = hidden_tooltip } }
+				owner = { country_event = { id = 8052 days = 5 } }
+			}
+			clr_country_flag = hidden_tooltip
+			kpb_formation = { }
 		}
 
 		ai_will_do = { factor = 1 }
 	}
+
 
 #from Colonial Portugal.txt
 
@@ -129,10 +159,7 @@ morocco_reconquest_por = {
 		picture = enact_the_homestead_act
 		potential = {
 			is_core = 521
-			OR = {
-				tag = POR
-				tag = KPB
-			}
+			has_country_flag = portugal_content
 			state_n_government = 1
 			NOT = { has_country_flag = portuguese_civil_code }
 		}
@@ -165,8 +192,7 @@ morocco_reconquest_por = {
 		potential = {
 			is_core = 521
 			OR = {
-				tag = POR
-				tag = KPB
+				has_country_flag = portugal_content
 				tag = IBR
 				has_country_flag = is_latin_union
 			}
@@ -369,10 +395,7 @@ morocco_reconquest_por = {
 		alert = no
 		potential = {
 			is_core = 521
-			OR = {
-				tag = POR
-				tag = KPB
-			}
+			has_country_flag = portugal_content
 			OR = {
 				owns = 1439
 				owns = 1444
@@ -437,8 +460,7 @@ morocco_reconquest_por = {
 		potential = {
 			owns = 2060
 			OR = {
-				tag = POR
-				tag = KPB
+				has_country_flag = portugal_content
 				tag = IBR
 			}
 			ai = yes
