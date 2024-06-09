@@ -9,7 +9,10 @@ political_decisions = {
 			NOT = { has_country_flag = crimean_war }
 			NOT = { has_global_flag = berlin_congress_held }
 			exists = TUR
+			OR = {
+			LTU = { exists = yes war = no }
 			FRA = { exists = yes war = no }
+			}
 			has_global_flag = crimean_war_inevitable
 			OR = {
 				has_global_flag = france_protector_of_eastern_christians
@@ -123,6 +126,7 @@ political_decisions = {
 						tag = NGF
 					}
 					NOT = { has_country_flag = prussia_sides_against_ausrus }
+					NOT = { has_country_flag = prussia_sides_against_rus }
 				}
 				leave_alliance = TUR
 			}
@@ -146,6 +150,7 @@ political_decisions = {
 					ai = yes
 					NOT = { has_country_flag = austria_honours_the_holy_alliance }
 					NOT = { has_country_flag = prussia_sides_against_ausrus }
+					NOT = { has_country_flag = prussia_sides_against_rus }
 					NOT = { has_country_flag = sardinia_joins_the_french }
 					NOT = { has_country_flag = austria_joins_the_allies }
 					NOT = { tag = FRA }
@@ -477,7 +482,7 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	build_the_st_petersburg_moscow_railway = { #Saint Petersburg-Moscow Railway
+	build_the_st_petersburg_moscow_railway = { #Saint Petersburg�Moscow Railway
 		picture = whistlestop_tour
 		potential = {
 			primary_culture = russian
@@ -686,6 +691,7 @@ political_decisions = {
 			primary_culture = bulgarian
 			capital = 809 #sofya
 			add_accepted_culture = serb
+			government = dominion
 			#remove_accepted_culture = slovene #we will leave it in. no content past this, so if RUS wants to expand Yugoslavia it must liberate CRO/SLV cores, they will apply to join Yugo individually
 			#remove_accepted_culture = croat 
 			}
@@ -853,6 +859,7 @@ political_decisions = {
 			GLM = { all_core = { add_core = WSF } }
 			CPL = { all_core = { add_core = WSF } }
 			PML = { all_core = { add_core = WSF } }
+			LUZ = { all_core = { add_core = WSF } }
 			any_country = {
 				limit = {
 					OR = {
@@ -866,6 +873,7 @@ political_decisions = {
 						tag = KRA
 						tag = BOH
 						tag = SLV
+						tag = LUZ
 					}
 					ai = yes
 					in_sphere = THIS
@@ -893,18 +901,19 @@ political_decisions = {
 						is_core = UKR
 						is_core = LIT
 						is_core = BYE
+						region = AUS_950 #Subcarpathia, Khust/Uzhorod
 					}
 				}
 				remove_core = THIS
 				secede_province = WSF
 			}
-			WSF = { capital = 703 prestige = -200 }
 			create_vassal = WSF
 			create_alliance = WSF
 			diplomatic_influence = {
 				who = WSF
 				value = 400
 			}
+			WSF = { capital = 703 prestige = -200 government = dominion } #capital: Krakow
 			any_country = {
 				limit = {
 					OR = {
@@ -1104,10 +1113,7 @@ political_decisions = {
 						substate_of = THIS
 					}
 				}
-				AND = {
-					owns = 1095
-					owns = 3956
-				}
+				owns = 1095
 			}
 			OR = {
 				has_global_flag = crimea_has_happened
@@ -1153,6 +1159,7 @@ political_decisions = {
 
 	integrate_mingrelia = {
 		picture = niko_dadiani
+
 		potential = {
 			primary_culture = russian
 			NOT = { has_country_flag = integrate_mingrelia }
@@ -1167,20 +1174,7 @@ political_decisions = {
 						substate_of = THIS
 					}
 				}
-				IME = { 
-					exists = yes
-					OR = {
-						vassal_of = THIS
-						substate_of = THIS
-					}
-				}
-				AB0 = { 
-					exists = yes
-					OR = {
-						vassal_of = THIS
-						substate_of = THIS
-					}
-				}
+				owns = 1095
 			}
 			OR = {
 				has_global_flag = crimea_has_happened
@@ -1202,70 +1196,23 @@ political_decisions = {
 			set_country_flag = integrate_mingrelia
 			random_country = {
 				limit = {
-					tag = AB0
-					OR = {
-						AND = { vassal_of = MIG MIG = { vassal_of = THIS } }
-						vassal_of = THIS
-					}
-					exists = yes
-					TCA = { exists = yes vassal_of = THIS }
-				}
-				all_core = { add_core = TCA remove_core = AB0 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AB0
-					OR = {
-						AND = { vassal_of = MIG MIG = { vassal_of = THIS } }
-						vassal_of = THIS
-					}
-					exists = yes
-					TCA = { exists = no }
-				}
-				all_core = { add_core = THIS remove_core = AB0 }
-				annex_to = THIS
-			}
-			random_country = {
-				limit = {
 					tag = MIG
-					vassal_of = THIS
 					exists = yes
-					TCA = { exists = yes vassal_of = THIS }
+					TCA = { exists = yes vassal_of = RUS }
 				}
-				all_core = { add_core = TCA remove_core = MIG }
+				all_core = { add_core = TCA }
 				annex_to = TCA
 			}
 			random_country = {
 				limit = {
 					tag = MIG
-					vassal_of = THIS
 					exists = yes
 					TCA = { exists = no }
 				}
-				all_core = { add_core = THIS remove_core = MIG }
-				annex_to = THIS
+				all_core = { add_core = RUS }
+				annex_to = RUS
 			}
-			random_country = {
-				limit = {
-					tag = IME
-					vassal_of = THIS
-					exists = yes
-					TCA = { exists = yes vassal_of = THIS }
-				}
-				all_core = { add_core = TCA remove_core = IME }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = IME
-					vassal_of = THIS
-					exists = yes
-					TCA = { exists = no }
-				}
-				all_core = { add_core = THIS remove_core = IME }
-				annex_to = THIS
-			}
+			MIG = { all_core = { remove_core = MIG } }
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -1324,6 +1271,39 @@ political_decisions = {
 		effect = {
 			set_country_flag = asy_gec_integrated
 			inherit = ASY
+			badboy = 1
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.98
+			}
+		}
+	}
+	
+	integrate_iraq_rus = {
+		#picture = unite_turkestan
+		potential = {
+			primary_culture = russian
+			#any_owned_province = { is_core = SYR }
+			NOT = { has_country_flag = irq_gec_integrated }
+			IRQ = { civilized = no neighbour = THIS }
+			invention = the_dark_continent
+			has_global_flag = dismantle_ottomans
+		}
+
+		allow = {
+			IRQ = {
+				exists = yes
+				vassal_of = THIS
+			}
+		}
+
+		effect = {
+			set_country_flag = irq_gec_integrated
+			inherit = IRQ
 			badboy = 1
 		}
 
@@ -1588,7 +1568,7 @@ political_decisions = {
 						NOT = { terrain = montane_tundra }
 					}
 				}
-				add_province_modifier = { name = small_baby_boom duration = 2920 }
+				add_province_modifier = { name = small_baby_boom duration = 1825 } #nerfed from 8 years to 5 years
 			}
 		}
 
@@ -1848,7 +1828,7 @@ political_decisions = {
 				}
 			}
 			1208 = {
-				owner = {
+			owner = {
 					OR = {
 						tag = QNG
 						tag = TPG
@@ -1863,7 +1843,7 @@ political_decisions = {
 				}
 			}
 			1189 = {
-				owner = {
+			owner = {
 					OR = {
 						tag = QNG
 						tag = TPG
@@ -1878,7 +1858,7 @@ political_decisions = {
 				}
 			}
 			1185 = {
-				owner = {
+			owner = {
 					OR = {
 						tag = QNG
 						tag = TPG
@@ -1902,9 +1882,7 @@ political_decisions = {
 		1186 = { add_core = RUS }
 		1188 = { add_core = RUS }
 		1190 = { add_core = RUS }
-		1208 = { add_core = RUS } # Khorug
-		3636 = { add_core = RUS } # Karakul
-		3638 = { add_core = RUS } # Barchidev
+		1208 = { add_core = RUS }
 		1189 = { add_core = RUS }
 		1185 = { add_core = RUS }
 			any_country = {
@@ -1984,7 +1962,7 @@ political_decisions = {
 		}
 	}
 
-	#depracated for now
+#depracated for now
 	# #ding dong they ded
 	# enforce_demands_on_qng_zheltorossiya = { #todo renaming decisions and plan w/ manchuria
 	# 	picture = peking_convention
@@ -3087,34 +3065,6 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	the_great_game_darvaz = {
-		picture = gtfo
-		potential = {
-			primary_culture = russian
-			is_greater_power = yes
-			has_country_flag = monarchy_gov
-			has_global_flag = crimea_has_happened
-			year = 1865
-			exists = DRV
-			DRV = {
-				civilized = no
-				ai = yes
-			}
-		}
-
-		allow = {
-			DRV = { vassal_of = RUS }
-			mass_politics = 1
-		}
-
-		effect = {
-			DRV = { annex_to = THIS }
-			badboy = 1.5
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
 	the_great_game_kokand = {
 		picture = gtfo
 		potential = {
@@ -3230,6 +3180,7 @@ political_decisions = {
 		picture = polish_expelled
 		potential = {
 			is_culture_group = east_slavic
+			NOT = { accepted_culture = polish }
 			OR = {
 				owns = 951
 				owns = 952
@@ -3384,105 +3335,10 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 
-	centralize_caucasus_viceroyalty = {
-		picture = caucasus_viceroyalty
-		potential = {
-			tag = RUS
-			TCA = { vassal_of = THIS }
-			OR = {
-				JBJ = { vassal_of = THIS }
-				AZ0 = { vassal_of = THIS }
-				AZ1 = { vassal_of = THIS }
-				AZ2 = { vassal_of = THIS }
-				AZ3 = { vassal_of = THIS }
-				AZ4 = { vassal_of = THIS }
-				TLY = { vassal_of = THIS }
-				BKU = { vassal_of = THIS }
-			}
-			NOT = { has_country_flag = caucasus_viceroyalty_centralized }
-		}
-		
-		allow = {
-			rank = 16
-			war = no
-			state_n_government = 1
-		}
-
-		effect = {
-			set_country_flag = caucasus_viceroyalty_centralized
-			random_country = {
-				limit = {
-					tag = JBJ
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = JBJ }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AZ0
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = AZ0 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AZ1
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = AZ1 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AZ2
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = AZ2 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AZ3
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = AZ3 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AZ4
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = AZ4 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = TLY
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = TLY }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = BKU
-					vassal_of = THIS
-				}
-				all_core = { add_core = TCA remove_core = BKU }
-				annex_to = TCA
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
 	establish_caucasus_viceroyalty = {
 		picture = caucasus_viceroyalty
 		potential = {
-			tag = RUS
+			primary_culture = russian
 			NOT = { has_country_flag = caucasus_viceroyalty_established }
 			TCA = { ai = yes }
 			NOT = { has_global_flag = transcaucasia_formed }
@@ -3528,24 +3384,9 @@ political_decisions = {
 				}
 				annex_to = RUS
 			}
-			### Old Georgia (RUS_1090) ###
-			RUS_1090 = { add_core = RUS } # Tiflis
-			RUS_1092 = { add_core = RUS } # Kutais
-			ABK_1095 = { add_core = RUS } # Sukhum
-			RUS_3706 = { add_core = RUS } # Telavi
-			### Old Armenia (RUS_1098) ###
-			RUS_1098 = { add_core = RUS } # Erivan
-			RUS_1101 = { add_core = RUS } # Nakhichevan
-			RUS_3767 = { add_core = RUS } # Borchali
-			### Old Azerbaijan (RUS_1102) ###
-			RUS_1102 = { add_core = RUS } # Baku
-			RUS_1103 = { add_core = RUS } # Southern Dagestan
-			RUS_1104 = { add_core = RUS } # Nukha
-			RUS_1105 = { add_core = RUS } # Yelizavetpol
-			RUS_1106 = { add_core = RUS } # Karabakh
-			RUS_1107 = { add_core = RUS } # Lenkoran
-			RUS_3351 = { add_core = RUS } # Zakatal
-			RUS_3713 = { add_core = RUS } # Shemakha
+			RUS_1090 = { add_core = RUS }
+			RUS_1098 = { add_core = RUS }
+			RUS_1102 = { add_core = RUS }
 		}
 		ai_will_do = { factor = 1 }
 	}
@@ -3567,13 +3408,7 @@ political_decisions = {
 						substate_of = THIS
 					}
 				}
-				AB4 = {
-					exists = yes
-					OR = {
-						vassal_of = THIS
-						substate_of = THIS
-					}
-				}
+				owns = 1095
 			}
 			OR = {
 				has_global_flag = crimea_has_happened
@@ -3600,9 +3435,8 @@ political_decisions = {
 			random_country = {
 				limit = {
 					tag = ABK
-					vassal_of = THIS
 					exists = yes
-					TCA = { exists = yes vassal_of = THIS }
+					TCA = { exists = yes vassal_of = RUS }
 				}
 				all_core = { add_core = TCA }
 				annex_to = TCA
@@ -3610,32 +3444,11 @@ political_decisions = {
 			random_country = {
 				limit = {
 					tag = ABK
-					vassal_of = THIS
 					exists = yes
 					TCA = { exists = no }
 				}
-				all_core = { add_core = THIS }
-				annex_to = THIS
-			}
-			random_country = {
-				limit = {
-					tag = AB4
-					vassal_of = THIS
-					exists = yes
-					TCA = { exists = yes vassal_of = THIS }
-				}
-				all_core = { add_core = TCA remove_core = AB4 }
-				annex_to = TCA
-			}
-			random_country = {
-				limit = {
-					tag = AB4
-					vassal_of = THIS
-					exists = yes
-					TCA = { exists = no }
-				}
-				all_core = { add_core = THIS remove_core = AB4 }
-				annex_to = THIS
+				all_core = { add_core = RUS }
+				annex_to = RUS
 			}
 		}
 		ai_will_do = { factor = 1 }
@@ -3940,13 +3753,12 @@ political_decisions = {
 			capital_scope = { continent = europe }
 			OR = {
 				AND = {
-					owns = 1205 # Kyzyl-Su
-					owns = 686 # Merv
-					owns = 3632 # Kara-Kum
+					owns = 1205
+					owns = 686
 				}
 				owns = 1150
 			}
-			NOT = { owns = 1204 } # Karakum Desert
+			NOT = { owns = 1204 }
 			NOT = { has_global_flag = treaty_of_akhal }
 			1204 = {
 				owner = {
@@ -4001,37 +3813,23 @@ political_decisions = {
 				1208 = { owner = { vassal_of = THIS } }
 				1208 = { owner = { in_sphere = THIS is_vassal = no } }
 			}
-			OR = {
-				owns = 3638
-				3638 = { owner = { vassal_of = THIS } }
-				3638 = { owner = { in_sphere = THIS is_vassal = no } }
-			}
-			OR = {
-				any_owned_province = { is_core = BDK }
-				any_owned_province = { is_core = WKH }
-			}
+			any_owned_province = { is_core = BDK }
 		}
 
 		allow = {
 			war = no
 			revolution_n_counterrevolution = 1
 			is_vassal = no
-			1210 = { owner = { war = no } } # Fayzabad
-			3637 = { owner = { war = no } } # Kala Wamar
-			3643 = { owner = { war = no } } # Kala Panja
-			OR = {
-				BDK = { exists = no }
-				WKH = { exists = no }
-			}
+			1210 = { owner = { war = no } }
+			BDK = { exists = no }
 		}
 
 		effect = {
 			prestige = 10
-			any_owned = { remove_core = BDK }
-			any_owned = { remove_core = WKH }
+			BDK = { all_core = { remove_core = BDK } }
 			random_owned = {
 				limit = { owner = { owns = 1210 } }
-				owner = { 1208 = { remove_core = AFG } 3638 = { remove_core = AFG } 208 = { remove_core = BUK remove_core = UZB remove_core = DRV } 1211 = { remove_core = BUK remove_core = DRV } }
+				owner = { 1208 = { remove_core = AFG } 208 = { remove_core = BUK } 208 = { remove_core = UZB } 1211 = { remove_core = BUK } }
 			}
 			random_owned = { limit = { owner = { NOT = { owns = 1210 } } } 1210 = { owner = { country_event = 325461 } } }
 		}
@@ -4350,11 +4148,11 @@ political_decisions = {
 			owns = 89
 			owns = 104
 			year = 1842
-			81 = { OR = { owned_by = THIS empty = yes owner = { vassal_of = THIS } } }
-			82 = { OR = { owned_by = THIS empty = yes owner = { vassal_of = THIS } } }
-			83 = { OR = { owned_by = THIS empty = yes owner = { vassal_of = THIS } } }
-			79 = { OR = { owned_by = THIS empty = yes owner = { vassal_of = THIS } } }
-			13 = { OR = { owned_by = THIS empty = yes owner = { vassal_of = THIS } } }
+			81 = { OR = { owned_by = THIS empty = yes } }
+			82 = { OR = { owned_by = THIS empty = yes } }
+			83 = { OR = { owned_by = THIS empty = yes } }
+			79 = { OR = { owned_by = THIS empty = yes } }
+			13 = { OR = { owned_by = THIS empty = yes } }
 		}
 
 		effect = {
@@ -4445,13 +4243,15 @@ political_decisions = {
 		}
 
 		allow = {
-			controls = 104
-			controls = 87
-			controls = 81
-			controls = 85
-			controls = 90
-			controls = 89
-			controls = 78
+				AND = {
+					controls = 104
+					controls = 87
+					controls = 81
+					controls = 85
+					controls = 90
+					controls = 89
+					controls = 78
+				}
 			#War for Pacific
 			NOT = { has_country_modifier = rocky_war_timer } #This is so they can't just take it asap as california falls. Player has 3 years since war STARTS to retake the occupied land before its lost forever
 		}
@@ -5140,18 +4940,30 @@ political_decisions = {
 		allow = {
 			706 = { owned_by = THIS } #Varshava
 			war = no
-			mass_politics = 1
+			NOT = { has_country_flag = absolute_monarchy_gov }
+			OR = {
+				citizens_rights = culture_voting_only
+				citizens_rights = all_voting_pops
+			}
+			OR = {
+				mass_politics = 1
+				AND = {
+					revolution_n_counterrevolution = 1
+					citizenship_policy = full_citizenship
+				}
+			}
 			OR = {
 					OR = {
 						has_country_flag = democracy_gov
-						has_country_flag = semi_constitutional_monarchy_gov
+						#has_country_flag = semi_constitutional_monarchy_gov
 						has_country_flag = constitutional_monarchy_gov
 					}
 					OR = {
 						ruling_party_ideology = liberal
 						ruling_party_ideology = socialist
 						ruling_party_ideology = anarcho_liberal
-						ruling_party_ideology = conservative
+						ruling_party_ideology = communist
+						#ruling_party_ideology = conservative
 						#ruling_party_ideology = reactionary
 					}
 				}
@@ -5166,6 +4978,15 @@ political_decisions = {
 				militancy = -5
 				consciousness = -5
 			}
+			any_owned = {
+				limit = {
+					OR = {
+					is_core = POL
+					is_core = LUZ
+					}
+				}
+				add_province_modifier = { name = core_integration duration = -1 }
+			}
 		}
 		ai_will_do = {
 			factor = 1
@@ -5173,6 +4994,9 @@ political_decisions = {
 				factor = 0
 				has_country_flag = absolute_monarchy_gov
 				ruling_party_ideology = reactionary
+				ruling_party_ideology = fascist
+				citizenship_policy = residency
+				citizenship_policy = limited_citizenship
 				citizens_rights = primary_culture_only
 			}
 		}
@@ -5198,18 +5022,30 @@ political_decisions = {
 		allow = {
 			625 = { owned_by = THIS } #Prag
 			war = no
-			mass_politics = 1
+			NOT = { has_country_flag = absolute_monarchy_gov }
+			OR = {
+				citizens_rights = culture_voting_only
+				citizens_rights = all_voting_pops
+			}
+			OR = {
+				mass_politics = 1
+				AND = {
+					revolution_n_counterrevolution = 1
+					citizenship_policy = full_citizenship
+				}
+			}
 			OR = {
 					OR = {
 						has_country_flag = democracy_gov
-						has_country_flag = semi_constitutional_monarchy_gov
+						#has_country_flag = semi_constitutional_monarchy_gov
 						has_country_flag = constitutional_monarchy_gov
 					}
 					OR = {
 						ruling_party_ideology = liberal
 						ruling_party_ideology = socialist
 						ruling_party_ideology = anarcho_liberal
-						ruling_party_ideology = conservative
+						ruling_party_ideology = communist
+						#ruling_party_ideology = conservative
 						#ruling_party_ideology = reactionary
 					}
 				}
@@ -5224,6 +5060,12 @@ political_decisions = {
 				militancy = -5
 				consciousness = -5
 			}
+			any_owned = {
+				limit = {
+					is_core = CZH
+				}
+				add_province_modifier = { name = core_integration duration = -1 }
+			}
 		}
 		ai_will_do = {
 			factor = 1
@@ -5231,6 +5073,9 @@ political_decisions = {
 				factor = 0
 				has_country_flag = absolute_monarchy_gov
 				ruling_party_ideology = reactionary
+				ruling_party_ideology = fascist
+				citizenship_policy = residency
+				citizenship_policy = limited_citizenship
 				citizens_rights = primary_culture_only
 			}
 		}
@@ -5437,7 +5282,6 @@ political_decisions = {
 			nationalism_n_imperialism = 1
 			KOK = { exists = no }
 			BUK = { exists = no }
-			DRV = { exists = no }
 			KHI = { exists = no }
 		}
 
@@ -5449,57 +5293,22 @@ political_decisions = {
 			1204 = { change_province_name = "Ashkhabad" life_rating = 1 fort = 1 }
 			1205 = { change_province_name = "Krasnovodsk" life_rating = 1 }
 
-			RUS_1185 = { remove_core = KOK remove_core = BUK remove_core = DRV remove_core = KHI }
-			RUS_1186 = { remove_core = KOK remove_core = BUK remove_core = DRV remove_core = KHI }
-			KOK_1190 = { remove_core = KOK remove_core = BUK remove_core = DRV remove_core = KHI }
-			KHI_1191 = { remove_core = KOK remove_core = BUK remove_core = DRV remove_core = KHI }
-			BUK_1198 = { remove_core = KOK remove_core = BUK remove_core = DRV remove_core = KHI }
-			RUS_1196 = { remove_core = KOK remove_core = BUK remove_core = DRV remove_core = KHI }
+			RUS_1185 = { remove_core = KOK remove_core = BUK remove_core = KHI }
+			KOK_1190 = { remove_core = KOK remove_core = BUK remove_core = KHI }
+			KHI_1191 = { remove_core = KOK remove_core = BUK remove_core = KHI }
+			RUS_1196 = { remove_core = KOK remove_core = BUK remove_core = KHI }
 
 			RUS_1182 = { add_core = KAZ }
-			1194 = { add_core = KAZ }
 			RUS_1184 = { add_core = KAZ }
-			1185 = { add_core = KAZ }
-			1186 = { add_core = KAZ }
-			1188 = { add_core = KAZ }
-			1193 = { add_core = KAZ }
-			1197 = { add_core = KAZ }
-			2702 = { add_core = KAZ }
-			1191 = { add_core = UZB }
-			1192 = { add_core = UZB }
-			1195 = { add_core = UZB }
-			1198 = { add_core = UZB }
-			1199 = { add_core = UZB }
-			1200 = { add_core = UZB }
-			1202 = { add_core = UZB }
-			29 = { add_core = UZB }
-			2656 = { add_core = UZB }
-			1194 = { add_core = TKM }
-			1196 = { add_core = TKM }
-			1204 = { add_core = TKM }
-			1205 = { add_core = TKM }
-			2656 = { add_core = TKM }
-			3630 = { add_core = TKM }
-			3631 = { add_core = TKM }
-			3641 = { add_core = TKM }
-			1206 = { add_core = TKM }
-			686 = { add_core = TKM }
-			3632 = { add_core = TKM }
+			RUS_1185 = { add_core = KAZ }
+			KHI_1191 = { add_core = UZB }
+			RUS_1196 = { add_core = TKM }
 			1201 = { add_core = TAJ }
-			## Old Kulob (1207) ##
-			1207 = { add_core = TAJ } # Kulob
-			3634 = { add_core = TAJ } # Kulab
-			3635 = { add_core = TAJ } # Kalai Khumb
-			3642 = { add_core = TAJ } # Jamarj-e Bala
-			## Old Khorug (1208) ##
-			1208 = { add_core = TAJ } # Khorug
-			3636 = { add_core = TAJ } # Karakul
-			3638 = { add_core = TAJ } # Barchidev
+			1207 = { add_core = TAJ }
+			1208 = { add_core = TAJ }
 			1189 = { add_core = KYR }
 			1190 = { add_core = KYR }
-			## Old Osh (1203) ##
-			1203 = { add_core = KYR } # Talas
-			3633 = { add_core = KYR } # Osh
+			1203 = { add_core = KYR }
 
 			KAZ = { tech_school = unciv_tech_school }
 			UZB = { tech_school = unciv_tech_school }
@@ -5512,5 +5321,39 @@ political_decisions = {
 		ai_will_do = { factor = 1 }
 	}
 	
+	influence_in_hawaii_rus = {
+		picture = annex_hawaii
+		potential = {
+			NOT = { has_country_flag = russian_hawaiian_forts }
+			has_country_flag = russian_america_ambition
+			primary_culture = russian
+			owns = 104 #San Francisco
+		}
+
+		allow = {
+			HAW = {
+				exists = yes
+			}
+			iron_steamers = 1
+			money = 50000
+		}
+
+		effect = {
+			set_country_flag = russian_hawaiian_forts #This allows Russia to do annex Hawaii decision if they completely sphere Hawaii
+			diplomatic_influence = { who = HAW value = 100 }
+			relation = { who = HAW value = 100 }
+			create_alliance = HAW
+			badboy = 0.25
+			treasury = -50000
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.98
+			}
+		}
+	}
 	
 }

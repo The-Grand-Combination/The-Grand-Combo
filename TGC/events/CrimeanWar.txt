@@ -295,6 +295,10 @@ country_event = {
 				factor = 0.5
 				alliance_with = RUS
 			}
+		modifier = {
+				factor = 0.25
+				FRA = { rank = 1 }
+			}
 		}
 	}
 }
@@ -457,6 +461,10 @@ country_event = {
 				factor = 0.01
 				has_global_flag = option_make_aiaustria_more_likely_to_join
 			}
+			modifier = {
+				factor = 3
+				has_recently_lost_war = yes
+			}
 		}
 	}
 
@@ -618,11 +626,21 @@ country_event = { #yes
 		prestige = 25
 		relation = { who = TUR value = -100 }
 		any_owned = { 
-			limit = { culture = romanian  NOT = { is_core = SIE } }
+			limit = {
+				AND = {
+					culture = romanian 
+					NOT = { is_core = SIE }
+				}
+			}
 			add_province_modifier = { name = nationalist_agitation duration = 7500 }
 		}
-		any_owned = {
-			limit = { is_core = SIE culture = romanian }
+		any_owned = { 
+			limit = {
+				AND = {
+					is_core = SIE
+					culture = romanian
+				}
+			}
 			add_province_modifier = { name = nationalist_agitation duration = 3600 }
 		}
 		any_owned = {
@@ -694,6 +712,42 @@ country_event = {
 				factor = 0
 				619 = { owner = { has_country_flag = austria_joins_the_allies } }
 			}
+			modifier = {
+				factor = 0
+				695 = { owned_by = RUS }
+			}
+			modifier = {
+				factor = 2
+				619 = { owner = { has_country_flag = austria_stays_put } }
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB500256"
+		set_country_flag = prussia_sides_against_rus
+		prestige = 50
+		diplomatic_influence = { who = TUR value = 100 }
+		relation = { who = TUR value = 200 }
+		relation = { who = FRA value = 200 }
+		relation = { who = ENG value = 100 }
+		relation = { who = RUS value = -200 }
+		#relation = { who = AUS value = -100 }
+		RUS = { country_event = { id = 500250 days = 2 } } #inform Russia
+		TUR = { country_event = { id = 500250 days = 2 } } #inform Ottomans
+		leave_alliance = RUS
+		#leave_alliance = AUS
+		create_alliance = TUR
+		ai_chance = {
+			factor = 2
+			modifier = {
+				factor = 300
+				695 = { owned_by = RUS }
+			}
+			modifier = {
+				factor = 2
+				alliance_with = FRA
+			}
 		}
 	}
 
@@ -720,6 +774,10 @@ country_event = {
 			}
 			modifier = {
 				factor = 100
+				619 = { owner = { has_country_flag = austria_honours_the_holy_alliance } }
+			}
+			modifier = {
+				factor = 0
 				619 = { owner = { has_country_flag = austria_honours_the_holy_alliance } }
 			}
 			modifier = {
@@ -763,6 +821,10 @@ country_event = {
 			modifier = {
 				factor = 0.5
 				truce_with = RUS
+			}
+			modifier = {
+				factor = 0
+				695 = { owned_by = RUS }
 			}
 		}
 	}
@@ -1019,16 +1081,13 @@ country_event = {
 		#San Stefano desires in Caucasus/Pontus
 		any_owned = {
 			limit = {
-			    OR = {
-					### Old Kars (TUR_885) ###
-					region = TUR_885 # Kars
-					region = TUR_1096 # Batum
-					region = RUS_2548 # Sumarli
-					region = TUR_3383 # Qerekose
-					province_id = 882
-					province_id = 884
-					province_id = 3722
-				}
+			          OR = {
+			          region = TUR_885 
+					  province_id = 3383
+					  province_id = 856
+					  province_id = 884
+					  province_id = 882
+					  }
 			}
 			secede_province = TCA
 		}
@@ -1331,34 +1390,25 @@ country_event = {
 		
 		#Armenian 6 Vilayets - According to San Stefano treaty, there was a stipulation obliging the Ottomans to create an autonomous region with Armenian majority
 		random_owned = {
-			limit = {
-				province_id = 878
-				owned_by = TUR
-				NOT = { exists = ARM }
+				limit = {
+					province_id = 878
+					owned_by = TUR
+					NOT = { exists = ARM }
+				}
+				secede_province = ARM
+				TUR = { create_vassal = ARM }
 			}
-			secede_province = ARM
-			TUR = { create_vassal = ARM }
-		}
 		random_owned = {
-			limit = {
-				province_id = 3665
-				owned_by = TUR
-				NOT = { exists = ARM }
-			}
-			secede_province = ARM
-			TUR = { create_vassal = ARM }
-		}
-		random_owned = {
-			limit = {
-				province_id = 890
-				owned_by = TUR
-			}
-			state_scope = {
+				limit = {
+					province_id = 890
+					owned_by = TUR
+				}
+				state_scope = {
 				any_owned = {
 					secede_province = ARM
-				}
+				   }
+		    	}
 			}
-		}
 		random_owned = {
 			limit = {
 				province_id = 879 #Erzuzum
@@ -1383,21 +1433,13 @@ country_event = {
 		}
 		
 		random_owned = {
-			limit = {
-				province_id = 878
-				owned_by = TUR
+				limit = {
+					province_id = 878
+					owned_by = TUR
+				}
+				add_core = ARM
+				secede_province = ARM
 			}
-			add_core = ARM
-			secede_province = ARM
-		}
-		random_owned = {
-			limit = {
-				province_id = 3665
-				owned_by = TUR
-			}
-			add_core = ARM
-			secede_province = ARM
-		}
 
 		TUR = {
 			release_vassal = URP
