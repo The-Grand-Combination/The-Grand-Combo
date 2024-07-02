@@ -7,8 +7,8 @@ defines = {
 		YEARS_OF_NATIONALISM 	= 20,   -- Years of Nationalism
 		MONTHS_UNTIL_BROKEN 		= 3,    -- OBSOLETE! (Months until rebel held capital results in broken country.)
 		REBEL_ACCEPTANCE_MONTHS = 60,
-		BASE_COUNTRY_TAX_EFFICIENCY = 0.2, -- Basic efficiency for taxes without 'crats and tech
-		BASE_COUNTRY_ADMIN_EFFICIENCY = 0.2,
+		BASE_COUNTRY_TAX_EFFICIENCY = 0.25, -- Basic efficiency for taxes without 'crats and tech
+		BASE_COUNTRY_ADMIN_EFFICIENCY = 0.25,
 		GOLD_TO_CASH_RATE = 10, -- Amount of money generated per gold unit. MODIFIED, Vanilla = 1.0                      Those two changes will ensure gold miners
 		GOLD_TO_WORKER_PAY_RATE = 1, -- Multiplier for how much money gold pays to pops. MODIFIED, Vanilla value = 3     won't hoard all the gold in the country.
 		GREAT_NATIONS_COUNT = 8,
@@ -105,7 +105,7 @@ defines = {
 		GUNBOAT_FLEET_SIZE_FACTOR = 100,
 		PROVINCE_SIZE_DIVIDER = 50,
 		CAPITALIST_BUILD_FACTORY_STATE_EMPLOYMENT_PERCENT = 0.7, -- Capis don't build factories if less than this percent is employed in existing factories
-		GOODS_FOCUS_SWAP_CHANCE = 0, -- Percent increased chance that artisan wants to change goods independently of how well he is doing presently
+		GOODS_FOCUS_SWAP_CHANCE = 0.25, -- Percent increased chance that artisan wants to change goods independently of how well he is doing presently
 		NUM_CLOSED_FACTORIES_PER_STATE_LASSIEZ_FAIRE = 1, -- Number of closed factories allowed per state under Lassiez Faire
 		MIN_NUM_FACTORIES_PER_STATE_BEFORE_DELETING_LASSIEZ_FAIRE = 2, -- Min number of factories per state before starting to delete under Lassiez Faire
 		BANKRUPCY_DURATION = 3, -- Years till a bankruptcy clears all loans
@@ -670,7 +670,7 @@ defines = {
 																	-- (if value < 1.0, the MIL will be increased) (Beware! value must be > 0)
 
 		POP_TO_LEADERSHIP = 0.0001, -- how much leadership every 1000 officers gives each day.
-		ARTISAN_MIN_PRODUCTIVITY = 5, -- Minimum efficiency of an artisan 5 to 1
+		ARTISAN_MIN_PRODUCTIVITY = 2, -- Minimum efficiency of an artisan 5 to 1
 		SLAVE_GROWTH_DIVISOR = 10.0, -- Slaves have N times lower growth
 
 		MIL_HIT_FROM_CONQUEST = 4, -- how much militancy grows in a province if taken without being core.

@@ -12,8 +12,8 @@ political_decisions = {
 				}
 			}
 			OR = {
-				tag = FRA
 				has_country_flag = is_latin_union
+				tag = FRA
 			}
 			NOT = { has_country_flag = nzl_master }
 		}
@@ -352,10 +352,9 @@ political_decisions = {
 	claim_australia = { # TODO redo this
 		picture = "imperial_japanese_navy"
 		potential = {
-			is_greater_power = yes
 			OR = {
-				has_country_flag = is_latin_union
-				tag = FRA
+			has_country_flag = is_latin_union
+			tag = FRA
 			}
 			NZF = {
 				OR = {
@@ -388,17 +387,17 @@ political_decisions = {
 	organize_australia = {
 		picture = "dreams_of_empire"
 		potential = {
+			has_country_flag = fra_claimed_australia
+			OR = {
+			has_country_flag = is_latin_union
+			tag = FRA
+			}
 			owns = 2476
 			owns = 2468
 			owns = 2483
 			owns = 2505
 			owns = 2497
 			owns = 2491
-			OR = {
-				has_country_flag = is_latin_union
-				tag = FRA
-			}
-			has_country_flag = fra_claimed_australia
 			NOT = { has_country_flag = australia_master }
 		}
 
@@ -693,9 +692,9 @@ political_decisions = {
 
 	propose_talleyrand_again = {
 		potential = {
-			tag = FRA
 			NET = { NOT = { has_country_flag = signed_treaty_of_london } }
 			NOT = { has_country_flag = talleyrand_proposed }
+			tag = FRA
 		}
 
 		allow = {
@@ -728,9 +727,9 @@ political_decisions = {
 	dutch_french_alliance = {
 		picture = "treaty_signing"
 		potential = {
-		  	primary_culture = french
+		    NET = { has_country_modifier = willem_i_absolutism NOT = { war_with = BEL } }
 			is_greater_power = yes
-			NET = { has_country_modifier = willem_i_absolutism NOT = { war_with = BEL } }
+			primary_culture = french
 			387 = { is_core = NET }
 			alliance_with = NET
 			NOT = { NET = { has_country_flag = PRU_willem_i_alliance has_country_flag = FRA_willem_i_alliance } has_country_flag = FRA_willem_i_alliance_proposed }
@@ -753,8 +752,8 @@ political_decisions = {
 	treaty_of_amsterdam_FRA = {
 		picture = "treaty_signing"
 		potential = {
-			primary_culture = french
 			is_greater_power = yes
+			primary_culture = french
 			NOT = { exists = BEL }
 			387 = { owned_by = NET }
 			NET = { has_country_flag = FRA_willem_i_alliance }
@@ -777,13 +776,46 @@ political_decisions = {
 	}
 	
 	#Pan-Latin Content
-	latin_monetary_union_FRA = {
+	latin_monetary_union_FRA = { #TODO this REALLY needs optimization lol
         picture = lmu
         potential = {
-			has_country_flag = can_join_latin_union
-            NOT = { has_country_flag = joined_lmu }
+			OR = {
+				has_global_flag = pan_hispanism
+				has_global_flag = pan_latinism
+			}
+            NOT = {
+                has_country_flag = joined_lmu
+            }
+			OR = {
+				tag = FRA
+				tag = ITA
+				tag = BEL
+				tag = SWI
+				tag = SPA
+				tag = ROM
+				tag = GRE
+				AND = {
+					OR = {
+						is_culture_group = iberian
+						is_culture_group = italian
+						is_culture_group = latin_american_cultures #Napoleon's Pan Latinism
+						primary_culture = acadian
+						primary_culture = cajun
+						primary_culture = french_australian
+						primary_culture = french_canadian
+					}
+					has_global_flag = pan_latinism
+				}
+				AND = {
+					OR = {
+						is_culture_group = iberian
+						is_culture_group = italian
+						is_culture_group = latin_american_cultures
+					}
+					has_global_flag = pan_hispanism
+				}
+			}
         }
-
         allow = {
 			OR = {
 				has_global_flag = pan_hispanism
@@ -815,8 +847,7 @@ political_decisions = {
 	latin_customs_union_FRA = {
         picture = lcu
         potential = {
-			has_country_flag = embraced_all_romance_cultures
-			has_global_flag = pan_latinism
+            has_global_flag = pan_latinism
 			NOT = { has_global_flag = latin_customs_union_exists_fra }
         }
         allow = {
@@ -824,8 +855,8 @@ political_decisions = {
 			is_sphere_leader_of = SPA
 			is_sphere_leader_of = POR
 			OR = {
-			is_sphere_leader_of = SAR
-			is_sphere_leader_of = ITA
+				is_sphere_leader_of = SAR
+				is_sphere_leader_of = ITA
 			}
             invention = silver_standard
         }
@@ -861,7 +892,7 @@ political_decisions = {
 	latin_customs_union = {
         picture = lmu
         potential = {
-            has_country_flag = joined_lmu
+            has_global_flag = latin_customs_union_exists_fra
 			OR = {
 				is_culture_group = iberian
 				is_culture_group = italian
@@ -873,7 +904,6 @@ political_decisions = {
 				tag = BEL
 				tag = ROM
 			}
-			has_global_flag = latin_customs_union_exists_fra
 			NOT = { has_country_flag = joined_lcu }
 		}
         allow = {
@@ -914,7 +944,7 @@ political_decisions = {
 			has_country_modifier = louis_napoleon_iii
 			has_country_flag = 2nd_empire
 			is_greater_power = yes
-			#owns = 412
+			NOT = { has_country_flag = embraced_all_romance_cultures }
 			NOT = { has_global_flag = pan_latinism }
 		}
 
@@ -937,10 +967,10 @@ political_decisions = {
 		picture = unionlatin
 		potential = {
 			has_country_modifier = louis_napoleon_iii
-			is_greater_power = yes
-			has_global_flag = pan_latinism
 			has_country_flag = 2nd_empire
+			is_greater_power = yes
 			NOT = { has_global_flag = extra_flavour_disabled }
+			has_global_flag = pan_latinism
 		}
 
 		allow = {
@@ -1272,19 +1302,19 @@ political_decisions = {
 			NOT = {
 				exists = LTU
 			}
-			619 = {
+			619 = { #Vienna
 				OR = {
 					owned_by = GCF
 					owned_by = GER
 				}
 			}
-			549 = {
+			549 = { #Berlin
 				OR = {
 					owned_by = GCF
 					owned_by = GER
 				}
 			}
-			641 = {
+			641 = { #Budapest
 				OR = {
 					owned_by = GCF
 					owned_by = GER
@@ -1294,6 +1324,24 @@ political_decisions = {
 			}
 			FRA_412 = {
 				NOT = { owned_by = FRA }
+			}
+			OR = {
+			AUS_726 = { #Lombardy
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
+			AUS_729 = { #Venice
+				OR = {
+					owned_by = GCF
+					owned_by = GER
+					owner = { vassal_of = GCF }
+					owner = { vassal_of = GER }
+				}
+			}
 			}
 			NOT = { has_global_flag = paris_congress_ltu }
 		}
@@ -1313,16 +1361,13 @@ political_decisions = {
 		effect = {
 			badboy = 5
 			FRA = { all_core = { add_core = LTU } }
-			ITA = { all_core = { add_core = LTU } }
-			SPA = { all_core = { add_core = LTU } }
-			POR = { all_core = { add_core = LTU } }
+			#ITA = { all_core = { add_core = LTU } }
+			#SPA = { all_core = { add_core = LTU } }
+			#POR = { all_core = { add_core = LTU } }
 			change_tag = LTU
-			any_country = { limit = { war_with = ITA } end_war = ITA }
-			any_country = { limit = { war_with = SPA } end_war = SPA }
-			any_country = { limit = { war_with = POR } end_war = POR }
-			inherit = SPA
-			inherit = POR
-			inherit = ITA
+			#inherit = SPA
+			#inherit = POR
+			#inherit = ITA
 			political_reform = confederalism
 			#add_country_modifier = { name = political_crisis duration = 3600 }
 			add_accepted_culture = portuguese
@@ -1379,6 +1424,7 @@ political_decisions = {
 					}
 					NOT = { has_country_flag = post_colonial_country }
 				}
+				all_core = { add_core = LTU }
 				country_event = 11101
 			}
 			GCF = { country_event = 10430 }
@@ -1417,5 +1463,75 @@ political_decisions = {
 		ai_will_do = {
 			factor = 1
 		}
+	}
+
+	dismantle_latin_union = {
+		picture = latinflag
+		potential = {
+			LTU = { exists = yes }
+			ai = no
+			NOT = { is_culture_group = pan_french }
+			is_greater_power = yes
+			capital_scope = { continent = europe }
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			OR = {
+			mass_politics = 1
+			war_policy = jingoism
+			}
+			LTU = { AND = { war_with = THIS national_provinces_occupied = 0.8 war_exhaustion = 75 } }
+			726 = { NOT = { owned_by = LTU } } #Milano
+			729 = { NOT = { owned_by = LTU } } #Venezia
+			FRA_412 = { NOT = { owned_by = LTU } } #Alsace
+			605 = { NOT = { owned_by = LTU } } #Bern
+		}
+
+		effect = {
+			prestige = 300
+			badboy = 5
+			LTU = {
+				end_war = THIS
+				country_event = 10415 #dismantles the Union
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	dismantle_german_confederation = {
+		picture = german_confederation
+		potential = {
+			GCF = { exists = yes }
+			ai = no
+			NOT = { is_culture_group = germanic }
+			is_greater_power = yes
+			capital_scope = { continent = europe }
+		}
+
+		allow = {
+			revolution_n_counterrevolution = 1
+			OR = {
+				mass_politics = 1
+				war_policy = jingoism
+			}
+			GCF = { AND = { war_with = THIS national_provinces_occupied = 0.8 war_exhaustion = 75 } }
+			726 = { NOT = { owned_by = GCF } } #Milano
+			729 = { NOT = { owned_by = GCF } } #Venezia
+			FRA_412 = { NOT = { owned_by = GCF } } #Alsace
+			605 = { NOT = { owned_by = GCF } } #Bern
+		}
+
+		effect = {
+			prestige = 300
+			badboy = 5
+			GCF = {
+				end_war = THIS
+				country_event = 9000011 #dismantles GCF
+			}
+		}
+
+		ai_will_do = { factor = 1 }
 	}
 }

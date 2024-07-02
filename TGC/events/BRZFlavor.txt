@@ -656,6 +656,28 @@
 		}
 	}
 
+	#Description: President Campos Sales visits Argentina - triggered for Argentina by decision from Brazil
+	country_event = {
+		id = 8022
+		title = "EVTNAME146605"
+		desc = "EVTDESC146605"
+		picture = "treaty"
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA146605"
+
+			FROM = { relation = { who = THIS value = 35 } }
+			random_country = { #if the relations between Chile and Argentina are bad, decrease relations further
+				limit = {
+					tag = CHL
+					NOT = { relation = { who = THIS value = 0 }	}
+				}
+				relation = { who = THIS value = -35 }
+			}
+			prestige = 6
+		}
+	}
 
 #KPB Stuff
 	#Portugal Formed KPB decides what to do with Brazil
@@ -778,10 +800,9 @@
 					NOT = { nationalism_n_imperialism = 1 }
 					NOT = { invention = national_fraternity }
 				}
-				AND = {
-					capital_scope = { controlled_by = REB }
-					num_of_revolts = 5
-				}
+				capital_scope = { controlled_by = REB owner = { num_of_revolts = 10 } }
+				2447 = { controlled_by = REB owner = { num_of_revolts = 10 } }
+				521 = { controlled_by = REB owner = { num_of_revolts = 10 } }
 				NOT = { plurality = 20 }
 			}
 		}
@@ -2091,6 +2112,7 @@
 				
 				PNB = { government = democracy clr_country_flag = 2nd_republicgov }
 				GPR = { government = democracy clr_country_flag = 2nd_republicgov }
+				MTG = { government = democracy clr_country_flag = 2nd_republicgov }
 				
 				ai_chance = { factor = 50 }
 		}
@@ -2116,7 +2138,7 @@
 				RGS = { end_war = THIS }
 				any_pop = { militancy = -3 consciousness = 3 }
 				any_owned = { limit = { region = BRZ_2446 } secede_province = MGS }
-				any_owned = { limit = { OR = { region = BRZ_2306 region = BRZ_2462 } } secede_province = SPL }
+				any_owned = { limit = { OR = { region = BRZ_2306 region = BRZ_2462 } } add_core = SPL secede_province = SPL }
 				any_owned = { limit = { OR = { region = BRZ_2410 region = BRZ_2426 province_id = 2423 } } add_core = CEQ secede_province = MAR }
 				any_owned = { limit = { OR = { region = BRZ_2401 region = BRZ_2408 region = ENG_1979 region = NET_2240 region = FRA_2241 region = VNZ_2278 } } add_core = CEQ secede_province = GPR }
 				any_owned = { limit = { OR = { region = BRZ_2416 region = BOL_2317 } } secede_province = MTG }
@@ -2133,6 +2155,7 @@
 				any_owned = { limit = { OR = { continent = africa } } secede_province = ANG }
 				PNB = { government = democracy clr_country_flag = 2nd_republicgov }
 				GPR = { government = democracy clr_country_flag = 2nd_republicgov }
+				MTG = { government = democracy clr_country_flag = 2nd_republicgov }
 
 				random_list = { 10 = { any_owned = { limit = { region = BRZ_2449 } secede_province = BAH } } 
 								90 = { } }
@@ -2168,7 +2191,7 @@
 		option = { 
 			name = "EVTOPTA8172"
 			any_owned = { limit = { region = BRZ_2446 } secede_province = MGS }
-			any_owned = { limit = { OR = { region = BRZ_2306 region = BRZ_2462 } } secede_province = SPL }
+			any_owned = { limit = { OR = { region = BRZ_2306 region = BRZ_2462 } } add_core = SPL secede_province = SPL }
 			any_owned = { limit = { OR = { region = BRZ_2410 region = BRZ_2426 province_id = 2423 } } add_core = CEQ secede_province = MAR }
 			any_owned = { limit = { OR = { region = BRZ_2401 region = BRZ_2408 region = ENG_1979 region = NET_2240 region = FRA_2241 region = VNZ_2278 } } add_core = CEQ secede_province = GPR }
 			any_owned = { limit = { OR = { region = BRZ_2416 region = BOL_2317 } } secede_province = MTG }
@@ -2421,8 +2444,7 @@
 				POR = { 
 					any_owned_province = {
 						OR = { region = POR_1999 region = POR_2003 }
-						average_militancy = 7
-						average_consciousness = 5
+						average_militancy = 4
 					}
 					ai = yes
 				}
@@ -2430,8 +2452,7 @@
 				POR = { 
 					any_owned_province = { 
 						OR = { region = POR_1999 region = POR_2003 }
-						average_militancy = 7
-						average_consciousness = 5
+						average_militancy = 4
 						NOT = { units_in_province = 1 }
 					}
 					ai = no
@@ -2439,33 +2460,40 @@
 			}
 		}
 
-		mean_time_to_happen = { days = 1 }
-
 		option = {
+			clr_country_flag = brasilian_party_in_motion
 			name = "EVTOPTA8206"
-			POR = { any_owned = { limit = { OR = { region = POR_1999 region = POR_2003 } }	
-						add_core = CFB
-						secede_province = CFB
-					}
+			POR = { 
+				any_owned = { limit = { OR = { region = POR_1999 region = POR_2003 } }	add_core = CFB }
 			}
-			create_vassal = CFB
-			relation = { who = CFB value = 200 }
-			prestige = 5
-			badboy = 2
+
+			POR = { release = CFB }
+			
+			BRZ = { 
+				create_vassal = CFB
+				relation = { who = CFB value = 200 }
+				prestige = 5
+				badboy = 2
+			}
 		}
 
 		option = {
+			clr_country_flag = brasilian_party_in_motion
 			name = "EVTOPTB8206"
 			POR = { any_owned = { limit = { OR = { region = POR_1999 region = POR_2003 } }	
+						add_core = CFB
 						secede_province = BRZ
 					}
 			}
-			relation = { who = POR value = -200 }
-			prestige = 10
-			badboy = 5
+			BRZ = { 
+				relation = { who = POR value = -200 }
+				prestige = 10
+				badboy = 5
+			}
 		}
  
 		option = {
+			clr_country_flag = brasilian_party_in_motion
 			name = "EVTOPTC8206"
 			relation = { who = POR value = 50 }
 			plurality = -2
@@ -2659,7 +2687,6 @@
 
 			option = {
 				name = "EVTOPTA8211"
-
 				prestige = 20
 			}
 		}
@@ -3204,8 +3231,90 @@
 				}
 			}
 		}
+		
+		#Description: The Corumba Sale - triggered for Brazil if Bolivia decides to sell Corumba - accept to buy it or refuse
+		country_event = {
+			id = 8222
+			title = "EVTNAME8222"
+			desc = "EVTDESC8222"
+			picture = "treaty_of_petropolis"
 
-		#Acre buy 8225-8230
+			is_triggered_only = yes
+
+			# Certainly!
+			option = {
+				name = "EVTOPTA8222"
+
+				relation = { who = FROM value = 100 }
+
+				treasury = -15000
+				FROM = { treasury = 15000 }
+
+				3298 = { remove_core = BOL }
+				random_country = {
+					limit = { FROM = { tag = PBC } }
+					3298 = { remove_core = PBC }
+				}
+				3298 = { add_core = BRZ }
+				random_country = {
+					limit = { THIS = { tag = KPB } }
+					3298 = { add_core = KPB }
+				}
+				3298 = { secede_province = THIS }
+
+				2407 = { remove_core = BOL }
+				random_country = {
+					limit = { FROM = { tag = PBC } }
+					2407 = { remove_core = PBC }
+				}
+				2407 = { add_core = BRZ }
+				random_country = {
+					limit = { THIS = { tag = KPB } }
+					2407 = { add_core = KPB }
+				}
+				2407 = { secede_province = THIS }
+
+				3296 = { remove_core = BOL }
+				random_country = {
+					limit = { FROM = { tag = PBC } }
+					3296 = { remove_core = PBC }
+				}
+				3296 = { add_core = BRZ }
+				random_country = {
+					limit = { THIS = { tag = KPB } }
+					3296 = { add_core = KPB }
+				}
+				3296 = { secede_province = THIS }
+
+				ai_chance = {
+					factor = 0.95
+					modifier = {
+						factor = 0
+						NOT = { money = 15000 }
+					}
+				}
+			}
+
+			# We´ll have to decline.
+			option = {
+				name = "EVTOPTB8222"
+
+				relation = { who = FROM value = -5 }
+
+				ai_chance = { factor = 0.04 }
+			}
+
+			# Oh hell no!
+			option = {
+				name = "EVTOPTC8222"
+
+				relation = { who = FROM value = -100 }
+
+				ai_chance = { factor = 0.01 }
+			}
+		}
+
+	#Acre buy 8225-8230
 
 	## Guyana buy
 		#Buy event, to all guyana holders
@@ -3532,15 +3641,15 @@
 			
 			#Registro Modifier
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } has_country_modifier = lei_do_registro }
-								JAN = { change_variable = { which = brz_slavery_politics value = 0.5 } }
+								JAN = { change_variable = { which = brz_slavery_politics value = 1 } }
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.25 } NOT = { has_global_flag = brz_slave_25 } }
 								set_global_flag = brz_slave_25
-								JAN = { change_variable = { which = brz_slavery_economics value = 5 } }
+								JAN = { change_variable = { which = brz_slavery_economics value = 2.5 } }
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.20 } NOT = { has_global_flag = brz_slave_20 } }
 								set_global_flag = brz_slave_20
-								JAN = { change_variable = { which = brz_slavery_economics value = 5 } }
+								JAN = { change_variable = { which = brz_slavery_economics value = 2.5 } }
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.15 } NOT = { has_global_flag = brz_slave_15 } }
 								set_global_flag = brz_slave_15
@@ -3548,7 +3657,7 @@
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.10 } NOT = { has_global_flag = brz_slave_10 } }
 								set_global_flag = brz_slave_10
-								JAN = { change_variable = { which = brz_slavery_economics value = 10 } }
+								JAN = { change_variable = { which = brz_slavery_economics value = 5 } }
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.05 } NOT = { has_global_flag = brz_slave_5 } }
 								set_global_flag = brz_slave_5
@@ -3560,11 +3669,11 @@
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.01 } NOT = { has_global_flag = brz_slave_1 } }
 								set_global_flag = brz_slave_1
-								JAN = { change_variable = { which = brz_slavery_economics value = 10 } }
+								JAN = { change_variable = { which = brz_slavery_economics value = 15 } }
 			}
 			any_country = { limit = { OR = { tag = BRZ tag = KPB } NOT = { slaves = 0.001 } NOT = { has_global_flag = brz_slave_01 } }
 								set_global_flag = brz_slave_01
-								JAN = { change_variable = { which = brz_slavery_economics value = 15 } }
+								JAN = { change_variable = { which = brz_slavery_economics value = 20 } }
 			}
 
 			random_owned = {
@@ -5663,8 +5772,6 @@
 
 		fire_only_once = yes
 
-		is_triggered_only = yes
-
 		option = {
 			name = "EVTOPTA50003"
 
@@ -5742,9 +5849,9 @@
 		picture = "conquest_of_the_amazon"
 
 		trigger = {
-			is_culture_group = latin_american_cultures
+			has_country_flag = conquest_of_the_amazon
 			OR = {
-				## Brazil ##
+				## Brazil/GPR ##
 					AND = { 2277 = { empty = yes } owns = 2404 owns = 2401 } # Piedra del Cocuy
 					AND = { 2245 = { empty = yes } OR = { owns = 2408 owns = 2246 owns = 3414 } } # Stoelmanseiland
 					AND = { 2246 = { empty = yes } owns = 2415 owns = 2408 } # Wayana
@@ -5784,7 +5891,6 @@
 					AND = { 2263 = { empty = yes } OR = { owns = 2291 owns = 2401 } } # Sao Paulo dos Cambebas
 					AND = { 2291 = { empty = yes } owns = 2260 } # Cahuinari
 					AND = { 2277 = { empty = yes } owns = 2278 } # Piedra del Cocuy
-					AND = { 2401 = { empty = yes } owns = 2260 } # Forte de Sao Gabriel da Cachoeira
 					AND = { 2260 = { empty = yes } OR = { owns = 2262 owns = 2257 } } # Serrania de Chibiquerte
 				## Peru - Bolivia ##
 					AND = { 2407 = { empty = yes } owns = 2549 } # Rio Jurua
@@ -5802,13 +5908,6 @@
 					AND = { 2288 = { empty = yes } owns = 2286 owns = 2294 owns = 2287 } # San Pablo y San Pedro de Iquitos
 					AND = { 2286 = { empty = yes } owns = 2293 owns = 2294 } # Caballococha
 			}
-			OR = {
-				money = 5000
-				AND = {
-					ai = yes
-					year = 1850
-				}
-			}
 			NOT = { # If the PBC exists but is still federalized, all the provinces in the Amazon are administered by Peru and South Peru
 				AND = {
 					tag = PBC
@@ -5819,7 +5918,7 @@
 		}
 
 		mean_time_to_happen = {
-			months = 18
+			months = 12
 			modifier = {
 				factor = 3.5
 				war = yes
@@ -5879,7 +5978,10 @@
 			}
 			modifier = {
 				factor = 0.5
-				tag = ECU
+				OR = {
+					tag = ECU
+					tag = GPR
+				}
 			}
 			modifier = {
 				factor = 0.7
@@ -5890,17 +5992,12 @@
 					tag = PBC
 				}
 			}
-			modifier = {
-				factor = 0.5
-				tag = GPR
-			}
 		}
 
 		option = {
 			name = "EVTOPTA97087"
 
 			prestige = 2
-			treasury = -1000
 			## Brazil ##
 				random_owned = {
 					limit = {
@@ -6235,14 +6332,6 @@
 						owner = { capital_scope = { continent = south_america } }
 					}
 					2277 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
-				}
-				random_owned = {
-					limit = {
-						2401 = { empty = yes }
-						2260 = { owned_by = THIS }
-						owner = { capital_scope = { continent = south_america } }
-					}
-					2401 = { secede_province = THIS any_pop = { limit = { is_primary_culture = no } literacy = -0.99 } add_core = THIS }
 				}
 				random_owned = {
 					limit = {

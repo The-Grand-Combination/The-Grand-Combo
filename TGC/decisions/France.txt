@@ -1,4 +1,85 @@
 political_decisions = {
+	#Description: Treaty of New York - peace deal after above war, takes all of Louisiana from the USA
+	treaty_of_new_york = {
+		picture = establish_panfrenchism
+		potential = {
+			has_country_flag = war_for_louisiana
+			NOT = { has_global_flag = treaty_of_new_york }
+			OR = {
+				has_country_flag = is_latin_union
+				tag = FRA
+			}
+			is_greater_power = yes
+		}
+
+		allow = {
+			money = 75000
+			USA = {
+				is_disarmed = yes
+				truce_with = THIS
+			}
+		}
+
+		effect = {
+			set_global_flag = treaty_of_new_york
+
+			## Louisiana cores ##
+
+				LOUISIANA_TERRITORY = { add_core = ULA }
+
+				ULA = { all_core = { remove_core = FCA remove_core = CAN } }
+
+			## Territory swap #
+
+				treasury = -75000
+				113 = { remove_core = CAN remove_core = ENG remove_core = FCA remove_core = ULA } #So it doesn't end up being annexed by France if USA didn't do the Oregon Treaty
+				USA = {
+					remove_accepted_culture = cajun
+					any_owned = {
+						limit = {
+							OR = {
+								is_core = ULA
+								is_core = ACA
+								is_core = CAN
+								is_core = FCA
+							}
+						}
+						secede_province = THIS
+					}
+					treasury = 75000
+				}
+				UNB = {
+					any_owned = {
+						limit = {
+							OR = {
+								is_core = ULA
+								is_core = ACA
+								is_core = CAN
+								is_core = FCA
+							}
+						}
+						secede_province = THIS
+					}
+				}
+
+				any_owned = {
+					limit = {
+						is_core = ULA
+						NOT = {
+							region = USA_139
+							region = USA_144
+							region = USA_148
+							region = USA_129
+						}
+					}
+					secede_province = UTI
+				}
+				inherit = UTI
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
 #from France.txt
 	liberty_enlightening_the_world = {
 		potential = {
@@ -159,7 +240,6 @@ political_decisions = {
 			PRU = {
 				owns = 572
 				owns = 575
-				owns = 3603
 			}
 			NOT = { has_country_flag = crisis_on_the_rhine }
 		}
@@ -186,7 +266,7 @@ political_decisions = {
 			factor = 1
 			modifier = {
 				factor = 0
-				badboy = 0.5
+				badboy = 0.8
 			}
 			modifier = {
 				factor = 0
@@ -1615,6 +1695,14 @@ rename_bourbon_island = {
 			}
 			inherit = CAM
 		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.8
+			}
+		}
 
 	}
 
@@ -2596,7 +2684,7 @@ rename_bourbon_island = {
 
 		ai_will_do = {
 			factor = 1
-			modifier = { factor = 0 badboy = 0.95 }
+			modifier = { factor = 0 badboy = 0.7 }
 		}
 	}
 
@@ -2855,7 +2943,13 @@ rename_bourbon_island = {
 			}
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = { 
+			factor = 1 
+			modifier = {
+				factor = 0
+				badboy = 0.5
+			}
+		}
 	}
 
 	#Description: Organize Acadia - add colonial integration, move pops, integrate into CAN if total victory
@@ -3249,6 +3343,14 @@ rename_bourbon_island = {
 					type = french_conquest_of_canada_uk
 					months = 24
 				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 0.2
 			}
 		}
 	}
@@ -3922,10 +4024,8 @@ rename_bourbon_island = {
 			war = no
 			war_policy = jingoism
 			394 = { owner = { NOT = { relation = { who = THIS value = 100 } } } }
-			OR = {
-				RHI = { exists = yes vassal_of = THIS }
-				AND = { owns = 575 owns = 573 owns = 3603 }
-			}
+			RHI = { exists = yes vassal_of = THIS }
+
 		}
 
 		effect = {
@@ -4113,7 +4213,6 @@ rename_bourbon_island = {
 				AND = {
 					owns = 573
 					owns = 575
-					owns = 3603
 				}
 				RHI = {
 					exists = yes
@@ -4461,7 +4560,10 @@ rename_bourbon_island = {
 			}
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = { 
+			factor = 1
+			modifier = { factor = 0 badboy = 0.9 }
+		}
 	}
 #from MiniMod-FRA.txt
 	revengance = {
@@ -4525,6 +4627,7 @@ rename_bourbon_island = {
 					has_country_flag = absolute_monarchy_gov
 				}
 			}
+			modifier = { factor = 0 badboy = 0.85 }
 		}
 	}
 
@@ -4588,6 +4691,7 @@ rename_bourbon_island = {
 		}
 		ai_will_do = {
 			factor = 1
+			modifier = { factor = 0 badboy = 0.8 }
 		}
 	}
 
@@ -4685,7 +4789,10 @@ rename_bourbon_island = {
 			}
 		}
 
-		ai_will_do = { factor = 1 }
+		ai_will_do = { 
+			factor = 1
+			modifier = { factor = 0 badboy = 0.9 }
+		}
 	}
 
 	jules_ferry_laws = {

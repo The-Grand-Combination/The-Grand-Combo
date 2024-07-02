@@ -738,23 +738,17 @@ political_decisions = {
 			potential = {
 				owns = 2461
 				OR = {
-					has_country_flag = brazil_content
-					AND = { tag = RGS owns = 2458 }
-				}
-				OR = {
 					2459 = { empty = yes }
 					2462 = { empty = yes }
 				}
 				NOT = { has_global_flag = eastern_misiones_dispute }
-				year = 1890
+				year = 1860
 			}
 
 			allow = {
 				war = no
-				OR = {
-					is_secondary_power = yes
-					revolution_n_counterrevolution = 1
-				}
+				revolution_n_counterrevolution = 1
+				invention = manifest_destiny
 			}
 
 			effect = {
@@ -782,6 +776,7 @@ political_decisions = {
 						is_vassal = no
 						owns = 2554
 						owns = 2341
+						NOT = { tag = THIS }
 					}
 					country_event = 8210
 				}
@@ -790,14 +785,16 @@ political_decisions = {
 						is_vassal = yes
 						owns = 2554
 						owns = 2341
+						NOT = { tag = THIS }
 					}
-					overlord = { country_event = 8210 }
+					overlord = { limit = { NOT = { tag = THIS } } country_event = 8210 }
 				}
 				random_country = {
 					limit = {
 						is_vassal = no
 						owns = 2554
 						NOT = { owns = 2341 }
+						NOT = { tag = THIS }
 					}
 					country_event = 8210
 				}
@@ -806,14 +803,16 @@ political_decisions = {
 						is_vassal = yes
 						owns = 2554
 						NOT = { owns = 2341 }
+						NOT = { tag = THIS }
 					}
-					overlord = { country_event = 8210 }
+					overlord = { limit = { NOT = { tag = THIS } } country_event = 8210 }
 				}
 				random_country = {
 					limit = {
 						is_vassal = no
 						NOT = { owns = 2554 }
 						owns = 2341
+						NOT = { tag = THIS }
 					}
 					country_event = 8210
 				}
@@ -822,8 +821,9 @@ political_decisions = {
 						is_vassal = yes
 						NOT = { owns = 2554 }
 						owns = 2341
+						NOT = { tag = THIS }
 					}
-					overlord = { country_event = 8210 }
+					overlord = { limit = { NOT = { tag = THIS } } country_event = 8210 }
 				}
 			}
 		}
@@ -1443,6 +1443,42 @@ political_decisions = {
 
 	##Random Flavor
 	
+	#Description: Gain relations with Argentina.
+	state_visit_to_argentina = { #original VIP event idea by General Perón, scripted by Scythe
+		picture = court_yard_speech
+		potential = {
+			tag = BRZ
+			exists = yes
+			exists = ARG
+			NOT = { has_country_flag = state_visit_to_argentina }
+			OR = {
+				government = presidential_dictatorship
+				has_country_flag = democracy_gov
+			}
+		}
+
+		allow = {
+			ruling_party_ideology = liberal #Campos Sales was a liberal
+			NOT = { war_with = ARG }
+		}
+
+		effect = {
+			ARG = {
+				country_event = 8021
+				relation = { who = THIS value = 35 }
+			}
+			random_country = { #if the relations between Chile and Argentina are bad, decrease relations between Chile and Brazil as well
+				limit = {
+					tag = CHL
+					NOT = { relation = { who = ARG value = 0 } }
+				}
+				relation = { who = BRZ value = -20 }
+			}
+			prestige = 6
+			set_country_flag = state_visit_to_argentina
+		}
+	}
+
 
 	#Post Collapse State Content
 		reform_brazil = {
@@ -1456,7 +1492,8 @@ political_decisions = {
 				BRZ = {
 					all_core = {
 						owner = {
-							OR = { in_sphere = THIS 
+							OR = { 
+								in_sphere = THIS 
 								vassal_of = THIS
 								tag = THIS
 							}
@@ -1468,12 +1505,12 @@ political_decisions = {
 
 			effect = {
 				prestige = 15
-				change_tag = BRZ
 				BRZ = {
 					all_core = {
 						secede_province = THIS
 					}
 				}
+				change_tag = BRZ
 			}
 			ai_will_do = { factor = 1 }
 		}

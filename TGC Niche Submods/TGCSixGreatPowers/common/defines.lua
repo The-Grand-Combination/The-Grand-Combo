@@ -1,14 +1,14 @@
 defines = {
 
 	start_date = '1836.1.1',
-	end_date = '1936.1.1',
+	end_date = '9999.1.1',
 
 	country = {
 		YEARS_OF_NATIONALISM 	= 20,   -- Years of Nationalism
 		MONTHS_UNTIL_BROKEN 		= 3,    -- OBSOLETE! (Months until rebel held capital results in broken country.)
 		REBEL_ACCEPTANCE_MONTHS = 60,
-		BASE_COUNTRY_TAX_EFFICIENCY = 0.2, -- Basic efficiency for taxes without 'crats and tech
-		BASE_COUNTRY_ADMIN_EFFICIENCY = 0.2,
+		BASE_COUNTRY_TAX_EFFICIENCY = 0.25, -- Basic efficiency for taxes without 'crats and tech
+		BASE_COUNTRY_ADMIN_EFFICIENCY = 0.25,
 		GOLD_TO_CASH_RATE = 10, -- Amount of money generated per gold unit. MODIFIED, Vanilla = 1.0                      Those two changes will ensure gold miners
 		GOLD_TO_WORKER_PAY_RATE = 1, -- Multiplier for how much money gold pays to pops. MODIFIED, Vanilla value = 3     won't hoard all the gold in the country.
 		GREAT_NATIONS_COUNT = 6,
