@@ -39,7 +39,7 @@ political_decisions = {
 
 	## Decisions relate to the startup options - All start with 'option_'
 
-		#Shows Options
+		#Setup Menu
 		option_enable_options = {
 			picture = cogs_red
 			potential = {
@@ -61,71 +61,8 @@ political_decisions = {
 			ai_will_do = { factor = 0 }
 		}
 
-		option_end_game = {
-			picture = cogs_red
-			alert = no
-			potential = {
-				ai = no
-				has_global_flag = post_game
-			}
 
-			allow = {
-				year = 1936
-			}
-
-			effect = {
-				country_event = 55
-			}
-
-			ai_will_do = { factor = 0 }
-		}
-
-		#Sets Up Game For Spectating
-		option_enable_spectator_mode = {
-			picture = cogs_red
-			alert = no
-			potential = {
-				has_country_flag = looking_through_options
-				ai = no
-				civilized = no
-				NOT = { year = 1837 }
-				NOT = { has_country_flag = spectator }
-			}
-
-			allow = {
-			}
-
-			effect = {
-				set_country_flag = spectator
-			}
-
-			ai_will_do = { factor = 0 }
-		}
-
-		#Enables Commie Mod content
-		option_disable_commiemod = {
-			picture = cogs_red
-			alert = no
-			potential = {
-				has_country_flag = looking_through_options
-				ai = no
-				NOT = { year = 1837 }
-				has_global_flag = disabled_commie_mod
-			}
-
-			allow = {
-			}
-
-			effect = {
-				clr_global_flag = disabled_commie_mod
-			}
-
-			ai_will_do = { factor = 0 }
-		}
-
-	## Decisions relate to the utility decisions - All start utility_
-
-		#Shows Utilities
+		#Utility Menu
 		utility_enable_utility = {
 			picture = cogs_blue
 			alert = no
@@ -147,165 +84,128 @@ political_decisions = {
 			ai_will_do = { factor = 0 }
 		}
 
-		## Grants Mechanic ## Events in CountryAid.txt
-
-			#Allows Recieving Money
-			utility_will_receive = {
-				picture = grant
-				alert = no
-				potential = {
-					has_country_flag = mp_utility
-				}
-
-				allow = {
-				}
-
-				effect = {
-					country_event = { id = 100000 days = 0 }
-				}
-
-				ai_will_do = { factor = 0 }
+		#MP Menu
+		utility_will_receive = {
+			picture = cogs_blue_green
+			alert = no
+			potential = {
+				ai = no
+				has_global_flag = multi_player_game
 			}
 
-			#Prevents Recieving Money
-			utility_will_not_receive = {
-				picture = grant
-				alert = no
-				potential = {
-					has_country_flag = see_grant_menu
-					has_country_flag = will_receive_grants
-				}
-
-				allow = {
-				}
-
-				effect = {
-					clr_country_flag = will_receive_grants
-				}
-
-				ai_will_do = { factor = 0 }
+			allow = {
 			}
 
-			#Allows Giving Money
-			utility_will_give = {
-				picture = grant
-				alert = no
-				potential = {
-					has_country_flag = see_grant_menu
-					NOT = { has_country_flag = will_give_grants }
-				}
-
-				allow = {
-				}
-
-				effect = {
-					set_country_flag = will_give_grants
-				}
-
-				ai_will_do = { factor = 0 }
+			effect = {
+				country_event = 87
 			}
 
-			#Prevents Giving Money
-			utility_will_not_give = {
-				picture = grant
-				alert = no
-				potential = {
-				has_country_flag = see_grant_menu
-					has_country_flag = will_give_grants
-				}
+			ai_will_do = { factor = 0 }
+		}
 
-				allow = {
-				}
-
-				effect = {
-					clr_country_flag = will_give_grants
-				}
-
-				ai_will_do = { factor = 0 }
+		#End Game
+		option_end_game = {
+			picture = cogs_red
+			alert = no
+			potential = {
+				ai = no
+				has_global_flag = post_game
 			}
 
-			soldiers_ai_gp = {
-				picture = cogs_yellow
-				alert = no
-				potential = {
-					rank = 5
-					ai = yes
-					NOT = { has_country_modifier = soldier_fix }
-					year = 1845
-					NOT = { tag = USA } #not europe
-				}
+			allow = {
+				year = 1936
+			}
 
-				allow = {
-					ai = yes
-					is_disarmed = no
+			effect = {
+				country_event = 55
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+
+		#AI Soldier Fix
+		soldiers_ai_gp = {
+			picture = cogs_yellow
+			alert = no
+			potential = {
+				rank = 5
+				ai = yes
+				NOT = { has_country_modifier = soldier_fix }
+				year = 1845
+				NOT = { tag = USA } #not europe
+			}
+
+			allow = {
+				ai = yes
+				is_disarmed = no
+				OR = {
+					revanchism = 0.1
 					OR = {
-						revanchism = 0.1
+						has_recently_lost_war = no
+						AND = {
+							any_greater_power = { truce_with = THIS }
+							has_recently_lost_war = yes
+						}
+					}
+					has_country_flag = militarized_society_threat
+				}
+				money = 100001
+				NOT = { has_country_modifier = no_more_war }
+				OR = {
+					war_policy = jingoism
+					war_policy = pro_military
+					has_country_flag = militarized_society_threat
+					revanchism = 0.1
+				}
+				OR = {
+					AND = {
+						conscription = one_year_draft
+						NOT = { soldiers = 0.015 }
+					}
+					AND = {
+						conscription = two_year_draft
+						NOT = { soldiers = 0.025 }
+					}
+					AND = {
+						conscription = four_year_draft
+						NOT = { soldiers = 0.035 }
+					}
+					AND = {
+						conscription = mandatory_service
+						NOT = { soldiers = 0.04 }
+					}
+				}
+			}
+
+			effect = {
+			treasury = -100000
+			steel = 500
+			cement = 500
+			machine_parts = 200
+			#This will help them build the units quicker
+			artillery = 250
+			canned_food = 250
+			ammunition = 250
+			small_arms = 250
+			regular_clothes = 100
+			liquor = 100
+			luxury_clothes = 50
+			any_pop = {
+				limit = {
+					type = soldiers
 						OR = {
-							has_recently_lost_war = no
-							AND = {
-								any_greater_power = { truce_with = THIS }
-								has_recently_lost_war = yes
+							is_primary_culture = yes
+							is_accepted_culture = yes
 							}
 						}
-						has_country_flag = militarized_society_threat
-					}
-					money = 100001
-					NOT = { has_country_modifier = no_more_war }
-					OR = {
-						war_policy = jingoism
-						war_policy = pro_military
-						has_country_flag = militarized_society_threat
-						revanchism = 0.1
-					}
-					OR = {
-						AND = {
-							conscription = one_year_draft
-							NOT = { soldiers = 0.015 }
-						}
-						AND = {
-							conscription = two_year_draft
-							NOT = { soldiers = 0.025 }
-						}
-						AND = {
-							conscription = four_year_draft
-							NOT = { soldiers = 0.035 }
-						}
-						AND = {
-							conscription = mandatory_service
-							NOT = { soldiers = 0.04 }
-						}
-					}
-				}
-
-				effect = {
-				treasury = -100000
-				steel = 500
-				cement = 500
-				machine_parts = 200
-				#This will help them build the units quicker
-				artillery = 250
-				canned_food = 250
-				ammunition = 250
-				small_arms = 250
-				regular_clothes = 100
-				liquor = 100
-				luxury_clothes = 50
-				any_pop = {
-					limit = {
-						type = soldiers
-							OR = {
-								is_primary_culture = yes
-								is_accepted_culture = yes
-								}
-							}
-							reduce_pop = 1.2 # Grown by 20%
-				}
-				add_country_modifier = { name = soldier_fix duration = 1800 }
-				add_country_modifier = { name = militarization_of_society duration = 7200 }
-				}
-
-				ai_will_do = { factor = 1 }
+						reduce_pop = 1.2 # Grown by 20%
 			}
+			add_country_modifier = { name = soldier_fix duration = 1800 }
+			add_country_modifier = { name = militarization_of_society duration = 7200 }
+			}
+
+			ai_will_do = { factor = 1 }
+		}
 
 ### World Setup Decisions
 
