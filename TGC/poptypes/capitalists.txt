@@ -66,578 +66,331 @@ country_migration_target = {
 
 	## Immigration Quota Literacy ##
 		modifier = {
-			factor = 0
+			factor = 0.1
 			border_policy = quota_immigration
 			#Audax Validator "." Ignore_1001
 			THIS = { NOT = { literacy = 0.6 } }
+		}		
+
+	## Bad Immigration Policy (Only mexico using it currently)
+		modifier = {
+			factor = 0.2
+			NOT = { THIS = { has_pop_religion = catholic } }
+			has_country_flag = bad_immigration_policy #was modifier
+		}	
+	## Border Policy
+		modifier = {
+			factor = 0.5
+			administration_spending = 0.9
+			border_policy = closed_borders
+		}
+		modifier = {
+			factor = 0.5
+			administration_spending = 0.75
+			border_policy = closed_borders
+		}	
+		modifier = {
+			factor = 0.5
+			administration_spending = 0.5
+			border_policy = closed_borders
+		}	
+
+	## Europe
+		modifier = {
+			factor = 0.2
+			capital_scope = { continent = europe }
+		}	
+
+	## Unemployment ##
+		modifier = {
+			factor = 1.125
+			NOT = { unemployment = 0.01 }
+		}
+		modifier = {
+			factor = 1.125
+			NOT = { unemployment = 0.02 }
+		}
+		modifier = {
+			factor = 1.125
+			NOT = { unemployment = 0.03 }
+		}
+		modifier = {
+			factor = 1.125
+			NOT = { unemployment = 0.04 }
 		}
 
-	## South America Fix
 		modifier = {
-			factor = 1.2
-			capital_scope = { is_colonial = no continent = south_america }
-			NOT = { tag = BRZ }
-		}	
-
-	## Mexico fix
+			factor = 0.75
+			unemployment = 0.1
+		}
+		modifier = {
+			factor = 0.5
+			unemployment = 0.2
+		}
+		modifier = {
+			factor = 0.25
+			unemployment = 0.4
+		}
 		modifier = {
 			factor = 0.1
-			NOT = { THIS = { has_pop_religion = catholic } }
-			has_country_flag = bad_immigration_policy
-		}	
+			unemployment = 0.8
+		}
 
-	modifier = {
-		factor = 2
-		unemployment = 0.1
-	}
-	modifier = {
-		factor = 0.5
-		economic_policy = laissez_faire
-	}
-	modifier = {
-		factor = 0.5
-		economic_policy = planned_economy
-	}
-
-	## Primary Culture ##
+	## Micro States
 		modifier = {
-			factor = 2.0
+			factor = 0.5
+			NOT = { number_of_states = 2 }
+		}
+
+	##Culture Related
+		#Literally me fr fr
+		modifier = {
+			factor = 2
 			OR = {
 				is_primary_culture = THIS
 				is_accepted_culture = THIS
 			}
 		}
-
-	## Culture Groups and related cultures ##
+		
+		#Same groups
 		modifier = {
-			factor = 3.21
+			factor = 1.5
+			is_culture_group = THIS
+		}
+
+		#High compatibility
+		modifier = {
+			factor = 1
 			OR = {
-				# Audax Validator "." Ignore_NEXT
-				is_culture_group = THIS
 				AND = {
-					THIS = { is_culture_group = iberian }
 					is_culture_group = latin_american_cultures
+					NOT = { tag = BRZ has_country_flag = brazilian_state }
+					THIS = { is_culture_group = iberian NOT = { has_pop_culture = portuguese } }
 				}
 				AND = {
-					THIS = { has_pop_culture = dutch }
+					
+					OR = { tag = BRZ has_country_flag = brazilian_state }
+					THIS = { has_pop_culture = portuguese } 
+				}
+				AND = {
 					primary_culture = boer
+					THIS = { has_pop_culture = dutch }
 				}
 				AND = {
-					THIS = { is_culture_group = pan_french }
 					OR = { primary_culture = french_canadian primary_culture = cajun primary_culture = french_australian }
+					THIS = { is_culture_group = pan_french }
 				}
 				AND = {
-					THIS = { is_culture_group = pan_british }
 					OR = {
 						is_culture_group = american_cultures
 						primary_culture = australian
 						primary_culture = anglo_canadian
 					}
-				}
-				AND = {
-					THIS = { is_culture_group = east_slavic }
-					primary_culture = alaskan
-				}
-				AND = {
-					has_country_flag = jewish_country
-					has_country_flag = law_of_return_issued
-					THIS = { is_culture_group = jewish_cultures }
+					THIS = { is_culture_group = pan_british }
 				}
 			}
 		}
 
-	## Communist Government ##
-		modifier = {
-			factor = 0
-			has_country_flag = communist_gov
-		}
 
-	## Generic New World Nation ##
-
+	## Hard Coded Immigration Patterns
+		#Russian America
 		modifier = {
-			factor = 3.8
-			number_of_states = 2
-			has_country_flag = new_world_nation
+			factor = 2
 			OR = {
-				capital_scope = { is_colonial = no continent = north_america }
-				capital_scope = { is_colonial = no continent = south_america }
-				capital_scope = { is_colonial = no continent = australia_new_zealand } 
-				capital_scope = { is_colonial = no continent = south_africa }
-			}
-			OR = {
-				has_country_flag = democracy_gov
-				#government = presidential_dictatorship
-				has_country_flag = constitutional_monarchy_gov
-				has_country_flag = dominion_gov
+				primary_culture = alaskan
+				THIS = { is_culture_group = east_slavic }
 			}
 		}
 
+		#German Mitteleuropa
 		modifier = {
-			factor = 3.1
-			NOT = { total_pops = 500000 }
-			NOT = { number_of_states = 2 }
-			has_country_flag = new_world_nation
-			OR = {
-				capital_scope = { is_colonial = no continent = north_america }
-				capital_scope = { is_colonial = no continent = south_america }
-				capital_scope = { is_colonial = no continent = australia_new_zealand } 
-				capital_scope = { is_colonial = no continent = south_africa }
-			}
-			OR = {
-				has_country_flag = democracy_gov
-				#government = presidential_dictatorship
-				has_country_flag = constitutional_monarchy_gov
-				has_country_flag = dominion_gov
+			factor = 2
+			has_country_flag = mitteleuropa_migration
+			has_global_flag = german_welcomes_eastern_workers
+			THIS = { 
+				OR = {
+					is_culture_group = czecho_slovak_culture_group
+					is_culture_group = polish_culture_group
+					is_culture_group = baltic
+					has_pop_culture = croat
+					has_pop_culture = hungarian
+					has_pop_culture = ukrainian
+					has_pop_culture = byelorussian
+				}
 			}
 		}
+		#Jewish people preffer going to israel if its formed.
+		modifier = {
+			factor = 5
+			has_country_flag = jewish_country	
+			has_global_flag = law_of_return_issued	
+			THIS = { is_culture_group = jewish_cultures }
+		}
 
-	## German Texas ##
+		#Irish people flocked to the US
+		modifier = {
+			factor = 10
+			tag = USA
+			THIS = { has_pop_culture = irish }
+			
+		}
 
-		# modifier = {
-		# 	factor = 2.0
-		# 	has_country_flag = new_world_nation
-		# 	has_global_flag = german_texas_funding
-		# 	NOT = { has_global_flag = german_texas_funding2 }
-		# 	NOT = { has_global_flag = german_texas_funding3 }
-		# 	THIS = { is_culture_group = germanic }
-		# 	OR = {
-		# 		capital_scope = { is_colonial = no continent = north_america }
-		# 		capital_scope = { is_colonial = no continent = south_america }
-		# 		capital_scope = { is_colonial = no continent = australia_new_zealand }
-		# 	}
-		# 	OR = {
-		# 		tag = ADV
-		# 		tag = TEX
-		# 	}
-		# 	has_country_flag = dominion_gov
-		# }
+		#British immigration to south america wasn't that high
+		#But for some reason they flock to colombia and venezuela
+		modifier = {
+			factor = 0.5
+			is_culture_group = latin_american_cultures
+			THIS = { is_culture_group = pan_british }
+		}
+		modifier = {
+			factor = 0.1
+			tag = CLM
+			NOT = { rank = 16 }
+		}
 
-		# modifier = {
-		# 	factor = 3.0
-		# 	has_country_flag = new_world_nation
-		# 	has_global_flag = german_texas_funding2
-		# 	NOT = { has_global_flag = german_texas_funding3 }
-		# 	THIS = { is_culture_group = germanic }
-		# 	OR = {
-		# 		capital_scope = { is_colonial = no continent = north_america }
-		# 		capital_scope = { is_colonial = no continent = south_america }
-		# 		capital_scope = { is_colonial = no continent = australia_new_zealand }
-		# 	}
-		# 	OR = {
-		# 		tag = ADV
-		# 		tag = TEX
-		# 	}
-		# 	has_country_flag = dominion_gov
-		# }
-
-		# modifier = {
-		# 	factor = 3.0
-		# 	has_country_flag = new_world_nation
-		# 	NOT = { tag = ADV }
-		# 	NOT = { tag = TEX }
-		# 	THIS = { is_culture_group = germanic }
-		# 	OR = {
-		# 		capital_scope = { is_colonial = no continent = north_america }
-		# 		capital_scope = { is_colonial = no continent = south_america }
-		# 		capital_scope = { is_colonial = no continent = australia_new_zealand }
-		# 	}
-		# 	OR = {
-		# 		primary_culture = north_german
-		# 		primary_culture = south_german
-		# 	}
-		# 	has_country_flag = dominion_gov
-		# }
-
-		# modifier = {
-		# 	factor = 4.0
-		# 	has_country_flag = new_world_nation
-		# 	has_global_flag = german_texas_funding3
-		# 	THIS = { is_culture_group = germanic }
-		# 	OR = {
-		# 		capital_scope = { is_colonial = no continent = north_america }
-		# 		capital_scope = { is_colonial = no continent = south_america }
-		# 		capital_scope = { is_colonial = no continent = australia_new_zealand }
-		# 	}
-		# 	OR = {
-		# 		tag = ADV
-		# 		tag = TEX
-		# 	}
-		# 	has_country_flag = dominion_gov
-		# }
-		
-	## Israel Mashallah ##
-	
 }
-
 migration_target = {
 	factor = 0.01
 
-	## Direct Immigration ##
-		# modifier = {
-		# 	factor = 0
-		# 	NOT = {
-		# 		# Audax Validator "." Ignore_NEXT
-		# 		has_building = immigrator
-		# 	}
-		# 	country = { has_country_flag = direct_immigration }
-		# 	country = { ai = no }
-		# }
+	## Direct Immigration, as long as we have other check, the country flag one, its fine to have this here even if the submod is off
+		modifier = {
+			factor = 0
+			country = { has_country_flag = direct_immigration }
+			NOT = { has_building = immigrator }
+		}
 
-	## Total Pops ##
+	## General Stuff
+		modifier = {
+			factor = 0.75
+			state_scope = { is_slave = yes }
+		}
+		modifier = {
+			factor = 2
+			is_state_capital = yes
+		}
+		modifier = {
+			factor = 0.1
+			unemployment = 0.1
+			state_scope = { has_factories = no }
+		}
+		modifier = {
+			factor = 0.01
+			is_overseas = yes
+			country = { border_policy = closed_borders NOT = { colonial_policy = settlement } }
+		}
 
+	## Unemployment, literally the same as the country one, that check works in both scopes
+		modifier = {
+			factor = 4
+			NOT = { unemployment = 0.01 }
+		}
+		modifier = {
+			factor = 2
+			NOT = { unemployment = 0.02 }
+		}
+		modifier = {
+			factor = 1.5
+			NOT = { unemployment = 0.03 }
+		}
+		modifier = {
+			factor = 1.25
+			NOT = { unemployment = 0.04 }
+		}
+
+		modifier = {
+			factor = 0.5
+			unemployment = 0.1
+		}
+		modifier = {
+			factor = 0.5
+			unemployment = 0.2
+		}
+		modifier = {
+			factor = 0.25
+			unemployment = 0.4
+		}
+		modifier = {
+			factor = 0.1
+			unemployment = 0.8
+		}
+		
+
+	#Pop compatibility, not as in-depth as the country targetting one
 		modifier = {
 			factor = 1.2
-			total_pops = 150000
+			has_pop_culture = THIS
+		}
+		modifier = {
+			factor = 0.25
+			has_culture_core = no
 		}
 		modifier = {
 			factor = 1.2
-			total_pops = 250000
+			has_pop_religion = THIS
+		}
+
+	## Liferating, this pretty much replaces all the old continent and terrain checks
+		modifier = {
+			factor = 0.1
+			NOT = { life_rating = 6 }
 		}
 		modifier = {
-			factor = 1.2
-			total_pops = 500000
+			factor = 0.2
+			NOT = { life_rating = 11 }
 		}
 		modifier = {
-			factor = 1.2
-			total_pops = 750000
+			factor = 0.5
+			NOT = { life_rating = 16 }
 		}
-	modifier = {
-		factor = 0
-		is_overseas = yes
-		country = { border_policy = closed_borders }
-	}
-	modifier = {
-		factor = 0
-		NOT = { state_scope = { work_available = { worker = craftsmen } } }
-	}
-	modifier = {
-		factor = 1.2
-		has_pop_culture = THIS
-	}
-	modifier = {
-		factor = 1.2
-		# Audax Validator "." Ignore_NEXT
-		has_pop_religion = THIS
-	}
-	modifier = {
-		factor = 1.5
-		any_core = { is_primary_culture = THIS }
-	}
-	modifier = {
-		factor = 0.75
-		state_scope = { is_slave = yes }
-	}
-	modifier = {
-		factor = 0
-		NOT = { is_state_capital = yes }
-	}
-	modifier = {
-		factor = 2.5
-		is_capital = yes
-	}
-	modifier = {
-		factor = 1.05
-		is_coastal = yes
-		NOT = {
-			terrain = arctic
-		}
-	}
-	
-	modifier = {
-        factor = 0.5
-        OR = {
-            continent = west_africa
-            continent = east_africa
-            continent = central_africa
-            continent = south_africa
-			continent = africa
-			continent = east_indies
-			continent = indochina
-        }
-    }
-	
-	modifier = {
-        factor = 0.01
-        OR = {
-			continent = east_indies
-			continent = polynesia
-        }
-		#NOT = { has_building = immigrator }
-    }
-	
-	modifier = {
-        factor = 0
-        OR = {
-            is_core = HND
-            is_core = CHI
-			is_core = TKG
-			is_core = JAP
-			continent = asia
-        }
-        country = { primary_culture = french }
-    }
-	
 		modifier = {
-        factor = 0
-        OR = {
-            is_core = HND
-            is_core = CHI
-			is_core = TKG
-			is_core = JAP
-			continent = asia
-        }
-		country = { primary_culture = british }
-    }
-
-    modifier = {
-        factor = 2.5
-        continent = europe
-        country = { primary_culture = russian }
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			}
+			factor = 2
+			life_rating = 35
 		}
-    }
-	
-	 modifier = {
-        factor = 2.0
-        OR = {
-            is_core = KOR
-            is_core = KAM
-            continent = indochina
-            continent = east_indies
-        }
-        country = { primary_culture = japanese }
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			}
-		}
-    }
-	
-	modifier = {
-        factor = 5.01
-        OR = {
-            continent = australia_new_zealand
-            continent = north_america
-            state_id = 254 #Ulster
-            state_id = 263 #Dublin
-            state_id = 273 #Wales
-        }
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			terrain = boreal
-			}
-		}
-        country = { primary_culture = british }
-    }
-	
-	 modifier = {
-        factor = 3.5
-        OR = {
-            state_id = 2033
-            state_id = 2028
-            is_core = SAF
-            is_core = RHO
-            #is_core = CHI #yeah no
-        }
-		year = 1860
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			}
-		}
-        country = { primary_culture = british }
-    }
-	
-	modifier = {
-        factor = 3.0
-        OR = {
-            is_core = RHI
-            is_core = WLL #Wallonia is WLL
-            is_core = LUX
-            is_core = CAT
-            is_core = SWI
-            continent = australia_new_zealand
-            continent = north_america
-            continent = africa #TBD maybe break it down to tags or regions
-            continent = indochina
-        }
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			}
-		}
-        country = { primary_culture = french }
-    }
-
-    modifier = {
-        factor = 3.0
-        OR = {
-            continent = africa
-            continent = east_africa
-            is_core = SWI
-            is_core = FRA
-			is_core = OCC
-            is_core = DLM
-            is_core = CRO
-            is_core = ALB
-            #is_core = TRE
-            is_core = AUS
-            is_core = FIU
-            is_core = SLO
-        }
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			}
-		}
-        country = { is_culture_group = italian }
-    }
-	
-	 modifier = {
-        factor = 2.0
-        continent = east_indies
-		NOT = {
-		    OR = {
-			terrain = arctic
-			terrain = jungle
-			terrain = desert
-			}
-		}
-        country = { is_culture_group = east_asian } #this is for chinese
-    }
-
-	modifier = {
-		factor = 0.8
-		terrain = steppe
-	}
-
-	modifier = {
-		factor = 0.7
-		terrain = savanna
-	}
-
-	modifier = {
-		factor = 0.6
-		OR = {
-			terrain = mountain
-			terrain = montane_forest
-		}
-	}
-
-	modifier = {
-		factor = 0.1
-		OR = {
-			terrain = semidesert
-			terrain = jungle
-			terrain = dryhills
-			terrain = marsh
-			terrain = swamp_forest
-			terrain = boreal #this is taiga
-			terrain = mangrove_island
-			terrain = dry_island
-			terrain = coral_island
-			terrain = small_island
-			terrain = caribbean_island
-			terrain = desert
-			terrain = boreal
-		}
-	}
-
-	modifier = {
-		factor = 0
-		OR = {
-			terrain = boreal #this is taiga
-			terrain = mangrove_island
-			terrain = dry_island
-			terrain = coral_island
-			terrain = small_island
-			terrain = caribbean_island
-			terrain = desert
-			terrain = jungle #this one is up for debate, but pops love going there so I'd rather just zero it
-			terrain = mangrove_island
-		}
-		OR = {
-		NOT = { year = 1910 } #After 1910 they might do something dumb like, move to Las Vegas
-		#NOT = { has_building = immigrator }
-		NOT = { trade_goods = precious_metal } #Dumbos will still move to look for gold
-		NOT = { trade_goods = precious_goods }
-		}
-	}
-
-	modifier = {
-		factor = 0
-		OR = { #They will never go here
-			terrain = polar_island
-			terrain = montane_tundra
-			terrain = arctic
-		}
-		#NOT = { has_building = immigrator }
-		NOT = { trade_goods = precious_metal } #Dumbos will still move to look for gold
-		NOT = { trade_goods = precious_goods }
-	}
-
-	modifier = {
-		factor = 0
-		OR = { #Canals
-			terrain = canal_kiel
-			terrain = canal_panama
-			terrain = canal_suez
-			terrain = canal_nicaragua
-		}
-		#NOT = { has_building = immigrator }
-	}
-
-	## Colonial Transportation ##
-		modifier = {
-			factor = 1.05
-			NOT = { country = { any_owned_province = { is_colonial = yes } } }
-			country = { penal_system = colonial_transportation }
-			OR = {
-				trade_goods = coal
-				trade_goods = sulphur
-				trade_goods = iron
-				trade_goods = precious_metal
-				trade_goods = tobacco
-				trade_goods = coffee
-				trade_goods = tea
-			}
-			OR = {
-				terrain = desert
-				terrain = arctic
-				terrain = semidesert
-				terrain = boreal
-				terrain = small_island
-				terrain = montane_tundra
-				terrain = coral_island
-			}
-		}
-
-	## Liferating ##
-
 		modifier = {
 			factor = 2
 			life_rating = 40
 		}
-
 		modifier = {
 			factor = 2
-			life_rating = 50
+			life_rating = 45
+		}
+
+	## Goods
+		modifier = {
+			factor = 5
+			trade_goods = precious_metal
+		}
+		modifier = {
+			factor = 2
+			OR = { 
+				trade_goods = rubber
+				trade_goods = iron
+			}
+		}
+
+	## Hard Coded Migration Patterns
+		modifier = {
+			factor = 5
+			OR = {
+				continent = australia_new_zealand
+				continent = north_america
+				state_id = 254 #Ulster
+				state_id = 263 #Dublin
+				state_id = 273 #Wales
+			}
+			country = { primary_culture = british }
+		}
+		
+		modifier = {
+			factor = 3.5
+			OR = {
+				state_id = 2033
+				state_id = 2028
+				is_core = SAF
+				is_core = RHO
+			}
+			year = 1860
+			country = { primary_culture = british }
 		}
 }
 
