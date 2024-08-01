@@ -180,6 +180,9 @@ country_event = {
 		ammunition = 1000
 		war_exhaustion = -20
 		inherit = VNG
+		ECU = { all_core = { add_core = GCO } }
+		VNZ = { all_core = { add_core = GCO } }
+		CLM = { all_core = { add_core = GCO } }
 		SPA = { country_event = 9008 }
 		}
 	}
@@ -258,7 +261,7 @@ country_event = {
 		war_exhaustion = 10
 		war = {
 			target = CHL
-			attacker_goal = { casus_belli = civil_war }
+			attacker_goal = { casus_belli = make_puppet }
 			defender_goal = { casus_belli = status_quo }
 			}
 		}
@@ -324,12 +327,12 @@ country_event = {
 		war_exhaustion = 10
 		war = {
 			target = PEU
-			attacker_goal = { casus_belli = civil_war }
+			attacker_goal = { casus_belli = make_puppet }
 			defender_goal = { casus_belli = status_quo }
 			}
 		war = {
 			target = BOL
-			attacker_goal = { casus_belli = civil_war }
+			attacker_goal = { casus_belli = make_puppet }
 			defender_goal = { casus_belli = status_quo }
 			}
 		}
@@ -361,12 +364,252 @@ country_event = {
 		war_exhaustion = 10
 		war = {
 			target = VNS
-			attacker_goal = { casus_belli = civil_war }
+			attacker_goal = { casus_belli = make_puppet }
 			defender_goal = { casus_belli = status_quo }
 			}
+		VNS = { country_event = 9014 }
 		}
 	option = {
 		name = "EVTOPTB9013"
 		release_vassal = VNS
+		VNS = { country_event = 9014 }
+		}
+	}
+##########VICEROYALTY OF NEW SPAIN BECOMES MEXICAN EMPIRE
+country_event = {
+	id = 9014
+	title = "EVTNAME9014"
+	desc = "EVTDESC9014"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = VNS
+		NOT = { year = 1830 vassal_of = SPA }
+		OR = {
+			government = hms_government
+			government = hms_government2
+			}
+		}
+	option = {
+		name = "EVTOPTA9014"
+		change_tag = MEX
+		government = absolute_monarchy
+		}
+	}
+###########SPAIN BECOMES CONSTITUTIONAL MONARCHY - WAR EXHAUSTION
+country_event = {
+	id = 9015
+	title = "EVTNAME9015"
+	desc = "EVTDESC9015"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		NOT = { year = 1830 }
+		war_exhaustion = 50
+		OR = {
+			government = absolute_monarchy
+			government = absolute_monarchy2
+			government = hms_government
+			government = hms_government2
+			}
+		}
+	option = {
+		name = "EVTOPTA9015"
+		government = hms_government
+		political_reform = wealth_voting
+		FRA = { country_event = 9016 }
+		}
+	option = {
+		name = "EVTOPTB9015"
+		war_exhaustion = 20
+		any_owned = { limit = { is_core = SPA NOT = { OR = { is_core = CAT is_core = BSQ } } }add_province_modifier = { name = liberal_agitation duration = 765 } }
+		}
+	}
+#####FRENCH INTERVENTION
+country_event = {
+	id = 9016
+	title = "EVTNAME9016"
+	desc = "EVTDESC9016"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	is_triggered_only = yes
+	option = {
+		name = "EVTOPTA9016"
+		war = { target = SPA 
+			attacker_goal = { casus_belli = gendarme_of_europe }
+			defender_goal = { casus_belli = humiliation }
+			}
+		ai_chance = { factor = 100 }
+		}
+	option = {
+		name = "EVTOPTB9016"
+		prestige = -20
+		}
+	}
+########SPANISH VICTORY - COLOMBIA
+country_event = {
+	id = 9017
+	title = "EVTNAME9017"
+	desc = "EVTDESC9017"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		GCO = { vassal_of = THIS }
+		}
+	option = {
+		name = "EVTOPTA9017"
+		war_exhaustion = -10
+		prestige = 15
+		VNG = { inherit = GCO }
+		create_vassal = VNG
+		CLM = { all_core = { add_core = VNG } }
+		VNZ = { all_core = { add_core = VNG } }
+		ECU = { all_core = { add_core = VNG } }
+		}
+	}
+##########SPANISH VICTORY - MEXICO
+country_event = {
+	id = 9018
+	title = "EVTNAME9018"
+	desc = "EVTDESC9018"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		MEX = { vassal_of = THIS }
+		}
+	option = {
+		name = "EVTOPTA9018"
+		war_exhaustion = -10
+		prestige = 15
+		VNS = { inherit = MEX }
+		create_vassal = VNS
+		MEX = { all_core = { add_core = VNS } }
+		HON = { all_core = { add_core = VNS } }
+		NIC = { all_core = { add_core = VNS } }
+		ELS = { all_core = { add_core = VNS } }
+		COS = { all_core = { add_core = VNS } }
+		GUA = { all_core = { add_core = VNS } }
+		}
+	}
+############SPANISH VICTORY - PERU
+country_event = {
+	id = 9019
+	title = "EVTNAME9019"
+	desc = "EVTDESC9019"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		PEU = { vassal_of = THIS }
+		}
+	option = {
+		name = "EVTOPTA9019"
+		war_exhaustion = -10
+		prestige = 15
+		VOP = { inherit = PEU }
+		PEU = { all_core = { add_core = VOP } }
+		BOL = { all_core = { add_core = VOP } }
+		create_vassal = VOP
+		}
+	}
+###########SPANISH VICTORY - LA PLATA
+country_event = {
+	id = 9020
+	title = "EVTNAME9020"
+	desc = "EVTDESC9020"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		OR = {
+		LPL = { vassal_of = THIS }
+		VLP = {vassal_of = THIS }
+		}
+		}
+	option = {
+		name = "EVTOPTA9020"
+		war_exhaustion = -10
+		prestige = 15
+		VLP = { inherit = LPL }
+		create_vassal = VLP
+		ARG = { all_core = { add_core = VLP } }
+		URU = { all_core = { add_core = VLP } }
+		PRG = { all_core = { add_core = VLP } }
+		CHL = { all_core = { add_core = VLP } }
+		}
+	}
+##########SPANISH VICTORY - BOLIVIA
+country_event = {
+	id = 9021
+	title = "EVTNAME9021"
+	desc = "EVTDESC9021"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		BOL = { vassal_of = THIS }
+		}
+	option = {
+		name = "EVTOPTA9021"
+		war_exhaustion = -10
+		prestige = 15
+		VOP = { inherit = BOL }
+		create_vassal = VOP
+		BOL = { all_core = { add_core = VOP } }
+		PEU = { all_core = { add_core = VOP } }
+		}
+	}
+##########SPANISH VICTORY - CHILE
+country_event = {
+	id = 9022
+	title = "EVTNAME9022"
+	desc = "EVTDESC9022"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		CHL = { vassal_of = THIS }
+		}
+	option = {
+		name = "EVTOPTA9022"
+		war_exhaustion = -10
+		prestige = 15
+		VOP = { inherit = CHL }
+		create_vassal = VOP
+		BOL = { all_core = { add_core = VOP } }
+		PEU = { all_core = { add_core = VOP } }
+		CHL = { all_core = { add_core = VOP } }
+		}
+	}
+###########SPANISH TOTAL VICTORY - COLONIAL EMPIRE RETAINED
+country_event = {
+	id = 9023
+	title = "EVTNAME9023"
+	desc = "EVTDESC9023"
+	mean_time_to_happen = { days = 1 }
+	fire_only_once = yes
+	trigger = {
+		tag = SPA
+		VLP = { vassal_of = THIS }
+		VNS = { vassal_of = THIS }
+		VOP = { vassal_of = THIS }
+		VNG = { vassal_of = THIS }
+		CLM = { exists = no }
+		VNZ = { exists = no }
+		ECU = { exists = no }
+		PEU = { exists = no }
+		CHL = { exists = no }
+		BOL = { exists = no }
+		MEX = { exists = no }
+		ARG = { exists = no }
+		}
+	option = {
+		name = "EVTOPTA9023"
+		war_exhaustion = -50
+		prestige = 75
+		set_global_flag = spain_gp
 		}
 	}
