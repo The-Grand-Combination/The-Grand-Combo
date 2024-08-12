@@ -138,7 +138,6 @@ country_event = {
 		enable_canal = 2
 		1755 = {
 			trade_goods = precious_goods
-			set_province_flag = suez_canal
 			any_pop = {
 			limit = { OR = { pop_type = labourers pop_type = farmers } }
 			random_list = {
@@ -1046,3 +1045,1138 @@ country_event = {
 		840 = { set_province_flag = corinth_canal }
 	}
 }
+
+# Channel Tunnel
+
+	# Channel Tunnel Proposal
+	country_event = {
+		id = 36988
+		title = "EVTNAME36988"
+		desc = "EVTDESC36988"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36988"
+			prestige = 5
+			any_country = {
+				limit = {
+					OR = {
+						owns = 301
+						owns = 401
+					}
+					NOT = { tag = THIS }
+				}
+				country_event = 36989
+			}
+		}
+	}
+
+	# Channel Tunnel Proposal Reciever
+	country_event = {
+		id = 36989
+		title = "EVTNAME36989"
+		desc = "EVTDESC36989"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36989"
+			prestige = 5
+			FROM = {
+				country_event = 36990
+			}
+
+			ai_chance = {
+				factor = 100
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36989"
+			prestige = -5
+			FROM = {
+				country_event = 36991
+			}
+
+			ai_chance = {
+				factor = 0
+			}
+		}
+	}
+
+	# Channel Tunnel Proposal Accepted - Financing Original Country
+	country_event = {
+		id = 36990
+		title = "EVTNAME36990"
+		desc = "EVTDESC36990"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36990"
+			prestige = 25
+			FROM = { 
+				country_event = 36993
+			}
+
+			ai_chance = {
+				factor = 50
+				modifier = { factor = 0 NOT = { money = 500000 } money = 1000000 }
+				modifier = { factor = 100 money = 500000 } 
+			}	
+		}
+
+		option = {
+			name = "EVTOPTB36990"
+			prestige = 55
+			country_event = 36999
+			ai_chance = {
+				factor = 40
+				modifier = { factor = 0 NOT = { money = 1000000 } }
+				modifier = { factor = 100 money = 1000000 } 
+			}
+		}
+
+		option = {
+			name = "EVTOPTC36990"
+			prestige = -100
+			FROM = {
+				country_event = 36998
+			}
+
+			ai_chance = {
+				factor = 10
+				modifier = { factor = 100 NOT = { money = 500000} }
+				modifier = { factor = 0 money = 500000 }
+			}
+
+		}
+	}
+
+	# Channel Tunnel Proposal Declined
+	country_event = {
+		id = 36991
+		title = "EVTNAME36991"
+		desc = "EVTDESC36991"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36991"
+			prestige = -10
+			set_global_flag = chunnel_failed
+			clr_global_flag = chunnel_under_discussion
+		}
+	}
+
+	# Channel Tunnel Reset 
+	country_event = {
+		id = 36992
+		title = "EVTNAME36992"
+		desc = "EVTDESC36992"
+		picture = "Suez3"
+
+		trigger = {
+			tag = JAN
+			has_global_flag = chunnel_failed
+		}
+
+		mean_time_to_happen = {
+			years = 5
+		}
+
+		option = {
+			name = "EVTOPTA36992"
+			clr_global_flag = chunnel_failed
+		}
+	}
+
+	# Channel Tunnel Proposal Accepted - Financing Reciever Country
+	country_event = {
+		id = 36993
+		title = "EVTNAME36993"
+		desc = "EVTDESC36993"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+		
+		option = {
+			name = "EVTOPTA36993"
+
+			prestige = 20
+			FROM = { country_event = 36994 }
+		
+			ai_chance = {
+				factor = 90
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36993"
+
+			prestige = -15
+			FROM = { country_event = 36997 }
+
+			ai_chance = {
+				factor = 10 
+			}
+		}
+	}
+
+	# Funding for Chunnel - Half Original
+	country_event = {
+		id = 36994
+		title = "EVTNAME36994"
+		desc = "EVTDESC36994"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36994"
+
+			treasury = -1000000
+			JAN = { 
+				set_variable = {
+					which = total_chunnel_funds
+					value = 10
+				}
+			}
+			FROM = { country_event = 36995 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 1001000 } }
+				modifier = { factor = 100 money = 1001000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36994"
+
+			treasury = -900000
+			JAN = { 
+				set_variable = {
+					which = total_chunnel_funds
+					value = 9
+				}
+			}
+			FROM = { country_event = 36995 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 901000 } }
+				modifier = { factor = 100 NOT = { money = 1001000 } money = 901000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTC36994"
+
+			treasury = -800000
+			JAN = { 
+				set_variable = {
+					which = total_chunnel_funds
+					value = 8
+				}
+			}
+			FROM = { country_event = 36995 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 801000 } }
+				modifier = { factor = 100 NOT = { money = 901000 } money = 801000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTD36994"
+
+			treasury = -700000
+			JAN = { 
+				set_variable = {
+					which = total_chunnel_funds
+					value = 7
+				}
+			}
+			FROM = { country_event = 36995 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 701000 } }
+				modifier = { factor = 100 NOT = { money = 801000 } money = 701000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTE36994"
+
+			treasury = -600000
+			JAN = { 
+				set_variable = {
+					which = total_chunnel_funds
+					value = 6
+				}
+			}
+			FROM = { country_event = 36995 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 601000 } }
+				modifier = { factor = 100 NOT = { money = 701000 } money = 601000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTF36994"
+
+			treasury = -500000
+			JAN = { 
+				set_variable = {
+					which = total_chunnel_funds
+					value = 5
+				}
+			}
+			FROM = { country_event = 36995 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 501000 } }
+				modifier = { factor = 100 NOT = { money = 601000 } money = 501000 }
+			}
+		}
+	}
+
+	# Funding for Chunnel - Half Reciever
+	country_event = {
+		id = 36995
+		title = "EVTNAME36995"
+		desc = "EVTDESC36995"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36995"
+
+			treasury = -1000000
+			JAN = { 
+				change_variable = {
+					which = total_chunnel_funds
+					value = 10
+				}
+			}
+			JAN = { country_event = 36996 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 1001000 } }
+				modifier = { factor = 100 money = 1001000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36995"
+
+			treasury = -900000
+			JAN = { 
+				change_variable = {
+					which = total_chunnel_funds
+					value = 9
+				}
+			}
+			JAN = { country_event = 36996 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 901000 } }
+				modifier = { factor = 100 NOT = { money = 1001000 } money = 901000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTC36995"
+
+			treasury = -800000
+			JAN = { 
+				change_variable = {
+					which = total_chunnel_funds
+					value = 8
+				}
+			}
+			JAN = { country_event = 36996 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 801000 } }
+				modifier = { factor = 100 NOT = { money = 901000 } money = 801000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTD36995"
+
+			treasury = -700000
+			JAN = { 
+				change_variable = {
+					which = total_chunnel_funds
+					value = 7
+				}
+			}
+			JAN = { country_event = 36996 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 701000 } }
+				modifier = { factor = 100 NOT = { money = 801000 } money = 701000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTE36995"
+
+			treasury = -600000
+			JAN = { 
+				change_variable = {
+					which = total_chunnel_funds
+					value = 6
+				}
+			}
+			JAN = { country_event = 36996 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 601000 } }
+				modifier = { factor = 100 NOT = { money = 701000 } money = 601000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTF36995"
+
+			treasury = -500000
+			JAN = { 
+				change_variable = {
+					which = total_chunnel_funds
+					value = 5
+				}
+			}
+			JAN = { country_event = 36996 }
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 501000 } }
+				modifier = { factor = 100 NOT = { money = 601000 } money = 501000 }
+			}
+		}
+	}
+
+
+	# Half-Half Channel Construction 
+	country_event = {
+		id = 36996
+		title = "EVTNAME36996"
+		desc = "EVTNAME36996"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 1825 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 1825 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 10
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 20
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 20
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9 
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 19
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 19
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 20
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTC36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 18
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 18
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 19
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTD36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 2920 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 2920 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 17
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 17
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 18
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTE36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 16
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 16
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 17
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTF36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 15
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 15
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 16
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTG36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 4015 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 4015 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 14
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 14
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 15
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTH36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 4380 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 4380 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 13
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 13
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 14
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTI36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 4745 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 4745 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 12
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 12
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 13
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTJ36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 5110 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 5110 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0 
+					NOT = { 
+						check_variable = {
+							which = total_chunnel_funds 
+							value = 11
+						}
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 11
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 12
+						}
+					}
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTK36996"
+
+			301 = { add_province_modifier = { name = chunnel_construction duration = 5475 } }
+			401 = { add_province_modifier = { name = chunnel_construction duration = 5475 } }
+
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 9
+				modifier = { 
+					factor = 0
+					check_variable = {
+						which = total_chunnel_funds
+						value = 11
+					}
+				}
+				modifier = {
+					factor = 100
+					check_variable = {
+						which = total_chunnel_funds
+						value = 10
+					}
+					NOT = {
+						check_variable = {
+							which = total_chunnel_funds
+							value = 11
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Channel Tunnel Proposal Accepted - Financing Original Country - Half-Half Declined
+	country_event = {
+		id = 36997
+		title = "EVTNAME36997"
+		desc = "EVTDESC36997"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36997"
+
+			prestige = -15
+			country_event = { id = 36999 }
+
+			ai_chance = {
+				factor = 50
+				modifier = { factor = 0 NOT = { money = 1000000 } }
+				modifier = { factor = 100 money = 1000000}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36997"
+
+			prestige = -10
+			set_global_flag = chunnel_failed
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 50
+				modifier = { factor = 100 NOT = { money = 1000000 } }
+			}
+		}
+	}
+
+	# Chunnel Tunnel Proposal Accepted - Financing Reciever Country - Half-Half and Whole Declined
+	country_event = {
+		id = 36998
+		title = "EVTNAME36998"
+		desc = "EVTDESC36998"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36998"
+
+			prestige = -20
+			country_event = { id = 36999 }
+
+			ai_chance = {
+				factor = 50
+				modifier = { factor = 0 NOT = { money = 1000000 } }
+				modifier = { factor = 100 money = 1000000}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36998"
+
+			prestige = 5
+			set_global_flag = chunnel_failed
+			clr_global_flag = chunnel_under_discussion
+
+			ai_chance = {
+				factor = 50
+				modifier = { factor = 100 NOT = { money = 1000000 } }
+			}
+		}
+	}
+
+	# Funding for Chunnel - Whole 
+	country_event = {
+		id = 36999
+		title = "EVTNAME36999"
+		desc = "EVTDESC36999"
+		picture = "Suez3"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA36999"
+
+			treasury = -2000000
+			set_global_flag = chunnel_under_construction
+			clr_global_flag = chunnel_under_discussion
+			random_list = {
+				35 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2190 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+				}
+				30 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2555 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+				}
+				25 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+				}
+				5 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+				}
+				5 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+				}
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 2001000 } }
+				modifier = { factor = 100 money = 2001000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB36999"
+
+			treasury = -1750000
+			set_global_flag = chunnel_under_construction
+			clr_country_flag = chunnel_under_discussion
+			random_list = {
+				30 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2190 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+				}
+				25 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2555 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+				}
+				25 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+				}
+				10 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+				}
+				10 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+				}
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 1751000 } }
+				modifier = { factor = 100 NOT = { money = 2001000 } money = 1751000 }
+			}
+		}
+		
+		option = {
+			name = "EVTOPTC36999"
+
+			treasury = -1500000
+			set_global_flag = chunnel_under_construction
+			clr_country_flag = chunnel_under_discussion
+			random_list = {
+				40 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+				}
+				15 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+				}
+				15 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2555 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+				}
+				15 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+				}
+				15 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2190 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+				}
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 1501000 } }
+				modifier = { factor = 100 NOT = { money = 1751000 } money = 3015010001000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTD36999"
+
+			treasury = -1250000
+			set_global_flag = chunnel_under_construction
+			clr_country_flag = chunnel_under_discussion
+			random_list = {
+				30 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+				}
+				20 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+				}
+				20 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2555 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+				}
+				20 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+				}
+				10 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2190 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+				}
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 NOT = { money = 1251000 } }
+				modifier = { factor = 100 NOT = { money = 1501000 } money = 1251000 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTE36999"
+
+			treasury = -1000000
+			set_global_flag = chunnel_under_construction
+			clr_country_flag = chunnel_under_discussion
+			random_list = {
+				40 = { 1755 = { add_province_modifier = { name = chunnel_construction duration = 3285 } } }
+				35 = { 1755 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } }
+				15 = { 1755 = { add_province_modifier = { name = chunnel_construction duration = 3650 } } }
+				5 = { 1755 = { add_province_modifier = { name = chunnel_construction duration = 2190 } } }
+				5 = { 1755 = { add_province_modifier = { name = chunnel_construction duration = 2555 } } }
+				
+				40 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3285 } }
+				}
+				35 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2920 } } 
+				}
+				15 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+					401 = { add_province_modifier = { name = chunnel_construction duration = 3650 } }
+				}
+				5 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2190 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2190 } }
+				}
+				5 = { 
+					301 = { add_province_modifier = { name = chunnel_construction duration = 2555 } } 
+					401 = { add_province_modifier = { name = chunnel_construction duration = 2555 } }
+				}
+			}
+
+			ai_chance = {
+				factor = 20
+				modifier = { factor = 0 money = 1001000 }
+			}
+		}
+	}
+
+	#Chunnel is Finished
+	country_event = {
+		id = 37000
+		title = "EVTNAME37000"
+		desc = "EVTDESC37000"
+		picture = "panama_canal_finished"
+
+		trigger = {
+			has_country_flag = chunnel_proposer
+			OR = {
+				owns = 301
+				owns = 401
+			}
+			has_global_flag = chunnel_construction
+			NOT = {
+				301 = { has_province_modifier = chunnel_construction }
+				401 = { has_province_modifier = chunnel_construction }
+				is_canal_enabled = 12
+			}
+		}
+
+		mean_time_to_happen = { days = 5 }
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA37000"		
+			enable_canal = 12
+			prestige = 100
+			clr_global_flag = chunnel_construction
+			301 = {
+				trade_goods = precious_goods
+			}
+			401 = {
+				trade_goods = precious_goods
+			}
+		}
+	}

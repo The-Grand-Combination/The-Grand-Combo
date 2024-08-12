@@ -1,73 +1,1449 @@
 political_decisions = {
-
-## Flavor ##
-
-	#Description: If Brazil has a monarchy and is at war, they can form the Fatherland Volunteers, losing war exhaustion and gaining prestige.
-	fatherland_volunteers = {
-		potential = {
-			has_country_modifier = dom_pedro_ii
-			has_country_flag = constitutional_monarchy_gov
-			war = yes
-			NOT = { has_country_flag = pedro_said_it_best }
-		}
-
-		allow = {
-			army_decision_making = 1
-		}
-
-		effect = {
-			war_exhaustion = -1
-			prestige = 20
-			set_country_flag = pedro_said_it_best
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If any Great Power has invented Dreadnoughts, and relations with the UK are good, Brazil can order, pay for and spawn two dreadnoughts in Rio de Janeiro.
-	minas_gerais = {
-		picture = "minas_gerais"
-		potential = {
-			is_core = 2447
-			OR = {
+	## Early troubles
+		#Majoriy Coup
+		majority_coup = {
+			picture = "majority_coup"
+			potential = {
 				tag = BRZ
-				tag = KPB
+				NOT = { year = 1845 
+						has_country_flag = pedro_ii_crowned }
+				has_country_modifier = regency_modifier
+				NOT = { has_global_flag = majority_coup }
 			}
-			year = 1900
-			NOT = { has_country_flag = minas_gerais_ordered }
-			relation = { who = ENG value = 100 }
-			any_greater_power = { invention = dreadnoughts }
+
+			allow = { NOT = { year = 1844 } }
+
+			effect = {
+				set_global_flag = majority_coup
+				set_country_flag = hidden_tooltip
+				random_owned = {
+					limit = {
+						owner = {
+							has_country_flag = hidden_tooltip
+						}
+					}
+					any_country = { limit = { tag = THIS NOT = { year = 1840 } } country_event = 8002 }
+					any_country = { limit = { tag = THIS year = 1840 NOT = { year = 1844 } } country_event = 8004 }
+				}
+				clr_country_flag = hidden_tooltip
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1835 
+							NOT = { year = 1836 }
+						}
+					}
+					owner = { dom_pedro_age_10 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1836 
+							NOT = { year = 1837 }
+						}
+					}
+					owner = { dom_pedro_age_11 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1837 
+							NOT = { year = 1838 }
+						}
+					}
+					owner = { dom_pedro_age_12 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1838 
+							NOT = { year = 1839 }
+						}
+					}
+					owner = { dom_pedro_age_13 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1839
+							NOT = { year = 1840 }
+						}
+					}
+					owner = { dom_pedro_age_14 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1840
+							NOT = { year = 1841 }
+						}
+					}
+					owner = { dom_pedro_age_15 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1841
+							NOT = { year = 1842 }
+						}
+					}
+					owner = { dom_pedro_age_16 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1843
+							NOT = { year = 1844 }
+						}
+					}
+					owner = { dom_pedro_age_17 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							year = 1844
+							NOT = { year = 1845 }
+						}
+					}
+					owner = { dom_pedro_age_18 = { } }
+				}
+			}
+
+			ai_will_do = { factor = 0 }
+		}
+		#Early Alt Hist Republican Coup
+		early_republican_coup = {
+			picture = "republica"
+			potential = {
+				has_country_modifier = regency_modifier
+				tag = BRZ
+				NOT = { year = 1840 }
+				NOT = { has_country_flag = pedro_ii_crowned }
+				
+			}
+
+			allow = {
+				war = no
+				ruling_party_ideology = liberal
+				has_country_modifier = regency_modifier
+				NOT = { plurality = 35 }
+			}
+
+			effect = {
+				country_event = 8009
+			}
+
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-			NOT = { average_militancy = 3 }
-			money = 15000
+	## Farrapos
+		negociate_peace_with_RGS = {
+			picture = "negociate_peace_with_RGS"
+			potential = {
+				has_country_flag = farroupilha_ongoing
+				war_with = RGS
+				RGS = { ai = yes }
+				NOT = { has_global_flag = farroupilha_negotiating }
+			}
+
+			allow = {
+				NOT = { check_variable = { which = farrapos_negotiation value = 3 } }
+				has_country_flag = farroupilha_ongoing
+			}
+
+			effect = {
+				set_global_flag = farroupilha_negotiating
+				set_country_flag = hidden_tooltip
+				random_owned = { 
+					limit = { owner = { has_country_flag = hidden_tooltip } }
+
+					any_country = { limit = { tag = RGS num_of_cities = 5 NOT = { has_country_flag = negotiation_sent } }
+									BRZ = { country_event = 8107 }
+									RGS = { set_country_flag = negotiation_sent }
+					}
+
+					any_country = { limit = { tag = RGS num_of_cities = 3 NOT = { has_country_flag = negotiation_sent } } 
+									BRZ = { country_event = 8108 }
+									RGS = { set_country_flag = negotiation_sent }
+					}
+
+					any_country = { limit = { tag = RGS num_of_cities = 1 NOT = { has_country_flag = negotiation_sent } } 
+									BRZ = { country_event = 8109 }
+									RGS = { set_country_flag = negotiation_sent }
+					}
+
+					RGS = { clr_country_flag = negotiation_sent }
+				}	
+				clr_country_flag = hidden_tooltip
+
+				random_owned = {
+					limit = {
+						owner = {
+							check_variable = { which = farrapos_negotiation value = 0 }
+							NOT = { check_variable = { which = farrapos_negotiation value = 1 } }
+						}
+					}
+					owner = { rio_grande_peace_deal_tooltip_0 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							check_variable = { which = farrapos_negotiation value = 1 }
+							NOT = { check_variable = { which = farrapos_negotiation value = 2 } }
+						}
+					}
+					owner = { rio_grande_peace_deal_tooltip_1 = { } }
+				}
+				random_owned = {
+					limit = {
+						owner = {
+							check_variable = { which = farrapos_negotiation value = 2 }
+							NOT = { check_variable = { which = farrapos_negotiation value = 3 } }
+						}
+					}
+					owner = { rio_grande_peace_deal_tooltip_2 = { } }
+				}
+
+				random_owned = {
+					limit = {
+						owner = {
+							check_variable = { which = farrapos_negotiation value = 3 }
+						}
+					}
+					owner = { rio_grande_peace_deal_tooltip_3 = { } }
+				}
+
+				change_variable = { which = farrapos_negotiation value = 1 }
+			}
+
+			ai_will_do = { factor = 0 }
 		}
 
-		effect = {
-			prestige = 30
-			treasury = -15000
-			2447 = { # Rio de Janeiro
-				sub_unit = {
-					type = dreadnought
-					value = current
-				}
-				sub_unit = {
-					type = dreadnought
-					value = current
-				}
+	## Slavery 
+		eusebio_de_queiroz = {
+			picture = eusebio
+			potential = { 
+				is_core = 2447
+				has_country_flag = brazil_content
+				slavery = yes_slavery
+				NOT = { has_country_flag = eusebio_de_queiroz }
 			}
-			any_neighbor_country = {
-				limit = { capital_scope = { continent = south_america } }
-				relation = {
-					who = THIS
-					value = -50
+		
+			allow = {
+				OR = {
+					upper_house = { ideology = liberal value = 0.25 }
+					upper_house = { ideology = socialist value = 0.25 }
 				}
+				NOT = { has_country_modifier = slavery_action_cooldown }
 			}
-			set_country_flag = minas_gerais_ordered
-		}
-	}
+		
+			effect = {
+				set_country_flag = aberdeen_accepted_flag
+				set_country_flag = eusebio_de_queiroz
+				clr_country_flag = slave_trader
+				clr_country_flag = slave_trade_leader
 
+				prestige = -1
+				badboy = -1
+				plurality = -2
+
+				any_pop = {
+					limit = { type = aristocrats }
+					consciousness = 4
+					militancy = 4
+				}
+				any_pop = {
+					limit = { type = slaves }
+					consciousness = 1
+				}
+				any_pop = {
+					limit = { has_pop_culture = afro_brazilian NOT = { type = slaves } }
+					consciousness = 1
+					militancy = -1
+				}
+		
+				remove_country_modifier = atlantic_slave_trade
+				add_country_modifier = { name = abolition_tensions duration = -1 }
+				add_country_modifier = { name = slavery_action_cooldown duration = 1825 }
+				ban_slave_trade = {}
+				brz_economics_improve = {}
+				JAN = { change_variable = { which = brz_slavery_economics value = 10 } }
+				JAN = { change_variable = { which = brz_slavery_politics value = 5 } }
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+		
+		ventre_livre = {
+			picture = ventre_livre 
+
+			potential = {
+				is_core = 2447
+				has_country_flag = brazil_content
+				slavery = yes_slavery
+			}
+		
+			allow = {
+				idealism = 1
+				state_n_government = 1
+				NOT = { has_country_modifier = atlantic_slave_trade }
+				NOT = { has_country_modifier = slavery_action_cooldown }
+			}
+		
+			effect = {
+				any_pop = {
+					limit = { type = aristocrats }
+					consciousness = 2
+					militancy = 2
+				}
+				plurality = -4
+				political_reform = freedom_of_womb
+				set_country_flag = ventre_livre
+				add_country_modifier = { name = slavery_action_cooldown duration = 1825 }
+
+				brz_economics_improve = {}
+				JAN = { change_variable = { which = brz_slavery_economics value = 5 } }
+				JAN = { change_variable = { which = brz_slavery_politics value = 5 } }
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+		sexagenarios = {
+			picture = sexagenarios
+
+			potential = {
+				is_core = 2447
+				has_country_flag = brazil_content
+				OR = {
+					slavery = freedom_of_womb
+					slavery = yes_slavery
+				}
+			}
+		
+			allow = {
+				slavery = freedom_of_womb
+				nationalism_n_imperialism = 1
+				invention = biased_multiculturalism
+				money = 60000
+				NOT = { has_country_modifier = slavery_action_cooldown }
+			}
+		
+			effect = {
+				any_pop = {
+					limit = { type = aristocrats }
+					consciousness = 1
+					militancy = 1
+				}
+				money = -50000
+				plurality = -5
+				set_country_flag = lei_sexagenarios
+				add_country_modifier = { name = lei_do_registro duration = -1 }
+				add_country_modifier = { name = slavery_action_cooldown duration = 1825 }
+
+				brz_economics_improve = {}
+				brz_politics_improve = {}
+				JAN = { change_variable = { which = brz_slavery_economics value = 10 } }
+				JAN = { change_variable = { which = brz_slavery_politics value = 15 } }
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+		projeto_dantas = {
+
+			picture = dantas
+
+			potential = { 
+				has_country_flag = brazil_content
+				slavery = freedom_of_womb
+				NOT = { has_country_modifier = lei_do_registro }
+			}
+		
+			allow = {
+				slavery = freedom_of_womb
+				nationalism_n_imperialism = 1
+				invention = biased_multiculturalism
+				NOT = { has_country_flag = lei_sexagenarios }
+				money = 250000
+			}
+		
+			effect = {
+				money = -250000
+				plurality = -10
+				set_country_flag = afro_agrarian_reform
+				any_pop = {
+					limit = { type = aristocrats }
+							consciousness = 5
+							militancy = 5
+				}
+				add_country_modifier = { name = lei_do_registro duration = -1 }
+				add_country_modifier = { name = slavery_action_cooldown duration = 1825 }
+
+				brz_economics_improve = {}
+				brz_politics_worsen = {}
+				
+				JAN = { change_variable = { which = brz_slavery_economics value = 15 } }
+				JAN = { change_variable = { which = brz_slavery_politics value = -5 } }
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+		golden_law = {
+			picture = golden_law
+			potential = {
+				has_country_flag = brazil_content
+				OR = { slavery = yes_slavery slavery = freedom_of_womb }
+				NOT = { has_country_flag = studying_slavery }
+			}
+
+			allow = {
+				ideological_thought = 1
+				NOT = { has_country_modifier = slavery_action_cooldown }
+			}
+
+			effect = {
+				country_event = 8301
+				set_country_flag = studying_slavery
+				random_owned = {
+					limit = {
+						owner = {
+							has_country_flag = afro_agrarian_reform
+						}
+					}
+					owner = { add_accepted_culture = afro_brazilian }
+				}
+				#Politics
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 1 } NOT = { check_variable = { which = brz_slavery_politics value = 10 } } } }
+								owner = { brz_politics_check_tooltip_0 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 10 } NOT = { check_variable = { which = brz_slavery_politics value = 20 } } } }
+								owner = { brz_politics_check_tooltip_1 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 20 } NOT = { check_variable = { which = brz_slavery_politics value = 30 } } } }
+								owner = { brz_politics_check_tooltip_2 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 30 } NOT = { check_variable = { which = brz_slavery_politics value = 40 } } } }
+								owner = { brz_politics_check_tooltip_3 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 40 } NOT = { check_variable = { which = brz_slavery_politics value = 50 } } } }
+								owner = { brz_politics_check_tooltip_4 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 50 } NOT = { check_variable = { which = brz_slavery_politics value = 60 } } } }
+								owner = { brz_politics_check_tooltip_5 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 60 } NOT = { check_variable = { which = brz_slavery_politics value = 70 } } } }
+								owner = { brz_politics_check_tooltip_6 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 70 } NOT = { check_variable = { which = brz_slavery_politics value = 80 } } } }
+								owner = { brz_politics_check_tooltip_7 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 80 } NOT = { check_variable = { which = brz_slavery_politics value = 90 } } } }
+								owner = { brz_politics_check_tooltip_8 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 90 } NOT = { check_variable = { which = brz_slavery_politics value = 100 } } } }
+								owner = { brz_politics_check_tooltip_9 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_politics value = 100 } } }
+								owner = { brz_politics_check_tooltip_10 = { } }
+				}
+				
+				#Economics
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 1 } NOT = { check_variable = { which = brz_slavery_economics value = 10 } } } }
+								owner = { brz_economics_check_tooltip_0 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 10 } NOT = { check_variable = { which = brz_slavery_economics value = 20 } } } }
+								owner = { brz_economics_check_tooltip_1 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 20 } NOT = { check_variable = { which = brz_slavery_economics value = 30 } } } }
+								owner = { brz_economics_check_tooltip_2 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 30 } NOT = { check_variable = { which = brz_slavery_economics value = 40 } } } }
+								owner = { brz_economics_check_tooltip_3 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 40 } NOT = { check_variable = { which = brz_slavery_economics value = 50 } } } }
+								owner = { brz_economics_check_tooltip_4 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 50 } NOT = { check_variable = { which = brz_slavery_economics value = 60 } } } }
+								owner = { brz_economics_check_tooltip_5 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 60 } NOT = { check_variable = { which = brz_slavery_economics value = 70 } } } }
+								owner = { brz_economics_check_tooltip_6 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 70 } NOT = { check_variable = { which = brz_slavery_economics value = 80 } } } }
+								owner = { brz_economics_check_tooltip_7 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 80 } NOT = { check_variable = { which = brz_slavery_economics value = 90 } } } }
+								owner = { brz_economics_check_tooltip_8 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 90 } NOT = { check_variable = { which = brz_slavery_economics value = 100 } } } }
+								owner = { brz_economics_check_tooltip_9 = { } }
+				}
+				random_owned = { limit = { JAN = { check_variable = { which = brz_slavery_economics value = 100 } } }
+								owner = { brz_economics_check_tooltip_10 = { } }
+				}
+			}
+		}
+
+	## Expansion
+		claim_provincia_cisplatina = {
+			picture = banda_oriental
+			potential = {
+				has_country_flag = brazil_content
+				neighbour = URU
+				NOT = {	has_country_flag = cisplatina_claimed }
+				URU = { exists = yes }
+			}
+
+			allow = {
+				state_n_government = 1
+				rank = 10
+			}
+
+			effect = {
+				set_country_flag = cisplatina_claimed
+				badboy = 4
+				casus_belli = { target = URU
+								type = conquest
+								months = 120 }
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = { factor = 0 badboy = 0.6 }
+			}
+		}
+
+		claim_provincia_cisplatina_rgs = {
+			picture = banda_oriental
+			potential = {
+				tag = RGS
+				neighbour = URU
+				NOT = {	has_country_flag = cisplatina_claimed }
+				URU = { exists = yes }
+			}
+
+			allow = {
+				state_n_government = 1
+				rank = 10
+			}
+
+			effect = {
+				set_country_flag = cisplatina_claimed
+				badboy = 4
+				casus_belli = { target = URU
+								type = conquest
+								months = 120 }
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = { factor = 0 badboy = 0.6 }
+			}
+		}
+
+		cisplatina_is_ours = {
+			picture = cisplatina
+			potential = {
+				owns = 2344
+				URU = { exists = no }
+				OR = { has_country_flag = brazil_content tag = RGS }
+				NOT = { has_country_flag = cisplatina_is_ours }
+			}
+
+			allow = {
+				2344 = { controlled_by = BRZ province_control_days = 1825 }
+				romanticism = 1
+			}
+
+			effect = {
+				set_country_flag = cisplatina_is_ours
+				set_global_flag = brazil_has_renamed_cisplatina
+				badboy = 2
+				URU_2344 = { add_core = THIS }
+				2344 = { change_province_name = "Montevideu" }
+				2346 = { change_province_name = "Santa Rosa" }
+				2344 = { state_scope = { change_region_name = "Cisplatina" } }
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = { factor = 0 badboy = 0.6 }
+			}
+		}
+
+		claim_paraguay = {
+			picture = map_paraguay
+			potential = {
+				neighbour = PRG
+				OR = { tag = RGS has_country_flag = brazil_content }
+				NOT = { has_country_flag = paraguay_is_ours }
+				PRG = { exists = yes }
+			}
+
+			allow = {
+				war_with = PRG
+				nationalism_n_imperialism = 1
+				NOT = { PRG = { any_owned_province = { NOT = { controlled_by = THIS } } } }
+			}
+
+			effect = {
+				set_country_flag = paraguay_is_ours
+				badboy = 4
+				end_war = PRG
+				inherit = PRG
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					badboy = 0.6
+				}
+			}
+		}
+
+		paraguay_is_ours = {
+			picture = map_paraguay
+			potential = {
+				has_country_flag = brazil_content
+				OR = { has_country_flag = paraguay_is_ours
+					   PRG = { exists = no } 
+				}
+				NOT = { has_country_flag = paraguay_assimilated }
+			}
+
+			allow = {
+				nationalism_n_imperialism = 1
+				romanticism = 1
+				PRG = { any_core = { owned_by = THIS } }
+				2339 = { controlled_by = THIS province_control_days = 3650 }
+			}
+
+			effect = {
+				set_country_flag = paraguay_assimilated
+				set_global_flag = brazil_has_renamed_paraguay
+				badboy = 5
+				random_owned = { limit = { province_id = 2420 } 2420 = { change_province_name = "Ponta Porã" add_core = THIS } }
+				random_owned = { limit = { province_id = 2339 } 2339 = { change_province_name = "Assunção" add_core = THIS } }
+				random_owned = { limit = { province_id = 2340 } 2340 = { change_province_name = "Vila Real" add_core = THIS } }
+				random_owned = { limit = { province_id = 2341 } 2341 = { change_province_name = "Itapuá" add_core = THIS } }
+				random_owned = { limit = { province_id = 2342 } 2342 = { change_province_name = "Vila Rica do Espirito Santo" add_core = THIS } }
+				2340 = { state_scope = { change_region_name = "Paraguai" } }
+				set_country_flag = hidden_tooltip
+				random_owned = {
+					limit = { owner = { has_country_flag = hidden_tooltip NOT = { has_global_flag = extra_flavour_disabled } } }
+					random = {
+						chance = 1
+						owner = { 2340 = { state_scope = { change_region_name = "Mato Grosso do Oeste" } } }
+					}
+				}
+				clr_country_flag = hidden_tooltip
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					badboy = 0.6
+				}
+			}
+		}
+
+		rio_da_prata = {
+			picture = rhodesia_charter
+			potential = {
+				has_country_flag = brazil_content
+				owns = 2344
+				NOT = { has_country_flag = prata_claimed }
+			}
+
+			allow = {
+				has_country_flag = paraguay_is_ours
+				has_country_flag = cisplatina_is_ours
+				war = no
+				nationalism_n_imperialism = 1
+				is_greater_power = yes
+			}
+
+			effect = {
+				set_country_flag = prata_claimed
+				badboy = 10
+				2459 = { add_core = THIS } # Easterm Misiones
+				2462 = { add_core = THIS } #
+				ARG_2554 = { add_core = THIS } # Misiones
+				ARG_2356 = { add_core = THIS } # Corrientes
+				ARG_2360 = { add_core = THIS } # Entre Rios
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					badboy = 0.6
+				}
+			}
+		}
+
+		brasilic_confederation_1 = {
+			picture = brasilic_confederation_1
+			potential = {
+				tag = BRZ
+				is_greater_power = yes
+				NOT = { has_country_flag = brasilian_party_funded }
+			}
+
+			allow = {
+				is_greater_power = yes
+				rank = 6
+				nationalism_n_imperialism = 1
+				invention = expansionism
+				invention = manifest_destiny
+				money = 150000
+				NOT = { POR = { alliance_with = THIS } }
+			}
+
+			effect = {
+				badboy = 6
+				money = -150000
+				relation = { who = POR value = -200 }
+				POR = { any_owned = { limit = { OR = { region = POR_1999 region = POR_2003 } }
+											add_province_modifier = { name = partido_brasileiro duration = 5000 }
+					}
+				}
+				POR = { country_event = 8205 }
+				set_country_flag = brasilian_party_in_motion
+				set_country_flag = brasilian_party_funded
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					badboy = 0.6
+				}
+			}
+		}
+
+		eastern_misiones_dispute = {
+			picture = missiones
+			potential = {
+				owns = 2461
+				OR = {
+					2459 = { empty = yes }
+					2462 = { empty = yes }
+				}
+				NOT = { has_global_flag = eastern_misiones_dispute }
+				year = 1860
+			}
+
+			allow = {
+				war = no
+				revolution_n_counterrevolution = 1
+				invention = manifest_destiny
+			}
+
+			effect = {
+				set_global_flag = eastern_misiones_dispute
+				random_owned = { limit = { owner = { tag = RGS } } 2459 = { add_core = RGS } }
+				random_owned = { limit = { owner = { tag = BRZ } } 2459 = { add_core = BRZ } }
+				random_owned = { limit = { owner = { tag = KPB } } 2459 = { add_core = BRZ add_core = KPB } }
+				random_owned = { limit = { 2459 = { empty = yes } } 2459 = { secede_province = THIS } }
+				random_owned = { limit = { owner = { tag = RGS } } 2462 = { add_core = RGS } }
+				random_owned = { limit = { owner = { tag = BRZ } } 2462 = { add_core = BRZ } }
+				random_owned = { limit = { owner = { tag = KPB } } 2462 = { add_core = BRZ add_core = KPB } }
+				random_owned = { limit = { 2462 = { empty = yes } } 2462 = { secede_province = THIS } }
+
+				random_owned = {
+					limit = { 2459 = { NOT = { life_rating = 30 } } }
+					2459 = { life_rating = 21 }
+				}
+				random_owned = {
+					limit = { 2462 = { NOT = { life_rating = 30 } } }
+					2462 = { life_rating = 21 }
+				}
+
+				random_country = {
+					limit = {
+						is_vassal = no
+						owns = 2554
+						owns = 2341
+						NOT = { tag = THIS }
+					}
+					country_event = 8210
+				}
+				random_country = {
+					limit = {
+						is_vassal = yes
+						owns = 2554
+						owns = 2341
+						NOT = { tag = THIS }
+					}
+					overlord = { limit = { NOT = { tag = THIS } } country_event = 8210 }
+				}
+				random_country = {
+					limit = {
+						is_vassal = no
+						owns = 2554
+						NOT = { owns = 2341 }
+						NOT = { tag = THIS }
+					}
+					country_event = 8210
+				}
+				random_country = {
+					limit = {
+						is_vassal = yes
+						owns = 2554
+						NOT = { owns = 2341 }
+						NOT = { tag = THIS }
+					}
+					overlord = { limit = { NOT = { tag = THIS } } country_event = 8210 }
+				}
+				random_country = {
+					limit = {
+						is_vassal = no
+						NOT = { owns = 2554 }
+						owns = 2341
+						NOT = { tag = THIS }
+					}
+					country_event = 8210
+				}
+				random_country = {
+					limit = {
+						is_vassal = yes
+						NOT = { owns = 2554 }
+						owns = 2341
+						NOT = { tag = THIS }
+					}
+					overlord = { limit = { NOT = { tag = THIS } } country_event = 8210 }
+				}
+			}
+		}
+
+		treaty_of_bogota = {
+			picture = colombia_map
+			potential = {
+				owns = 2403 # Manaus
+				owns = 2404 # Sao Jose do Javari
+				has_country_flag = brazil_content
+				OR = {
+					is_vassal = no
+					overlord = {
+						NOT = {
+							primary_culture = colombian
+							primary_culture = ecuadorian
+							primary_culture = venezuelan
+							primary_culture = peruvian
+						}
+					}
+				}
+				OR = {
+					NOT = { owns = 2401 }
+					NOT = { owns = 2263 }
+					NOT = { owns = 3295 }
+				}
+				2401 = { owner = { NOT = { truce_with = THIS } } }
+				2263 = { owner = { NOT = { truce_with = THIS } } }
+				3295 = { owner = { NOT = { truce_with = THIS } } }
+			}
+
+			allow = {
+				war = no
+				OR = {
+					year = 1908
+					mass_politics = 1
+				}
+			}
+
+			effect = {
+				3295 = { add_core = BRZ }
+				random_owned = {
+					limit = { owner = { tag = KPB } }
+					3295 = { add_core = KPB }
+				}
+				2263 = { add_core = BRZ }
+				random_owned = {
+					limit = { owner = { tag = KPB } }
+					2263 = { add_core = KPB }
+				}
+				2401 = { add_core = BRZ }
+				random_owned = {
+					limit = { owner = { tag = KPB } }
+					2401 = { add_core = KPB }
+				}
+
+				## Event ##
+					random_country = {
+						limit = {
+							owns = 3295
+							owns = 2263
+							owns = 2401
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+					random_country = {
+						limit = {
+							owns = 3295
+							owns = 2263
+							NOT = { owns = 2401 }
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+					random_country = {
+						limit = {
+							owns = 3295
+							NOT = { owns = 2263 }
+							owns = 2401
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+					random_country = {
+						limit = {
+							NOT = { owns = 3295 }
+							owns = 2263
+							owns = 2401
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+					random_country = {
+						limit = {
+							owns = 3295
+							NOT = { owns = 2263 }
+							NOT = { owns = 2401 }
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+					random_country = {
+						limit = {
+							NOT = { owns = 3295 }
+							owns = 2263
+							NOT = { owns = 2401 }
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+					random_country = {
+						limit = {
+							NOT = { owns = 3295 }
+							NOT = { owns = 2263 }
+							owns = 2401
+							NOT = {
+								tag = THIS
+								OR = {
+									has_country_flag = ortiz_mangabeira_accepted
+									has_country_flag = ortiz_mangabeira_refused
+								}
+							}
+						}
+						country_event = 8220
+					}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+		treaty_of_petropolis = {
+			picture = treaty_of_petropolis_stamp
+			potential = {
+				owns = 2549 # Tarauaca
+				2549 = { is_core = THIS }
+				OR = {
+					primary_culture = bolivian
+					primary_culture = chilean
+					primary_culture = peruvian
+					primary_culture = brazilian
+					primary_culture = portuguese
+				}
+				NOT = { has_country_flag = treaty_of_petropolis }
+				NOT = { has_country_flag = signed_treaty_of_petropolis }
+			}
+
+			allow = {
+				war = no
+				money = 200000
+				OR = {
+					year = 1903
+					mass_politics = 1
+				}
+			}
+
+			effect = {
+				set_country_flag = treaty_of_petropolis
+				treasury = -200000
+				any_country = {
+					limit = { any_core = { region = BRZ_2549 } }
+					country_event = 8221
+				}
+			}
+
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					factor = 0
+					NOT = { money = 400000 }
+				}
+				modifier = {
+					factor = 0
+					NOT = { tag = BRZ year = 1910 }
+				}
+			}
+		}
+
+		guiana_negotiations = {
+			picture = guyanas
+			potential = {
+				has_country_flag = brazil_content
+				owns = 2412
+				owns = 2402
+				is_greater_power = yes
+				NOT = { has_country_flag = guiana_purchase }
+			}
+	
+			allow = {
+				war = no
+				money = 1000000
+				is_greater_power = yes
+				nationalism_n_imperialism = 1
+				invention = expansionism
+				invention = manifest_destiny
+				has_country_flag = cisplatina_is_ours
+			}
+			
+			effect = {
+				set_country_flag = guiana_purchase
+				any_country = { 
+					limit = { 
+						NOT = { capital_scope = { continent = south_america } }
+						any_owned_province = { 
+							OR = { 
+								region = ENG_1979 
+								region = NET_2240
+								region = FRA_2241
+							} 
+						} 
+					}
+					country_event = 8231
+				}
+			    brz_guyanas_buy = { }
+			}
+	
+			ai_will_do = { factor = 0 }
+		}
+
+		santo_amaro_plans = {
+			picture = greater_brazilian_destiny
+			potential = {
+				tag = BRZ
+				rank = 8
+				has_country_flag = cisplatina_is_ours
+				has_country_flag = paraguay_is_ours
+				has_country_flag = guiana_purchase
+				has_country_flag = prata_claimed
+				NOT = { has_country_flag = greater_brazilian_destiny }
+			}
+
+			allow = { 
+				nationalism_n_imperialism = 1
+				invention = expansionism
+				invention = manifest_destiny
+				is_greater_power = yes
+				rank = 6
+				ENG_1979 = { owned_by = THIS }
+				NET_2240 = { owned_by = THIS } 
+				FRA_2241 = { owned_by = THIS } 
+				URU_2344 = { owned_by = THIS }
+				ARG_2554 = { owned_by = THIS } 
+				ARG_2356 = { owned_by = THIS } 
+				ARG_2360 = { owned_by = THIS }
+				PRG_2343 = { owned_by = THIS }
+			}
+
+			effect = {
+				set_country_flag = greater_brazilian_destiny
+				country_event = 8240
+			}
+		}
+
+		santo_amaro_plans_la_plata = {
+			picture = santo_amaro_la_plata
+			potential = {
+				has_country_flag = santo_amaro_plans_ongoing
+				NOT = { has_country_flag = santo_amaro_la_plata }
+			}
+
+			allow = { 
+				is_greater_power = yes
+				rank = 6
+				OR = {
+					ARG = {
+						OR = {
+							vassal_of = THIS
+
+							all_core = {
+								OR = {
+									owned_by = THIS
+
+									owner = {
+										vassal_of = THIS
+									}
+								}
+							}
+						}
+					}
+
+					ARC = {
+						OR = {
+							vassal_of = THIS
+							all_core = {
+								OR = {
+									owned_by = THIS
+
+									owner = {
+										vassal_of = THIS
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			effect = {
+				any_country = {
+					limit = {
+						vassal_of = THIS
+						OR = {
+							tag = ARG
+							tag = ARC
+						}
+					}
+					all_core = { add_core = VLP }
+					annex_to = VLP
+				}
+				create_vassal = VLP
+				VLP = { government = dominion }
+				set_country_flag = santo_amaro_la_plata
+				change_variable = { which = brazil_expansion value = 1 }
+			}
+		}
+		
+		santo_amaro_plans_southern_cone = {
+			picture = santo_amaro_southern_cone
+			potential = {
+				has_country_flag = santo_amaro_plans_ongoing
+				NOT = { has_country_flag = santo_amaro_southern_cone }
+			}
+
+			allow = { 
+				is_greater_power = yes
+				rank = 6
+				CHL = {
+					OR = {
+						vassal_of = THIS
+
+						all_core = {
+							OR = {
+								owned_by = THIS
+
+								owner = {
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+				}
+			}
+
+			effect = {
+				any_country = {
+					limit = {
+						vassal_of = THIS
+						tag = CHL
+					}
+					all_core = { add_core = CGC }
+					annex_to = CGC
+				}
+				create_vassal = CGC
+				CGC = { government = dominion }
+				set_country_flag = santo_amaro_southern_cone
+				change_variable = { which = brazil_expansion value = 1 }
+			}
+		}
+
+		santo_amaro_plans_peru_bolivia = {
+			picture = santo_amaro_peru_bolivia
+			potential = {
+				has_country_flag = santo_amaro_plans_ongoing
+				NOT = { has_country_flag = santo_amaro_peru_bolivia }
+			}
+
+			allow = { 
+				is_greater_power = yes
+				rank = 6
+				OR = {
+					PEU = {
+						OR = {
+							vassal_of = THIS
+							all_core = {
+								OR = {
+									owned_by = THIS
+
+									owner = { vassal_of = THIS }
+								}
+							}
+						}
+					}
+					SPU = {
+						OR = {
+							vassal_of = THIS
+							all_core = {
+								OR = {
+									owned_by = THIS
+
+									owner = { vassal_of = THIS }
+								}
+							}
+						}
+					}
+				}
+				BOL = {
+					OR = {
+						vassal_of = THIS
+
+						all_core = {
+							OR = {
+								owned_by = THIS
+
+								owner = {
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+				}
+			}
+
+			effect = {
+				any_country = {
+					limit = {
+						vassal_of = THIS
+						OR = {
+							tag = PEU
+							tag = SPU
+							tag = BOL
+						}
+					}
+					all_core = { add_core = VOP }
+					annex_to = VOP
+				}
+				create_vassal = VOP
+				VOP = { government = dominion }
+				set_country_flag = santo_amaro_peru_bolivia
+				change_variable = { which = brazil_expansion value = 1 }
+			}
+		}
+
+		santo_amaro_plans_gran_colombia = {
+			picture = santo_amaro_gran_colombia
+			potential = {
+				has_country_flag = santo_amaro_plans_ongoing
+				NOT = { has_country_flag = santo_amaro_gran_colombia }
+			}
+
+			allow = { 
+				is_greater_power = yes
+				rank = 6
+				CLM = {
+					OR = {
+						vassal_of = THIS
+
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+				}
+				VNZ = {
+					OR = {
+						vassal_of = THIS
+
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+				}
+				ECU = {
+					OR = {
+						vassal_of = THIS
+
+						all_core = {
+							OR = {
+								owned_by = THIS
+								owner = {
+									vassal_of = THIS
+								}
+							}
+						}
+					}
+				}
+			}
+
+			effect = {
+				any_country = {
+					limit = {
+						vassal_of = THIS
+						OR = {
+							tag = CLM
+							tag = VNZ
+							tag = ECU
+						}
+					}
+					all_core = { add_core = VNG }
+					annex_to = VNG
+				}
+				create_vassal = VNG
+				VNG = { government = dominion }
+				change_variable = { which = brazil_expansion value = 1 }
+				set_country_flag = santo_amaro_gran_colombia
+			}
+		}
+
+	#City building
+		#Brasilia
+		a_new_capital_for_brasil = {
+			picture = old_rio_dec
+			potential = {
+				tag = BRZ
+				capital = 2421
+				year = 1890
+				NOT = { has_country_flag = searching_for_a_capital }
+			}
+
+			allow = {
+				war = no
+				money = 25000
+				social_alienation = 1
+				integral_rail_system = 1
+				mass_politics = 1
+			}
+
+			effect = {
+				country_event = 8410
+				set_country_flag = searching_for_a_capital
+			}
+			ai_will_do = { factor = 1 }
+		}
+
+		build_brasilia = {
+			picture = brasilia
+			potential = {
+				has_country_flag = brasilia_ready
+				NOT = { has_country_flag = building_brasilia }
+			}
+
+			allow = {
+				war = no
+				money = 250000
+			}
+
+			effect = {
+				money = -250000
+				prestige = 5
+				set_country_flag = building_brasilia
+				add_country_modifier = { name = building_brasilia duration = 1095 }
+			}
+			ai_will_do = { factor = 1 }
+		}
+
+		#Belo Horizonte
+		build_belo_horizonte = {
+			picture = build_belo_horizonte
+			potential = {
+				owns = 2442
+				has_country_flag = brazil_content
+				year = 1870
+				NOT = { has_country_flag = bh_built }
+			}
+
+			allow = {
+				money = 150000
+			}
+
+			effect = {
+				set_country_flag = bh_built
+				treasury = -150000
+				2442 = {
+					change_province_name = "Belo Horizonte"
+					life_rating = 4
+					trade_goods = iron
+					add_province_modifier = { name = recently_built_city duration = 365 }
+				}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+	##Random Flavor
+	
 	#Description: Gain relations with Argentina.
 	state_visit_to_argentina = { #original VIP event idea by General Perón, scripted by Scythe
 		picture = court_yard_speech
@@ -89,7 +1465,7 @@ political_decisions = {
 
 		effect = {
 			ARG = {
-				country_event = 146605
+				country_event = 8022
 				relation = { who = THIS value = 35 }
 			}
 			random_country = { #if the relations between Chile and Argentina are bad, decrease relations between Chile and Brazil as well
@@ -104,1077 +1480,212 @@ political_decisions = {
 		}
 	}
 
-## City Building ##
 
-	#Description: Build a new capital, gain population growth.
-	build_brasilia = {
-		picture = brasilia
-		potential = {
-			tag = BRZ
-			owns = 2421
-			year = 1891
-			NOT = { has_country_flag = build_brasilia }
-		}
-
-		allow = {
-			war = no
-			money = 500000
-			rank = 16
-		}
-
-		effect = {
-			money = -300000
-			prestige = 15
-			any_pop = { militancy = -1 consciousness = 1 }
-			2421 = {
-				change_province_name = "Brasília"
-				add_province_modifier = { name = recently_built_city duration = 365 }
-				add_province_modifier = { name = new_capital_modifier duration = 3650 }
-			}
-			capital = 2421
-			set_country_flag = build_brasilia
-		}
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Build a new city, gain population growth.
-	build_teresina = {
-		picture = build_teresina
-		potential = {
-			owns = 2426
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			year = 1852
-			NOT = { has_country_flag = teresina_built }
-		}
-
-		allow = {
-			money = 15000
-		}
-
-		effect = {
-			set_country_flag = teresina_built
-			treasury = -15000
-			2426 = {
-				change_province_name = "Teresina"
-				add_province_modifier = { name = recently_built_city duration = 365 }
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Build a new city, gain population growth.
-	build_belo_horizonte = {
-		picture = build_belo_horizonte
-		potential = {
-			owns = 2442
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			year = 1870
-			NOT = { has_country_flag = bh_built }
-		}
-
-		allow = {
-			money = 15000
-		}
-
-		effect = {
-			set_country_flag = bh_built
-			treasury = -15000
-			2442 = {
-				change_province_name = "Belo Horizonte"
-				life_rating = 4
-				trade_goods = iron
-				add_province_modifier = { name = recently_built_city duration = 365 }
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Build new cities, gain population growth.
-	brazilian_rubber_boom = {
-		picture = rubber_cycle
-		potential = {
-			owns = 2550
-			owns = 2419
-			owns = 2532
-			owns = 2410
-			owns = 2402
-			year = 1880
-			NOT = { has_country_flag = brazilian_rubber_boom }
-		}
-
-		allow = {
-			war = no
-			state_n_government = 1
-		}
-
-		effect = {
-			set_country_flag = brazilian_rubber_boom
-			2410 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
-			2402 = { add_province_modifier = { name = colonial_recruitment duration = 365 } }
-			2419 = { change_province_name = "Campo Grande" trade_goods = cattle }
-			2550 = { change_province_name = "Porto Velho" add_province_modifier = { name = recently_built_city duration = 150 } }
-			2532 = { change_province_name = "Boa Vista" add_province_modifier = { name = recently_built_city duration = 150 } }
-			random_owned = {
-				limit = { province_id = 2549 }
-				change_province_name = "Rio Branco" add_province_modifier = { name = recently_built_city duration = 100 }
-			}
-		}
-	}
-
-## Slavery ##
-
-	#Description: Brazil can abolish slavery.
-	golden_law = {
-		picture = golden_law
-		potential = {
-			is_core = 2447
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			NOT = { has_country_flag = golden_law_passed }
-			has_country_flag = monarchy_gov
-		}
-
-		allow = {
-			realism = 1
-			invention = national_fraternity
-			OR = {
-				upper_house = { ideology = liberal value = 0.2 }
-				upper_house = { ideology = socialist value = 0.2 }
-			}
-		}
-
-		effect = {
-			set_country_flag = golden_law_passed
-			badboy = -1
-			add_accepted_culture = afro_brazilian
-			random_owned = {
-				limit = { owner = { NOT = { slavery = no_slavery } } }
-				owner = { political_reform = no_slavery }
-			}
-			slaves = { consciousness = -5 militancy = -6 }
-			aristocrats = { militancy = 3 consciousness = 5 }
-		}
-	}
-
-	#Description: If Brazil still has slavery, they can appease the mulattos, reducing their militancy.
-	mulatto_african_tension = {
-		picture = coloured_troops
-		potential = {
-			is_core = 2447
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			slavery = yes_slavery
-			NOT = { has_country_flag = mulatto_tensions_flag }
-		}
-
-		allow = {
-			war = no
-		}
-
-		effect = {
-			add_country_modifier = {
-				name = mulatto_modifier
-				duration = 18000
-			}
-			set_country_flag = mulatto_tensions_flag
-			slaves = { militancy = -5 }
-		}
-	}
-
-## Borders ##
-
-	#Description: Brazil treaty with Columbia regarding their border in the northern Amazon.
-	treaty_of_bogota = {
-		picture = colombia_map
-		potential = {
-			owns = 2403 # Manaus
-			owns = 2404 # Sao Jose do Javari
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			OR = {
-				is_vassal = no
-				overlord = {
-					NOT = {
-						primary_culture = colombian
-						primary_culture = ecuadorian
-						primary_culture = venezuelan
-						primary_culture = peruvian
-					}
-				}
-			}
-			OR = {
-				NOT = { owns = 2401 }
-				NOT = { owns = 2263 }
-				NOT = { owns = 3295 }
-			}
-			2401 = { owner = { NOT = { truce_with = THIS } } }
-			2263 = { owner = { NOT = { truce_with = THIS } } }
-			3295 = { owner = { NOT = { truce_with = THIS } } }
-		}
-
-		allow = {
-			war = no
-			OR = {
-				year = 1908
-				mass_politics = 1
-			}
-		}
-
-		effect = {
-			3295 = { add_core = BRZ }
-			random_owned = {
-				limit = { owner = { tag = KPB } }
-				3295 = { add_core = KPB }
-			}
-			2263 = { add_core = BRZ }
-			random_owned = {
-				limit = { owner = { tag = KPB } }
-				2263 = { add_core = KPB }
-			}
-			2401 = { add_core = BRZ }
-			random_owned = {
-				limit = { owner = { tag = KPB } }
-				2401 = { add_core = KPB }
+	#Post Collapse State Content
+		reform_brazil = {
+			picture = rio
+			potential = {
+				has_country_flag = brazilian_state
+				NOT = { has_country_flag = relinquished_brazil }
 			}
 
-			## Event ##
-				random_country = {
-					limit = {
-						owns = 3295
-						owns = 2263
-						owns = 2401
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
+			allow = {
+				BRZ = {
+					all_core = {
+						owner = {
+							OR = { 
+								in_sphere = THIS 
+								vassal_of = THIS
+								tag = THIS
 							}
 						}
 					}
-					country_event = 34628
 				}
-				random_country = {
-					limit = {
-						owns = 3295
-						owns = 2263
-						NOT = { owns = 2401 }
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
-							}
-						}
-					}
-					country_event = 34628
-				}
-				random_country = {
-					limit = {
-						owns = 3295
-						NOT = { owns = 2263 }
-						owns = 2401
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
-							}
-						}
-					}
-					country_event = 34628
-				}
-				random_country = {
-					limit = {
-						NOT = { owns = 3295 }
-						owns = 2263
-						owns = 2401
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
-							}
-						}
-					}
-					country_event = 34628
-				}
-				random_country = {
-					limit = {
-						owns = 3295
-						NOT = { owns = 2263 }
-						NOT = { owns = 2401 }
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
-							}
-						}
-					}
-					country_event = 34628
-				}
-				random_country = {
-					limit = {
-						NOT = { owns = 3295 }
-						owns = 2263
-						NOT = { owns = 2401 }
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
-							}
-						}
-					}
-					country_event = 34628
-				}
-				random_country = {
-					limit = {
-						NOT = { owns = 3295 }
-						NOT = { owns = 2263 }
-						owns = 2401
-						NOT = {
-							tag = THIS
-							OR = {
-								has_country_flag = ortiz_mangabeira_accepted
-								has_country_flag = ortiz_mangabeira_refused
-							}
-						}
-					}
-					country_event = 34628
-				}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Whoever owns Acre and has a core there can pay the other countries who have a core there to remove their cores. # TODO how does Brazil get cores on this
-	treaty_of_petropolis = {
-		picture = treaty_of_petropolis_stamp
-		potential = {
-			owns = 2549 # Tarauaca
-			2549 = { is_core = THIS }
-			OR = {
-				primary_culture = bolivian
-				primary_culture = chilean
-				primary_culture = peruvian
-				primary_culture = brazilian
-				primary_culture = portuguese
-			}
-			NOT = { has_country_flag = treaty_of_petropolis }
-			NOT = { has_country_flag = signed_treaty_of_petropolis }
-		}
-
-		allow = {
-			war = no
-			money = 200000
-			OR = {
-				year = 1903
-				mass_politics = 1
-			}
-		}
-
-		effect = {
-			set_country_flag = treaty_of_petropolis
-			treasury = -200000
-			any_country = {
-				limit = { any_core = { region = BRZ_2549 } }
-				country_event = 46610101
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				NOT = { money = 400000 }
-			}
-			modifier = {
-				factor = 0
-				NOT = { tag = BRZ year = 1910 }
-			}
-		}
-	}
-
-	#Description: Brazil can dispute the Eastern Misiones from Argentina/Paraguay
-	eastern_misiones_dispute = {
-		picture = military_aid # alternative?
-		potential = {
-			owns = 2461
-			OR = {
-				tag = BRZ
-				tag = KPB
-				AND = { tag = RGS owns = 2458 }
-			}
-			OR = {
-				2459 = { empty = yes }
-				2462 = { empty = yes }
-			}
-			year = 1881
-			NOT = { has_global_flag = eastern_misiones_dispute }
-		}
-
-		allow = {
-			war = no
-			OR = {
 				is_greater_power = yes
-				revolution_n_counterrevolution = 1
 			}
+
+			effect = {
+				prestige = 15
+				BRZ = {
+					all_core = {
+						secede_province = THIS
+					}
+				}
+				change_tag = BRZ
+			}
+			ai_will_do = { factor = 1 }
 		}
 
-		effect = {
-			set_global_flag = eastern_misiones_dispute
-			random_owned = { limit = { owner = { tag = RGS } } 2459 = { add_core = RGS } }
-			random_owned = { limit = { owner = { tag = BRZ } } 2459 = { add_core = BRZ } }
-			random_owned = { limit = { owner = { tag = KPB } } 2459 = { add_core = BRZ add_core = KPB } }
-			random_owned = { limit = { 2459 = { empty = yes } } 2459 = { secede_province = THIS } }
-			random_owned = { limit = { owner = { tag = RGS } } 2462 = { add_core = RGS } }
-			random_owned = { limit = { owner = { tag = BRZ } } 2462 = { add_core = BRZ } }
-			random_owned = { limit = { owner = { tag = KPB } } 2462 = { add_core = BRZ add_core = KPB } }
-			random_owned = { limit = { 2462 = { empty = yes } } 2462 = { secede_province = THIS } }
-
-			random_owned = {
-				limit = { 2459 = { NOT = { life_rating = 30 } } }
-				2459 = { life_rating = 21 }
-			}
-			random_owned = {
-				limit = { 2462 = { NOT = { life_rating = 30 } } }
-				2462 = { life_rating = 21 }
+		relinquish_brazil = {
+			picture = ma_noticia
+			potential = {
+				has_country_flag = brazilian_state
+				NOT = { has_country_flag = relinquished_brazil }
 			}
 
-			random_country = {
-				limit = {
-					is_vassal = no
-					owns = 2554
-					owns = 2341
-				}
-				country_event = 34629
+			allow = {
+				always = yes
 			}
-			random_country = {
-				limit = {
-					is_vassal = yes
-					owns = 2554
-					owns = 2341
-				}
-				overlord = { country_event = 34629 }
-			}
-			random_country = {
-				limit = {
-					is_vassal = no
-					owns = 2554
-					NOT = { owns = 2341 }
-				}
-				country_event = 34629
-			}
-			random_country = {
-				limit = {
-					is_vassal = yes
-					owns = 2554
-					NOT = { owns = 2341 }
-				}
-				overlord = { country_event = 34629 }
-			}
-			random_country = {
-				limit = {
-					is_vassal = no
-					NOT = { owns = 2554 }
-					owns = 2341
-				}
-				country_event = 34629
-			}
-			random_country = {
-				limit = {
-					is_vassal = yes
-					NOT = { owns = 2554 }
-					owns = 2341
-				}
-				overlord = { country_event = 34629 }
-			}
-		}
-	}
 
-## TODO Guyana Negotiations ##
-
-	#	guiana_negotiations = {
-	#		picture = guyanas
-	#		potential = {
-	#			primary_culture = brazilian
-	#			exists = no
-	#			NOT = { has_country_flag = guiana_negotiations }
-	#		}
-	#
-	#		allow = {
-	#			war = no
-	#			money = 1000000
-	#			OR = {
-	#				is_secondary_power = yes
-	#				is_greater_power = yes
-	#			}
-	#			FRA = {
-	#				war = no
-	#				relation = { who = THIS value = 75 }
-	#			}
-	#			ENG = {
-	#				war = no
-	#				relation = { who = THIS value = 75 }
-	#			}
-	#			NET = {
-	#				war = no
-	#				relation = { who = THIS value = 75 }
-	#			}
-	#		}
-	#
-	#		effect = {
-	#			set_country_flag = guiana_purchase
-	#			FRA = { country_event = 224555 }
-	#			ENG = { country_event = 224555 }
-	#			NET = { country_event = 224555 }
-	#			THIS = { set_country_flag = guiana_negotiations }
-	#		}
-	#
-	#		ai_will_do = { factor = 0 }
-	#	}
-	#
-	#	guiana_purchasebrz = {
-	#		picture = guyanas
-	#		potential = {
-	#			primary_culture = brazilian
-	#			exists = no
-	#			NOT = { has_country_flag = guiana_purchase }
-	#		}
-	#
-	#		allow = {
-	#			war = no
-	#			has_country_flag = guiana_negotiations
-	#			money = 1000000
-	#			OR = {
-	#				is_secondary_power = yes
-	#				is_greater_power = yes
-	#			}
-	#			NET_2240 = {
-	#				owner = {
-	#					war = no
-	#					relation = { who = THIS value = 75 }
-	#					has_country_flag = guyana_negotiations
-	#				}
-	#			}
-	#			ENG_1979 = {
-	#				owner = {
-	#					war = no
-	#					relation = { who = THIS value = 75 }
-	#					has_country_flag = guyana_negotiations
-	#				}
-	#			}
-	#			FRA_2241 = {
-	#				owner = {
-	#					war = no
-	#					relation = { who = THIS value = 75 }
-	#					has_country_flag = guyana_negotiations
-	#				}
-	#			}
-	#		}
-	#
-	#		effect = {
-	#			set_country_flag = guiana_purchase
-	#			FRA = {
-	#				release = GUY
-	#				money = +500000
-	#			}
-	#			ENG = {
-	#				release = GUY
-	#				money = +400000
-	#			}
-	#			NET = {
-	#				release = GUY
-	#				money = +100000
-	#			}
-	#			THIS = {
-	#				inherit = GUY
-	#				money = -1000000
-	#			}
-	#		}
-	#
-	#		ai_will_do = { factor = 0 }
-	#	}
-
-## Minors ##
-
-	#Description: The sphere leader of both Brazil and Bahia can reintegrate Bahia into Brazil.
-	integrating_bahia = {
-		picture = fatherland_volunteers
-		potential = {
-			is_greater_power = yes
-			OR = {
-				is_sphere_leader_of = BAH
-				is_sphere_leader_of = BRZ
+			effect = {
+				prestige = 5
+				any_pop = { limit = { has_pop_culture = brazilian } consciousness = 2 }
+				set_country_flag = relinquished_brazil 
 			}
-			exists = BAH
-			exists = BRZ
-			NOT = { tag = BAH }
-			BAH = { ai = yes }
+			ai_will_do = { factor = 0 }
 		}
 
-		allow = {
-			war = no
-			is_sphere_leader_of = BAH
-			is_sphere_leader_of = BRZ
-			BAH = {
+		reform_ceq = {
+			picture = ceq
+			potential = {
+				has_country_flag = can_form_ceq
+				CEQ = { exists = no }
+			}
+
+			allow = {
+				CEQ = {
+					all_core = {
+						owner = {
+							OR = { in_sphere = THIS 
+								vassal_of = THIS
+								tag = THIS
+							}
+						}
+					}
+				}
+				is_greater_power = yes
+				has_country_flag = relinquished_brazil
+			}
+
+			effect = {
+				prestige = 15
+				change_tag = CEQ
+				CEQ = {
+					all_core = {
+						secede_province = THIS
+					}
+				}
+			}
+			ai_will_do = { factor = 1 }
+		}
+
+		claim_grao_para = {
+			picture = graopara
+			potential = {
+				has_country_flag = can_form_ceq
+				OR = {
+					CEQ = { exists = no }
+					tag = CEQ
+				}
+				NOT = { tag = GPR }
+				NOT = { tag = BRZ }
+			}
+
+			allow = {
+				is_greater_power = yes
+				tag = CEQ
+				GPR = { 
+					all_core = {
+						owner = {
+							OR = { in_sphere = THIS 
+								   vassal_of = THIS
+								   tag = THIS
+							}
+						}
+					}
+				}
+			}
+
+			effect = {
+				prestige = 10
+				GPR = {
+					all_core = {
+						secede_province = THIS
+					}
+				}
+			}
+
+			ai_will_do = { factor = 1 }
+		}
+
+		unify_the_south = {
+			picture = sul
+			potential = {
+				has_country_flag = can_unify_south
+				ai = no
+				NOT = { government = democracy2 }
+			}
+
+			allow = {
+				BRZ_2461 = { owned_by = THIS }
+				BRZ_2462 = { owned_by = THIS }
+				BRZ_2467 = { owned_by = THIS }
+				is_secondary_power = yes
+			}
+
+			effect = {
+				prestige = 10
+				set_country_flag = hidden_tooltip
+				random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+								owner = { government = democracy2 }
+				}
+				clr_country_flag = hidden_tooltip
+				set_country_flag = 2nd_republicgov
+				become_sul = { }
+			}
+			ai_will_do = { factor = 1 }
+		}
+
+		mar_das_gerais = {
+			picture = mar_de_morros
+
+			potential = { 
+				tag = MGS
+				NOT = { any_owned_province = { is_coastal = yes } }
+				NOT = { has_country_flag = mar_das_gerais }
+			}
+		
+			allow = {
 				war = no
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
+				NOT = { any_owned_province = { is_coastal = yes } }
+				BRZ_2449 = { NOT = { owned_by = THIS } }
 			}
-			BRZ = {
+		
+			effect = {
+				set_country_flag = mar_das_gerais
+				2449 = { owner = { country_event = 8180 } }
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+		mar_das_gerais2 = {
+			picture = espirito_santo
+
+			potential = { 
+				tag = MGS
+				has_country_modifier = espirito_santo_deal
+			}
+		
+			allow = {
 				war = no
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
+				money = 110000
+				has_country_modifier = espirito_santo_deal
+			}
+		
+			effect = {
+				clr_country_flag = espirito_santo_deal_closed
+				remove_country_modifier = espirito_santo_deal
+				money = -100000
+				2449 = { owner = { money = -100000 BRZ_2449 = { secede_province = THIS } } }
+			}
+		
+			ai_will_do = {
+				factor = 1
 			}
 		}
-
-		effect = {
-			BRZ = { inherit = BAH }
-			relation = { who = BRZ value = 50 }
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: The sphere leader of both Brazil and Pernambuco can reintegrate Pernambuco into Brazil.
-	integrating_pernambuco = {
-		picture = fatherland_volunteers
-		potential = {
-			is_greater_power = yes
-			OR = {
-				is_sphere_leader_of = PNB
-				is_sphere_leader_of = BRZ
-			}
-			exists = PNB
-			exists = BRZ
-			NOT = { tag = PNB }
-			PNB = { ai = yes }
-		}
-
-		allow = {
-			war = no
-			is_sphere_leader_of = PNB
-			is_sphere_leader_of = BRZ
-			PNB = {
-				war = no
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-			}
-			BRZ = {
-				war = no
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-			}
-		}
-
-		effect = {
-			BRZ = { inherit = PNB }
-			relation = { who = BRZ value = 50 }
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: The sphere leader of both Brazil and Rio Grande do Sul can reintegrate Rio Grande do Sul into Brazil.
-	integrating_rgs = {
-		picture = fatherland_volunteers
-		potential = {
-			is_greater_power = yes
-			OR = {
-				is_sphere_leader_of = RGS
-				is_sphere_leader_of = BRZ
-			}
-			exists = RGS
-			exists = BRZ
-			NOT = { tag = RGS }
-			RGS = { ai = yes }
-		}
-
-		allow = {
-			war = no
-			is_sphere_leader_of = RGS
-			is_sphere_leader_of = BRZ
-			RGS = {
-				war = no
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-			}
-			BRZ = {
-				war = no
-				OR = {
-					is_vassal = no
-					vassal_of = THIS
-				}
-			}
-		}
-
-		effect = {
-			BRZ = { inherit = RGS }
-			relation = { who = BRZ value = 50 }
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: Rio Grande do Sul can get stockpile, leadership and a draft modifier when at war with Brazil.
-	total_war_in_rio_grande_sul = {
-		picture = begin_line_of_advantage
-		potential = {
-			tag = RGS
-			war_with = BRZ
-			NOT = { has_country_modifier = small_country_draft }
-			NOT = { has_country_flag = rgs_draft_happened }
-		}
-
-		allow = {
-		}
-
-		effect = {
-			iron = 10
-			wool = 10
-			timber = 25
-			small_arms = 10
-			leadership = 20
-			add_country_modifier = {
-				name = small_country_draft
-				duration = 30
-			}
-			set_country_flag = rgs_draft_happened
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If independent and at peace, Rio Grande do Sul can claim the region of Santa Catarina.
-	claim_santa_catarina = {
-		picture = claim_santa_catarina
-		potential = {
-			tag = RGS
-			NOT = { has_country_flag = claim_santa_catarina }
-		}
-
-		allow = {
-			war = no
-			is_vassal = no
-			prestige = 90
-		}
-
-		effect = {
-			set_country_flag = claim_santa_catarina
-			badboy = 5
-			BRZ_2461 = { add_core = THIS } # Santa Catarina
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-## Expansion ##
-
-	#Description: Brazil can claim Uruguay.
-	provincia_cisplatina = {
-		picture = banda_oriental
-		potential = {
-			owns = 2463
-			OR = {
-				tag = BRZ
-				tag = KPB
-			}
-			NOT = { has_country_flag = cisplatina_is_ours }
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = fascist_dictatorship
-				war_policy = jingoism
-			}
-		}
-
-		allow = {
-			war = no
-			nationalism_n_imperialism = 1
-			romanticism = 1
-			is_greater_power = yes
-		}
-
-		effect = {
-			set_country_flag = cisplatina_is_ours
-			badboy = 9
-
-			random_owned = {
-				limit = { owner = { tag = BRZ } }
-				URU_2344 = { add_core = THIS }
-			}
-			random_owned = {
-				limit = { owner = { tag = KPB } }
-				URU_2344 = { add_core = THIS add_core = KPB }
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				badboy = 0.6
-			}
-		}
-	}
-
-	#Description: Brazil can claim Paraguay.
-	provincia_paraguay = {
-		picture = map_paraguay
-		potential = {
-			has_country_flag = cisplatina_is_ours
-			neighbour = PRG
-			NOT = { has_country_flag = paraguay_is_ours }
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = fascist_dictatorship
-				war_policy = jingoism
-			}
-		}
-
-		allow = {
-			war = no
-			nationalism_n_imperialism = 1
-			romanticism = 1
-			is_greater_power = yes
-		}
-
-		effect = {
-			set_country_flag = paraguay_is_ours
-			badboy = 9
-
-			random_owned = {
-				limit = { owner = { tag = BRZ } }
-				2420 = { add_core = BRZ }
-				2416 = { add_core = BRZ }
-				PRG_2343 = { add_core = THIS }
-			}
-			random_owned = {
-				limit = { owner = { tag = KPB } }
-				2420 = { add_core = BRZ add_core = KPB }
-				2416 = { add_core = BRZ add_core = KPB }
-				PRG_2343 = { add_core = BRZ add_core = KPB }
-			}
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				badboy = 0.6
-			}
-		}
-	}
-
-	#Description: Brazil can claim northeastern Argentina.
-	rio_da_prata = {
-		picture = rhodesia_charter
-		potential = {
-			has_country_flag = paraguay_is_ours
-			has_country_flag = cisplatina_is_ours
-			NOT = { has_country_flag = prata_is_ours }
-			OR = {
-				has_country_flag = absolute_monarchy_gov
-				government = fascist_dictatorship
-				war_policy = jingoism
-			}
-		}
-
-		allow = {
-			nationalism_n_imperialism = 1
-			is_greater_power = yes
-		}
-
-		effect = {
-			set_country_flag = prata_is_ours
-			badboy = 10
-
-			2459 = { add_core = THIS } # Easterm Misiones
-			2462 = { add_core = THIS }
-			ARG_2554 = { add_core = THIS } # Misiones
-			ARG_2356 = { add_core = THIS } # Corrientes
-			ARG_2360 = { add_core = THIS } # Entre Rios
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				badboy = 0.6
-			}
-		}
-	}
-
-## The Dreadnought Race ##
-
-	#Description: Brazil can offer to buy a dreadnought from a random Great Power.
-	sa_dreadnought_race = {
-		picture = dreadnought
-		potential = {
-			tag = BRZ
-			any_owned_province = { has_building = naval_base }
-			is_greater_power = no
-			NOT = {
-				has_global_flag = dreadnought_race
-				high_sea_battle_fleet = 1
-			}
-			iron_steamers = 1
-			blue_and_brown_water_schools = 1
-			any_greater_power = {
-				high_sea_battle_fleet = 1
-				invention = dreadnoughts
-			}
-		}
-
-		allow = {
-			war = no
-			money = 100000
-			NOT = { is_disarmed = yes }
-			NOT = {
-				OR = {
-					war_policy = anti_military
-					war_policy = pacifism
-				}
-			}
-		}
-
-		effect = {
-			set_global_flag = dreadnought_race
-			random_country = {
-				limit = {
-					is_greater_power = yes
-					high_sea_battle_fleet = 1
-					invention = dreadnoughts
-				}
-				country_event = 188158
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If Brazil wants to buy a dreadnought, Argentina can offer to buy one as well.
-	sa_dreadnought_race_arg = {
-		picture = dreadnought
-		potential = {
-			primary_culture = platinean
-			OR = {
-				tag = ARG
-				tag = LPL
-			}
-			BRZ = { has_country_flag = dreadnought_race }
-			is_greater_power = no
-			NOT = {
-				high_sea_battle_fleet = 1
-				has_global_flag = dreadnought_race_arg
-			}
-			any_greater_power = {
-				high_sea_battle_fleet = 1
-				invention = dreadnoughts
-			}
-			has_global_flag = dreadnought_race
-		}
-
-		allow = {
-			war = no
-			money = 100000
-			any_owned_province = { has_building = naval_base }
-			blue_and_brown_water_schools = 1
-			iron_steamers = 1
-			NOT = { is_disarmed = yes }
-			NOT = {
-				OR = {
-					war_policy = anti_military
-					war_policy = pacifism
-				}
-			}
-		}
-
-		effect = {
-			set_global_flag = dreadnought_race_arg
-			random_country = {
-				limit = {
-					is_greater_power = yes
-					high_sea_battle_fleet = 1
-					invention = dreadnoughts
-				}
-				country_event = 188158
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
-
-	#Description: If Brazil wants to buy a dreadnought, Chile can offer to buy one as well.
-	sa_dreadnought_race_chl = {
-		picture = dreadnought
-		potential = {
-			tag = CHL
-			BRZ = { has_country_flag = dreadnought_race }
-			is_greater_power = no
-			NOT = {
-				high_sea_battle_fleet = 1
-				has_global_flag = dreadnought_race_chl
-			}
-			any_greater_power = {
-				high_sea_battle_fleet = 1
-				invention = dreadnoughts
-			}
-			has_global_flag = dreadnought_race
-		}
-
-		allow = {
-			war = no
-			money = 100000
-			any_owned_province = { has_building = naval_base }
-			blue_and_brown_water_schools = 1
-			iron_steamers = 1
-			NOT = { is_disarmed = yes }
-			NOT = {
-				OR = {
-					war_policy = anti_military
-					war_policy = pacifism
-				}
-			}
-		}
-
-		effect = {
-			set_global_flag = dreadnought_race_chl
-			random_country = {
-				limit = {
-					is_greater_power = yes
-					high_sea_battle_fleet = 1
-					invention = dreadnoughts
-				}
-				country_event = 188158
-			}
-		}
-
-		ai_will_do = { factor = 1 }
-	}
 }
+
+

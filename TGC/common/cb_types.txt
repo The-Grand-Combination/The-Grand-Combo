@@ -419,7 +419,7 @@ acquire_core_state = {
 			war_with = THIS
 			any_neighbor_country = { substate_of = THIS }
 		}
-		number_of_states = 2 # annex if you want their last state
+		number_of_states = 2
 		OR = {
 			war_with = THIS
 			THIS = { NOT = { has_country_modifier = punitive_effects } }
@@ -485,7 +485,6 @@ acquire_core_state = {
 		country_event =	2650	# Territorial Loss event
 	}
 }
-
 
 # Acquire All Core States
 acquire_all_cores = {
@@ -555,7 +554,6 @@ acquire_all_cores = {
 
 	all_allowed_states = yes
 	po_transfer_provinces = yes
-
 	war_name = WAR_ALL_CORES_NAME
 
 	on_add = {
@@ -568,6 +566,7 @@ acquire_all_cores = {
 
 	on_po_accepted = {
 		country_event =	2650	# Territorial Loss event
+		plurality = -2
 	}
 }
 
@@ -1531,6 +1530,7 @@ unification_humiliate_cb = {
 
 	on_po_accepted = {
 		prestige_factor = -0.2
+		plurality = -2
 		country_event = 99996
 	}
 }
@@ -1609,6 +1609,7 @@ unification_GP_humiliate = {
 
 	on_po_accepted = {
 		prestige_factor = -0.2
+		plurality = -2
 	}
 }
 
@@ -1909,7 +1910,6 @@ free_peoples = {
 			FROM = { tag = KAM }
 			FROM = { tag = KAZ }
 			FROM = { tag = BDK }
-			FROM = { tag = WKH }
 			FROM = { tag = SIB }
 			FROM = { tag = YAK }
 			FROM = { tag = ALT }
@@ -2193,6 +2193,7 @@ free_peoples = {
 
 	on_po_accepted = {
 		country_event =	2651	# Territorial Loss event
+		plurality = -2
 	}
 }
 
@@ -2504,6 +2505,7 @@ liberate_country = {
 
 	on_po_accepted = {
 		country_event =	2651	# Territorial Loss event
+		plurality = -2
 		random_owned = {
 			limit = { owner = { tag = TUR has_global_flag = italy_fights_turk war_with = ITA } }
 			ITA = { country_event = 900009 }
@@ -3371,26 +3373,16 @@ great_game_cb = {
 		}
 		OR = {
 			AND = { tag = SIN THIS = { tag = ENG } }
-			AND = { tag = KHP THIS = { tag = ENG } }
 			AND = { tag = KAL THIS = { tag = ENG } }
 			AND = { tag = MAK THIS = { tag = ENG } }
 			AND = { tag = LAS THIS = { tag = ENG } }
 			AND = { tag = CRL THIS = { tag = ENG } }
-			AND = { tag = GIL THIS = { tag = ENG } }
-			AND = { tag = HNZ THIS = { tag = ENG } }
-			AND = { tag = KOH THIS = { tag = ENG } }
-			AND = { tag = KSN THIS = { tag = ENG } }
-			AND = { tag = NAR THIS = { tag = ENG } }
-			AND = { tag = SHN THIS = { tag = ENG } }
-			AND = { tag = SWA THIS = { tag = ENG } }
 
 			AND = { tag = KOK THIS = { tag = RUS } }
 			AND = { tag = KHI THIS = { tag = RUS } }
 			AND = { tag = BUK THIS = { tag = RUS } }
-			AND = { tag = DRV THIS = { tag = RUS } }
 			AND = { tag = KAZ THIS = { tag = RUS } }
 			AND = { tag = BDK THIS = { tag = RUS } }
-			AND = { tag = WKH THIS = { tag = RUS } }
 			AND = {
 				tag = PNJ
 				has_global_flag = 1_anglo_sikh_war
@@ -3405,14 +3397,9 @@ great_game_cb = {
 				KOK = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } }
 				KHI = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } }
 				BUK = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } }
-				DRV = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } }
 				OR = {
 					BDK = { OR = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } vassal_of = THIS } }
-					1210 = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } }
-				}
-				OR = {
-					WKH = { OR = { all_core = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } } vassal_of = THIS } }
-					3643 = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } }
+					1208 = { OR = { owned_by = THIS owner = { vassal_of = THIS war = no } } }
 				}
 			}
 			AND = {
@@ -3425,6 +3412,13 @@ great_game_cb = {
 						has_global_flag = graveyard_of_empires
 						has_global_flag = afgan_2
 					}
+				}
+			}
+			AND = { #If either conventions over Persia or Afghanistan escalate to war, and one side wins, it will allow them to use this CB to puppet outside their historical sphere
+				OR = { tag = PER tag = AFG tag = SIN tag = KAL tag = MAK tag = LAS tag = CRL tag = KOK tag = BUK tag = KAZ tag = BDK tag = KHI }
+				OR = {
+				THIS = { tag = RUS has_country_flag = great_game_won }
+				THIS = { tag = ENG has_country_flag = great_game_won }
 				}
 			}
 		}
@@ -3441,8 +3435,12 @@ great_game_cb = {
 			}
 			NOT = {
 				has_country_flag = no_more_great_game
+				has_country_flag = great_game_lost
 				has_country_modifier = punitive_effects
-				badboy = 0.85
+			}
+			OR = {
+			NOT = { badboy = 0.85 } #this wass designed so AI doesn't go over the limit by using the CB, it shouldn't be affecting the player.
+			ai = no
 			}
 		}
 		OR = {
@@ -5044,6 +5042,7 @@ establish_protectorate_casus_belli = {
 		}
 	}
 	on_po_accepted = { tech_school = unciv_tech_school 
+						plurality = -5 
 					   #country_event = 426700 
 	}
 }
@@ -5093,6 +5092,7 @@ cut_down_to_size_boxer = {
 	on_po_accepted = {
 		THIS = { clr_country_flag = intervened_boxer_war }
 		country_event = 99015
+		plurality = -5
 	}
 }
 
@@ -5224,6 +5224,7 @@ cut_down_to_size_ottoman = {
 
 	on_po_accepted = {
 		set_country_flag = lost_russo_turkish_war
+		plurality = -10
 	}
 }
 
@@ -5424,6 +5425,8 @@ uninstall_communist_gov_cb = {
 			value = 0.25
 		}
 	}
+
+	on_po_accepted = { plurality = -3 }
 }
 
 great_war_install_democracy = {
@@ -5967,6 +5970,7 @@ acquire_substate_region = {
 			value = 0.25
 		}
 	}
+	on_po_accepted = { plurality = -3 }
 }
 
 # Gain control of Substate colony
@@ -6032,6 +6036,8 @@ acquire_substate_colony = {
 			value = 0.25
 		}
 	}
+
+	on_po_accepted = { plurality = -3 }
 }
 
 # Gain control of Substate Core region
@@ -6102,6 +6108,8 @@ acquire_substate_core_region = {
 			value = 0.25
 		}
 	}
+
+	on_po_accepted = { plurality = -5 }
 }
 
 # Colonial competition
@@ -6214,8 +6222,7 @@ dismantle_forts = {
 		}
 	}
 
-	on_po_accepted = {
-	}
+	on_po_accepted = { plurality = -5 }
 }
 
 #Placeholder for calling allies
@@ -6495,7 +6502,7 @@ treaty_port_casus_belli = {
 					any_owned_province = { port = yes }
 				}
 			}
-			owner = { add_country_modifier = { name = negotiating_unequal_treaty duration = -1 } }
+			owner = { add_country_modifier = { name = negotiating_unequal_treaty duration = -1 } plurality = -5 }
 			THIS = { add_country_modifier = { name = negotiating_treaty duration = -1 } }
 		}
 	}
@@ -6826,6 +6833,7 @@ war_reparations = {
 	}
 
 	on_po_accepted = {
+		plurality = -5
         random_owned = {
             limit = {
                 owner = {
@@ -6928,7 +6936,7 @@ war_reparations = {
 		# any_country = {
 			# limit = {
 				# exists = no
-				# has_country_flag = existing_country
+				# 
 			# }
 			# clr_country_flag = existing_country
 		# }
@@ -7004,7 +7012,7 @@ take_puppet = {
 		any_country = {
 			limit = {
 				exists = no
-				has_country_flag = existing_country
+				
 			}
 			clr_country_flag = existing_country
 		}
@@ -7231,7 +7239,7 @@ liberate_puppet = {
 		any_country = {
 			limit = {
 				exists = no
-				has_country_flag = existing_country
+				
 			}
 			clr_country_flag = existing_country
 		}
@@ -7254,7 +7262,6 @@ liberate_puppet = {
 		any_country = {
 			limit = {
 				exists = yes
-				NOT = { has_country_flag = existing_country }
 				is_vassal = no
 				in_sphere = THIS
 			}
@@ -7450,6 +7457,9 @@ take_capital = {
 			to = pro_military
 			value = 0.25
 		}
+	}
+	on_po_accepted = {
+		plurality = -15
 	}
 }
 
@@ -7873,6 +7883,7 @@ mexico_concession_rus = {
 
 	on_po_accepted = {
 		#California, Baja, Utah, Nevada
+		plurality = -2
 		any_owned = {
 			limit = {
 				OR = {
@@ -7927,10 +7938,6 @@ the_great_game_rus = {
 		diplomatic_influence = { who = AFG value = -200 }
 		relation = { who = MYN value = -200 }
 		diplomatic_influence = { who = MYN value = -200 }
-		relation = { who = SIS value = -200 }
-		diplomatic_influence = { who = SIS value = -200 }
-		relation = { who = KND value = -200 }
-		diplomatic_influence = { who = KND value = -200 }
 		relation = { who = HRT value = -200 }
 		diplomatic_influence = { who = HRT value = -200 }
 		relation = { who = BHR value = -200 }
@@ -7961,26 +7968,16 @@ the_great_game_rus = {
 		relation = { who = HNZ value = -50 }
 		diplomatic_influence = { who = KOH value = -50 }
 		relation = { who = KOH value = -50 }
-		diplomatic_influence = { who = KSN value = -50 }
-		relation = { who = KSN value = -50 }
-		diplomatic_influence = { who = NAR value = -50 }
-		relation = { who = NAR value = -50 }
-		diplomatic_influence = { who = SHN value = -50 }
-		relation = { who = SHN value = -50 }
 		diplomatic_influence = { who = SWA value = -50 }
 		relation = { who = SWA value = -50 }
 		diplomatic_influence = { who = KOK value = -50 }
 		relation = { who = KOK value = -50 }
 		diplomatic_influence = { who = BUK value = -50 }
 		relation = { who = BUK value = -50 }
-		diplomatic_influence = { who = DRV value = -50 }
-		relation = { who = DRV value = -50 }
 		diplomatic_influence = { who = KAZ value = -50 }
 		relation = { who = KAZ value = -50 }
 		diplomatic_influence = { who = BDK value = -50 }
 		relation = { who = BDK value = -50 }
-		diplomatic_influence = { who = WKH value = -50 }
-		relation = { who = WKH value = -50 }
 		diplomatic_influence = { who = KHI value = -50 }
 		relation = { who = KHI value = -50 }
 		RUS = {
@@ -7991,10 +7988,6 @@ the_great_game_rus = {
 			relation = { who = AFG value = 100 }
 			diplomatic_influence = { who = HRT value = 50 }
 			relation = { who = HRT value = 100 }
-			diplomatic_influence = { who = KND value = 50 }
-			relation = { who = KND value = 100 }
-			diplomatic_influence = { who = SIS value = 50 }
-			relation = { who = SIS value = 100 }
 			diplomatic_influence = { who = MYN value = 50 }
 			relation = { who = MYN value = 100 }
 			set_country_flag = great_game_won
@@ -8044,10 +8037,6 @@ the_great_game_eng = {
 		diplomatic_influence = { who = AFG value = -200 }
 		relation = { who = MYN value = -200 }
 		diplomatic_influence = { who = MYN value = -200 }
-		relation = { who = SIS value = -200 }
-		diplomatic_influence = { who = SIS value = -200 }
-		relation = { who = KND value = -200 }
-		diplomatic_influence = { who = KND value = -200 }
 		relation = { who = HRT value = -200 }
 		diplomatic_influence = { who = HRT value = -200 }
 		relation = { who = BHR value = -200 }
@@ -8078,26 +8067,16 @@ the_great_game_eng = {
 		relation = { who = HNZ value = -50 }
 		diplomatic_influence = { who = KOH value = -50 }
 		relation = { who = KOH value = -50 }
-		diplomatic_influence = { who = KSN value = -50 }
-		relation = { who = KSN value = -50 }
-		diplomatic_influence = { who = NAR value = -50 }
-		relation = { who = NAR value = -50 }
-		diplomatic_influence = { who = SHN value = -50 }
-		relation = { who = SHN value = -50 }
 		diplomatic_influence = { who = SWA value = -50 }
 		relation = { who = SWA value = -50 }
 		diplomatic_influence = { who = KOK value = -50 }
 		relation = { who = KOK value = -50 }
 		diplomatic_influence = { who = BUK value = -50 }
 		relation = { who = BUK value = -50 }
-		diplomatic_influence = { who = DRV value = -50 }
-		relation = { who = DRV value = -50 }
 		diplomatic_influence = { who = KAZ value = -50 }
 		relation = { who = KAZ value = -50 }
 		diplomatic_influence = { who = BDK value = -50 }
 		relation = { who = BDK value = -50 }
-		diplomatic_influence = { who = WKH value = -50 }
-		relation = { who = WKH value = -50 }
 		diplomatic_influence = { who = KHI value = -50 }
 		relation = { who = KHI value = -50 }
 		ENG = {
@@ -8108,10 +8087,6 @@ the_great_game_eng = {
 			relation = { who = AFG value = 100 }
 			diplomatic_influence = { who = HRT value = 50 }
 			relation = { who = HRT value = 100 }
-			diplomatic_influence = { who = KND value = 50 }
-			relation = { who = KND value = 100 }
-			diplomatic_influence = { who = SIS value = 50 }
-			relation = { who = SIS value = 100 }
 			diplomatic_influence = { who = MYN value = 50 }
 			relation = { who = MYN value = 100 }
 			set_country_flag = great_game_won
@@ -8156,10 +8131,11 @@ hungarian_game_escalation1 = {
 	po_remove_prestige = yes
 	po_disarmament = yes
 	po_reparations = yes
-  po_add_to_sphere = yes
+ 	po_add_to_sphere = yes
 
 	on_po_accepted = {
 		country_event = 2000000083
+		plurality = -3
 	}
 
 	on_add = {}
@@ -8197,6 +8173,7 @@ sonderbund_cb = {
 
 	on_po_accepted = {
 		SDB = { country_event = 99798 }
+		plurality = -3
 	}
 
 	on_add = {}
@@ -8943,149 +8920,12 @@ rhine_crisis_french = {
 			clr_country_flag = german_confederation_member
 			government = colonial_company
 		}
+		plurality = -8
 	}
 
 	on_add = {}
 
 	war_name = WAR_RHINE_CRISIS
-}
-
-circassian_war = {
-	sprite_index = 22
-	is_triggered_only = yes 
-	months = 12
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 0.75
-	peace_cost_factor = 85
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = { 
-		THIS = {
-		### First Circassian War ###
-			random_owned = {
-				limit = { NOT = { owner = { has_global_flag = 2nd_caucasian_war } } }
-				THIS = {
-					### Your vassals ###
-					inherit = TAU
-					### Enemies ###
-					inherit = AB1
-					inherit = AB2
-					inherit = AB3
-					inherit = AB5
-					inherit = C0R
-					inherit = C1R
-					inherit = C2R
-					inherit = C3R
-					inherit = C4R
-					inherit = C6R
-					inherit = C7R
-					inherit = C8R
-					inherit = C9R
-					inherit = C10
-				}
-			}
-		### Second Circassian War ###
-			random_owned = {
-				limit = { owner = { has_global_flag = 2nd_caucasian_war } }
-				THIS = { inherit = CIR }
-			}
-		}
-
-	}
-
-	on_add = { }
-
-	war_name = WAR_RUS_CIR
-}
-
-caucasus_war = {
-	sprite_index = 22
-	is_triggered_only = yes 
-	months = 12
-	constructing_cb = no
-
-	badboy_factor = 0
-	prestige_factor = 0.75
-	peace_cost_factor = 85
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	always = no
-
-	can_use = { }
-
-	po_remove_prestige = yes
-
-	on_po_accepted = {
-		THIS = {
-		### First Caucasus War ###
-			random_owned = { 
-				limit = { NOT = { owner = { has_country_flag = imam_shamil_raid } } }
-				THIS = {
-					### Your vassals ###
-					inherit = DG4
-					inherit = DA0
-					inherit = DA2
-					inherit = DA3
-					inherit = DA4
-					inherit = DA5
-					inherit = DA7
-					inherit = DA8
-					inherit = DBT
-					inherit = L0Z
-					inherit = L1Z
-					inherit = L2Z
-					inherit = L3Z
-					### Enemies ###
-					inherit = DAG
-					inherit = DG0
-					inherit = DG1
-					inherit = DG2
-					inherit = DG3
-				}
-			}
-		### Dagestan Strikes Back ###
-			random_owned = {
-				limit = { owner = { has_country_flag = imam_shamil_raid } }
-				THIS = { inherit = DAG }
-			}
-		}
-		TCA = {
-			random_owned = {
-				limit = { NOT = { owner = { overlord = { has_country_flag = imam_shamil_raid } } } }
-				TCA = { inherit = DA6 }
-			}
-		}
-	}
-
-	on_add = { }
-
-	war_name = WAR_RUS_DAG
 }
 
 acw_intervention = {
@@ -9604,6 +9444,66 @@ plague_cleanse = {
 	}
 }
 
+# Acquire All Claimed provinces
+take_claimed_land = {
+	sprite_index = 25
+	is_triggered_only = yes
+	#always = yes
+	months = 1
+
+	construction_speed = 5
+
+	badboy_factor = 0.5
+	prestige_factor = 2
+	peace_cost_factor = 0.8
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = { 
+		exists = yes
+	}
+
+	allowed_countries = {
+		any_owned_province = { is_core = FROM }
+		FROM = {
+			has_country_flag = is_claim_nation
+			THIS = { is_our_vassal = FROM }
+			exists = no
+		}
+	}
+
+	allowed_states = {
+		any_owned_province = { is_core = FROM }
+	}
+
+	po_transfer_provinces = yes
+
+	war_name = WAR_TAKE_CLAIM
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.25
+		}
+	}
+
+	on_po_accepted = {
+		country_event =	2651	# Territorial Loss event
+		any_country = { limit = { has_country_flag = is_claim_nation }
+						country_event = 2670
+		}
+	}
+}
+
 # Acquire Core State
 conquest_of_the_wasteland = {
 	sprite_index = 5
@@ -9647,5 +9547,63 @@ conquest_of_the_wasteland = {
 
 	on_po_accepted = {
 		#country_event =	2650	# Territorial Loss event
+	}
+}
+
+#New World Hegemony War
+new_world_hegemony = {
+	sprite_index = 20
+	is_triggered_only = yes
+	constructing_cb = no
+	months = 12
+	crisis = no
+
+	construction_speed = 0.25
+
+	badboy_factor = 2
+	prestige_factor = 10
+	peace_cost_factor = 35
+	penalty_factor = 3
+
+	break_truce_prestige_factor = 5
+	break_truce_infamy_factor = 3
+	break_truce_militancy_factor = 1
+	truce_months = 108
+
+	good_relation_prestige_factor = 0
+	good_relation_infamy_factor = 0
+	good_relation_militancy_factor = 0
+
+	can_use = { }
+
+	po_disarmament = yes
+	po_reparations = yes
+
+	war_name = NEW_WORLD_HEGEMONY
+
+	on_add = {
+		FROM = {
+			set_country_flag = dismantle_declared
+		}
+		move_issue_percentage = {
+			from = pro_military
+			to = jingoism
+			value = 0.10
+		}
+		country_event = 96000
+	}
+
+	on_po_accepted = {
+		set_country_flag = dismantling_treaty
+		random_owned = {
+			limit = { owner = { tag = USA } }
+			# Audax Validator "." Ignore_NEXT
+			BRZ = { country_event = { id = 8251 days = 5 } }
+		}
+		random_owned = {
+			limit = { owner = { tag = BRZ } }
+			# Audax Validator "." Ignore_NEXT
+			BRZ = { country_event = { id = 8252 days = 5 } }
+		}
 	}
 }

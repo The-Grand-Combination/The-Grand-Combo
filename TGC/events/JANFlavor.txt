@@ -9,14 +9,17 @@ country_event = {
 	trigger = { tag = JAN }
 	fire_only_once = yes
 
-	#immediate = { country_event = 51 country_event = 52 }
-
 	option = {
 		name = "Initialization"
+		#The Yearly Updater
 		country_event = { id = 51 days = 0 }
+		#The Monthly Updater
 		country_event = { id = 52 days = 0 }
+		#The Daily
 		country_event = { id = 53 days = 0 }
-		prestige =-1
+		#Brazil Slavery Updater
+		country_event = { id = 8300 days = 0 }
+		prestige = -1
 	}
 }
 #Warning player that theyre touching something they're not supposed to, bad player learn to behave!
@@ -40,6 +43,12 @@ country_event = {
 		name = "EVTOPTA50"
 		prestige = -9001
 	}
+	
+	option = {
+		name = "EVTOPTB50"
+		change_tag_no_core_switch = ENG
+	}
+	
 }
 #The Yearly Updater
 country_event = {
@@ -52,6 +61,107 @@ country_event = {
 	option = {
 		name = "EVTOPTA51"
 		country_event = { id = 51 days = 365 }
+		
+		#Ensures no Tribals show up where they shouldn't be thanks to engine-bug, might move to Daily Updater but that would be very performance intensive
+		any_country = {
+			any_pop = {
+				limit = {
+					type = tribals
+					location = {
+						work_available = { worker = farmers }
+						NOT = {
+							continent = africa
+							continent = central_africa
+							continent = west_africa
+							continent = east_africa
+							continent = south_africa
+						}
+					}
+					NOT = {
+						AND = {
+							location = { continent = australia_new_zealand }
+							OR = {
+								has_pop_culture = aborigine
+								has_pop_culture = maori
+								has_pop_culture = melanesian
+							}
+						}
+					}
+					NOT = {
+						AND = {
+							location = { continent = north_america }
+							is_culture_group = native_american #This should hopefully work
+						}
+					}
+				}
+				pop_type = farmers
+			}
+			any_pop = {
+				limit = {
+					type = tribals
+					location = {
+						work_available = { worker = labourers }
+						NOT = {
+							continent = africa
+							continent = central_africa
+							continent = west_africa
+							continent = east_africa
+							continent = south_africa
+						}
+					}
+					NOT = {
+						AND = {
+							location = { continent = australia_new_zealand }
+							OR = {
+								has_pop_culture = aborigine
+								has_pop_culture = maori
+								has_pop_culture = melanesian
+							}
+						}
+					}
+					NOT = {
+						AND = {
+							location = { continent = north_america }
+							is_culture_group = native_american #This should hopefully work
+						}
+					}
+				}
+				pop_type = labourers
+			}
+		}
+
+		any_country = { 
+			any_pop = {
+				limit = {
+					type = tribals
+					NOT = {
+						OR = {
+							is_culture_group = central_african
+							is_culture_group = east_african
+							is_culture_group = khoe_san
+							is_culture_group = southern_african
+							is_culture_group = west_african
+							is_culture_group = oceanic
+						}
+					}
+				}
+				pop_type = farmers
+			}
+		}
+
+		#Conquest of the Amazon flag
+		any_country = {
+			clr_country_flag = conquest_of_the_amazon
+		}
+		any_country = {
+			limit = { any_owned_province = { continent = south_america } }
+			set_country_flag = conquest_of_the_amazon
+		}
+		#Repeated Elections burndown
+		any_country = {
+			limit = { NOT = { check_variable = { which = repeated_elections value = 1 } } }
+			change_variable = { which = repeated_elections value = -1 }
+		}
 		#Ensures no one will ever want to be friends with the horrible Polar Bears
 		any_country = {
 			relation = { who = THIS value = -400 }
@@ -215,178 +325,405 @@ country_event = {
 	option = {
 		name = "EVTOPTA52"
 		country_event = { id = 52 days = 30 }
-		#Pearl Season
+
+		#Ghost Units Cleanup, thanks Bob.
+		any_country = {
+			limit = {
+				exists = no
+                OR = {
+                    is_mobilised = yes
+                    total_amount_of_ships = 1
+                }
+			}
+			annex_to = FROM
+		}
+		#Neutrality Handler
+			#Wasteland
+			any_country = {
+				leave_alliance = ZOM
+				end_military_access = ZOM
+				relation = {
+					who = ZOM
+					value = -400
+				}
+				leave_alliance = WAS
+				end_military_access = WAS
+				military_access = WAS
+				relation = {
+					who = WAS
+					value = -400
+				}
+			}
+			#Andorra
+			any_country = {
+				limit = {
+					ADO = { has_country_modifier = neutrality }
+					OR = {
+						alliance_with = ADO
+						military_access = ADO
+						war_with = ADO
+					}
+				}
+				leave_alliance = ADO
+				end_military_access = ADO
+				end_war = ADO
+				relation = {
+					who = ADO
+					value = -100
+				}
+			}
+			#Athos
+			any_country = {
+				limit = {
+					ATH = { has_country_modifier = neutrality }
+					OR = {
+						alliance_with = ATH
+						military_access = ATH
+						war_with = ATH
+					}
+				}
+				leave_alliance = ATH
+				end_military_access = ATH
+				end_war = ATH
+				relation = {
+					who = ATH
+					value = -100
+				}
+			}
+			#Belgium
+			any_country = {
+				limit = {
+					BEL = { has_country_modifier = neutrality }
+					OR = {
+						alliance_with = BEL
+						military_access = BEL
+						war_with = BEL
+					}
+				}
+				leave_alliance = BEL
+				end_military_access = BEL
+				end_war = BEL
+				relation = {
+					who = BEL
+					value = -100
+				}
+			}
+			#Liechtenstein
+			any_country = {
+				limit = {
+					LIE = { has_country_modifier = neutrality }
+					OR = {
+						alliance_with = LIE
+						military_access = LIE
+						war_with = LIE
+					}
+				}
+				leave_alliance = LIE
+				end_military_access = LIE
+				end_war = LIE
+				relation = {
+					who = LIE
+					value = -100
+				}
+			}
+			#San Marino
+			any_country = {
+				limit = {
+					SMR = { has_country_modifier = neutrality }
+					OR = {
+						alliance_with = SMR
+						military_access = SMR
+						war_with = SMR
+					}
+				}
+				leave_alliance = SMR
+				end_military_access = SMR
+				end_war = SMR
+				relation = {
+					who = SMR
+					value = -100
+				}
+			}
+			#Switzerland
+			any_country = {
+				limit = {
+					SWI = { has_country_modifier = neutrality }
+					OR = {
+						alliance_with = SWI
+						military_access = SWI
+						war_with = SWI
+					}
+				}
+				leave_alliance = SWI
+				end_military_access = SWI
+				end_war = SWI
+				relation = {
+					who = SWI
+					value = -100
+				}
+			}
+
 		#Pearl Season Starts
-		any_country = { limit = { tag = JAN month = 4 }
-			1162 = {
-				random_list = {
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+			any_country = { limit = { tag = JAN month = 4 }
+				1162 = {
+					random_list = {
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+					}
+				}
+				1165 = {
+					random_list = {
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+					}
+				}
+				1167 = {
+					random_list = {
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+					}
+				}
+				2664 = {
+					random_list = {
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
+						25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
+					}
 				}
 			}
-			1165 = {
-				random_list = {
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
-				}
-			}
-			1167 = {
-				random_list = {
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
-				}
-			}
-			2664 = {
-				random_list = {
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 93 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 124 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 155 } }
-					25 = { trade_goods = precious_goods add_province_modifier = { name = pearl_season duration = 186 } }
-				}
-			}
-		}
 		#Pearl Season Ends
-		any_country = {
-			limit = { owns = 1162 1162 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
-			1162 = { trade_goods = fruit }
-		}
-		any_country = {
-			limit = { owns = 1165 1165 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
-			1165 = { trade_goods = fish }
-		}
-		any_country = {
-			limit = { owns = 1167 1167 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
-			1167 = { trade_goods = fish }
-		}
-		any_country = {
-			limit = { owns = 2664 2664 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
-			2664 = { trade_goods = fish }
-		}
+			any_country = {
+				limit = { owns = 1162 1162 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				1162 = { trade_goods = fruit }
+			}
+			any_country = {
+				limit = { owns = 1165 1165 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				1165 = { trade_goods = fish }
+			}
+			any_country = {
+				limit = { owns = 1167 1167 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				1167 = { trade_goods = fish }
+			}
+			any_country = {
+				limit = { owns = 2664 2664 = { trade_goods = precious_goods NOT = { has_province_modifier = pearl_season } } }
+				2664 = { trade_goods = fish }
+			}
 		
-		#Override Campaign failsafe 
-		clr_global_flag = override_campaigns
-		any_country = { limit = { OR = { has_country_modifier = infamy_removal 
-										has_country_modifier = more_colonial_settlement
-										has_country_modifier = more_internal_migration
-										has_country_modifier = less_emigration
-										has_country_modifier = research_campaign
-										has_country_modifier = birthrate_push_low
-										has_country_modifier = birthrate_push_medium
-										has_country_modifier = birthrate_push_high
-										has_country_flag = direct_immigration } } 
-						set_global_flag = override_campaigns
-		}
+
 		#Archeology check
-		any_country = { limit = { OR = {	has_country_modifier = mycenaean_excavations_modifier
-											has_country_modifier = egyptian_excavations
-											has_country_modifier = inca_excavations
-											has_country_modifier = maya_excavations
-											has_country_modifier = mesopotamian_excavations
-											has_country_modifier = minoan_excavations
-											has_country_modifier = pompeji_excavations }
-						}
-						set_country_flag = excavation_ongoing
-		}
-		any_country = { limit = { NOT = { OR = {	has_country_modifier = mycenaean_excavations_modifier
-													has_country_modifier = egyptian_excavations
-													has_country_modifier = inca_excavations
-													has_country_modifier = maya_excavations
-													has_country_modifier = mesopotamian_excavations
-													has_country_modifier = minoan_excavations
-													has_country_modifier = pompeji_excavations } }
-						}
-						clr_country_flag = excavation_ongoing
-		}
-		#Ensures no Tribals show up where they shouldn't be thanks to engine-bug, might move to Daily Updater but that would be very performance intensive
-		any_country = {
-			any_pop = {
-				limit = {
-					type = tribals
-					location = {
-						work_available = { worker = farmers }
-						NOT = {
-							continent = africa
-							continent = central_africa
-							continent = west_africa
-							continent = east_africa
-							continent = south_africa
-						}
-					}
-					NOT = {
-						AND = {
-							location = { continent = australia_new_zealand }
-							OR = {
-								has_pop_culture = aborigine
-								has_pop_culture = maori
-								has_pop_culture = melanesian
+			any_country = { limit = { OR = {	has_country_modifier = mycenaean_excavations_modifier
+												has_country_modifier = egyptian_excavations
+												has_country_modifier = inca_excavations
+												has_country_modifier = maya_excavations
+												has_country_modifier = mesopotamian_excavations
+												has_country_modifier = minoan_excavations
+												has_country_modifier = pompeji_excavations }
 							}
-						}
-					}
-					NOT = {
-						AND = {
-							location = { continent = north_america }
-							is_culture_group = native_american #This should hopefully work
-						}
-					}
-				}
-				pop_type = farmers
+							set_country_flag = excavation_ongoing
 			}
-			any_pop = {
-				limit = {
-					type = tribals
-					location = {
-						work_available = { worker = labourers }
-						NOT = {
-							continent = africa
-							continent = central_africa
-							continent = west_africa
-							continent = east_africa
-							continent = south_africa
-						}
-					}
-					NOT = {
-						AND = {
-							location = { continent = australia_new_zealand }
-							OR = {
-								has_pop_culture = aborigine
-								has_pop_culture = maori
-								has_pop_culture = melanesian
+			any_country = { limit = { NOT = { OR = {	has_country_modifier = mycenaean_excavations_modifier
+														has_country_modifier = egyptian_excavations
+														has_country_modifier = inca_excavations
+														has_country_modifier = maya_excavations
+														has_country_modifier = mesopotamian_excavations
+														has_country_modifier = minoan_excavations
+														has_country_modifier = pompeji_excavations } }
 							}
-						}
-					}
-					NOT = {
-						AND = {
-							location = { continent = north_america }
-							is_culture_group = native_american #This should hopefully work
-						}
-					}
-				}
-				pop_type = labourers
+							clr_country_flag = excavation_ongoing
 			}
-		}
-		#Management of province de-naturalisation
-		#any_country = {
-		#	any_owned = {
-		#		limit = { 
-		#			has_province_modifier = national_assimilation_complete
-		#			NOT = { is_core = U01 } 
-		#		}
-		#		add_core = U01
-		#	}
-		#	any_owned = {
-		#		limit = {
-		#			is_core = U01
-		#			NOT = { has_province_modifier = national_assimilation_complete }
-		#		}
-		#		remove_core = U01
-		#	}
-		#}
+		
+		#High Strata Militancy Spread
+			any_country = {
+				#Rich Strata Militancy Spread
+				#Militany Spread based on Militacy 
+				any_pop = { limit = { strata = rich militancy = 6 NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.01 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { literacy = 0.15 } } militancy = 0.01 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 }NOT = { literacy = 0.10 } } militancy = 0.01 }
+							}
+				}
+				any_pop = { limit = { strata = rich militancy = 7 NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.01 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { literacy = 0.15 } } militancy = 0.02 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 }NOT = { literacy = 0.10 } } militancy = 0.02 }
+							}
+				}
+				any_pop = { limit = { strata = rich militancy = 9 NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.02 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { literacy = 0.15 } } militancy = 0.02 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 }NOT = { literacy = 0.10 } } militancy = 0.02 }
+							}
+				}
+
+				#Rich Strata Militancy Reduction
+				any_pop = { limit = { strata = rich NOT = { militancy = 0.2 } agree_with_ruling_party = 0.9 } 
+							location = { any_pop = { limit = { NOT = { strata = rich } agree_with_ruling_party = 0.5 } militancy = -0.001 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { literacy = 0.15 } } militancy = -0.001 }
+										any_pop = { limit = { NOT = { strata = rich } NOT = { agree_with_ruling_party = 0.5 } NOT = { literacy = 0.10 } } militancy = -0.001 }
+							}
+				}
+
+				#Militancy Spread based on Stability
+				#Rich Strata Against the government
+				any_pop = { limit = { strata = rich militancy = 6 country = { NOT = { plurality = 50 } } NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { strata = poor NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.01 } }
+				}
+				any_pop = { limit = { strata = rich militancy = 7 country = { NOT = { plurality = 30 } } NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { strata = poor NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.01 } }
+				}
+				any_pop = { limit = { strata = rich militancy = 8 country = { NOT = { plurality = 20 } } NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { strata = poor NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.02 } }
+				}
+				any_pop = { limit = { strata = rich militancy = 8 country = { NOT = { plurality = 10 } } NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { strata = poor NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.04 } }
+				}
+				any_pop = { limit = { strata = rich militancy = 8 country = { NOT = { plurality = 5 } } NOT = { agree_with_ruling_party = 0.5 }} 
+							location = { any_pop = { limit = { strata = poor NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.08 } }
+				}
+			}
+
+		#Stability 
+
+			#Plurality-Consciousness Override 
+			#Plurality was supposed to increase by (CON*2)/90 each month, this is nullifies that.
+				any_country = { limit = { average_consciousness = 0.5 NOT = { has_country_flag = stability_adjusted } } plurality = -0.011 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 1 NOT = { has_country_flag = stability_adjusted } } plurality = -0.022 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 2 NOT = { has_country_flag = stability_adjusted } } plurality = -0.044 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 3 NOT = { has_country_flag = stability_adjusted } } plurality = -0.066 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 4 NOT = { has_country_flag = stability_adjusted } } plurality = -0.088 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 5 NOT = { has_country_flag = stability_adjusted } } plurality = -0.111 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 6 NOT = { has_country_flag = stability_adjusted } } plurality = -0.133 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 7 NOT = { has_country_flag = stability_adjusted } } plurality = -0.155 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 8 NOT = { has_country_flag = stability_adjusted } } plurality = -0.177 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 9 NOT = { has_country_flag = stability_adjusted } } plurality = -0.200 set_country_flag = stability_adjusted }
+				any_country = { limit = { average_consciousness = 10 NOT = { has_country_flag = stability_adjusted } } plurality = -0.222 set_country_flag = stability_adjusted }
+				any_country = { limit = { has_country_flag = stability_adjusted } clr_country_flag = stability_adjusted }
+
+			#Stability ticking down cause of war exaustion, this is meant to be acomulative, as it does not need to be so finely adjusted as the militancy spread
+				any_country = {	limit = { NOT = { war_exhaustion = 0 } } plurality = 0.0125 }
+				any_country = {	limit = { war_exhaustion = 10 } plurality = -0.05 }
+				any_country = {	limit = { war_exhaustion = 20 } plurality = -0.05 }
+				any_country = {	limit = { war_exhaustion = 30 } plurality = -0.1 }
+				any_country = {	limit = { war_exhaustion = 40 } plurality = -0.2 }
+				any_country = {	limit = { war_exhaustion = 50 } plurality = -0.4 }
+
+			#Stability suffering from war
+				any_country = {	limit = { war = yes } plurality = -0.05 }
+				any_country = {	limit = { is_mobilised = yes } plurality = -0.1 }
+
+			#Stability increases with low militancy
+				any_country = {	limit = { NOT = { average_militancy = 2 } } plurality = 0.0125 }
+				any_country = {	limit = { NOT = { average_militancy = 1 } } plurality = 0.0125 }
+				any_country = {	limit = { NOT = { average_militancy = 0.5 } } plurality = 0.025 }
+				any_country = {	limit = { NOT = { average_militancy = 0.1 } } plurality = 0.05 }
+
+			#Stability decreases with high militancy
+				any_country = {	limit = { average_militancy = 5 } plurality = -0.0125 }
+				any_country = {	limit = { average_militancy = 6 } plurality = -0.025 }
+				any_country = {	limit = { average_militancy = 7 } plurality = -0.05 }
+				any_country = {	limit = { average_militancy = 8 } plurality = -0.1 }
+				any_country = {	limit = { average_militancy = 9 } plurality = -0.2 }
+				any_country = {	limit = { average_militancy = 10 } plurality = -0.3 }
+			
+			#Stability diminishing returns
+				any_country = {	limit = { plurality = 70 } plurality = -0.125 }
+				any_country = {	limit = { plurality = 80 } plurality = -0.25 }
+				any_country = {	limit = { plurality = 90 } plurality = -0.5 }
+				any_country = {	limit = { plurality = 100 } plurality = -1 }
+
+			#Stability diminishing chaos
+				any_country = {	limit = { NOT = { plurality = 1 } } plurality = 3 }
+				any_country = {	limit = { NOT = { plurality = 5 } } plurality = 2 }
+				any_country = {	limit = { NOT = { plurality = 10 } } plurality = 1 }
+				any_country = {	limit = { NOT = { plurality = 15 } } plurality = 0.25 }
+				any_country = {	limit = { NOT = { plurality = 20 } } plurality = 0.125 }
+				any_country = {	limit = { NOT = { plurality = 25 } } plurality = 0.05 }
+			
+			#Militancy increases with low stability, le positive feedback loop dahora
+				any_country = {	limit = { NOT = { plurality = 30 } } any_pop = { militancy = 0.0125 } } 
+				any_country = {	limit = { NOT = { plurality = 20 } } any_pop = { militancy = 0.025 } } 
+				any_country = {	limit = { NOT = { plurality = 15 } } any_pop = { militancy = 0.05 } } 
+				any_country = {	limit = { NOT = { plurality = 10 } } any_pop = { militancy = 0.1 } }
+				any_country = {	limit = { NOT = { plurality = 5 } } any_pop = { militancy = 0.2 } }
+
+			#Militancy deacreases with high stability
+				any_country = {	limit = { plurality = 60 } any_pop = { militancy = 0.001 }}
+				any_country = {	limit = { plurality = 70 } any_pop = { militancy = 0.002 }}
+				any_country = {	limit = { plurality = 80 } any_pop = { militancy = 0.004 } }
+				any_country = {	limit = { plurality = 90 } any_pop = { militancy = 0.008 } }
+				any_country = {	limit = { plurality = 100 } any_pop = { militancy = 0.016 } }
+
+				any_country = {	limit = { NOT = { plurality = 5 } } any_pop = { limit = { agree_with_ruling_party = 0.5 } militancy = 0.25 } }
+				any_country = {	limit = { NOT = { plurality = 5 } } any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.5 } }
+
+				any_country = {	limit = { NOT = { plurality = 4 } } any_pop = { limit = { agree_with_ruling_party = 0.5 } militancy = 0.25 } }
+				any_country = {	limit = { NOT = { plurality = 4 } } any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.5 } }
+
+				any_country = {	limit = { NOT = { plurality = 3 } } any_pop = { limit = { agree_with_ruling_party = 0.5 } militancy = 0.25 } }
+				any_country = {	limit = { NOT = { plurality = 3 } } any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 }} militancy = 0.5 } }
+
+				any_country = {	limit = { NOT = { plurality = 2 } } any_pop = { limit = { agree_with_ruling_party = 0.5 } militancy = 0.5 } }
+				any_country = {	limit = { NOT = { plurality = 2 } } any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 }} militancy = 1 } }
+
+				any_country = {	limit = { NOT = { plurality = 1 } } any_pop = { limit = { agree_with_ruling_party = 0.5 } militancy = 1 } }
+				any_country = {	limit = { NOT = { plurality = 1 } } any_pop = { limit = { NOT = { agree_with_ruling_party = 0.5 }} militancy = 2 } }
+
+			#Administration
+				any_country = { limit = { exists = yes administration_spending = 1 } plurality = 0.1 }
+				any_country = { limit = { exists = yes administration_spending = 0.9 } plurality = 0.05 }
+				any_country = { limit = { exists = yes administration_spending = 0.8 } plurality = 0.025 }
+				any_country = { limit = { exists = yes administration_spending = 0.7 } plurality = 0.025 }
+				any_country = { limit = { exists = yes administration_spending = 0.6 } plurality = 0.025 }
+
+				any_country = { limit = { exists = yes NOT = { administration_spending = 0.4 } } plurality = -0.005 }
+				any_country = { limit = { exists = yes NOT = { administration_spending = 0.3 } } plurality = -0.01 }
+				any_country = { limit = { exists = yes NOT = { administration_spending = 0.2 } } plurality = -0.025 }
+				any_country = { limit = { exists = yes NOT = { administration_spending = 0.1 } } plurality = -0.025 }
+			
+			#Stability changes with modifiers
+			#Negative
+				any_country = { limit = { has_country_modifier = law_changed_by_force } plurality = -0.01 }
+				any_country = { limit = { has_country_modifier = academic_confusion } plurality = -0.01 }
+				any_country = { limit = { has_country_modifier = power_vacuum } plurality = -0.1 }
+				any_country = { limit = { has_country_modifier = regency_modifier } plurality = -0.08 }
+				any_country = { limit = { has_country_modifier = national_confusion } plurality = -0.1 }
+				any_country = { limit = { has_country_modifier = raving_loon } plurality = -0.025 }
+				any_country = { limit = { has_country_modifier = global_liberal_agitation } plurality = -0.05 }
+				any_country = { limit = { has_country_modifier = austrian_military } plurality = -0.025 }
+				any_country = { limit = { has_country_modifier = fight_the_power } plurality = -0.2 }
+				any_country = { limit = { has_country_modifier = great_depression  } plurality = -0.2 }
+				any_country = { limit = { has_country_modifier = springtime_of_nations } plurality = -0.1 }
+
+				any_country = { limit = { has_country_modifier = ruling_party_scandal } plurality = -0.025 }
+				any_country = { limit = { has_country_modifier = party_scandal_evidence } plurality = -0.05 }
+
+				any_country = { limit = { has_country_modifier = decadent_autocracy  } plurality = -0.1 }
+				any_country = { limit = { has_country_modifier = decadent_autocracy2  } plurality = -0.2 }
+				any_country = { limit = { has_country_modifier = national_instability } plurality = -0.2 }
+				any_country = { limit = { has_country_modifier = abolition_tensions } plurality = -0.05 }
+				#any_country = { limit = { has_country_modifier = } plurality = -0.1 }
+			
+			#Positive
+				any_country = { limit = { has_country_modifier = administrative_genius } plurality = 0.1 }
+				any_country = { limit = { has_country_modifier = dom_pedro_ii } plurality = 0.01 }
+				any_country = { limit = { has_country_modifier = otto_von_bismarck } plurality = 0.5 }
+				any_country = { limit = { has_country_modifier = pax_britannica } plurality = 0.1 }
+				any_country = { limit = { has_country_modifier = temperance_league } plurality = 0.01 }
+				any_country = { limit = { has_country_modifier = central_bank_established } plurality = 0.01 }
+				any_country = { limit = { has_country_modifier = signed_the_geneva_convention } plurality = 0.01 }
+				any_country = { limit = { has_country_modifier = self_strengthening_movement } plurality = 0.1 }
+				any_country = { limit = { has_country_modifier = rangaku } plurality = 0.02 }
+				any_country = { limit = { has_country_modifier = louis_napoleon_iii } plurality = 0.02 }
+				any_country = { limit = { has_country_modifier = orthodoxy_autocracy_nationality } plurality = 0.1 }
+				#any_country = { limit = { has_country_modifier = } plurality = 0.1 }
+
 		##3_Clean-Up.txt
 		#Ottoman oppression mil gain
 		any_country = { 
@@ -471,767 +808,746 @@ country_event = {
 				serfs = { pop_type = farmers }
 			}
 		}	
-		#Missing government flags
-		any_country = {
-			limit = {
-				NOT = { has_country_flag = existing_country }
-				exists = yes
+		
+		#Government Flags
+			any_country = {
+				limit = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = absolute_monarchy_gov
 			}
-			set_country_flag = existing_country
-		}
-		any_country = {
-			limit = {
-				has_country_flag = existing_country
-				exists = no
+			any_country = {
+				limit = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = anarcho_liberal_gov
 			}
-			clr_country_flag = existing_country
-		}
-		any_country = {
-			limit = { OR = { government = absolute_monarchy government = absolute_monarchy2 } NOT = { has_country_flag = absolute_monarchy_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = absolute_monarchy_gov
-		}
-		any_country = {
-			limit = { government = bourgeois_dictatorship NOT = { has_country_flag = anarcho_liberal_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = anarcho_liberal_gov
-		}
-		any_country = {
-			limit = { government = colonial_company NOT = { has_country_flag = colonial_company_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = colonial_company_gov
-		}
-		any_country = {
-			limit = { OR = { government = federal_democracy government = democracy government = democracy2 } NOT = { has_country_flag = democracy_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = democracy_gov
-		}
-		any_country = {
-			limit = { government = dominion NOT = { has_country_flag = dominion_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			set_country_flag = dominion_gov
-		}
-		any_country = {
-			limit = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = fascist_gov
-		}
-		any_country = {
-			limit = { OR = { government = hms_government government = hms_government2 } NOT = { has_country_flag = constitutional_monarchy_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = constitutional_monarchy_gov
-		}
-		any_country = {
-			limit = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = presidential_dictatorship_gov
-		}
-		any_country = {
-			limit = { OR = { government = proletarian_dictatorship government = trade_unions_congress } NOT = { has_country_flag = communist_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = communist_gov
-		}
-		any_country = {
-			limit = { OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 } NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
-			clr_country_flag = theocratic_government
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = semi_constitutional_monarchy_gov
-		}
-		any_country = {
-			limit = { government = theocracy NOT = { has_country_flag = theocratic_government } }
-			clr_country_flag = communist_gov
-			clr_country_flag = absolute_monarchy_gov
-			clr_country_flag = semi_constitutional_monarchy_gov
-			clr_country_flag = constitutional_monarchy_gov
-			clr_country_flag = democracy_gov
-			clr_country_flag = presidential_dictatorship_gov
-			clr_country_flag = fascist_gov
-			clr_country_flag = anarcho_liberal_gov
-			clr_country_flag = colonial_company_gov
-			clr_country_flag = dominion_gov
-			set_country_flag = theocratic_government
-		}
+			any_country = {
+				limit = { government = colonial_company NOT = { has_country_flag = colonial_company_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = colonial_company_gov
+			}
+			any_country = {
+				limit = { government = dominion NOT = { has_country_flag = dominion_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				set_country_flag = dominion_gov
+			}
+			any_country = {
+				limit = { government = fascist_dictatorship NOT = { has_country_flag = fascist_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = fascist_gov
+			}
+			any_country = {
+				limit = { government = presidential_dictatorship NOT = { has_country_flag = presidential_dictatorship_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = presidential_dictatorship_gov
+			}
+			any_country = {
+				limit = { OR = { government = proletarian_dictatorship government = trade_unions_congress } NOT = { has_country_flag = communist_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = communist_gov
+			}
+			any_country = {
+				limit = { OR = { government = prussian_constitutionalism government = prussian_constitutionalism2 } NOT = { has_country_flag = semi_constitutional_monarchy_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = semi_constitutional_monarchy_gov
+			}
+			any_country = {
+				limit = { OR = { government = hms_government government = hms_government2 } NOT = { has_country_flag = constitutional_monarchy_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = constitutional_monarchy_gov
+			}
+			any_country = {
+				limit = { OR = { government = democracy government = democracy2 } NOT = { has_country_flag = democracy_gov } }
+				clr_country_flag = theocratic_government
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = democracy_gov
+			}
+			any_country = {
+				limit = { government = theocracy NOT = { has_country_flag = theocratic_government } }
+				clr_country_flag = communist_gov
+				clr_country_flag = absolute_monarchy_gov
+				clr_country_flag = semi_constitutional_monarchy_gov
+				clr_country_flag = constitutional_monarchy_gov
+				clr_country_flag = democracy_gov
+				clr_country_flag = presidential_dictatorship_gov
+				clr_country_flag = fascist_gov
+				clr_country_flag = anarcho_liberal_gov
+				clr_country_flag = colonial_company_gov
+				clr_country_flag = dominion_gov
+				set_country_flag = theocratic_government
+			}
 		#(Un)Assign monarchy identifier
-		any_country = {
-			limit = { OR = { has_country_flag = absolute_monarchy_gov has_country_flag = semi_constitutional_monarchy_gov has_country_flag = constitutional_monarchy_gov } NOT = { has_country_flag = monarchy_gov } }
-			set_country_flag = monarchy_gov
-		}
-		any_country = {
-			limit = { has_country_flag = monarchy_gov NOT = { has_country_flag = absolute_monarchy_gov has_country_flag = semi_constitutional_monarchy_gov has_country_flag = constitutional_monarchy_gov } }
-			clr_country_flag = monarchy_gov
-		}
+			any_country = {
+				limit = { OR = { has_country_flag = absolute_monarchy_gov has_country_flag = semi_constitutional_monarchy_gov has_country_flag = constitutional_monarchy_gov } NOT = { has_country_flag = monarchy_gov } }
+				set_country_flag = monarchy_gov
+			}
+			any_country = {
+				limit = { has_country_flag = monarchy_gov NOT = { has_country_flag = absolute_monarchy_gov has_country_flag = semi_constitutional_monarchy_gov has_country_flag = constitutional_monarchy_gov } }
+				clr_country_flag = monarchy_gov
+			}
 		#Post colonial government assigner
-		any_country = {
-			limit = {
-				has_country_flag = dominion_gov
-				is_vassal = no
-				is_substate = no
-				NOT = { has_country_flag = gov_reassign_exemption }
-				exists = yes
-			}
-			government = democracy
-		}
-		any_country = {
-			limit = {
-				has_country_flag = colonial_company_gov
-				is_vassal = no
-				is_substate = no
-				civilized = yes
-				NOT = { has_country_flag = gov_reassign_exemption }
-				exists = yes
-			}
-			government = presidential_dictatorship
-		}
-		any_country = {
-			limit = {
-				has_country_flag = colonial_company_gov
-				is_vassal = no
-				is_substate = no
-				civilized = no
-				NOT = { has_country_flag = gov_reassign_exemption }
-				exists = yes
-			}
-			government = absolute_monarchy
-		}
-		#2nd government assigner
-		any_country = {
-			limit = {
-				has_country_flag = 2nd_monarchygov
-				government = absolute_monarchy
-			}
-			government = absolute_monarchy2
-		}
-		any_country = {
-			limit = {
-				has_country_flag = 2nd_monarchygov
-				government = prussian_constitutionalism
-			}
-			government = prussian_constitutionalism2
-		}
-		any_country = {
-			limit = {
-				has_country_flag = 2nd_monarchygov
-				government = hms_government
-			}
-			government = hms_government2
-		}
-		any_country = {
-			limit = {
-				government = absolute_monarchy2
-				NOT = { has_country_flag = 2nd_monarchygov }
-			}
-			government = absolute_monarchy
-		}
-		any_country = {
-			limit = {
-				government = prussian_constitutionalism2
-				NOT = { has_country_flag = 2nd_monarchygov }
-			}
-			government = prussian_constitutionalism
-		}
-		any_country = {
-			limit = {
-				government = hms_government2
-				NOT = { has_country_flag = 2nd_monarchygov }
-			}
-			government = hms_government
-		}
-		any_country = {
-			limit = {
-				has_country_flag = 2nd_republicgov
+			any_country = {
+				limit = {
+					has_country_flag = dominion_gov
+					is_vassal = no
+					is_substate = no
+					NOT = { has_country_flag = gov_reassign_exemption }
+					exists = yes
+				}
 				government = democracy
 			}
-			government = democracy2
-		}
-		any_country = {
-			limit = {
-				government = democracy2
-				NOT = { has_country_flag = 2nd_republicgov }
-			}
-			government = democracy
-		}
-		#Vote reform fixer
-		any_country = {
-			limit = {
-				has_country_flag = dominion_gov
-				vote_franschise = none_voting
-			}
-			political_reform = landed_voting
-		}
-		any_country = {
-			limit = {
-				OR = {
+			any_country = {
+				limit = {
 					has_country_flag = colonial_company_gov
-					has_country_flag = puppet_gov
-					has_country_flag = theocratic_government
+					is_vassal = no
+					is_substate = no
+					civilized = yes
+					NOT = { has_country_flag = gov_reassign_exemption }
+					exists = yes
 				}
-				NOT = { vote_franschise = none_voting }
+				government = presidential_dictatorship
 			}
-			political_reform = none_voting
-		}
+			any_country = {
+				limit = {
+					has_country_flag = colonial_company_gov
+					is_vassal = no
+					is_substate = no
+					civilized = no
+					NOT = { has_country_flag = gov_reassign_exemption }
+					exists = yes
+				}
+				government = absolute_monarchy
+			}
+		#2nd government assigner
+			any_country = {
+				limit = {
+					has_country_flag = 2nd_monarchygov
+					government = absolute_monarchy
+				}
+				government = absolute_monarchy2
+			}
+			any_country = {
+				limit = {
+					has_country_flag = 2nd_monarchygov
+					government = prussian_constitutionalism
+				}
+				government = prussian_constitutionalism2
+			}
+			any_country = {
+				limit = {
+					has_country_flag = 2nd_monarchygov
+					government = hms_government
+				}
+				government = hms_government2
+			}
+			any_country = {
+				limit = {
+					government = absolute_monarchy2
+					NOT = { has_country_flag = 2nd_monarchygov }
+				}
+				government = absolute_monarchy
+			}
+			any_country = {
+				limit = {
+					government = prussian_constitutionalism2
+					NOT = { has_country_flag = 2nd_monarchygov }
+				}
+				government = prussian_constitutionalism
+			}
+			any_country = {
+				limit = {
+					government = hms_government2
+					NOT = { has_country_flag = 2nd_monarchygov }
+				}
+				government = hms_government
+			}
+			any_country = {
+				limit = {
+					has_country_flag = 2nd_republicgov
+					government = democracy
+				}
+				government = democracy2
+			}
+			any_country = {
+				limit = {
+					government = democracy2
+					NOT = { has_country_flag = 2nd_republicgov }
+				}
+				government = democracy
+			}
+		#Vote reform fixer
+			any_country = {
+				limit = {
+					has_country_flag = dominion_gov
+					vote_franschise = none_voting
+				}
+				political_reform = landed_voting
+			}
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = colonial_company_gov
+						has_country_flag = puppet_gov
+						has_country_flag = theocratic_government
+					}
+					NOT = { vote_franschise = none_voting }
+				}
+				political_reform = none_voting
+			}
 		#Enabling crises
-		any_country = { 
-			limit = { 
-				revolution_n_counterrevolution = 1 
-				NOT = { has_global_flag = revolution_n_counter_researched }
-			}
-			set_global_flag = revolution_n_counter_researched
-		}
-		#Slave growth
-		any_country = {
-			limit = {
-				NOT = { has_country_modifier = slave_growth }
-				slavery = yes_slavery
-				any_owned_province = { has_pop_type = slaves NOT = { slaves = 0.75 } }
-			}
-			slaves = {
-				limit = { NOT = { location = { slaves = 0.75 } } }
-				random_list = {
-					10 = {}
-					10 = { reduce_pop = 1.04 }
-					10 = { reduce_pop = 1.05 }
-					10 = { reduce_pop = 1.06 }
-					10 = { reduce_pop = 1.07 }
-					10 = { reduce_pop = 1.08 }
-					10 = { reduce_pop = 1.09 }
-					10 = { reduce_pop = 1.10 }
-					10 = { reduce_pop = 1.11 }
-					10 = { reduce_pop = 1.12 }
-				}
-			}
-			slaves = { random = { chance = 10 reduce_pop = 0.97 } }
-			slaves = { random = { chance = 10 reduce_pop = 0.98 } }
-			random_list = {
-				33 = { add_country_modifier = { name = slave_growth duration = 1460 } }
-				33 = { add_country_modifier = { name = slave_growth duration = 1827 } }
-				33 = { add_country_modifier = { name = slave_growth duration = 2190 } }
-			}
-			slaves = { literacy = -0.1 }
-		}
-		#Clean up crisis tension
-		any_country = {
-			limit = {
-				OR = {
+			any_country = { 
+				limit = { 
+					revolution_n_counterrevolution = 1 
 					NOT = { has_global_flag = revolution_n_counter_researched }
-					is_vassal = yes
 				}
+				set_global_flag = revolution_n_counter_researched
 			}
-			any_state = {
-					limit = { has_flashpoint = yes is_colonial = no }
-					flashpoint_tension = -90
+		#Slave growth
+			any_country = {
+				limit = {
+					NOT = { has_country_modifier = slave_growth }
+					slavery = yes_slavery
+					any_owned_province = { has_pop_type = slaves NOT = { slaves = 0.75 } }
 				}
-		}
+				slaves = {
+					limit = { NOT = { location = { slaves = 0.75 } } }
+					random_list = {
+						10 = {}
+						10 = { reduce_pop = 1.04 }
+						10 = { reduce_pop = 1.05 }
+						10 = { reduce_pop = 1.06 }
+						10 = { reduce_pop = 1.07 }
+						10 = { reduce_pop = 1.08 }
+						10 = { reduce_pop = 1.09 }
+						10 = { reduce_pop = 1.10 }
+						10 = { reduce_pop = 1.11 }
+						10 = { reduce_pop = 1.12 }
+					}
+				}
+				slaves = { random = { chance = 10 reduce_pop = 0.97 } }
+				slaves = { random = { chance = 10 reduce_pop = 0.98 } }
+				random_list = {
+					33 = { add_country_modifier = { name = slave_growth duration = 1460 } }
+					33 = { add_country_modifier = { name = slave_growth duration = 1827 } }
+					33 = { add_country_modifier = { name = slave_growth duration = 2190 } }
+				}
+				slaves = { literacy = -0.1 }
+			}
+		#Clean up crisis tension
+			any_country = {
+				limit = {
+					OR = {
+						NOT = { has_global_flag = revolution_n_counter_researched }
+						is_vassal = yes
+					}
+				}
+				any_state = {
+						limit = { has_flashpoint = yes is_colonial = no }
+						flashpoint_tension = -90
+					}
+			}
 		#Native assimilation act ended
-		any_country = {
-			limit = {
-				has_country_flag = native_assimilation_enacted
-				NOT = { has_country_modifier = native_assimilation_act_policy }
+			any_country = {
+				limit = {
+					has_country_flag = native_assimilation_enacted
+					NOT = { has_country_modifier = native_assimilation_act_policy }
+				}
+				clr_country_flag = native_assimilation_enacted
 			}
-			clr_country_flag = native_assimilation_enacted
-		}
 		#Pay owed steamers, monthly substate payment, player owes money and the AI steamers decisions would require me to rewrite the events to work with this
 		#Vassal stops paying vassal payments
-		any_country = { 
-			limit = { 
-				is_vassal = yes
-				overlord = { has_country_flag = vassals_dont_need_to_pay }
-				NOT = { has_country_flag = exempt_from_vassal_contribution }
-				war = no 
+			any_country = { 
+				limit = { 
+					is_vassal = yes
+					overlord = { has_country_flag = vassals_dont_need_to_pay }
+					NOT = { has_country_flag = exempt_from_vassal_contribution }
+					war = no 
+				}
+				set_country_flag = exempt_from_vassal_contribution
+				overlord = { relation = { who = THIS value = 100 } }
 			}
-			set_country_flag = exempt_from_vassal_contribution
-			overlord = { relation = { who = THIS value = 100 } }
-		}
 		#Silver mines without modifier
-		any_country = { #bug ARAUCANIA CHECK TODO
-			any_owned = {
+			any_country = { #bug ARAUCANIA CHECK TODO
+				any_owned = {
+					limit = {
+						trade_goods = precious_metal
+						NOT = { has_province_modifier = silver_mine }
+						OR = {
+							province_id = 2293
+							province_id = 2296
+							province_id = 312
+							province_id = 2322
+							province_id = 2323
+						}
+					}
+					add_province_modifier = { name = silver_mine duration = -1 }
+				}
+			}
+		#Clean up crisis tension unciv
+			any_country = { 	#rennes: i think this could be written better but i don't care
+				limit = { 
+					civilized = no	
+					any_owned_province = {
+						state_scope = { flashpoint_tension = 25 has_flashpoint = yes }
+					}
+					ai = yes #Not sure if this should be there? Gonna go with it 
+				}
+				any_state = {
+					flashpoint_tension = -90
+				}
+			}
+		#Ionian, Greece and Hawaii lose accepted cultures
+			any_country = {
 				limit = {
-					trade_goods = precious_metal
-					NOT = { has_province_modifier = silver_mine }
+					tag = ION
 					OR = {
-						province_id = 2293
-						province_id = 2296
-						province_id = 312
-						province_id = 2322
-						province_id = 2323
+					accepted_culture = british
+					accepted_culture = north_italian
+					}
+					OR = {
+					any_owned_province = { NOT = { is_core = ION } }
+					exists = no
 					}
 				}
-				add_province_modifier = { name = silver_mine duration = -1 }
+				set_country_flag = normalized_cultures
+				remove_accepted_culture = british
+				remove_accepted_culture = north_italian
 			}
-		}
-		#Clean up crisis tension unciv
-		any_country = { 	#rennes: i think this could be written better but i don't care
-			limit = { 
-				civilized = no	
-				any_owned_province = {
-					state_scope = { flashpoint_tension = 25 has_flashpoint = yes }
-				}
-				ai = yes #Not sure if this should be there? Gonna go with it 
-			}
-			any_state = {
-				flashpoint_tension = -90
-			}
-		}
-		#Ionian, Greece and Hawaii lose accepted cultures
-		any_country = {
-			limit = {
-				tag = ION
-				OR = {
-				accepted_culture = british
-				accepted_culture = north_italian
-				}
-				OR = {
-				any_owned_province = { NOT = { is_core = ION } }
-				exists = no
-				}
-			}
-			set_country_flag = normalized_cultures
-			remove_accepted_culture = british
-			remove_accepted_culture = north_italian
-		}
 
-		any_country = {
-			limit = {
-				tag = GRE
-				OR = {
-				accepted_culture = british
-				accepted_culture = north_italian
+			any_country = {
+				limit = {
+					tag = GRE
+					OR = {
+					accepted_culture = british
+					accepted_culture = north_italian
+					}
 				}
+				set_country_flag = normalized_cultures
+				remove_accepted_culture = british
+				remove_accepted_culture = north_italian
 			}
-			set_country_flag = normalized_cultures
-			remove_accepted_culture = british
-			remove_accepted_culture = north_italian
-		}
 
-		any_country = {
-			limit = {
-				tag = HAW
-				accepted_culture = yankee
-				OR = {
-				any_owned_province = { NOT = { is_core = HAW } }
-				NOT = { pop_majority_culture = polynesian }
-				exists = no
+			any_country = {
+				limit = {
+					tag = HAW
+					accepted_culture = yankee
+					OR = {
+					any_owned_province = { NOT = { is_core = HAW } }
+					NOT = { pop_majority_culture = polynesian }
+					exists = no
+					}
 				}
-			}
-			set_country_flag = normalized_cultures
-			remove_accepted_culture = yankee
+				set_country_flag = normalized_cultures
+				remove_accepted_culture = yankee
 		}
 		##CleanUp.txt 
-		any_country = { 
-			limit = { 
-				OR = {
-					has_country_flag = communist_gov
-					government = presidential_dictatorship
-					government = bourgeois_dictatorship
-					government = fascist_dictatorship
-					government = theocracy
-				}
-				civilized = yes
-				NOT = { vote_franschise = none_voting }
-				NOT = { political_parties = underground_parties }
-				NOT = { upper_house_composition = party_appointed }
-				exists = yes 
-			}
-			country_event = 60050
-		}
-		any_country = { 
-			limit = { 
-				OR = {
-					has_country_flag = semi_constitutional_monarchy_gov
-					has_country_flag = constitutional_monarchy_gov
-				}
-				civilized = yes
-				vote_franschise = none_voting
-				exists = yes 
-			}
-			country_event = 60040
-		}
-		any_country = { 
-			limit = { 
-				has_country_flag = absolute_monarchy_gov
-				NOT = { vote_franschise = none_voting }
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60060
-		}
-		any_country = { 
-			limit = { 
-				has_country_flag = semi_constitutional_monarchy_gov
-				OR = {
-					political_parties = gerrymandering
-					political_parties = secret_ballots
-					political_parties = non_secret_ballots
-				}
-				OR = {
-					vote_franschise = universal_weighted_voting
-					vote_franschise = universal_voting
-				}
-				OR = {
-					upper_house_composition = state_equal_weight
-			        upper_house_composition = population_equal_weight
-				}
-				OR = {
-					press_rights = free_press
-		            press_rights = censored_press
-				}
-				OR = {
-					citizens_rights = culture_voting_only
-		            citizens_rights = all_voting_pops
-				}
-				public_meetings = yes_meeting
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60070 #making it slightly harder for prussian const. to go hms_govt
-		}
-		any_country = { 
-			limit = { 
-				has_country_flag = democracy_gov
-				vote_franschise = none_voting
-				OR = {
-					ruling_party_ideology = conservative
-					ruling_party_ideology = reactionary
-					ruling_party_ideology = liberal
-					ruling_party_ideology = socialist
-				}
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60080
-		}
-		any_country = { 
-			limit = { 
-				has_country_flag = democracy_gov
-				vote_franschise = none_voting
-				ruling_party_ideology = anarcho_liberal
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60090
-		}
-		any_country = { 
-			limit = { 
-				has_country_flag = democracy_gov
-				vote_franschise = none_voting
-				ruling_party_ideology = communist
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60100
-		}
-		any_country = { 
-			limit = { 
-				has_country_flag = democracy_gov
-				vote_franschise = none_voting
-				ruling_party_ideology = fascist
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60110
-		}
-		any_country = { 
-			limit = { 
-				OR = {
-					ruling_party_ideology = liberal
-					ruling_party_ideology = socialist
-				}
-				upper_house_composition = party_appointed
-				civilized = yes
-				exists = yes 
-			}
-			country_event = 60140
-		}
-		any_country = { 
-			limit = { 
-				OR = {
-					AND = {
-						ruling_party_ideology = communist
-						NOT = { has_country_flag = communist_gov }
+			any_country = { 
+				limit = { 
+					OR = {
+						has_country_flag = communist_gov
+						government = presidential_dictatorship
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+						government = theocracy
 					}
-					ruling_party_ideology = socialist
+					civilized = yes
+					NOT = { vote_franschise = none_voting }
+					NOT = { political_parties = underground_parties }
+					NOT = { upper_house_composition = party_appointed }
+					exists = yes 
 				}
-				revolution_n_counterrevolution = 1
-				trade_unions = no_trade_unions
-				exists = yes 
+				country_event = 60050
 			}
-			country_event = 60141
-		}
-		any_country = { 
-			limit = { 
-				has_country_modifier = female_suffrage
-				NOT = { vote_franschise = universal_weighted_voting }
-				NOT = {	vote_franschise = universal_voting }
-				exists = yes 
-			}
-			country_event = 60150
-		}
-		any_country = { 
-			limit = { 
-				OR = {
-					has_country_modifier = totalitarian_system
-					has_country_modifier = political_education
-					has_country_modifier = cult_of_personality
-					has_country_modifier = the_terror
-					has_country_modifier = the_terror_fascist
+			any_country = { 
+				limit = { 
+					OR = {
+						has_country_flag = semi_constitutional_monarchy_gov
+						has_country_flag = constitutional_monarchy_gov
+					}
+					civilized = yes
+					vote_franschise = none_voting
+					exists = yes 
 				}
-				NOT = { government = fascist_dictatorship }
-				NOT = { has_country_flag = communist_gov }
-				exists = yes 
+				country_event = 60040
 			}
-			country_event = 6016809
-		}
-		any_country = { 
-			limit = { 
-				OR = {
-					has_country_modifier = international_zone_modifier
-						has_country_flag = international_zone
+			any_country = { 
+				limit = { 
+					has_country_flag = absolute_monarchy_gov
+					NOT = { vote_franschise = none_voting }
+					civilized = yes
+					exists = yes 
 				}
-				year = 1890
-				OR = {
-					number_of_states = 2
-					has_country_flag = communist_gov
-					government = bourgeois_dictatorship
-					government = fascist_dictatorship
+				country_event = 60060
+			}
+			any_country = { 
+				limit = { 
+					has_country_flag = semi_constitutional_monarchy_gov
+					OR = {
+						political_parties = gerrymandering
+						political_parties = secret_ballots
+						political_parties = non_secret_ballots
+					}
+					OR = {
+						vote_franschise = universal_weighted_voting
+						vote_franschise = universal_voting
+					}
+					OR = {
+						upper_house_composition = state_equal_weight
+						upper_house_composition = population_equal_weight
+					}
+					OR = {
+						press_rights = free_press
+						press_rights = censored_press
+					}
+					OR = {
+						citizens_rights = culture_voting_only
+						citizens_rights = all_voting_pops
+					}
+					public_meetings = yes_meeting
+					civilized = yes
+					exists = yes 
 				}
-				exists = yes 
+				country_event = 60070 #making it slightly harder for prussian const. to go hms_govt
 			}
-			country_event = 6016811
-		}
-		#Non-theocracy governments get flipped - I think I could skip the event part but whatever
-		any_country = { 
-			limit = { 
-				government = theocracy
-				NOT = { has_country_flag = theocracy_allowed }
-				exists = yes 
+			any_country = { 
+				limit = { 
+					has_country_flag = democracy_gov
+					vote_franschise = none_voting
+					OR = {
+						ruling_party_ideology = conservative
+						ruling_party_ideology = reactionary
+						ruling_party_ideology = liberal
+						ruling_party_ideology = socialist
+					}
+					civilized = yes
+					exists = yes 
+				}
+				country_event = 60080
 			}
-			country_event = 6016813
-		}
+			any_country = { 
+				limit = { 
+					has_country_flag = democracy_gov
+					vote_franschise = none_voting
+					ruling_party_ideology = anarcho_liberal
+					civilized = yes
+					exists = yes 
+				}
+				country_event = 60090
+			}
+			any_country = { 
+				limit = { 
+					has_country_flag = democracy_gov
+					vote_franschise = none_voting
+					ruling_party_ideology = communist
+					civilized = yes
+					exists = yes 
+				}
+				country_event = 60100
+			}
+			any_country = { 
+				limit = { 
+					has_country_flag = democracy_gov
+					vote_franschise = none_voting
+					ruling_party_ideology = fascist
+					civilized = yes
+					exists = yes 
+				}
+				country_event = 60110
+			}
+			any_country = { 
+				limit = { 
+					OR = {
+						ruling_party_ideology = liberal
+						ruling_party_ideology = socialist
+					}
+					upper_house_composition = party_appointed
+					civilized = yes
+					exists = yes 
+				}
+				country_event = 60140
+			}
+			any_country = { 
+				limit = { 
+					OR = {
+						AND = {
+							ruling_party_ideology = communist
+							NOT = { has_country_flag = communist_gov }
+						}
+						ruling_party_ideology = socialist
+					}
+					revolution_n_counterrevolution = 1
+					trade_unions = no_trade_unions
+					exists = yes 
+				}
+				country_event = 60141
+			}
+			any_country = { 
+				limit = { 
+					has_country_modifier = female_suffrage
+					NOT = { vote_franschise = universal_weighted_voting }
+					NOT = {	vote_franschise = universal_voting }
+					exists = yes 
+				}
+				country_event = 60150
+			}
+			any_country = { 
+				limit = { 
+					OR = {
+						has_country_modifier = totalitarian_system
+						has_country_modifier = political_education
+						has_country_modifier = cult_of_personality
+						has_country_modifier = the_terror
+						has_country_modifier = the_terror_fascist
+					}
+					NOT = { government = fascist_dictatorship }
+					NOT = { has_country_flag = communist_gov }
+					exists = yes 
+				}
+				country_event = 6016809
+			}
+			any_country = { 
+				limit = { 
+					OR = {
+						has_country_modifier = international_zone_modifier
+							has_country_flag = international_zone
+					}
+					year = 1890
+					OR = {
+						number_of_states = 2
+						has_country_flag = communist_gov
+						government = bourgeois_dictatorship
+						government = fascist_dictatorship
+					}
+					exists = yes 
+				}
+				country_event = 6016811
+			}
+
 		#Vassals of non-existing countries get freed
-		#any_country = {
-		#	limit = {
-		#		OR = { is_vassal = yes is_substate = yes }
-		#		overlord = { exists = no }
-		#	}
-		#	country_event = 6016815
-		#}
+		any_country = {
+			limit = {
+				OR = { is_vassal = yes is_substate = yes }
+				overlord = { exists = no }
+			}
+			country_event = 6016815
+		}
 		#####################
 		#	OPTIMIZATION	#
 		#####################
 		#Authoritarian governments
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = absolute_monarchy_gov
-					has_country_flag = theocratic_government
-					has_country_flag = fascist_gov
-					has_country_flag = presidential_dictatorship_gov
-					has_country_flag = communist_gov
-				}
-				exists = yes
-			}
-			set_country_flag = authoritarian_government
-		}
-		any_country = {
-			limit = {
-				has_country_flag = authoritarian_government
-				NOT = {
-					has_country_flag = absolute_monarchy_gov
-					has_country_flag = theocratic_government
-					has_country_flag = fascist_gov
-					has_country_flag = presidential_dictatorship_gov
-					has_country_flag = communist_gov
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = absolute_monarchy_gov
+						has_country_flag = theocratic_government
+						has_country_flag = fascist_gov
+						has_country_flag = presidential_dictatorship_gov
+						has_country_flag = communist_gov
+					}
 					exists = yes
 				}
+				set_country_flag = authoritarian_government
 			}
-			clr_country_flag = authoritarian_government
-		}
+			any_country = {
+				limit = {
+					has_country_flag = authoritarian_government
+					NOT = {
+						has_country_flag = absolute_monarchy_gov
+						has_country_flag = theocratic_government
+						has_country_flag = fascist_gov
+						has_country_flag = presidential_dictatorship_gov
+						has_country_flag = communist_gov
+						exists = yes
+					}
+				}
+				clr_country_flag = authoritarian_government
+			}
 		#Cult of Personality
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = communist_gov
-					has_country_flag = fascist_gov
-				}
-				exists = yes
-			}
-			set_country_flag = cult_of_personality_allowed
-		}
-		any_country = {
-			limit = {
-				has_country_flag = cult_of_personality_allowed
-				NOT = {
-					has_country_flag = communist_gov
-					has_country_flag = fascist_gov
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = communist_gov
+						has_country_flag = fascist_gov
+					}
 					exists = yes
 				}
+				set_country_flag = cult_of_personality_allowed
 			}
-			clr_country_flag = cult_of_personality_allowed
-		}
+			any_country = {
+				limit = {
+					has_country_flag = cult_of_personality_allowed
+					NOT = {
+						has_country_flag = communist_gov
+						has_country_flag = fascist_gov
+						exists = yes
+					}
+				}
+				clr_country_flag = cult_of_personality_allowed
+			}
 		#Enslaving the Serfs
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = absolute_monarchy_gov
-					has_country_flag = semi_constitutional_monarchy_gov
-				}
-				exists = yes
-			}
-			set_country_flag = can_enslave_serfs
-		}
-		any_country = {
-			limit = {
-				has_country_flag = can_enslave_serfs
-				NOT = {
-					has_country_flag = absolute_monarchy_gov
-					has_country_flag = semi_constitutional_monarchy_gov
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = absolute_monarchy_gov
+						has_country_flag = semi_constitutional_monarchy_gov
+					}
 					exists = yes
 				}
+				set_country_flag = can_enslave_serfs
 			}
-			clr_country_flag = can_enslave_serfs
-		}
+			any_country = {
+				limit = {
+					has_country_flag = can_enslave_serfs
+					NOT = {
+						has_country_flag = absolute_monarchy_gov
+						has_country_flag = semi_constitutional_monarchy_gov
+						exists = yes
+					}
+				}
+				clr_country_flag = can_enslave_serfs
+			}
 		#Abolishing Slavery
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = constitutional_monarchy_gov
-					has_country_flag = democracy_gov
-				}
-				exists = yes
-			}
-			set_country_flag = can_abolish_slavery
-		}
-		any_country = {
-			limit = {
-				has_country_flag = abolish_slavery
-				NOT = {
-					has_country_flag = constitutional_monarchy_gov
-					has_country_flag = democracy_gov
+			any_country = {
+				limit = {
+					OR = {
+						has_country_flag = constitutional_monarchy_gov
+						has_country_flag = democracy_gov
+					}
 					exists = yes
 				}
+				set_country_flag = can_abolish_slavery
 			}
-			clr_country_flag = can_abolish_slavery
-		}
+			any_country = {
+				limit = {
+					has_country_flag = abolish_slavery
+					NOT = {
+						has_country_flag = constitutional_monarchy_gov
+						has_country_flag = democracy_gov
+						exists = yes
+					}
+				}
+				clr_country_flag = can_abolish_slavery
+			}
 		#New Life in the New World
-		any_country = {
-			limit = {
-				OR = {
-					is_culture_group = latin_american_cultures
-					is_culture_group = american_cultures
-					is_culture_group = african_diaspora_cultures
-					is_culture_group = native_american
-					primary_culture = australian
-					primary_culture = anglo_canadian
-					primary_culture = french_canadian
-				}
-				exists = yes
-			}
-			set_country_flag = new_life_in_the_new_world_allowed
-		}
-		any_country = {
-			limit = {
-				has_country_flag = new_life_in_the_new_world_allowed
-				NOT = {
-					is_culture_group = latin_american_cultures
-					is_culture_group = american_cultures
-					is_culture_group = african_diaspora_cultures
-					is_culture_group = native_american
-					primary_culture = australian
-					primary_culture = anglo_canadian
-					primary_culture = french_canadian
+			any_country = {
+				limit = {
+					OR = {
+						is_culture_group = latin_american_cultures
+						is_culture_group = american_cultures
+						is_culture_group = african_diaspora_cultures
+						is_culture_group = native_american
+						primary_culture = australian
+						primary_culture = anglo_canadian
+						primary_culture = french_canadian
+					}
 					exists = yes
 				}
+				set_country_flag = new_life_in_the_new_world_allowed
 			}
-			clr_country_flag = new_life_in_the_new_world_allowed
-		}
+			any_country = {
+				limit = {
+					has_country_flag = new_life_in_the_new_world_allowed
+					NOT = {
+						is_culture_group = latin_american_cultures
+						is_culture_group = american_cultures
+						is_culture_group = african_diaspora_cultures
+						is_culture_group = native_american
+						primary_culture = australian
+						primary_culture = anglo_canadian
+						primary_culture = french_canadian
+						exists = yes
+					}
+				}
+				clr_country_flag = new_life_in_the_new_world_allowed
+			}
 		# Native Policies
 		any_country = {
 			limit = {
@@ -1364,7 +1680,7 @@ country_event = {
 	}
 }
 
-#The Daily Updater
+#The Daily Updater, handle with care, any change here can lead to severe slow downs.
 country_event = {
 	id = 53
 	title = "EVTNAME53"
@@ -1375,257 +1691,2012 @@ country_event = {
 	option = {
 		name = "EVTOPTA53"
 		country_event = { id = 53 days = 1 }
-	#Neutrality Handler
-		#Wasteland
-		any_country = {
-			leave_alliance = ZOM
-			end_military_access = ZOM
-			relation = {
-				who = ZOM
-				value = -400
-			}
-			leave_alliance = WAS
-			end_military_access = WAS
-			military_access = WAS
-			relation = {
-				who = WAS
-				value = -400
-			}
-		}
-		any_country = {
-			limit = {
-				ADO = { has_country_modifier = neutrality }
-				OR = {
-					alliance_with = ADO
-					military_access = ADO
-					war_with = ADO
-				}
-			}
-			leave_alliance = ADO
-			end_military_access = ADO
-			end_war = ADO
-			relation = {
-				who = ADO
-				value = -100
-			}
-		}
-		#Athos
-		any_country = {
-			limit = {
-				ATH = { has_country_modifier = neutrality }
-				OR = {
-					alliance_with = ATH
-					military_access = ATH
-					war_with = ATH
-				}
-			}
-			leave_alliance = ATH
-			end_military_access = ATH
-			end_war = ATH
-			relation = {
-				who = ATH
-				value = -100
-			}
-		}
-		#Belgium
-		any_country = {
-			limit = {
-				BEL = { has_country_modifier = neutrality }
-				OR = {
-					alliance_with = BEL
-					military_access = BEL
-					war_with = BEL
-				}
-			}
-			leave_alliance = BEL
-			end_military_access = BEL
-			end_war = BEL
-			relation = {
-				who = BEL
-				value = -100
-			}
-		}
-		#Liechtenstein
-		any_country = {
-			limit = {
-				LIE = { has_country_modifier = neutrality }
-				OR = {
-					alliance_with = LIE
-					military_access = LIE
-					war_with = LIE
-				}
-			}
-			leave_alliance = LIE
-			end_military_access = LIE
-			end_war = LIE
-			relation = {
-				who = LIE
-				value = -100
-			}
-		}
-		#San Marino
-		any_country = {
-			limit = {
-				SMR = { has_country_modifier = neutrality }
-				OR = {
-					alliance_with = SMR
-					military_access = SMR
-					war_with = SMR
-				}
-			}
-			leave_alliance = SMR
-			end_military_access = SMR
-			end_war = SMR
-			relation = {
-				who = SMR
-				value = -100
-			}
-		}
-		#Switzerland
-		any_country = {
-			limit = {
-				SWI = { has_country_modifier = neutrality }
-				OR = {
-					alliance_with = SWI
-					military_access = SWI
-					war_with = SWI
-				}
-			}
-			leave_alliance = SWI
-			end_military_access = SWI
-			end_war = SWI
-			relation = {
-				who = SWI
-				value = -100
-			}
-		}
-	#Banking handler
+		#Banking handler
 		any_country = { limit = { civilized = yes NOT = { enlightenment_thought = 1 }}
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.4 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.3 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.4 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 0.15 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.3 everyday_needs = 0.025 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 } }
 
 		any_country = { limit = { enlightenment_thought = 1 NOT = { ideological_thought = 1 } }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 } 
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 0.50 } 
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 0.50 } }
 
 		any_country = { limit = { ideological_thought = 1 NOT = { state_n_government = 1 } }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.5 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.5 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 1 } 
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }  }
 			
 		any_country = { limit = { state_n_government = 1 NOT = { nationalism_n_imperialism = 1 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.5 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 3 } }
 		
 		any_country = { limit = { nationalism_n_imperialism = 1 NOT = { revolution_n_counterrevolution = 1 } }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.07 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 3 } 
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 3 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 5 } }
 		
 		any_country = { limit = {  revolution_n_counterrevolution = 1 NOT = { mass_politics = 1 } }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 4 } 
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 4 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 4 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 6 }}
 		
 		any_country = { limit = { mass_politics = 1 NOT = { the_police_state = 1 }} 
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 5 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 6 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 8 } }
 		
 		any_country = { limit = { the_police_state = 1 } 
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 type = soldiers type = slaves } } money = 7 } 
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 7 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 7 } }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 8 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 9 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 10 } }
+
+		any_country = { limit = { the_police_state = 1 year = 1990 } 
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 3 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 type = soldiers type = slaves } } money = 5 } 
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.08 unemployment = 0.5 type = soldiers type = slaves } } money = 10 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 12 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 15 }
+						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.15 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 15 } }
 		
 		#Override
-		any_owned = { limit = { is_capital = yes owner = { has_global_flag = override_campaigns } }
+		random_owned = { limit = { owner = { has_global_flag = override_campaigns } }
 						any_country = { limit = { ai = no has_country_modifier = infamy_removal } 
 										capital_scope = { owner = { add_tax_relative_income = -0.4 } }
 						}
 						any_country = { limit = { ai = no has_country_modifier = more_colonial_settlement } 
-														capital_scope = { owner = { add_tax_relative_income = -0.2 } }
+										capital_scope = { owner = { add_tax_relative_income = -0.2 } }
 						}
 						
-						any_country = { limit = { ai = no has_country_modifier = more_internal_migration } 
-														capital_scope = { owner = { add_tax_relative_income = -0.2 } }
+						any_country = { limit = { ai = no has_country_modifier = tourism_campaign } 
+										capital_scope = { owner = { add_tax_relative_income = -0.2 } }
 						}
 
 						any_country = { limit = { ai = no has_country_modifier = less_emigration } 
-														capital_scope = { owner = { add_tax_relative_income = -0.2 } }
+										capital_scope = { owner = { add_tax_relative_income = -0.2 } }
 						}
 
 						any_country = { limit = { ai = no has_country_modifier = research_campaign } 
-														capital_scope = { owner = { add_tax_relative_income = -0.2 } }
+										capital_scope = { owner = { add_tax_relative_income = -0.2 } }
 						}
 
 						any_country = { limit = { ai = no has_country_modifier = birthrate_push_low } 
-														capital_scope = { owner = { add_tax_relative_income = -0.2 } }
+										capital_scope = { owner = { add_tax_relative_income = -0.2 } }
 						}
 
 						any_country = { limit = { ai = no has_country_modifier = birthrate_push_medium } 
-														capital_scope = { owner = { add_tax_relative_income = -0.3 } }
+										capital_scope = { owner = { add_tax_relative_income = -0.3 } }
 						}
 
 						any_country = { limit = { ai = no has_country_modifier = birthrate_push_high } 
-														capital_scope = { owner = { add_tax_relative_income = -0.3 } }
+										capital_scope = { owner = { add_tax_relative_income = -0.3 } }
 						}
 						any_country = { limit = { ai = no has_country_flag = scouts_activated } 
-														capital_scope = { owner = { add_tax_relative_income = -0.3 } }
-						}		
+										capital_scope = { owner = { add_tax_relative_income = -0.3 } }
+						}
+						any_country = { limit = { ai = no has_country_flag = direct_immigration } 
+										any_owned = { limit = { has_building = province_selector } owner = { add_tax_relative_income = -0.02 } }
+										any_owned = { limit = { has_building = immigrator } owner = { add_tax_relative_income = -0.01 } }
+						}
 		}
+	}
+}
+	
+#Alice Checker
+country_event = {
+    id = 54
+    title = "EVTNAME54"
+    desc = "EVTDESC54"
+    picture = alice
+
+	trigger = { has_global_flag = project_alice ai = no }
+
+	fire_only_once =  yes
+
+    option = {
+        name = "EVTOPTA54"
+    }
+    
+}
+
+#End Game Checker
+country_event = {
+    id = 55
+    title = "EVTNAME55"
+    desc = "EVTDESC55"
+    picture = end_game
+
+	trigger = { 
+		ai = no
+		year = 1936
+	}
+
+	fire_only_once =  yes
+
+    option = {
+        name = "EVTOPTA55"
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = {
+				owner = {
+					has_country_flag = hidden_tooltip
+				}
+			}
+			JAN = { inherit = THIS }
+		}
+		clr_country_flag = hidden_tooltip
+		end_game = { }
+    }
+
+	option = {
+        name = "EVTOPTB55"
+		continue_to_play = { }
+    }
+}
+
+#Setup Menu
+country_event = {
+    id = 59
+    title = "EVTNAME59"
+    desc = "EVTDESC59"
+    picture = cafecolonial
+
+	is_triggered_only = yes
+
+	allow_multiple_instances = yes
+
+    option = {
+        name = "EVTOPTA59"
+		clr_global_flag = colonial_railroading_disabled
+		clr_global_flag = revolution_n_counter_researched
+		clr_global_flag = uk_isolation_disabled
+		set_global_flag = usa_gtfo_africa
+		clr_global_flag = extra_flavour_disabled
+		clr_global_flag = extra_flavour_disabled
+		clr_global_flag = colonial_cassus_belli_africa_enabled
+		clr_global_flag = minor_greater_power_enabled
+		clr_global_flag = workplace_events_disabled
+		clr_global_flag = disable_unite_as_puppet
+		clr_global_flag = mobilisation_limiter_enabled
+		clr_global_flag = acw_bypass
+		clr_global_flag = option_make_aiaustria_more_likely_to_join
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 59 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
+
+	option = {
+        name = "EVTOPTB59"
+		set_global_flag = colonial_railroading_disabled
+		set_global_flag = revolution_n_counter_researched
+		set_global_flag = uk_isolation_disabled
+		clr_global_flag = usa_gtfo_africa
+		clr_global_flag = extra_flavour_disabled
+		clr_global_flag = extra_flavour_disabled
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 59 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
+
+	option = {
+        name = "EVTOPTC59"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 60 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
+
+	option = {
+        name = "EVTOPTD59"
+
+    }
+}
+
+#Setup Options 1/4
+country_event = {
+	id = 60
+	title = "EVTNAME60"
+	desc = "EVTDESC60"
+	picture = "cafecolonial"
+
+	is_triggered_only = yes
+
+	allow_multiple_instances = yes
+
+	option = { 
+		name = "EVTOPTA60"
+		random_owned = { 
+			limit = { 
+				owner = { 
+					NOT = { has_global_flag = colonial_railroading_disabled } 
+					NOT = { has_country_flag = setting_changed } 
+				} 
+			}
+			owner = { 
+				set_global_flag = colonial_railroading_disabled
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_global_flag = colonial_railroading_disabled NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_global_flag = colonial_railroading_disabled
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 60 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTB60"
+		random_owned = { 
+			limit = { 
+				owner = { 
+					NOT = { has_global_flag = revolution_n_counter_researched } 
+					NOT = { has_country_flag = setting_changed } 
+				} 
+			}
+			owner = { 
+				set_global_flag = revolution_n_counter_researched
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { 
+				owner = { 
+					has_global_flag = revolution_n_counter_researched 
+					NOT = { has_country_flag = setting_changed } 
+				} 	
+			}
+			owner = { 
+				clr_global_flag = revolution_n_counter_researched
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 60 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTC60"
+		random_owned = { 
+			limit = { owner = { NOT = { has_global_flag = uk_isolation_disabled } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_global_flag = uk_isolation_disabled
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_global_flag = uk_isolation_disabled NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_global_flag = uk_isolation_disabled
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 60 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTD60"
+		random_owned = { 
+			limit = { owner = { NOT = { has_global_flag = usa_gtfo_africa } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_global_flag = usa_gtfo_africa
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_global_flag = usa_gtfo_africa NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_global_flag = usa_gtfo_africa
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 60 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTNEXT"
+		country_event = 61
+	}
+}
+
+#Setup Options 2/4
+country_event = {
+	id = 61
+	title = "EVTNAME61"
+	desc = "EVTDESC61"
+	picture = "cafecolonial"
+
+	is_triggered_only = yes
+
+	allow_multiple_instances = yes
+	
+	option = { 
+		name = "EVTOPTA61"
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = extra_flavour_disabled } 
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = extra_flavour_disabled
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { has_global_flag = extra_flavour_disabled NOT = { has_country_flag = setting_changed } }
+			}
+			owner = { 
+				currently_disabled = { } 
+				clr_global_flag = extra_flavour_disabled
+				set_country_flag = setting_changed
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 61 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTB61"
+		
+		random_owned = {
+			limit = {
+				NOT = { owner = { has_global_flag = micro_states_disabled } }
+			}
+			owner = { 
+				currently_enabled = { } 
+				permanent_option = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { has_global_flag = micro_states_disabled }
+			}
+			owner = {
+				currently_disabled = { } 
+				permanent_option_taken = { }
+			}
+		}
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip NOT = { has_global_flag = micro_states_disabled }} }
+						CUO = { annex_to = SPA }
+						ADO = { annex_to = FRA }
+						LIE = { annex_to = AUS }
+						ATH = { annex_to = TUR }
+						SMR = { annex_to = PAP }
+						MRN = { annex_to = PRU }
+						MNC = { annex_to = SAR }
+		}
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 61 }
+		}
+		clr_country_flag = hidden_tooltip
+		set_global_flag = micro_states_disabled
+	}
+
+	option = { 
+		name = "EVTOPTC61"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_global_flag = colonial_cassus_belli_africa_enabled }
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				set_global_flag = colonial_cassus_belli_africa_enabled
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = colonial_cassus_belli_africa_enabled 
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				clr_global_flag = colonial_cassus_belli_africa_enabled
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 61 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTD61"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_global_flag = minor_greater_power_enabled }
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				set_global_flag = minor_greater_power_enabled
+				set_country_flag = setting_changed
+				currently_disabled = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = minor_greater_power_enabled
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				clr_global_flag = minor_greater_power_enabled
+				set_country_flag = setting_changed
+				currently_enabled = { }
+			}
+		}
+
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 61 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTNEXT"
+		country_event = 62
+	}
+}
+
+#Setup Options 3/4
+country_event = {
+	id = 62
+	title = "EVTNAME62"
+	desc = "EVTDESC62"
+	picture = "cafecolonial"
+
+	is_triggered_only = yes
+
+	allow_multiple_instances = yes
+	
+	option = { 
+		name = "EVTOPTA62"
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = workplace_events_disabled } 
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				set_global_flag = workplace_events_disabled
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = workplace_events_disabled
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				clr_global_flag = workplace_events_disabled
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 62 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTB62"
+
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = leader_events_disabled } 
+					NOT = { has_country_flag = setting_changed } 
+				}
+			}
+			owner = { 
+				set_country_flag = setting_changed
+				set_global_flag = leader_events_disabled
+				currently_enabled = { } 
+				permanent_option = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { has_global_flag = leader_events_disabled }
+			}
+			owner = { 
+				currently_disabled = { } 
+				permanent_option_taken = { }
+			}
+		}
+
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 62 }
+						owner = { 
+							set_global_flag = leader_events_disabled
+							remove_country_modifier = expert_diplomat
+							remove_country_modifier = successful_industrialist
+							remove_country_modifier = ivory_tower_intellectual
+							remove_country_modifier = man_of_the_people
+							remove_country_modifier = landed_gentleman
+							remove_country_modifier = military_man
+							remove_country_modifier = lord_admiral
+							remove_country_modifier = raving_loon
+							remove_country_modifier = luddite
+							remove_country_modifier = great_statesman
+							remove_country_modifier = backroom_boy
+							remove_country_modifier = great_reformer
+							remove_country_modifier = gauche_buffoon
+							remove_country_modifier = administrative_genius
+							remove_country_modifier = visionary_thinker
+							remove_country_modifier = competent_placeholder
+							remove_country_modifier = imperious_autocrat
+							remove_country_modifier = prince_of_terror
+							remove_country_modifier = efficient_sociopath
+							remove_country_modifier = pig_headed_isolationist
+							remove_country_modifier = ambitious_union_boss
+							remove_country_modifier = dour_economist
+							remove_country_modifier = has_political_leader
+						}
+						any_country = {
+							remove_country_modifier = expert_diplomat
+							remove_country_modifier = successful_industrialist
+							remove_country_modifier = ivory_tower_intellectual
+							remove_country_modifier = man_of_the_people
+							remove_country_modifier = landed_gentleman
+							remove_country_modifier = military_man
+							remove_country_modifier = lord_admiral
+							remove_country_modifier = raving_loon
+							remove_country_modifier = luddite
+							remove_country_modifier = great_statesman
+							remove_country_modifier = backroom_boy
+							remove_country_modifier = great_reformer
+							remove_country_modifier = gauche_buffoon
+							remove_country_modifier = administrative_genius
+							remove_country_modifier = visionary_thinker
+							remove_country_modifier = competent_placeholder
+							remove_country_modifier = imperious_autocrat
+							remove_country_modifier = prince_of_terror
+							remove_country_modifier = efficient_sociopath
+							remove_country_modifier = pig_headed_isolationist
+							remove_country_modifier = ambitious_union_boss
+							remove_country_modifier = dour_economist
+							remove_country_modifier = has_political_leader
+						}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTC62"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_global_flag = disable_unite_as_puppet }
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = {
+				set_global_flag = disable_unite_as_puppet
+				set_country_flag = setting_changed 
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = disable_unite_as_puppet
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = {
+				clr_global_flag = disable_unite_as_puppet
+				set_country_flag = setting_changed 
+				currently_disabled = { }
+			}
+		}
+
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 62 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTD62"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_global_flag = mobilisation_limiter_enabled }
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = {
+				set_global_flag = mobilisation_limiter_enabled
+				set_country_flag = setting_changed 
+				currently_disabled = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = mobilisation_limiter_enabled
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = {
+				clr_global_flag = mobilisation_limiter_enabled
+				set_country_flag = setting_changed 
+				currently_enabled = { }
+			}
+		}
+
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 62 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTNEXT"
+		country_event = 63
+	}
+}
+
+#Setup Options 4/4
+country_event = {
+	id = 63
+	title = "EVTNAME63"
+	desc = "EVTDESC63"
+	picture = "cafecolonial"
+
+	is_triggered_only = yes
+
+	allow_multiple_instances = yes
+	
+	option = { 
+		name = "EVTOPTA63"
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = acw_bypass }
+					NOT = { has_country_flag = setting_changed } 
+				}
+			}
+			owner = {
+				set_global_flag = acw_bypass
+				set_country_flag = setting_changed 
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = acw_bypass 
+					NOT = { has_country_flag = setting_changed } 
+				}
+			}
+			owner = { 
+				clr_global_flag = acw_bypass
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 63 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTB63"
+		set_global_flag = brz_dismantled_via_option
+
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = brz_dismantled_via_option }
+				}
+			}
+			owner = { 
+				set_global_flag = brz_dismantled_via_option
+				currently_disabled = { } 
+				permanent_option = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { has_global_flag = brz_dismantled_via_option }
+			}
+			owner = {
+				currently_enabled = { } 
+				permanent_option_taken = { }
+			}
+		}
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 63 }
+						RGS = { end_war = BRZ }
+						GPR = { end_war = BRZ }
+						RJL = { end_war = BRZ }
+						BRZ = { 
+							country_event = 8171
+						}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTC63"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_global_flag = option_make_aiaustria_more_likely_to_join }
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = { 
+				set_global_flag = option_make_aiaustria_more_likely_to_join
+				set_country_flag = setting_changed 
+				currently_disabled = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = option_make_aiaustria_more_likely_to_join
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+			owner = {
+				clr_global_flag = option_make_aiaustria_more_likely_to_join 
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 63 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTD63"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_global_flag = lucky_nations_on }
+				}
+			}
+			owner = { 
+				set_global_flag = lucky_nations_on
+				currently_disabled = { }
+				permanent_option = { }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = lucky_nations_on
+				}
+			}
+			owner = { 
+				currently_enabled = { }
+				permanent_option_taken = { }
+			}
+		}
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 63 }
+		}
+		clr_country_flag = hidden_tooltip
+		set_global_flag = lucky_nations_on
+	}
+
+	option = { 
+		name = "EVTBACK"
+		country_event = 59
+	}
+}
+
+#Utility Menu 1/2
+country_event = {
+	id = 64
+	title = "EVTNAME64"
+	desc = "EVTDESC64"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA64"
+		country_event = 69
+	}
+
+	option = {
+		name = "EVTOPTB64"
+		country_event = 68
+	}
+
+	option = {
+		name = "EVTOPTC64"
+		random_owned = {
+			limit = { owner = { war = no num_of_vassals_no_substates = 1 } }
+			owner = { country_event = 99 } 
+		}
+
+		random_owned = {
+			limit = { owner = { OR = { war = yes NOT = { num_of_vassals_no_substates = 1 } } } }
+			owner = { cant_do_while_at_war_or_no_vassals = { } } 
+		}
+
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip OR = { war = yes NOT = { num_of_vassals_no_substates = 1 } } } }
+			owner = { country_event = 64 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTD64"
+		country_event = 96
+	}
+
+	option = {
+		name = "EVTNEXT"
+		country_event = 65
+	}
+}
+
+#Utility Menu 2/3
+country_event = {
+	id = 65
+	title = "EVTNAME65"
+	desc = "EVTDESC65"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA65"
+		permanent_action = { }
+		set_country_flag = hidden_tooltip
+		random_owned = { 
+			limit = { owner = { has_country_flag = hidden_tooltip } } 
+			owner = { country_event = 65 }
+			UTI = { any_country = { any_pop = { reduce_pop = 0.9 } } }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTB65"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_flag = vassals_dont_need_to_pay } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_country_flag = vassals_dont_need_to_pay
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = vassals_dont_need_to_pay NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_country_flag = vassals_dont_need_to_pay
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 65 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = { 
+		name = "EVTOPTC65"
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_leader = "John Cena" }
+				}
+			}
+			owner = { country_event = 10000100 }
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					has_leader = "John Cena"
+				}
+			}
+			owner = { cant_do_that_yet = { } }
+		}
+		
+		set_country_flag = hidden_tooltip
+		random_owned = { 
+			limit = { owner = { has_country_flag = hidden_tooltip } } 
+			owner = { country_event = 65 }
+		}
+		clr_country_flag = hidden_tooltip
+		
+	}
+
+	option = {
+		name = "EVTOPTD65"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_flag = picking_up_a_tech_school } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_country_flag = picking_up_a_tech_school
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = picking_up_a_tech_school NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_country_flag = picking_up_a_tech_school
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 65 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTNEXT"
+		country_event = 66
+	}
+}
+
+#Utility Menu 3/3
+country_event = {
+	id = 66
+	title = "EVTNAME66"
+	desc = "EVTDESC66"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA66"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = law_changed_by_force } } }
+			owner = { country_event = 67 }
+		}
+		random_owned = { 
+			limit = { owner = { has_country_modifier = law_changed_by_force  } }
+			owner = { cant_do_that_yet = { } }
+		}
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip has_country_modifier = law_changed_by_force } }
+			owner = { country_event = 66 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTB66"
+		country_event = 199936
+	}
+
+	option = {
+		name = "EVTOPTC66"
+		country_event = 199937
+	}
+
+	option = {
+		name = "EVTCLOSE"
+	}
+
+	option = {
+		name = "EVTSTART"
+		country_event = 78
+	}
+}
+
+#Border Control
+country_event = {
+	id = 67
+	title = "EVTNAME67"
+	desc = "EVTDESC67"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA67"
+		add_country_modifier = { name = law_changed_by_force duration = 365 }
+		political_reform = open_borders
+	}
+
+	option = {
+		name = "EVTOPTB67"
+		add_country_modifier = { name = law_changed_by_force duration = 365 }
+		political_reform = quota_immigration
+		any_pop = { consciousness = 1 }
+	}
+
+	option = {
+		name = "EVTOPTC67"
+		add_country_modifier = { name = law_changed_by_force duration = 730 }
+		political_reform = closed_borders
+		any_pop = { consciousness = 5 militancy = 3 }
+
+	}
+
+	option = {
+		name = "EVTOPTD67"
+		country_event = 84
+	}
+
+	option = {
+		name = "EVTCLOSE"
+	}
+}
+
+#NV Change Menu
+country_event = {
+	id = 68
+	title = "EVTNAME68"
+	desc = "EVTDESC68"
+	picture = cafecolonial
+
+	trigger = {
+		civilized = no
+		civilization_progress = 0.5
+		war = no
+		NOT = {	has_country_modifier = national_confusion }
+		NOT = { num_of_revolts = 1 }
+	}
+
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA68"
+		nationalvalue = nv_order
+
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		any_pop = {
+			scaled_militancy = { ideology = reactionary factor = 5 }
+			scaled_militancy = { ideology = conservative factor = 2 }
+			scaled_militancy = { ideology = liberal factor = -2 }
+		}
+
+		ai_chance = {
+			factor = 0.2
+		}
+	}
+
+	option = {
+		name = "EVTOPTB68"
+		nationalvalue = nv_productivity
+
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		any_pop = {
+			scaled_militancy = { ideology = reactionary factor = 6 }
+			scaled_militancy = { ideology = conservative factor = 2 }
+			scaled_militancy = { ideology = liberal factor = -2 }
+		}
+		
+		ai_chance = {
+			factor = 0.2
+		}
+	}
+
+	option = {
+		name = "EVTOPTC68"
+		nationalvalue = nv_autocracy
+
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		any_pop = {
+			scaled_militancy = { ideology = reactionary factor = 4 }
+			scaled_militancy = { ideology = conservative factor = 2 }
+			scaled_militancy = { ideology = liberal factor = -2 }
+		}
+		
+		ai_chance = {
+			factor = 0.2
+		}
+	}
+
+	option = {
+		name = "EVTOPTD68"
+		nationalvalue = nv_equality
+
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		any_pop = {
+			scaled_militancy = { ideology = reactionary factor = 8 }
+			scaled_militancy = { ideology = conservative factor = 2 }
+			scaled_militancy = { ideology = liberal factor = -2 }
+		}
+
+		ai_chance = {
+			factor = 0.2
+		}
+	}
+
+	option = {
+		name = "EVTOPTE68"
+		nationalvalue = nv_liberty
+
+		add_country_modifier = { name = national_confusion duration = 3650 }
+		any_pop = {
+			scaled_militancy = { ideology = reactionary factor = 8 }
+			scaled_militancy = { ideology = conservative factor = 2 }
+			scaled_militancy = { ideology = liberal factor = -3 }
+		}
+
+		ai_chance = {
+			factor = 0.2
+		}
+	}
+
+	option = {
+		name = "EVTCLOSE"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+#National Campaign Menu, 1/2
+country_event = {
+	id = 69
+	title = "EVTNAME69"
+	desc = "EVTDESC69"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA69"
+		remove_country_modifier = infamy_removal 
+		remove_country_modifier = more_colonial_settlement
+		remove_country_modifier = tourism_campaign
+		remove_country_modifier = less_emigration
+		remove_country_modifier = research_campaign
+		remove_country_modifier = birthrate_push_medium
+		clr_global_flag = override_campaigns 
+	}
+	
+	option = {
+		name = "EVTOPTB69"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = birthrate_push_medium } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = birthrate_push_medium duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = birthrate_push_medium NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = birthrate_push_medium
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 69 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTC69"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = infamy_removal } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = infamy_removal duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = infamy_removal NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = infamy_removal
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 69 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTD69"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = research_campaign } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = research_campaign duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = research_campaign NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = research_campaign
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 69 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTNEXT"
+		country_event = 70
+	}
+}
+
+#National Campaign Menu, 2/2
+country_event = {
+	id = 70
+	title = "EVTNAME70"
+	desc = "EVTDESC70"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA70"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = more_colonial_settlement } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = more_colonial_settlement duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = more_colonial_settlement NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = more_colonial_settlement
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 70 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+	
+	option = {
+		name = "EVTOPTB70"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = less_emigration } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = less_emigration duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = less_emigration NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = less_emigration
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 70 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTC70"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = tourism_campaign } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = tourism_campaign duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = tourism_campaign NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = tourism_campaign
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 70 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTD70"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_flag = show_dm_options } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_country_flag = show_dm_options
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = show_dm_options NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_country_flag = show_dm_options
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 70 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTCLOSE"
+	}
+}
+
+#MP Menu
+country_event = {
+	id = 71
+	title = "EVTNAME71"
+	desc = "EVTDESC71"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA71"
+		random_owned = { 
+			any_country = {
+				limit = {
+					has_country_flag = will_give_grants
+					ai = no
+					money = 10000
+				}
+				country_event = { id = 100001 days = 0 }
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB71"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_flag = will_receive_grants } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_country_flag = will_receive_grants
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = will_receive_grants NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_country_flag = will_receive_grants
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 71 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTC71"
+		random_owned = { 
+					limit = { owner = { NOT = { has_country_flag = will_give_grants } NOT = { has_country_flag = setting_changed } } }
+					owner = { 
+						set_country_flag = will_give_grants
+						set_country_flag = setting_changed
+						currently_disabled = { } 
+					}
+				}
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = will_give_grants NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_country_flag = will_give_grants
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 71 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTCLOSE"
+	}
+}
+
+#Shatter Menu
+country_event = {
+	id = 72
+	title = "EVTNAME72"
+	desc = "EVTDESC72"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA72"
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_flag = can_shatter } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				set_country_flag = can_shatter
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = can_shatter NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				clr_country_flag = can_shatter
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		clr_country_flag = setting_changed
+		
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 72 } 
+		}
+		clr_country_flag = hidden_tooltip
+	}
+	
+	option = {
+		name = "EVTOPTB72"
+		random_owned = { 
+					limit = { owner = { NOT = { has_country_flag = can_shatter } NOT = { has_global_flag = world_shattered } } }
+					owner = { 
+						locked_option = { } 
+					}
+		}
+		set_country_flag = hidden_tooltip
+
+		clr_country_flag = hidden_tooltip
+
+		random_owned = { 
+			limit = { owner = { has_country_flag = can_shatter NOT = { has_global_flag = world_shattered } } }
+			owner = { 
+				currently_disabled = { }
+				permanent_option = { }
+				set_global_flag = world_shattered
+				clr_country_flag = can_shatter
+				JAN = { country_event = 89 }
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_global_flag = world_shattered } }
+			owner = { 
+				currently_enabled = { } 
+				permanent_option_taken = { }
+			}
+		}
+
+		set_country_flag = hidden_tooltip
+		random_owned = { 
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { 
+				country_event = 72
+			}
+		}
+		clr_country_flag = hidden_tooltip
+		
+	}
+
+	option = {
+		name = "EVTOPTC72"
+		clr_country_flag = can_shatter
+	}
+}
+
+country_event = {
+	id = 89
+	title = ""
+	desc = ""
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = ""
+		any_country = {
+			limit = {
+				tag = RUS 
+			}
+			country_event = 96040
+		}
+
+		any_country = {
+			limit = {
+				tag = USA
+			}
+			country_event = 96045
+		}
+
+		any_country = {
+			limit = {
+				tag = ENG
+			}
+			country_event = 96050
+		}
+
+
+		any_country = {
+			limit = {
+				tag = FRA
+			}
+			country_event = 96055
+		}
+
+		any_country = {
+			limit = {
+				OR = {
+					tag = AUS
+					tag = KUK
+					tag = DNB
+				}
+			}
+			country_event = 96056
+		}
+
+		any_country = {
+			limit = {
+				tag = BRZ
+			}
+			country_event = 96058
+		}
+
+		any_country = {
+			limit = {
+				tag = TUR
+			}
+			country_event = 96057
+		}
+
+		any_country = {
+			war_exhaustion = -100
+			remove_country_modifier = punitive_effects
+			remove_country_modifier = no_more_war
+		}
+
+		any_country = {
+			limit = { NOT = { tag = SMR } }
+			country_event = 90
+		}
+	}
+}
+
+country_event = {
+	id = 90
+	title = ""
+	desc = ""
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = ""
+		any_country = {
+			limit = {
+				any_core = { owned_by = THIS }
+				exists = no
+				is_cultural_union = no
+				is_primary_culture = THIS
+				culture_has_union_tag = yes
+			}
+			country_event = 96018
+		}
+		any_country = {
+			limit = {
+				OR = {
+					civilized = yes
+					tag = JAP
+					tag = KOR
+					tag = SIA
+					tag = MOR
+					tag = ALD
+					tag = TUN
+					tag = EGY
+				}
+				any_core = { owned_by = THIS }
+				exists = no
+				is_cultural_union = no
+				NOT = {
+					AND = {
+						is_primary_culture = THIS
+						culture_has_union_tag = yes
+					}
+				}
+				NOT = { has_country_flag = post_colonial_country }
+			}
+			all_core = {
+				limit = {
+					is_core = THIS
+					state_scope = {
+						NOT = { any_owned_province = { is_capital = yes } }
+					}
+				}
+				remove_core = THIS
+			}
+			country_event = 96012
+		}
+
+		any_country = {
+			limit = {
+				tag = CZH
+				exists = no
+				THIS = {
+					owns = 625
+					owns = 633
+				}
+				NOT = { exists = BOH }
+				NOT = { exists = SLV }
+			}
+			set_global_flag = czechoslovakia_formed
+			BOH = { all_core = { add_core = CZH } }
+			SLV = { all_core = { add_core = CZH } }
+			2584 = { add_core = CZH }
+			689 = { add_core = CZH }
+			all_core = {
+				limit = {
+					is_core = THIS
+					state_scope = {
+						NOT = { any_owned_province = { is_capital = yes } }
+					}
+				}
+				remove_core = THIS
+			}
+			country_event = 96012
+		}
+		any_country = {
+			limit = { vassal_of = THIS }
+			all_core = {
+				limit = { is_core = THIS }
+				remove_core = THIS
+			}
+			leave_alliance = THIS
+			country_event = 96015
+		}
+
+		any_country = { leave_alliance = THIS }
+		any_country = { end_war = THIS }
 	}
 }
