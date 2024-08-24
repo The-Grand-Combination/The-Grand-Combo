@@ -145,6 +145,7 @@ war_of_the_americas_ussa
 french_conquest_of_canada_france
 french_conquest_of_canada_uk
 crush_the_commonwealth
+reclaim_the_commonwealth
 }
 
 # Great War CB's
@@ -9637,12 +9638,198 @@ crush_the_commonwealth = {
 
 	po_remove_prestige = yes
 
+	po_annex = yes
+
 	on_po_accepted = {
 		set_global_flag = polish_uprising_crushed
-		RUS = { country_event = 500007 }
+		LIT = {
+			any_owned = {
+				secede_province = RUS
+			}
+		}
+		719 = { remove_core = CPL }
+		3497 = { remove_core = CPL }
+		940 = { remove_core = CPL }
+		957 = { remove_core = CPL }
+		RUS = {
+			any_owned = {
+				limit = {
+					has_province_modifier = polish_revolt
+				}
+				remove_province_modifier = polish_revolt
+			}
+			any_owned = {
+				remove_core = PLC
+			}
+		}
 	}
 
 	on_add = {}
 
 	war_name = WAR_POLAND_UPRISING
+}
+
+reclaim_the_commonwealth = {
+	sprite_index = 23
+	is_triggered_only = yes
+	months = 12
+
+	construction_speed = 0.8
+
+	badboy_factor = 0
+	prestige_factor = 2
+	peace_cost_factor = 0.7
+	penalty_factor = 1
+	always = yes
+
+	break_truce_prestige_factor = 5
+	break_truce_infamy_factor = 2
+	break_truce_militancy_factor = 2
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = {
+		THIS = {
+			has_global_flag = commonwealth_claimed
+			is_greater_power = yes
+			tag = PLC
+			ai = no
+		}
+		OR = {
+			THIS = {
+				OR = {
+					war_policy = pro_military
+					war_policy = jingoism
+				}
+			}
+			war_with = THIS
+		}
+		is_vassal = no
+		OR = {
+		AND = {
+		has_global_flag = byzantine_balkans_claimed
+		any_owned_province = {
+			OR = {
+				is_core = BUL
+				is_core = SER
+				is_core = ALB
+				is_core = BOS
+			}
+		}
+		}
+		AND = {
+		has_global_flag = byzantine_levant_claimed
+		any_owned_province = {
+			OR = {
+				is_core = PLS
+				is_core = JOR
+				is_core = LBN
+				is_core = SYR
+				is_core = ASY
+				is_core = KDS
+			}
+		}
+		}
+		AND = { #This should be fine as player can't claim egypt before levant, so EGY cores on Levant don't matter
+		has_global_flag = byzantine_egypt_claimed
+		any_owned_province = {
+			OR = {
+				is_core = EGY
+				is_core = IRQ
+			}
+		}
+		}
+		AND = {
+		has_global_flag = byzantine_caucasus_claimed
+		any_owned_province = {
+			OR = {
+				is_core = ARM #Erivan
+				is_core = AZB
+				is_core = GEO
+			}
+		}
+		}
+		}
+		OR = {
+			war_with = THIS
+			THIS = { NOT = { has_country_modifier = punitive_effects } }
+		}
+		NOT = { has_country_modifier = neutrality }
+		THIS = { NOT = { has_country_modifier = neutrality } }
+	}
+
+	allowed_states = {
+		OR = {
+		AND = {
+		has_global_flag = byzantine_balkans_claimed
+		any_owned_province = {
+			OR = {
+				is_core = BUL
+				is_core = SER
+				is_core = ALB
+				is_core = BOS
+			}
+		}
+		}
+		AND = {
+		has_global_flag = byzantine_levant_claimed
+		any_owned_province = {
+			OR = {
+				is_core = PLS
+				is_core = JOR
+				is_core = LBN
+				is_core = SYR
+				is_core = ASY
+				is_core = KDS
+			}
+		}
+		}
+		AND = { #This should be fine as player can't claim egypt before levant, so EGY cores on Levant don't matter
+		has_global_flag = byzantine_egypt_claimed
+		any_owned_province = {
+			OR = {
+				is_core = EGY
+				is_core = IRQ
+			}
+		}
+		}
+		AND = {
+		has_global_flag = byzantine_caucasus_claimed
+		any_owned_province = {
+			OR = {
+				is_core = ARM #Erivan
+				is_core = AZB
+				is_core = GEO
+			}
+		}
+		}
+		}
+		OR = {
+			THIS = { ai = no }
+			any_owned_province = { any_neighbor_province = { owned_by = THIS } }
+			any_owned_province = { port = yes }
+			AND = {
+				any_owned_province = { port = yes }
+				THIS = {
+					rank = 16
+					any_owned_province = { port = yes }
+				}
+			}
+		}
+	}
+
+	po_demand_state = yes
+
+	war_name = WAR_RECLAIM_THE_EMPIRE_NAME
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.05
+		}
+	}
 }
