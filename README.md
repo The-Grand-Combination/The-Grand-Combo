@@ -189,6 +189,12 @@ Now your /flags folder should look like this, and TGC game will use considerably
 
 ![Acknowledgements](https://user-images.githubusercontent.com/32886642/209702062-2863718f-663a-4f62-9982-1ca68908a65a.png)
 
+TGC Developers:
+
+* Wyrm00
+* Gelre
+* emprahtheodosius
+  
 TGC was made possible by the below developers and mods:
 
 * u/Hammonia-HFM mapmod
@@ -203,20 +209,15 @@ TGC was made possible by the below developers and mods:
 * Guy from the Land of Phillip II - Localized Country Endonyms Submod
 * many others
 
-TGC Developers:
-
-* rderekp
-* Hammonia
-* Kspeher
-* Gelre
-* champfish
-* ColdSlav
-* emprahtheodosius
-* Frazza
-
 Honorable mentions and ex-Developers:
 
 * JmanThunder - Founder
+* rderekp - Former Devlead
+* ColdSlav - Former Devlead
+* Hammonia - Map Expert
+* Frazza
+* Champfish
+* Kspeher
 * MBnomics
 * vjwua
 * martoeuropa
