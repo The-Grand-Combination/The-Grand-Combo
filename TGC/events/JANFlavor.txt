@@ -325,19 +325,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA52"
 		country_event = { id = 52 days = 30 }
-
-		#Ghost Units Cleanup, thanks Bob.
-		any_country = {
-			limit = {
-				exists = no
-                OR = {
-                    is_mobilised = yes
-                    total_amount_of_ships = 1
-                }
-			}
-			annex_to = FROM
-		}
-		#Neutrality Handler
+		#Neutrality
 			#Wasteland
 			any_country = {
 				leave_alliance = ZOM
@@ -358,111 +346,55 @@ country_event = {
 			any_country = {
 				limit = {
 					ADO = { has_country_modifier = neutrality }
-					OR = {
-						alliance_with = ADO
-						military_access = ADO
-						war_with = ADO
-					}
 				}
-				leave_alliance = ADO
 				end_military_access = ADO
-				end_war = ADO
-				relation = {
-					who = ADO
-					value = -100
-				}
 			}
 			#Athos
 			any_country = {
 				limit = {
 					ATH = { has_country_modifier = neutrality }
-					OR = {
-						alliance_with = ATH
-						military_access = ATH
-						war_with = ATH
-					}
 				}
-				leave_alliance = ATH
 				end_military_access = ATH
-				end_war = ATH
-				relation = {
-					who = ATH
-					value = -100
-				}
 			}
 			#Belgium
 			any_country = {
 				limit = {
 					BEL = { has_country_modifier = neutrality }
-					OR = {
-						alliance_with = BEL
-						military_access = BEL
-						war_with = BEL
-					}
 				}
-				leave_alliance = BEL
 				end_military_access = BEL
-				end_war = BEL
-				relation = {
-					who = BEL
-					value = -100
-				}
 			}
 			#Liechtenstein
 			any_country = {
 				limit = {
 					LIE = { has_country_modifier = neutrality }
-					OR = {
-						alliance_with = LIE
-						military_access = LIE
-						war_with = LIE
-					}
 				}
-				leave_alliance = LIE
 				end_military_access = LIE
-				end_war = LIE
-				relation = {
-					who = LIE
-					value = -100
-				}
 			}
 			#San Marino
 			any_country = {
 				limit = {
 					SMR = { has_country_modifier = neutrality }
-					OR = {
-						alliance_with = SMR
-						military_access = SMR
-						war_with = SMR
-					}
 				}
-				leave_alliance = SMR
 				end_military_access = SMR
-				end_war = SMR
-				relation = {
-					who = SMR
-					value = -100
-				}
 			}
 			#Switzerland
 			any_country = {
 				limit = {
 					SWI = { has_country_modifier = neutrality }
-					OR = {
-						alliance_with = SWI
-						military_access = SWI
-						war_with = SWI
-					}
 				}
-				leave_alliance = SWI
 				end_military_access = SWI
-				end_war = SWI
-				relation = {
-					who = SWI
-					value = -100
-				}
 			}
-
+		#Ghost Units Cleanup, thanks Bob.
+		any_country = {
+			limit = {
+				exists = no
+                OR = {
+                    is_mobilised = yes
+                    total_amount_of_ships = 1
+                }
+			}
+			annex_to = FROM
+		}
 		#Pearl Season Starts
 			any_country = { limit = { tag = JAN month = 4 }
 				1162 = {
@@ -518,6 +450,7 @@ country_event = {
 		
 
 		#Archeology check
+			any_country = { clr_country_flag = excavation_ongoing }
 			any_country = { limit = { OR = {	has_country_modifier = mycenaean_excavations_modifier
 												has_country_modifier = egyptian_excavations
 												has_country_modifier = inca_excavations
@@ -527,16 +460,6 @@ country_event = {
 												has_country_modifier = pompeji_excavations }
 							}
 							set_country_flag = excavation_ongoing
-			}
-			any_country = { limit = { NOT = { OR = {	has_country_modifier = mycenaean_excavations_modifier
-														has_country_modifier = egyptian_excavations
-														has_country_modifier = inca_excavations
-														has_country_modifier = maya_excavations
-														has_country_modifier = mesopotamian_excavations
-														has_country_modifier = minoan_excavations
-														has_country_modifier = pompeji_excavations } }
-							}
-							clr_country_flag = excavation_ongoing
 			}
 		
 		#High Strata Militancy Spread
@@ -1075,7 +998,6 @@ country_event = {
 				limit = {
 					OR = {
 						has_country_flag = colonial_company_gov
-						has_country_flag = puppet_gov
 						has_country_flag = theocratic_government
 					}
 					NOT = { vote_franschise = none_voting }
@@ -1147,6 +1069,7 @@ country_event = {
 			any_country = { 
 				limit = { 
 					is_vassal = yes
+					NOT = { has_country_modifier = neutrality }
 					overlord = { has_country_flag = vassals_dont_need_to_pay }
 					NOT = { has_country_flag = exempt_from_vassal_contribution }
 					war = no 
@@ -1415,7 +1338,9 @@ country_event = {
 		any_country = {
 			limit = {
 				OR = { is_vassal = yes is_substate = yes }
+				NOT = { has_country_modifier = neutrality }
 				overlord = { exists = no }
+				overlord = { NOT = { tag = U02 } }
 			}
 			country_event = 6016815
 		}
@@ -1578,7 +1503,7 @@ country_event = {
 			}
 			clr_country_flag = native_integration_policies
 		}
-		# Female Suffrage
+		# Female Suffrage 
 		any_country = {
 			limit = {
 				OR = {
@@ -1661,21 +1586,117 @@ country_event = {
 			limit = { has_country_modifier = let_the_chips_fall }
 		}
 
-	#	Nations with multiple tags
-		#	Belgium
+		#Nations with multiple tags
+			#Belgium
+			any_country = {
+				limit = {
+					has_country_flag = is_real_belgium
+					exists = no
+				}
+				clr_global_flag = belgium_exists
+			}
+			any_country = {
+				limit = {
+					has_country_flag = is_real_belgium
+					exists = yes
+				}
+				set_global_flag = belgium_exists
+			}
+		
+		#African Conquest CB
+		any_country = { clr_country_flag = african_nation }
 		any_country = {
 			limit = {
-				has_country_flag = is_real_belgium
-				exists = no
+				OR = {
+					capital_scope = { continent = africa }
+					capital_scope = { continent = central_africa }
+					capital_scope = { continent = west_africa }
+					capital_scope = { continent = east_africa }
+					capital_scope = { continent = south_africa }
+				}
 			}
-			clr_global_flag = belgium_exists
+			set_country_flag = african_nation
 		}
+
+		#Ows a treaty Port
+		any_country = { clr_country_flag = has_treaty_port }
 		any_country = {
 			limit = {
-				has_country_flag = is_real_belgium
-				exists = yes
+				OR = {
+					owns = 1071 # Qeshm
+					owns = 1177 # Socotra
+					owns = 1481 # Lushun - Port Arthur
+					owns = 1482 # Fuzhou
+					owns = 1496 # Hong Kong
+					owns = 1498 # Macao
+					owns = 1499 # Hainan
+					owns = 1538 # Shanghai
+					owns = 1566	# Qingdao
+					owns = 1569 # Weihaiwei
+					owns = 1606 # Jiaxing
+					owns = 1608 # Ningbo
+					owns = 1637 # Cheju
+					owns = 1695 # Ifni
+					owns = 2048 # Zanzibar
+					owns = 2562 # Tainan
+					owns = 2589 # Tsushima
+					owns = 2632 # Kwangchowan
+					owns = 2640 # Gwadar
+					owns = 2681 # Taipei
+					owns = 3249 # Old Tianjin
+					owns = 3260 # Sado
+					owns = 3326 # San Mun
+				}
 			}
-			set_global_flag = belgium_exists
+			set_country_flag = has_treaty_port
+		}
+
+		#Has Colonial Province 
+		any_country = { clr_country_flag = has_colonial_provinces }
+		any_country = {
+			limit = { any_owned_province = { is_colonial = yes } }
+			set_country_flag = has_colonial_provinces
+		}	
+		
+		#Has Ports 
+		any_country = { clr_country_flag = has_port_provinces }
+		any_country = {
+			limit = { any_owned_province = { port = yes } }
+			set_country_flag = has_port_provinces
+		}	
+			
+
+		#Sahel Jihad CB
+		any_country = { clr_country_flag = sahel_jihad_cb }
+		any_country = {
+			limit = {
+				any_owned_province = {
+					OR = {
+						province_id = 1786
+						province_id = 1789
+						province_id = 1794
+						province_id = 1800
+						province_id = 1804
+						province_id = 1808
+						province_id = 1878
+						province_id = 1880
+					}
+				}
+			}
+			set_country_flag = sahel_jihad_cb
+		}
+
+		#Monarchy Gov
+		any_country = { clr_country_flag = monarchy_gov }
+		any_country = {
+			limit = {
+				OR = {
+					has_country_flag = absolute_monarchy_gov
+					has_country_flag = semi_constitutional_monarchy_gov
+					has_country_flag = constitutional_monarchy_gov
+				}
+			}
+			set_country_flag = monarchy_gov 
 		}
 	}
 }
@@ -2766,7 +2787,7 @@ country_event = {
 			owner = { 
 				set_country_flag = picking_up_a_tech_school
 				set_country_flag = setting_changed
-				currently_enabled = { } 
+				currently_disabled = { } 
 			}
 		}
 
@@ -2775,7 +2796,7 @@ country_event = {
 			owner = { 
 				clr_country_flag = picking_up_a_tech_school
 				set_country_flag = setting_changed
-				currently_disabled = { } 
+				currently_enabled = { } 
 			}
 		}
 		clr_country_flag = setting_changed
@@ -2838,7 +2859,7 @@ country_event = {
 
 	option = {
 		name = "EVTSTART"
-		country_event = 78
+		country_event = 64
 	}
 }
 
@@ -3526,7 +3547,7 @@ country_event = {
 }
 
 country_event = {
-	id = 89
+	id = 73
 	title = ""
 	desc = ""
 	picture = cafecolonial
@@ -3604,7 +3625,7 @@ country_event = {
 }
 
 country_event = {
-	id = 90
+	id = 74
 	title = ""
 	desc = ""
 	picture = cafecolonial

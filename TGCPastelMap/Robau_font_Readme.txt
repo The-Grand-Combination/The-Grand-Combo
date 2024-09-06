@@ -16,6 +16,6 @@ PM me (CaptRobau) at the Paradox Interactive Forums.
 
 Copyright:
 ==========
-This mod is © 2010 by Stefan "CaptRobau" Rumen.
+This mod is Â© 2010 by Stefan "CaptRobau" Rumen.
 
 #If you don't want to use this font, simply delete the font folder in gfx

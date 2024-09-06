@@ -3,7 +3,7 @@ political_decisions = {
 	andean_conf_by_sword = {
 		picture = andean_conf
 		potential = {
-			OR = { tag = GCO tag = PCB }
+			OR = { tag = GCO tag = PBC }
             NOT = { has_country_flag = we_shall_unite_by_sword_andean }
 		}
 
@@ -30,7 +30,7 @@ political_decisions = {
 	form_andean_conf = {
 		picture = andean_conf
 		potential = {
-			OR = { tag = GCO tag = PCB }
+			OR = { tag = GCO tag = PBC }
 			NOT = { exists = ANC }
 		}
 
@@ -78,60 +78,123 @@ political_decisions = {
 			add_accepted_culture = colombian
 			add_accepted_culture = venezuelan
 
-			## Annexation ##
-				any_country = {
-					limit = {
-						OR = {
-							in_sphere = THIS
-							vassal_of = THIS
-						}
-						ai = yes
-					}
-					any_owned = {
-						limit = { is_core = ANC }
-						secede_province = THIS
-					}
-				}
-				random_country = {
-					limit = {
-						tag = CLM
-						ai = no
-						NOT = { tag = THIS }
-						exists = yes
-					}
-					country_event = 11101
-				}
-				random_country = {
-					limit = {
-						tag = ECU
-						ai = no
-						NOT = { tag = THIS }
-						exists = yes
-					}
-					country_event = 11101
-				}
-                random_country = {
-					limit = {
-						tag = BOL
-						ai = no
-						NOT = { tag = THIS }
-						exists = yes
-					}
-					country_event = 11101
-				}
-				random_country = {
-					limit = {
-						tag = PEU
-						ai = no
-						NOT = { tag = THIS }
-						exists = yes
-					}
-					country_event = 11101
-				}
 			change_tag = ANC
+
+			any_country = {
+				limit = {
+					OR = {
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					OR = {
+						tag = PEU
+						tag = BOL
+						tag = ECU
+						tag = CLM
+						tag = PEU
+						tag = GCO
+					}
+				}
+				annex_to = THIS
+			}
+
+			any_owned =  { add_core = THIS }
+			
 		}
 
 		ai_will_do = { factor = 1 }
 	}
 
+}
+
+
+form_andean_conf = {
+	picture = andean_conf
+	potential = {
+		OR = { tag = GCO tag = PBC }
+		NOT = { exists = ANC }
+	}
+
+	allow = {
+		war = no
+		prestige = 100
+		nationalism_n_imperialism = 1
+		CLM = {
+			OR = {
+				in_sphere = THIS
+				vassal_of = THIS
+				all_core = { OR = { owned_by = THIS empty = yes } }
+			}
+		}
+		ECU = {
+			OR = {
+				in_sphere = THIS
+				vassal_of = THIS
+				all_core = { OR = { owned_by = THIS empty = yes } }
+			}
+		}
+		PEU = {
+			OR = {
+				in_sphere = THIS
+				vassal_of = THIS
+				all_core = { OR = { owned_by = THIS empty = yes } }
+			}
+		}
+		BOL = {
+			OR = {
+				in_sphere = THIS
+				vassal_of = THIS
+				all_core = { OR = { owned_by = THIS empty = yes } }
+			}
+		}
+	}
+
+	effect = {
+		prestige = 20
+		add_accepted_culture = ecuadorian
+		add_accepted_culture = colombian
+		add_accepted_culture = venezuelan
+
+		## Annexation ##
+			any_country = {
+				limit = {
+					OR = {
+						in_sphere = THIS
+						vassal_of = THIS
+					}
+					ai = yes
+				}
+				any_owned = {
+					limit = { is_core = ANC }
+					secede_province = THIS
+				}
+			}
+			random_country = {
+				limit = {
+					tag = CLM
+				}
+				country_event = 11101
+			}
+			random_country = {
+				limit = {
+					tag = ECU
+				}
+				country_event = 11101
+			}
+			random_country = {
+				limit = {
+					tag = BOL
+				}
+				country_event = 11101
+			}
+			random_country = {
+				limit = {
+					tag = PEU
+				}
+				country_event = 11101
+			}
+		change_tag = ANC
+	}
+
+	ai_will_do = { factor = 1 }
 }
