@@ -189,6 +189,15 @@ country_event = {
 				personality = defiant
 				background = school_of_defense
 			}
+
+			set_variable = {
+				which = white_strength 
+				value = 15
+			}
+			set_variable = {
+				which = red_strength
+				value = 10
+			}
 		}
 
 		release_vassal = LIT
@@ -305,7 +314,7 @@ country_event = {
 				is_greater_power = yes
 			}
 			country_event = { id = 500003 days = 5 }
-			CPL = { set_variable = { which = french_influence_poland value = 50 } }
+			CPL = { set_variable = { which = french_influence_poland value = 0 } }
 		}
 		any_country = {
 			limit = {
@@ -316,8 +325,8 @@ country_event = {
 					tag = GCF
 				}
 			}
-			country_event = { id = 500004 days = 5 }
-			CPL = { set_variable = { which = austrian_influence_poland value = 50 } }
+			country_event = { id = 500004 days = 4 }
+			CPL = { set_variable = { which = austrian_influence_poland value = 0 } }
 		}
 		any_country = {
 			limit = {
@@ -328,8 +337,8 @@ country_event = {
 					tag = GER
 				}
 			}
-			country_event = { id = 500005 days = 5 }
-			CPL = { set_variable = { which = prussian_influence_poland value = 50 } }
+			country_event = { id = 500005 days = 4 }
+			CPL = { set_variable = { which = prussian_influence_poland value = 0 } }
 		}
 
 		ai_chance = { factor = 100 }
@@ -731,7 +740,7 @@ country_event = {
 			ammunition = 50
 			canned_food = 50
 			artillery = 50
-			set_variable = { which = french_influence_poland value = 50 }
+			change_variable = { which = french_influence_poland value = 15 }
 		}
 		create_alliance = CPL
 		leave_alliance = FROM
@@ -740,7 +749,12 @@ country_event = {
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
 		set_global_flag = poland_intervention 
-		country_event = { id = 500010 days = 5 }
+		random_owned = {
+			limit = {
+				owner = { NOT = { has_global_flag = poland_german_intervention } }
+			}
+			owner = { country_event = { id = 500010 days = 5 } }
+		}
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 5
@@ -777,7 +791,7 @@ country_event = {
 			ammunition = 10
 			canned_food = 10
 			artillery = 10
-			set_variable = { which = french_influence_poland value = 10 }
+			set_variable = { which = french_influence_poland value = 5 }
 		}
 		relation = { who = FROM value = -100 }
 		relation = { who = CPL value = 100 }
@@ -814,7 +828,6 @@ country_event = {
 	option = { #Neutrality
 		name = "EVTOPTC500003"
 		prestige = -20
-		CPL = { set_variable = { which = french_influence_poland value = 0 } }
 		relation = { who = FROM value = 50 }
 		relation = { who = CPL value = -100 }
 		diplomatic_influence = { who = CPL value = -100 }
@@ -865,7 +878,7 @@ country_event = {
 			ammunition = 50
 			canned_food = 50
 			artillery = 50
-			set_variable = { which = austrian_influence_poland value = 50 }
+			set_variable = { which = austrian_influence_poland value = 15 }
 		}
 		create_alliance = CPL
 		leave_alliance = FROM
@@ -874,6 +887,7 @@ country_event = {
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
 		set_global_flag = poland_intervention 
+		set_global_flag = poland_german_intervention
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 5
@@ -910,7 +924,7 @@ country_event = {
 			ammunition = 10
 			canned_food = 10
 			artillery = 10
-			set_variable = { which = austrian_influence_poland value = 10 }
+			set_variable = { which = austrian_influence_poland value = 5 }
 		}
 		relation = { who = FROM value = -100 }
 		relation = { who = CPL value = 100 }
@@ -945,7 +959,6 @@ country_event = {
 	option = { #Neutrality
 		name = "EVTOPTC500004"
 		prestige = -5
-		CPL = { set_variable = { which = austrian_influence_poland value = 0 } }
 		relation = { who = FROM value = 15 }
 		relation = { who = CPL value = -50 }
 		diplomatic_influence = { who = CPL value = -50 }
@@ -978,11 +991,11 @@ country_event = {
 	option = { #Support Russia
 		name = "EVTOPTD500004"
 		prestige = -20
-		CPL = { set_variable = { which = austrian_influence_poland value = 0 } }
 		relation = { who = FROM value = 50 }
 		relation = { who = CPL value = -100 }
 		diplomatic_influence = { who = CPL value = -100 }
 		set_country_flag = poland_decision_made
+		create_alliance = FROM
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 10
@@ -1058,7 +1071,7 @@ country_event = {
 	option = {
 		name = "EVTOPTC500005"
 		CPL = {
-			set_variable = { which = prussian_influence_poland value = 50 }
+			set_variable = { which = prussian_influence_poland value = 15 }
 		}
 		create_alliance = CPL
 		leave_alliance = FROM
@@ -1067,6 +1080,7 @@ country_event = {
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
 		set_global_flag = poland_intervention
+		set_global_flag = poland_german_intervention
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 5
@@ -1330,14 +1344,6 @@ country_event = {
 				reduce_pop = 0.8
 			}
 			country_event = 666666126 #notif, largely for player QOL
-			set_variable = {
-				which = white_strength 
-				value = 15
-			}
-			set_variable = {
-				which = red_strength
-				value = 10
-			}
 		}
 
 		CPL = { create_vassal = LIT }
@@ -1417,7 +1423,10 @@ country_event = {
 	option = {
 		name = "EVTOPTA500010"
 		prestige = 5
-		PRU = { country_event = { id = 500011 days = 2 } }
+		any_country = {
+			limit = { owns = 549 }
+			country_event = { id = 500011 days = 2 }
+		}
 		any_country = {
 			limit = {
 				primary_culture = north_german
@@ -1455,6 +1464,10 @@ country_event = {
 		name = "EVTOPTA500011"
 		prestige = -20
 		military_access = FROM
+		any_country = {
+			limit = { primary_culture = north_german }
+			military_access = FROM
+		}
 		alliance = FROM
 		alliance = CPL
 		FROM = { country_event = { id = 500012 days = 3 } }
