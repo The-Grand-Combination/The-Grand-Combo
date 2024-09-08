@@ -297,14 +297,14 @@ country_event = {
 				NOT = { tag = NGF }
 				NOT = { tag = GER }
 			}
-			country_event = { id = 500002 days = 5 }
+			country_event = { id = 500002 days = 10 }
 		}
 		any_country = {
 			limit = {
 				has_country_flag = french_content
 				is_greater_power = yes
 			}
-			country_event = { id = 500003 days = 2 }
+			country_event = { id = 500003 days = 5 }
 			CPL = { set_variable = { which = french_influence_poland value = 50 } }
 		}
 		any_country = {
@@ -316,7 +316,7 @@ country_event = {
 					tag = GCF
 				}
 			}
-			country_event = { id = 500004 days = 3 }
+			country_event = { id = 500004 days = 5 }
 			CPL = { set_variable = { which = austrian_influence_poland value = 50 } }
 		}
 		any_country = {
@@ -328,7 +328,7 @@ country_event = {
 					tag = GER
 				}
 			}
-			country_event = { id = 500005 days = 4 }
+			country_event = { id = 500005 days = 5 }
 			CPL = { set_variable = { which = prussian_influence_poland value = 50 } }
 		}
 
@@ -366,7 +366,6 @@ country_event = {
 			}
 			secede_province = CPL
 		}
-		any_owned = { limit = { is_core = LIT } add_province_modifier = { name = nationalist_agitation duration = 1080 } }
 		CPL = {
 			government = presidential_dictatorship
 			clr_country_flag = soc_reform_blocker
@@ -447,9 +446,6 @@ country_event = {
 				}
 				reduce_pop = 0.8
 			}
-			any_owned = {
-				add_province_modifier = { name = polish_revolt duration = 1080 }
-			}
 			set_variable = {
 				which = white_strength 
 				value = 15
@@ -510,7 +506,6 @@ country_event = {
 				background = school_of_defense
 			}
 
-			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
 			random_owned = {
 				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
 				owner = {
@@ -745,6 +740,7 @@ country_event = {
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
 		set_global_flag = poland_intervention 
+		country_event = { id = 500010 days = 5 }
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 5
@@ -1127,7 +1123,8 @@ country_event = {
 		create_alliance = FROM
 		leave_alliance = CPL
 		leave_alliance = LIT
-		relation = { who = FROM value = -100 }
+		relation = { who = FROM value = 100 }
+		set_country_flag = alvensleben_convention
 	}
 }
 
@@ -1144,6 +1141,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA500008"
 		prestige = -25
+		relation = { who = FROM value = -50 }
 	}
 }
 
@@ -1406,8 +1404,164 @@ country_event = {
 	
 }
 
+#French - Demand Mil Access?
 country_event = {
 	id = 500010
+	title = "EVTNAME500010"
+	desc = "EVTDESC500010"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA500010"
+		prestige = 5
+		PRU = { country_event = { id = 500011 days = 2 } }
+		any_country = {
+			limit = {
+				primary_culture = north_german
+			}
+			relation = { who = THIS value = -50 }
+		}
+		
+		ai_chance = {
+			factor = 95
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB500010"
+		prestige = -10
+
+		ai_chance = {
+			factor = 5
+		}
+	}
+}
+
+#French demand Mil Access
+country_event = {
+	id = 500011
+	title = "EVTNAME500011"
+	desc = "EVTDESC500011"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	#fire_only_once = yes
+	option = {
+		name = "EVTOPTA500011"
+		prestige = -20
+		military_access = FROM
+		alliance = FROM
+		alliance = CPL
+		FROM = { country_event = { id = 500012 days = 3 } }
+		random_owned = {
+			limit = {
+				owner = { has_country_flag = alvensleben_convention }
+			}
+			end_military_access = RUS
+			leave_alliance = RUS
+			relation = { who = RUS value = -100 }
+			RUS = { country_event = { id = 500014 days = 1 } }
+		}
+
+		ai_chance = {
+			factor = 5
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB500011"
+		FROM = { country_event = { id = 500013 days = 3 } }
+		random_owned = {
+			limit = {
+				NOT = { owner = { has_country_flag = alvensleben_convention } }
+			}
+			alliance = RUS
+			relation = { who = RUS value = 50 }
+		}
+
+		ai_chance = {
+			factor = 95
+		}
+	}
+}
+
+#France - Prussia accepted Mil Access
+country_event = {
+	id = 500012
+	title = "EVTNAME500012"
+	desc = "EVTDESC500012"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = "EVTOPTA500012"
+		prestige = 15
+	}
+}
+
+#France - Prussia refused Mil Access
+country_event = {
+	id = 500013
+	title = "EVTNAME500013"
+	desc = "EVTDESC500013"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA500013"
+		prestige = 5
+
+		ai_chance = {
+			factor = 85
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB500013"
+		prestige = -25
+		FROM = {
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = alvensleben_convention } } }
+			}
+			FROM = {
+				leave_alliance = RUS
+			}
+		}
+		
+
+		ai_chance = {
+			factor = 15
+		}
+	}
+}
+
+#Notif for Russia that Prussia broke Alvensleben Convention
+country_event = {
+	id = 500014
+	title = "EVTNAME500014"
+	desc = "EVTDESC500014"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = "EVTOPTA500014"
+		relation = { who = FROM value = -100 }
+	}
+}
+
+country_event = {
+	id = 50001000
 	title = "EVTNAME500003" #Polish defeated
 	desc = "EVTDESC500003"
 	picture = "vacation_on_siberia"
@@ -1489,7 +1643,7 @@ country_event = {
 }
 
 country_event = {
-	id = 500011
+	id = 50001100
 	title = "EVTNAME500004" #Polish petitions for annexation
 	desc = "EVTDESC500004"
 	picture = "greatpowers"
