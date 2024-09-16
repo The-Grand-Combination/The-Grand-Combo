@@ -36,7 +36,7 @@ country_event = {
 	}
 }
 
-#Russia trigger event for January Uprising
+#Russia trigger event for January Uprising - 1863
 country_event = { 
 	id = 500001
 	title = "EVTNAME500001"
@@ -1586,10 +1586,11 @@ country_event = {
 	}
 }
 
+#Event for Russia to decide what to do with szlachta after Poland is defeated
 country_event = {
-	id = 50001000
-	title = "EVTNAME500003" #Polish defeated
-	desc = "EVTDESC500003"
+	id = 500015
+	title = "EVTNAME500015"
+	desc = "EVTDESC500015"
 	picture = "vacation_on_siberia"
 
 	fire_only_once = yes
@@ -1598,6 +1599,7 @@ country_event = {
 		has_global_flag = january_uprising_happened
 		has_country_flag = through_january_uprising
 		CPL = { exists = no }
+		LIT = { exists = no }
 		owns = 706
 		war = no
 	}
@@ -1605,7 +1607,7 @@ country_event = {
 	mean_time_to_happen = { days = 5 }
 
 	option = {
-		name = "EVTOPTA500003"  #punish them
+		name = "EVTOPTA500015"  #punish them
 		any_country = {
 			limit = { is_greater_power = yes capital_scope = { continent = europe } NOT = { alliance_with = THIS } }
 			relation = { who = THIS value = -25 }
@@ -1616,6 +1618,7 @@ country_event = {
 			owner = {
 				RUS_360 = { add_core = RUS }
 				CPL = { all_core = { add_core = RUS } }
+				LIT = { all_core = { add_core = RUS } }
 			}
 		}
 
@@ -1624,7 +1627,6 @@ country_event = {
 		CPL = { all_core = { add_core = THIS } }
 		LIT = { all_core = { add_core = THIS } }
 
-		706 = { any_pop = { limit = { has_pop_culture = polish pop_type = officers } reduce_pop = 0.7 } }
 		any_owned = {
 			limit = { is_core = POL }
 			any_pop = {
@@ -1632,10 +1634,19 @@ country_event = {
 					has_pop_culture = polish
 					OR = {
 						pop_type = officers
-						pop_type = soldiers
+						pop_type = capitalists
+						pop_type = aristocrats
 					}
 				}
 				reduce_pop = 0.7
+				move_pop = 1079
+			}
+			any_pop = {
+				limit = {
+					has_pop_culture = polish
+					pop_type = soldiers
+				}
+				reduce_pop = 0.8
 			}
 			add_province_modifier = { name = russoification duration = -1 } 
 			add_province_modifier = { name = national_assimilation_complete duration = 7000 } #This is so U01 gets removed after 20 years
@@ -1660,9 +1671,10 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTB500003"	#be lenient
+		name = "EVTOPTB500015"	#be lenient
 		prestige = -60
 		CPL = { all_core = { add_core = THIS } }
+		set_country_flag = lenient_on_poles
 		any_pop = {
 			limit = { is_accepted_culture = no }
 			consciousness = 6
@@ -1671,10 +1683,11 @@ country_event = {
 	}
 }
 
+#Event to incorporate all other Polish states
 country_event = {
-	id = 50001100
-	title = "EVTNAME500004" #Polish petitions for annexation
-	desc = "EVTDESC500004"
+	id = 500016
+	title = "EVTNAME500016" #Polish petitions for annexation
+	desc = "EVTDESC500016"
 	picture = "greatpowers"
 
 
@@ -1688,18 +1701,26 @@ country_event = {
 			part_of_sphere = no
 			in_sphere = POL
 		}
-		POL = {
-			NOT = { truce_with = THIS }
-			exists = yes
-			neighbour = THIS
-			is_vassal = no
+		OR = {
+			POL = {
+				NOT = { truce_with = THIS }
+				exists = yes
+				neighbour = THIS
+				is_vassal = no
+			}
+			PLC = {
+				NOT = { truce_with = THIS }
+				exists = yes
+				neighbour = THIS
+				is_vassal = no
+			}
 		}
 	}
 
 	mean_time_to_happen = { months = 6 }
 
 	option = {
-		name = "EVTOPTA500004"
+		name = "EVTOPTA500016"
 		set_country_flag = polish_integration_asked
 		all_core = {
 			add_core = POL
@@ -1720,7 +1741,7 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTB500004"
+		name = "EVTOPTB500016"
 		set_country_flag = polish_integration_asked
 		all_core = { add_core = POL }
 		ai_chance = {
