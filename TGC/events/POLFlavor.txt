@@ -205,11 +205,11 @@ country_event = {
 			}
 
 			set_variable = {
-				which = white_strength 
+				which = polish_whites_strength 
 				value = 15
 			}
 			set_variable = {
-				which = red_strength
+				which = polish_reds_strength
 				value = 10
 			}
 		}
@@ -470,11 +470,11 @@ country_event = {
 				reduce_pop = 0.8
 			}
 			set_variable = {
-				which = white_strength 
+				which = polish_whites_strength 
 				value = 15
 			}
 			set_variable = {
-				which = red_strength
+				which = polish_reds_strength
 				value = 10
 			}
 		}
@@ -1640,6 +1640,7 @@ country_event = {
 				}
 				reduce_pop = 0.7
 				move_pop = 1079
+				pop_type = labourers
 			}
 			any_pop = {
 				limit = {
@@ -1749,44 +1750,45 @@ country_event = {
 	}
 }
 
+# Red-White Struggle - ids 500100-500199
 #Choosing a King - Add "Call a Regency Council" decision
 country_event = {
-	id = 500018
-	title = "EVTNAME500018"
-	desc = "EVTDESC500018"
+	id = 500100
+	title = "EVTNAME500100"
+	desc = "EVTDESC500100"
 	picture = "placeholder"
 	
 	is_triggered_only = yes
 	
 	option = { # Wettin
-		name = "EVTOPTA500018" 
+		name = "EVTOPTA500100" 
 		set_country_flag = wettin_poland
 		
 	}
 	
 	option = { # Poniatowski
-		name = "EVTOPTB500018"
+		name = "EVTOPTB500100"
 		set_country_flag = poniatowski_poland
 	}
 
 	option = { # Habsburg
-		name = "EVTOPTC500018"
+		name = "EVTOPTC500100"
 		set_country_flag = habsburg_poland
 	}
 
 	option = { # Other
-		name = "EVTOPTD500018"
+		name = "EVTOPTD500100"
 		any_owned = {
 			limit = {
 				owner = { NOT = { has_global_flag = fantasy_formables } }
 			}
-			country_event = 500019
+			country_event = 500101
 		}
 		any_owned = {
 			limit = {
 				owner = { has_global_flag = fantasy_formables }
 			}
-			country_event = 500020
+			country_event = 500102
 		}
 	}
 	
@@ -1794,65 +1796,140 @@ country_event = {
 
 #Choosing a King Part 2 - Not FF
 country_event = {
-	id = 500019
-	title = "EVTNAME500019"
-	desc = "EVTDESC500019"
+	id = 500101
+	title = "EVTNAME500101"
+	desc = "EVTDESC500101"
 	picture = "placeholder"
 	
 	is_triggered_only = yes
 
 	option = { # Bonaparte
-		name = "EVTOPTA500019"
+		name = "EVTOPTA500101"
 		set_country_flag = bonaparte_poland
 		
 	}
 	
 	option = { # Hohenzollern
-		name = "EVTOPTB500019"
+		name = "EVTOPTB500101"
 		set_country_flag = hohenzollern_poland
 		
 	}
 
 	option = { # Back
-		name = "EVTOPTC500019"
-		country_event = 500018
+		name = "EVTOPTC500101"
+		country_event = 500100
 		
 	}
 }
 
 #Choosing a King Part 2 - FF
 country_event = {
-	id = 500020
-	title = "EVTNAME500020"
-	desc = "EVTDESC500020"
+	id = 500102
+	title = "EVTNAME500102"
+	desc = "EVTDESC500102"
 	picture = "placeholder"
 	
 	is_triggered_only = yes
 
 	option = { # Bonaparte
-		name = "EVTOPTA500020"
+		name = "EVTOPTA500102"
 		set_country_flag = bonaparte_poland
 
 	}
 	
 	option = { # Hohenzollern
-		name = "EVTOPTB500020"
+		name = "EVTOPTB500102"
 		set_country_flag = hohenzollern_poland
 
 	}
 
 	option = { # Vasa 
-		name = "EVTOPTC500020"
+		name = "EVTOPTC500102"
 		set_country_flag = vasa_poland
 		
 	}
 
 	option = { # Back
-		name = "EVTOPTD500020"
-		country_event = 500018
+		name = "EVTOPTD500102"
+		country_event = 500100
 		
 	}
 	
+}
+
+#Abolish Serfdom - Poland
+country_event = {
+	id = 500103
+	title = "EVTNAME500103"
+	desc = "EVTDESC500103"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = { # Compensation
+		name = "EVTOPTA500103"
+		political_reform = peonage
+		any_pop = {
+			limit = { strata = poor }
+			militancy = 3
+			consciousness = 3
+		}
+		any_pop = {
+			limit = { strata = rich }
+			militancy = 1
+			consciousness = 1
+		}
+		change_variable = { 
+			which = polish_whites_strength
+			value = 10
+		}
+		add_country_modifier = { name = promised_compensation days = -1 }
+
+		ai_chance = {
+			factor = 50
+		}
+	}
+	
+	option = { # No Compensation
+		name = "EVTOPTB500103"
+		political_reform = peonage
+		any_pop = {
+			limit = { strata = poor }
+			militancy = -3
+		}
+		any_pop = {
+			limit = { strata = rich }
+			militancy = 5
+			consciousness = 5
+		}
+		change_variable = { 
+			which = polish_reds_strength
+			value = 10
+		}
+
+		ai_chance = {
+			factor = 45
+		}
+	}
+	
+	option = { # Keep Serfdom
+		name = "EVTOPTC500103"
+		any_pop = {
+			limit = { strata = poor }
+			militancy = 7
+			consciousness 7 
+		}
+		any_pop = {
+			limit = { strata = rich }
+			militancy = -1
+			consciousness = -1
+		}
+
+		ai_chance = {
+			factor = 5
+		}
+	}
 }
 
 # Foreign Meddling - ids 500600-500799
