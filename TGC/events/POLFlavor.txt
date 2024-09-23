@@ -1803,6 +1803,25 @@ country_event = {
 	}
 }
 
+#Russian Event for Defeat in Poland
+country_event = {
+	id = 500018
+	title = "EVTNAME500018"
+	desc = "EVTDESC500018"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500018"
+		prestige = -100
+		any_pop = { limit = { is_accepted_culture = yes } militancy = 2 }
+		any_pop = { limit = { has_pop_culture = polish } militancy = 7 }
+		any_pop = { limit { is_accepted_culture = no NOT = { has_pop_culture = polish } } militancy = 5 }
+
+	}
+}
+
 # Red-White Struggle - ids 500100-500199
 # Choosing a King - Add "Call a Regency Council" decision
 country_event = {
@@ -1984,7 +2003,7 @@ country_event = {
 	}
 }
 
-# First Dictator of Poland - Ludwik Mieros?awski
+# First Dictator of Poland - Ludwik Mieroslawski
 country_event = {
 	id = 500104
 	title = "EVTNAME500104"
@@ -2280,9 +2299,9 @@ country_event = { # Nationalization 1
 	
 	is_triggered_only = yes
 
-	option = { # Research - Expel Foreign Advisors
+	option = { # Nationalize Foreign Factories
 		name = "EVTOPTA500601" 
-		add_country_modifier = { name = research_buff duration = 30 }
+		add_country_modifier = { name = factory_debuff duration = 30 }
 		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
 
 		change_variable = { which = french_influence_poland value = -5 }
@@ -2294,9 +2313,9 @@ country_event = { # Nationalization 1
 		}
 	}
 	
-	option = { # Military
+	option = { # Remove Military Advisors
 		name = "EVTOPTB500601"
-		add_country_modifier = { name = military_buff duration = 30 }
+		add_country_modifier = { name = military_debuff duration = 30 }
 		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
 
 		change_variable = { which = french_influence_poland value = -5 }
@@ -2312,27 +2331,27 @@ country_event = { # Nationalization 1
 		}
 	}
 	
-	option = { # Money
+	option = { # Pay Off Loans
 		name = "EVTOPTC500601"
-		ENG = { country_event = 500609 }
+		add_country_modifier = { name = financial_debuff duration = 30 }
 		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
 
 		ai_chance = {
 			factor = 15
 			modifier = {
-				factor = 2
+				factor = 0.5
 				NOT = { money = 100000 }
 			}
 			modifier = {
-				factor = 2
+				factor = 0.5
 				NOT = { money = 50000 }
 			}
 			modifier = {
-				factor = 2
+				factor = 0.5
 				NOT = { money = 25000 }
 			}
 			modifier = {
-				factor = 2
+				factor = 0
 				NOT = { money = 10000 }
 			}
 		}
@@ -2356,9 +2375,39 @@ country_event = { # Nationalization 2
 	
 	is_triggered_only = yes
 
+	option = { # Increase Tariffs
+		name = "EVTOPTA500602"
+		add_country_modifier = { name = tariffs_debuff duration = 30 }
+		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
+
+		change_variable = { which = french_influence_poland value = -5 }
+		change_variable = { which = austrian_influence_poland value = -5 }
+		change_variable = { which = prussian_influence_poland value = -5 }
+
+		ai_chance = {
+			factor = 40
+			modifier = {
+				factor = 2
+				NOT = { money = 100000 }
+			}
+			modifier = {
+				factor = 2
+				NOT = { money = 50000 }
+			}
+			modifier = {
+				factor = 2
+				NOT = { money = 25000 }
+			}
+			modifier = {
+				factor = 5
+				NOT = { money = 10000 }
+			}
+		}
+	}
+	
 	option = {
-		name = "EVTOPTA500602" # Education Eff (Teachers)
-		add_country_modifier = { name = factory_buff duration = 30 }
+		name = "EVTOPTB500602" # Expel Scientists
+		add_country_modifier = { name = research_debuff duration = 30 }
 		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
 
 		change_variable = { which = french_influence_poland value = -5 }
@@ -2387,22 +2436,8 @@ country_event = { # Nationalization 2
 	}
 	
 	option = {
-		name = "EVTOPTB500602" # Factory Cost/Output/Throughput (Engineers+Industrial Subsidies)
-		add_country_modifier = { name = factory_buff duration = 30 }
-		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
-
-		change_variable = { which = french_influence_poland value = -5 }
-		change_variable = { which = austrian_influence_poland value = -5 }
-		change_variable = { which = prussian_influence_poland value = -5 }
-
-		ai_chance = {
-			factor = 40
-		}
-	}
-	
-	option = {
-		name = "EVTOPTC500602" # Infamy Decrease (Diplomatic Support) 
-		badboy = -0.5
+		name = "EVTOPTC500602" # Assert Ourselves
+		badboy = 1
 		add_country_modifier = { name = asked_for_aid_recently duration = 30 }
 
 		change_variable = { which = french_influence_poland value = -10 }
@@ -2412,20 +2447,16 @@ country_event = { # Nationalization 2
 		ai_chance = {
 			factor = 20
 			modifier = {
-				factor = 0.1
-				NOT = { badboy = 5 }
-			}
-			modifier = {
-				factor = 2 
+				factor = 0.5
 				badboy = 15
 			}
 			modifier = {
-				factor = 2 
+				factor = 0.5
 				badboy = 20
 			}
 			modifier = {
-				factor = 100
-				badboy = 25
+				factor = 0
+				badboy = 24
 			}
 		}
 	}
