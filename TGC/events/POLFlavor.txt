@@ -37,7 +37,7 @@ country_event = {
 	}
 }
 
-# Russia trigger event for January Uprising - 1863
+# Russia trigger event for January Uprising - 1863 - Add Event about polish conscription - 
 country_event = { 
 	id = 500001
 	title = "EVTNAME500001"
@@ -1823,7 +1823,7 @@ country_event = {
 	}
 }
 
-# Red-White Struggle - ids 500100-500199
+# Red-White Struggle - ids 500100-500199 - combine red/white influence modifier into one modifier using desc
 # Choosing a King - Add "Call a Regency Council" decision
 country_event = {
 	id = 500100
@@ -1836,17 +1836,60 @@ country_event = {
 	option = { # Wettin
 		name = "EVTOPTA500100" 
 		set_country_flag = wettin_poland
-		
+		change_variable = { which = prussian_influence_poland value = 10 }
+		change_variable = { which = austrian_influence_poland value = 10 }
+		any_country = {
+			limit = {
+				is_culture_group = germanic
+			}
+			relation = { who = THIS value = 50 }
+		}
+		create_vassal = SAX
+
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				OR = {
+					any_country = {
+						limit = { is_greater_power = yes capital = 549 }
+						alliance_with = THIS
+					}
+					any_country = {
+						limit = { is_greater_power = yes capital = 619 }
+						alliance_with = THIS
+					}
+					any_country = {
+						limit = { is_greater_power = yes has_country_flag = french_content }
+						alliance_with = THIS
+					}
+				}
+			}
+		}
 	}
 	
 	option = { # Poniatowski
 		name = "EVTOPTB500100"
 		set_country_flag = poniatowski_poland
+		any_country = {
+			limit = {
+				OR = { is_culture_group = germanic primary_culture = russian }
+			}
+			relation = { who = THIS value = -50 }
+		}
 	}
 
 	option = { # Habsburg
 		name = "EVTOPTC500100"
 		set_country_flag = habsburg_poland
+		change_variable = { which = austrian_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { capital = 619 }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
+		}
 	}
 
 	option = { # Other
@@ -1879,13 +1922,27 @@ country_event = {
 	option = { # Bonaparte
 		name = "EVTOPTA500101"
 		set_country_flag = bonaparte_poland
-		
+		change_variable = { which = french_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { has_country_flag = french_content }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
+		}
 	}
 	
 	option = { # Hohenzollern
 		name = "EVTOPTB500101"
 		set_country_flag = hohenzollern_poland
-		
+		change_variable = { which = prussian_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { capital = 549 }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
+		}
 	}
 
 	option = { # Back
@@ -1907,19 +1964,39 @@ country_event = {
 	option = { # Bonaparte
 		name = "EVTOPTA500102"
 		set_country_flag = bonaparte_poland
-
+		change_variable = { which = french_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { has_country_flag = french_content }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
+		}
 	}
 	
 	option = { # Hohenzollern
 		name = "EVTOPTB500102"
 		set_country_flag = hohenzollern_poland
-
+		change_variable = { which = prussian_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { capital = 549 }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
+		}
 	}
 
 	option = { # Vasa 
 		name = "EVTOPTC500102"
 		set_country_flag = vasa_poland
-		
+		any_country = {
+			limit = { OR = { is_greater_power = yes has_country_flag = monarchy_gov } }
+			relations = {
+				who = THIS
+				value = -150
+			}
+		}
 	}
 
 	option = { # Back
@@ -2269,7 +2346,9 @@ country_event = {
 	}
 }
 
-# Foreign Meddling - ids 500600-500799
+
+
+# Foreign Meddling - ids 500600-500799 - combine foreign influence modifiers into one modifier using desc
 country_event = { # Foreign Aid Event
 	id = 500600
 	title = "EVTNAME500600"
@@ -2284,6 +2363,14 @@ country_event = { # Foreign Aid Event
 
 		ai_chance = {
 			factor = 10
+			modifier = {
+				factor = 0.25
+				OR = {
+					has_country_flag = bonaparte_poland
+					has_country_flag = habsburg_poland
+					has_country_flag = hohenzollern_poland
+				}
+			}
 		}
 	}
 	
@@ -2293,6 +2380,18 @@ country_event = { # Foreign Aid Event
 
 		ai_chance = {
 			factor = 40
+			modifier = {
+				factor = 100
+				has_country_flag = bonaparte_poland
+			}
+			modifier = {
+				factor = 0
+				has_country_flag = habsburg_poland
+			}
+			modifier = {
+				factor = 0
+				has_country_flag = hohenzollern_poland
+			}
 		}
 	}
 	
@@ -2306,6 +2405,18 @@ country_event = { # Foreign Aid Event
 				factor = 2
 				has_global_flag = alvensleben_convention
 			}
+			modifier = {
+				factor = 0
+				has_country_flag = bonaparte_poland
+			}
+			modifier = {
+				factor = 100
+				has_country_flag = habsburg_poland
+			}
+			modifier = {
+				factor = 0
+				has_country_flag = hohenzollern_poland
+			}
 		}
 	}
 
@@ -2318,6 +2429,18 @@ country_event = { # Foreign Aid Event
 			modifier = {
 				factor = 0
 				has_global_flag = alvensleben_convention
+			}
+			modifier = {
+				factor = 0
+				has_country_flag = bonaparte_poland
+			}
+			modifier = {
+				factor = 0
+				has_country_flag = habsburg_poland
+			}
+			modifier = {
+				factor = 100
+				has_country_flag = hohenzollern_poland
 			}
 		}
 	}
