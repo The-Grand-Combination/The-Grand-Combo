@@ -58,7 +58,7 @@ The player's voice is always heard in TGC, the team makes constant polling about
 
 <br clear="left"/>
 
-And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to #modder-recruiting.
+And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to #modder-recruiting and don't forget that Victoria 2 needs text files to be encoded in Windows 1252 or special characters in utf8 it will look weird in game.
 
 ## Submods
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
