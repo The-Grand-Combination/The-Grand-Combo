@@ -2944,7 +2944,22 @@ country_event = {
 	option = {
 		name = "EVTOPTA131715"
 		set_global_flag = spread_warlord_influence
-		tech_school = army_tech_school
+		
+		remove_country_modifier = ts_traditional
+		remove_country_modifier = ts_army
+		remove_country_modifier = ts_naval
+		remove_country_modifier = ts_industrial
+		remove_country_modifier = ts_culture
+		remove_country_modifier = ts_commerce
+		remove_country_modifier = ts_prussian
+		remove_country_modifier = ts_czech
+		remove_country_modifier = ts_japanese
+		remove_country_modifier = ts_chinese
+
+		add_country_modifier = {
+			name = ts_army
+			duration = -1
+		}
 		add_country_modifier = {
 			name = academic_confusion
 			duration = 1825
@@ -11430,6 +11445,7 @@ country_event = {
 	major = yes
 
 	trigger = {
+		mass_politics = 1
 		OR = {
 			is_greater_power = yes
 			AND = {
@@ -11438,17 +11454,28 @@ country_event = {
 			}
 		}
 		capital_scope = { continent = europe }
-		invention = prophylaxis_against_malaria
-		invention = mission_to_civilize
-		invention = colonial_negotiations
-		invention = the_dark_continent
-		mass_politics = 1
-		NOT = { has_global_flag = scramble_for_china }
+		AND = { 
+			OR = {
+				invention = prophylaxis_against_malaria
+				invention = mission_to_civilize
+				invention = colonial_negotiations
+				invention = the_dark_continent
+			}
+			AND = {
+				has_global_flag = scramble_for_china_railroad
+				OR = {
+					TPG = { exists = yes NOT = { civilization_progress = 0.8 } }
+					QNG = { exists = yes NOT = { civilization_progress = 0.8 } }
+					CHI = { exists = yes NOT = { civilization_progress = 0.8 } }
+				}
+			}
+		}
 		OR = {
 			TPG = { exists = yes civilized = no }
 			QNG = { exists = yes civilized = no }
 			CHI = { exists = yes civilized = no }
 		}
+		NOT = { has_global_flag = scramble_for_china }
 	}
 
 	allow_multiple_instances = no
@@ -11458,25 +11485,25 @@ country_event = {
 		modifier = {
 			factor = 0.85
 			OR = {
-			TPG = { exists = yes NOT = { civilization_progress = 0.4  } }
-			QNG = { exists = yes NOT = { civilization_progress = 0.4  } }
-			CHI = { exists = yes NOT = { civilization_progress = 0.4  } }
+				TPG = { exists = yes NOT = { civilization_progress = 0.4  } }
+				QNG = { exists = yes NOT = { civilization_progress = 0.4  } }
+				CHI = { exists = yes NOT = { civilization_progress = 0.4  } }
 			}
 		}
 		modifier = {
 			factor = 0.9
 			OR = {
-			TPG = { exists = yes NOT = { civilization_progress = 0.6  } }
-			QNG = { exists = yes NOT = { civilization_progress = 0.6  } }
-			CHI = { exists = yes NOT = { civilization_progress = 0.6  } }
+				TPG = { exists = yes NOT = { civilization_progress = 0.6  } }
+				QNG = { exists = yes NOT = { civilization_progress = 0.6  } }
+				CHI = { exists = yes NOT = { civilization_progress = 0.6  } }
 			}
 		}
 		modifier = {
 			factor = 0.95
 			OR = {
-			TPG = { exists = yes NOT = { civilization_progress = 0.8 } }
-			QNG = { exists = yes NOT = { civilization_progress = 0.8  } }
-			CHI = { exists = yes NOT = { civilization_progress = 0.8  } }
+				TPG = { exists = yes NOT = { civilization_progress = 0.8 } }
+				QNG = { exists = yes NOT = { civilization_progress = 0.8  } }
+				CHI = { exists = yes NOT = { civilization_progress = 0.8  } }
 			}
 		}
 	}

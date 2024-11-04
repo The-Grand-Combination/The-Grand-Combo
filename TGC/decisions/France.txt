@@ -769,21 +769,26 @@ rename_bourbon_island = {
 			is_greater_power = yes
 			has_country_flag = french_content
 			state_n_government = 1
-			NOT = { has_country_flag = claimed_authority_over_holy_land }
-			NOT = { has_global_flag = berlin_congress_held }
-			TUR = { neighbour = RUS }
-			917 = {
-				OR = {
-					owned_by = TUR
-					AND = {
-						owned_by = EGY
-						EGY = {
-							in_sphere = THIS
-							is_vassal = no
+			OR = { 
+				AND = { 
+					TUR = { neighbour = RUS }
+					917 = {
+						OR = {
+							owned_by = TUR
+							AND = {
+								owned_by = EGY
+								EGY = {
+									in_sphere = THIS
+									is_vassal = no
+								}
+							}
 						}
 					}
 				}
+				has_global_flag = crimea_war_railroad
 			}
+			NOT = { has_country_flag = claimed_authority_over_holy_land }
+			NOT = { has_global_flag = berlin_congress_held }
 		}
 
 		allow = {
@@ -794,8 +799,8 @@ rename_bourbon_island = {
 			 		has_country_modifier = louis_napoleon_iii
 			 		has_country_flag = 2nd_empire
 			 		NOT = { has_country_flag = louis_deposed }
-			 	}
-			 }
+			 	}	
+			}
 			war = no
 			TUR = {
 				war = no
@@ -803,6 +808,80 @@ rename_bourbon_island = {
 				owns = 860
 			}
 			NOT = { war_exhaustion = 1 }
+		}
+
+		effect = {
+			set_country_flag = claimed_authority_over_holy_land
+			prestige = 20
+			TUR = { country_event = 97500 }
+			any_owned = { any_pop = { limit = { is_primary_culture = yes }
+				scaled_militancy = {
+					factor = -0.5
+					ideology = liberal
+					}
+				scaled_militancy = {
+					factor = -0.5
+					ideology = conservative
+					}
+				scaled_militancy = {
+					factor = -1
+					ideology = reactionary
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				ENG = { war_with = USA }
+			}
+
+			modifier = {
+				factor = 0
+				ENG = { war_with = TPG }
+			}
+
+			modifier = {
+				factor = 0
+				ENG = { war_with = QNG }
+			}
+		}
+	}
+
+	france_protector_of_eastern_christians_ai = {
+		picture = protect_eastern_christians
+		potential = {
+			is_greater_power = yes
+			has_country_flag = french_content
+			ai = yes
+			state_n_government = 1
+			OR = { 
+				AND = { 
+					TUR = { neighbour = RUS }
+					917 = {
+						OR = {
+							owned_by = TUR
+							AND = {
+								owned_by = EGY
+								EGY = {
+									in_sphere = THIS
+									is_vassal = no
+								}
+							}
+						}
+					}
+				}
+				has_global_flag = crimea_war_railroad
+			}
+			NOT = { has_country_flag = claimed_authority_over_holy_land }
+			NOT = { has_global_flag = berlin_congress_held }
+		}
+
+		allow = {
+			year = 1853
+			has_global_flag = crimea_war_railroad
 		}
 
 		effect = {
@@ -1016,7 +1095,6 @@ rename_bourbon_island = {
 			set_global_flag = created_cambodian_protectorate
 			prestige = 20
 			inherit = CAM
-			CAM = { tech_school = unciv_tech_school }
 			country_event = 199071
 		}
 	}
@@ -1103,7 +1181,6 @@ rename_bourbon_island = {
 					}
 				}
 				set_country_flag = annexed_to_FRA
-				tech_school = unciv_tech_school
 				annex_to = THIS
 			}
 		}
@@ -1123,7 +1200,7 @@ rename_bourbon_island = {
 					}
 				}
 				primary_culture = japanese
-				tech_school = naval_tech_school
+				has_country_modifier = ts_naval
 			}
 			has_global_flag = berlin_conference
 			SIA = {
@@ -1293,7 +1370,6 @@ rename_bourbon_island = {
 				government = democracy
 				political_reform = landed_voting
 				all_core = { remove_core = SIA }
-				tech_school = unciv_tech_school
 			}
 			random_owned = {
 				limit = { owner = { NOT = { has_global_flag = rgo_change_in_laos } } }
@@ -1565,7 +1641,6 @@ rename_bourbon_island = {
 		effect = {
 			prestige = 10
 			set_country_flag = vietnam_organized
-			DAI = { tech_school = unciv_tech_school }
 			country_event = 199072
 		}
 
@@ -1586,7 +1661,7 @@ rename_bourbon_island = {
 					}
 				}
 				primary_culture = japanese
-				tech_school = naval_tech_school
+				has_country_modifier = ts_naval
 			}
 			DAI = {
 				exists = yes
@@ -1620,7 +1695,6 @@ rename_bourbon_island = {
 				badboy = 1
 			}
 			inherit = DAI
-			DAI = { tech_school = unciv_tech_school }
 		}
 	}
 
@@ -2612,7 +2686,7 @@ rename_bourbon_island = {
 			relation = { who = TUN value = -400 }
 			leave_alliance = TUN
 			end_military_access = TUN
-			TUN = { end_military_access = THIS tech_school = unciv_tech_school }
+			TUN = { end_military_access = THIS }
 			any_country = {
 				limit = { is_our_vassal = TUN }
 				release_vassal = TUN
@@ -4454,8 +4528,6 @@ rename_bourbon_island = {
 			has_country_flag = french_content
 			NOT = { has_country_flag = revengance }
 			NOT = { year = 1880 }
-		}
-		allow = {
 		}
 		effect = {
 			set_country_flag = revengance
