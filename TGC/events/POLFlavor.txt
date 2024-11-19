@@ -1804,7 +1804,7 @@ country_event = {
 	}
 }
 
-#Russian Event for Defeat in Poland
+# Russian Event for Defeat in Poland
 country_event = {
 	id = 500018
 	title = "EVTNAME500018"
@@ -1820,6 +1820,239 @@ country_event = {
 		any_pop = { limit = { has_pop_culture = polish } militancy = 7 }
 		any_pop = { limit = { is_accepted_culture = no NOT = { has_pop_culture = polish } } militancy = 5 }
 	}
+}
+
+# January Uprising Event - Triggers if the Congress of Paris didn't trigger 
+country_event = {
+	id = 500019
+	title = "EVTNAME500019"
+	desc = "EVTDESC500019"
+	picture = "placeholder"
+	
+	trigger = {
+		tag = RUS
+		NOT = { has_global_flag = poland_intervention }
+		OR = {
+			rank = 1
+			any_greater_power = {
+				rank = 1
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 1
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 2
+			any_greater_power = {
+				rank = 2
+				NOT = { rank = 1 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 2
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 3
+			any_greater_power = {
+				rank = 3
+				NOT = { rank = 2 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 3
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 4
+			any_greater_power = {
+				rank = 4
+				NOT = { rank = 3 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 4
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 5
+			any_greater_power = {
+				rank = 5
+				NOT = { rank = 4 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 5
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 6
+			any_greater_power = {
+				rank = 6
+				NOT = { rank = 5 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 6
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 7
+			any_greater_power = {
+				rank = 7
+				NOT = { rank = 6 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 7
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+		OR = {
+			rank = 8
+			any_greater_power = {
+				rank = 8
+				NOT = { rank = 7 }
+				has_country_flag = poland_decision_made
+			}
+			any_greater_power = {
+				rank = 8
+				NOT = { capital_scope = { continent = europe } }
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 2
+	}
+
+	fire_only_once = yes
+	
+	option = {
+		name = "EVTOPTA500019"
+		random_country = {
+			limit = {
+				tag = CPL
+				OR = {
+					substate_of = THIS
+					vassal_of = THIS
+				}
+			}
+			THIS = { release_vassal = CPL }
+		}
+		release = CPL
+		diplomatic_influence = { who = CPL value = -200 }
+		relation = { who = CPL value = -400 }
+		leave_alliance = CPL
+		any_owned = {
+			limit = {
+				OR = {
+					is_core = CPL
+					is_core = PZN
+					is_core = SLS
+					is_core = GLM
+					is_core = PML
+				}
+			}
+			secede_province = CPL
+		}
+		CPL = { all_core = { add_core = THIS } }
+		CPL = {
+			government = presidential_dictatorship
+			clr_country_flag = soc_reform_blocker
+			clr_country_flag = pol_reform_blocker
+			remove_accepted_culture = russian
+			remove_accepted_culture = ukrainian
+			remove_country_modifier = russian_absolutist_encroachment
+			remove_country_modifier = rus_organic_statute_cpl
+			ruling_party_ideology = conservative
+			political_reform = none_voting
+			political_reform = party_appointed
+			political_reform = no_meeting
+			political_reform = state_press
+			political_reform = no_trade_unions
+			political_reform = underground_parties
+			political_reform = mandatory_service
+			political_reform = serfdom # This was peonage. Goes a lil bit against schlahta hard on for the serfs, innit?
+			nationalvalue = nv_order
+			leadership = 80
+			treasury = 100000
+
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1095 }
+					set_country_flag = recognized_country
+				}
+			}
+
+			any_pop = {
+				limit = {
+					has_pop_culture = russian
+					OR = {
+						pop_type = bureaucrats
+						pop_type = soldiers
+						pop_type = officers
+						pop_type = aristocrats
+						pop_type = capitalists
+					}
+				}
+				reduce_pop = 0.8
+			}
+			country_event = 666666126 # notif, largely for player QOL
+		}
+
+		CPL = { create_vassal = LIT }
+		diplomatic_influence = { who = LIT value = -200 }
+		relation = { who = LIT value = -400 }
+		leave_alliance = LIT
+		CPL = { create_alliance = LIT }
+		LIT = {
+			government = presidential_dictatorship
+			ruling_party_ideology = conservative
+			political_reform = none_voting
+			political_reform = party_appointed
+			political_reform = no_meeting
+			political_reform = state_press
+			political_reform = no_trade_unions
+			political_reform = underground_parties
+			political_reform = mandatory_service
+			political_reform = serfdom # This was peonage. Goes a lil bit against schlahta hard on for the serfs, innit?
+			nationalvalue = nv_order
+			primary_culture = polish
+			add_accepted_culture = lithuanian
+			leadership = 80
+			treasury = 100000
+
+			random_owned = {
+				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
+				owner = {
+					add_country_modifier = { name = unrecognized_country duration = 1095 }
+					set_country_flag = recognized_country
+				}
+			}
+		}
+
+		war = {
+			target = CPL
+			attacker_goal = { casus_belli = crush_the_commonwealth }
+			defender_goal = { casus_belli = restore_the_commonwealth }
+			call_ally = yes
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB500019"
+		
+	}
+	
 }
 
 # Red-White Struggle - ids 500100-500199 - combine red/white influence modifier into one modifier using desc
