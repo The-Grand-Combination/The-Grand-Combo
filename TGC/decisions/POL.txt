@@ -1,6 +1,205 @@
 political_decisions = {
 #from Poland.txt
+##DEVNOTE - there seems to be an extra decision (The Uprising Is Victorious) that can be removed/changed so it's not available to the player
 
+	# Foreign Aid Decisions
+	poland_foreign_aid = {
+		picture = placeholder
+
+		potential = {
+			OR = {
+				tag = CPL
+				tag = POL
+				tag = PLC
+			}
+			is_vassal = no
+		}
+
+		allow = {
+			NOT = { has_country_modifier = asked_for_aid_recently }
+		}
+
+		effect = {
+			country_event = 500600
+		}
+	}
+
+	provide_foreign_aid_poland = {
+		picture = placeholder
+
+		potential = {
+			is_greater_power = yes
+			CPL = { is_independant = yes }
+			OR = {
+				has_country_flag = french_content
+				has_country_flag = austrian_content
+				has_country_flag = prussian_content
+			}
+		}
+
+		allow = {
+			NOT = { has_country_modifier = recently_provided_aid }
+		}
+
+		effect = {
+			random_owned = {
+				limit = {
+					owner = { has_country_flag = french_content }
+				}
+				owner = {
+					country_event = 500692
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = { has_country_flag = austrian_content }
+				}
+				owner = {
+					country_event = 500693
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = { has_country_flag = prussian_content }
+				}
+				owner = {
+					country_event = 500694
+				}
+			}
+		}
+	}
+
+	# French Poland
+	form_duchy_of_warsaw = {
+		picture = placeholder
+
+		potential = {
+			has_country_flag = french_content 
+			is_greater_power = yes
+			706 = { owner = { is_vassal = no war = no } }
+		}
+
+		allow = {
+			706 = { owner = { check_variable = { which = french_influence_poland value = 99.99 } } }
+		}
+
+		effect = {
+			any_country = {
+				limit = {
+					owns = 706
+				}
+				country_event = 500700
+			}
+			release_vassal = LIT
+			release_vassal = POL
+		}
+	}
+
+	# Austrian Poland
+	form_kingdom_of_poland = {
+		picture = placeholder
+
+		potential = {
+			has_country_flag = austrian_content
+			is_greater_power = yes
+			706 = { owner = { is_vassal = no war = no } }
+		}
+
+		allow = {
+			706 = { owner = { check_variable = { which = austrian_influence_poland value = 99.99 } } }
+		}
+
+		effect = {
+			any_country = {
+				limit = {
+					owns = 706
+				}
+				country_event = 500700
+			}
+			release_vassal = LIT
+			release_vassal = POL
+		}
+	}
+
+	# Prussian Poland
+	form_prussian_poland = { # IDK what the actual name was
+		picture = placeholder
+
+		potential = {
+			has_country_flag = prussian_content
+			is_greater_power = yes
+			706 = { owner = { is_vassal = no war = no } }
+		}
+
+		allow = {
+			706 = { owner = { check_variable = { which = prussian_influence_poland value = 99.99 } } }
+		}
+
+		effect = {
+			any_country = {
+				limit = {
+					owns = 706
+				}
+				country_event = 500700
+			}
+			release_vassal = LIT
+			release_vassal = POL
+		}
+	}
+
+# Red-White Struggle 
+
+	# Serfdom
+	question_of_serfdom = {
+		picture = placeholder
+
+		potential = {
+			NOT = { has_global_flag = polish_serfdom_question }
+			has_global_flag = january_uprising_happened
+			has_country_flag = through_january_uprising
+			OR = {
+				tag = CPL
+				tag = POL
+				tag = PLC
+			}
+		}
+
+		allow = {
+			is_vassal = no
+		}
+
+		effect = {
+			set_global_flag = polish_serfdom_question
+			country_event = 500103
+		}
+	}
+
+	# The Capital Question
+	polish_capital_question = {
+		picture = placeholder
+
+		potential = {
+			NOT = { has_global_flag = polish_capital_question }
+			has_global_flag = january_uprising_happened
+			has_country_flag = through_january_uprising
+			OR = {
+				tag = POL
+				tag = PLC
+			}
+		}
+
+		allow = {
+			is_vassal = no
+			war = no
+		}
+
+		effect = {
+			set_global_flag = polish_capital_question
+			country_event = 500112
+		}
+	}
+	
+	# Become Poland
 	become_poland = {
 
 		potential = {
@@ -12,8 +211,11 @@ political_decisions = {
 		}
 
 		allow = {
+			owns = 706
+			war = no
+			is_vassal = no
 			OR = {
-				prestige = 90
+				prestige = 30
 				is_secondary_power = yes
 				AND = {
 					tag = CPL
@@ -26,12 +228,9 @@ political_decisions = {
 					year = 1900
 				}
 			}
-			war = no
-			is_vassal = no
-			owns = 706
 		}
 
-		effect = {
+		effect = { #Add an effect dependent on whether it was restored through the January Uprising that removes all POL cores not owned; 500016 should give cores to POL on owned automatically
 			prestige = 40
 			random_owned = {
 				limit = { owner = { accepted_culture = south_german } } owner = { remove_accepted_culture = south_german }
@@ -48,128 +247,69 @@ political_decisions = {
 				owner = { all_core = { remove_core = THIS } }
 			}
 			change_tag = POL
+			all_core = {
+				limit = { NOT = { owned_by = THIS } }
+				remove_core = THIS
+			}
 			capital = 706
+			any_country = {
+				limit = { 
+					is_vassal = no 
+					OR = {
+						primary_culture = polish
+						accepted_culture = polish
+					}
+				}
+				country_event = 500016
+			}
 		}
 
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-	become_poland_lithuania = {
+	
+	proclaim_the_commonwealth = {
 		picture = become_poland_lithuania
 
 		potential = {
-			OR = {
-				primary_culture = polish
-				primary_culture = lithuanian
-			}
-			NOT = { exists = PLC }
-			NOT = { has_country_flag = post_colonial_country }
-			NOT = { tag = WSF }
+			tag = POL
 		}
 
 		allow = {
 			war = no
-			is_greater_power = yes
-			owns = 706
-			owns = 703
-			360 = {
-				OR = {
-					owned_by = THIS
-					owner = { in_sphere = THIS }
-					owner = { vassal_of = THIS }
-				}
+			is_vassal = no
+			is_our_vassal = LIT
+			OR = {
+				KRA = { exists = no }
+				KRA = { is_vassal = yes }
 			}
-			718 = {
-				OR = {
-					owned_by = THIS
-					owner = { in_sphere = THIS }
-					owner = { vassal_of = THIS }
-				}
+			OR = {
+				PML = { exists = no }
+				PML = { is_vassal = yes }
 			}
-			958 = {
-				OR = {
-					owned_by = THIS
-					owner = { in_sphere = THIS }
-					owner = { vassal_of = THIS }
-				}
-			}
-			695 = {
-				OR = {
-					owned_by = THIS
-					owner = { in_sphere = THIS }
-					owner = { vassal_of = THIS }
-				}
+			OR = {
+				PZN = { exists = no }
+				PZN = { is_vassal = yes }
 			}
 		}
 
 		effect = {
-			prestige = 60
-			random_owned = {
-				limit = { owner = { accepted_culture = south_german } } owner = { remove_accepted_culture = south_german }
-			}
-			random_owned = {
-				limit = { owner = { accepted_culture = north_german } } owner = { remove_accepted_culture = north_german }
-			}
-			random_owned = {
-				limit = { owner = { accepted_culture = czech } } owner = { remove_accepted_culture = czech }
-			}
-			random_owned = {
-				limit = { owner = { primary_culture = polish } }
-				owner = {
-					add_accepted_culture = lithuanian
-					all_core = {
-						add_core = PLC
-						remove_core = POL
-					}
-				}
-				LIT = {
-					all_core = { add_core = PLC }
-				}
-			}
-			random_owned = {
-				limit = {
-					owner = { primary_culture = lithuanian }
-				}
-				owner = {
-					add_accepted_culture = polish
-					all_core = {
-						add_core = PLC
-						remove_core = LIT
-					}
-				}
-				POL = {
-					all_core = { add_core = PLC }
-				}
-			}
-			LAT = {
-				all_core = { add_core = PLC }
-			}
-			BYE = {
-				all_core = { add_core = PLC }
-			}
-			RUS_958 = { add_core = PLC }
-			PRU_695 = { add_core = PLC }
-			any_country = {
-				limit = {
-					OR = {
-						in_sphere = THIS
-						vassal_of = THIS
-					}
-				}
+			prestige = 50
+			LIT = {
 				any_owned = {
-					limit = { is_core = PLC }
-					secede_province = THIS
+					add_core = PLC
 				}
 			}
+			inherit = LIT
+			set_global_flag = commonwealth_restored_january
 			change_tag = PLC
 			capital = 703
 			any_greater_power = {
 				limit = {
 					OR = {
 						primary_culture = russian
-						is_culture_group = germanic
+						AND = { is_culture_group = germanic NOT = { alliance_with = THIS } }
 					}
 					neighbour = THIS
 				}
@@ -183,77 +323,591 @@ political_decisions = {
 		}
 	}
 
-	stop_poland_lithuania = {
-		picture = become_poland_lithuania
-		alert = no
+## Reclaim the Commonwealth 
+
+	# West Vilna
+	reclaim_western_vilna = {
+		picture = aleppo_map
 		potential = {
 			tag = PLC
-			NOT = { exists = POL }
+			has_global_flag = commonwealth_restored_january
+			NOT = { has_country_flag = commonwealth_western_vilna }
+			NOT = { truce_with = RUS }
 		}
 
 		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
 			war = no
-			is_greater_power = no
-			NOT = { owns = 695 }
-			NOT = { owns = 958 }
-			NOT = { owns = 718 }
 		}
 
 		effect = {
-			prestige = -70
-			PLC = { all_core = { remove_core = PLC } }
-			689 = { add_core = POL }
-			702 = { add_core = POL }
-			704 = { add_core = POL }
-			705 = { add_core = POL }
-			714 = { add_core = POL }
-			951 = { add_core = POL }
-			952 = { add_core = POL }
-			953 = { add_core = POL }
-			2584 = { add_core = POL }
-			684 = { add_core = POL }
-			685 = { add_core = POL }
-			690 = { add_core = POL }
-			691 = { add_core = POL }
-			694 = { add_core = POL }
-			699 = { add_core = POL }
-			700 = { add_core = POL }
-			701 = { add_core = POL }
-			703 = { add_core = POL }
-			360 = { add_core = POL }
-			706 = { add_core = POL }
-			707 = { add_core = POL }
-			708 = { add_core = POL }
-			709 = { add_core = POL }
-			710 = { add_core = POL }
-			711 = { add_core = POL }
-			712 = { add_core = POL }
-			713 = { add_core = POL }
-			715 = { add_core = POL }
-			716 = { add_core = POL }
-			717 = { add_core = POL }
-			719 = { add_core = POL }
-			936 = { add_core = POL }
-			937 = { add_core = POL }
-			938 = { add_core = POL }
-			939 = { add_core = POL }
-			940 = { add_core = POL }
-			947 = { add_core = POL }
-			955 = { add_core = POL }
-			956 = { add_core = POL }
-			957 = { add_core = POL }
-			any_pop = {
-				limit = { has_pop_culture = polish }
-				militancy = -6
+			prestige = 25
+			badboy = 10
+			set_country_flag = commonwealth_western_vilna
+			set_global_flag = commonwealth_western_vilna_claimed #This enables the CB that player can then freely use to reclaim western vilna region
+		}
+			  
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
 			}
-			change_tag = POL
-			capital = 706
+		}
+	}
+
+	# East Vilna
+	reclaim_eastern_vilna = {
+		picture = aleppo_map
+		potential = {
+			tag = PLC
+			has_global_flag = commonwealth_restored_january
+			NOT = { has_country_flag = commonwealth_eastern_vilna }
+			has_country_flag = commonwealth_western_vilna
+			NOT = { truce_with = RUS }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+			NOT = { western_vilna_general_governate = { NOT = { owned_by = THIS } } }
+		}
+
+		effect = {
+			prestige = 25
+			badboy = 10
+			set_country_flag = commonwealth_eastern_vilna
+			set_global_flag = commonwealth_eastern_vilna_claimed #This enables the CB that player can then freely use to reclaim eastern vilna region
+		}
+			  
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
+		}
+	}
+
+	# Kyiv
+	reclaim_kyiv = {
+		picture = aleppo_map
+		potential = {
+			tag = PLC
+			has_global_flag = commonwealth_restored_january
+			NOT = { has_country_flag = commonwealth_kyiv }
+			has_country_flag = commonwealth_eastern_vilna
+			NOT = { truce_with = RUS }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+			NOT = { eastern_vilna_general_governate = { NOT = { owned_by = THIS } } }
+		}
+
+		effect = {
+			prestige = 25
+			badboy = 10
+			set_country_flag = commonwealth_kyiv
+			set_global_flag = commonwealth_kyiv_claimed #This enables the CB that player can then freely use to reclaim vilna region
+		}
+			  
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
+		}
+	}
+
+	# Baltics
+	reclaim_livonia = {
+		picture = aleppo_map
+		potential = {
+			tag = PLC
+			has_global_flag = commonwealth_restored_january
+			NOT = { has_country_flag = commonwealth_livonia }
+			has_country_flag = commonwealth_kyiv
+			NOT = { truce_with = RUS }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+			NOT = { kyiv_general_governate = { NOT = { owned_by = THIS } } }
+		}
+
+		effect = {
+			prestige = 25
+			badboy = 10
+			set_country_flag = commonwealth_livonia
+			set_global_flag = commonwealth_livonia_claimed #This enables the CB that player can then freely use to reclaim vilna region
+		}
+			  
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
+		}
+	}
+
+	# Left Bank 
+	reclaim_left_bank_ukraine = {
+		picture = aleppo_map
+		potential = {
+			tag = PLC
+			has_global_flag = commonwealth_restored_january
+			NOT = { has_country_flag = commonwealth_left_bank }
+			has_country_flag = commonwealth_livonia
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+		}
+
+		effect = {
+			prestige = 25
+			badboy = 10
+			set_country_flag = commonwealth_left_bank
+			set_global_flag = commonwealth_left_bank_claimed #This enables the CB that player can then freely use to reclaim vilna region
+		}
+			  
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
+		}
+	}
+
+	# Prussia
+
+	# Galicia + Bukovina
+
+	# Poznan
+
+## Vasa-Jagellonian Empire LARP ##DEVNOTE - Add historical boundaries for each decision
+
+	# Jagellonian Hungary
+	jagellonian_reclaim_hungary = {
+		picture = placeholder
+		potential = {
+			has_country_flag = vasa_poland
+			NOT = { accepted_culture = hungarian }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+		}
+
+		effect = {
+			badboy = 15
+			HUN = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			add_accepted_culture = hungarian
 		}
 
 		ai_will_do = {
 			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
 		}
 	}
+
+	# Vasa Sweden
+	vasa_reclaim_sweden = {
+		picture = placeholder
+		potential = {
+			has_country_flag = vasa_poland
+			NOT = { accepted_culture = swedish }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+		}
+
+		effect = {
+			badboy = 15
+			SWE = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			FIN = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			KRL = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			add_accepted_culture = swedish
+			add_accepted_culture = finnish
+			add_accepted_culture = karelian
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
+		}
+	}
+
+	# Jagellonian Bohemia
+	vasa_reclaim_bohemia = {
+		picture = placeholder
+		potential = {
+			has_country_flag = vasa_poland
+			NOT = { accepted_culture = czech }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+		}
+
+		effect = {
+			badboy = 15
+			BOH = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			SLS = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			add_accepted_culture = czech
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 10
+			}
+		}
+	}
+
+	# Jagellonian Moldavia
+	vasa_reclaim_moldavia = {
+		picture = placeholder
+		potential = {
+			has_country_flag = vasa_poland
+			NOT = { accepted_culture = romanian }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+		}
+
+		effect = {
+			badboy = 5
+			MDV = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			add_accepted_culture = romanian
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 15
+			}
+		}
+	}
+
+	# Jagellonian Lithuania
+	vasa_reclaim_lithuania = {
+		picture = placeholder
+		potential = {
+			has_country_flag = vasa_poland
+			NOT = { accepted_culture = lithuanian }
+		}
+
+		allow = {
+			all_core = { owned_by = THIS }		
+			is_disarmed = no
+			NOT = { has_country_modifier = no_more_war }	
+			war = no
+		}
+
+		effect = {
+			badboy = 20
+			LIT = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			COU = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			UKR = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			BYE = {
+				all_core = {
+					add_core = POL
+				}
+			}
+			add_accepted_culture = lithuanian
+			add_accepted_culture = latvian
+			add_accepted_culture = ukrainian
+			add_accepted_culture = byelorussian
+			add_accepted_culture = cossack
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				badboy = 15
+			}
+		}
+	}
+
+#	become_poland_lithuania = {
+#		picture = become_poland_lithuania
+#
+#		potential = {
+#			OR = {
+#				primary_culture = polish
+#				primary_culture = lithuanian
+#			}
+#			NOT = { exists = PLC }
+#			NOT = { has_country_flag = post_colonial_country }
+#			NOT = { tag = WSF }
+#		}
+#
+#		allow = {
+#			war = no
+#			is_greater_power = yes
+#			owns = 706
+#			owns = 703
+#			360 = {
+#				OR = {
+#					owned_by = THIS
+#					owner = { in_sphere = THIS }
+#					owner = { vassal_of = THIS }
+#				}
+#			}
+#			718 = {
+#				OR = {
+#					owned_by = THIS
+#					owner = { in_sphere = THIS }
+#					owner = { vassal_of = THIS }
+#				}
+#			}
+#			958 = {
+#				OR = {
+#					owned_by = THIS
+#					owner = { in_sphere = THIS }
+#					owner = { vassal_of = THIS }
+#				}
+#			}
+#			695 = {
+#				OR = {
+#					owned_by = THIS
+#					owner = { in_sphere = THIS }
+#					owner = { vassal_of = THIS }
+#				}
+#			}
+#		}
+#
+#		effect = {
+#			prestige = 60
+#			random_owned = {
+#				limit = { owner = { accepted_culture = south_german } } owner = { remove_accepted_culture = south_german }
+#			}
+#			random_owned = {
+#				limit = { owner = { accepted_culture = north_german } } owner = { remove_accepted_culture = north_german }
+#			}
+#			random_owned = {
+#				limit = { owner = { accepted_culture = czech } } owner = { remove_accepted_culture = czech }
+#			}
+#			random_owned = {
+#				limit = { owner = { primary_culture = polish } }
+#				owner = {
+#					add_accepted_culture = lithuanian
+#					all_core = {
+#						add_core = PLC
+#						remove_core = POL
+#					}
+#				}
+#				LIT = {
+#					all_core = { add_core = PLC }
+#				}
+#			}
+#			random_owned = {
+#				limit = {
+#					owner = { primary_culture = lithuanian }
+#				}
+#				owner = {
+#					add_accepted_culture = polish
+#					all_core = {
+#						add_core = PLC
+#						remove_core = LIT
+#					}
+#				}
+#				POL = {
+#					all_core = { add_core = PLC }
+#				}
+#			}
+#			LAT = {
+#				all_core = { add_core = PLC }
+#			}
+#			BYE = {
+#				all_core = { add_core = PLC }
+#			}
+#			RUS_958 = { add_core = PLC }
+#			PRU_695 = { add_core = PLC }
+#			any_country = {
+#				limit = {
+#					OR = {
+#						in_sphere = THIS
+#						vassal_of = THIS
+#					}
+#				}
+#				any_owned = {
+#					limit = { is_core = PLC }
+#					secede_province = THIS
+#				}
+#			}
+#			change_tag = PLC
+#			capital = 703
+#			any_greater_power = {
+#				limit = {
+#					OR = {
+#						primary_culture = russian
+#						is_culture_group = germanic
+#					}
+#					neighbour = THIS
+#				}
+#				relation = { who = THIS value = -200 }
+#				leave_alliance = THIS
+#			}
+#		}
+#
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+
+#	stop_poland_lithuania = {
+#		picture = become_poland_lithuania
+#		alert = no
+#		potential = {
+#			tag = PLC
+#			NOT = { exists = POL }
+#		}
+#
+#		allow = {
+#			war = no
+#			is_greater_power = no
+#			NOT = { owns = 695 }
+#			NOT = { owns = 958 }
+#			NOT = { owns = 718 }
+#		}
+#
+#		effect = {
+#			prestige = -70
+#			PLC = { all_core = { remove_core = PLC } }
+#			689 = { add_core = POL }
+#			702 = { add_core = POL }
+#			704 = { add_core = POL }
+#			705 = { add_core = POL }
+#			714 = { add_core = POL }
+#			951 = { add_core = POL }
+#			952 = { add_core = POL }
+#			953 = { add_core = POL }
+#			2584 = { add_core = POL }
+#			684 = { add_core = POL }
+#			685 = { add_core = POL }
+#			690 = { add_core = POL }
+#			691 = { add_core = POL }
+#			694 = { add_core = POL }
+#			699 = { add_core = POL }
+#			700 = { add_core = POL }
+#			701 = { add_core = POL }
+#			703 = { add_core = POL }
+#			360 = { add_core = POL }
+#			706 = { add_core = POL }
+#			707 = { add_core = POL }
+#			708 = { add_core = POL }
+#			709 = { add_core = POL }
+#			710 = { add_core = POL }
+#			711 = { add_core = POL }
+#			712 = { add_core = POL }
+#			713 = { add_core = POL }
+#			715 = { add_core = POL }
+#			716 = { add_core = POL }
+#			717 = { add_core = POL }
+#			719 = { add_core = POL }
+#			936 = { add_core = POL }
+#			937 = { add_core = POL }
+#			938 = { add_core = POL }
+#			939 = { add_core = POL }
+#			940 = { add_core = POL }
+#			947 = { add_core = POL }
+#			955 = { add_core = POL }
+#			956 = { add_core = POL }
+#			957 = { add_core = POL }
+#			any_pop = {
+#				limit = { has_pop_culture = polish }
+#				militancy = -6
+#			}
+#			change_tag = POL
+#			capital = 706
+#		}
+#
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
 
 	unite_with_poland = {
 
