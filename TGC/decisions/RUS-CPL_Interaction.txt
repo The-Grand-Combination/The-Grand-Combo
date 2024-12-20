@@ -2,7 +2,7 @@ political_decisions = {
 
 	# Decision that sets up variables for January Uprising
 	rus_cpl_interaction_setup = {
-		picture = "placeholder"
+		picture = placeholder
 	
 		potential = { 
 			tag = JAN
@@ -27,7 +27,7 @@ political_decisions = {
 		}
 	}
 
-	# Decision to appoint Alexander Wielopolski; -1 Support
+	# Decision to appoint Aleksander Wielopolski; -1 Support
 	appoint_wielopolski = {
 		picture = placeholder
 	
@@ -74,7 +74,7 @@ political_decisions = {
 
 	# Establish the Warsaw Main School - Szkola Glowna; -1 Support
 	establish_warsaw_main_school = {
-		picture = "placeholder"
+		picture = placeholder
 	
 		potential = {
 			NOT = { has_country_flag = warsaw_main_school_established }
@@ -114,7 +114,7 @@ political_decisions = {
 
 	# Fully reopen the University of Warsaw; -1 Support
 	reopen_university_of_warsaw = {
-		picture = "placeholder"
+		picture = placeholder
 	
 		potential = {
 			NOT = { has_country_flag = university_of_warsaw_reopened }
@@ -129,32 +129,157 @@ political_decisions = {
 			has_global_flag = wielopolski_appointed
 			NOT = { has_global_flag = january_uprising_happened }
 			has_global_flag = warsaw_university_closed
-            has_global_flag = warsaw_main_school_established
+			has_global_flag = warsaw_main_school_established
 		}
 	
 		allow = { # Five Original Schools of the University of Warsaw
-            romanticism = 1 # Art and Humanities
-            idealism = 1 # Philosophy
+			romanticism = 1 # Art and Humanities
+			idealism = 1 # Philosophy
 			functionalism = 1 # Theology
 			medicine = 1 # Medicine
-            state_n_government = 1 # Law and Administratio
+			state_n_government = 1 # Law and Administratio
 		}
 	
 		effect = {
 			set_global_flag = university_of_warsaw_reopened
 			prestige = 10
 			add_country_modifier = { name = university_of_warsaw_RUS duration = -1 }
-            remove_country_modifier = warsaw_main_school_RUS
+			remove_country_modifier = warsaw_main_school_RUS
 			CPL = {
 				literacy = 0.01
 				add_country_modifier = { name = university_of_warsaw_CPL duration = -1 }
-                remove_country_modifier = warsaw_main_school_CPL
+				remove_country_modifier = warsaw_main_school_CPL
 				change_variable = { which = january_uprising_support value = -1 }
 			}
 		}
 	
 		ai_will_do = {
 			factor = 0
+		}
+	}
+
+	# Begin conscription in CPL; -1 Readiness, WILL TRIGGER JANUARY UPRISING IF NOT ALL DECISIONS ARE DONE
+	begin_conscription_in_CPL = {
+		picture = placeholder
+	
+		potential = { 
+			NOT = { has_global_flag = began_conscription_in_CPL }
+			tag = RUS
+			year = 1860
+			has_global_flag = wielopolski_appointed
+			CPL = {
+				exists = yes
+				is_substate = yes
+				substate_of = THIS
+			}
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			set_global_flag = began_conscription_in_CPL
+			CPL = {
+				random_owned = {
+					limit = {
+						owner = { # DEVNOTE: Change this depending on what decisions/events are added
+							check_variable = { which = january_uprising_support value = 4.99 }
+							check_variable = { which = january_uprising_readiness value = 4.99 }
+						}
+					}
+					owner = {
+						overlord = {
+							country_event = { id = 500001 days = 30 }
+						}
+					}
+				}
+				random_owned = {
+					limit = {
+						owner = { # DEVNOTE: Change this depending on what decisions/events are added
+							NOT = { check_variable = { which = january_uprising_support value = 4.99 } }
+							NOT = { check_variable = { which = january_uprising_readiness value = 4.99 } }
+						}
+					}
+					owner = {
+						change_variable = { which = january_uprising_readiness value = -1 }
+					}
+					THIS = { set_country_flag = CPL_conscription_succeeded }
+				}
+			}
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	# Abolish serfdom in CPL
+	extend_emancipation_proclamation_to_CPL = {
+		picture = placeholder
+	
+		potential = { 
+			NOT = { has_global_flag = extended_emancipation_proclamation_to_CPL }
+			tag = RUS
+			year = 1860
+			has_global_flag = wielopolski_appointed
+			OR = {
+				AND = {
+					has_global_flag = january_uprising_happened
+					CPL = { exists = no }
+				}
+				AND = {
+					has_country_flag = CPL_conscription_succeeded
+					CPL = {
+						exists = yes
+						is_substate = yes
+						substate_of = THIS
+					}
+				}
+			}
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	# Manifesto of Grand Duke Nicholas; -1 Readiness, - 1 Support, FINAL DECISION IN CHAIN
+	manifesto_of_grand_duke_nicholas = {
+		picture = placeholder
+	
+		potential = { 
+			NOT = { has_global_flag = manifesto_of_grand_duke_nicholas_issued }
+			tag = RUS
+			year = 1860
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			set_global_flag = manifesto_of_grand_duke_nicholas_issued
+			CPL = {
+				change_variable = { which = january_uprising_support value = -1 }
+				change_variable = { which = january_uprising_readiness value = -1 }
+			}
+		}
+	
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { year = 1900 }
+			}
 		}
 	}
 }
