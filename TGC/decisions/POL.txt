@@ -2,13 +2,15 @@ political_decisions = {
 #from Poland.txt
 ##DEVNOTE - there seems to be an extra decision (The Uprising Is Victorious) that can be removed/changed so it's not available to the player
 
-	# Foreign Aid Decisions
+	# Ask for Foreign Aid - Poland
 	poland_foreign_aid = {
 		picture = placeholder
 
 		potential = {
 			has_country_flag = polish_content
 			is_vassal = no
+			is_substate = no
+			NOT = { has_global_flag = poland_repudiated_foreign_influence }
 		}
 
 		allow = {
@@ -20,6 +22,7 @@ political_decisions = {
 		}
 	}
 
+	# Provide Foreign Aid - Great Powers
 	provide_foreign_aid_poland = {
 		picture = placeholder
 
@@ -31,6 +34,7 @@ political_decisions = {
 					is_substate = no
 				}
 			}
+			NOT = { has_global_flag = poland_repudiated_foreign_influence }
 			OR = {
 				has_country_flag = french_content
 				has_country_flag = austrian_content
@@ -77,6 +81,7 @@ political_decisions = {
 		potential = {
 			has_country_flag = french_content 
 			is_greater_power = yes
+			NOT = { has_global_flag = poland_repudiated_foreign_influence }
 			706 = { 
 				owner = { 
 					is_vassal = no
@@ -112,6 +117,7 @@ political_decisions = {
 		potential = {
 			has_country_flag = austrian_content
 			is_greater_power = yes
+			NOT = { has_global_flag = poland_repudiated_foreign_influence }
 			706 = { 
 				owner = { 
 					is_vassal = no
@@ -141,12 +147,13 @@ political_decisions = {
 	}
 
 	# Prussian Poland
-	form_prussian_poland = { # IDK what the actual name was
+	form_viceroyalty_of_poland = { # IDK what the actual name was
 		picture = placeholder
 
 		potential = {
 			has_country_flag = prussian_content
 			is_greater_power = yes
+			NOT = { has_global_flag = poland_repudiated_foreign_influence }
 			706 = { 
 				owner = { 
 					is_vassal = no
@@ -172,6 +179,62 @@ political_decisions = {
 			}
 			release_vassal = LIT
 			release_vassal = CPL
+		}
+	}
+
+	# Remove all Foreign Influence - Poland is a big boy
+	poland_remove_foreign_influence = {
+		picture = poland_remove_foreign_influence
+	
+		potential = { 
+			NOT = { has_global_flag = poland_repudiated_foreign_influence }
+			has_country_flag = poland_content
+			is_substate = no
+			is_vassal = no
+		}
+	
+		allow = {
+			is_greater_power = yes
+			is_disarmed = no
+			NOT = { check_variable = { which = french_influence_poland value = 19.99 } }
+			NOT = { check_variable = { which = austrian_influence_poland value = 19.99 } }
+			NOT = { check_variable = { which = prussian_influence_poland value = 19.99 } }
+		}
+	
+		effect = {
+			prestige = 15
+			set_global_flag = poland_repudiated_foreign_influence
+			set_variable = { which = french_influence_poland value = 0 }
+			set_variable = { which = austrian_influence_poland value = 0 }
+			set_variable = { which = prussian_influence_poland value = 0 }
+			any_country = {
+				limit = {
+					has_country_flag = french_content
+					is_greater_power = yes
+					owns = 425
+				}
+				country_event = 500614
+			}
+			any_country = {
+				limit = {
+					has_country_flag = austrian_content
+					is_greater_power = yes
+					owns = 619
+				}
+				country_event = 500614
+			}
+			any_country = {
+				limit = {
+					has_country_flag = prussian_content
+					is_greater_power = yes
+					owns = 549
+				}
+				country_event = 500614
+			}
+		}
+	
+		ai_will_do = {
+			factor = 1
 		}
 	}
 
