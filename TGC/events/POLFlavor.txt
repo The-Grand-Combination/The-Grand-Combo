@@ -1,10 +1,10 @@
 # 500000-500999 - Poland (Commonwealth)
-# 	500000-500099 - Uprising - Congress of Paris
+# 	500000-500099 - Pre-Uprising + Uprising
 # 	500100-500199 - Red-White
 # 	500200-500599 - Commonwealth
 # 	500600-500799 - Foreign Interventions (Austria, Prussia, France)
 # 	500800-500899 - Vasa/Jagiellonian
-# 	500900-500999 - 
+# 	500900-500999 - Other Polish Stuff
 # 501000-501999 - Russia (Panslavic)
 # 502000-502999 - Russia (Zheltorossiya)
 # 503000-503999 - Russia (Soviet)
@@ -234,14 +234,14 @@ country_event = {
 			any_pop = { # This represents Polish Intelligentsia and Nobility in Lithuania and Belarus
 				limit = { 
 					OR = {
-					has_pop_culture = lithuanian
-					has_pop_culture = polish
+						has_pop_culture = lithuanian
+						has_pop_culture = polish
 					}
 					OR = {
-					strata = rich
-					type = clergymen
+						strata = rich
+						type = clergymen
 					}
-					}
+				}
 				ideology = { factor = 0.1 value = liberal }
 				militancy = 7
 				consciousness = 8
@@ -268,51 +268,63 @@ country_event = {
 				consciousness = 5
 			}
 		}
-		any_country = {
+
+		random_country = {
 			limit = {
 				is_greater_power = yes
 				capital_scope = { continent = europe }
-				NOT = { has_country_flag = french_content }
-				NOT = { tag = AUS }
-				NOT = { tag = KUK }
-				NOT = { tag = GCF }
-				NOT = { tag = PRU }
-				NOT = { tag = NGF }
-				NOT = { tag = GER }
+				NOT = { has_country_flag = poland_decision_made }
+				NOT = { tag = RUS }
 			}
-			country_event = { id = 500002 days = 10 }
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = { has_country_flag = french_content }
+						NOT = { has_country_flag = austrian_content }
+						NOT = { has_country_flag = prussian_content }
+					}
+				}
+				owner = {
+					country_event = { id = 500002 days = 5 }
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = french_content
+					}
+				}
+				owner = {
+					country_event = { id = 500003 days = 5 }
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = austrian_content
+					}
+				}
+				owner = {
+					country_event = { id = 500004 days = 5 }
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = prussian_content
+					}
+				}
+				owner = {
+					country_event = { id = 500005 days = 5 }
+				}
+			}
 		}
-		any_country = {
+		
+		random_country = {
 			limit = {
 				has_country_flag = french_content
-				is_greater_power = yes
 			}
-			country_event = { id = 500003 days = 5 }
-			CPL = { set_variable = { which = french_influence_poland value = 0 } }
-		}
-		any_country = {
-			limit = {
-				is_greater_power = yes
-				OR = {
-					tag = AUS
-					tag = KUK
-					tag = GCF
-				}
-			}
-			country_event = { id = 500004 days = 4 }
-			CPL = { set_variable = { which = austrian_influence_poland value = 0 } }
-		}
-		any_country = {
-			limit = {
-				is_greater_power = yes
-				OR = {
-					tag = PRU
-					tag = NGF
-					tag = GER
-				}
-			}
-			country_event = { id = 500005 days = 4 }
-			CPL = { set_variable = { which = prussian_influence_poland value = 0 } }
+			country_event = { id = 500003 days = 3 }
 		}
 
 		ai_chance = { factor = 100 }
@@ -344,8 +356,8 @@ country_event = {
 			artillery = 10
 		}
 		create_alliance = CPL
-		leave_alliance = FROM
-		relation = { who = FROM value = -150 }
+		leave_alliance = RUS
+		relation = { who = RUS value = -150 }
 		relation = { who = CPL value = 200 }
 		diplomatic_influence = { who = CPL value = 100 }
 		any_pop = {
@@ -356,20 +368,20 @@ country_event = {
 
 		ai_chance = {
 			factor = 25
-			modifier = { factor = 0 alliance_with = FROM }
-			modifier = { factor = 10 war_with = FROM }
-			modifier = { factor = 2 truce_with = FROM }
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -377,25 +389,76 @@ country_event = {
 	option = {
 		name = "EVTOPTB500002" 		# condemn Russia
 		set_country_flag = poland_decision_made
-		relation = { who = FROM value = -50 }
+		relation = { who = RUS value = -50 }
 		relation = { who = CPL value = 50 }
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 7
 			militancy = -1
 		}
+
+		random_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+				NOT = { has_country_flag = poland_decision_made }
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						NOT = { has_country_flag = french_content }
+						NOT = { has_country_flag = austrian_content }
+						NOT = { has_country_flag = prussian_content }
+					}
+				}
+				owner = {
+					country_event = { id = 500002 days = 5 }
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = french_content
+					}
+				}
+				owner = {
+					country_event = { id = 500003 days = 5 }
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = austrian_content
+					}
+				}
+				owner = {
+					country_event = { id = 500004 days = 5 }
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						has_country_flag = prussian_content
+					}
+				}
+				owner = {
+					country_event = { id = 500005 days = 5 }
+				}
+			}
+		}
+
 		ai_chance = {
 			factor = 25
-			modifier = { factor = 0 alliance_with = FROM }
+			modifier = { factor = 0 alliance_with = RUS }
 			modifier = {
 				factor = 1.25
-				relation = { who = FROM value = -50 }
-				NOT = { relation = { who = FROM value = 0 } }
+				relation = { who = RUS value = -50 }
+				NOT = { relation = { who = RUS value = 0 } }
 			}
 			modifier = {
 				factor = 1.25
-				relation = { who = FROM value = 0 }
-				NOT = { relation = { who = FROM value = 50 } }
+				relation = { who = RUS value = 0 }
+				NOT = { relation = { who = RUS value = 50 } }
 			}
 		}
 	}
@@ -417,15 +480,15 @@ country_event = {
 			}
 			modifier = {
 				factor = 2
-				relation = { who = FROM value = 50 }
-				NOT = { relation = { who = FROM value = 100 } }
+				relation = { who = RUS value = 50 }
+				NOT = { relation = { who = RUS value = 100 } }
 			}
 		}
 	}
 	option = {
 		name = "EVTOPTD500002"		# support russia
 		set_country_flag = poland_decision_made
-		relation = { who = FROM value = 25 }
+		relation = { who = RUS value = 25 }
 		relation = { who = CPL value = -150 }
 		any_pop = {
 			limit = { has_pop_culture = polish }
@@ -435,28 +498,21 @@ country_event = {
 		ai_chance = {
 			factor = 25
 			# Audax Validator "." Ignore_NEXT # Audax Validator "." Ignore_NEXT
-			modifier = { factor = 5 alliance_with = FROM }
+			modifier = { factor = 5 alliance_with = RUS }
 			modifier = {
 				factor = 2
 				# Audax Validator "." Ignore_NEXT # Audax Validator "." Ignore_NEXT
-				relation = { who = FROM value = 190 }
+				relation = { who = RUS value = 190 }
 			}
 			modifier = {
 				factor = 2
 				# Audax Validator "." Ignore_NEXT # Audax Validator "." Ignore_NEXT
-				relation = { who = FROM value = 150 }
+				relation = { who = RUS value = 150 }
 			}
 			modifier = {
 				factor = 2
 				# Audax Validator "." Ignore_NEXT # shut up brov # Audax Validator "." Ignore_NEXT
-				relation = { who = FROM value = 100 }
-			}
-			modifier = {
-				factor = 3
-				OR = {
-					tag = PRU
-					tag = NGF
-				}
+				relation = { who = RUS value = 100 }
 			}
 		}
 	}
@@ -484,41 +540,44 @@ country_event = {
 			change_variable = { which = french_influence_poland value = 15 }
 		}
 		create_alliance = CPL
-		leave_alliance = FROM
-		relation = { who = FROM value = -200 }
+		leave_alliance = RUS
+		relation = { who = RUS value = -200 }
 		relation = { who = CPL value = 200 }
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
+		set_country_flag = intervention_for_CPL
 		set_global_flag = poland_intervention 
-		random_owned = {
-			limit = {
-				owner = { NOT = { has_global_flag = poland_german_intervention } }
-			}
-			owner = { country_event = { id = 500010 days = 5 } }
-		}
+		
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 5
 			militancy = -10
 		}
 		
+		random_country = {
+			limit = {
+				has_country_flag = austrian_content
+			}
+			country_event = { id = 500004 days = 3 } # TODO - Add separate event for AUS if FRA intervenes pressuring them for an alliance
+		}
+
 		ai_chance = {
 			factor = 5
 			modifier = {
 				factor = 10
-				war_with = FROM
+				war_with = RUS
 			}
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -534,7 +593,7 @@ country_event = {
 			artillery = 10
 			set_variable = { which = french_influence_poland value = 5 }
 		}
-		relation = { who = FROM value = -100 }
+		relation = { who = RUS value = -100 }
 		relation = { who = CPL value = 100 }
 		diplomatic_influence = { who = CPL value = 50 }
 		set_country_flag = poland_decision_made
@@ -544,24 +603,29 @@ country_event = {
 			militancy = -6
 		}
 
-		
+		random_country = {
+			limit = {
+				has_country_flag = austrian_content
+			}
+			country_event = { id = 500004 days = 3 }
+		}
 
 		ai_chance = {
 			factor = 25
-			modifier = { factor = 0 alliance_with = FROM }
-			modifier = { factor = 10 war_with = FROM }
-			modifier = { factor = 2 truce_with = FROM }
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -569,7 +633,7 @@ country_event = {
 	option = { # Neutrality
 		name = "EVTOPTC500003"
 		prestige = -20
-		relation = { who = FROM value = 50 }
+		relation = { who = RUS value = 50 }
 		relation = { who = CPL value = -100 }
 		diplomatic_influence = { who = CPL value = -100 }
 		set_country_flag = poland_decision_made
@@ -579,22 +643,29 @@ country_event = {
 			militancy = 5
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = austrian_content
+			}
+			country_event = { id = 500004 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 70
-			modifier = { factor = 0 alliance_with = FROM }
-			modifier = { factor = 10 war_with = FROM }
-			modifier = { factor = 2 truce_with = FROM }
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -622,8 +693,8 @@ country_event = {
 			set_variable = { which = austrian_influence_poland value = 15 }
 		}
 		create_alliance = CPL
-		leave_alliance = FROM
-		relation = { who = FROM value = -200 }
+		leave_alliance = RUS
+		relation = { who = RUS value = -200 }
 		relation = { who = CPL value = 200 }
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
@@ -635,23 +706,30 @@ country_event = {
 			militancy = -10
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = prussian_content
+			}
+			country_event = { id = 500005 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 5
 			modifier = {
 				factor = 10
-				war_with = FROM
+				war_with = RUS
 			}
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -667,7 +745,7 @@ country_event = {
 			artillery = 10
 			set_variable = { which = austrian_influence_poland value = 5 }
 		}
-		relation = { who = FROM value = -100 }
+		relation = { who = RUS value = -100 }
 		relation = { who = CPL value = 100 }
 		diplomatic_influence = { who = CPL value = 50 }
 		set_country_flag = poland_decision_made 
@@ -677,22 +755,29 @@ country_event = {
 			militancy = -6
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = prussian_content
+			}
+			country_event = { id = 500005 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 20
-			modifier = { factor = 0 alliance_with = FROM }
-			modifier = { factor = 10 war_with = FROM }
-			modifier = { factor = 2 truce_with = FROM }
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -700,7 +785,7 @@ country_event = {
 	option = { # Neutrality
 		name = "EVTOPTC500004"
 		prestige = -5
-		relation = { who = FROM value = 15 }
+		relation = { who = RUS value = 15 }
 		relation = { who = CPL value = -50 }
 		diplomatic_influence = { who = CPL value = -50 }
 		set_country_flag = poland_decision_made
@@ -710,55 +795,70 @@ country_event = {
 			militancy = 5
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = prussian_content
+			}
+			country_event = { id = 500005 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 70
-			modifier = { factor = 0 alliance_with = FROM }
-			modifier = { factor = 10 war_with = FROM }
-			modifier = { factor = 2 truce_with = FROM }
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
+
 	option = { # Support Russia
 		name = "EVTOPTD500004"
 		prestige = -20
-		relation = { who = FROM value = 50 }
+		relation = { who = RUS value = 50 }
 		relation = { who = CPL value = -100 }
 		diplomatic_influence = { who = CPL value = -100 }
 		set_country_flag = poland_decision_made
-		create_alliance = FROM
+		create_alliance = RUS
 		any_pop = {
 			limit = { has_pop_culture = polish }
 			consciousness = 10
 			militancy = 10
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = prussian_content
+			}
+			country_event = { id = 500005 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 5
-			modifier = { factor = 100 alliance_with = FROM }
-			modifier = { factor = 0 war_with = FROM }
-			modifier = { factor = 2 truce_with = FROM }
+			modifier = { factor = 100 alliance_with = RUS }
+			modifier = { factor = 0 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
 			modifier = {
 				factor = 2
-				NOT = { relation = { who = FROM value = -150 } }
+				NOT = { relation = { who = RUS value = -150 } }
 			}
 			modifier = {
 				factor = 1.5
-				NOT = { relation = { who = FROM value = -100 } }
+				NOT = { relation = { who = RUS value = -100 } }
 			}
 			modifier = {
 				factor = 1.25
-				NOT = { relation = { who = FROM value = -50 } }
+				NOT = { relation = { who = RUS value = -50 } }
 			}
 		}
 	}
@@ -774,10 +874,10 @@ country_event = {
 	fire_only_once = yes
 	is_triggered_only = yes
 
-	option = {
+	option = { # Offer Alvensleben Convention
 		name = "EVTOPTA500005"
 		RUS = { country_event = { id = 500006 days = 1 } }
-		relation = { who = FROM value = 100 }
+		relation = { who = RUS value = 100 }
 		relation = { who = CPL value = -150 }
 		diplomatic_influence = { who = CPL value = -100 }
 		set_country_flag = poland_decision_made
@@ -787,14 +887,21 @@ country_event = {
 			militancy = 10
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = british_content
+			}
+			country_event = { id = 500020 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 80
 		}
 	}
 	
-	option = {
+	option = { # Neutrality
 		name = "EVTOPTB500005"
-		relation = { who = FROM value = 15 }
+		relation = { who = RUS value = 15 }
 		relation = { who = CPL value = -50 }
 		diplomatic_influence = { who = CPL value = -50 }
 		set_country_flag = poland_decision_made
@@ -804,19 +911,26 @@ country_event = {
 			militancy = 5
 		}
 
+		random_country = {
+			limit = {
+				has_country_flag = british_content
+			}
+			country_event = { id = 500020 days = 3 }
+		}
+
 		ai_chance = {
 			factor = 15
 		}
 	}
 
-	option = {
+	option = { # Support CPl
 		name = "EVTOPTC500005"
 		CPL = {
 			set_variable = { which = prussian_influence_poland value = 15 }
 		}
 		create_alliance = CPL
-		leave_alliance = FROM
-		relation = { who = FROM value = -200 }
+		leave_alliance = RUS
+		relation = { who = RUS value = -200 }
 		relation = { who = CPL value = 200 }
 		diplomatic_influence = { who = CPL value = 100 }
 		set_country_flag = poland_decision_made
@@ -826,6 +940,22 @@ country_event = {
 			limit = { has_pop_culture = polish }
 			consciousness = 5
 			militancy = -10
+		}
+
+		random_country = {
+			limit = {
+				has_country_flag = british_content
+			}
+			country_event = { id = 500020 days = 3 }
+		}
+
+		random_country = {
+			limit = {
+				has_country_flag = french_content
+				has_country_flag = intervention_for_CPL
+				NOT = { has_global_flag = poland_german_intervention }
+			}
+			
 		}
 
 		ai_chance = {
@@ -1370,7 +1500,6 @@ country_event = {
 					}
 				}
 				reduce_pop = 0.7
-				move_pop = 1079
 			}
 			any_pop = {
 				limit = {
@@ -1548,7 +1677,7 @@ country_event = {
 	}
 }
 
-# January Uprising Event - Triggers if the Congress of Paris didn't trigger 
+# January Uprising Event - Triggers if the Congress of Paris didn't trigger  #NEEDS FIXING
 country_event = {
 	id = 500019
 	title = "EVTNAME500019"
@@ -2009,6 +2138,165 @@ country_event = {
 	
 }
 
+# British Intervention in January Uprising
+country_event = {
+	id = 500020
+	title = "EVTNAME500020"
+	desc = "EVTDESC500020"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+
+	option = { # Intervention for Poland
+		name = "EVTOPTA500020"
+		treasury = -100000
+		CPL = {
+			treasury = 80000
+			small_arms = 50
+			ammunition = 50
+			canned_food = 50
+			artillery = 50
+		}
+		create_alliance = CPL
+		leave_alliance = RUS
+		relation = { who = RUS value = -200 }
+		relation = { who = CPL value = 200 }
+		diplomatic_influence = { who = CPL value = 100 }
+		set_country_flag = poland_decision_made
+		set_global_flag = poland_intervention 
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 5
+			militancy = -10
+		}
+
+		ai_chance = {
+			factor = 5
+			modifier = {
+				factor = 10
+				war_with = RUS
+			}
+			modifier = {
+				factor = 2
+				NOT = { relation = { who = RUS value = -150 } }
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { relation = { who = RUS value = -100 } }
+			}
+			modifier = {
+				factor = 1.25
+				NOT = { relation = { who = RUS value = -50 } }
+			}
+		}
+	}
+	
+	option = { # Diplomatic Support
+		name = "EVTOPTB500020"
+		treasury = -25000
+		CPL = {
+			treasury = 20000
+			small_arms = 10
+			ammunition = 10
+			canned_food = 10
+			artillery = 10
+		}
+		relation = { who = RUS value = -100 }
+		relation = { who = CPL value = 100 }
+		diplomatic_influence = { who = CPL value = 50 }
+		set_country_flag = poland_decision_made 
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 4
+			militancy = -6
+		}
+
+		ai_chance = {
+			factor = 20
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
+			modifier = {
+				factor = 2
+				NOT = { relation = { who = RUS value = -150 } }
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { relation = { who = RUS value = -100 } }
+			}
+			modifier = {
+				factor = 1.25
+				NOT = { relation = { who = RUS value = -50 } }
+			}
+		}
+	}
+	
+	option = { # Neutrality
+		name = "EVTOPTC500020"
+		prestige = -5
+		relation = { who = RUS value = 15 }
+		relation = { who = CPL value = -50 }
+		diplomatic_influence = { who = CPL value = -50 }
+		set_country_flag = poland_decision_made
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 5
+			militancy = 5
+		}
+
+		ai_chance = {
+			factor = 70
+			modifier = { factor = 0 alliance_with = RUS }
+			modifier = { factor = 10 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
+			modifier = {
+				factor = 2
+				NOT = { relation = { who = RUS value = -150 } }
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { relation = { who = RUS value = -100 } }
+			}
+			modifier = {
+				factor = 1.25
+				NOT = { relation = { who = RUS value = -50 } }
+			}
+		}
+	}
+
+	option = { # Diplomatic Support for RUS
+		name = "EVTOPTD500020"
+		relation = { who = RUS value = 50 }
+		relation = { who = CPL value = -100 }
+		diplomatic_influence = { who = CPL value = -100 }
+		set_country_flag = poland_decision_made 
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 4
+			militancy = 6
+		}
+		
+		ai_chance = {
+			factor = 5
+			modifier = { factor = 100 alliance_with = RUS }
+			modifier = { factor = 0 war_with = RUS }
+			modifier = { factor = 2 truce_with = RUS }
+			modifier = {
+				factor = 2
+				NOT = { relation = { who = RUS value = -150 } }
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { relation = { who = RUS value = -100 } }
+			}
+			modifier = {
+				factor = 1.25
+				NOT = { relation = { who = RUS value = -50 } }
+			}
+		}
+	}
+}
+
 ## Red-White Struggle - ids 500100-500199 - combine red/white influence modifier into one modifier using desc
 # Choosing a King - Add "Call a Regency Council" decision
 country_event = {
@@ -2407,7 +2695,7 @@ country_event = {
 	}
 }
 
-# Origin of Whites - Towarzystwo Rolnicze 
+# Origin of Whites - Towarzystwo Rolnicze; Support +1, Readiness +1
 country_event = {
 	id = 500108
 	title = "EVTNAME500108"
@@ -2438,10 +2726,12 @@ country_event = {
 			militancy = 1
 		}
 		change_variable = { which = polish_whites_strength value = 10 }
+		change_variable = { which = january_uprising_support value = 1 }
+		change_variable = { which = january_uprising_readiness value = 1 }
 	}
 }
 
-# Origin of Reds - Komitet Centralny Narodowy
+# Origin of Reds - Komitet Centralny Narodowy; Support +2, Readiness +2
 country_event = {
 	id = 500109
 	title = "EVTNAME500109"
@@ -2472,10 +2762,12 @@ country_event = {
 			militancy = 1
 		}
 		change_variable = { which = polish_reds_strength value = 15 }
+		change_variable = { which = january_uprising_support value = 2 }
+		change_variable = { which = january_uprising_readiness value = 2 }
 	}
 }
 
-# 1861 Warsaw Massacre
+# 1861 Warsaw Massacre; Support +1, Readiness -1
 country_event = {
 	id = 500110
 	title = "EVTNAME500110"
@@ -2498,6 +2790,8 @@ country_event = {
 	option = {
 		name = "EVTOPTA500110"
 		change_variable = { which = polish_whites_strength value = -5 }
+		change_variable = { which = january_uprising_support value = 1 }
+		change_variable = { which = january_uprising_readiness value = -1 }
 	}
 }
 

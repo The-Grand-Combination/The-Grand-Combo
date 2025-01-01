@@ -38,7 +38,7 @@ political_decisions = {
 	
 		potential = {
 			NOT = { has_global_flag = wielopolski_appointed }
-			year = 1855
+			year = 1848
 			tag = RUS
 			is_greater_power = yes
 			CPL = {
@@ -50,6 +50,7 @@ political_decisions = {
 		}
 	
 		allow = {
+			year = 1855
 			state_n_government = 1
 		}
 	
@@ -156,10 +157,125 @@ political_decisions = {
 				remove_country_modifier = warsaw_main_school_CPL
 				change_variable = { which = january_uprising_support value = -1 }
 			}
+			706 = {
+				university = 2
+			}
 		}
 	
 		ai_will_do = {
 			factor = 0
+		}
+	}
+
+	# Reinstate Polish as the Language of Instruction in CPL; -1 Support
+	reinstate_polish_language_of_instruction = {
+		picture = placeholder
+	
+		potential = { 
+			NOT = { has_global_flag = polish_reinstated_language_of_instruction }
+			NOT = { has_country_flag = university_of_warsaw_reopened }
+			year = 1861
+			tag = RUS
+			is_greater_power = yes
+			CPL = {
+				exists = yes
+				is_substate = yes
+				substate_of = THIS
+			}
+			has_global_flag = wielopolski_appointed
+			NOT = { has_global_flag = january_uprising_happened }
+			has_global_flag = warsaw_university_reopened
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			set_global_flag = polish_reinstated_language_of_instruction
+			CPL = {
+				change_variable = { which = january_uprising_support value = -1 }
+				any_pop = {
+					limit = {
+						culture = polish
+					}
+					consciousness = 1
+				}
+			}
+		}
+	
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	# Negotiations with the Agricultural Society; Maximum of -2 Support, -3 Readiness
+	negotiate_with_polish_agricultural_society = {
+		picture = placeholder
+	
+		potential = { 
+			NOT = { has_country_flag = opened_negotiations_with_CPL_agricultural_society }
+			year = 1861
+			tag = RUS
+			is_greater_power = yes
+			CPL = {
+				exists = yes
+				is_substate = yes
+				substate_of = THIS
+			}
+			has_global_flag = wielopolski_appointed
+			NOT = { has_global_flag = january_uprising_happened }
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			set_country_flag = opened_negotiations_with_CPL_agricultural_society
+			country_event = 500900
+			CPL = {
+				change_variable = { which = january_uprising_support value = -1 }
+			}
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	# Revoke Polish Organic Statue of 1832; -1 Support
+	revoke_polish_organic_statue = {
+		picture = placeholder
+	
+		potential = { 
+			NOT = { has_country_flag = revoked_polish_organic_statue }
+			year = 1861
+			tag = RUS
+			is_greater_power = yes
+			CPL = {
+				exists = yes
+				is_substate = yes
+				substate_of = THIS
+			}
+			has_global_flag = wielopolski_appointed
+			NOT = { has_global_flag = january_uprising_happened }
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			set_country_flag = revoked_polish_organic_statue
+			CPL = {
+				remove_country_modifier = rus_organic_statute_cpl
+				change_variable = { which = january_uprising_support value = -1 }
+			}
+		}
+	
+		ai_will_do = {
+			factor = 1
 		}
 	}
 
@@ -227,7 +343,7 @@ political_decisions = {
 		}
 	}
 
-	# Abolish serfdom in CPL
+	# Abolish Serfdom in CPL; -2 Support
 	extend_emancipation_proclamation_to_CPL = {
 		picture = placeholder
 	
@@ -261,6 +377,7 @@ political_decisions = {
 			set_global_flag = extended_emancipation_proclamation_to_CPL
 			CPL = {
 				political_reform = peonage
+				change_variable = { which = january_uprising_support value = -2 }
 			}
 		}
 	
@@ -280,7 +397,8 @@ political_decisions = {
 		}
 	
 		allow = {
-			
+			is_greater_power = yes
+
 		}
 	
 		effect = {
@@ -299,4 +417,29 @@ political_decisions = {
 			}
 		}
 	}
+
+	# Promise to Abolish Serfdom; +1 Support
+	promise_polish_serfdom_abolition = {
+		picture = promise_polish_serfdom_abolition
+	
+		potential = { 
+			tag = CPL
+			is_substate = yes
+			overlord = RUS
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			
+		}
+	
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	
 }
