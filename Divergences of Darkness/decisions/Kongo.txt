@@ -1,0 +1,182 @@
+political_decisions = {
+    invite_kongo_missionaries = {
+        picture = "preacher"
+
+        potential = {
+            tag = KON
+            has_country_flag = kongo_children
+            NOT = { has_country_flag = invite_kongo_missionaries }
+            749 = { owned_by = PAP }
+            civilized = no
+        }
+
+        allow = {
+            NOT = { has_country_flag = lacking_writing_system }
+            NOT = { has_country_modifier = kongo_missing_children }
+            749 = {
+                owner = {
+                    relation = {
+                        who = THIS
+                        value = 50
+                    }
+                }
+            }
+            money = 5001
+        }
+
+        effect = {
+            PAP = {
+                relation = {
+                    with = THIS
+                    value = 50
+                }
+                money = 5000
+            }
+            money = -5000
+            set_country_flag = invite_kongo_missionaries
+            add_country_modifier = {
+                name = kongo_missionaries
+                duration = 3650
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    kongo_empire = {
+        picture = "map_africa"
+
+        potential = {
+            tag = KON
+            is_vassal = no
+            civilized = yes
+            NOT = { has_country_flag = kongo_empire }
+        }
+
+        allow = {
+            prestige = 25
+            NOT = { badboy = 0.5 }
+        }
+
+        effect = {
+            prestige = 5
+            set_country_flag = kongo_empire
+            badboy = 10
+
+            POR_1999 = { add_core = KON }
+            POR_2003 = { add_core = KON }
+            POR_2006 = { add_core = KON }
+            #POR_2053 = { add_core = KON }
+            #POR_2060 = { add_core = KON }
+            ENG_1843 = { add_core = KON }
+            ENG_1956 = { add_core = KON }
+            ENG_2014 = { add_core = KON }
+            ENG_2016 = { add_core = KON }
+            ENG_2019 = { add_core = KON }
+            ENG_2034 = { add_core = KON }
+            #ENG_2039 = { add_core = KON }
+            #ENG_2068 = { add_core = KON }
+            BEL_1977 = { add_core = KON }
+            BEL_1984 = { add_core = KON }
+            BEL_1987 = { add_core = KON }
+            BEL_1990 = { add_core = KON }
+            BEL_1992 = { add_core = KON }
+            FRA_1965 = { add_core = KON }
+            FRA_1972 = { add_core = KON }
+            FRA_1978 = { add_core = KON }
+            BCH_1 = { add_core = KON }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    integrate_congo_cultures = {
+        picture = "dayaks"
+
+        potential = {
+            tag = KON
+            is_vassal = no
+            has_country_flag = kongo_empire
+            NOT = { has_country_flag = integrate_congo_cultures }
+        }
+
+        allow = {
+            all_core = {
+                OR = {
+                    owned_by = THIS
+                    empty = yes
+                    is_colonial = yes
+                }
+            }
+            NOT = { badboy = 0.75 }
+            NOT = { average_militancy = 4 }
+        }
+
+        effect = {
+            prestige = 25
+            set_country_flag = integrate_congo_cultures
+            badboy = 5
+        }
+        ai_will_do = { factor = 1 }
+    }
+	
+    kongo_liferating = {
+        picture = "rubber_cycle"
+	
+        potential = {
+            war = no
+            has_country_flag = congo_cultures_integrated
+            NOT = { has_country_flag = kongo_liferating }
+        }
+	
+        allow = {
+            all_core = {
+				owned_by = THIS
+			}
+			money = 10000
+			iron_railroad = 1
+		}
+		
+        effect = {
+            prestige = 5
+			money = -10000
+            set_country_flag = kongo_liferating
+			
+			THIS = { all_core = { limit = { NOT = { life_rating = 10 }  } life_rating = 15 } }
+			THIS = { all_core = { limit = { NOT = { life_rating = 20 }  } life_rating = 5 } }
+			THIS = { all_core = { limit = { NOT = { life_rating = 25 }  } life_rating = 3 } }
+			
+        }
+        ai_will_do = { factor = 1 }
+	}
+	
+	kongo_mining = {
+        picture = "diamond_extraction"
+	
+        potential = {
+            war = no
+            has_country_flag = kongo_liferating
+            NOT = { has_country_flag = kongo_mining }
+        }
+	
+        allow = {
+            all_core = {
+				owned_by = THIS
+			}
+			money = 50000
+		}
+		
+        effect = {
+            prestige = 5
+			money = -50000
+            set_country_flag = kongo_mining
+			
+            1990 = { trade_goods = coal }
+            1987 = { trade_goods = iron }
+            1991 = { trade_goods = precious_metal }
+            1984 = { trade_goods = precious_metal }
+            #2010 = { trade_goods = precious_goods }
+            #2006 = { trade_goods = precious_goods }
+        }
+        ai_will_do = { factor = 1 }
+	}
+	
+}

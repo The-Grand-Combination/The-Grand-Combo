@@ -1,0 +1,300 @@
+political_decisions = {
+
+    overthrow_shaki = {
+        picture = gigio_attack
+        potential = {
+			OR = {
+				tag = SAM
+				tag = IME				
+			}
+			ai = no
+			vassal_of = AZB			
+            NOT = { has_country_flag = threw_turkoman_yoke }
+        }
+        allow = {
+            war = no
+        }
+        effect = {
+			prestige = 5
+            AZB = {
+                release_vassal = THIS
+                country_event = 180004
+            }
+			relation = {
+				who = AZB
+				value = -200
+			}
+            any_pop = {
+                limit = { culture = georgian }
+                consciousness = -1
+                militancy = -3
+            }			
+			set_country_flag = threw_turkoman_yoke	
+        }
+        ai_will_do = { factor = 0 }
+    }
+	
+    unify_georgia = {
+        picture = seal_bagrationi
+        potential = {
+            NOT = {
+                GEO = { exists = yes }
+            }
+            primary_culture = georgian
+        }
+        allow = {
+            war = no
+			is_vassal = no			
+            AND = {
+                SAM = {
+                    all_core = {
+                        OR = {
+                            owned_by = THIS
+                            owner = { 
+								OR = { 
+									in_sphere = THIS 
+									vassal_of = THIS
+								}
+							}
+                        }
+                    }
+                }
+                IME = {
+                    all_core = {
+                        OR = {
+                            owned_by = THIS
+                            owner = { 
+								OR = { 
+									in_sphere = THIS 
+									vassal_of = THIS
+								}
+							}
+                        }
+                    }
+                }
+            }	
+        }
+        effect = {
+            prestige = 20
+            change_tag = GEO
+			any_owned = {
+				limit = { is_core = SAM }
+				remove_core = SAM
+			}
+			any_country = {
+				any_owned = {
+					limit = { is_core = SAM }
+					remove_core = SAM
+				}
+			}
+			any_owned = {
+				limit = { is_core = IME }
+				remove_core = IME
+			}
+			any_country = {
+				any_owned = {
+					limit = { is_core = IME }
+					remove_core = IME
+				}
+			}			
+        }
+        ai_will_do = { factor = 1 }
+    }	
+	
+    greater_georgia = {
+        picture = queen_tamar
+        potential = {
+            tag = GEO
+            NOT = { has_country_flag = tamar_georgia }			
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+            all_core = { owned_by = THIS }
+            nationalism_n_imperialism = 1
+        }
+
+        effect = {
+			set_country_flag = tamar_georgia	
+            RUS_1098 = { add_core = THIS }
+            1102 = { add_core = THIS }
+            1103 = { add_core = THIS }			
+            1104 = { add_core = THIS }			
+            1105 = { add_core = THIS }
+            1106 = { add_core = THIS }			
+        }
+
+        ai_will_do = { factor = 1 }
+    }	
+
+    GEO_integrate_armenian = {
+        picture = wappen_armenien
+        potential = {
+			tag = GEO
+			has_country_flag = tamar_georgia			
+            NOT = { has_country_flag = integrated_armenian }
+        }
+        allow = {
+            war = no
+            biologism = 1	
+        }
+        effect = {
+			prestige = 2
+            add_accepted_culture = armenian							
+			set_country_flag = integrated_armenian	
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    create_georgia = { 
+	    picture = st_george 
+        potential = {
+			ai = no
+			GEO = { exists = no }			
+            NOT = {
+                tag = SAM
+				tag = IME 
+				tag = KRT 
+				tag = AZB 
+                has_global_flag = georgia_formed
+            }
+            OR = {
+                any_owned_province = { is_core = SAM }
+                any_owned_province = { is_core = IME }
+				any_owned_province = { is_core = KRT }
+                is_sphere_leader_of = SAM 
+                is_sphere_leader_of = IME
+                is_sphere_leader_of = KRT
+            }
+        }
+        allow = {
+            war = no
+            SAM = {
+                ai = yes
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = {
+                            war = no
+                            OR = {
+                                in_sphere = THIS
+                                vassal_of = THIS
+                            }
+                        }
+                    }
+                }
+            }
+            IME = {
+                ai = yes
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = {
+                            war = no
+                            OR = {
+                                in_sphere = THIS
+                                vassal_of = THIS
+                            }
+                        }
+                    }
+                }
+            }
+            KRT = {
+                ai = yes
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = {
+                            war = no
+                            OR = {
+                                in_sphere = THIS
+                                vassal_of = THIS
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        effect = {
+            set_global_flag = georgia_formed
+            prestige = 20
+            badboy = 2
+            SAM = {
+                all_core = { add_core = GEO }
+            }
+            IME = {
+                all_core = { add_core = GEO }
+            }
+            KRT = {
+                all_core = { add_core = GEO }
+            }
+            any_country = {
+                limit = {
+                    OR = {
+                        tag = SAM
+                        tag = IME
+                        tag = KRT
+                    }
+                    ai = yes
+                    OR = {
+                        in_sphere = THIS
+                        vassal_of = THIS
+                    }
+                }
+                annex_to = THIS
+            }
+            any_country = {
+                limit = {
+                    NOT = { tag = GEO }
+
+                    OR = {
+                        in_sphere = THIS
+                        vassal_of = THIS
+                    }
+                    war = no
+                    any_owned_province = {
+                        OR = {
+                            is_core = SAM
+                            is_core = IME
+                            is_core = KRT
+                        }
+                    }
+                }
+                any_owned = {
+                    limit = {
+                        OR = {
+                            is_core = SAM
+                            is_core = IME
+                            is_core = KRT
+                        }
+                    }
+                    secede_province = THIS
+                }
+            }
+            any_owned = {
+                limit = {
+                    is_core = GEO
+                    NOT = { is_core = THIS }					
+                }
+                secede_province = GEO
+            }
+            create_vassal = GEO
+            create_alliance = GEO
+            diplomatic_influence = {
+                who = GEO
+                value = 300
+            }
+            GEO = { prestige = -400 }
+        }
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                OR = {
+                    tag = AZB
+                }
+            }
+        }
+    }
+}

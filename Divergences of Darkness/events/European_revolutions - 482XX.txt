@@ -1,0 +1,1071 @@
+#####################
+#Scotland insurrection following English independence (48201-48206)
+#Irish insurrection following English independence
+#Dutch insurrection following French independence
+#Portuguese/Spanish insurrection following Occitania independence/France which absorbed Occitania
+#Creation of Italia by France/Occitania : Etruria becomes hegemon but cedes the Western Alpes
+#Catalan union with Occitania
+#################
+
+country_event = { ##Scotish agitator Walter Scott arrives in England
+
+    id = 48202
+    title = "EUR2.T"
+    desc = "EUR2.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "48202.A"
+        money = -50000
+        relation = {
+            who = SCA
+            value = -150
+        }
+        set_global_flag = ENL_help_SCO
+    }
+
+    option = {
+        name = "48202.B"
+        prestige = -15
+    }
+}
+
+country_event = { ##Young Scotland revolts
+
+    id = 48203
+    title = "EUR3.T"
+    desc = "EUR3.D"
+
+    trigger = {
+        tag = SCA
+        owns = 269
+        owns = 267
+        has_global_flag = ENL_help_SCO
+        NOT = { has_country_flag = SCO_free }
+    }
+
+    mean_time_to_happen = { months = 35 }
+
+    option = {
+        name = "48203.A"
+        any_owned = {
+            limit = { is_core = SCO }
+            secede_province = SCO
+        }
+        SCO = {
+            capital = 269
+            government = democracy
+        }
+        ENL = { country_event = 48204 }
+
+        any_country = {
+            limit = {
+                government = democracy
+                has_country_flag = Anschluss_DUA
+            }
+            country_event = 48205
+        }
+        country_event = {
+            id = 48206
+            days = 6
+        }
+    }
+}
+
+country_event = { ##Young Scotland revolts -ENL
+
+    id = 48204
+    title = "EUR4.T"
+    desc = "EUR4.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "48204.A"
+        create_alliance = SCO
+        relation = {
+            who = SCO
+            value = 200
+        }
+        diplomatic_influence = {
+            who = SCO
+            value = 50
+        }
+        ai_chance = { factor = 100 }
+    }
+
+    option = { name = "48204.B" }
+}
+
+country_event = { ##Standard event for the 'Sister Republics' to join a pending Revolution
+
+    id = 48205
+    title = "EUR5.T"
+    desc = "EUR5.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "48205.A"
+        create_alliance = SCO
+        ai_chance = { factor = 80 }
+    }
+
+    option = {
+        name = "48205.B"
+        ai_chance = {
+            factor = 20
+            modifier = {
+                factor = 2.5
+                war = yes
+            }
+        }
+    }
+}
+
+country_event = { ##The Scandinavian Reaction
+
+    id = 48206
+    title = "EUR6.T"
+    desc = "EUR6.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "48206.A"
+        prestige = 25
+        war = {
+            target = SCO
+            attacker_goal = { casus_belli = annex_core_country }
+        }
+        ai_chance = { factor = 50 }
+    }
+
+    option = {
+        name = "48206.B"
+        prestige = -25
+        war = {
+            target = SCO
+            attacker_goal = { casus_belli = annex_core_country }
+            call_ally = yes
+        }
+        ai_chance = { factor = 50 }
+    }
+}
+
+
+country_event = { ##Birth of Irish nationalism -violent path
+
+    id = 48210
+    title = "EUR10.T"
+    desc = "EUR10.D"
+
+    picture = "IRE_army"
+
+    trigger = {
+        tag = DUA
+        IRE = { exists = no }
+        has_global_flag = glorious_revolution
+        NOT = { government = democracy }
+        ENL = { exists = yes }
+        NOT = { has_global_flag = irish_brotherhood }
+    }
+
+    mean_time_to_happen = { months = 15 }
+
+    option = {
+        name = "48210.A"
+        set_global_flag = irish_brotherhood
+        prestige = -15
+    }
+}
+
+country_event = { ##Creation of the Irish Brotherhood -possible negotiation
+
+    id = 48211
+    title = "EUR11.T"
+    desc = "EUR11.D"
+
+    picture = "IRE_IB"
+
+    trigger = {
+        tag = DUA
+        IRE = { exists = no }
+        has_global_flag = french_int
+        NOT = { government = democracy }
+        year = 1860
+        NOT = { has_country_flag = irish_claims }
+    }
+
+    mean_time_to_happen = { months = 15 }
+
+    option = {
+        name = "48211.A"
+        set_country_flag = irish_claims
+        prestige = -15
+    }
+}
+
+country_event = { ##Dominion of Ireland
+
+    id = 48212
+    title = "EUR12.T"
+    desc = "EUR12.D"
+
+    picture = "IRE_IB"
+
+    trigger = {
+        tag = DUA
+        IRE = { exists = no }
+        has_country_flag = irish_claims
+        war = no
+        NOT = { has_global_flag = irish_brotherhood }
+    }
+
+    mean_time_to_happen = {
+        months = 1000
+        modifier = {
+            factor = 1.5
+            rank = 2
+        }
+        modifier = {
+            factor = 0.6
+            war_exhaustion = 50
+        }
+        modifier = {
+            factor = 0.8
+            any_owned_province = {
+                is_core = IRE
+                any_pop = {
+                    culture = irish
+                    militancy = 2
+                }
+            }
+        }
+        modifier = {
+            factor = 0.8
+            any_owned_province = {
+                is_core = IRE
+                any_pop = {
+                    culture = irish
+                    consciousness = 6
+                }
+            }
+        }
+        modifier = {
+            factor = 0.7
+            any_owned_province = {
+                is_core = IRE
+                any_pop = {
+                    culture = irish
+                    militancy = 4
+                }
+            }
+        }
+        modifier = {
+            factor = 0.5
+            any_owned_province = {
+                is_core = IRE
+                any_pop = {
+                    culture = irish
+                    militancy = 6
+                }
+            }
+        }
+    }
+
+    option = {
+        name = "48212.A"
+        release_vassal = IRE
+        prestige = -40
+        any_pop = {
+            scaled_militancy = {
+                factor = 1
+                ideology = conservative
+            }
+            scaled_militancy = {
+                factor = 5
+                ideology = reactionary
+            }
+            scaled_consciousness = {
+                factor = 3
+                ideology = conservative
+            }
+        }
+    }
+
+    option = {
+        name = "48212.B"
+        set_global_flag = irish_brotherhood
+        any_pop = {
+            limit = { culture = irish }
+            militancy = 1
+            consciousness = 4
+            scaled_militancy = {
+                factor = 1
+                ideology = liberal
+            }
+            scaled_militancy = {
+                factor = 1
+                ideology = socialist
+            }
+        }
+    }
+}
+
+country_event = { ##Irish Rising
+
+    id = 48213
+    title = "EUR13.T"
+    desc = "EUR13.D"
+
+    picture = "IRE_army"
+
+    trigger = {
+        IRE = { exists = no }
+        DUA = { owns = 263 }
+        NOT = {
+            OR = {
+                government = absolute_monarchy
+                government = fascist_dictatorship
+            }
+        }
+        has_global_flag = irish_brotherhood
+        NOT = { has_country_flag = refused_IRE_help }
+        war = no
+        is_greater_power = yes
+        continent = europe
+        NOT = {
+            relation = {
+                who = DUA
+                value = -50
+            }
+        }
+        NOT = { truce_with = DUA }
+    }
+
+    mean_time_to_happen = { months = 120 }
+
+    option = {
+        name = "48213.A"
+        money = -100000
+        ammunition = -1000
+        small_arms = -1000
+        artillery = -1000
+        canned_food = -1000
+        regular_clothes = -1000
+        clr_global_flag = irish_brotherhood
+        random_list = {
+            40 = {
+                DUA = { country_event = 48214 }
+            }
+            60 = {
+                DUA = { country_event = 48216 }
+            }
+        }
+    }
+
+    option = {
+        name = "48213.B"
+        prestige = -15
+        set_country_flag = refused_IRE_help
+    }
+}
+
+country_event = { ##Irish Rising
+
+    id = 48214
+    title = "EUR14.T"
+    desc = "EUR14.D"
+
+    is_triggered_only = yes
+
+    major = yes
+
+    option = {
+        name = "48214.A"
+        any_owned = {
+            limit = { is_core = IRE }
+            secede_province = IRE
+        }
+        IRE = {
+            capital = 263
+            government = democracy
+            money = 100000
+            ammunition = 1000
+            small_arms = 1000
+            artillery = 1000
+            canned_food = 1000
+            regular_clothes = 1000
+        }
+        diplomatic_influence = {
+            who = IRE
+            value = 300
+        }
+        FROM = {
+            relation = {
+                who = IRE
+                value = 150
+            }
+            create_alliance = IRE
+        }
+        DUA = {
+            country_event = {
+                id = 48215
+                days = 20
+            }
+        }
+        set_global_flag = wait_DUA
+    }
+}
+
+country_event = {
+    id = 48215
+    title = "EUR15.T"
+    desc = "EUR15.D"
+
+    is_triggered_only = yes
+
+
+    option = {
+        name = "48215.A"
+        diplomatic_influence = {
+            who = IRE
+            value = -300
+        }
+        clr_global_flag = wait_DUA
+        war = {
+            target = IRE
+            attacker_goal = { casus_belli = annex_core_country }
+        }
+        ai_chance = { factor = 70 }
+    }
+
+    option = {
+        name = "48215.B"
+        prestige = -50
+        clr_global_flag = wait_DUA
+        diplomatic_influence = {
+            who = IRE
+            value = -200
+        }
+        relation = {
+            who = IRE
+            value = 75
+        }
+        ai_chance = { factor = 30 }
+    }
+}
+
+country_event = {
+    id = 48216
+    title = "EUR16.T" #The ship is captured
+    desc = "EUR16.D"
+
+    major = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = "48216.A"
+        prestige = 20
+        scaled_militancy = {
+            factor = -1
+            ideology = conservative
+        }
+        casus_belli = {
+            target = FROM
+            type = cut_down_to_size
+            months = 60
+        }
+        war = {
+            target = FROM
+            attacker_goal = { casus_belli = cut_down_to_size }
+            call_ally = yes
+        }
+        FROM = { country_event = 48217 }
+        ai_chance = { factor = 70 }
+    }
+
+    option = {
+        name = "48216.B"
+        prestige = -20
+        ai_chance = { factor = 30 }
+    }
+}
+
+country_event = {
+    id = 48217
+    title = "48217.T"
+    desc = "48217.D"
+
+    is_triggered_only = yes
+
+    option = { name = "48217.A" }
+}
+
+country_event = { ##Scotish agitator Walter Scott and Scandinavian reaction
+
+    id = 48201
+    title = "EUR1.T"
+    desc = "EUR1.D"
+
+    trigger = {
+        tag = SCA
+        owns = 269
+        owns = 267
+        has_global_flag = glorious_revolution
+        NOT = { government = democracy }
+        ENL = { exists = yes }
+        ENL = { government = democracy }
+        NOT = { alliance_with = ENL }
+        NOT = { has_country_flag = WScott }
+    }
+
+    mean_time_to_happen = { months = 15 }
+
+    option = {
+        name = "48201.A"
+        set_country_flag = WScott
+        ENL = { country_event = 48202 }
+        prestige = 15
+    }
+
+    option = {
+        name = "48201.B"
+        set_country_flag = WScott
+        prestige = -20
+        any_pop = {
+            limit = { culture = scottish }
+            militancy = 4
+            consciousness = 5
+        }
+        any_owned = {
+            limit = { is_core = SCO }
+            add_province_modifier = {
+                name = nationalist_agitation
+                duration = 2000
+            }
+        }
+    }
+}
+
+country_event = {
+    id = 36720
+    title = "TUS_setupT"
+    desc = "TUS_setupD"
+
+    is_triggered_only = yes
+    fire_only_once = yes
+
+    option = {
+        name = "36720.A"
+
+        744 = {
+            add_province_modifier = {
+                name = liberal_stronghold
+                duration = -1
+            }
+        }
+        any_pop = {
+            ideology = {
+                value = liberal
+                factor = 0.47
+            }
+        }
+    }
+}
+
+country_event = { ##Using the Carbonari ?
+    id = 36731
+    title = "ETR1.T"
+    desc = "ETR1.D"
+    picture = "carbonari"
+
+    trigger = {
+        tag = TUS
+        has_global_flag = liberal_revolution_somewhere
+        NOT = { has_country_flag = carbonari }
+    }
+
+    mean_time_to_happen = { months = 15 }
+
+    option = {
+        name = "36731.A"
+        set_country_flag = carbonari
+        set_global_flag = TUS_carbonari
+        any_country = {
+            limit = {
+                NOT = { government = democracy }
+                NOT = { tag = THIS }
+                exists = yes
+                OR = {
+                    primary_culture = north_italian
+                    primary_culture = south_italian
+                }
+            }
+            country_event = 36732
+        }
+        ai_chance = {
+            factor = 65
+            modifier = {
+                factor = 0.5
+                ruling_party_ideology = conservative
+            }
+            modifier = {
+                factor = 0
+                ruling_party_ideology = reactionary
+            }
+            modifier = {
+                factor = 2
+                is_greater_power = yes
+            }
+        }
+    }
+
+    option = {
+        name = "36731.B"
+        set_country_flag = carbonari
+        ai_chance = {
+            factor = 35
+            modifier = {
+                factor = 0.5
+                ruling_party_ideology = liberal
+            }
+        }
+    }
+}
+
+country_event = { ##Carbonari activate
+    id = 36732
+    title = "ETR2.T"
+    desc = "ETR2.D"
+    picture = "carbonari"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "36732.A"
+        any_owned = {
+            limit = { is_core = ITA }
+            any_pop = {
+                ideology = {
+                    value = liberal
+                    factor = 0.2
+                }
+            }
+            any_pop = {
+                limit = {
+                    OR = {
+                        type = officers
+                        type = soldiers
+                    }
+                }
+                ideology = {
+                    value = liberal
+                    factor = 0.5
+                }
+                militancy = 5
+                consciousness = 4
+            }
+        }
+        capital_scope = {
+            add_province_modifier = {
+                name = etrurian_agitation
+                duration = 1200
+            }
+        }
+        set_country_flag = carbonari_activity
+    }
+}
+
+country_event = { #Congress because of HRE formed
+    id = 48251
+    title = "CONGR1.T"
+    desc = "CONGR1.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        has_global_flag = hre_formed
+        NOT = { tag = HLR }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48251.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Danubian Federation
+    id = 48252
+    title = "CONGR1.T"
+    desc = "CONGR2.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        SGF = { exists = yes }
+        NOT = {
+            tag = SGF
+            tag = BOH
+        }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48252.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Confederation at the Elbe
+    id = 48253
+    title = "CONGR1.T"
+    desc = "CONGR3.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        CAE = { exists = yes }
+        NOT = { tag = CAE }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48253.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Aragon-Italy forming
+    id = 48254
+    title = "CONGR1.T"
+    desc = "CONGR4.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        ARI = { exists = yes }
+        NOT = { tag = ARI }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48254.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Revitalized PLC
+    id = 48255
+    title = "CONGR1.T"
+    desc = "CONGR5.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        PLC = { has_country_flag = lublin_new }
+        NOT = { tag = PLC }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48255.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Russian Bear
+    id = 48256
+    title = "CONGR1.T"
+    desc = "CONGR6.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        RUS = {
+            exists = yes
+            is_greater_power = yes
+        }
+        NOT = { tag = RUS }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48256.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Iberian Union
+    id = 48257
+    title = "CONGR1.T"
+    desc = "CONGR7.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        SPA = { has_country_flag = iberian_union }
+        NOT = { tag = SPA }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48257.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = {
+    id = 48258
+    title = "CONGR1.T"
+    desc = "CONGR8.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        SCA = { has_country_flag = nordtyskland }
+        NOT = { tag = SCA }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48258.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Valois in Italy
+    id = 48259
+    title = "CONGR1.T"
+    desc = "CONGR9.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        ITA = {
+            exists = yes
+            has_country_flag = valois_italy
+        }
+        NOT = { tag = ITA }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48259.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Valois in France
+    id = 48260
+    title = "CONGR1.T"
+    desc = "CONGR10.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        FRA = {
+            exists = yes
+            has_country_flag = valois_rulez
+        }
+        NOT = { tag = FRA }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48260.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Etrurian Italy
+    id = 48261
+    title = "CONGR1.T"
+    desc = "CONGR11.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        ITA = {
+            exists = yes
+            has_country_flag = quick_unification
+        }
+        NOT = { tag = ITA }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48261.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Anglois acceptance
+    id = 48262
+    title = "CONGR1.T"
+    desc = "CONGR12.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        DUA = { has_country_flag = Anglois_accepted }
+        NOT = { tag = DUA }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48262.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Success Glorious Revolution
+    id = 48263
+    title = "CONGR1.T"
+    desc = "CONGR13.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        has_global_flag = glorious_revolution
+        ENL = {
+            exists = yes
+            war = no
+            has_country_flag = ENL_recognized
+        }
+        NOT = {
+            tag = DUA
+            tag = ENL
+        }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48263.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}
+
+country_event = { #Success Total Revolution
+    id = 48264
+    title = "CONGR1.T"
+    desc = "CONGR14.D"
+
+    major = yes
+
+
+    trigger = {
+        NOT = { has_global_flag = DVG_infamy }
+        has_global_flag = fall_DUA
+        NOT = {
+            tag = FRA
+            tag = ENL
+        }
+        is_greater_power = yes
+        continent = europe
+    }
+
+    mean_time_to_happen = { days = 30 }
+
+    option = {
+        name = "48264.A"
+        set_global_flag = DVG_infamy
+        badboy = -3
+        prestige = 10
+    }
+}

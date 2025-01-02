@@ -1,0 +1,863 @@
+political_decisions = {
+    holy_crown_HUN = {
+        picture = hungary
+
+        potential = {
+            NOT = { has_country_flag = HUN_asked }
+            NOT = { exists = HLR }
+            tag = HUN
+        }
+
+        allow = {
+            war = no
+            OR = {
+                year = 1842
+                romanticism = 1
+            }
+        }
+
+        effect = {
+            set_country_flag = HUN_asked
+            set_global_flag = crown_stefen
+            BOH = { country_event = 265401 }
+        }
+    }
+
+    HUN_prague = {
+        picture = prague
+        potential = {
+            tag = HUN
+            war_with = BOH
+            has_global_flag = crown_stefen
+        }
+
+        allow = {
+            625 = { controlled_by = THIS }
+        }
+
+        effect = {
+            clr_global_flag = crown_stefen
+            country_event = 265411
+            BOH = { country_event = 265412 }
+        }
+    }
+
+    BOH_buda = {
+        picture = budapest
+        potential = {
+            tag = BOH
+            war_with = HUN
+            has_global_flag = crown_stefen
+        }
+
+        allow = {
+            641 = { controlled_by = THIS }
+        }
+
+        effect = {
+            clr_global_flag = crown_stefen
+            HUN = { country_event = 265413 }
+        }
+    }
+
+    reclaim_croatia = {
+        picture = reclaim_croatia
+        potential = {
+            tag = HUN
+            OR = {
+                is_greater_power = yes
+                has_country_flag = holy_crown
+            }
+            NOT = { has_country_flag = Hungarian_CRO }
+        }
+
+        allow = { state_n_government = 1 }
+
+        effect = {
+            badboy = 12.5
+            any_owned = {
+                limit = {
+                    is_core = CRO
+                    NOT = { is_core = SLO }
+                }
+                add_core = THIS
+            }
+            any_country = {
+                any_owned = {
+                    limit = {
+                        is_core = CRO
+                        NOT = { is_core = SLO }
+                    }
+                    add_core = THIS
+                }
+            }
+            set_country_flag = Hungarian_CRO
+        }
+    }
+
+    croatian_compromise = {
+        picture = croatian_compromise
+        potential = {
+            tag = HUN
+            771 = { is_core = THIS }
+			has_country_flag = magyaroszag_integration
+            NOT = { has_country_flag = croatian_compromise }
+        }
+
+        allow = {
+            owns = 771 #Zagreb
+            owns = 779 #Osijek
+            nationalism_n_imperialism = 1			
+            war = no
+            OR = {
+                government = hms_government
+                government = democracy
+            }
+            OR = {
+                is_secondary_power = yes
+                is_greater_power = yes
+            }
+            NOT = {
+                citizenship_policy = residency
+                exists = CRO
+            }
+        }
+
+        effect = {
+            set_country_flag = croatian_compromise
+            prestige = -10
+            add_accepted_culture = croat
+            random_owned = {
+                limit = {
+                    owner = { citizens_rights = primary_culture_only }
+                }
+                owner = { political_reform = culture_voting_only }
+            }
+            any_pop = {
+                limit = { has_pop_culture = croat }
+                militancy = -6
+                consciousness = -2
+            }
+            any_pop = {
+                limit = { has_pop_culture = hungarian }
+                militancy = 2
+                consciousness = 4
+            }
+        }
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                NOT = {
+                    any_owned_province = {
+                        is_core = CRO
+                        average_militancy = 6
+                    }
+                }
+            }
+            modifier = {
+                factor = 0
+                NOT = {
+                    OR = {
+                        ruling_party_ideology = liberal
+                        ruling_party_ideology = socialist
+                    }
+                }
+            }
+        }
+    }
+
+
+    independent_SLO = {
+        picture = "Triglav"
+
+        potential = {
+            OR = {
+                tag = SLO
+                AND = {
+                    tag = CRO
+                    owns = 767
+                }
+                AND = {
+                    tag = YUG
+                    owns = 767
+                }
+            }
+            NOT = { has_country_flag = independent_SLO }
+        }
+
+        allow = {
+            AUS = { exists = no }
+            war = no
+        }
+
+        effect = {
+            any_owned = {
+                limit = { is_core = SLO }
+                remove_core = AUS
+                remove_core = SGF
+                remove_core = GER
+            }
+            set_country_flag = independent_SLO
+        }
+    }
+
+    accept_SLO = {
+        picture = "Triglav"
+
+        potential = {
+            tag = CRO
+            NOT = { has_country_flag = accepted_slovenians }
+        }
+
+        allow = {
+            OR = {
+                owns = 768
+                owns = 769
+            }
+        }
+
+        effect = {
+            set_country_flag = accepted_slovenians
+            add_accepted_culture = slovene
+        }
+    }
+	
+    abolish_szekely_privilege = {
+        picture = szekely_mozes
+        potential = {
+			has_country_flag = hungarian_modernisation
+            NOT = { has_country_flag = abolished_szekely_privilege }			
+        }
+        allow = {
+            war = no
+            army_decision_making = 1			
+            owns = 660					
+        }
+        effect = {
+            any_owned = {
+                limit = { has_province_modifier = szekely_privilege }
+                remove_province_modifier = szekely_privilege
+            }
+            remove_country_modifier = szekely_tax_exemption
+			THIS = { 
+				country_event = { 
+					id = 265418
+					days = 3
+				}			
+			}			
+            any_pop = {
+                limit = {
+                    has_pop_culture = hungarian
+                    location = { province_id = 660 }
+                }
+                consciousness = 2
+                militancy = 3
+            }
+            any_pop = {
+                limit = {
+                    has_pop_culture = hungarian
+                    location = { province_id = 2533 }
+                }
+                consciousness = 2
+                militancy = 3
+            }
+            any_pop = {
+                limit = {
+                    has_pop_culture = hungarian
+                    location = { province_id = 3399 }
+                }
+                consciousness = 2
+                militancy = 3
+            }			
+			set_country_flag = abolished_szekely_privilege	
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    end_cattle_barons = {
+        picture = floret_honore_novo
+        potential = {
+			has_country_flag = hungarian_modernisation
+            NOT = { has_country_flag = developed_alfold }
+        }
+
+        allow = {
+            war = no
+            all_core = { owned_by = THIS }
+			steam_turbine = 1
+        }
+
+        effect = {
+            set_country_flag = developed_alfold
+			THIS = { country_event = 265420 }
+			any_pop = {
+				limit = {
+					culture = hungarian
+					pop_type = aristocrats
+				}
+				militancy = 3				
+			}			
+        }
+        ai_will_do = { factor = 1 }		
+    }
+
+    declare_equality_cults = {
+        picture = quinqre_eccle
+        potential = {
+			has_country_flag = hungarian_modernisation
+            NOT = { has_country_flag = hungary_protestant }
+        }
+
+        allow = {
+            war = no
+			ideological_thought = 1
+        }
+
+        effect = {
+            set_country_flag = hungary_protestant
+            prestige = 3
+            religion = protestant
+			research_points = 10000			
+            any_pop = {
+                limit = {
+                    has_pop_religion = catholic
+					culture = hungarian
+					pop_type = aristocrats					
+                }
+                militancy = 5
+                consciousness = 8
+            }			
+        }
+        ai_will_do = { factor = 1 }		
+    }	
+	
+    limit_signeural_rights = {
+        picture = vaciensis_1808
+        potential = {
+			has_country_flag = hungarian_modernisation
+            NOT = { has_country_flag = limited_signeural }			
+        }
+        allow = {
+            war = no
+            functionalism = 1			
+        }
+        effect = {
+            any_owned = {
+                limit = { has_province_modifier = hungarian_noble_privilege }
+                remove_province_modifier = hungarian_noble_privilege
+            }		
+            any_pop = {
+                limit = {
+					culture = hungarian
+					pop_type = aristocrats					
+                }
+                militancy = 3
+                consciousness = 3
+            }
+            any_pop = {
+                limit = {
+					culture = hungarian
+					pop_type = serfs					
+                }
+                militancy = -3
+                consciousness = 3
+            }			
+			set_country_flag = limited_signeural	
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    hungary_emancipation = {
+        picture = fluminensis_1816
+        potential = {
+			has_country_flag = limited_signeural
+            NOT = { has_country_flag = hungarian_serfs_emancipated }			
+        }
+        allow = {
+            war = no
+            biologism = 1			
+        }
+        effect = {
+			set_country_flag = hungarian_serfs_emancipated
+			clr_country_flag = cannot_abolish_serfdom		
+            any_owned = {
+                limit = { has_province_modifier = hungarian_noble_privilege }
+                remove_province_modifier = hungarian_noble_privilege
+            }		
+            any_pop = {
+                limit = {
+					culture = hungarian
+					pop_type = aristocrats					
+                }
+                militancy = 3
+                consciousness = 3
+            }
+            any_pop = {
+                limit = {
+					culture = hungarian
+					pop_type = serfs					
+                }
+                militancy = -3
+                consciousness = 3
+            }			
+			political_reform = debtors_prisons			
+        }
+        ai_will_do = { factor = 1 }
+    }	
+	
+    force_concivilitaet = {
+        picture = siegel_goldenen_freibriefs
+        potential = {
+			has_country_flag = magyaroszag_integration
+            NOT = { has_country_flag = concivilitaet }
+        }
+
+        allow = { 
+			war = no		
+			empiricism = 1
+            all_core = { owned_by = THIS }
+		}
+
+        effect = {
+            any_owned = {
+                limit = { has_province_modifier = vlach_unrest }
+                remove_province_modifier = vlach_unrest
+            }
+            any_pop = {
+                limit = {
+					culture = siebenburger
+					pop_type = aristocrats					
+                }
+                militancy = 3
+                consciousness = 3
+            }
+            any_pop = {
+                limit = {
+					culture = siebenburger
+					pop_type = artisans					
+                }
+                militancy = 3
+                consciousness = 3
+            }
+            any_pop = {
+                limit = {
+					culture = romanian				
+                }
+                militancy = -3
+                consciousness = -3
+            }			
+            set_country_flag = concivilitaet
+        }
+        ai_will_do = { factor = 1 }		
+    }
+
+    recognise_saxon_nation = {
+        picture = st_stephen
+        potential = {
+			has_country_flag = concivilitaet
+            NOT = { has_country_flag = saxons_recognised }
+        }
+
+        allow = {
+            war = no		
+            owns = 657 #Hermannstadt
+            analytic_philosophy = 1
+        }
+
+        effect = {
+            set_country_flag = saxons_recognised
+            add_accepted_culture = siebenburger
+            any_pop = {
+                limit = { has_pop_culture = siebenburger }
+                militancy = -6
+                consciousness = -2
+            }
+            any_pop = {
+                limit = { has_pop_culture = hungarian }
+                consciousness = 1
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }	
+	
+    integrate_kunok = {
+        picture = cuman_portrait
+        potential = {
+			has_country_flag = hungary_protestant
+			has_country_flag = magyaroszag_integration			
+            NOT = { has_country_flag = kunok_integrated }
+        }
+
+        allow = {
+            war = no		
+            owns = 2538 #Ujvidek
+            revolution_n_counterrevolution = 1
+			NOT = { religious_policy = moralism }			
+        }
+
+        effect = {
+            set_country_flag = kunok_integrated
+            add_accepted_culture = kunok
+            any_pop = {
+                limit = { has_pop_culture = kunok }
+                militancy = -6
+                consciousness = -2
+            }			
+			any_pop = {
+				limit = { has_pop_culture = hungarian }
+				dominant_issue = {
+					factor = 0.01
+					value = moralism
+				}
+				scaled_militancy = {
+					issue = moralism
+					factor = 5
+				}
+			}
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    abolish_saxon_university = {
+        picture = saxon_university
+        potential = {
+			has_country_flag = magyaroszag_magyarisation			
+            NOT = { has_country_flag = abolished_koenigsboden }
+        }
+
+        allow = {
+            war = no		
+            owns = 657 #Hermannstadt
+            analytic_philosophy = 1		
+        }
+
+        effect = {
+            badboy = 5		
+            set_country_flag = abolished_koenigsboden
+			set_global_flag = siebenburger_plight
+			set_global_flag = hungarian_western_transylvania
+			set_global_flag = hungarian_eastern_transylvania				
+            any_owned = {
+                limit = { has_province_modifier = koenigsboden }
+                remove_province_modifier = koenigsboden
+				add_core = U01
+				add_province_modifier = {
+					name = forced_integration
+					duration = -1
+				}				
+            }
+            any_pop = {
+                limit = { has_pop_culture = siebenburger }
+                militancy = 6
+                consciousness = 6
+            }
+			3400 = {
+				change_province_name = "Szászrégen"
+				state_scope = { change_region_name = "Western Erdély" }
+			}
+			657 = {
+				change_province_name = "Nagyszeben"
+				state_scope = { change_region_name = "Eastern Erdéy" }
+			}
+			659 = { change_province_name = "Brassó" }
+			3398 = { change_province_name = "Medgyes" }			
+        }
+        ai_will_do = { 
+			factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.55
+            }			
+		}
+    }
+
+    magyarise_vlachs = {
+        picture = vladislav_vlaicu
+        potential = {
+			has_country_flag = magyaroszag_magyarisation			
+            NOT = { has_country_flag = vlach_magyarisation }
+        }
+
+        allow = {
+            war = no
+            experimental_psychology = 1
+            all_core = { owned_by = THIS }			
+        }
+
+        effect = {
+            badboy = 5		
+            set_country_flag = vlach_magyarisation	
+			any_owned = {
+				limit = {
+					OR = {
+						province_id = 647
+						province_id = 653					
+						province_id = 654					
+						province_id = 655					
+						province_id = 656
+						province_id = 3397
+						province_id = 3401			
+					}
+				}
+				add_core = U01				
+				add_province_modifier = {
+					name = forced_integration
+					duration = -1
+				}		
+			}
+            any_country = {
+                limit = {
+                    is_culture_group = pan_romanian
+                    exists = yes					
+                }
+				country_event = 265439
+            }			
+            any_pop = {
+                limit = { has_pop_culture = romanian }
+                militancy = 6
+                consciousness = 6
+            }
+        }
+        ai_will_do = { 
+			factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.55
+            }			
+		}
+    }	
+	
+	
+    magyarise_kunok = {
+        picture = hungarian_mosque
+        potential = {
+			has_country_flag = magyaroszag_magyarisation			
+            NOT = { has_country_flag = kunok_magyarisation }
+        }
+
+        allow = {
+            war = no
+            revolution_n_counterrevolution = 1
+            all_core = { owned_by = THIS }			
+        }
+
+        effect = {
+            badboy = 5		
+            set_country_flag = kunok_magyarisation
+			any_owned = {
+				limit = { is_core = KUN }
+				add_core = U01				
+				add_province_modifier = {
+					name = forced_integration
+					duration = -1
+				}		
+			}
+            any_pop = {
+                limit = { has_pop_culture = kunok }
+                militancy = 6
+                consciousness = 6
+            }
+        }
+        ai_will_do = { 
+			factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.55
+            }			
+		}
+    }
+
+    transylvania_integrate_romanians = {
+        picture = romanian_regeneration
+        potential = {
+			tag = SIE
+            NOT = { has_country_flag = transylvania_romanians }
+        }
+
+        allow = {
+            war = no		
+            all_core = { owned_by = THIS }	
+            revolution_n_counterrevolution = 1
+        }
+
+        effect = {
+            set_country_flag = transylvania_romanians
+            add_accepted_culture = romanian
+            any_pop = {
+                limit = { has_pop_culture = romanian }
+                militancy = -6
+                consciousness = -2
+            }
+            any_pop = {
+                limit = { has_pop_culture = hungarian }
+                consciousness = 1
+            }
+            any_pop = {
+                limit = { has_pop_culture = siebenburger }
+                consciousness = 1
+            }			
+        }
+        ai_will_do = { factor = 1 }
+    }	
+	
+    form_transcarpathia = {
+        picture = bathory_shield
+        potential = {
+			has_country_flag = transylvania_romanians
+            NOT = { has_country_flag = transcarpathian_union }
+        }
+
+        allow = {
+			war = no
+            rank = 20
+            all_core = { owned_by = THIS }
+			social_science = 1			
+            641 = {
+                OR = {
+                    owned_by = THIS
+                    owner = {
+                        OR = {
+                            in_sphere = THIS
+                            vassal_of = THIS
+                        }
+                    }
+                }
+            }
+            664 = {
+                OR = {
+                    owned_by = THIS
+                    owner = {
+                        OR = {
+                            in_sphere = THIS
+                            vassal_of = THIS
+                        }
+                    }
+                }
+            }
+            670 = {
+                OR = {
+                    owned_by = THIS
+                    owner = {
+                        OR = {
+                            in_sphere = THIS
+                            vassal_of = THIS
+                        }
+                    }
+                }
+            }
+        }
+		
+        effect = {
+			set_country_flag = transcarpathian_union		
+            prestige = 20
+            change_tag = TCP
+			ROM = { all_core = { add_core = THIS } }
+			HUN_637 = { add_core = THIS }
+			AUS_623 = { add_core = THIS }
+			AUS_641 = { add_core = THIS }
+			AUS_777 = { add_core = THIS }			
+        }
+        ai_will_do = { factor = 1 }
+    }	
+	
+    dominate_south_slavs = {
+        picture = despotate_serbia
+        potential = {
+			has_country_flag = hungary_balkan_expansionism			
+            NOT = { has_country_flag = serbia_hungary }
+        }
+        allow = {
+            war = no
+            military_logistics = 1			
+            owns = 787
+        }
+        effect = {
+			prestige = 5
+            badboy = 10			
+			SER_794 = { add_core = THIS }
+			TUR_803 = { add_core = THIS }
+			MON_2582 = { add_core = THIS }					
+			set_country_flag = serbia_hungary			
+        }
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.36
+            }
+        }
+    }	
+	
+    albanian_protectorate = {
+        picture = otranto_strasse
+        potential = {
+            has_country_flag = serbia_hungary
+            NOT = { has_country_flag = hungary_albanian_protectorate }
+			ALB = { 
+				exists = yes
+				owns = 852
+			}
+        }
+
+        allow = {
+			war = no
+			owns = 800
+			owns = 803			
+            ALB = { in_sphere = THIS }
+        }
+
+        effect = {
+			set_country_flag = hungary_albanian_protectorate
+			badboy = 5
+            ALB = { country_event = 265449 }
+        }
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.76
+            }
+        }
+    }
+
+    ultimatum_oltenia = {
+        picture = romanian_principalities_1782
+        potential = {
+            has_country_flag = hungary_balkan_expansionism
+			has_country_flag = magyaroszag_magyarisation
+            NOT = { has_country_flag = hungary_principalities }
+			ROM = { 
+				exists = yes
+				owns = 666
+				owns = 670
+				owns = 676				
+			}
+        }
+
+        allow = {
+			war = no
+			owns = 656
+			mass_politics = 1
+            war_policy = jingoism			
+        }
+
+        effect = {
+			set_global_flag = hungary_oltenia
+			set_country_flag = hungary_principalities
+			badboy = 15
+			ROM = { country_event = 265452 }
+        }
+
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.36
+            }
+        }
+    }		
+	
+}
