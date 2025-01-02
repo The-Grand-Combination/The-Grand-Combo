@@ -1,0 +1,1224 @@
+# Bridge over Salzach
+country_event = {
+    id = 598000
+    title = "EVTNAME598000"
+    desc = "EVTDESC598000"
+    picture = "greatpowers"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA598000"
+        relation = {
+            who = BOH
+            value = 350
+        }
+        relation = {
+            who = BRG
+            value = -100
+        }
+        relation = {
+            who = SCA
+            value = -100
+        }
+        relation = {
+            who = ARA
+            value = -100
+        }
+        prestige = 15
+        BOH = { prestige = 15 }
+        set_global_flag = salzach
+        create_alliance = BOH
+        ai_chance = {
+            factor = 75
+            modifier = {
+                factor = 0.25
+                has_country_flag = meddle_in_italy
+            }
+        }
+    }
+
+    option = {
+        name = "EVTOPTB598000"
+        prestige = -15
+        BOH = { prestige = -15 }
+        relation = {
+            who = BOH
+            value = -200
+        }
+        relation = {
+            who = BRG
+            value = 20
+        }
+        relation = {
+            who = SCA
+            value = 20
+        }
+        relation = {
+            who = ARA
+            value = 20
+        }
+        set_global_flag = salzachrefused
+        ai_chance = {
+            factor = 25
+            modifier = {
+                factor = 0
+                NOT = { has_country_flag = meddle_in_italy }
+            }
+        }
+    }
+}
+
+# Partition of Venice
+country_event = {
+    id = 598001
+    title = "EVTNAME598001"
+    desc = "EVTDESC598001"
+    picture = "greatpowers"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA598001"
+        any_owned = {
+            limit = { is_core = AUS }
+            secede_province = AUS
+        }
+        any_owned = {
+            limit = { is_core = CYP }
+            secede_province = DUA
+        }
+        release_vassal = GRE
+        release = GRE
+        any_owned = {
+            limit = { is_core = GRE }
+            secede_province = GRE
+        }
+        any_owned = {
+            limit = { is_core = ATS }
+            secede_province = ATS
+        }
+        any_country = {
+            any_owned = {
+                limit = {
+                    NOT = {
+                        province_id = 734
+                        province_id = 735
+                        province_id = 615
+                        province_id = 729
+                        province_id = 730
+                        province_id = 731
+                        province_id = 732
+                        province_id = 733
+                    }
+                    is_core = VEN
+                }
+                remove_core = VEN
+            }
+        }
+        #any_country = {
+        #	limit = {
+        #		is_releasable_vassal = yes
+        #		NOT = { tag = ITA }
+        #	}
+        #	country_event = 598002
+        #}
+        any_country = {
+            limit = {
+                NOT = { tag = ITA }
+            }
+            country_event = 598003
+        }
+    }
+}
+
+# Clean-up for Partition
+#country_event = {
+#
+#	id = 598002
+#
+#	is_triggered_only = yes
+#
+#	title = "EVTNAME598002"
+#	desc = "EVTDESC598002"
+#	picture = "Administration"
+#
+#	option = {
+#		name = "EVTOPTA598002"
+#		FROM = {
+#			release = THIS
+#		}
+#	}
+#}
+
+# Clean-up for Partition I
+country_event = {
+    id = 598003
+
+    is_triggered_only = yes
+
+    title = "EVTNAME598003"
+    desc = "EVTDESC598003"
+    picture = "Administration"
+
+    option = {
+        name = "EVTOPTA598003"
+        FROM = {
+            release_vassal = THIS
+            any_owned = {
+                limit = {
+                    is_core = THIS
+                    NOT = { is_core = FROM }
+                }
+                secede_province = THIS
+            }
+            country_event = 598004
+        }
+    }
+}
+
+# Clean-up for Partition II
+country_event = {
+    id = 598004
+
+    is_triggered_only = yes
+
+    title = "EVTNAME598004"
+    desc = "EVTDESC598004"
+    picture = "Administration"
+
+    option = {
+        name = "EVTOPTA598004"
+
+        any_owned = {
+            limit = {
+                NOT = { is_core = THIS }
+            }
+            secede_province = DUA
+        }
+        random_country = {
+            limit = {
+                tag = AUS
+                OR = {
+                    NOT = {
+                        DUA = { has_country_flag = meddle_in_italy }
+                    }
+                    DUA = { war = yes }
+                    DUA = { is_greater_power = no }
+                    PRV = {
+                        all_core = {
+                            NOT = { owned_by = DUA }
+                        }
+                    }
+                }
+            }
+            inherit = VEN
+            set_global_flag = death_of_venice
+        }
+        random_country = {
+            limit = {
+                tag = DUA
+                has_country_flag = meddle_in_italy
+                NOT = { war = yes }
+                is_greater_power = yes
+                PRV = {
+                    all_core = { owned_by = DUA }
+                }
+            }
+            set_country_flag = letsthinkaboutit
+        }
+    }
+}
+
+# French Decision
+country_event = {
+    id = 598005
+
+    is_triggered_only = yes
+
+    title = "EVTNAME598005"
+    desc = "EVTDESC598005"
+    picture = "Administration"
+
+    option = {
+        name = "EVTOPTA598005"
+        prestige = 5
+        AUS = {
+            inherit = VEN
+            set_global_flag = death_of_venice
+        }
+        any_country = {
+            limit = { is_culture_group = italian }
+            relation = {
+                who = THIS
+                value = -130
+            }
+        }
+        ai_chance = { factor = 33 }
+    }
+
+    option = {
+        name = "EVTOPTB598005"
+        prestige = 5
+        badboy = 10
+        AUS = {
+            inherit = VEN
+            set_global_flag = death_of_venice
+        }
+        SAR = { country_event = 598006 }
+        any_country = {
+            limit = { is_culture_group = italian }
+            relation = {
+                who = THIS
+                value = -140
+            }
+        }
+        ai_chance = { factor = 33 }
+    }
+
+    option = {
+        name = "EVTOPTC598005"
+        prestige = -20
+        relation = {
+            who = BOH
+            value = -300
+        }
+        leave_alliance = BOH
+        relation = {
+            who = AUS
+            value = -300
+        }
+        leave_alliance = AUS
+        SAR = { country_event = 598007 }
+        diplomatic_influence = {
+            who = SAR
+            value = 400
+        }
+        any_country = {
+            limit = {
+                is_culture_group = italian
+                NOT = { primary_culture = catalan }
+                NOT = { primary_culture = athesian }
+            }
+            relation = {
+                who = THIS
+                value = 100
+            }
+        }
+        ai_chance = {
+            factor = 33
+            modifier = {
+                factor = 2
+                NOT = { alliance_with = BOH }
+            }
+            modifier = {
+                factor = .5
+                OR = {
+                    alliance_with = AUS
+                    AND = {
+                        alliance_with = BOH
+                        relation = {
+                            who = AUS
+                            value = 100
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Anschluss of Savoy
+country_event = {
+    id = 598006
+
+    is_triggered_only = yes
+
+    title = "EVTNAME598006"
+    desc = "EVTDESC598006"
+    picture = "Administration"
+
+    option = {
+        name = "EVTOPTA598006"
+        prestige = 10
+        FROM = {
+            prestige = -10
+            badboy = 5
+            war = {
+                target = THIS
+                attacker_goal = { casus_belli = conquest }
+
+                defender_goal = { casus_belli = status_quo }
+            }
+        }
+    }
+
+    option = {
+        name = "EVTOPTB598006"
+        FROM = {
+            inherit = THIS
+            any_pop = {
+                limit = { culture = north_italian }
+                militancy = 2
+                consciousness = 4
+            }
+        }
+    }
+}
+
+# Italian Saviour
+country_event = {
+    id = 598007
+
+    is_triggered_only = yes
+
+    title = "EVTNAME598007"
+    desc = "EVTDESC598007"
+    picture = "Administration"
+
+    option = {
+        name = "EVTOPTA598007"
+
+        465 = {
+            secede_province = DUA
+            remove_core = SAR
+            remove_core = LOM
+            remove_core = ARI
+            remove_core = ITA
+            add_core = DUA
+            add_core = GNV
+        }
+        466 = {
+            secede_province = DUA
+            remove_core = SAR
+            remove_core = LOM
+            remove_core = ARI
+            remove_core = ITA
+            add_core = DUA
+            add_core = GNV
+        }
+        721 = {
+            secede_province = DUA
+            remove_core = SAR
+            remove_core = LOM
+            remove_core = ARI
+            remove_core = ITA
+            add_core = DUA
+            add_core = GNV
+        }
+        609 = {
+            secede_province = DUA
+            remove_core = SAR
+            remove_core = LOM
+            remove_core = ARI
+            remove_core = ITA
+            add_core = DUA
+            add_core = GNV
+        }
+        change_tag = ITA
+        add_accepted_culture = south_italian
+        any_country = {
+            limit = {
+                OR = {
+                    primary_culture = north_italian
+                    tag = PAP
+                    tag = SRD
+                }
+                exists = yes
+                NOT = { tag = THIS }
+                NOT = { rank = 20 }
+                ai = yes
+            }
+            country_event = 598008
+        }
+    }
+}
+
+# Italian Saviour - Reaction
+country_event = {
+    id = 598008
+
+    is_triggered_only = yes
+
+    title = "EVTNAME598008"
+    desc = "EVTDESC598008"
+    picture = "Administration"
+
+    option = {
+        name = "EVTOPTA598008"
+        FROM = {
+            inherit = THIS
+            prestige = 2
+        }
+    }
+}
+
+#######United Republic events
+#French path
+country_event = {
+    id = 650300
+    title = "DUA100.T"
+    desc = "DUA100.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = french_integration
+        NOT = {
+            ENL = { exists = yes }
+        }
+        NOT = {
+            IRE = { exists = yes }
+        }
+        NOT = { has_country_flag = Paris_congress }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        name = "650300.A"
+        clr_country_flag = french_integration
+        set_country_flag = Paris_congress
+        random_list = {
+            20 = { country_event = 650301 }
+            60 = { country_event = 650302 }
+            20 = { country_event = 650303 }
+        }
+    }
+}
+
+country_event = { ######All cultures accepted
+    id = 650301
+    title = "DUA101.T"
+    desc = "DUA101.D"
+
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "650301.A"
+        any_pop = { militancy = -3 }
+        add_accepted_culture = french
+        add_accepted_culture = english
+        add_accepted_culture = irish
+        add_accepted_culture = provencal
+    }
+}
+
+country_event = { ###Irish and English puppets
+    id = 650302
+    title = "DUA102.T"
+    desc = "DUA102.D"
+
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "650302.A"
+        ENG_273 = { remove_core = ENL }
+        ENG_300 = { remove_core = ENL }
+        ENG_296 = { remove_core = ENL }
+        ENG_291 = { remove_core = ENL }
+        any_owned = {
+            limit = { is_core = ENL }
+            remove_core = DUA
+			secede_province = ENL
+        }
+        any_owned = {
+            limit = { is_core = IRE }
+            remove_core = DUA
+			secede_province = IRE
+        }
+        create_vassal = ENL
+        create_vassal = IRE
+        diplomatic_influence = {
+            who = ENL
+            value = 300
+        }
+        diplomatic_influence = {
+            who = IRE
+            value = 300
+        }
+        ENL = { prestige = -100 }
+        IRE = { prestige = -100 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = french
+        add_accepted_culture = provencal
+    }
+}
+
+country_event = { ###Irish and English leave
+    id = 650303
+    title = "DUA103.T"
+    desc = "DUA103.D"
+
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "650303.A"
+        any_country = {
+            any_owned = {
+                limit = {
+                    OR = {
+                        is_core = ENL
+                        is_core = IRE
+                    }
+                }
+                remove_core = DUA
+            }
+        }
+        any_owned = {
+            limit = {
+                OR = {
+                    is_core = ENL
+                    is_core = IRE
+                }
+            }
+            remove_core = DUA
+        }
+        release = ENL
+        ENL = {
+            capital = 300
+            add_accepted_culture = anglois
+        }
+        release = IRE
+        IRE = { capital = 263 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = french
+        add_accepted_culture = provencal
+        remove_accepted_culture = welsh
+        change_tag = FRA
+        relation = {
+            who = ENG
+            value = 200
+        }
+        relation = {
+            who = IRE
+            value = 200
+        }
+    }
+}
+
+country_event = {
+    id = 650304
+    title = "DUA104.T"
+    desc = "DUA104.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = french_integration
+        ENL = { exists = yes }
+        NOT = { has_country_flag = Paris_congress }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        name = "650304.A"
+        set_country_flag = Paris_congress
+        any_country = {
+            any_owned = {
+                limit = {
+                    OR = {
+                        is_core = ENL
+                        is_core = IRE
+                    }
+                }
+                remove_core = DUA
+            }
+        }
+        any_owned = {
+            limit = {
+                OR = {
+                    is_core = ENL
+                    is_core = IRE
+                }
+            }
+            remove_core = DUA
+        }
+        any_owned = {
+            limit = { is_core = ENL }
+            secede_province = ENL
+        }
+        any_owned = {
+            limit = { is_core = IRE }
+            secede_province = IRE
+        }
+        ENL = {
+            capital = 300
+            add_accepted_culture = anglois
+        }
+        IRE = { capital = 263 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = french
+        add_accepted_culture = provencal
+        remove_accepted_culture = welsh
+        change_tag = FRA
+        relation = {
+            who = ENG
+            value = 200
+        }
+        relation = {
+            who = IRE
+            value = 200
+        }
+    }
+}
+
+#English path
+
+country_event = {
+    id = 650310
+    title = "DUA110.T"
+    desc = "DUA110.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = english_integration
+        NOT = {
+            FRA = { exists = yes }
+        }
+        NOT = {
+            OCC = { exists = yes }
+        }
+        NOT = { has_country_flag = Paris_congress }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        name = "650310.A"
+        clr_country_flag = english_integration
+        set_country_flag = Paris_congress
+        random_list = {
+            20 = { country_event = 650311 }
+            60 = { country_event = 650312 }
+            20 = { country_event = 650313 }
+        }
+    }
+}
+
+country_event = { ######All cultures accepted
+    id = 650311
+    title = "DUA111.T"
+    desc = "DUA111.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "650311.A"
+        any_pop = { militancy = -3 }
+        add_accepted_culture = french
+        add_accepted_culture = english
+        add_accepted_culture = irish
+        add_accepted_culture = provencal
+    }
+}
+
+country_event = { ###Occitan and French puppets
+	id = 650312
+	title = "DUA112.T"
+	desc = "DUA112.D"
+	
+	is_triggered_only = yes 
+	major = yes 
+	
+    option = { 
+	    name = "650312.A"
+        FRA_420 = { remove_core = FRA }
+        FRA_425 = { remove_core = FRA }
+        FRA_435 = { remove_core = FRA }
+        FRA_418 = { remove_core = FRA }
+        any_owned = { limit = { is_core = FRA } remove_core = DUA }
+        any_owned = { limit = { is_core = OCC } remove_core = DUA }
+        release_vassal = FRA 
+        release_vassal = OCC 
+        diplomatic_influence = { who = FRA value = 300 }
+        diplomatic_influence = { who = OCC value = 300 }
+        FRA = { prestige = -100 capital = 438 }
+        OCC = { prestige = -100 capital = 455 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = english 
+        add_accepted_culture = irish
+        capital = 300
+	}
+}
+
+country_event = { ###France and Occitania leave
+    id = 650313
+    title = "DUA113.T"
+    desc = "DUA113.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "650313.A"
+        any_country = {
+            any_owned = { remove_core = DUA }
+        }
+        any_owned = { remove_core = DUA }
+        release = FRA
+        FRA = {
+            capital = 425
+            add_accepted_culture = anglois
+        }
+        release = OCC
+        OCC = { capital = 455 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = english
+        add_accepted_culture = irish
+        remove_accepted_culture = breton
+        change_tag = ENL
+        relation = {
+            who = FRA
+            value = 200
+        }
+        relation = {
+            who = OCC
+            value = 200
+        }
+    }
+}
+
+country_event = {
+    id = 650314
+    title = "DUA114.T"
+    desc = "DUA114.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = english_integration
+        OCC = { exists = yes }
+        FRA = { exists = yes }
+        NOT = { has_country_flag = Paris_congress }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        capital = 300
+        name = "650314.A"
+        any_country = {
+            any_owned = { remove_core = DUA }
+        }
+        any_owned = {
+            limit = {
+                OR = {
+                    is_core = FRA
+                    is_core = OCC
+                }
+            }
+            remove_core = DUA
+        }
+        any_owned = {
+            limit = { is_core = FRA }
+            secede_province = FRA
+        }
+        any_owned = {
+            limit = { is_core = OCC }
+            secede_province = OCC
+        }
+        FRA = {
+            capital = 425
+            add_accepted_culture = anglois
+        }
+        OCC = { capital = 455 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = irish
+        add_accepted_culture = english
+        remove_accepted_culture = breton
+        change_tag = ENL
+        relation = {
+            who = FRA
+            value = 200
+        }
+        relation = {
+            who = OCC
+            value = 200
+        }
+    }
+}
+
+country_event = {
+    id = 650315
+    title = "DUA114.T"
+    desc = "DUA114.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = english_integration
+        OCC = { exists = yes }
+        NOT = {
+            FRA = { exists = yes }
+        }
+        NOT = { has_country_flag = Paris_congress }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        capital = 300
+        name = "650315.A"
+        set_country_flag = Paris_congress
+        any_country = {
+            any_owned = { remove_core = DUA }
+        }
+        any_owned = {
+            limit = {
+                OR = {
+                    is_core = FRA
+                    is_core = OCC
+                }
+            }
+            remove_core = DUA
+        }
+        release = FRA
+        any_owned = {
+            limit = { is_core = OCC }
+            secede_province = OCC
+        }
+        FRA = {
+            capital = 425
+            add_accepted_culture = anglois
+        }
+        OCC = { capital = 455 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = irish
+        add_accepted_culture = english
+        remove_accepted_culture = breton
+        change_tag = ENL
+        relation = {
+            who = FRA
+            value = 200
+        }
+        relation = {
+            who = OCC
+            value = 200
+        }
+    }
+}
+
+country_event = {
+    id = 650316
+    title = "DUA114.T"
+    desc = "DUA114.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = french_integration
+        NOT = {
+            OCC = { exists = yes }
+        }
+        FRA = { exists = yes }
+        NOT = { has_country_flag = Paris_congress }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        capital = 300
+        name = "650316.A"
+        set_country_flag = Paris_congress
+        any_country = {
+            any_owned = { remove_core = DUA }
+        }
+        any_owned = {
+            limit = {
+                OR = {
+                    is_core = FRA
+                    is_core = OCC
+                }
+            }
+            remove_core = DUA
+        }
+        release = FRA
+        any_owned = {
+            limit = { is_core = OCC }
+            secede_province = OCC
+        }
+        FRA = {
+            capital = 425
+            add_accepted_culture = anglois
+        }
+        OCC = { capital = 455 }
+        any_pop = { militancy = -3 }
+        add_accepted_culture = irish
+        add_accepted_culture = english
+        remove_accepted_culture = breton
+        change_tag = ENL
+        relation = {
+            who = FRA
+            value = 200
+        }
+        relation = {
+            who = OCC
+            value = 200
+        }
+    }
+}
+
+country_event = {
+    id = 650320
+    title = "DUA120.T"
+    desc = "DUA120.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = dual_integration
+        NOT = {
+            FRA = { exists = yes }
+        }
+        NOT = {
+            OCC = { exists = yes }
+        }
+        NOT = {
+            ENL = { exists = yes }
+        }
+        NOT = {
+            IRE = { exists = yes }
+        }
+        NOT = {
+            has_country_flag = Paris_congress
+            has_country_flag = Anglois_accepted
+        }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        name = "650320.A"
+        clr_country_flag = dual_integration
+        set_country_flag = Paris_congress
+        random_list = {
+            40 = { country_event = 650321 }
+            60 = { country_event = 650322 }
+        }
+    }
+}
+
+country_event = { ######All cultures accepted
+    id = 650321
+    title = "DUA121.T"
+    desc = "DUA121.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "650321.A"
+        any_pop = { militancy = -3 }
+        add_accepted_culture = french
+        add_accepted_culture = english
+        add_accepted_culture = irish
+        add_accepted_culture = provencal
+    }
+}
+
+country_event = { ######Sister Republics
+    id = 650322
+    title = "DUA122.T"
+    desc = "DUA122.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "650322.A"
+        any_pop = { militancy = -3 }
+        any_owned = { remove_core = DUA }
+        DUA = {
+            all_core = { remove_core = DUA }
+        }
+        release = ENL
+        release = OCC
+        release = IRE
+        ENL = { government = democracy }
+        OCC = { government = democracy }
+        IRE = { government = democracy }
+        remove_accepted_culture = english
+        remove_accepted_culture = irish
+        remove_accepted_culture = welsh
+        remove_accepted_culture = provencal
+        add_accepted_culture = french
+        OCC = { capital = 455 }
+        ENL = {
+            capital = 300
+            add_accepted_culture = anglois
+            set_country_flag = Anglois_accepted
+        }
+        IRE = { capital = 263 }
+        change_tag = FRA
+    }
+}
+
+country_event = {
+    id = 650323
+    title = "DUA123.T"
+    desc = "DUA123.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = dual_integration
+        OR = {
+            OCC = { exists = yes }
+            ENL = { exists = yes }
+            IRE = { exists = yes }
+        }
+        NOT = { exists = FRA }
+        NOT = {
+            has_country_flag = Paris_congress
+            has_country_flag = Anglois_accepted
+        }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        name = "650323.A"
+        clr_country_flag = dual_integration
+        set_country_flag = Paris_congress
+        any_owned = { remove_core = DUA }
+        DUA = {
+            all_core = { remove_core = DUA }
+        }
+        release = ENL
+        release = OCC
+        release = IRE
+        any_owned = {
+            limit = { is_core = ENL }
+            secede_province = ENL
+        }
+        any_owned = {
+            limit = { is_core = OCC }
+            secede_province = OCC
+        }
+        any_owned = {
+            limit = { is_core = IRE }
+            secede_province = IRE
+        }
+        remove_accepted_culture = english
+        remove_accepted_culture = irish
+        remove_accepted_culture = welsh
+        remove_accepted_culture = provencal
+        add_accepted_culture = french
+        OCC = { capital = 455 }
+        ENL = {
+            capital = 300
+            add_accepted_culture = anglois
+        }
+        IRE = { capital = 263 }
+        change_tag = FRA
+    }
+}
+
+country_event = {
+    id = 650324
+    title = "DUA124.T"
+    desc = "DUA124.D"
+
+    trigger = {
+        tag = DUA
+        government = democracy
+        has_country_flag = dual_integration
+        OR = {
+            OCC = { exists = yes }
+            FRA = { exists = yes }
+            IRE = { exists = yes }
+        }
+        NOT = { exists = ENL }
+        NOT = {
+            has_country_flag = Paris_congress
+            has_country_flag = Anglois_accepted
+        }
+    }
+
+    mean_time_to_happen = { months = 1 }
+
+    option = {
+        name = "650324.A"
+        clr_country_flag = dual_integration
+        set_country_flag = Paris_congress
+        capital = 300
+        any_owned = { remove_core = DUA }
+        DUA = {
+            all_core = { remove_core = DUA }
+        }
+        release = FRA
+        release = OCC
+        release = IRE
+        any_owned = {
+            limit = { is_core = FRA }
+            secede_province = FRA
+        }
+        any_owned = {
+            limit = { is_core = OCC }
+            secede_province = OCC
+        }
+        any_owned = {
+            limit = { is_core = IRE }
+            secede_province = IRE
+        }
+        remove_accepted_culture = french
+        remove_accepted_culture = irish
+        remove_accepted_culture = breton
+        remove_accepted_culture = provencal
+        add_accepted_culture = english
+        OCC = { capital = 455 }
+        FRA = {
+            capital = 425
+            add_accepted_culture = anglois
+        }
+        IRE = { capital = 263 }
+        change_tag = ENL
+    }
+}
+
+country_event = {
+    id = 650330
+    title = "DUA130.T"
+    desc = "DUA130.D"
+    picture = "spit_breton"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "650330.A"
+        prestige = 25
+        ai_chance = { factor = 50 }
+    }
+
+    option = {
+        name = "650330.B"
+        set_country_flag = DUA_schooling
+        remove_accepted_culture = breton
+        remove_accepted_culture = welsh
+        remove_accepted_culture = french
+        remove_accepted_culture = english
+        remove_accepted_culture = irish
+        remove_accepted_culture = scottish
+        remove_accepted_culture = provencal
+        remove_accepted_culture = basque
+        any_owned = {
+            limit = { 
+				is_core = DUA
+				is_colonial = no
+			}
+            add_province_modifier = {
+                name = anglois_cultural_unity
+                duration = -1
+            }
+            add_province_modifier = {
+                name = forced_integration
+                duration = -1
+            }
+			add_core = U01
+        }
+        ai_chance = { factor = 50 }
+    }
+}

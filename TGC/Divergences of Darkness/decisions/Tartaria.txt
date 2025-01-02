@@ -1,0 +1,168 @@
+political_decisions = {
+    form_tatarstan = {
+        picture = Tatarstan
+
+        potential = {
+            OR = {
+                primary_culture = astrakhani
+                primary_culture = crimean
+                primary_culture = tatar
+            }
+            NOT = {
+                TAR = { exists = yes }
+            }
+        }
+
+        allow = {
+            OR = {
+                tag = CRI
+                AND = {
+                    NOT = {
+                        CRI = { exists = yes }
+                    }
+                    owns = 967 #Sebastopol
+                }
+                CRI = { in_sphere = THIS }
+                CRI = { vassal_of = THIS }
+            }
+            OR = {
+                tag = ASK
+                AND = {
+                    NOT = {
+                        ASK = { exists = yes }
+                    }
+                    owns = 1036 #Astrakhan
+                }
+                ASK = { in_sphere = THIS }
+                ASK = { vassal_of = THIS }
+            }
+            OR = {
+                tag = NOG
+                AND = {
+                    NOT = {
+                        NOG = { exists = yes }
+                    }
+                    owns = 1182 #capital of Nogai
+                }
+                NOG = { in_sphere = THIS }
+                NOG = { vassal_of = THIS }
+            }
+        }
+
+        effect = {
+            any_country = {
+                limit = {
+                    OR = {
+						is_culture_group = tatar_group
+						tag = CIR
+					}
+                    OR = {
+                        in_sphere = THIS
+                        vassal_of = THIS
+                    }
+                }
+                annex_to = THIS
+            }
+            CRI = {
+                all_core = { add_core = TAR }
+            }
+            ASK = {
+                all_core = { add_core = TAR }
+            }
+            NOG = {
+                all_core = { add_core = TAR }
+            }
+            SIB = {
+                all_core = { add_core = TAR }
+            }
+            add_accepted_culture = crimean
+            add_accepted_culture = astrakhani
+            add_accepted_culture = tatar
+            change_tag = TAR
+            years_of_research = 3.0
+            prestige = 20
+        }
+        ai_will_do = { factor = 1 }
+    }
+    #Makes Sevestapol grow. More POPs for a unified Tataristan. Changes government type
+    TAR_encourage_sedentarization = { ### Write alternative event in case Crimea reforms/revolts out of Khanate before renovations
+        picture = tatar_sedentarization
+        potential = {
+            OR = {
+                tag = TAR
+                tag = CRI
+            }
+            NOT = { has_country_flag = TAR_urbanization }
+            government = khanate
+        }
+        allow = {
+            civilized = yes
+            owns = 967 #Sebestapol
+            medicine = 1 #City planning has a health component to it.
+        }
+        effect = {
+            set_country_flag = TAR_urbanization
+            government = absolute_monarchy
+            remove_country_modifier = nomadic_confederation
+            clr_country_flag = nomad
+            967 = {
+                life_rating = 5
+                add_province_modifier = {
+                    name = baby_boom
+                    duration = 1825
+                }
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    TAR_renovate_xacitarxan = { ### Write alternative event in case Crimea reforms/revolts out of Khanate before renovations
+        picture = astrakhan_carpet
+        potential = {
+            OR = {
+                tag = TAR
+                tag = ASK
+            }
+            NOT = { has_country_flag = TAR_xacitarxan }
+        }
+        allow = {
+            civilized = yes
+            owns = 1036 #Astrakhan
+            medicine = 1 #City planning has a health component to it
+        }
+        effect = {
+            set_country_flag = TAR_xacitarxan
+            1036 = {
+                life_rating = 5
+                add_province_modifier = {
+                    name = baby_boom
+                    duration = 1825
+                }
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    #Accept Krymchaks after secularising society
+    TAR_krymchak = {
+        picture = krymchak
+        potential = {
+            OR = {
+                tag = TAR
+                tag = CRI
+            }
+            NOT = { has_country_flag = abolished_jizya }
+        }
+        allow = {
+            civilized = yes
+            owns = 967 #Sebestapol
+			invention = secularization
+            revolution_n_counterrevolution = 1
+        }
+        effect = {
+            set_country_flag = abolished_jizya
+            add_accepted_culture = krymchak
+        }
+        ai_will_do = { factor = 1 }
+    }
+}

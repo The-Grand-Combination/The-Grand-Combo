@@ -1,0 +1,289 @@
+political_decisions = {
+    unite_principalities = {
+        picture = romanian_principalities
+        potential = {
+            NOT = {
+                ROM = { exists = yes }
+            }
+            primary_culture = romanian
+        }
+
+        allow = {
+            NOT = { war = yes }
+            NOT = { is_vassal = yes }
+            OR = {
+                AND = {
+                    rank = 20
+                    prestige = 50
+                }
+                ai = yes
+            }
+            OR = {
+                AND = {
+                    MOL = {
+                        all_core = {
+                            OR = {
+                                owned_by = THIS
+                                owner = { in_sphere = THIS }
+                            }
+                        }
+                    }
+                    SIE = {
+                        all_core = {
+                            OR = {
+                                owned_by = THIS
+                                owner = { in_sphere = THIS }
+                            }
+                        }
+                    }
+                }
+
+                AND = {
+                    MOL = {
+                        all_core = {
+                            OR = {
+                                owned_by = THIS
+                                owner = { in_sphere = THIS }
+                            }
+                        }
+                    }
+                    WAL = {
+                        all_core = {
+                            OR = {
+                                owned_by = THIS
+                                owner = { in_sphere = THIS }
+                            }
+                        }
+                    }
+                }
+
+                AND = {
+                    SIE = {
+                        all_core = {
+                            OR = {
+                                owned_by = THIS
+                                owner = { in_sphere = THIS }
+                            }
+                        }
+                    }
+                    WAL = {
+                        all_core = {
+                            OR = {
+                                owned_by = THIS
+                                owner = { in_sphere = THIS }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        effect = {
+            prestige = 20
+            change_tag = ROM
+            any_country = {
+                limit = {
+                    NOT = { is_greater_power = yes }
+                    is_culture_group = THIS
+                    in_sphere = THIS
+                }
+                country_event = 11101
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+
+    create_romania = {
+        picture = create_romania
+        potential = {
+            NOT = {
+                exists = ROM
+                is_culture_group = pan_romanian
+            }
+            OR = {
+                any_owned_province = {
+                    any_neighbor_province = { is_core = ROM }
+                }
+                is_sphere_leader_of = WAL
+                is_sphere_leader_of = MOL
+                is_sphere_leader_of = SIE
+            }
+            NOT = {
+                OR = {
+                    tag = HUN
+                    tag = BUL
+                    tag = TUR
+                }
+            }
+        }
+        allow = {
+            war = no
+            is_greater_power = yes
+            ROM = {
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = {
+                            in_sphere = THIS
+                            war = no
+                            is_greater_power = no
+                        }
+                    }
+                }
+            }
+        }
+        effect = {
+            prestige = 20
+            badboy = 2
+            any_country = {
+                limit = {
+                    OR = {
+                        is_our_vassal = WAL
+                        is_our_vassal = MOL
+                        is_our_vassal = SIE
+                    }
+                    NOT = { tag = THIS }
+                }
+                casus_belli = {
+                    target = THIS
+                    type = humiliate
+                    months = 12
+                }
+            }
+            any_country = {
+                limit = {
+                    OR = {
+                        tag = WAL
+                        tag = MOL
+                        tag = SIE
+                    }
+                    ai = yes
+                    in_sphere = THIS
+                }
+                annex_to = THIS
+            }
+            any_country = {
+                limit = {
+                    NOT = { is_culture_group = pan_romanian }
+                    OR = {
+                        in_sphere = THIS
+                        vassal_of = THIS
+                    }
+                    war = no
+                    any_owned_province = { is_core = ROM }
+                    ai = yes					
+                }
+                any_owned = {
+                    limit = { is_core = ROM }
+                    secede_province = THIS
+                }
+            }			
+            any_owned = {
+                limit = {
+                    is_core = THIS
+                    is_core = ROM
+                }
+                remove_core = ROM
+            }
+            release = ROM
+			create_vassal = ROM			
+            create_alliance = ROM
+            diplomatic_influence = {
+                who = ROM
+                value = 300
+            }
+            ROM = { prestige = -400 }
+            any_country = {
+                limit = {
+                    OR = {
+                        tag = HUN
+                        tag = TUR
+                    }
+                    NOT = { tag = THIS }
+                }
+                relation = {
+                    who = THIS
+                    value = -50
+                }
+                relation = {
+                    who = ROM
+                    value = -50
+                }
+            }
+        }
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                OR = {
+                    tag = HUN
+                    tag = TUR
+                }
+            }
+        }
+    }
+
+    unite_with_romania = {
+        picture = create_romania
+        potential = {
+            is_culture_group = pan_romanian
+            exists = ROM
+            NOT = {
+                has_country_flag = unite_with_romania
+                tag = ROM
+            }
+        }
+
+        allow = {
+            war = no
+            OR = {
+                is_vassal = no
+                overlord = { is_our_vassal = ROM }
+            }
+            OR = {
+                part_of_sphere = no
+                sphere_owner = { is_sphere_leader_of = ROM }
+            }
+            ROM = {
+                war = no
+                neighbour = THIS
+            }
+        }
+
+        effect = {
+            set_country_flag = unite_with_romania
+            random_country = {
+                limit = {
+                    tag = ROM
+                    ai = yes
+                    THIS = { ai = yes }
+                }
+                inherit = THIS
+            }
+            random_country = {
+                limit = {
+                    tag = ROM
+                    ai = yes
+                    THIS = { ai = no }
+                }
+                any_owned = { secede_province = THIS }
+                THIS = {
+                    random_owned = {
+                        limit = { province_id = 664 }
+                        owner = { capital = 664 }
+                    }
+                    change_tag = ROM
+                }
+            }
+            random_country = {
+                limit = {
+                    tag = ROM
+                    ai = no
+                }
+                country_event = 60130
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+}

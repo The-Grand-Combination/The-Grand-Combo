@@ -1,0 +1,541 @@
+country_event = { #### Rif and Mauretania
+    id = 333221
+    title = "Rif.T"
+    desc = "Rif.D"
+    picture = "Rif"
+
+    trigger = {
+        tag = SPA
+        owns = 1686
+        1686 = { is_core = MOR }
+        NOT = { has_country_flag = rif_resolved }
+    }
+
+    mean_time_to_happen = { months = 15 }
+
+    option = {
+        name = "333221.A"
+        MOR_1688 = {
+            remove_core = MOR
+            remove_core = MGH
+        }
+        set_country_flag = rif_resolved
+    }
+
+    option = {
+        name = "333221.B"
+        set_country_flag = rif_resolved
+    }
+}
+
+country_event = { #### Mancomunnidad
+    id = 333222
+    title = "CLM_lib6.T"
+    desc = "CLM_lib6.D"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "333222.A"
+        government = hms_government
+        political_reform = state_equal_weight
+        political_reform = universal_weighted_voting
+        political_reform = yes_meeting
+        political_reform = censored_press
+        political_reform = no_trade_unions
+        political_reform = first_past_the_post
+        political_reform = non_secret_ballots
+    }
+}
+
+country_event = {
+    id = 333223
+
+    title = "333223.T"
+    desc = "333223.D"
+    picture = "danishgovernment"
+
+    major = yes
+
+    trigger = {
+        tag = SPA
+        exists = yes
+        war = no
+        year = 1910
+        has_country_flag = mancomunidad
+        any_owned_province = { is_core = CUB }
+        NOT = { exists = CUB }
+        is_possible_vassal = CUB
+    }
+
+    mean_time_to_happen = {
+        months = 6
+        modifier = {
+            factor = 10
+            has_country_flag = CUB_independence_refused
+        }
+        modifier = {
+            factor = 0.8
+            any_state = {
+                any_owned_province = { is_core = CUB }
+                average_militancy = 3
+            }
+        }
+        modifier = {
+            factor = 0.8
+            any_state = {
+                any_owned_province = { is_core = CUB }
+                average_militancy = 4
+            }
+        }
+        modifier = {
+            factor = 0.5
+            year = 1920
+            NOT = { has_country_flag = CUB_independence_refused }
+        }
+    }
+
+    option = {
+        name = "22260.A"
+        clr_country_flag = CUB_independence_refused
+        prestige = -20
+        badboy = -5
+        any_pop = {
+            limit = {
+                location = { is_core = CUB }
+            }
+            militancy = -10
+        }
+        CUB = {
+            all_core = { remove_core = SPA }
+        }
+        release_vassal = CUB
+        CUB = { prestige = -80 }
+        relation = {
+            who = CUB
+            value = 100
+        }
+        diplomatic_influence = {
+            who = CUB
+            value = 200
+        }
+        any_pop = { consciousness = 1 }
+        ai_chance = {
+            factor = 80
+            modifier = {
+                factor = 0
+                OR = {
+                    government = proletarian_dictatorship
+                    government = bourgeois_dictatorship
+                    government = fascist_dictatorship
+                    government = presidential_dictatorship
+                }
+            }
+            modifier = {
+                factor = 0.25
+                government = absolute_monarchy
+            }
+            modifier = {
+                factor = 1.5
+                government = democracy
+            }
+            modifier = {
+                factor = 0.5
+                war_policy = jingoism
+            }
+            modifier = {
+                factor = 0.75
+                war_policy = pro_military
+            }
+            modifier = {
+                factor = 1.25
+                war_policy = anti_military
+            }
+            modifier = {
+                factor = 1.5
+                war_policy = pacifism
+            }
+            modifier = {
+                factor = 1.2
+                militancy = 3
+            }
+            modifier = {
+                factor = 1.2
+                militancy = 5
+            }
+        }
+    }
+    option = {
+        name = "22260.B"
+        set_country_flag = CUB_independence_refused
+        any_owned = {
+            limit = { is_core = CUB }
+            any_pop = { militancy = 3 }
+        }
+        ai_chance = {
+            factor = 20
+            modifier = {
+                factor = 1.75
+                government = absolute_monarchy
+            }
+            modifier = {
+                factor = 0.5
+                government = democracy
+            }
+            modifier = {
+                factor = 1.5
+                war_policy = jingoism
+            }
+            modifier = {
+                factor = 1.25
+                war_policy = pro_military
+            }
+            modifier = {
+                factor = 0.75
+                war_policy = anti_military
+            }
+            modifier = {
+                factor = 0.5
+                war_policy = pacifism
+            }
+            modifier = {
+                factor = 0.8
+                militancy = 3
+            }
+            modifier = {
+                factor = 0.8
+                militancy = 5
+            }
+        }
+    }
+}
+
+### Event for a Spain that has formed Iberia but Navarra is owned by another Great Power
+
+country_event = {
+    id = 333224
+    title = "EVTNAME333224"
+    desc = "EVTDESC333224"
+    picture = "la_concha"
+
+    trigger = {
+        tag = SPA
+        SPA = { exists = yes }
+        NAV = { exists = no }
+        has_country_flag = iberian_union
+        NOT = {
+            owns = 492
+            has_country_flag = basqueland
+            492 = { is_core = SPA }
+        }
+        war = no
+    }
+
+    fire_only_once = yes
+
+    mean_time_to_happen = { months = 12 }
+
+    option = {
+        name = "EVTOPTA333224"
+        ESK_1 = { add_core = SPA }
+        set_country_flag = basqueland
+        ai_chance = { factor = 100 }
+    }
+}
+
+### Event so that Catalonia, once Spain declares it wans to form Iberia, can choose to submit peacefully or fight
+
+country_event = {
+    id = 333225
+    title = "EVTNAME333225"
+    desc = "EVTDESC333225"
+    picture = "treaty_of_petropolis"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA333225"
+        SPA = {
+            inherit = CAT
+            add_accepted_culture = catalan
+            any_owned = {
+                limit = { is_core = CAT }
+                add_core = SPA
+            }
+        }
+        set_country_flag = catalan_integration
+        ai_chance = {
+            factor = 70
+            modifier = {
+                factor = 1.25
+                SPA = { press_rights = free_press }
+            }
+            modifier = {
+                factor = 1.25
+                SPA = { vote_franschise = universal_voting }
+            }
+            modifier = {
+                factor = 1.25
+                SPA = {
+                    OR = {
+                        political_parties = non_secret_ballots
+                        political_parties = secret_ballots
+                    }
+                }
+            }
+            modifier = {
+                factor = 0
+                SPA = {
+                    OR = {
+                        government = proletarian_dictatorship
+                        government = bourgeois_dictatorship
+                        government = fascist_dictatorship
+                        government = presidential_dictatorship
+                    }
+                }
+            }
+            modifier = {
+                factor = 1.25
+                alliance_with = SPA
+            }
+            modifier = {
+                factor = 1.25
+                relation = {
+                    who = SPA
+                    value = 100
+                }
+            }
+        }
+    }
+
+    option = {
+        name = "EVTOPTB333225"
+        prestige = 10
+        relation = {
+            who = SPA
+            value = -200
+        }
+        SPA = { country_event = 333226 }
+        ai_chance = {
+            factor = 30
+            modifier = {
+                factor = 5
+                SPA = {
+                    OR = {
+                        government = proletarian_dictatorship
+                        government = bourgeois_dictatorship
+                        government = fascist_dictatorship
+                        government = presidential_dictatorship
+                    }
+                }
+            }
+        }
+    }
+}
+
+### Event to notify Spain of Catalan refusal
+
+country_event = {
+    id = 333226
+    title = "EVTNAME333226"
+    desc = "EVTDESC333226"
+    picture = "treaty_of_petropolis"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA333226"
+        SPA = { leave_alliance = CAT }
+        diplomatic_influence = {
+            who = CAT
+            value = -400
+        }
+        SPA_498 = { add_core = SPA }
+        SPA_492 = { add_core = SPA }
+        SPA_503 = { add_core = SPA }
+        badboy = 10
+        ai_chance = {
+            factor = 60
+            modifier = {
+                factor = 0
+                badboy = 0.55
+            }
+        }
+    }
+
+    option = {
+        name = "EVTOPTB333226"
+        SPA = { leave_alliance = CAT }
+        diplomatic_influence = {
+            who = CAT
+            value = -400
+        }
+        casus_belli = {
+            target = CAT
+            type = make_puppet
+            months = 12
+        }
+        ai_chance = {
+            factor = 40
+            modifier = {
+                factor = 1.5
+                SPA = {
+                    OR = { government = proletarian_dictatorship }
+                }
+            }
+        }
+    }
+}
+
+# The Iberian Cooperation Treaty
+country_event = {
+    id = 333227
+    title = "EVTNAME333227"
+    desc = "EVTDESC333227"
+    picture = "greatpowers"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA333227"
+        relation = {
+            who = SPC
+            value = 150
+        }
+        prestige = 15
+        SPC = { prestige = 15 }
+        create_alliance = SPC
+        SPC = { country_event = 333228 }
+        ai_chance = {
+            factor = 80
+            modifier = {
+                factor = 0
+                OR = {
+                    495 = { owned_by = SPA }
+                    498 = { owned_by = SPA }
+                    503 = { owned_by = SPA }
+                    1700 = { owned_by = SPA }
+                }
+            }
+        }
+    }
+
+    option = {
+        name = "EVTOPTB333227"
+        prestige = -15
+        SPC = { prestige = -15 }
+        relation = {
+            who = SPC
+            value = -100
+        }
+        SPC = { country_event = 333229 }
+        ai_chance = {
+            factor = 20
+            modifier = {
+                factor = 2
+                OR = {
+                    495 = { owned_by = SPA }
+                    498 = { owned_by = SPA }
+                    503 = { owned_by = SPA }
+                    1700 = { owned_by = SPA }
+                }
+            }
+            modifier = {
+                factor = 4
+                not = {
+                    relation = {
+                        who = SPC
+                        value = 0
+                    }
+                }
+            }
+            modifier = {
+                factor = 0.25
+                relation = {
+                    who = SPC
+                    value = 150
+                }
+            }
+        }
+    }
+    option = {
+        name = "EVTOPTC333227"
+        prestige = 15
+        SPC = { prestige = -15 }
+        relation = {
+            who = SPC
+            value = -300
+        }
+        leave_alliance = SPC
+        add_casus_belli = {
+            target = SPC
+            type = humiliate
+            months = 12
+        }
+        casus_belli = {
+            target = SPC
+            type = cut_down_to_size
+            months = 12
+        }
+        badboy = 3
+        SPC = { country_event = 333230 }
+        ai_chance = {
+            factor = 50
+            modifier = {
+                factor = 0
+                NOT = {
+                    OR = {
+                        495 = { owned_by = SPA }
+                        498 = { owned_by = SPA }
+                        503 = { owned_by = SPA }
+                        1700 = { owned_by = SPA }
+                    }
+                }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = 333228
+    title = "EVTNAME333228"
+    desc = "EVTDESC333228"
+    picture = "greatpowers"
+
+    is_triggered_only = yes
+
+    option = { name = "EVTOPTA333228" }
+}
+
+country_event = {
+    id = 333229
+    title = "EVTNAME333229"
+    desc = "EVTDESC333229"
+    picture = "greatpowers"
+
+    is_triggered_only = yes
+
+    option = { name = "EVTOPTA333229" }
+}
+
+country_event = {
+    id = 333230
+    title = "EVTNAME333230"
+    desc = "EVTDESC333230"
+    picture = "greatpowers"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA333230"
+        dominant_issue = {
+            value = jingoism
+            factor = 0.1
+        }
+        casus_belli = {
+            target = SPC
+            type = cut_down_to_size
+            months = 12
+        }
+    }
+}

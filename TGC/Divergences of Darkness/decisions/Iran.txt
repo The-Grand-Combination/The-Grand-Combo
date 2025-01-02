@@ -1,0 +1,1545 @@
+political_decisions = {
+
+    end_kartveli_autonomy = {
+        picture = annex_georgian_principalities
+        potential = {
+			primary_culture = azerbaijani
+            NOT = { has_country_flag = annexed_georgian_principalities }
+            IME = { 
+				exists = yes
+				vassal_of = THIS 
+			}
+            SAM = {
+				exists = yes			
+				vassal_of = THIS
+			}			
+        }
+        allow = {
+            war = no
+			owns = 1090
+            OR = {
+                civilization_progress = 0.75
+                civilized = yes
+            }
+        }
+        effect = {
+            prestige = 10
+            IME = { annex_to = THIS }
+            SAM = { annex_to = THIS }
+            IME = {
+                all_core = { 
+					add_core = THIS
+					#remove_core = IME
+				}
+            }
+            SAM = {
+                all_core = { 
+					add_core = THIS
+					#remove_core = SAM
+				}
+            }			
+            set_country_flag = annexed_georgian_principalities
+        }
+        ai_will_do = { factor = 1 }
+    }
+	
+    end_shamkhalate = {
+        picture = annex_shamkhalate
+        potential = {
+			primary_culture = azerbaijani
+            NOT = { has_country_flag = annexed_tarki_shamkhalate }
+            KMY = { 
+				exists = yes
+				substate_of = THIS 
+			}			
+        }
+        allow = {
+            war = no
+			owns = 1104
+			idealism = 1
+        }
+        effect = {
+            prestige = 10
+            KMY = { annex_to = THIS }			
+            set_country_flag = annexed_tarki_shamkhalate
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    integrate_kumyks = {
+        picture = tarki
+        potential = {
+            OR = { 
+				tag = AZB
+				tag = TCA
+			}
+            NOT = { has_country_flag = accepted_kumyk }
+            KMY = { exists = no }			
+        }
+        allow = {
+            war = no
+            biologism = 1			
+            owns = 3322
+        }
+        effect = {
+            add_accepted_culture = kumyk
+			set_country_flag = accepted_kumyk
+        }
+        ai_will_do = { factor = 1 }
+    }
+	
+    encourage_baku_refineries = {
+        picture = baku_refinery
+        potential = {
+            OR = { 
+				tag = AZB
+				tag = TCA
+			}
+            NOT = { has_country_flag = baku_refinery }
+			1102 = { NOT = { trade_goods = oil } }
+        }
+        allow = {
+            war = no
+            pneumatic_and_hydraulics = 1			
+            owns = 1102
+			owns = 1104
+        }
+        effect = {
+            1102 = { 
+				trade_goods = oil
+				life_rating = 2
+			}
+			set_country_flag = baku_refinery			
+        }
+        ai_will_do = { factor = 1 }
+    }	
+
+    move_capital_baku = {
+        picture = baku_1850
+        potential = {
+            OR = { 
+				tag = AZB
+				tag = TCA
+			}
+            NOT = { has_country_flag = capital_baku }
+            1102 = { 
+				is_capital = no 
+				trade_goods = oil
+			}						
+        }
+        allow = {
+            war = no
+			NOT = { government = khanate }		
+            owns = 1102
+			owns = 1104			
+        }
+        effect = {
+            capital = 1102
+            1102 = {
+                add_province_modifier = {
+                    name = gateway_to_harbor
+                    duration = 1825
+                }
+                life_rating = 3
+            }	
+			set_country_flag = capital_baku			
+        }
+        ai_will_do = { factor = 1 }
+    }		
+
+    integrate_tats = {
+        picture = darband
+        potential = {
+            OR = { 
+				tag = AZB
+				tag = TCA
+			}
+            1102 = { is_capital = yes }			
+            NOT = { has_country_flag = accepted_tats }
+			NOT = { accepted_culture = tat }			
+        }
+        allow = {
+            war = no
+            social_science = 1			
+            owns = 1102
+        }
+        effect = {
+            add_accepted_culture = tat
+			set_country_flag = accepted_tats	
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    treaty_of_bandar_abbas = {
+        picture = treaty_bandar_abbas
+        potential = {
+            OR = {
+                tag = ZND
+                tag = PER
+                tag = ARY
+            }
+            1071 = {
+                owner = {
+                    OR = {
+						NOT = { primary_culture = persian }
+						capital_scope = { continent = europe }
+					}
+                    war_with = THIS
+                }
+            }
+			NOT = { has_country_flag = signed_bandar_abbas }
+        }
+
+        allow = {
+            war = yes
+            1071 = {
+                controlled_by = THIS
+                province_control_days = 365
+            }
+
+            THIS = {
+                all_core = {
+                    OR = {
+                        controlled_by = THIS
+                        controller = { alliance_with = THIS }
+                        empty = yes
+                        province_id = 1071
+                        owner = {
+                            NOT = { war_with = THIS }
+                        }
+                    }
+                }
+            }
+        }
+
+        effect = {
+			set_country_flag = signed_bandar_abbas
+            random_country = {
+                limit = {
+                    owns = 1071
+                    war_with = THIS
+                }
+                country_event = 180015
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    settle_iranian_nomads = {
+        picture = bakhtiari_khan
+        potential = {
+            OR = { 
+                tag = ZND
+                tag = PER
+                tag = ARY
+			}
+			has_country_flag = tribal_troubles_shekhbizin
+            NOT = { has_country_flag = settled_iranian_nomads }			
+        }
+        allow = {
+            war = no
+            freedom_of_trade = 1			
+            owns = 1117			
+            owns = 1127
+            owns = 1135			
+        }
+        effect = {
+            remove_accepted_culture = lurish
+            remove_accepted_culture = qashqai
+			1119 = { trade_goods = cotton }
+			1120 = { trade_goods = cotton }			
+			1122 = { trade_goods = fruit }
+			1128 = { trade_goods = iron }
+			1133 = { trade_goods = grain }
+			1134 = { trade_goods = cotton }
+			3326 = { trade_goods = fruit }
+            any_owned = {
+                limit = { has_province_modifier = lurish_administration }
+                remove_province_modifier = lurish_administration
+            }
+            any_owned = {
+                limit = { has_province_modifier = qashqai_administration }
+                remove_province_modifier = qashqai_administration
+            }
+			PER_1135 = { add_core = QSQ }
+			PER_1122 = { add_core = LUR }
+			PER_1138 = { add_core = LUR }
+			925 = { add_core = LUR }
+			928 = { add_core = LUR }
+            any_pop = {
+                limit = { has_pop_culture = lurish }
+                militancy = 3
+                consciousness = 2
+            }
+            any_pop = {
+                limit = { has_pop_culture = qashqai }
+                militancy = 3
+                consciousness = 2
+            }			
+			set_country_flag = settled_iranian_nomads	
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    reform_iranian_tribal_army = {
+        picture = bakhtiari_isfahan
+        potential = {
+            OR = { 
+                tag = ZND
+                tag = PER
+                tag = ARY
+			}
+			has_country_flag = settled_iranian_nomads
+            NOT = { has_country_flag = reformed_iranian_tribal_army }			
+        }
+        allow = {
+            war = no
+            military_plans = 1			
+            owns = 1117			
+            owns = 1127
+            owns = 1135			
+        }
+        effect = {
+			remove_country_modifier = shekhbizin_tribal_army	
+			set_country_flag = reformed_iranian_tribal_army	
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    shekhbizin_basra = {
+        picture = basra_map
+        potential = {
+            OR = { 
+                tag = ZND
+                tag = PER
+			}
+			has_country_flag = tribal_troubles_shekhbizin
+			NOT = { 932 = { is_core = THIS } }
+        }
+        allow = {
+            war = no		
+            owns = 1132			
+        }
+        effect = {
+			932 = { add_core = THIS }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    shekhbizin_mazun = {
+        picture = buyyid_gulf
+        potential = {
+            OR = { 
+                tag = ZND
+                tag = PER
+				tag = ARY
+			}
+			932 = { is_core = THIS }
+			has_country_flag = tribal_troubles_shekhbizin
+			NOT = { has_country_flag = mazun_shekhbizin }
+        }
+        allow = {
+            war = no		
+            owns = 932
+			state_n_government = 1
+        }
+        effect = {
+			ABU_1162 = { add_core = THIS }		
+			935 = { add_core = THIS }
+			1163 = { add_core = THIS }
+			1164 = { add_core = THIS }			
+			set_country_flag = mazun_shekhbizin
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+	deal_with_the_shaki_naibs = {
+	    picture = khanate_of_nakhichevan
+		potential = {
+		    tag = ARM 
+			civilized = no 
+			NOT = { has_country_flag = naib_question }
+		}
+		allow = {
+			early_classical_theory_and_critique = 1
+		}
+		effect = {
+		    any_pop = {
+			    limit = { culture = azerbaijani }
+				consciousness = 2 	
+			}	
+			set_country_flag = naib_question			
+		    ARM = { country_event = 180038 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	invite_armenian_diaspora = {
+	    picture = san_lazzaro_degli_armeni
+		potential = {
+		    tag = ARM 
+			NOT = { has_country_flag = armenian_diaspora_returns }
+		}
+		allow = {
+	        #bureaucrats = 0.02	
+			experimental_railroad = 1
+		}
+		effect = {
+		    prestige = 10
+			any_pop = { literacy = 0.1 }
+            any_pop = {
+                limit = { pop_type = clergymen }
+                reduce_pop = 2 
+			}
+			add_country_modifier = {
+			    name = armenian_intellectual_diaspora
+				duration = 5475
+			}	
+		    economic_reform = education_reform_two
+			economic_reform = western_science_two
+			set_country_flag = armenian_diaspora_returns			
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+    settle_national_borders_armenia = {
+        picture = armenian_claims
+        potential = {
+            tag = ARM
+			NOT = { has_country_flag = armenian_caucasian_claims }
+		}
+		allow = {
+		    civilized = yes 
+			war = no 
+		}
+		effect = {
+		    prestige = 5
+			badboy = 7
+			set_country_flag = armenian_caucasian_claims
+			1106 = { add_core = THIS }
+			1105 = { add_core = THIS }
+			1093 = { add_core = THIS }
+			886 = { add_core = THIS }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	proclaim_greater_armenia = {
+	    picture = greater_armenia
+		potential = {
+		    tag = ARM
+			has_country_flag = armenian_caucasian_claims
+			NOT = { has_country_flag = greater_armenia_claimed }
+		}
+        allow = { 
+            civilized = yes
+			nationalism_n_imperialism = 1
+            ARM = { all_core = { owned_by = ARM } }
+        }
+        effect = {
+            prestige = 10
+            badboy = 15 
+            882 = { 
+				add_core = THIS
+				remove_core = ERZ
+			}	
+		    888 = { 
+				add_core = THIS 
+				remove_core = ERZ				
+			}
+			891 = { 
+				add_core = THIS
+				remove_core = ERZ				
+			}
+			890 = { 
+				add_core = THIS 
+				remove_core = ERZ				
+			}
+			887 = { 
+				add_core = THIS
+				remove_core = ERZ				
+			}
+			set_country_flag = greater_armenia_claimed
+		}
+        ai_will_do = { factor = 1 }
+	}
+	
+	armenian_turkish_population_exchange_treaty = {
+		picture = population_exchange
+        potential = {
+		    OR = { 
+				tag = ARM 
+			    tag = TUR 
+			}	   
+			ARM = { exists = yes }
+			890 = { owned_by = ARM }
+			882 = { owned_by = ARM }
+			891 = { owned_by = ARM }	
+			NOT = { 1098 = { is_core = TUR } }
+			NOT = { CLC = { exists = yes } }
+			NOT = { has_country_flag = restored_armenian_empire }
+			NOT = { has_country_flag = turko-armenian_population_exchange }
+		}
+		
+		allow = {
+			TUR = { is_greater_power = no }
+		    owns = 890
+			owns = 882
+			owns = 891
+			revolution_n_counterrevolution = 1 
+		}
+		
+		effect = {
+			set_global_flag = turko-armenian_population_exchange_proposed 
+			set_country_flag = turko-armenian_population_exchange
+			set_country_flag = proposing_turko-armenian_population_exchange 
+		}		
+		ai_will_do = { factor = 1 }  
+	}	
+	
+	restore_empire_of_tigranes = {
+	    picture = flag_artaxid_armenia
+		potential = {
+		    tag = ARM
+			NOT = { ARM = { government = proletarian_dictatorship }
+			}
+			has_country_flag = greater_armenia_claimed
+			CLC = { exists = yes }	 
+			NOT = { has_country_flag = restored_armenian_empire
+			}
+		}
+        allow = {
+		    civilized = yes
+			revolution_n_counterrevolution = 1
+			CLC = { exists = yes 
+			}
+			OR = {
+                  ARM = { government = fascist_dictatorship }
+                  ARM = { government = absolute_monarchy }
+				  ARM = { government = presidential_dictatorship }
+            }
+			ARM = {
+                all_core = {
+                    owned_by = ARM 	
+			    }
+			}
+        }
+       	effect = {
+            prestige = 35
+            badboy = 20
+            884 = { add_core = ARM }		
+            879 = { add_core = ARM }	
+            894 = { add_core = ARM }
+            896 = { add_core = ARM }	
+            898 = { add_core = ARM }	
+            900 = { add_core = ARM }	
+            897 = { add_core = ARM }
+            901 = { add_core = ARM }
+            923 = { add_core = ARM }
+            924 = { add_core = ARM }
+            892 = { add_core = ARM }
+            2414 = { add_core = ARM }		
+            893 = { add_core = ARM }
+            899 = { add_core = ARM }
+            889 = { add_core = ARM }
+            1109 = { add_core = ARM }
+            set_country_flag = restored_armenian_empire
+	    }
+        ai_will_do = { factor = 1 }
+	}
+    
+    accept_assyrians = {
+        picture = assyrian_church_of_the_east
+		potential = {
+		    tag = ARM
+			has_country_flag = restored_armenian_empire
+			923 = { owned_by = ARM }
+			NOT = { has_country_flag = assyrians_accepted }
+		}		
+		allow = {
+		    social_science = 1
+			923 = { owned_by = ARM }
+		}
+   		effect = {
+		    add_accepted_culture = assyrian 
+			set_country_flag = assyrians_accepted 
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	accept_syriacs = {
+	    picture = syriac_orthodox_church
+		potential = {
+		    tag = ARM
+			has_country_flag = restored_armenian_empire
+			900 = { owned_by = ARM }
+			NOT = { has_country_flag = syriacs_accepted }
+		}
+		allow = {
+		    social_science = 1 
+			920 = { owned_by = ARM }
+		}	
+		effect = {
+		    add_accepted_culture = syriac 
+			set_country_flag = syriacs_accepted
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	accept_georgians = {
+	    picture = georgian_orthodox_church 
+		potential = {
+		    tag = ARM 
+		    has_country_flag = greater_armenia_claimed
+		    886 = { owned_by = ARM }
+		    NOT = { has_country_flag = georgians_accepted
+		    } 
+		}	
+		allow = {
+		    biologism = 1
+            1094 = { owned_by = ARM }
+		}	
+		effect = {
+		    add_accepted_culture = georgian 
+			set_country_flag = georgians_accepted
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	irrigate_armenia = {
+	    picture = irrigation
+		potential = {
+		    owns = 1098
+            civilized = yes
+			tag = ARM
+			NOT = { has_country_flag = irrigated_armenia }
+		}
+		allow = {
+		    pneumatic_and_hydraulics = 1
+		}
+		effect = {
+			set_country_flag = irrigated_armenia
+		    1098 = { 
+				trade_goods = grain 
+				life_rating = 2
+			}
+			1101 = { 
+			    trade_goods = cattle 
+			}
+			885 = { 
+			    trade_goods = cotton
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	end_ottoman_imperialism_anatolia = {
+	    picture = communist_party_armenia_flag
+		potential = {
+		    tag = ARM
+			NOT = { 
+			    OR = {
+                    ARM = { government = fascist_dictatorship }
+                    ARM = { government = absolute_monarchy }
+				    ARM = { government = presidential_dictatorship }
+			    }
+			}	
+			has_country_flag = greater_armenia_claimed
+			CLC = { exists = yes }	 
+			NOT = { has_country_flag = restored_armenian_empire
+			}
+		}
+        allow = {
+			revolution_n_counterrevolution = 1
+			CLC = { exists = yes 
+			}
+			ARM = { government = proletarian_dictatorship }
+			ARM = {
+                all_core = {
+                    owned_by = ARM 			
+			    }
+			}
+		}	
+		effect = {
+            prestige = 35
+            badboy = 20
+            884 = { add_core = ARM }		
+            879 = { add_core = ARM }	
+            894 = { add_core = ARM }
+            896 = { add_core = ARM }	
+            898 = { add_core = ARM }	
+            900 = { add_core = ARM }	
+            897 = { add_core = ARM }
+            901 = { add_core = ARM }
+            923 = { add_core = ARM }
+            924 = { add_core = ARM }
+            892 = { add_core = ARM }
+            2414 = { add_core = ARM }		
+            893 = { add_core = ARM }
+            899 = { add_core = ARM }
+            889 = { add_core = ARM }
+            1109 = { add_core = ARM }
+            set_country_flag = restored_armenian_empire
+	    }
+        ai_will_do = { factor = 1 }
+	}
+
+    return_capital_shiraz = {
+        picture = nou_bagh
+        potential = {
+			has_country_flag = shekhbizin_civil_war
+            1135 = { is_capital = no }			
+        }
+
+        allow = {
+            war = no
+            owns = 1135
+        }
+
+        effect = {
+            capital = 1135
+            1135 = {
+                add_province_modifier = {
+                    name = gateway_to_harbor
+                    duration = 1825
+                }
+                life_rating = 2
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    move_capital_rasht = {
+        picture = rasht_1918
+        potential = {
+			has_country_flag = kar_kiya_constitutional_victory
+            1113 = { is_capital = no }			
+        }
+
+        allow = {
+            war = no
+            owns = 1113
+			late_classical_theory = 1			
+        }
+
+        effect = {
+            capital = 1113
+            1113 = {
+                add_province_modifier = {
+                    name = gateway_to_harbor
+                    duration = 1825
+                }
+                life_rating = 2
+            }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    encourage_tea_lahijan = {
+        picture = lahijan_tea
+        potential = {
+			has_country_flag = kar_kiya_constitutional_victory
+			NOT = { has_country_flag = lahijan_tea_industry }
+        }
+
+        allow = {
+            war = no
+            high_pressure_steam_engine = 1			
+            owns = 3332
+        }
+        effect = {
+			add_country_modifier = {
+				name = "lahijan_tea_production"
+				duration = -1
+			}			
+            3332 = { 
+				trade_goods = tea
+				life_rating = 2
+			}
+			set_country_flag = lahijan_tea_industry			
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    liberate_caspians = {
+        picture = araxes
+        potential = {
+            OR = {
+				tag = QAJ
+				tag = PER				
+			}
+			has_country_flag = kar_kiya_constitutional_victory
+			NOT = { 1108 = { is_core = THIS } }
+        }
+
+        allow = {
+            war = no
+            positivism = 1			
+            owns = 1113
+        }
+        effect = {
+			prestige = 5
+			add_accepted_culture = fahlavi			
+			1109 = { add_core = THIS }
+			1110 = { add_core = THIS }
+			PER_1112 = { add_core = THIS }
+			set_country_flag = liberated_fahlavi			
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    fund_nationalist_anjoman = {
+        picture = revenge_anjoman
+        potential = {
+			tag = QAJ
+			has_country_flag = kar_kiya_constitutional_victory
+			NOT = { has_global_flag = nationalist_anjoman_active }
+			PER = { exists = no }
+			ARY = { exists = no }			
+        }
+
+        allow = {
+            war = no
+            enlightenment_thought = 1
+        }
+        effect = {
+			prestige = 5
+            any_country = {
+                limit = { is_culture_group = THIS }
+                relation = {
+                    who = THIS
+                    value = -50
+                }
+            }			
+			set_global_flag = nationalist_anjoman_active
+        }
+        ai_will_do = { factor = 1 }
+    }		
+	
+	train_daylamite_mountain_troops = {
+        picture = buyid_daylamite	
+		potential = {
+			has_country_flag = kar_kiya_constitutional_victory
+			NOT = { has_country_flag = daylamite_corps }
+		}
+		allow = {
+			army_professionalism = 1
+		}
+		effect = {
+			add_country_modifier = {
+				name = daylamite_mountaineers
+				duration = -1
+			}
+			set_country_flag = daylamite_corps
+		}
+	}
+
+	kar_kiya_land_reform = {
+        picture = mazanderan_tobacco	
+		potential = {
+			has_country_flag = kar_kiya_constitutional_victory
+			NOT = { has_country_flag = kar_kiya_land_reform_enacted }
+		}
+		allow = {
+			market_regulations = 1
+			war = no
+		}
+		effect = {
+			add_country_modifier = {
+				name = kar_kiya_land_redistribution
+				duration = -1
+			}
+			random_state = {
+				limit = {
+					NOT = { is_colonial = yes }
+				}
+				farmers = { militancy = -3 }
+			}
+			random_state = {
+				limit = {
+					NOT = { is_colonial = yes }
+					has_pop_type = aristocrats
+				}
+				aristocrats = { militancy = 7 }
+			}			
+			set_country_flag = kar_kiya_land_reform_enacted
+		}
+	}
+
+	persecute_twelvers_ismailis = {
+        picture = al_aqmar	
+		potential = {
+			has_country_flag = kar_kiya_kalwatiya_victory
+			NOT = { has_country_flag = kalwatiya_conversion }
+		}
+		allow = {
+			civilized = yes
+			war = no
+		}
+		effect = {
+			add_country_modifier = {
+				name = kalwatiya_forced_conversion
+				duration = -1
+			}
+			badboy = 3
+            any_pop = {
+                limit = { 
+					OR = { 
+						has_pop_religion = ismaili
+						has_pop_religion = shiite 						
+					} 
+				}
+                militancy = 7
+                consciousness = 5
+            }
+            any_pop = {
+                limit = { has_pop_religion = zaydi }
+                militancy = -5
+                consciousness = -2
+            }			
+			set_country_flag = kalwatiya_conversion
+		}
+		
+        ai_will_do = {
+            factor = 1
+            modifier = {
+                factor = 0
+                badboy = 0.8
+            }
+        }		
+		
+	}
+
+    avenge_karbala = {
+        picture = karbala
+        potential = {
+            OR = {
+				tag = QAJ
+				tag = PER				
+			}
+			has_country_flag = kar_kiya_kalwatiya_victory
+			NOT = { 
+				has_country_flag = kalwatiya_karbala
+				owns = 929
+			}
+        }
+        allow = {
+            war = no
+            bronze_muzzle_loaded_artillery = 1			
+            owns = 1125
+        }
+        effect = {
+			prestige = 5
+			IRQ = { all_core = { add_core = THIS } }
+			set_country_flag = kalwatiya_karbala			
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    secure_khorasani_shrines = {
+        picture = hasan_urtush_amol
+        potential = {
+            OR = {
+				tag = QAJ
+				tag = PER				
+			}
+			has_country_flag = kar_kiya_kalwatiya_victory
+			NOT = { has_country_flag = kalwatiya_urtush }
+        }
+        allow = {
+            war = no
+            medicine = 1			
+            owns = 1115
+        }
+        effect = {
+			prestige = 5
+			IRN_1116 = { add_core = THIS }
+			IRN_3339 = { add_core = THIS }
+			IRN_1148 = { add_core = THIS }			
+			3354 = { add_core = THIS }
+			1204 = { add_core = THIS }	
+			3329 = { add_core = THIS }	
+			3330 = { add_core = THIS }
+			3331 = { add_core = THIS }				
+			set_country_flag = kalwatiya_urtush			
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    zaydi_yemen_protectorate = {
+        picture = jazirat_yemen
+        potential = {
+			has_country_flag = kar_kiya_kalwatiya_victory
+			NOT = { has_country_flag = kalwatiya_yemen }
+        }
+        allow = {
+            war = no
+            nationalism_n_imperialism = 1
+            owns = 1142
+        }
+        effect = {
+			prestige = 5
+			YEM = { all_core = { add_core = THIS } }
+			set_country_flag = kalwatiya_yemen			
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    integrate_khaliji_arabs = {
+        picture = jazirat_hedjaz
+        potential = {
+			has_country_flag = kalwatiya_yemen
+			NOT = { has_country_flag = kalwatiya_hedjaz }
+        }
+
+        allow = {
+            owns = 1178
+            revolution_n_counterrevolution = 1
+			war = no			
+        }
+
+        effect = {
+            set_country_flag = kalwatiya_hedjaz
+            add_accepted_culture = khaliji
+			HDJ = { all_core = { add_core = THIS } }			
+        }
+    }
+
+    kar_kiya_modernise_army = {
+        picture = tehran_cannon
+        potential = {
+			has_country_flag = gorgan_leased
+			NOT = { has_country_flag = kar_kiya_army_reform }
+        }
+
+        allow = {
+            military_plans = 1	
+			war = no
+        }
+
+        effect = {
+            set_country_flag = kar_kiya_army_reform
+            tech_school = kar_kiya_tech_school			
+        }
+    }
+
+    treaty_amol = {
+        picture = astarabad_bay
+        potential = {
+			has_country_flag = gorgan_leased
+			NOT = { 
+				has_country_flag = returned_gorgan
+				has_country_modifier = gorgan_lease
+			}
+            1016 = {
+                owner = {
+					tag = RUS
+                    war_with = THIS
+                }
+            }			
+        }
+
+        allow = {
+            war = yes
+            1016 = {
+                controlled_by = THIS
+                province_control_days = 365
+            }
+
+            THIS = {
+                all_core = {
+                    OR = {
+                        controlled_by = THIS
+                        controller = { alliance_with = THIS }
+                        empty = yes
+                        province_id = 1016
+                        owner = {
+                            NOT = { war_with = THIS }
+                        }
+                    }
+                }
+            }
+        }
+
+        effect = {
+            set_country_flag = returned_gorgan
+            random_country = {
+                limit = {
+                    owns = 1016
+                    war_with = THIS
+                }
+                country_event = 180064
+            }			
+        }
+    }	
+	
+    inflame_caucasus_jihad = {
+        picture = caucasian_mountaineers_1831
+        potential = {
+			has_country_flag = gorgan_leased
+			NOT = { 
+				has_country_flag = returned_gorgan
+				has_country_flag = caucasus_jihad				
+				has_country_modifier = gorgan_lease
+			}
+            1016 = {
+                owner = {
+					tag = RUS
+                    war_with = THIS
+                }
+            }
+			1055 = { owned_by = RUS }
+			DAG = { exists = no }
+        }
+
+        allow = {
+            war = yes
+        }
+
+        effect = {
+            set_country_flag = caucasus_jihad
+			RUS = { country_event = 180065 }
+        }
+    }
+
+    timurtash_protect_ismaili = {
+        picture = ismail_calligraphy
+        potential = {
+			has_country_flag = timurtash_ismaili_repression
+        }
+
+        allow = {
+            war = no
+			malthusian_thought = 1 			
+        }
+
+        effect = {
+            clr_country_flag = timurtash_ismaili_repression
+			add_country_modifier = {
+				name = "ismaili_education"
+				duration = -1
+			}
+			any_pop = {
+				limit = { has_pop_religion = ismaili }
+				literacy = 0.1
+			}
+			CLN = {
+				change_variable = {
+					which = dehqan_unrest
+					value = 1
+				}
+			}			
+        }
+    }	
+	
+    timurtash_idris_tribute = {
+        picture = idris_tribute
+        potential = {
+			has_country_modifier = idris_insolence
+        }
+
+        allow = {
+            war = no
+			ad_hoc_money_bill_printing = 1			
+        }
+
+        effect = {
+			remove_country_modifier = idris_insolence
+			set_country_flag = idris_paid_tribute
+			any_owned = {
+				limit = { region = IRN_3330	}
+				remove_province_modifier =  dehqan_autonomy		
+			}
+			money = 50000
+			prestige = 5
+			CLN = {
+				change_variable = {
+					which = dehqan_unrest
+					value = 1
+				}
+			}			
+        }
+    }
+
+    irrigate_marw_herat = {
+        picture = merv_1997
+        potential = {
+			has_country_flag = idris_paid_tribute
+			NOT = { has_country_flag = merv_herat_irrigation }
+        }
+
+        allow = {
+            war = no
+			experimental_railroad = 1			
+        }
+
+        effect = {
+			set_country_flag = merv_herat_irrigation
+            3330 = {
+                add_province_modifier = {
+                    name = khorasan_irrigation
+                    duration = 1825
+                }
+                life_rating = 2
+            }
+            1212 = {
+                add_province_modifier = {
+                    name = khorasan_irrigation
+                    duration = 1825
+                }
+                life_rating = 2
+            }				
+        }
+    }
+
+    abolish_mosallamiyat = {
+        picture = mongol_quran
+        potential = {
+			has_country_flag = timurtash_remnant
+			NOT = { has_country_flag = abolished_mosallamiyat }
+        }
+
+        allow = {
+            war = no
+			private_banks = 1			
+        }
+
+        effect = {
+			set_country_flag = abolished_mosallamiyat
+			add_country_modifier = {
+				name = "mosallamiyat_abolished"
+				duration = -1
+			}
+			CLN = {
+				change_variable = {
+					which = dehqan_unrest
+					value = 1
+				}
+			}			
+        }
+    }
+
+    reestablish_imperial_amirs = {
+        picture = timurtash_amirs
+        potential = {
+			has_country_flag = timurtash_remnant
+			NOT = { has_country_flag = imperial_appointed_amirs }
+        }
+
+        allow = {
+            war = no
+            freedom_of_trade = 1		
+        }
+
+        effect = {
+			set_country_flag = imperial_appointed_amirs
+			any_owned = {
+                limit = { has_province_modifier = dehqan_autonomy }
+                remove_province_modifier = dehqan_autonomy
+                add_province_modifier = {
+                    name = limited_dehqan_autonomy
+                    duration = -1
+                }
+			}
+			CLN = {
+				change_variable = {
+					which = dehqan_unrest
+					value = 1
+				}
+			}			
+        }
+    }	
+	
+    abolish_soyurghal = {
+        picture = samanid_shah
+        potential = {
+			has_country_flag = imperial_appointed_amirs
+			has_country_flag = abolished_mosallamiyat
+			has_country_flag = idris_paid_tribute			
+			NOT = { has_country_flag = abolished_soyurghal }
+        }
+
+        allow = {
+            war = no
+			military_staff_system = 1			
+        }
+
+        effect = {
+			set_country_flag = abolished_soyurghal		
+			remove_country_modifier = soyurghal_system
+			government = absolute_monarchy			
+			remove_country_modifier = feudal			
+			any_owned = {
+                limit = { has_province_modifier = limited_dehqan_autonomy }
+                remove_province_modifier = limited_dehqan_autonomy
+			}
+			CLN = {
+				change_variable = {
+					which = dehqan_unrest
+					value = 1
+				}
+			}			
+        }
+    }
+
+    AFS_turkmenia = {
+        picture = karakum
+        potential = {
+			has_country_flag = timurtash_remnant
+            686 = { empty = yes }
+            1205 = { empty = yes }
+        }
+
+        allow = {
+            war = no
+            owns = 1204			
+            OR = {
+                civilized = yes
+                civilization_progress = 0.6
+            }
+        }
+
+        effect = {
+            prestige = 5
+            686 = { secede_province = THIS }
+            1205 = { secede_province = THIS }
+			set_country_flag = timurtash_qarehqum
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    restore_hindukush_frontier = {
+        picture = parthian_indus
+        potential = {
+			has_country_flag = timurtash_remnant
+			CLN = {
+				check_variable = {
+					which = timurtash_legitimacy
+					value = 1.99
+				}
+			}
+            NOT = { has_country_flag = timurtash_hindukush }
+        }
+
+        allow = {
+            war = no
+            owns = 1212			
+            bronze_muzzle_loaded_artillery = 1
+        }
+
+        effect = {
+			1215 = { add_core = THIS }		
+			AFG_1212 = { add_core = THIS }
+			IRN_1213 = { add_core = THIS }
+			IRN_1211 = { add_core = THIS }			
+			set_country_flag = timurtash_hindukush
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    reclaim_mawarannahr = {
+        picture = achaemenid_margiana
+        potential = {
+			has_country_flag = timurtash_qarehqum
+			CLN = {
+				check_variable = {
+					which = timurtash_legitimacy
+					value = 2.99
+				}
+			}
+            NOT = { has_country_flag = timurtash_mawarannahr }
+        }
+
+        allow = {
+            war = no
+            owns = 1211			
+            owns = 686			
+            strategic_mobility = 1
+        }
+
+        effect = {	
+			TRN_1191 = { add_core = THIS }
+			TRN_1198 = { add_core = THIS }
+			TRN_3362 = { add_core = THIS }			
+			set_country_flag = timurtash_mawarannahr
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    reclaim_syrdaria = {
+        picture = persian_syrdaria
+        potential = {
+			has_country_flag = timurtash_qarehqum
+			CLN = {
+				check_variable = {
+					which = timurtash_legitimacy
+					value = 3.99
+				}
+			}
+            NOT = { has_country_flag = timurtash_syrdaria }
+        }
+
+        allow = {
+            war = no
+            owns = 1199			
+            owns = 1210			
+            army_professionalism = 1
+        }
+
+        effect = {
+			TRN_1193 = { add_core = THIS }
+			TRN_1195 = { add_core = THIS }
+			TRN_1208 = { add_core = THIS }			
+			set_country_flag = timurtash_syrdaria
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    integrate_sarts = {
+        picture = uzbek_orientalist
+        potential = {
+			has_country_flag = timurtash_syrdaria
+            NOT = { has_country_flag = timurtash_sarts }
+        }
+
+        allow = {
+            war = no
+            owns = 1195			
+            biologism = 1	
+        }
+
+        effect = {
+			add_accepted_culture = uzbek
+			set_country_flag = timurtash_sarts
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    revoke_treaty_karabakh = {
+        picture = safavid_caucasus
+        potential = {
+			has_country_flag = western_iran_reclaimed
+            NOT = { has_country_flag = timurtash_caucasus }
+        }
+
+        allow = {
+            war = no
+            owns = 1118			
+            owns = 1113			
+			state_n_government = 1
+        }
+
+        effect = {
+			prestige = 10
+			1090 = { add_core = THIS }
+			1091 = { add_core = THIS }			
+			1098 = { add_core = THIS }
+			1099 = { add_core = THIS }
+			1100 = { add_core = THIS }
+			1101 = { add_core = THIS }			
+			1109 = { add_core = THIS }
+			1110 = { add_core = THIS }
+            3385 = { add_core = THIS }
+            3386 = { add_core = THIS }
+            3390 = { add_core = THIS }			
+			PER_1112 = { add_core = THIS }	
+			RUS_1102 = { add_core = THIS }				
+			set_country_flag = timurtash_caucasus
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    iran_integrate_armenia = {
+        picture = gregory_illuminator
+        potential = {
+			OR = { 
+				has_country_flag = timurtash_caucasus
+				has_country_flag = iranian_caucasus				
+			}
+            NOT = { has_country_flag = iran_integrated_armenians }
+        }
+
+        allow = {
+            war = no
+            owns = 1098
+            invention = secularization				
+			revolution_n_counterrevolution = 1	
+        }
+
+        effect = {
+			add_accepted_culture = armenian
+			set_country_flag = iran_integrated_armenians
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    iran_reconquer_caucasus = {
+        picture = seljuq_caucasus
+        potential = {
+			OR = {
+				tag = PER
+				AND = {
+					tag = ARY
+					NOT = { has_country_flag = timurtash_remnant }
+				}
+			}
+            NOT = { has_country_flag = iranian_caucasus }
+        }
+
+        allow = {
+            war = no
+            owns = 1118			
+            owns = 1113			
+			nationalism_n_imperialism = 1
+        }
+
+        effect = {
+			prestige = 10
+			1090 = { add_core = THIS }
+			1091 = { add_core = THIS }			
+			1098 = { add_core = THIS }
+			1099 = { add_core = THIS }
+			1100 = { add_core = THIS }
+			1101 = { add_core = THIS }			
+			1109 = { add_core = THIS }
+			1110 = { add_core = THIS }
+            3385 = { add_core = THIS }
+            3386 = { add_core = THIS }
+            3390 = { add_core = THIS }			
+			PER_1112 = { add_core = THIS }	
+			RUS_1102 = { add_core = THIS }				
+			set_country_flag = iranian_caucasus
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    reconciliate_zagros_tribes = {
+        picture = qashqai_people
+        potential = {
+			has_country_flag = shekhbizin_pending_reconciliation
+			NOT = { has_country_flag = rehabilitated_zagros }
+        }
+
+        allow = {
+            revolution_n_counterrevolution = 1
+			war = no			
+        }
+
+        effect = {
+            set_country_flag = rehabilitated_zagros
+			add_accepted_culture = lurish
+			add_accepted_culture = qashqai
+			add_accepted_culture = khalaj
+        }
+    }	
+	
+}
