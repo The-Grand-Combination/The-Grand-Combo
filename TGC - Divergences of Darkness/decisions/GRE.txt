@@ -1,0 +1,689 @@
+political_decisions = {
+    treaty_of_Corfu = {
+        picture = morea
+        potential = {
+            tag = GRE
+            VEN = {
+                has_country_flag = greek_rebellion
+                war_with = THIS
+            }
+        }
+
+        allow = {
+            834 = {
+                controller = {
+                    NOT = {
+                        tag = VEN
+                        vassal_of = VEN
+                        alliance_with = VEN
+                    }
+                }
+                province_control_days = 750
+            }
+            840 = {
+                controller = {
+                    NOT = {
+                        tag = VEN
+                        vassal_of = VEN
+                        alliance_with = VEN
+                    }
+                }
+                province_control_days = 750
+            }
+            833 = {
+                controller = {
+                    NOT = {
+                        tag = VEN
+                        vassal_of = VEN
+                        alliance_with = VEN
+                    }
+                }
+                province_control_days = 750
+            }
+			THIS = { war_score = 35 }
+        }
+
+        effect = {
+            VEN = { country_event = 100618 }
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    claim_thrace = {
+        picture = thrace
+        potential = {
+            tag = GRE
+            NOT = { is_vassal = yes }
+            NOT = { has_country_flag = thrace_claimed }
+            NOT = { war = yes }
+        }
+
+        allow = {
+            NOT = {
+                TUR = { is_greater_power = yes }
+            }
+            NOT = { war = yes }
+            GRE = {
+                all_core = { owned_by = THIS }
+            }
+        }
+
+        effect = {
+            prestige = 5
+            add_core = 828
+            add_core = 859
+            add_core = 858
+            add_core = 861
+            add_core = 860
+            set_country_flag = thrace_claimed
+        }
+        ai_will_do = { factor = 1 }
+    }
+    megali_idea = {
+        picture = megali
+        potential = {
+            tag = GRE
+            NOT = { is_vassal = yes }
+            NOT = { has_country_flag = megali_idea }
+            has_country_flag = thrace_claimed
+            GRE = {
+                all_core = { owned_by = THIS }
+            }
+        }
+
+        allow = {
+            NOT = {
+                TUR = { is_greater_power = yes }
+            }
+            NOT = { war = yes }
+            owns = 860
+            is_greater_power = yes
+        }
+
+        effect = {
+            prestige = 20
+			TUR_806 = { add_core = THIS } 
+			TUR_809 = { add_core = THIS }
+ 			EGY_843 = { add_core = THIS }
+			TUR_855 = { add_core = THIS }
+            853 = { add_core = THIS }            
+			865 = { add_core = THIS }
+            864 = { add_core = THIS }
+            869 = { add_core = THIS }
+            870 = { add_core = THIS }			
+            872 = { add_core = THIS }
+            863 = { add_core = THIS }
+            862 = { add_core = THIS }
+            881 = { add_core = THIS }
+            880 = { add_core = THIS }
+            883 = { add_core = THIS }
+            884 = { add_core = THIS }
+            882 = { add_core = THIS }
+            set_country_flag = megali_idea
+            capital = 860
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    end_of_exarchate = {
+        picture = Greece_VEN
+
+        potential = {
+            tag = VEN
+            GRE = { vassal_of = VEN }
+            rank = 15
+            NOT = { has_country_flag = greek_integration }
+        }
+
+        allow = {
+            OR = {
+				government = democracy
+				
+				AND = {
+					OR = {
+						vote_franschise = universal_weighted_voting
+						vote_franschise = universal_voting
+					}
+					public_meetings = yes_meeting
+					press_rights = free_press
+				}
+			}
+            nationalism_n_imperialism = 1
+            war = no
+        }
+        effect = {
+            inherit = GRE
+            set_country_flag = greek_integration
+            add_accepted_culture = greek
+            GRE = {
+                all_core = { add_core = THIS }
+            }
+        }
+    }
+
+    greek_integration = {
+        picture = Greece_VEN
+
+        potential = {
+            tag = VEN
+            rank = 15			
+            OR = { 
+				government = democracy
+				government = merchant_republic
+			}
+            NOT = {
+                has_country_flag = greek_integration
+                GRE = { exists = yes }
+            }
+        }
+
+        allow = {
+            nationalism_n_imperialism = 1
+            war = no
+            owns = 834
+        }
+        effect = {
+            set_country_flag = greek_integration
+            add_accepted_culture = greek
+            GRE = {
+                all_core = { add_core = THIS }
+            }
+        }
+    }
+
+    settle_east_MAC = { #Greek-Bulgarian population exchange
+        picture = east_macedonia
+        potential = {
+            tag = GRE
+            has_country_flag = megali_idea			
+            BUL = { exists = yes }
+            NOT = { has_country_flag = BUL_MAC_settled }
+        }
+
+        allow = {
+            is_greater_power = yes
+            BUL = { in_sphere = THIS }
+            war = no
+            BUL = { war = no }
+            nationalism_n_imperialism = 1
+            owns = 823
+            owns = 828			
+        }
+
+        effect = {
+            set_country_flag = BUL_MAC_settled
+            BUL = { country_event = 106093 }
+        }
+    }
+
+    Enosis_GRE = {
+        picture = enosis
+        potential = {
+            tag = GRE
+            has_country_flag = megali_idea
+            NOT = { has_country_flag = megali_idea_complete }
+        }
+
+        allow = {
+            all_core = { owned_by = THIS }
+            revolution_n_counterrevolution = 1
+        }
+
+        effect = {
+            set_country_flag = megali_idea_complete
+            828 = { remove_core = TUR }
+            859 = { remove_core = TUR }
+            858 = { remove_core = TUR }
+            861 = { remove_core = TUR }
+            860 = { remove_core = TUR }
+            add_country_modifier = {
+                name = enosis_modifier
+                duration = 6000
+            }
+        }
+    }
+
+    greek_epirus = {
+        picture = epirus
+        potential = {
+            tag = GRE
+            owns = 824 #Janina
+            NOT = { has_global_flag = greek_epirus }
+        }
+
+        allow = {
+            owns = 824 #Janina
+            war = no
+        }
+
+        effect = {
+            824 = { change_province_name = "Ioannina" }
+            prestige = 1
+            set_global_flag = greek_epirus
+        }
+    }
+
+    restore_epirus = {
+        picture = epirus
+        potential = {
+            OR = {
+                tag = TUR
+                tag = ALB
+            }
+            has_global_flag = greek_epirus
+            owns = 824 #Janina
+        }
+
+        allow = {
+            owns = 824 #Janina
+            war = no
+        }
+
+        effect = {
+            824 = { change_province_name = "Janina" }
+            prestige = 1
+            random_country = {
+                limit = {
+                    exists = yes
+                    tag = GRE
+                }
+                prestige = -3
+            }
+            clr_global_flag = greek_epirus
+        }
+    }
+
+    greek_thrace = {
+        picture = adrianople
+        potential = {
+            tag = GRE
+            OR = {
+                owns = 823 #Kavala
+                owns = 828 #Edirne
+            }
+            NOT = { has_global_flag = greek_thrace }
+        }
+
+        allow = {
+            owns = 823 #Kavala
+            owns = 828 #Edirne
+            war = no
+        }
+
+        effect = {
+            830 = { change_province_name = "Alexandrople" }
+            828 = { change_province_name = "Adrianople" }
+            858 = { change_province_name = "Saranta Ekklesies" }
+            859 = { change_province_name = "Kallipolis" }
+            prestige = 2
+            set_global_flag = greek_thrace
+        }
+    }
+
+    restore_thrace = {
+        picture = adrianople
+        potential = {
+            tag = TUR
+            has_global_flag = greek_thrace
+            OR = {
+                owns = 823 #Kavala
+                owns = 828 #Edirne
+            }
+        }
+
+        allow = {
+            owns = 828 #Edirne
+            owns = 823 #Kavala
+            war = no
+        }
+
+        effect = {
+            830 = { change_province_name = "Dedeagatch" }
+            828 = { change_province_name = "Edirne" }
+            858 = { change_province_name = "Kirklareli" }
+            859 = { change_province_name = "Gallipoli" }
+            prestige = 2
+            random_country = {
+                limit = {
+                    exists = yes
+                    tag = GRE
+                }
+                prestige = -5
+            }
+            clr_global_flag = greek_thrace
+        }
+    }
+
+    greek_constantinople = {
+        picture = constantinople
+        potential = {
+            tag = GRE
+            owns = 860 #Istanbul
+            NOT = { has_global_flag = greek_constantinople }
+        }
+
+        allow = {
+            owns = 860 #Istanbul
+            war = no
+        }
+
+        effect = {
+            860 = {
+                change_province_name = "Constantinople"
+                state_scope = { change_region_name = "Byzantium" }
+            }
+            861 = { change_province_name = "Chrysopolis" }
+            prestige = 2
+            set_global_flag = greek_constantinople
+        }
+    }
+
+    restore_istanbul = {
+        picture = constantinople
+        potential = {
+            tag = TUR
+            has_global_flag = greek_constantinople
+            owns = 860 #Istanbul
+        }
+
+        allow = {
+            owns = 860 #Istanbul
+            war = no
+        }
+
+        effect = {
+            860 = {
+                change_province_name = "Istanbul"
+                state_scope = { change_region_name = "Istanbul Region" }
+            }
+            861 = { change_province_name = "Üsküdar" }
+            prestige = 2
+            random_country = {
+                limit = {
+                    exists = yes
+                    tag = GRE
+                }
+                prestige = -5
+            }
+            clr_global_flag = greek_constantinople
+        }
+    }
+
+    greek_ionia = {
+        picture = smyrna
+        potential = {
+            tag = GRE
+            owns = 869 #Izmir
+            NOT = { has_global_flag = greek_ionia }
+        }
+
+        allow = {
+            owns = 869 #Izmir
+            owns = 872 #Mugla
+            war = no
+        }
+
+        effect = {
+            869 = {
+                change_province_name = "Smyrna"
+                state_scope = { change_region_name = "Ionia" }
+            }
+            872 = { change_province_name = "Milas" }
+            prestige = 1
+            set_global_flag = greek_ionia
+        }
+    }
+
+    restore_aydin = {
+        picture = smyrna
+        potential = {
+            tag = TUR
+            has_global_flag = greek_ionia
+            owns = 869 #Izmir
+        }
+
+        allow = {
+            owns = 869 #Izmir
+            owns = 872 #Mugla
+            war = no
+        }
+
+        effect = {
+            869 = { change_province_name = "Izmir" }
+            872 = { change_province_name = "Mugla" }
+            prestige = 1
+            random_country = {
+                limit = {
+                    exists = yes
+                    tag = GRE
+                }
+                prestige = -3
+            }
+            clr_global_flag = greek_ionia
+        }
+    }
+
+    greek_nicaea = {
+        picture = nicomedia
+        potential = {
+            tag = GRE
+            owns = 863 #Bursa
+            NOT = { has_global_flag = greek_nicaea }
+        }
+
+        allow = {
+            owns = 863 #Bursa
+            owns = 864 #Balikesir
+            owns = 865 #Canakkale
+            war = no
+        }
+
+        effect = {
+            863 = { change_province_name = "Prusa" }
+            864 = { change_province_name = "Paleokastro" }
+            865 = { change_province_name = "Dardanellia" }
+            862 = { change_province_name = "Nicomedia" }
+            prestige = 1
+            set_global_flag = greek_nicaea
+        }
+    }
+
+    restore_hudavendigar = {
+        picture = nicomedia
+        potential = {
+            tag = TUR
+            owns = 863 #Bursa
+            has_global_flag = greek_nicaea
+        }
+
+        allow = {
+            owns = 863 #Bursa
+            owns = 864 #Balikesir
+            owns = 865 #Canakkale
+            war = no
+        }
+
+        effect = {
+            863 = { change_province_name = "Bursa" }
+            864 = { change_province_name = "Balikesir" }
+            865 = { change_province_name = "Canakkale" }
+
+            862 = { change_province_name = "Izmit" }
+            prestige = 1
+            random_country = {
+                limit = {
+                    exists = yes
+                    tag = GRE
+                }
+                prestige = -3
+            }
+            clr_global_flag = greek_nicaea
+        }
+    }
+
+    greek_pontus = {
+        picture = Trapezounda
+        potential = {
+            tag = GRE
+            owns = 860 #Istanbul
+            NOT = { has_global_flag = greek_pontus }
+        }
+
+        allow = {
+            owns = 880 #Kastamonu
+            owns = 882 #Trabzon
+            war = no
+        }
+
+        effect = {
+            880 = { change_province_name = "Kastra Komnenon" }
+            881 = { change_province_name = "Hadrianopolis" }
+            882 = { change_province_name = "Trapezounda" }
+            883 = { change_province_name = "Sinope" }
+            884 = { change_province_name = "Kerasous" }
+            prestige = 2
+            set_global_flag = greek_pontus
+        }
+    }
+
+    restore_pontus = {
+        picture = Trapezounda
+        potential = {
+            tag = TUR
+            has_global_flag = greek_pontus
+            owns = 880 #Kastamonu
+            owns = 882 #Trabzon
+        }
+
+        allow = {
+            owns = 880 #Kastamonu
+            owns = 882 #Trabzon
+            war = no
+        }
+
+        effect = {
+            880 = { change_province_name = "Kastamonu" }
+            881 = { change_province_name = "Bolu" }
+            882 = { change_province_name = "Trabzon" }
+            883 = { change_province_name = "Sinop" }
+            884 = { change_province_name = "Giresun" }
+            prestige = 2
+            random_country = {
+                limit = {
+                    exists = yes
+                    tag = GRE
+                }
+                prestige = -5
+            }
+            clr_global_flag = greek_pontus
+        }
+    }
+	
+    treaty_argos = {
+        picture = treaty_argos
+        potential = {
+			has_country_flag = second_year_greek_war			
+			NOT = { 
+				has_country_flag = treaty_argos_signed
+				has_country_flag = burgundy_helps_greece				
+				has_country_modifier = second_year_greek_war
+			}
+            VEN = { 
+				war_with = THIS
+				has_country_flag = greek_rebellion
+			}			
+        }
+
+        allow = {
+            war = yes
+            834 = {
+                controller = {
+                    NOT = {
+                        tag = VEN
+                        vassal_of = VEN
+                        alliance_with = VEN
+                    }
+                }
+            }
+            840 = {
+                controller = {
+                    NOT = {
+                        tag = VEN
+                        vassal_of = VEN
+                        alliance_with = VEN
+                    }
+                }
+            }
+            833 = {
+                controller = {
+                    NOT = {
+                        tag = VEN
+                        vassal_of = VEN
+                        alliance_with = VEN
+                    }
+                }
+            }		
+
+        }
+
+        effect = {
+            set_country_flag = treaty_argos_signed
+            random_country = {
+                limit = {
+                    owns = 729
+                    war_with = THIS
+                }
+                country_event = 106116
+            }			
+        }
+    }
+
+    settle_ioannina = { #Greek-Albanian population exchange
+        picture = ioannina
+        potential = {
+            tag = GRE
+            has_country_flag = megali_idea			
+            ALB = { exists = yes }
+            NOT = { has_country_flag = epirus_settled }
+        }
+
+        allow = {
+            is_greater_power = yes
+            ALB = { in_sphere = THIS }
+            war = no
+            ALB = { war = no }
+            nationalism_n_imperialism = 1
+            owns = 824		
+        }
+
+        effect = {
+            set_country_flag = epirus_settled
+            ALB = { country_event = 106117 }
+        }
+    }	
+	
+    claim_taurica = {
+        picture = taurica
+        potential = {
+            tag = GRE
+            has_country_flag = megali_idea_complete
+            NOT = { has_country_flag = taurica_claimed }
+        }
+
+        allow = {
+            government = fascist_dictatorship		
+            GRE = {
+                all_core = { owned_by = THIS }
+            }
+        }
+
+        effect = {
+            964 = { add_core = THIS } #Taphros           
+			966 = { add_core = THIS } #Iluraton
+            967 = { add_core = THIS } #Chersonesos
+            set_country_flag = taurica_claimed
+        }
+        ai_will_do = { factor = 1 }
+    }	
+	
+}

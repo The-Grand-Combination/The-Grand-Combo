@@ -1,0 +1,387 @@
+country_event = {
+    id = 124100 #Declaration - reaction event
+    title = "EVTNAME124100"
+    desc = "EVTDESC124100"
+    picture = "rome_ossolinski"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA124100"
+        relation = {
+            who = FROM
+            value = -200
+        }
+        FROM = {
+            add_casus_belli = {
+                target = THIS
+                type = release_puppet
+                months = 24
+            }
+        }
+    }
+}
+
+country_event = {
+    id = 124102 # Consolidation
+    title = "EVTNAME124102"
+    desc = "EVTDESC124102"
+    picture = "milano"
+
+    trigger = {
+        tag = ARI
+        has_country_flag = ARA_ITA
+        NOT = { has_country_flag = Italyrulezz }
+    }
+
+    mean_time_to_happen = { days = 1 }
+
+    option = {
+        name = "EVTOPTA124102"
+        release = LOM
+        create_vassal = LOM
+        LOM = { government = colonial_company }
+        diplomatic_influence = {
+            who = LOM
+            value = 200
+        }
+        set_country_flag = Italyrulezz
+
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                OR = {
+                    tag = SPA
+                    tag = DUA
+                }
+            }
+            country_event = 124100
+        }
+    }
+}
+
+country_event = {
+    id = 124101 #Declaration - reaction event II
+    title = "EVTNAME124101"
+    desc = "EVTDESC124101"
+    picture = "?"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA124101"
+        any_country = {
+            limit = { ai = no }
+            country_event = 124103
+        }
+    }
+}
+
+country_event = {
+    id = 124103 #A minor recommendation
+    title = "EVTNAME124103"
+    desc = "EVTDESC124103"
+    picture = "?"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA124103"
+        prestige = 1
+    }
+}
+
+country_event = {
+    id = 124105 # Fight over the House of Rome
+    title = "EVTNAME124105"
+    desc = "EVTDESC124105"
+
+    trigger = {
+        tag = ARI
+        OR = {
+            LOM = {
+                NOT = { is_vassal = yes }
+            }
+            is_greater_power = no
+        }
+        LOM = { exists = yes }
+        NOT = { has_country_flag = waroveritaly }
+        NOT = { has_country_flag = waroveritalyend }
+    }
+
+    mean_time_to_happen = { days = 1 }
+
+    major = yes
+
+    option = {
+        name = "EVTOPTA124105"
+        set_country_flag = waroveritaly
+        release_vassal = LOM
+        LOM = { government = democracy }
+        relation = {
+            who = LOM
+            value = -200
+        }
+        diplomatic_influence = {
+            who = LOM
+            value = -200
+        }
+        PAP_752 = { add_core = LOM }
+        war = {
+            target = LOM
+            attacker_goal = { casus_belli = civil_war }
+
+            defender_goal = {
+                casus_belli = acquire_core_state
+                state_province_id = 749
+            }
+        }
+    }
+}
+
+country_event = {
+    id = 124106 # Fall of the House of Rome
+    title = "EVTNAME124106"
+    desc = "EVTDESC124106"
+
+    trigger = {
+        tag = ARI
+        LOM = { war = no }
+        LOM = { exists = yes }
+        has_country_flag = waroveritaly
+    }
+
+    mean_time_to_happen = { days = 1 }
+
+    major = yes
+
+    option = {
+        name = "EVTOPTA124106"
+        clr_country_flag = waroveritaly
+        set_country_flag = waroveritalyend
+        prestige = -50
+        capital = 498
+
+        change_tag = ARA
+
+        any_country = {
+            any_owned = {
+                limit = { is_core = ARI }
+                remove_core = ARI
+            }
+        }
+
+        any_owned = {
+            limit = { is_core = ARI }
+            remove_core = ARI
+        }
+
+        any_country = {
+            any_owned = {
+                limit = {
+                    NOT = { exists = CAT }
+                    is_core = CAT
+                }
+                remove_core = CAT
+            }
+        }
+
+        any_owned = {
+            limit = {
+                NOT = { exists = CAT }
+                is_core = CAT
+            }
+            remove_core = CAT
+        }
+    }
+}
+
+country_event = {
+    id = 124107 # Victory of the House of Rome
+    title = "EVTNAME124107"
+    desc = "EVTDESC124107"
+
+    trigger = {
+        tag = ARI
+        LOM = { exists = no }
+        has_country_flag = waroveritaly
+    }
+
+    mean_time_to_happen = { days = 1 }
+
+    major = yes
+
+    option = {
+        name = "EVTOPTA124107"
+        clr_country_flag = waroveritaly
+        set_country_flag = waroveritalyend
+        prestige = 30
+
+        any_country = {
+            any_owned = {
+                limit = { is_core = ITA }
+                add_core = ARI
+            }
+        }
+
+        any_owned = {
+            limit = { is_core = ITA }
+            add_core = ARI
+        }
+
+        any_country = {
+            any_owned = {
+                limit = { is_core = LOM }
+                remove_core = LOM
+            }
+        }
+
+        any_owned = {
+            limit = { is_core = LOM }
+            remove_core = LOM
+        }
+
+        AUS_726 = { add_core = LOM }
+    }
+}
+
+country_event = {
+    id = 124108
+    title = "EVTNAME124108"
+    desc = "EVTDESC124108"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTA124108"
+        FROM = {
+            diplomatic_influence = {
+                who = THIS
+                value = -100
+            }
+        }
+    }
+}
+
+country_event = {
+    id = 124110
+    title = "ARI.1.T"
+    desc = "ARI.1.D"
+    picture = "ARA_TUN"
+
+    trigger = {
+        OR = {
+            tag = ARA
+            tag = ARI
+        }
+        owns = 1725
+        TUN = { civilized = no }
+        year = 1860
+        is_greater_power = yes
+        war = no
+    }
+
+    fire_only_once = yes
+
+    mean_time_to_happen = { months = 20 }
+
+    option = {
+        name = "124110.A"
+        badboy = 5
+        TUN = { country_event = 124111 }
+        ai_chance = { factor = 70 }
+    }
+
+    option = {
+        name = "124110.B"
+        ai_chance = { factor = 30 }
+    }
+}
+
+country_event = {
+    id = 124111
+    title = "ARI.2.T"
+    desc = "ARI.2.D"
+    picture = "ARA_TUN"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "124111.A"
+        FROM = { country_event = 124112 }
+        ai_chance = {
+            factor = 30
+            modifier = {
+                factor = 1.5
+                FROM = { rank = 4 }
+            }
+        }
+    }
+
+    option = {
+        name = "124111.B"
+        FROM = { country_event = 124113 }
+    }
+}
+
+country_event = {
+    id = 124112
+    title = "ARI.3.T"
+    desc = "ARI.3.D"
+    picture = "ARA_TUN"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "124112.A"
+        inherit = FROM
+    }
+}
+
+country_event = {
+    id = 124113
+    title = "ARI.4.T"
+    desc = "ARI.4.D"
+    picture = "ARA_TUN"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "124113.A"
+        add_casus_belli = {
+            target = FROM
+            type = establish_protectorate_casus_belli
+            months = 24
+        }
+        war = {
+            target = FROM
+            attacker_goal = { casus_belli = establish_protectorate_casus_belli }
+        }
+    }
+}
+
+country_event = {
+    id = 124114
+    title = "EVTNAME124114"
+    desc = "EVTDESC124114"
+    picture = "speech_assembly"
+
+    trigger = {
+        OR = {
+            tag = ARA
+            tag = ARI
+        }
+        owns = 492
+        is_greater_power = yes
+        war = no
+    }
+
+    fire_only_once = yes
+
+    mean_time_to_happen = { months = 2 }
+
+    option = {
+        name = "EVT124114OPTA"
+        add_accepted_culture = basque
+    }
+}

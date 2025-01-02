@@ -1,0 +1,1355 @@
+### Events 201000-201070 ### Koldewey ### by Marco Dandolo ###
+
+
+# Events 201000-19/37-39/70 THAT BELONGS IN A MUSEUM! (general)
+
+# Events 201000-02 Mayan and Incan ruins discovered (triggers decision)
+# Events 201003-06 Archaeological access to Maya ruins
+# Events 201007-09 Archaeological access to Peru
+# Events 201010-12 Archaeological access to Mesopotamia
+# Event  201013    Exhibtion
+# Event  201014    Invitation to an exhibition
+# Events 201015-17 Local excavations (for countries without archaeology!)
+# Event  201018    Archaeological society
+# Event  201019    Famous archaeologist
+# Events 201037-39 Sensation aftermath
+# Event  201070    Aftermath for Agamemnon's mask (APD)
+
+# Events 201020-36/40-69 Excavations
+
+# { UPDATED OLD EGYPTIAN EXCEVATION-EVENTS! }
+# Event  201020    New egyptian excevation-event
+# Events 201021-32 Mayan excavations
+# Events 201033-36 Mesopotamian excavations
+# Events 201040-69 Incan excavations
+
+
+
+#############################
+# THAT BELONGS IN A MUSEUM! #
+#############################
+
+## Panama Canal build - Mysterious ruins
+
+country_event = {
+    id = 201000
+    title = "EVTNAME201000"
+    desc = "EVTDESC201000"
+    picture = "Panama3"
+    major = yes
+    fire_only_once = yes
+
+    trigger = {
+        war = no
+        owns = 1723 #Panama
+        1723 = { has_province_modifier = panama_canal_construction }
+        has_global_flag = panama_canal_construction
+    }
+
+    mean_time_to_happen = { months = 3 }
+
+    option = {
+        name = "EVT201000OPTA"
+        set_global_flag = maya_ruins
+        prestige = 15
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            country_event = 201001
+        }
+        any_country = {
+            limit = {
+                is_secondary_power = yes
+                NOT = { tag = THIS }
+            }
+            country_event = 201001
+        }
+    }
+}
+
+## Panama Canal build - Mysterious ruins (others)
+
+country_event = {
+    id = 201001
+    title = "EVTNAME201000"
+    desc = "EVTDESC201000"
+    picture = "Panama3"
+    is_triggered_only = yes
+
+    option = {
+        name = "EVT201000OPTA"
+        prestige = 5
+    }
+}
+
+## Machu Picchu (others)
+
+country_event = {
+    id = 201002
+    title = "EVTNAME201002"
+    desc = "EVTDESC201002"
+    picture = "Machupicchu"
+    is_triggered_only = yes
+
+    option = { name = "EVTOPT201002" }
+}
+
+###################################
+# GUATEMALA QUESTIONS AND ANSWERS #
+###################################
+
+## Guatemala questioned
+
+country_event = {
+    id = 201003
+    title = "EVTNAME201003"
+    desc = "EVTDESC201003"
+    picture = "Botanic_expedition"
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPT201003"
+        plurality = 1
+        money = 10000
+        FROM = { country_event = 201004 }
+        ai_chance = {
+            factor = 60
+            modifier = {
+                factor = 1.5
+                FROM = { owns = 1723 }
+            }
+            modifier = {
+                factor = 1.5
+                FROM = { prestige = 100 }
+            }
+            modifier = {
+                factor = 1.5
+                FROM = { is_greater_power = yes }
+            }
+            modifier = {
+                factor = 2
+                NOT = { has_country_modifier = egyptian_excavations }
+            }
+        }
+    }
+
+    option = {
+        name = "EVTOPT201003OPTB"
+        prestige = 5
+        FROM = { country_event = 201005 }
+        ai_chance = {
+            factor = 40
+            modifier = {
+                factor = 0.5
+                FROM = { owns = 1723 }
+            }
+            modifier = {
+                factor = 0.5
+                FROM = { is_greater_power = yes }
+            }
+            modifier = {
+                factor = 1.3
+                FROM = { is_secondary_power = yes }
+            }
+            modifier = {
+                factor = 1.4
+                FROM = { tag = ENG }
+            }
+            modifier = {
+                factor = 1.5
+                has_country_modifier = egyptian_excavations
+            }
+
+            modifier = {
+                factor = 1.6
+                FROM = { prestige = 300 }
+            }
+            modifier = {
+                factor = 2
+                FROM = { prestige = 500 }
+            }
+            modifier = {
+                factor = 3
+                FROM = { prestige = 550 }
+            }
+            modifier = {
+                factor = 5
+                FROM = { prestige = 600 }
+            }
+        }
+    }
+}
+
+### Guatemala gives access
+
+country_event = {
+    id = 201004
+    title = "EVTNAME201004"
+    desc = "EVTDESC201004"
+    picture = "Botanic_expedition"
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTSPLENDID"
+        money = -10000
+        add_country_modifier = {
+            name = maya_excavations
+            duration = -1
+        }
+        relation = {
+            who = FROM
+            value = 25
+        }
+        prestige = 5
+    }
+}
+
+### Guatemala refuses
+
+country_event = {
+    id = 201005
+    title = "EVTNAME201005"
+    desc = "EVTDESC201005"
+    picture = "Botanic_expedition"
+    is_triggered_only = yes
+
+    option = {
+        name = "EVT201005OPTA"
+        relation = {
+            who = FROM
+            value = -10
+        }
+        prestige = -5
+        set_country_flag = maya_refused
+        ai_chance = { factor = 50 }
+    }
+
+    option = {
+        name = "EVT201005OPTB"
+        money = -50000
+        prestige = -10
+        add_country_modifier = {
+            name = maya_excavations
+            duration = -1
+        }
+        2189 = {
+            owner = { country_event = 201006 }
+        }
+        ai_chance = {
+            factor = 50
+            modifier = {
+                factor = 0
+                NOT = { money = 60000 }
+            }
+            modifier = {
+                factor = 5
+                OR = {
+                    is_secondary_power = yes
+                    is_greater_power = yes
+                }
+            }
+        }
+    }
+}
+
+### Guatemala bribed
+
+country_event = {
+    id = 201006
+    title = "EVTNAME201006"
+    desc = "EVTDESC201006"
+    picture = "Botanic_expedition"
+    is_triggered_only = yes
+
+    option = {
+        name = "EVT201006OPT"
+        prestige = 10
+        money = 50000
+        relation = {
+            who = FROM
+            value = 10
+        }
+    }
+}
+
+###################################
+# OE QUESTIONS AND ANSWERS        #
+###################################
+
+### OE questioned
+
+country_event = {
+    id = 201010
+    title = "EVTNAME201010"
+    desc = "EVTDESC201010"
+    picture = "Mesopotamia"
+    is_triggered_only = yes
+
+    option = {
+        name = "If they want dirt, give them dirt."
+        money = 15000
+        set_global_flag = mesopotamian_excavation_rights
+        FROM = { country_event = 201011 }
+        ai_chance = {
+            factor = 20
+            modifier = {
+                factor = 1.5
+                FROM = { ai = no }
+            }
+            modifier = {
+                factor = 0.1
+                has_global_flag = mesopotamian_excavation_rights
+            }
+            modifier = {
+                factor = 3
+                FROM = { prestige = 300 }
+            }
+            modifier = {
+                factor = 1.5
+                FROM = { is_greater_power = yes }
+            }
+        }
+    }
+
+    option = {
+        name = "I've got a jar of dirt, I've got a jar of dirt!"
+        prestige = 5
+        FROM = { country_event = 201012 }
+    }
+}
+
+# OE Allows
+country_event = {
+    id = 201011
+
+    title = "EVTNAME201011"
+    desc = "EVTDESC201011"
+    picture = "Mesopotamia"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "EVTOPTSPLENDID"
+        money = -15000
+        add_country_modifier = {
+            name = mesopotamian_excavations
+            duration = -1
+        }
+        relation = {
+            who = FROM
+            value = 20
+        }
+        set_global_flag = mesopotamian_excavation_rights
+        prestige = 5
+    }
+}
+
+# OE Refuses
+country_event = {
+    id = 201012
+
+    title = "EVTNAME201012"
+    desc = "EVTDESC201012"
+    picture = "Mesopotamia"
+    is_triggered_only = yes
+
+    option = {
+        name = "That's rather unfortunate."
+        relation = {
+            who = FROM
+            value = -20
+        }
+        prestige = -5
+        set_country_flag = mesopotamian_refused
+    }
+}
+
+#######################
+# Archaeology various #
+#######################
+
+### Exhibition
+
+country_event = {
+    id = 201013
+    title = "EVTNAME201013"
+    desc = "EVTDESC201013"
+    picture = "Archaeological_exhibition"
+
+    trigger = {
+        is_greater_power = yes
+        NOT = { has_country_flag = had_arch_exhibition }
+        has_country_flag = museum_build
+        OR = {
+            has_country_modifier = mesopotamian_excavations
+            has_country_modifier = maya_excavations
+            has_country_modifier = egyptian_excavations
+            has_country_modifier = mycenaean_excavations
+        }
+    }
+
+    mean_time_to_happen = {
+        months = 800
+        modifier = {
+            factor = 0.9
+            invention = early_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            has_country_modifier = egyptian_excavations
+        }
+        modifier = {
+            factor = 0.8
+            has_country_modifier = mesopotamian_excavations
+        }
+        modifier = {
+            factor = 0.8
+            has_country_modifier = maya_excavations
+        }
+        modifier = {
+            factor = 0.8
+            has_country_modifier = mycenaean_excavations
+        }
+        modifier = {
+            factor = 0.8
+            has_country_modifier = minoan_excavations
+        }
+        modifier = {
+            factor = 0.8
+            has_country_modifier = pompeji_excavations
+        }
+        modifier = {
+            factor = 0.7
+            has_country_flag = archaeological_society
+        }
+    }
+
+    option = {
+        name = "Archaeology is an amazing science."
+        plurality = 1
+        prestige = 10
+        years_of_research = 0.15
+        set_country_flag = had_arch_exhibition
+    }
+
+    option = {
+        name = "We shall showcase our exhibition to the world!"
+        set_country_flag = had_arch_exhibition
+        plurality = 1
+        prestige = 35
+        badboy = -1
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = {
+                    tag = THIS
+                    has_country_flag = had_arch_exhibition
+                }
+            }
+            country_event = 201014
+        }
+    }
+}
+
+# Invitation
+country_event = {
+    id = 201014
+    title = "EVTNAME201014"
+    desc = "EVTDESC201014"
+    picture = "Archaeological_exhibition"
+
+    is_triggered_only = yes
+
+    option = {
+        name = "Why don't we have something like this?"
+        relation = {
+            who = FROM
+            value = 15
+        }
+        prestige = -5
+        set_country_flag = blamed_by_other_archaeologists
+    }
+}
+
+### Blamed and without archaeology
+
+country_event = {
+    id = 201015
+    title = "EVTNAME201015"
+    desc = "EVTDESC201015"
+    picture = "Local_excavation"
+
+    trigger = {
+        is_greater_power = yes
+        NOT = { has_country_flag = local_excavation }
+        has_country_flag = blamed_by_other_archaeologists
+        idealism = 1
+        NOT = {
+            has_country_flag = had_arch_exhibition
+            has_country_modifier = mesopotamian_excavations
+            has_country_modifier = maya_excavations
+            has_country_modifier = egyptian_excavations
+            has_country_modifier = mycenaean_excavations
+            has_country_modifier = minoan_excavations
+            has_country_modifier = pompeji_excavations
+        }
+        NOT = { invention = early_archaeology }
+    }
+
+    mean_time_to_happen = { months = 3 }
+
+    option = {
+        name = "What a splendid idea!"
+        money = -75000
+        prestige = 2
+        set_country_flag = local_excavation
+        ai_chance = {
+            factor = 75
+            modifier = {
+                factor = 0
+                NOT = { money = 80000 }
+            }
+        }
+    }
+    option = {
+        name = "What a waste of money."
+        set_country_flag = local_excavation
+        prestige = -1
+        ai_chance = { factor = 25 }
+    }
+}
+
+### Local excavation success
+
+country_event = {
+    id = 201017
+    title = "EVTNAME201017"
+    desc = "EVTDESC201017"
+    picture = "Local_excavation"
+
+    trigger = {
+        is_greater_power = yes
+        NOT = { has_country_flag = local_excavation_end }
+        has_country_flag = local_excavation
+    }
+
+    mean_time_to_happen = { months = 60 }
+
+    option = {
+        name = "Our efforts have not gone to waste"
+        add_country_modifier = {
+            name = local_excavations
+            duration = -1
+        }
+        prestige = 3
+        years_of_research = 0.01
+        set_country_flag = local_excavation_end
+    }
+}
+
+### Archaeological society
+
+country_event = {
+    id = 201018
+    title = "EVTNAME201018"
+    desc = "EVTDESC201018"
+    picture = "Administration"
+
+    trigger = {
+        NOT = { has_country_flag = archaeological_society }
+        invention = early_archaeology
+        has_country_flag = museum_build
+        OR = {
+            has_country_modifier = mesopotamian_excavations
+            has_country_modifier = maya_excavations
+            has_country_modifier = egyptian_excavations
+            has_country_modifier = mycenaean_excavations
+            has_country_modifier = minoan_excavations
+            has_country_modifier = pompeji_excavations
+        }
+    }
+
+    mean_time_to_happen = {
+        months = 400
+        modifier = {
+            factor = 0.9
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            has_country_modifier = mesopotamian_excavations
+        }
+        modifier = {
+            factor = 0.9
+            is_greater_power = yes
+        }
+    }
+
+    option = {
+        name = "EVTOPTSPLENDID"
+        prestige = 10
+        years_of_research = 0.05
+        set_country_flag = archaeological_society
+    }
+}
+
+### Famous Archaeologist
+
+country_event = {
+    id = 201019
+    title = "EVTNAME201019"
+    desc = "EVTDESC201019"
+    picture = "Western_education"
+
+    trigger = {
+        has_country_flag = archaeological_society
+        invention = modern_archaeology
+        has_country_flag = museum_build
+        NOT = { has_country_flag = famous_archaeologist }
+        OR = {
+            has_country_modifier = mesopotamian_excavations
+            has_country_modifier = maya_excavations
+            has_country_modifier = egyptian_excavations
+            has_country_modifier = mycenaean_excavations
+            has_country_modifier = minoan_excavations
+            has_country_modifier = pompeji_excavations
+        }
+    }
+
+    mean_time_to_happen = {
+        months = 200
+        modifier = {
+            factor = 0.9
+            has_country_modifier = mesopotamian_excavations
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = had_arch_exhibition
+        }
+        modifier = {
+            factor = 0.9
+            is_greater_power = yes
+        }
+    }
+
+    option = {
+        name = "He serves as an example of the $COUNTRY_ADJ$ scientific society."
+        years_of_research = 0.05
+        set_country_flag = famous_archaeologist
+    }
+
+    option = {
+        name = "He serves as an example of the $COUNTRY_ADJ$ people."
+        prestige = 15
+        set_country_flag = famous_archaeologist
+    }
+}
+
+#####################
+# Success Aftermath #
+#####################
+
+#Tutankhamun
+
+country_event = {
+    id = 201037
+    title = "EVTNAME201037"
+    desc = "EVTDESC201037"
+    picture = "Carter"
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "EVT201038OPTA"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            relation = {
+                who = THIS
+                value = 25
+            }
+        }
+    }
+
+    option = {
+        name = "EVT201038OPTB"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            prestige = -5
+            set_country_flag = blamed_by_other_archaeologists
+        }
+    }
+}
+
+#El Mirador
+
+country_event = {
+    id = 201038
+    title = "EVTNAME201038"
+    desc = "EVTDESC201037"
+    picture = "Mirador"
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "EVT201038OPTA"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            relation = {
+                who = THIS
+                value = 25
+            }
+        }
+    }
+
+    option = {
+        name = "EVT201038OPTB"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            prestige = -5
+            set_country_flag = blamed_by_other_archaeologists
+        }
+    }
+}
+
+#Tower of Babylon
+
+country_event = {
+    id = 201039
+    title = "EVTNAME201039"
+    desc = "EVTDESC201037"
+    picture = "Babel"
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "EVT201038OPTA"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            relation = {
+                who = THIS
+                value = 25
+            }
+        }
+    }
+
+    option = {
+        name = "EVT201038OPTB"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            prestige = -5
+            set_country_flag = blamed_by_other_archaeologists
+        }
+    }
+}
+
+#Agamemnon's Mask
+
+country_event = {
+    id = 201070
+    title = "EVTNAME201070"
+    desc = "EVTDESC201037"
+    picture = "Mask"
+    is_triggered_only = yes
+    major = yes
+
+    option = {
+        name = "EVT201038OPTA"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            relation = {
+                who = THIS
+                value = 25
+            }
+        }
+    }
+
+    option = {
+        name = "EVT201038OPTB"
+        any_country = {
+            limit = {
+                is_greater_power = yes
+                NOT = { tag = THIS }
+            }
+            prestige = -5
+            set_country_flag = blamed_by_other_archaeologists
+        }
+    }
+}
+
+
+##########################
+# Excavations in general #
+##########################
+
+###############################################################################
+# Egyptian excavations. Please check the 'Great Powers' file, Events 19043-49 #
+###############################################################################
+
+############################################################################################
+
+####################
+# MAYA EXCAVATIONS #
+####################
+
+#Stele Found
+country_event = {
+    id = 201021
+    title = "EVTNAME201021"
+    desc = "EVTDESC201021"
+    picture = "Maya_stele"
+
+    trigger = { has_country_modifier = maya_excavations }
+
+    mean_time_to_happen = {
+        months = 350
+        modifier = {
+            factor = 0.9
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "That belongs in a museum!"
+        prestige = 5
+        years_of_research = 0.05
+    }
+}
+
+#Pyramid Found
+country_event = {
+    id = 201022
+    title = "EVTNAME201022"
+    desc = "EVTDESC201022"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_modifier = maya_excavations
+        NOT = { tag = FRA }
+        NOT = { has_country_flag = belloq_wins }
+        NOT = { has_country_flag = belloq_loses }
+        NOT = { has_country_flag = pyramid_found }
+    }
+
+    mean_time_to_happen = {
+        months = 500
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.8
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.7
+            has_country_flag = famous_archaeologist
+        }
+        modifier = {
+            factor = 0.6
+            invention = modern_archaeology
+        }
+    }
+
+    option = {
+        name = "I will go first. *drags a fedora deep in his face*"
+        years_of_research = 0.15
+        set_country_flag = pyramid_found
+    }
+}
+
+#Pyramid Found FRA
+country_event = {
+    id = 201023
+    title = "EVTNAME201022"
+    desc = "EVTDESC201023"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_modifier = maya_excavations
+        tag = FRA
+    }
+
+    mean_time_to_happen = {
+        months = 600
+        modifier = {
+            factor = 0.9
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "So once again, Jones, what was briefly yours is now mine."
+        years_of_research = 0.15
+        prestige = 15
+    }
+}
+
+#Pyramid Found 2
+country_event = {
+    id = 201024
+    title = "EVTNAME201022"
+    desc = "EVTDESC201022"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_modifier = maya_excavations
+        NOT = { tag = FRA }
+        OR = {
+            has_country_flag = belloq_wins
+            has_country_flag = belloq_loses
+        }
+    }
+
+    mean_time_to_happen = {
+        months = 600
+        modifier = {
+            factor = 0.9
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "Enough pyramid-adventures for me!"
+        years_of_research = 0.15
+        prestige = 15
+    }
+}
+
+#Expedition lost
+country_event = {
+    id = 201025
+    title = "EVTNAME201025"
+    desc = "EVTDESC201025"
+    picture = "lost_world"
+
+    trigger = { has_country_modifier = maya_excavations }
+
+    mean_time_to_happen = {
+        months = 350
+        modifier = {
+            factor = 1.2
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 1.3
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 1.4
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "That was clearly a great adventure. These scientists are heroes!"
+        money = -10000
+        prestige = -5
+        years_of_research = 0.05
+    }
+    option = {
+        name = "Dinosaurs? Hidden valley? Are you kidding me?!"
+        prestige = 5
+        years_of_research = -0.05
+    }
+}
+
+#El Mirador
+country_event = {
+    id = 201026
+    title = "EVTNAME201026"
+    desc = "EVTDESC201026"
+    picture = "Mirador"
+
+    trigger = {
+        has_country_modifier = maya_excavations
+        NOT = { has_global_flag = mirador_found }
+    }
+
+    mean_time_to_happen = {
+        months = 1000
+        modifier = {
+            factor = 0.9
+            invention = modern_archaeology
+        }
+        modifier = {
+            factor = 0.9
+            has_country_modifier = mesopotamian_excavations
+        }
+        modifier = {
+            factor = 0.9
+            has_country_modifier = mycenaean_excavations
+        }
+        modifier = {
+            factor = 0.9
+            has_country_modifier = minoan_excavations
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = had_arch_exhibition
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    fire_only_once = yes
+
+    option = {
+        name = "And neither Nazis nor Communists nearby who could interfere..."
+        prestige = 50
+        years_of_research = 0.5
+        set_global_flag = mirador_found
+        country_event = 201038
+    }
+}
+
+##########################
+# Pyramid Chain          #
+##########################
+
+#Pyramid Riddle
+country_event = {
+    id = 201027
+    title = "EVTNAME201027"
+    desc = "EVTDESC201027"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_flag = pyramid_found
+        NOT = { has_country_flag = pyramid_riddle }
+    }
+
+    mean_time_to_happen = { days = 3 }
+
+    option = {
+        name = "Stockpile the most useless stuff in the world? What?"
+        set_country_flag = pyramid_riddle
+    }
+}
+
+#Pyramid Riddle solved
+country_event = {
+    id = 201028
+    title = "EVTNAME201028"
+    desc = "EVTDESC201028"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_flag = pyramid_riddle
+        fertilizer = 1
+        NOT = { has_country_flag = pyramid_riddle_solved_artefact_scene }
+        NOT = { has_country_flag = pyramid_riddle_solved_escape }
+    }
+
+    mean_time_to_happen = { days = 3 }
+
+    option = {
+        name = "Gently... carefully... I'll do it..."
+        set_country_flag = pyramid_riddle_solved_artefact_scene
+        prestige = 1
+        fertilizer = -1
+    }
+    option = {
+        name = "I know this scene - it never works out. Grab the damn artefact and RUN!"
+        set_country_flag = pyramid_riddle_solved_escape
+        prestige = -1
+    }
+}
+
+#Pyramid escape 1
+country_event = {
+    id = 201029
+    title = "EVTNAME201029"
+    desc = "EVTDESC201029"
+    picture = "Maya_trap"
+
+    trigger = {
+        has_country_flag = pyramid_riddle_solved_artefact_scene
+        NOT = { has_country_flag = pyramid_riddle_solved_escape_1 }
+    }
+
+    mean_time_to_happen = { days = 3 }
+
+    option = {
+        name = "RUN!"
+        set_country_flag = pyramid_riddle_solved_escape_1
+    }
+}
+
+#Pyramid escape 2
+country_event = {
+    id = 201030
+    title = "EVTNAME201029"
+    desc = "EVTDESC201030"
+    picture = "Maya_trap"
+
+    trigger = {
+        has_country_flag = pyramid_riddle_solved_escape
+        NOT = { has_country_flag = pyramid_riddle_solved_escape_2 }
+    }
+
+    mean_time_to_happen = { days = 3 }
+
+    option = {
+        name = "I had seen this coming, damn!"
+        set_country_flag = pyramid_riddle_solved_escape_2
+    }
+}
+
+#Pyramid Belloq wins
+country_event = {
+    id = 201031
+    title = "EVTNAME201031"
+    desc = "EVTDESC201031"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_flag = pyramid_riddle_solved_escape_1
+        NOT = { has_country_flag = belloq_wins }
+    }
+
+    mean_time_to_happen = { days = 3 }
+
+    option = {
+        name = "Damn you, Belloq!"
+        set_country_flag = belloq_wins
+        prestige = -10
+        remove_country_modifier = maya_excavations
+        FRA = { country_event = 201023 }
+    }
+}
+
+#Pyramid Belloq loses
+country_event = {
+    id = 201032
+    title = "EVTNAME201032"
+    desc = "EVTDESC201032"
+    picture = "Maya_pyramid"
+
+    trigger = {
+        has_country_flag = pyramid_riddle_solved_escape_2
+        NOT = { has_country_flag = belloq_loses }
+    }
+
+    mean_time_to_happen = { days = 3 }
+
+    option = {
+        name = "Back home!"
+        set_country_flag = belloq_loses
+        prestige = 15
+    }
+}
+
+############################################################################################
+
+############################
+# MESOPOTAMIAN EXCAVATIONS #
+############################
+
+#Cuneiform tablet archive Found
+country_event = {
+    id = 201033
+    title = "EVTNAME201033"
+    desc = "EVTDESC201033"
+    picture = "cuneiform_tablet"
+
+    trigger = { has_country_modifier = mesopotamian_excavations }
+
+    mean_time_to_happen = {
+        months = 300
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "That belongs in a museum!"
+        prestige = 5
+        years_of_research = 0.05
+    }
+}
+
+#Palace Found
+country_event = {
+    id = 201034
+    title = "EVTNAME201034"
+    desc = "EVTDESC201034"
+    picture = "mesopotamia"
+
+    trigger = { has_country_modifier = mesopotamian_excavations }
+
+    mean_time_to_happen = {
+        months = 500
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "Incredible!"
+        years_of_research = 0.10
+        prestige = 10
+    }
+}
+
+#Excavation failure
+country_event = {
+    id = 201035
+    title = "EVTNAME201035"
+    desc = "EVTDESC201035"
+    picture = "mesopotamia2"
+
+    trigger = { has_country_modifier = mesopotamian_excavations }
+
+    mean_time_to_happen = {
+        months = 400
+        modifier = {
+            factor = 1.3
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 1.3
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    option = {
+        name = "We must begin over again!"
+        money = -5000
+        prestige = -5
+        years_of_research = -0.05
+    }
+}
+
+#Tower of Babel
+country_event = {
+    id = 201036
+    title = "EVTNAME201036"
+    desc = "EVTDESC201036"
+    picture = "Babel"
+
+    trigger = {
+        has_country_modifier = mesopotamian_excavations
+        NOT = { has_global_flag = tower_of_babel_found }
+    }
+
+    mean_time_to_happen = {
+        months = 700
+        modifier = {
+            factor = 0.9
+            has_country_flag = had_arch_exhibition
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = museum_build
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = archaeological_society
+        }
+        modifier = {
+            factor = 0.9
+            has_country_flag = famous_archaeologist
+        }
+    }
+
+    fire_only_once = yes
+
+    option = {
+        name = "And I thought it was only a legend."
+        prestige = 50
+        years_of_research = 0.5
+        set_global_flag = tower_of_babel_found
+        country_event = 201039
+    }
+}

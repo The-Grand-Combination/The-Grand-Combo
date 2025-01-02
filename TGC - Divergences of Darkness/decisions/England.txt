@@ -1,0 +1,545 @@
+political_decisions = {
+    create_british_empire = {
+        picture = British_islands
+        potential = {
+            NOT = { has_global_flag = britemp }
+            OR = {
+                tag = ENL
+                tag = SCO
+                tag = IRE
+                tag = WLS
+            }
+        }
+        allow = {
+            NOT = { war = yes }
+            NOT = { part_of_sphere = yes }
+            is_greater_power = yes
+            WLS = {
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = { in_sphere = THIS }
+                    }
+                }
+            }
+            ENL = {
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = { in_sphere = THIS }
+                    }
+                }
+            }
+            SCO = {
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = { in_sphere = THIS }
+                    }
+                }
+            }
+            IRE = {
+                all_core = {
+                    OR = {
+                        owned_by = THIS
+                        owner = { in_sphere = THIS }
+                    }
+                }
+            }
+        }
+
+        effect = {
+            prestige = 30
+            random_owned = {
+                limit = {
+                    owner = { tag = ENL }
+                }
+                owner = { capital = 300 }
+            }
+            random_owned = {
+                limit = {
+                    owner = { tag = WLS }
+                }
+                owner = { capital = 273 }
+            }
+            random_owned = {
+                limit = {
+                    owner = { tag = IRE }
+                }
+                owner = { capital = 263 }
+            }
+            random_owned = {
+                limit = {
+                    owner = { tag = SCO }
+                }
+                owner = { capital = 269 }
+            }
+            any_country = {
+                limit = {
+                    OR = {
+                        tag = ENL
+                        tag = WLS
+                        tag = SCO
+                        tag = IRE
+                    }
+                    in_sphere = THIS
+                    NOT = { tag = THIS }
+                }
+                annex_to = THIS
+            }
+            change_tag = ENG
+            any_owned = {
+                limit = { is_core = SCO }
+                add_core = THIS
+            }
+            any_owned = {
+                limit = { is_core = ENL }
+                add_core = THIS
+            }
+            any_owned = {
+                limit = { is_core = IRE }
+                add_core = THIS
+            }
+            any_owned = {
+                limit = { is_core = WLS }
+                add_core = THIS
+            }
+            set_global_flag = britemp
+            add_accepted_culture = anglois
+            add_accepted_culture = english
+            add_accepted_culture = scottish
+            add_accepted_culture = welsh
+            add_accepted_culture = irish
+        }
+        ai_will_do = { factor = 1 }
+    }
+
+    ENL_recognized = {
+        picture = British_islands
+        potential = {
+            NOT = { has_global_flag = wait_DUA }
+            tag = ENL
+            NOT = { has_country_flag = ENL_recognized }
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+        }
+
+        effect = {
+            set_country_flag = ENL_recognized
+            set_global_flag = ENL_loss
+            any_owned = {
+                limit = { is_core = THIS }
+                remove_core = DUA
+            }
+            any_country = {
+                limit = {
+                    any_owned_province = { is_core = ENL }
+                    NOT = { primary_culture = english }
+                }
+                relation = {
+                    who = THIS
+                    value = -100
+                }
+                leave_alliance = THIS
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    ENL_claim = {
+        picture = British_islands
+        potential = {
+            tag = DUA
+            has_global_flag = ENL_loss
+            is_greater_power = yes
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+            ENL = {
+                NOT = { is_greater_power = yes }
+            }
+            all_core = { owned_by = THIS }
+            nationalism_n_imperialism = 1
+        }
+
+        effect = {
+            clr_global_flag = ENL_loss
+            badboy = 20
+            ENL = {
+                all_core = { add_core = DUA }
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    OCC_recognized = {
+        picture = occitania_free
+        potential = {
+            NOT = { has_global_flag = wait_DUA }
+            tag = OCC
+            NOT = { has_country_flag = OCC_recognized }
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+        }
+
+        effect = {
+            set_country_flag = OCC_recognized
+            set_global_flag = OCC_loss
+            any_owned = {
+                limit = { is_core = THIS }
+                remove_core = DUA
+            }
+            any_country = {
+                limit = {
+                    any_owned_province = { is_core = OCC }
+                    NOT = { primary_culture = provencal }
+                }
+                relation = {
+                    who = THIS
+                    value = -100
+                }
+                leave_alliance = THIS
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    OCC_claim = {
+        picture = occitania_claim
+        potential = {
+            tag = DUA
+            has_global_flag = OCC_loss
+            is_greater_power = yes
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+            OCC = {
+                NOT = { is_greater_power = yes }
+            }
+            all_core = { owned_by = THIS }
+            nationalism_n_imperialism = 1
+        }
+
+        effect = {
+            clr_global_flag = OCC_loss
+            badboy = 20
+            OCC = {
+                all_core = { add_core = DUA }
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    IRE_recognized = {
+        picture = ireland_free
+        potential = {
+            tag = IRE
+            NOT = { has_country_flag = IRE_recognized }
+            NOT = { has_global_flag = wait_DUA }
+            all_core = { owned_by = THIS }
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+        }
+
+        effect = {
+            set_country_flag = IRE_recognized
+            set_global_flag = IRE_loss
+            any_owned = {
+                limit = { is_core = THIS }
+                remove_core = DUA
+            }
+            any_country = {
+                limit = {
+                    any_owned_province = { is_core = IRE }
+                    NOT = { primary_culture = irish }
+                }
+                relation = {
+                    who = THIS
+                    value = -100
+                }
+                leave_alliance = THIS
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    IRE_claim = {
+        picture = ireland_claim
+        potential = {
+            tag = DUA
+            has_global_flag = IRE_loss
+            is_greater_power = yes
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+            IRE = {
+                NOT = { is_greater_power = yes }
+            }
+            all_core = { owned_by = THIS }
+            277 = { owned_by = THIS }
+            nationalism_n_imperialism = 1
+        }
+
+        effect = {
+            clr_global_flag = IRE_loss
+            badboy = 20
+            IRE = {
+                all_core = { add_core = DUA }
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    SCO_recognized = {
+        picture = scotland_free
+        potential = {
+            tag = SCO
+            NOT = { has_country_flag = SCO_recognized }
+            all_core = { owned_by = THIS }
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+        }
+
+        effect = {
+            set_country_flag = SCO_recognized
+            set_global_flag = SCO_loss
+            any_owned = {
+                limit = { is_core = THIS }
+                remove_core = SCA
+            }
+            any_country = {
+                limit = {
+                    any_owned_province = { is_core = SCO }
+                    NOT = { primary_culture = scottish }
+                }
+                relation = {
+                    who = THIS
+                    value = -100
+                }
+                leave_alliance = THIS
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    SCO_claim = {
+        picture = scotland_claim
+        potential = {
+            tag = SCA
+            has_global_flag = SCO_loss
+            is_greater_power = yes
+            NOT = {
+                ENG = { exists = yes }
+            }
+        }
+
+        allow = {
+            war = no
+            is_vassal = no
+            SCO = {
+                NOT = { is_greater_power = yes }
+            }
+            all_core = { owned_by = THIS }
+            nationalism_n_imperialism = 1
+        }
+
+        effect = {
+            clr_global_flag = SCO_loss
+            badboy = 20
+            SCO = {
+                all_core = { add_core = SCA }
+            }
+        }
+
+        ai_will_do = { factor = 1 }
+    }
+
+    end_DUA_ENL = {
+        picture = france_1350
+        potential = {
+            OR = {
+                tag = ENL
+                tag = ENG
+            }
+            DUA = { exists = yes }
+            FRA = { exists = no }
+        }
+
+        allow = {
+            all_core = { owned_by = THIS }
+            OR = {
+                AND = {
+                    is_greater_power = yes
+                    DUA = { is_greater_power = no }
+                }
+                AND = {
+                    DUA = { is_greater_power = yes }
+                    THIS = { rank = 4 }
+                }
+            }
+        }
+
+        effect = {
+            prestige = 50
+            DUA = { country_event = 650295 }
+        }
+    }
+
+    English_north_ENL = {
+        picture = liverpool
+        potential = {
+            OR = {
+                tag = ENL
+                tag = ENG
+            }
+            owns = 281
+            owns = 277
+            owns = 284
+            NOT = { has_global_flag = North_ENL_renamed }
+        }
+
+        allow = {
+            NOT = { war = yes }
+        }
+
+        effect = {
+            277 = { change_province_name = "Liverpool" }
+            278 = { change_province_name = "Manchester" }
+            280 = { change_province_name = "Newcastle On Tyne" }
+            282 = { change_province_name = "Leeds" }
+            283 = { change_province_name = "Sheffield" }
+            285 = { change_province_name = "Chester" }
+            286 = { change_province_name = "Shrewesbury" }
+            288 = { change_province_name = "Nottingham" }
+            289 = { change_province_name = "Leicester" }
+            290 = { change_province_name = "Lincoln" }
+            304 = { change_province_name = "Isle of Man" }
+            set_global_flag = North_ENL_renamed
+        }
+    }
+
+    English_north_DUA = {
+        picture = liverpool
+        potential = {
+            tag = DUA
+            owns = 281
+            owns = 277
+            owns = 284
+            has_global_flag = North_ENL_renamed
+        }
+
+        allow = {
+            NOT = { war = yes }
+        }
+
+        effect = {
+            277 = { change_province_name = "Livreport" }
+            278 = { change_province_name = "Manchester" }
+            280 = { change_province_name = "Neufchâtel Sur Tyne" }
+            282 = { change_province_name = "Loinèr" }
+            283 = { change_province_name = "Chef-des-Champs" }
+            285 = { change_province_name = "Cestre" }
+            286 = { change_province_name = "Amwythig" }
+            288 = { change_province_name = "Nottingville" }
+            289 = { change_province_name = "Leicestre" }
+            290 = { change_province_name = "Lindre" }
+            304 = { change_province_name = "Île de Man" }
+            clr_global_flag = North_ENL_renamed
+        }
+    }
+
+    English_south_ENL = {
+        picture = london
+        potential = {
+            OR = {
+                tag = ENL
+                tag = ENG
+            }
+            owns = 287
+            owns = 303
+            owns = 293
+            NOT = { has_global_flag = South_ENL_renamed }
+        }
+
+        allow = {
+            NOT = { war = yes }
+        }
+
+        effect = {
+            287 = { change_province_name = "Salisbury" }
+            299 = { change_province_name = "Plymouth" }
+            300 = { change_province_name = "London" }
+            301 = { change_province_name = "Canterbury" }
+            302 = { change_province_name = "Brighton" }
+            set_global_flag = South_ENL_renamed
+        }
+    }
+
+    English_south_DUA = {
+        picture = london
+        potential = {
+            tag = DUA
+            owns = 287
+            owns = 303
+            owns = 293
+            has_global_flag = South_ENL_renamed
+        }
+
+        allow = {
+            NOT = { war = yes }
+        }
+
+        effect = {
+            287 = { change_province_name = "Plymville" }
+            299 = { change_province_name = "Plymouth" }
+            300 = { change_province_name = "Londres" }
+            301 = { change_province_name = "Cantorbéry" }
+            302 = { change_province_name = "Hantone" }
+            clr_global_flag = South_ENL_renamed
+        }
+    }
+
+    English_southern_cores = {
+        picture = British_islands
+        potential = {
+            tag = ENL
+            NOT = { is_core = 300 }
+        }
+
+        allow = {
+            NOT = { war = yes }
+            is_vassal = no
+        }
+
+        effect = {
+            ENG_300 = { add_core = ENL }
+            ENG_296 = { add_core = ENL }
+            ENG_273 = { add_core = ENL }
+        }
+    }
+}
