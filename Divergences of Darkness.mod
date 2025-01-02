@@ -1,0 +1,7 @@
+name = "Divergences of Darkness"
+path = "mod/Divergences of Darkness"
+user_dir = "DoD"
+replace_path = "events"
+replace_path = "decisions"
+replace_path = "history/provinces"
+replace_path = "history/wars"
