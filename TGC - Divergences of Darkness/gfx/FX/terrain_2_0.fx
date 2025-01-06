@@ -773,11 +773,11 @@ float3 RGBtoHSV(float3 RGB)
         Delta.rgb -= Delta.brg;
         Delta.rg += float2(2,4);
         if (RGB.r >= HSV.z)
-            HSV.x = Delta.b;
+			HSV.x = Delta.b;
         else if (RGB.g >= HSV.z)
-            HSV.x = Delta.r;
+			HSV.x = Delta.r;
         else
-            HSV.x = Delta.g;
+			HSV.x = Delta.g;
         HSV.x = frac(HSV.x / 6);
     }
     return HSV;

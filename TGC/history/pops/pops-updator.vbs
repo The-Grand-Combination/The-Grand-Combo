@@ -44,15 +44,15 @@ Sub AddContent(strPath, objList)
     Dim objItem
     With CreateObject("Scripting.FileSystemObject")
         If .FileExists(strPath) Then
-            objList(strPath) = ReadFromFile(strPath, FileEncoding)
+			objList(strPath) = ReadFromFile(strPath, FileEncoding)
         End If
         If .FolderExists(strPath) Then
-            For Each objItem In .GetFolder(strPath).Files
-                AddContent objItem.Path, objList
-            Next
-            For Each objItem In .GetFolder(strPath).SubFolders
-                AddContent objItem.Path, objList
-            Next
+			For Each objItem In .GetFolder(strPath).Files
+			    AddContent objItem.Path, objList
+			Next
+			For Each objItem In .GetFolder(strPath).SubFolders
+			    AddContent objItem.Path, objList
+			Next
         End If
     End With
 End Sub
