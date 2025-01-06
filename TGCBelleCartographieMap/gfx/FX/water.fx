@@ -390,7 +390,7 @@ float4 PixelShader_HoiWater_2_0( VS_OUTPUT_WATER IN ) : COLOR
 	float3 vBumpD = tex2D( WaterNormalMap, coordD.xy );
 
 	float3 vBumpTex = normalize(WaveModOne * (vBumpA.xyz + vBumpB.xyz +
-						         vBumpC.xyz + vBumpD.xyz) - WaveModTwo);
+								 vBumpC.xyz + vBumpD.xyz) - WaveModTwo);
 
 										     	
 	float3 WorldColorColor = tex2D( WorldColor, IN.WorldTexture );
