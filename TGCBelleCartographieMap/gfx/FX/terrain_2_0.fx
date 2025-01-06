@@ -54,199 +54,199 @@ float3 ApplyFOWColor( float3 c, float FOW )
 sampler BaseTexture  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex0>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler TreeTexture  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex0>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 
 sampler MapTexture  =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex1>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler NoiseTexture  =
 sampler_state
 {
-    Texture = <tex5>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex5>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler OverlayTexture  =
 sampler_state
 {
-    Texture = <tex5>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex5>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler StripesTexture  =
 sampler_state
 {
-    Texture = <tex7>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex7>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 
 sampler ColorTexture  =
 sampler_state
 {
-    Texture = <tex4>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex4>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 // used for political, religious etc etc..
 sampler GeneralTexture  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex2>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler GeneralTexture2  =
 sampler_state
 {
-    Texture = <tex3>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex3>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 
 sampler TerrainAlphaTexture  =
 sampler_state
 {
-    Texture = <tex3>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex3>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler TextureSheet  =
 sampler_state
 {
-    Texture = <tex6>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex6>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler BorderDirectionTexture  =
 sampler_state
 {
-    Texture = <tex4>;
-    MinFilter = Linear;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex4>;
+	MinFilter = Linear;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler WinterTexture  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex2>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler BorderTexture  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Linear;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex2>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler QuadIndexTexture  =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Point; //Linear;
-    MagFilter = Point; //Linear;
-    MipFilter = None;
-    AddressU = Mirror;
-    AddressV = Mirror;
+	Texture = <tex1>;
+	MinFilter = Point; //Linear;
+	MagFilter = Point; //Linear;
+	MipFilter = None;
+	AddressU = Mirror;
+	AddressV = Mirror;
 };
 
 sampler TerraIncognitaTextureTerrain =
 sampler_state
 {
-    Texture = <tex7>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex7>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler TerraIncognitaTextureTree =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex1>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 
 struct VS_INPUT
 {
-    float2 vPosition  : POSITION;
-    int2 vProvinceId : TEXCOORD0;
+	float2 vPosition  : POSITION;
+	int2 vProvinceId : TEXCOORD0;
 };
 
 struct VS_BORDER_INPUT
@@ -257,78 +257,78 @@ struct VS_BORDER_INPUT
 
 struct VS_INPUT_BEACH
 {
-    float2 vPosition  : POSITION;
-    float4 vTerrainIndexColor : COLOR0;
+	float2 vPosition  : POSITION;
+	float4 vTerrainIndexColor : COLOR0;
   //  float2 vPixelCoord : TEXCOORD0;
 };
 
 struct VS_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
-    float2  vTexCoord1 : TEXCOORD1;
-    float2  vColorTexCoord : TEXCOORD2;
+	float4  vPosition : POSITION;
+	float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
+	float2  vTexCoord1 : TEXCOORD1;
+	float2  vColorTexCoord : TEXCOORD2;
 
-    float2  vBorderTexCoord0 : TEXCOORD3;
-    float2  vBorderTexCoord1 : TEXCOORD4;
+	float2  vBorderTexCoord0 : TEXCOORD3;
+	float2  vBorderTexCoord1 : TEXCOORD4;
 
-    float2  vTerrainTexCoord : TEXCOORD5;
+	float2  vTerrainTexCoord : TEXCOORD5;
 
-    float2 vProvinceIndexCoord  : TEXCOORD6;
-    float4 vBorderOffsetColor : COLOR0;
-    
-    
+	float2 vProvinceIndexCoord  : TEXCOORD6;
+	float4 vBorderOffsetColor : COLOR0;
+	
+	
 };
 
 struct VS_MAP_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
-    float2  vTexCoord1 : TEXCOORD1;
-    float2  vColorTexCoord : TEXCOORD2;
+	float4  vPosition : POSITION;
+	float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
+	float2  vTexCoord1 : TEXCOORD1;
+	float2  vColorTexCoord : TEXCOORD2;
 	float2	vProvinceId : TEXCOORD3;
-    float2  vTerrainTexCoord : TEXCOORD4; 
-    float4	vTerrainIndexColor : TEXCOORD5;
+	float2  vTerrainTexCoord : TEXCOORD4; 
+	float4	vTerrainIndexColor : TEXCOORD5;
 	float4 vPosTex : TEXCOORD6; // workarounds
 };
 
 struct VS_OUTPUT_BEACH
 {
-    float4  vPosition : POSITION;
-    float2  vTexCoordBase : TEXCOORD0;
-    float2  vColorTexCoord : TEXCOORD1;
+	float4  vPosition : POSITION;
+	float2  vTexCoordBase : TEXCOORD0;
+	float2  vColorTexCoord : TEXCOORD1;
 	// Later put this into ONE texcoord, this is easier for debugging etc..
-    float3  vLightIntensity : TEXCOORD2;
-    float2 vProvinceIndexCoord  : TEXCOORD3;
-    float2 vBorderTexCoord0		: TEXCOORD4;
-    
-    float4 vTerrainIndexColor : TEXCOORD5;
-    float2  vTexCoord1 : TEXCOORD6;
-    float4 vBorderOffsetColor : COLOR0;
+	float3  vLightIntensity : TEXCOORD2;
+	float2 vProvinceIndexCoord  : TEXCOORD3;
+	float2 vBorderTexCoord0		: TEXCOORD4;
+	
+	float4 vTerrainIndexColor : TEXCOORD5;
+	float2  vTexCoord1 : TEXCOORD6;
+	float4 vBorderOffsetColor : COLOR0;
 };
 
 struct VS_INPUT_PTI
 {
-    float2 vPosition  : POSITION;
+	float2 vPosition  : POSITION;
 };
 
 struct VS_OUTPUT_PTI
 {
-    float4  vPosition : POSITION;
+	float4  vPosition : POSITION;
 };
 
 
 struct VS_INPUT_TREE
 {
-    float3 vPosition : POSITION;
-    float2 vTexCoord : TEXCOORD0;
+	float3 vPosition : POSITION;
+	float2 vTexCoord : TEXCOORD0;
 };
 
 struct VS_OUTPUT_TREE
 {
-    float4 vPosition   : POSITION;
-    float2 vTexCoord   : TEXCOORD0;
-    float2 vTexCoordTI : TEXCOORD1;
+	float4 vPosition   : POSITION;
+	float2 vTexCoord   : TEXCOORD0;
+	float2 vTexCoordTI : TEXCOORD1;
 };
 
 ///////	//////////////////////////////////////////////////////////////////////////
@@ -349,7 +349,7 @@ const float NUM_TILES_X = 1.0/8.0;
 const float NUM_TILES_Y = 1.0/8.0;
 
 
-//32.0 = 64 textures    16.0 = 256 textures
+//32.0 = 64 textures	16.0 = 256 textures
 #define NUM_TERRAINS_FACTOR 32.0 //NUM_TILES_X * 256.0 / Num Terrains?
 #define X_CLAMP 0.125
 #define Y_CLAMP 0.125
@@ -357,10 +357,10 @@ const float NUM_TILES_Y = 1.0/8.0;
 
 struct TILE_STRUCT
 {
-    float2  vTexCoord0 : TEXCOORD0;
-    float2  vTexCoord1 : TEXCOORD1;
-    float2  vColorTexCoord : TEXCOORD2;
-    float4 vTerrainIndexColor : COLOR0;
+	float2  vTexCoord0 : TEXCOORD0;
+	float2  vTexCoord1 : TEXCOORD1;
+	float2  vColorTexCoord : TEXCOORD2;
+	float4 vTerrainIndexColor : COLOR0;
 };
 
 
@@ -498,42 +498,42 @@ float GenerateHeight( TILE_STRUCT v )
 }
 
 float4x4 inverse(float4x4 m) {
-    float n11 = m[0][0], n12 = m[1][0], n13 = m[2][0], n14 = m[3][0];
-    float n21 = m[0][1], n22 = m[1][1], n23 = m[2][1], n24 = m[3][1];
-    float n31 = m[0][2], n32 = m[1][2], n33 = m[2][2], n34 = m[3][2];
-    float n41 = m[0][3], n42 = m[1][3], n43 = m[2][3], n44 = m[3][3];
+	float n11 = m[0][0], n12 = m[1][0], n13 = m[2][0], n14 = m[3][0];
+	float n21 = m[0][1], n22 = m[1][1], n23 = m[2][1], n24 = m[3][1];
+	float n31 = m[0][2], n32 = m[1][2], n33 = m[2][2], n34 = m[3][2];
+	float n41 = m[0][3], n42 = m[1][3], n43 = m[2][3], n44 = m[3][3];
 
-    float t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
-    float t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44;
-    float t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44;
-    float t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
+	float t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
+	float t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44;
+	float t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44;
+	float t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
 
-    float det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
-    float idet = 1.0f / det;
+	float det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
+	float idet = 1.0f / det;
 
-    float4x4 ret;
+	float4x4 ret;
 
-    ret[0][0] = t11 * idet;
-    ret[0][1] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * idet;
-    ret[0][2] = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) * idet;
-    ret[0][3] = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) * idet;
+	ret[0][0] = t11 * idet;
+	ret[0][1] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * idet;
+	ret[0][2] = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) * idet;
+	ret[0][3] = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) * idet;
 
-    ret[1][0] = t12 * idet;
-    ret[1][1] = (n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 - n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44) * idet;
-    ret[1][2] = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) * idet;
-    ret[1][3] = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) * idet;
+	ret[1][0] = t12 * idet;
+	ret[1][1] = (n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 - n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44) * idet;
+	ret[1][2] = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) * idet;
+	ret[1][3] = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) * idet;
 
-    ret[2][0] = t13 * idet;
-    ret[2][1] = (n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 + n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44) * idet;
-    ret[2][2] = (n12 * n24 * n41 - n14 * n22 * n41 + n14 * n21 * n42 - n11 * n24 * n42 - n12 * n21 * n44 + n11 * n22 * n44) * idet;
-    ret[2][3] = (n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 + n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43) * idet;
+	ret[2][0] = t13 * idet;
+	ret[2][1] = (n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 + n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44) * idet;
+	ret[2][2] = (n12 * n24 * n41 - n14 * n22 * n41 + n14 * n21 * n42 - n11 * n24 * n42 - n12 * n21 * n44 + n11 * n22 * n44) * idet;
+	ret[2][3] = (n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 + n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43) * idet;
 
-    ret[3][0] = t14 * idet;
-    ret[3][1] = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) * idet;
-    ret[3][2] = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) * idet;
-    ret[3][3] = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) * idet;
+	ret[3][0] = t14 * idet;
+	ret[3][1] = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) * idet;
+	ret[3][2] = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) * idet;
+	ret[3][3] = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) * idet;
 
-    return ret;
+	return ret;
 }
 
 const float vXStretch = 16; //higher gives textures more stretch change both values
@@ -747,27 +747,27 @@ float SelfShadow( TILE_STRUCT v, float3 lightDir, float3 viewDir )
 
 float3 Hue(float H)
 {
-    float R = abs(H * 6 - 3) - 1;
-    float G = 2 - abs(H * 6 - 2);
-    float B = 2 - abs(H * 6 - 4);
-    return saturate(float3(R,G,B));
+	float R = abs(H * 6 - 3) - 1;
+	float G = 2 - abs(H * 6 - 2);
+	float B = 2 - abs(H * 6 - 4);
+	return saturate(float3(R,G,B));
 }
 
 float3 HSVtoRGB(float3 HSV)
 {
-    return ((Hue(HSV.x) - 1) * HSV.y + 1) * HSV.z;
+	return ((Hue(HSV.x) - 1) * HSV.y + 1) * HSV.z;
 }
 
 float3 RGBtoHSV(float3 RGB)
 {
-    float3 HSV = 0;
-    
+	float3 HSV = 0;
+	
 	HSV.z = max(RGB.r, max(RGB.g, RGB.b));
-    float M = min(RGB.r, min(RGB.g, RGB.b));
-    float C = HSV.z - M;
+	float M = min(RGB.r, min(RGB.g, RGB.b));
+	float C = HSV.z - M;
 
-    if (C != 0)
-    {
+	if (C != 0)
+	{
 		HSV.y = C / HSV.z;
 		float3 Delta = (HSV.z - RGB) / C;
 		Delta.rgb -= Delta.brg;
@@ -779,8 +779,8 @@ float3 RGBtoHSV(float3 RGB)
 		else
 			HSV.x = Delta.g;
 		HSV.x = frac(HSV.x / 6);
-    }
-    return HSV;
+	}
+	return HSV;
 }
 
 float4 PixelShader_Map2_0_General( VS_MAP_OUTPUT v ) : COLOR
@@ -800,24 +800,24 @@ float4 PixelShader_Map2_0_General( VS_MAP_OUTPUT v ) : COLOR
 	//float3 viewDir = TanViewPos - TanFragPos;
 	//float3 lightDir = TanLightPos - TanFragPos;
 	
-    TILE_STRUCT s;
-    s.vTexCoord1 = v.vTexCoord1;
-    s.vColorTexCoord = v.vColorTexCoord;
-    s.vTerrainIndexColor = v.vTerrainIndexColor;
-    s.vTexCoord0 = v.vTexCoord0.xy;
+	TILE_STRUCT s;
+	s.vTexCoord1 = v.vTexCoord1;
+	s.vColorTexCoord = v.vColorTexCoord;
+	s.vTerrainIndexColor = v.vTerrainIndexColor;
+	s.vTexCoord0 = v.vTexCoord0.xy;
 	
 	//s = ParallaxMapping( s, viewDir );
 	//float penumbraFactor = SelfShadow( s, lightDir, viewDir );
 	
 
-    float4 TerrainColor = GenerateTiles( s );
+	float4 TerrainColor = GenerateTiles( s );
 
-    float Grey = dot( TerrainColor.rgb, GREYIFY ); 
+	float Grey = dot( TerrainColor.rgb, GREYIFY ); 
  	TerrainColor.rgb = Grey;
 	TerrainColor *= White;
 	
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
-    vProvinceUV /= PROVINCE_LOOKUP_SIZE;
+	vProvinceUV /= PROVINCE_LOOKUP_SIZE;
   
   	float4 Color1 = tex2D( GeneralTexture, vProvinceUV ) - 0.7;
 	float4 Color2 = tex2D( GeneralTexture2, vProvinceUV ) - 0.7;
@@ -839,7 +839,7 @@ float4 PixelShader_Map2_0_General_Low( VS_MAP_OUTPUT v ) : COLOR
 	float4 OverlayColor = tex2D( OverlayTexture, v.vColorTexCoord );
 	
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
-    vProvinceUV /= PROVINCE_LOOKUP_SIZE;
+	vProvinceUV /= PROVINCE_LOOKUP_SIZE;
   
   	float4 Color1 = tex2D( GeneralTexture, vProvinceUV ) - 0.7;
 	float4 Color2 = tex2D( GeneralTexture2, vProvinceUV ) - 0.7;
@@ -889,20 +889,20 @@ float4 PixelShader_Map2_0( VS_MAP_OUTPUT v ) : COLOR
 	//float3 viewDir = TanViewPos - TanFragPos;
 	//float3 lightDir = TanLightPos - TanFragPos;
 	
-    TILE_STRUCT s;
-    s.vTexCoord1 = v.vTexCoord1;
-    s.vColorTexCoord = v.vColorTexCoord;
-    s.vTerrainIndexColor = v.vTerrainIndexColor;
-    s.vTexCoord0 = v.vTexCoord0.xy;
+	TILE_STRUCT s;
+	s.vTexCoord1 = v.vTexCoord1;
+	s.vColorTexCoord = v.vColorTexCoord;
+	s.vTerrainIndexColor = v.vTerrainIndexColor;
+	s.vTexCoord0 = v.vTexCoord0.xy;
 	
 	//s = ParallaxMapping( s, viewDir );
 	//float penumbraFactor = SelfShadow( s, lightDir, viewDir );
 
-    float4 OutColor = GenerateTiles( s );
+	float4 OutColor = GenerateTiles( s );
 	OutColor.rgb *= LIGHTNESS;
 	
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
-    vProvinceUV /= PROVINCE_LOOKUP_SIZE;
+	vProvinceUV /= PROVINCE_LOOKUP_SIZE;
   
 	float4 FogColor = tex2D( GeneralTexture, vProvinceUV );
 
@@ -1017,7 +1017,7 @@ float4 PixelShader_Beach_General_Low( VS_OUTPUT_BEACH v ) : COLOR
 	OutColor.a = 1;
 	
 	float4 ColorColor = tex2D( ColorTexture, v.vColorTexCoord ); //Coordinates for colormap
-    	
+		
 	//float4 OutColor = float4( COLOR_VALUE,COLOR_VALUE,COLOR_VALUE,1);
 	OutColor.rgb = lerp(ColorColor.rgb, float3(OutColor.r,OutColor.g,OutColor.b), 0.3);
 	
@@ -1041,9 +1041,9 @@ float4 PixelShader_Beach_General_Low( VS_OUTPUT_BEACH v ) : COLOR
 /////////////////////////////////////////////////////////////////////////////////
 struct VS_BORDER_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float4  vUV_ProvUV : TEXCOORD0;
-    float4 vBorderOffsetColor : TEXCOORD1; 
+	float4  vPosition : POSITION;
+	float4  vUV_ProvUV : TEXCOORD0;
+	float4 vBorderOffsetColor : TEXCOORD1; 
 };
 
 #define MAX_HALF_SIZE 1000.0f
@@ -1188,15 +1188,15 @@ VS_OUTPUT_BEACH VertexShader_Beach(const VS_INPUT_BEACH v )
 float4 PixelShader_Beach( VS_OUTPUT_BEACH v ) : COLOR
 {
 	TILE_STRUCT s;
-    s.vTexCoord1 = v.vColorTexCoord;
-    s.vColorTexCoord = v.vBorderTexCoord0;
-    s.vTerrainIndexColor = v.vTerrainIndexColor;
-    s.vTexCoord0 = v.vTexCoordBase;
+	s.vTexCoord1 = v.vColorTexCoord;
+	s.vColorTexCoord = v.vBorderTexCoord0;
+	s.vTerrainIndexColor = v.vTerrainIndexColor;
+	s.vTexCoord0 = v.vTexCoordBase;
 
-    float4 OutColor = GenerateTiles( s );
+	float4 OutColor = GenerateTiles( s );
 	
 	OutColor.rgb *= LIGHTNESS;
-    //return OutColor;
+	//return OutColor;
 	// FOW /////////////////
 	
 	float3 FogColor = tex2D( GeneralTexture, v.vBorderOffsetColor.rg + float2(-0.001/256,0)).rgb;
@@ -1211,7 +1211,7 @@ float4 PixelShader_Beach( VS_OUTPUT_BEACH v ) : COLOR
 	
 	OutColor.rgb *= LIGHTNESS;
 	OutColor.a = 1;
-    
+	
 	return OutColor;
 }
 

@@ -2,8 +2,8 @@ import os
 import shutil
 
 def copy_tga_files(directory):
-    # Iterate over all files in the specified directory
-    for filename in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), directory)):
+	# Iterate over all files in the specified directory
+	for filename in os.listdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), directory)):
 		# Check if the file matches the 3-character .tga pattern
 		if len(filename) == 7 and filename.endswith('.tga'):
 			base_name = filename[:3]  # Extract the 3-character name

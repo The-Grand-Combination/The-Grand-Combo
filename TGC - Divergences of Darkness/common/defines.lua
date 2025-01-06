@@ -5,7 +5,7 @@ end_date = '1936.1.1',
 
 country = {
 	YEARS_OF_NATIONALISM 	= 20,   -- Years of Nationalism
-	MONTHS_UNTIL_BROKEN 		= 3,    -- OBSOLETE! (Months until rebel held capital results in broken country.)
+	MONTHS_UNTIL_BROKEN 		= 3,	-- OBSOLETE! (Months until rebel held capital results in broken country.)
 	REBEL_ACCEPTANCE_MONTHS = 60,
 	BASE_COUNTRY_TAX_EFFICIENCY = 0.2, -- Basic efficiency for taxes without 'crats and tech
 	BASE_COUNTRY_ADMIN_EFFICIENCY = 0.2,
@@ -94,7 +94,7 @@ country = {
 },
 
 economy = {
-	MAX_DAILY_RESEARCH		    = 100,
+	MAX_DAILY_RESEARCH			= 100,
 	LOAN_BASE_INTEREST			= 0.02,
 	BANKRUPTCY_EXTERNAL_LOAN_YEARS	= 10,
 	BANKRUPTCY_FACTOR = 0.2,
@@ -403,7 +403,7 @@ diplomacy = {
 	DECLAREWAR_DIPLOMATIC_COST = 0,
 	
 	ADDWARGOAL_RELATION_ON_ACCEPT = 0,
-    ADDWARGOAL_DIPLOMATIC_COST = 0,
+	ADDWARGOAL_DIPLOMATIC_COST = 0,
 	ADD_UNJUSTIFIED_GOAL_BADBOY = 1,
 	
 	PEACE_RELATION_ON_ACCEPT = 5,

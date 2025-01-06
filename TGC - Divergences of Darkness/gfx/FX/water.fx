@@ -24,12 +24,12 @@ const float FADE_DISTANCE = 100;
 sampler BaseTexture  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Linear; //Point;
-    MagFilter = Point;
-    MipFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex0>;
+	MinFilter = Linear; //Point;
+	MagFilter = Point;
+	MipFilter = Linear;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 
@@ -37,57 +37,57 @@ sampler_state
 sampler TheBackgroundTexture  =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Linear; //Point;
-    MagFilter = Point;
-    MipFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex1>;
+	MinFilter = Linear; //Point;
+	MagFilter = Point;
+	MipFilter = Linear;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 
 sampler TerraIncognitaFiltered  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Mirror;
-    AddressV = Mirror;
+	Texture = <tex2>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Mirror;
+	AddressV = Mirror;
 };
 
 sampler WorldColor  =
 sampler_state
 {
-    Texture = <tex3>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex3>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler NormalMap  =
 sampler_state
 {
-    Texture = <tex4>;
-    MinFilter = Linear; //Point;
-    MagFilter = Point;
-    MipFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex4>;
+	MinFilter = Linear; //Point;
+	MagFilter = Point;
+	MipFilter = Linear;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler Overlay  =
 sampler_state
 {
-    Texture = <tex4>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear;
-    MipFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex4>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 ///
@@ -95,47 +95,47 @@ sampler_state
 sampler WaterNormalMap  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear;
-    MipFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
-//    AddressW = Wrap;
+	Texture = <tex0>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = Wrap;
+	AddressV = Wrap;
+//	AddressW = Wrap;
 };
 
 sampler FOWTexture  =
 sampler_state
 {
-    Texture = <tex5>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex5>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 ///
 
 struct VS_INPUT_WATER
 {
-    float3 position			: POSITION;
-    float2 texCoord0			: TEXCOORD0;
-    float2 texCoord1			: TEXCOORD1;
-    float2 texCoord2			: TEXCOORD2;
+	float3 position			: POSITION;
+	float2 texCoord0			: TEXCOORD0;
+	float2 texCoord1			: TEXCOORD1;
+	float2 texCoord2			: TEXCOORD2;
 };
 
 struct VS_OUTPUT_WATER
 {
-    float4 position		: POSITION;
-    float2 texCoord0		: TEXCOORD0;
+	float4 position		: POSITION;
+	float2 texCoord0		: TEXCOORD0;
 
-    float3 eyeDirection		: TEXCOORD1;
-    float3 lightDirection	: TEXCOORD2;
-    float3 halfAngleDirection	: TEXCOORD3;
-    float2 WorldTexture		: TEXCOORD4;
-    float2 WorldTextureTI : TEXCOORD5;
-    float2 texCoord1		: TEXCOORD6;
+	float3 eyeDirection		: TEXCOORD1;
+	float3 lightDirection	: TEXCOORD2;
+	float3 halfAngleDirection	: TEXCOORD3;
+	float2 WorldTexture		: TEXCOORD4;
+	float2 WorldTextureTI : TEXCOORD5;
+	float2 texCoord1		: TEXCOORD6;
 	float  heightFactor			: TEXCOORD7;
 };
 
@@ -180,7 +180,7 @@ VS_OUTPUT_WATER VertexShader_Water_2_0(const VS_INPUT_WATER IN )
   	float4 tangent = float4(1.0, 0.0, 0.0, 0.0);
 	float4 normal = float4(0.0, 1.0, 0.0, 0.0);
 	float4 biTangent = float4(0.0, 0.0, 1.0, 0.0);
-    
+	
 	OUT.texCoord0 = IN.texCoord0 + Time*0.02;
 
 	float4 viewDir = float4( CameraPosition, 1 ) - position;
@@ -275,15 +275,15 @@ float4 PixelShader_Water_2_0( VS_OUTPUT_WATER IN ) : COLOR
 
 VS_OUTPUT_WATER VertexShader_Water_1_1(const VS_INPUT_WATER IN )
 {
-    VS_OUTPUT_WATER OUT = (VS_OUTPUT_WATER)0;
-    float4 position = mul( float4(IN.position.xyz , 1.0) , WorldViewProjectionMatrix );
-    OUT.position = position;
-    OUT.texCoord0 = IN.texCoord0 + Time*0.1;
-    
-    float WorldPositionX = (ColorMapWidth * IN.texCoord1.x) / MapWidth;
+	VS_OUTPUT_WATER OUT = (VS_OUTPUT_WATER)0;
+	float4 position = mul( float4(IN.position.xyz , 1.0) , WorldViewProjectionMatrix );
+	OUT.position = position;
+	OUT.texCoord0 = IN.texCoord0 + Time*0.1;
+	
+	float WorldPositionX = (ColorMapWidth * IN.texCoord1.x) / MapWidth;
 	float WorldPositionY = (ColorMapHeight * IN.texCoord1.y) / MapHeight;
-    OUT.WorldTexture.xy = float2( ( WorldPositionX + X_OFFSET)/ColorMapTextureWidth, (WorldPositionY + Z_OFFSET)/ColorMapTextureHeight );
-    OUT.WorldTextureTI	= float2( ( IN.texCoord1.x + 0.25)/BorderWidth, (IN.texCoord1.y + 0.25)/BorderHeight );
+	OUT.WorldTexture.xy = float2( ( WorldPositionX + X_OFFSET)/ColorMapTextureWidth, (WorldPositionY + Z_OFFSET)/ColorMapTextureHeight );
+	OUT.WorldTextureTI	= float2( ( IN.texCoord1.x + 0.25)/BorderWidth, (IN.texCoord1.y + 0.25)/BorderHeight );
 
 
 	float3x3 objToTangentSpace;
@@ -293,12 +293,12 @@ VS_OUTPUT_WATER VertexShader_Water_1_1(const VS_INPUT_WATER IN )
 
 	float3 lightDir = normalize( LightPosition - CameraPosition );
 	float3 viewDir = normalize( CameraPosition - IN.position.xyz );
-    float3 halfAngleVector = normalize(lightDir + viewDir);
+	float3 halfAngleVector = normalize(lightDir + viewDir);
 
-    OUT.lightDirection = normalize(mul(objToTangentSpace, lightDir.xyz)) * 0.5 + 0.5.xxx;
-    OUT.halfAngleDirection = normalize(mul(objToTangentSpace, halfAngleVector.xyz)) * 0.5 + 0.5.xxx;
+	OUT.lightDirection = normalize(mul(objToTangentSpace, lightDir.xyz)) * 0.5 + 0.5.xxx;
+	OUT.halfAngleDirection = normalize(mul(objToTangentSpace, halfAngleVector.xyz)) * 0.5 + 0.5.xxx;
 
-    return OUT;
+	return OUT;
 }
 
 float4 PixelShader_Water_1_1( VS_OUTPUT_WATER IN ) : COLOR
@@ -325,7 +325,7 @@ VS_OUTPUT_WATER VertexShader_HoiWater_2_0(const VS_INPUT_WATER IN )
   	float4 tangent = float4(1.0, 0.0, 0.0, 0.0);
 	float4 normal = float4(0.0, 1.0, 0.0, 0.0);
 	float4 biTangent = float4(0.0, 0.0, 1.0, 0.0);
-    
+	
 	OUT.texCoord0 = IN.texCoord0 * MAIN_TILING_FACTOR + Time*0.002;
 
 	float4 viewDir = float4(0.0, 1.0, 1.0, 0.0);
@@ -392,7 +392,7 @@ float4 PixelShader_HoiWater_2_0( VS_OUTPUT_WATER IN ) : COLOR
 	float3 vBumpTex = normalize(WaveModOne * (vBumpA.xyz + vBumpB.xyz +
 								 vBumpC.xyz + vBumpD.xyz) - WaveModTwo);
 
-										     	
+											 	
 	float3 WorldColorColor = tex2D( WorldColor, IN.WorldTexture );
 
 	float3 eyeDir = normalize(IN.eyeDirection); 
@@ -467,12 +467,12 @@ technique HoiWaterShader_2_0
 
 struct VS_INPUT_WATER_FAR
 {
-    float4 position_uv		: POSITION;
+	float4 position_uv		: POSITION;
 };
 
 struct VS_OUTPUT_WATER_FAR
 {
-    float4 position			: POSITION;
+	float4 position			: POSITION;
 	float2 vWorldPos		: TEXCOORD0;
 	float2 vUV				: TEXCOORD1;
 };

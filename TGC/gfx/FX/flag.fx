@@ -6,27 +6,27 @@ float4	 FlagCoords;
 sampler BaseTexture  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex0>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 struct VS_INPUT
 {
-    float4 vPosition  : POSITION;
-    float3 vNormal    : NORMAL;
-    float2 vTexCoord  : TEXCOORD0;
-    float4 vDiffuse   : COLOR;
+	float4 vPosition  : POSITION;
+	float3 vNormal	: NORMAL;
+	float2 vTexCoord  : TEXCOORD0;
+	float4 vDiffuse   : COLOR;
 };
 
 struct VS_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float2  vTexCoord0 : TEXCOORD0;
-    float4  vDiffuse   : COLOR;
+	float4  vPosition : POSITION;
+	float2  vTexCoord0 : TEXCOORD0;
+	float4  vDiffuse   : COLOR;
 };
 
 

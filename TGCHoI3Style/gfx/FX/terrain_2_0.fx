@@ -53,199 +53,199 @@ float3 ApplyFOWColor( float3 c, float FOW )
 sampler BaseTexture  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex0>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler TreeTexture  =
 sampler_state
 {
-    Texture = <tex0>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex0>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 
 sampler MapTexture  =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex1>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler NoiseTexture  =
 sampler_state
 {
-    Texture = <tex5>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex5>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler OverlayTexture  =
 sampler_state
 {
-    Texture = <tex5>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = Linear; //None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex5>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = Linear; //None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 sampler StripesTexture  =
 sampler_state
 {
-    Texture = <tex7>;
-    MinFilter = Linear; //Point;
-    MagFilter = Linear; //Point;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex7>;
+	MinFilter = Linear; //Point;
+	MagFilter = Linear; //Point;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 
 sampler ColorTexture  =
 sampler_state
 {
-    Texture = <tex4>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Texture = <tex4>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Wrap;
+	AddressV = Wrap;
 };
 
 // used for political, religious etc etc..
 sampler GeneralTexture  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex2>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler GeneralTexture2  =
 sampler_state
 {
-    Texture = <tex3>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex3>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 
 sampler TerrainAlphaTexture  =
 sampler_state
 {
-    Texture = <tex3>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex3>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler TextureSheet  =
 sampler_state
 {
-    Texture = <tex6>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex6>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler BorderDirectionTexture  =
 sampler_state
 {
-    Texture = <tex4>;
-    MinFilter = Linear;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex4>;
+	MinFilter = Linear;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler WinterTexture  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Point;
-    MagFilter = Point;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex2>;
+	MinFilter = Point;
+	MagFilter = Point;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler BorderTexture  =
 sampler_state
 {
-    Texture = <tex2>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Linear;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex2>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = Linear;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler QuadIndexTexture  =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Point; //Linear;
-    MagFilter = Point; //Linear;
-    MipFilter = None;
-    AddressU = Mirror;
-    AddressV = Mirror;
+	Texture = <tex1>;
+	MinFilter = Point; //Linear;
+	MagFilter = Point; //Linear;
+	MipFilter = None;
+	AddressU = Mirror;
+	AddressV = Mirror;
 };
 
 sampler TerraIncognitaTextureTerrain =
 sampler_state
 {
-    Texture = <tex7>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex7>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 sampler TerraIncognitaTextureTree =
 sampler_state
 {
-    Texture = <tex1>;
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = None;
-    AddressU = Clamp;
-    AddressV = Clamp;
+	Texture = <tex1>;
+	MinFilter = Linear;
+	MagFilter = Linear;
+	MipFilter = None;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 
 struct VS_INPUT
 {
-    float2 vPosition  : POSITION;
-    int2 vProvinceId : TEXCOORD0;
+	float2 vPosition  : POSITION;
+	int2 vProvinceId : TEXCOORD0;
 };
 
 struct VS_BORDER_INPUT
@@ -256,77 +256,77 @@ struct VS_BORDER_INPUT
 
 struct VS_INPUT_BEACH
 {
-    float2 vPosition  : POSITION;
-    float4 vTerrainIndexColor : COLOR0;
+	float2 vPosition  : POSITION;
+	float4 vTerrainIndexColor : COLOR0;
   //  float2 vPixelCoord : TEXCOORD0;
 };
 
 struct VS_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
-    float2  vTexCoord1 : TEXCOORD1;
-    float2  vColorTexCoord : TEXCOORD2;
+	float4  vPosition : POSITION;
+	float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
+	float2  vTexCoord1 : TEXCOORD1;
+	float2  vColorTexCoord : TEXCOORD2;
 
-    float2  vBorderTexCoord0 : TEXCOORD3;
-    float2  vBorderTexCoord1 : TEXCOORD4;
+	float2  vBorderTexCoord0 : TEXCOORD3;
+	float2  vBorderTexCoord1 : TEXCOORD4;
 
-    float2  vTerrainTexCoord : TEXCOORD5;
+	float2  vTerrainTexCoord : TEXCOORD5;
 
-    float2 vProvinceIndexCoord  : TEXCOORD6;
-    float4 vBorderOffsetColor : COLOR0;
-    
-    
+	float2 vProvinceIndexCoord  : TEXCOORD6;
+	float4 vBorderOffsetColor : COLOR0;
+	
+	
 };
 
 struct VS_MAP_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
-    float2  vTexCoord1 : TEXCOORD1;
-    float2  vColorTexCoord : TEXCOORD2;
+	float4  vPosition : POSITION;
+	float3  vTexCoord0 : TEXCOORD0;	// third beein' lightIntensity
+	float2  vTexCoord1 : TEXCOORD1;
+	float2  vColorTexCoord : TEXCOORD2;
 	float2	vProvinceId : TEXCOORD3;
-    float2  vTerrainTexCoord : TEXCOORD4; 
-    float4	vTerrainIndexColor : TEXCOORD5;
+	float2  vTerrainTexCoord : TEXCOORD4; 
+	float4	vTerrainIndexColor : TEXCOORD5;
 };
 
 struct VS_OUTPUT_BEACH
 {
-    float4  vPosition : POSITION;
-    float2  vTexCoordBase : TEXCOORD0;
-    float2  vColorTexCoord : TEXCOORD1;
+	float4  vPosition : POSITION;
+	float2  vTexCoordBase : TEXCOORD0;
+	float2  vColorTexCoord : TEXCOORD1;
 	// Later put this into ONE texcoord, this is easier for debugging etc..
-    float3  vLightIntensity : TEXCOORD2;
-    float2 vProvinceIndexCoord  : TEXCOORD3;
-    float2 vBorderTexCoord0		: TEXCOORD4;
-    
-    float4 vTerrainIndexColor : TEXCOORD5;
-    float2  vTexCoord1 : TEXCOORD6;
-    float4 vBorderOffsetColor : COLOR0;
+	float3  vLightIntensity : TEXCOORD2;
+	float2 vProvinceIndexCoord  : TEXCOORD3;
+	float2 vBorderTexCoord0		: TEXCOORD4;
+	
+	float4 vTerrainIndexColor : TEXCOORD5;
+	float2  vTexCoord1 : TEXCOORD6;
+	float4 vBorderOffsetColor : COLOR0;
 };
 
 struct VS_INPUT_PTI
 {
-    float2 vPosition  : POSITION;
+	float2 vPosition  : POSITION;
 };
 
 struct VS_OUTPUT_PTI
 {
-    float4  vPosition : POSITION;
+	float4  vPosition : POSITION;
 };
 
 
 struct VS_INPUT_TREE
 {
-    float3 vPosition : POSITION;
-    float2 vTexCoord : TEXCOORD0;
+	float3 vPosition : POSITION;
+	float2 vTexCoord : TEXCOORD0;
 };
 
 struct VS_OUTPUT_TREE
 {
-    float4 vPosition   : POSITION;
-    float2 vTexCoord   : TEXCOORD0;
-    float2 vTexCoordTI : TEXCOORD1;
+	float4 vPosition   : POSITION;
+	float2 vTexCoord   : TEXCOORD0;
+	float2 vTexCoordTI : TEXCOORD1;
 };
 
 ///////	//////////////////////////////////////////////////////////////////////////
@@ -347,7 +347,7 @@ const float NUM_TILES_X = 1.0/8.0;
 const float NUM_TILES_Y = 1.0/8.0;
 
 
-//32.0 = 64 textures    16.0 = 256 textures
+//32.0 = 64 textures	16.0 = 256 textures
 #define NUM_TERRAINS_FACTOR 32.0 //NUM_TILES_X * 256.0 / Num Terrains?
 #define X_CLAMP 0.125
 #define Y_CLAMP 0.125
@@ -355,10 +355,10 @@ const float NUM_TILES_Y = 1.0/8.0;
 
 struct TILE_STRUCT
 {
-    float2  vTexCoord0 : TEXCOORD0;
-    float2  vTexCoord1 : TEXCOORD1;
-    float2  vColorTexCoord : TEXCOORD2;
-    float4 vTerrainIndexColor : COLOR0;
+	float2  vTexCoord0 : TEXCOORD0;
+	float2  vTexCoord1 : TEXCOORD1;
+	float2  vColorTexCoord : TEXCOORD2;
+	float4 vTerrainIndexColor : COLOR0;
 };
 
 
@@ -573,20 +573,20 @@ float4 PixelShader_Map2_0_General( VS_MAP_OUTPUT v ) : COLOR
 {
 	
 	TILE_STRUCT s;
-    s.vTexCoord1 = v.vTexCoord1;
-    s.vColorTexCoord = v.vColorTexCoord;
-    s.vTerrainIndexColor = v.vTerrainIndexColor;
-    s.vTexCoord0 = v.vTexCoord0.xy;
-    
-    float4 TerrainColor = GenerateTiles( s );
-    //return float4(s.vTexCoord0.xy, 0, 1);
+	s.vTexCoord1 = v.vTexCoord1;
+	s.vColorTexCoord = v.vColorTexCoord;
+	s.vTerrainIndexColor = v.vTerrainIndexColor;
+	s.vTexCoord0 = v.vTexCoord0.xy;
+	
+	float4 TerrainColor = GenerateTiles( s );
+	//return float4(s.vTexCoord0.xy, 0, 1);
 
-    float Grey = dot( TerrainColor.rgb, GREYIFY ); 
+	float Grey = dot( TerrainColor.rgb, GREYIFY ); 
  	TerrainColor.rgb = Grey;
 	TerrainColor *= White;
 	
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
-    vProvinceUV /= PROVINCE_LOOKUP_SIZE;
+	vProvinceUV /= PROVINCE_LOOKUP_SIZE;
   
   	float4 Color1 = tex2D( GeneralTexture, vProvinceUV ) - 0.7;
 	float4 Color2 = tex2D( GeneralTexture2, vProvinceUV ) - 0.7;
@@ -604,12 +604,12 @@ float4 PixelShader_Map2_0_General( VS_MAP_OUTPUT v ) : COLOR
 float4 PixelShader_Map2_0_General_Low( VS_MAP_OUTPUT v ) : COLOR
 {
 	float4 ColorColor = tex2D( ColorTexture, v.vTexCoord1 ); //Coordinates for colormap
-    
-    //float Grey = dot( ColorColor.rgb, GREYIFY ); 
+	
+	//float Grey = dot( ColorColor.rgb, GREYIFY ); 
  	//ColorColor.rgb = Grey;
 	ColorColor *= White;
-    float2 vProvinceUV = v.vProvinceId + 0.5f;
-    vProvinceUV /= PROVINCE_LOOKUP_SIZE;
+	float2 vProvinceUV = v.vProvinceId + 0.5f;
+	vProvinceUV /= PROVINCE_LOOKUP_SIZE;
    	float4 Color1 = tex2D( GeneralTexture, vProvinceUV ) - 0.7;
 	float4 Color2 = tex2D( GeneralTexture2, vProvinceUV ) - 0.7;
 
@@ -636,17 +636,17 @@ float4 PixelShader_Map2_0_General_Low( VS_MAP_OUTPUT v ) : COLOR
 float4 PixelShader_Map2_0( VS_MAP_OUTPUT v ) : COLOR
 {
 	
-    TILE_STRUCT s;
-    s.vTexCoord1 = v.vTexCoord1;
-    s.vColorTexCoord = v.vColorTexCoord;
-    s.vTerrainIndexColor = v.vTerrainIndexColor;
-    s.vTexCoord0 = v.vTexCoord0.xy;
+	TILE_STRUCT s;
+	s.vTexCoord1 = v.vTexCoord1;
+	s.vColorTexCoord = v.vColorTexCoord;
+	s.vTerrainIndexColor = v.vTerrainIndexColor;
+	s.vTexCoord0 = v.vTexCoord0.xy;
 
-    float4 OutColor = GenerateTiles( s );
+	float4 OutColor = GenerateTiles( s );
 	OutColor.rgb *= LIGHTNESS;
 	
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
-    vProvinceUV /= PROVINCE_LOOKUP_SIZE;
+	vProvinceUV /= PROVINCE_LOOKUP_SIZE;
   
 	float4 FogColor = tex2D( GeneralTexture, vProvinceUV );
 
@@ -759,7 +759,7 @@ float4 PixelShader_Beach_General_Low( VS_OUTPUT_BEACH v ) : COLOR
 	OutColor.a = 1;
 	
 	float4 ColorColor = tex2D( ColorTexture, v.vColorTexCoord ); //Coordinates for colormap
-    	
+		
 	//float4 OutColor = float4( COLOR_VALUE,COLOR_VALUE,COLOR_VALUE,1);
 	OutColor.rgb = lerp(ColorColor.rgb, float3(OutColor.r,OutColor.g,OutColor.b), 0.3);
 	
@@ -783,9 +783,9 @@ float4 PixelShader_Beach_General_Low( VS_OUTPUT_BEACH v ) : COLOR
 /////////////////////////////////////////////////////////////////////////////////
 struct VS_BORDER_OUTPUT
 {
-    float4  vPosition : POSITION;
-    float4  vUV_ProvUV : TEXCOORD0;
-    float4 vBorderOffsetColor : TEXCOORD1; 
+	float4  vPosition : POSITION;
+	float4  vUV_ProvUV : TEXCOORD0;
+	float4 vBorderOffsetColor : TEXCOORD1; 
 };
 
 #define MAX_HALF_SIZE 1000.0f
@@ -930,15 +930,15 @@ VS_OUTPUT_BEACH VertexShader_Beach(const VS_INPUT_BEACH v )
 float4 PixelShader_Beach( VS_OUTPUT_BEACH v ) : COLOR
 {
 	TILE_STRUCT s;
-    s.vTexCoord1 = v.vColorTexCoord;
-    s.vColorTexCoord = v.vBorderTexCoord0;
-    s.vTerrainIndexColor = v.vTerrainIndexColor;
-    s.vTexCoord0 = v.vTexCoordBase;
+	s.vTexCoord1 = v.vColorTexCoord;
+	s.vColorTexCoord = v.vBorderTexCoord0;
+	s.vTerrainIndexColor = v.vTerrainIndexColor;
+	s.vTexCoord0 = v.vTexCoordBase;
 
-    float4 OutColor = GenerateTiles( s );
+	float4 OutColor = GenerateTiles( s );
 	
 	OutColor.rgb *= LIGHTNESS;
-    //return OutColor;
+	//return OutColor;
 	// FOW /////////////////
 	
 	float3 FogColor = tex2D( GeneralTexture, v.vBorderOffsetColor.rg + float2(-0.001/256,0)).rgb;
@@ -959,7 +959,7 @@ float4 PixelShader_Beach( VS_OUTPUT_BEACH v ) : COLOR
 	OutColor.rgb += float3(FogColor.b,FogColor.b,FogColor.b)*0.3;
 	
 	OutColor.rgb *= LIGHTNESS;
-    
+	
 	return OutColor;
 }
 
