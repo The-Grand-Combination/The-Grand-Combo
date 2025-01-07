@@ -84,9 +84,7 @@ peace_order = {
 	great_game_cb
 	make_puppet
 	# cb_rr_save_the_republic		Gelre this is a placeholder for you
-	install_fascism_make_puppet
-	install_communism_make_puppet
-	install_democracy_make_puppet
+	install_allied_puppet_government
 	gunboat
 	end_slave_trade
 	cut_down_to_size
@@ -5300,6 +5298,7 @@ treaty_port_casus_belli = {
 
 	can_use = {
 		has_country_flag = has_treaty_port
+		THIS = { NOT = { has_country_flag = non_agressive_ai } }
 		THIS = {
 			rank = 20
 			any_owned_province = { port = yes }
@@ -5308,36 +5307,6 @@ treaty_port_casus_belli = {
 		}
 		civilized = no
 		num_of_cities = 2
-
-		OR = {
-			THIS = { NOT = { war_policy = pacifism } }
-			THIS = { ai = no }
-		}
-		OR = {
-			owns = 1071 # Qeshm
-			owns = 1177 # Socotra
-			owns = 1481 # Lushun - Port Arthur
-			owns = 1482 # Fuzhou
-			owns = 1496 # Hong Kong
-			owns = 1498 # Macao
-			owns = 1499 # Hainan
-			owns = 1538 # Shanghai
-			owns = 1566	# Qingdao
-			owns = 1569 # Weihaiwei
-			owns = 1606 # Jiaxing
-			owns = 1608 # Ningbo
-			owns = 1637 # Cheju
-			owns = 1695 # Ifni
-			owns = 2048 # Zanzibar
-			owns = 2562 # Tainan
-			owns = 2589 # Tsushima
-			owns = 2632 # Kwangchowan
-			owns = 2640 # Gwadar
-			owns = 2681 # Taipei
-			owns = 3249 # Old Tianjin
-			owns = 3260 # Sado
-			owns = 3326 # San Mun
-		}
 	}
 
 	po_reparations = yes
@@ -5397,7 +5366,62 @@ treaty_port_casus_belli = {
 	}
 }
 
-install_fascism_make_puppet = { #Doesn't seem to be used
+install_allied_puppet_government = {
+	sprite_index = 17
+	is_triggered_only = yes
+	constructing_cb = no
+	months = 12
+	crisis = no
+
+	badboy_factor = 2
+	prestige_factor = 1
+	peace_cost_factor = 1.17
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	po_make_puppet = yes
+
+	war_name = WAR_NAME
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.05
+		}
+	}
+
+	on_po_accepted = { 
+		random_owned = {
+			limit = {
+				THIS = { has_country_flag = communist_gov }
+			}
+			country_event = 96087
+		}
+		random_owned = {
+			limit = {
+				THIS = { government = fascist_dictatorship }
+			}
+			country_event = 96086
+		}
+		random_owned = {
+			limit = {
+				THIS = { has_country_flag = democracy_gov }
+			}
+			country_event = 96085
+		}
+	}
+}
+
+install_allied_puppet_government = {
 	sprite_index = 17
 	is_triggered_only = yes
 	constructing_cb = no
@@ -5435,86 +5459,6 @@ install_fascism_make_puppet = { #Doesn't seem to be used
 	}
 
 	on_po_accepted = { THIS = { set_country_flag = friendly_fascist_puppet } country_event = 96086 }
-}
-
-install_communism_make_puppet = { #Doesn't seem to be used
-	sprite_index = 17
-	is_triggered_only = yes
-	constructing_cb = no
-	months = 12
-	crisis = no
-
-	badboy_factor = 2
-	prestige_factor = 1
-	peace_cost_factor = 1.17
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	can_use = {
-		is_vassal = no
-	}
-
-	po_make_puppet = yes
-
-	war_name = WAR_NAME
-
-	on_add = {
-		move_issue_percentage = {
-			from = jingoism
-			to = pro_military
-			value = 0.05
-		}
-	}
-
-	on_po_accepted = { THIS = { set_country_flag = friendly_communist_puppet } country_event = 96087 }
-}
-
-install_democracy_make_puppet = { #Doesn't seem to be used
-	sprite_index = 17
-	is_triggered_only = yes
-	constructing_cb = no
-	months = 12
-	crisis = no
-
-	badboy_factor = 2
-	prestige_factor = 1
-	peace_cost_factor = 1.17
-	penalty_factor = 1
-
-	break_truce_prestige_factor = 1
-	break_truce_infamy_factor = 1
-	break_truce_militancy_factor = 1
-	truce_months = 48
-
-	good_relation_prestige_factor = 1
-	good_relation_infamy_factor = 1
-	good_relation_militancy_factor = 1
-
-	can_use = {
-		is_vassal = no
-	}
-
-	po_make_puppet = yes
-
-	war_name = WAR_NAME
-
-	on_add = {
-		move_issue_percentage = {
-			from = jingoism
-			to = pro_military
-			value = 0.05
-		}
-	}
-
-	on_po_accepted = { THIS = { set_country_flag = friendly_democracy_puppet } country_event = 96085 }
 }
 
 #Colonial Conquest
