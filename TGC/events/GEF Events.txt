@@ -2365,9 +2365,15 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA9111111"
-
-		set_country_flag = german_invasion_of_lowlands
-		set_global_flag = greatest_germany
+		any_country = {
+			limit = {
+				OR = { 	#r's note: Country flag?
+					tag = NET
+					has_country_flag = is_real_belgium
+				}
+			}
+			country_event = 9111112
+		}
 
 		ai_chance = { factor = 0 }
 	}
@@ -2394,25 +2400,26 @@ country_event = {
 	desc = "EVTDESC9111112"
 	picture = "greatwar"
 
-	trigger = {
-		OR = { 	#r's note: Country flag?
-			tag = NET
-			has_country_flag = is_real_belgium
-		}
-		GER = { has_country_flag = german_invasion_of_lowlands }
-		has_global_flag = greatest_germany
-		NOT = { has_country_flag = german_preperation_for_war }
-	}
-
+	is_triggered_only = yes
+	
 	option = {
 		name = "EVTOPTA9111112"
 
-		set_country_flag = german_preperation_for_war
-		ENG = { set_country_flag = lowland_cry_for_help }
-		FRA = { set_country_flag = lowland_cry_for_help }
-		RUS = { set_country_flag = lowland_cry_for_help }
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+				NOT = { alliance_with = GER }
+				NOT = { tag = GER }
+			}
+			country_event = 9111113
+		}
 
-		ai_chance = { factor = 100 }
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			GER = { country_event = { id = 9111116 days = 10 } }
+		}
+		clr_country_flag = hidden_tooltip
 	}
 }
 
@@ -2422,29 +2429,16 @@ country_event = {
 	desc = "EVTDESC9111113"
 	picture = "greatpowers"
 
-	trigger = {
-		has_country_flag = lowland_cry_for_help
-		OR = {
-			tag = FRA
-			tag = LTU
-			tag = ENG
-			tag = RUS
-		}
-		has_global_flag = greatest_germany
-	}
+	is_triggered_only = yes
 
 	option = {
 		name = "EVTOPTA9111113"
+		badboy = -3
+		prestige = 50
 
-		clr_country_flag = lowland_cry_for_help
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = is_real_belgium
-					tag = NET
-				}
-				exists = yes
-			}
+		set_country_flag = low_lands_supporter
+
+		FROM = {
 			create_alliance = THIS
 			relation = {
 				who = THIS
@@ -2455,24 +2449,12 @@ country_event = {
 				days = 2
 			}
 		}
-		badboy = -3
-		prestige = 100
-
 		ai_chance = { factor = 100 }
 	}
 
 	option = {
 		name = "EVTOPTB9111113"
-
-		clr_country_flag = lowland_cry_for_help
-		set_country_flag = refused_to_help_lowlands
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = is_real_belgium
-					tag = NET
-				}
-			}
+		FROM = {
 			relation = {
 				who = THIS
 				value = -100
@@ -2482,7 +2464,7 @@ country_event = {
 				days = 2
 			}
 		}
-		prestige = -100
+		prestige = -50
 		badboy = 3
 
 		ai_chance = { factor = 0 }
@@ -2501,8 +2483,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA9111114"
 
-		prestige = 50
-		GER = { set_country_flag = lowland_cry_for_help_answered }
+		prestige = 25
 
 		ai_chance = { factor = 0 }
 	}
@@ -2520,8 +2501,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA9111115"
 
-		prestige = -50
-		GER = { set_country_flag = lowland_cry_for_help_answered }
+		prestige = -5
 
 		ai_chance = { factor = 0 }
 	}
@@ -2532,75 +2512,45 @@ country_event = {
 	title = "EVTNAME9111116"
 	desc = "EVTDESC9111116"
 	picture = "the_great_war"
-	fire_only_once = yes
 
-	trigger = {
-		tag = GER
-		has_country_flag = lowland_cry_for_help_answered
-		has_global_flag = greatest_germany
-	}
-
-	mean_time_to_happen = {
-		days = 3
-	}
+	is_triggered_only = yes
 
 	option = {
 		name = "EVTOPTA9111116"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			any_country = {
+				limit = {
+					tag = BEL
+					exists = yes
+				}
+				BEL = {
+					set_country_flag = neutrality_violated
+					remove_country_modifier = neutrality
+					relation = { who = THIS value = -200 }
+					
+				}
+				release_vassal = BEL
+			}
+			any_country = {
+				limit = {
+					has_country_flag = is_real_belgium
+					exists = yes
+				}
+				create_alliance = NET
+			}
+			any_country = {
+				limit = {
+					has_country_flag = low_lands_supporter
+					exists = yes
+				}
+				create_alliance = NET
+			}
+		}
 		clr_country_flag = hidden_tooltip
 
-		any_country = {
-			limit = {
-				tag = BEL
-				exists = yes
-			}
-			BEL = {
-				set_country_flag = neutrality_violated
-				remove_country_modifier = neutrality
-				relation = { who = THIS value = -200 }
-				
-			}
-			release_vassal = BEL
-		}
-		any_country = {
-			limit = {
-				has_country_flag = is_real_belgium
-				exists = yes
-				NOT = { has_country_flag = refused_to_help_lowlands }
-			}
-			create_alliance = NET
-		}
-		any_country = {
-			limit = {
-				tag = ENG
-				exists = yes
-				NOT = { has_country_flag = refused_to_help_lowlands }
-			}
-			ENG = { create_alliance = NET }
-		}
-		any_country = {
-			limit = {
-				tag = FRA
-				exists = yes
-				NOT = { has_country_flag = refused_to_help_lowlands }
-			}
-			FRA = { create_alliance = NET }
-		}
-		any_country = {
-			limit = {
-				tag = LTU
-				exists = yes
-				NOT = { has_country_flag = refused_to_help_lowlands }
-			}
-			LTU = { create_alliance = NET }
-		}
-		any_country = {
-			limit = {
-				tag = RUS
-				exists = yes
-				NOT = { has_country_flag = refused_to_help_lowlands }
-			}
-			RUS = { create_alliance = NET }
-		}
+		set_country_flag = german_invasion_of_lowlands
+
 		war = {
 			target = NET
 			attacker_goal = { casus_belli = cut_down_to_size }
@@ -2681,9 +2631,9 @@ country_event = {
 		393 = {	secede_province = WLL }
 		405 = { secede_province = WLL }
 		3463 = { secede_province = WLL }
-		3142 = {	secede_province = WLL }
+		3142 = {secede_province = WLL }
 		398 = {	secede_province = WLL }
-		3386 = {	secede_province = WLL }
+		3386 = {secede_province = WLL }
 		3412 = { change_province_name = "Bleyberg" }
 		release = WLL
 		create_vassal = WLL
@@ -2737,7 +2687,6 @@ country_event = {
 	trigger = {
 		tag = GER
 		is_disarmed = yes
-		has_global_flag = greatest_germany
 		has_country_flag = german_invasion_of_lowlands
 
 	}
