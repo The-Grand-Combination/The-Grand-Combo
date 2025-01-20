@@ -58,13 +58,13 @@ The player's voice is always heard in TGC, the team makes constant polling about
 
 <br clear="left"/>
 
-And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to #modder-recruiting.
+And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to [#join-the-team](https://discord.gg/3ayvt9y8mJ).
 
 ## Submods
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
 ![Mapskins](https://user-images.githubusercontent.com/32886642/209603913-7d6cd0c8-8465-436f-98ed-71eb46f4f7c2.png)
 
-Given how TGC completely overhauls the map and the game's mechanics, most (if not all) map mods and addons won't work here. Of course, to compensate for that, TGC has 3 map skins for players to pick from besides the default one: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast, improved version of the default map. HFM Style Map, a map with a color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian style maps. 
+Given how TGC completely overhauls the map and the game's mechanics, most (if not all) map mods and addons won't work here. Of course, to compensate for that, TGC has quite a few map skins for players to pick from besides the default one. Some of the most commonly used ones are: [Pastel ThickBorders](https://github.com/emprahtheodosius/PastelThickBordersMod), a high contrast, improved version of the default map. HFM Style Map, a map with a color scheme similar to HFM's default map. And the classic [Belle Cartographie](https://github.com/emprahtheodosius/BelleCartographieTGC), a map skin aiming to mimic old victorian style maps. Around 10 or so other map skins have also been created, which can be viewed in the [TGC-Extra-Maps repository](https://github.com/The-Grand-Combination/TGC-Extra-Maps).
 
 ![HFMcolorsBanner](https://user-images.githubusercontent.com/32886642/210180842-e345ac2b-177c-4e10-bbe2-d2ee0af9c05d.png)
 
