@@ -35,9 +35,9 @@ When playing TGC, there are always cool "look what the AI did this time" moments
 
 <img src="https://user-images.githubusercontent.com/32886642/209606164-6a4d50a4-da8d-489f-a5e0-d3e0e3580e58.png" align="left"/>
 
-Banks and Universities provide the player with new playstyles and methods to spend money. Universities are costly, but they provide prestige and a steady source of research points, giving the player the opportunity to pull ahead on research and become a technological powerhouse. Development banks will assist local landowners in developing their farms and considerably increasing farming capacity, allowing the player to develop their economy by investing in RGOs rather than just industrialization, creating a never-seen before playstyle.
+Banks and Universities provide the player with new playstyles and methods to spend money. **Universities** are costly, but they provide prestige and a steady source of research points, giving the player the opportunity to pull ahead on research and become a technological powerhouse. **Development Banks** will assist local landowners in developing their farms and considerably increasing farming capacity, allowing the player to develop their economy by investing in RGOs rather than just industrialization, creating a never-seen before playstyle.
 
-Our two new PoPs: Pioneers and Tribesmen allow for a never-seen experience when it comes to expanding and colonizing new lands. Pioneers, who are usually seen in lands ripe for colonization are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. Tribesmen are similarily unique PoPs, in the sense that they are harder to integrate into western society, and have no plans in working with settlers. Why would a native pick up a hoe and start farming as soon as someone steps into their lands? These two new PoPs open room to vast possibilities in terms of flavor, immersion, and gameplay, something which you may never see in any other mod.
+Our two new PoPs (Pioneers and Tribesmen) allow for a never-seen experience when it comes to expanding and colonizing new lands. **Pioneers**, who are usually seen in lands ripe for colonization are a special pop that can work as both a farmer and a soldier, a worker always ready to get his trusty rifle and protect his land. **Tribesmen** are similarily unique PoPs, in the sense that they are harder to integrate into western society, and have no plans in working with settlers. Why would a native pick up a hoe and start farming as soon as someone steps into their lands? These two new PoPs open room to vast possibilities in terms of flavor, immersion, and gameplay, something which you may never see in any other mod.
 
 <br clear="left"/>
 
@@ -50,12 +50,12 @@ TGC's Economy won't stagnate, quite the contrary, it will get stronger as the ga
 ![polling](https://user-images.githubusercontent.com/32886642/209735696-2d36c43b-fdb0-497c-a7ae-c9983106f57d.png)
 ![Community](https://user-images.githubusercontent.com/32886642/209602402-e39c39d9-4967-4056-85da-32d93a7eb803.png)
 
-The player's voice is always heard in TGC, the team makes constant polling about important decisions to help guide the mod's development. 
+The player's voice is always heard in TGC; the team often polls the playerbase about important decisions to help guide the mod's development. Players can even directly suggest new content for TGC in our Discord server. Many of these suggestions make it in game, and several have even inspired full reworks of nations or regions.
 
 <img src="https://user-images.githubusercontent.com/32886642/209703700-c2908082-3eb5-4452-a373-376d7a91acbc.png" align="left"/>
 <br>
 
-[The Grand Combination](https://discord.gg/the-grand-combination-689466155978588176) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, be part of the polls or discuss history in a civil manner.
+[The Grand Combination](https://discord.gg/the-grand-combination-689466155978588176) is the home for this mod where you will find the most recent updates, discussions and answers. Please visit if you would like to suggest improvements, report bugs, tell us something interesting, be part of the polls, or discuss history in a civil manner.
 
 <br clear="left"/>
 
