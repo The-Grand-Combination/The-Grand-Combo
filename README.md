@@ -2,19 +2,19 @@
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
 
-TGC is a complete game overhaul that started as an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience, this objective has been reached long ago. Nowadays, the team aims to improve historical accuracy and detail by adding plausible alt-history paths, immersive flavor to all nations, and designing new mechanics to make Victoria 2 feel new and refreshed again.
+TGC is a complete game overhaul that started as an attempt to merge all the various disparate HFM and HPM based submods into a single modding experience; this objective was reached long ago. Nowadays, the team aims to improve historical accuracy and detail by adding plausible alt-history paths, immersive flavor to all nations, and designing new mechanics to make Victoria 2 feel new and refreshing again.
 
 ## Features
 ![mapbanner](https://user-images.githubusercontent.com/32886642/209995357-3bdc506f-7e02-49ba-aec1-c6a6dd6f7892.png)
 ![improved map](https://user-images.githubusercontent.com/32886642/209994969-e8232250-1b02-432b-b57d-8dd98b247653.png)
 ![improved map 2](https://user-images.githubusercontent.com/32886642/209994977-6d7af8fb-4ede-4d28-b80e-ef56144b0b52.png)
 
-TGC has the currently largest, most accurate, and well-made Victoria II map from Vanilla and all other mods, including an expanded 25% larger map with hundreds, if not thousands, of additional provinces, an improved map projection, enhanced coastlines and borders, flavor, new pops, buildings completely revamped and fixed economy and much much more. As our motto states, "Every house a province, every man a pop, every thought a +1 prestige event."
+TGC has the currently largest, most accurate, and well-made Victoria II map from Vanilla and all other mods, including an expanded 25% larger map with hundreds, if not thousands, of additional provinces, an improved map projection, enhanced coastlines and borders, flavor, new pops, buildings completely revamped and fixed economy and much much more. As our (unofficial) motto states, "Every house a province, every man a pop, every thought a +1 prestige event."
 
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
 
-A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the sociocultural intricacies of each location.. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map.
+A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the sociocultural intricacies of each location.. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map. TGC's culture map goes into greater detail than any other Victoria 2 mod, using an approach based on accuracy and precision relevant to the mechanics of the game. 
 
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
@@ -58,7 +58,7 @@ The player's voice is always heard in TGC, the team makes constant polling about
 
 <br clear="left"/>
 
-And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to [#join-the-team](https://discord.gg/3ayvt9y8mJ).
+And we are always looking for new developers interested in helping the development of the mod! Hit the discord up and go to [#join-the-team](https://discord.gg/3ayvt9y8mJ). No modding experience needed; as long as you are interested, we will teach you how to mod Victoria 2!
 
 ## Submods
 ![mapskinsbanner](https://user-images.githubusercontent.com/32886642/209603162-9b771f08-2384-4526-a3cb-fa31a77229a9.png)
