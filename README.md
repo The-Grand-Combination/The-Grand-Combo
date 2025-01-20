@@ -14,7 +14,7 @@ TGC has the currently largest, most accurate, and well-made Victoria II map from
 ![CultureMap Banner](https://user-images.githubusercontent.com/32886642/209599678-d02b1aed-4b38-45ab-861b-2483fbfa2d29.png)
 ![CultureMap1](https://user-images.githubusercontent.com/32886642/209995096-c8b0d761-ab75-49cd-bb9b-cc210ca114ff.png)
 
-A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the sociocultural intricacies of each location.. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map. TGC's culture map goes into greater detail than any other Victoria 2 mod, using an approach based on accuracy and precision relevant to the mechanics of the game. 
+A better map requires better people living on it; TGC's superior culture map is meticulously designed to highlight the sociocultural intricacies of each location. The assimilation mechanics have also been revamped so that the player can interact more effectively with this superior cultural map. TGC's culture map goes into greater detail than any other Victoria 2 mod, using an approach based on accuracy and precision relevant to the mechanics of the game. 
 
 ![Flavor](https://user-images.githubusercontent.com/32886642/209615095-a8aa7804-1e20-4592-aed0-f24c37543f7e.png)
 
