@@ -194,6 +194,8 @@ TGC Developers:
 * Wyrm00
 * Gelre
 * emprahtheodosius
+* kobabab
+* pixelaes
   
 TGC was made possible by the below developers and mods:
 
