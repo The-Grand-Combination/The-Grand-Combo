@@ -23,6 +23,7 @@ A better map requires better people living on it; TGC's superior culture map is 
 <br>
 TGC, like many other major overhauls, is no stranger to additional historical content and flavor. From fresh events and decisions to new formables and plausible alternative historical pathways, the player can pursue and satisfy their geographical and roleplay desires.
 <br>
+<br>
 One thing we strongly try to avoid is "railroady" content, focusing our modding efforts on a mechanical and detailed approach rather than novel-style gameplay is our focus as a team, this lets us provide with options not just to the player but also to the AI, making the game more intriguing, flexible, and unexpectable.
 <br>
 <br>
