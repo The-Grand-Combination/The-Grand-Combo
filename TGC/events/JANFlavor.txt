@@ -19,6 +19,8 @@ country_event = {
 		country_event = { id = 53 days = 0 }
 		#Brazil Slavery Updater
 		country_event = { id = 8300 days = 0 }
+		#Renamer Updater
+		country_event = { id = 365 days = 0 }
 		prestige = -1
 	}
 }
@@ -142,6 +144,7 @@ country_event = {
 							is_culture_group = southern_african
 							is_culture_group = west_african
 							is_culture_group = oceanic
+							is_culture_group = southeast_asian # Prevents MAD from losing tribals
 						}
 					}
 				}
@@ -195,11 +198,27 @@ country_event = {
 				has_country_flag = big_pioneer_state
 			}
 			any_pop = {
-				limit = { type = pioneers location = { OR = { is_colonial = no is_overseas = yes } work_available = { worker = farmers } } }
+				limit = {
+					type = pioneers
+					OR = {
+						is_accepted_culture = no
+						location = { is_colonial = no }
+						location = { is_overseas = yes }
+					}
+					location = { work_available = { worker = farmers } }
+				}
 				pop_type = farmers
 			}
 			any_pop = {
-				limit = { type = pioneers location = { OR = { is_colonial = no is_overseas = yes } work_available = { worker = labourers } } }
+				limit = {
+					type = pioneers
+					OR = {
+						is_accepted_culture = no
+						location = { is_colonial = no }
+						location = { is_overseas = yes }
+					}
+					location = { work_available = { worker = labourers } }
+				}
 				pop_type = labourers
 			}
 		}
@@ -209,11 +228,25 @@ country_event = {
 				has_country_flag = pioneer_state
 			}
 			any_pop = {
-				limit = { type = pioneers location = { is_overseas = yes work_available = { worker = farmers } } }
+				limit = {
+					type = pioneers
+					OR = {
+						is_accepted_culture = no
+						location = { is_overseas = yes }
+					}
+					location = { work_available = { worker = farmers } }
+				}
 				pop_type = farmers
 			}
 			any_pop = {
-				limit = { type = pioneers location = { is_overseas = yes work_available = { worker = labourers } } }
+				limit = {
+					type = pioneers
+					OR = {
+						is_accepted_culture = no
+						location = { is_overseas = yes }
+					}
+					location = { work_available = { worker = labourers } }
+				}
 				pop_type = labourers
 			}
 		}
@@ -1700,8 +1733,7 @@ country_event = {
 			any_country = { 
 				limit = { 
 					has_country_modifier = female_suffrage
-					NOT = { vote_franschise = universal_weighted_voting }
-					NOT = {	vote_franschise = universal_voting }
+					vote_franschise = none_voting
 					exists = yes 
 				}
 				country_event = 60150
@@ -1952,102 +1984,126 @@ country_event = {
 				}
 				set_country_flag = army_tech
 			}
-		any_country = { clr_country_flag = african_nation }
-		any_country = {
-			limit = {
-				OR = {
-					capital_scope = { continent = africa }
-					capital_scope = { continent = central_africa }
-					capital_scope = { continent = west_africa }
-					capital_scope = { continent = east_africa }
-					capital_scope = { continent = south_africa }
-				}
-				exists = yes
-			}
-			set_country_flag = african_nation
-		}
 
 		#Ows a treaty Port
-		any_country = { clr_country_flag = has_treaty_port }
-		any_country = {
-			limit = {
-				OR = {
-					owns = 1071 # Qeshm
-					owns = 1177 # Socotra
-					owns = 1481 # Lushun - Port Arthur
-					owns = 1482 # Fuzhou
-					owns = 1496 # Hong Kong
-					owns = 1498 # Macao
-					owns = 1499 # Hainan
-					owns = 1538 # Shanghai
-					owns = 1566	# Qingdao
-					owns = 1569 # Weihaiwei
-					owns = 1606 # Jiaxing
-					owns = 1608 # Ningbo
-					owns = 1637 # Cheju
-					owns = 1695 # Ifni
-					owns = 2048 # Zanzibar
-					owns = 2562 # Tainan
-					owns = 2589 # Tsushima
-					owns = 2632 # Kwangchowan
-					owns = 2640 # Gwadar
-					owns = 2681 # Taipei
-					owns = 3249 # Old Tianjin
-					owns = 3260 # Sado
-					owns = 3326 # San Mun
-				}
-				exists = yes
-			}
-			set_country_flag = has_treaty_port
-		}
-
-		#Sahel Jihad CB
-		any_country = { clr_country_flag = sahel_jihad_cb }
-		any_country = {
-			limit = {
-				any_owned_province = {
+			any_country = { clr_country_flag = has_treaty_port }
+			any_country = {
+				limit = {
 					OR = {
-						province_id = 1786
-						province_id = 1789
-						province_id = 1794
-						province_id = 1800
-						province_id = 1804
-						province_id = 1808
-						province_id = 1878
-						province_id = 1880
+						owns = 1071 # Qeshm
+						owns = 1177 # Socotra
+						owns = 1481 # Lushun - Port Arthur
+						owns = 1482 # Fuzhou
+						owns = 1496 # Hong Kong
+						owns = 1498 # Macao
+						owns = 1499 # Hainan
+						owns = 1538 # Shanghai
+						owns = 1566	# Qingdao
+						owns = 1569 # Weihaiwei
+						owns = 1606 # Jiaxing
+						owns = 1608 # Ningbo
+						owns = 1637 # Cheju
+						owns = 1695 # Ifni
+						owns = 2048 # Zanzibar
+						owns = 2562 # Tainan
+						owns = 2589 # Tsushima
+						owns = 2632 # Kwangchowan
+						owns = 2640 # Gwadar
+						owns = 2681 # Taipei
+						owns = 3249 # Old Tianjin
+						owns = 3260 # Sado
+						owns = 3326 # San Mun
 					}
+					exists = yes
 				}
-				exists = yes
+				set_country_flag = has_treaty_port
 			}
-			set_country_flag = sahel_jihad_cb
-		}
-
-		#Monarchy Gov
-		any_country = { clr_country_flag = monarchy_gov }
-		any_country = {
-			limit = {
-				OR = {
-					has_country_flag = absolute_monarchy_gov
-					has_country_flag = semi_constitutional_monarchy_gov
-					has_country_flag = constitutional_monarchy_gov
-				}
-			}
-			set_country_flag = monarchy_gov 
-		}
 
 		#Army Tech
-		any_country = { clr_country_flag = army_tech }
-		any_country = {
-			limit = {
-				OR = {
-					has_country_modifier = ts_army
-					has_country_modifier = ts_prussian
-					has_country_modifier = ts_japanese
+			any_country = { clr_country_flag = army_tech }
+			any_country = {
+				limit = {
+					OR = {
+						has_country_modifier = ts_army
+						has_country_modifier = ts_prussian
+						has_country_modifier = ts_japanese
+					}
+					exists = yes
 				}
-				exists = yes
+				set_country_flag = army_tech
 			}
-			set_country_flag = army_tech
-		}
+
+		#Dominion Customization
+			any_country = {
+				limit = {
+					NOT = { has_global_flag = puppet_color_off }
+					OR = {
+						tag = LPL
+						tag = GCO
+						tag = PBC
+						tag = ARG
+						tag = BOL
+						tag = PEU
+						tag = VNZ
+						tag = CHL
+						tag = MEX
+						tag = URU
+					}
+					is_vassal = yes
+					overlord = { tag = SPA }
+				}
+				government = dominion2
+			}
+
+			any_country = {
+				limit = {
+					NOT = { has_global_flag = puppet_color_off }
+					OR = {
+						tag = LPL
+						tag = GCO
+						tag = PBC
+						tag = CHL
+					}
+					is_vassal = yes
+					overlord = { tag = BRZ }
+				}
+				government = dominion3
+			}
+
+			any_country = {
+				limit = {
+					NOT = { has_global_flag = puppet_color_off }
+					has_country_flag = british_raj
+					is_vassal = yes
+					overlord = { OR = { tag = ENG tag = EIC } }
+				}
+			}
+
+		#Non Agressive AI
+			any_country = { clr_country_flag = non_agressive_ai }
+			any_country = {
+				limit = {
+					OR = {
+						war_policy = anti_military
+						war_policy = pacifism
+					}
+					ai = yes
+				}
+				set_country_flag = non_agressive_ai
+			}
+
+		#Agressive AI
+			any_country = { clr_country_flag = agressive_ai }
+			any_country = {
+				limit = {
+					OR = {
+						war_policy = pro_military
+						war_policy = jingoism
+					}
+					ai = yes
+				}
+				set_country_flag = agressive_ai
+			}
 	}
 }
 #The Daily Updater, handle with care, any change here can lead to severe slow downs.
@@ -2062,26 +2118,6 @@ country_event = {
 		name = "EVTOPTA53"
 		country_event = { id = 53 days = 1 }
 		#Banking handler
-		any_country = { limit = { civilized = yes NOT = { enlightenment_thought = 1 }}
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.4 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 0.15 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.3 everyday_needs = 0.025 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.1 everyday_needs = 0.01 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 } }
-
-		any_country = { limit = { enlightenment_thought = 1 NOT = { ideological_thought = 1 } }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.2 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.05 unemployment = 0.5 type = soldiers type = slaves } } money = 0.25 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 0.50 } 
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 0.50 } }
-
-		any_country = { limit = { ideological_thought = 1 NOT = { state_n_government = 1 } }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.06 unemployment = 0.5 type = soldiers type = slaves } } money = 1.5 }
-						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.2 everyday_needs = 0.02 unemployment = 0.5 type = soldiers type = slaves } } money = 2 }  }
-			
 		any_country = { limit = { state_n_government = 1 NOT = { nationalism_n_imperialism = 1 } }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 0.5 }
 						any_pop = { limit = { strata = poor NOT = { cash_reserves = 1.5 unemployment = 0.5 type = soldiers type = slaves } } money = 1 }
@@ -2286,13 +2322,22 @@ country_event = {
         name = "EVTOPTC59"
 		set_country_flag = hidden_tooltip
 		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
-						owner = { country_event = 60 }
+						owner = { country_event = 82 }
 		}
 		clr_country_flag = hidden_tooltip
     }
 
 	option = {
         name = "EVTOPTD59"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 60 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
+
+	option = {
+        name = "EVTOPTE59"
 
     }
 }
@@ -3170,10 +3215,6 @@ country_event = {
 	option = {
 		name = "EVTOPTB66"
 		country_event = 199936
-	}
-
-	option = {
-		name = "EVTOPTC66"
 		country_event = 199937
 	}
 
@@ -3181,6 +3222,15 @@ country_event = {
 		name = "EVTOPTD66"
 		country_event = 74
 	}
+
+	option = {
+        name = "EVTOPTC59"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
 
 	option = {
 		name = "EVTCLOSE"
@@ -3332,7 +3382,7 @@ country_event = {
 	}
 }
 
-#National Campaign Menu, 1/2
+#National Campaign Menu, 1/3
 country_event = {
 	id = 69
 	title = "EVTNAME69"
@@ -3350,11 +3400,15 @@ country_event = {
 		remove_country_modifier = less_emigration
 		remove_country_modifier = research_campaign
 		remove_country_modifier = birthrate_push_medium
+		remove_country_modifier = birthrate_push_low
+		remove_country_modifier = birthrate_push_high
 		clr_global_flag = override_campaigns 
 	}
 	
 	option = {
 		name = "EVTOPTB69"
+		remove_country_modifier = birthrate_push_low
+		remove_country_modifier = birthrate_push_high
 		random_owned = { 
 			limit = { owner = { NOT = { has_country_modifier = birthrate_push_medium } NOT = { has_country_flag = setting_changed } } }
 			owner = { 
@@ -3497,7 +3551,7 @@ country_event = {
 	}
 }
 
-#National Campaign Menu, 2/2
+#National Campaign Menu, 2/3
 country_event = {
 	id = 70
 	title = "EVTNAME70"
@@ -3689,6 +3743,126 @@ country_event = {
 			}
 		}
 		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTNEXT"
+		country_event = 81
+	}
+}
+
+#National Campaign Menu, 3/3
+country_event = {
+	id = 81
+	title = "EVTNAME81"
+	desc = "EVTDESC81"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA81"
+		remove_country_modifier = birthrate_push_medium
+		remove_country_modifier = birthrate_push_high
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = birthrate_push_low } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = birthrate_push_low duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = birthrate_push_low NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = birthrate_push_low
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 81 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+	
+	option = {
+		name = "EVTOPTB81"
+		remove_country_modifier = birthrate_push_low
+		remove_country_modifier = birthrate_push_medium
+		random_owned = { 
+			limit = { owner = { NOT = { has_country_modifier = birthrate_push_high } NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				add_country_modifier = { name = birthrate_push_high duration = -1 } 
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = { 
+			limit = { owner = { has_country_modifier = birthrate_push_high NOT = { has_country_flag = setting_changed } } }
+			owner = { 
+				remove_country_modifier = birthrate_push_high
+				set_country_flag = setting_changed
+				currently_enabled = { } 
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = {
+			limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 81 } 
+			clr_global_flag = override_campaigns
+			any_country = { 
+				limit = { 
+					OR = { 
+						has_country_modifier = infamy_removal 
+						has_country_modifier = more_colonial_settlement
+						has_country_modifier = tourism_campaign
+						has_country_modifier = less_emigration
+						has_country_modifier = research_campaign
+						has_country_modifier = birthrate_push_low
+						has_country_modifier = birthrate_push_medium
+						has_country_modifier = birthrate_push_high
+						has_country_flag = direct_immigration 
+						} 
+				} 
+				set_global_flag = override_campaigns
+			}
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTC81"
+		remove_country_modifier = birthrate_push_medium
+		remove_country_modifier = birthrate_push_low
+		remove_country_modifier = birthrate_push_high
+		clr_global_flag = override_campaigns 
 	}
 
 	option = {
@@ -4127,3 +4301,149 @@ country_event = {
 }
 
 #74-80 used in TGO, do not use.
+
+#Railroading menu, 2
+country_event = {
+	id = 82
+	title = "EVTNAME82"
+	desc = "EVTDESC82"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA82"
+
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = renamings_enabled } 
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renamings_enabled
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renamings_enabled 
+					NOT = { has_country_flag = setting_changed } 
+				}
+			}
+			owner = { 
+				currently_enabled = { } 
+				clr_global_flag = renamings_enabled
+				set_country_flag = setting_changed
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTB82"
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_half_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_1_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_half_y
+				renaming_half_y = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_1_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_2_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_1_y
+				renaming_1_y = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_2_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_5_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_2_y
+				renaming_2_y = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_5_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_half_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_5_y
+				renaming_5_y = { } 
+			}
+		}
+
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+		
+	}
+
+	option = {
+		name = "EVTOPTC82"
+		set_country_flag = forced_renaming
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			JAN = { country_event = 16 }
+		}
+
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTCLOSE"
+	}
+}
