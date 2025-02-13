@@ -1,30 +1,169 @@
 political_decisions = {
 
-    form_balkan_federation = {
-        picture = form_balkan_federation
-    
-        potential = { 
-            tag = YUG
-            rank = 16
-            year = 1870
-            NOT = { has_country_flag = formed_balkan_federation }
-        }
-    
-        allow = {
-            is_greater_power = yes
-            war = no
-            all_core = { owned_by = THIS }
-        }
-    
-        effect = {
-            add_accepted_culture = greek
-            add_accepted_culture = romanian
-            add_accepted_culture = hungarian
-            set_country_flag = formed_balkan_federation
-        }
-    
-        ai_will_do = {
-            factor = 1
-        }
-    }
+	#Description: Greece ## DISABLED. Way too gamey. If someone wants to make an edgy Balkan Fed path, be my guest, but Greece in YugoSLAVia makes no sense. #DEVNOTE: Moved to Fantasy Formables - pixelaes
+	invite_GRE_to_YUG = {
+		picture = map_balkans
+		potential = {
+			OR = {
+				tag = YUG
+				YUG = {
+					vassal_of = THIS
+					in_sphere = THIS
+				}
+			}
+			exists = GRE
+			NOT = { has_country_flag = invite_GRE_to_YUG }
+		}
+	
+		allow = {
+			war = no
+			revolution_n_counterrevolution = 1
+			NOT = { government = theocracy }
+			GRE = {
+				war = no
+				neighbour = YUG
+				NOT = { truce_with = THIS }
+				NOT = { has_country_flag = megali_idea_claimed }
+				OR = {
+					is_vassal = no
+					vassal_of = THIS
+				}
+				OR = {
+					AND = {
+						part_of_sphere = no
+						relation = { who = THIS value = 100 }
+					}
+					in_sphere = THIS
+					sphere_owner = { is_sphere_leader_of = THIS }
+				}
+			}
+		}
+
+		effect = {
+			set_country_flag = invite_GRE_to_YUG
+			badboy = 15
+			GRE = { all_core = { add_core = YUG } }
+			GRE = { country_event = 11120 }
+		}
+	
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: If Yugoslavia is only left with Greek cores, it will turn into Greece and all Yugoslavia cores will be removed.
+	end_of_yugoslavia_greece = {
+		picture = form_yugoslavia
+		potential = {
+			tag = YUG
+			NOT = { exists = GRE any_owned_province = { NOT = { is_core = GRE } } }
+		}
+
+		allow = {
+			war = no
+			NOT = { any_owned_province = { NOT = { is_core = GRE } } }
+		}
+
+		effect = {
+			random_owned = {
+				limit = { province_id = 809 }
+				owner = { capital = 809 }
+			}
+			prestige = 10
+			primary_culture = greek
+			remove_accepted_culture = croat
+			remove_accepted_culture = slovene
+			remove_accepted_culture = bosniak
+			remove_accepted_culture = albanian
+			remove_accepted_culture = serb
+			remove_accepted_culture = bulgarian
+			all_core = { remove_core = YUG }
+			change_tag = BUL
+			any_pop = {
+				limit = { has_pop_culture = bulgarian }
+				militancy = -4
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	form_balkan_federation = {
+		picture = form_balkan_federation
+	
+		potential = { 
+			tag = YUG
+			is_greater_power = yes
+			year = 1870
+			accepted_culture = greek
+			accepted_culture = albanian
+			accepted_culture = bulgarian
+			NOT = { has_country_flag = formed_balkan_federation }
+		}
+	
+		allow = {
+			rank = 4
+			war = no
+			mass_politics = 1
+			all_core = { owned_by = THIS }
+		}
+	
+		effect = {
+			prestige = 50
+			badboy = 20
+			add_accepted_culture = romanian
+			add_accepted_culture = hungarian
+			WAL_665 = { add_core = THIS }
+			WAL_666 = { add_core = THIS }
+			MOL_673 = { add_core = THIS }
+			TUR_674 = { add_core = THIS }
+			AUS_654 = { add_core = THIS }
+			AUS_657 = { add_core = THIS }
+			AUS_663 = { add_core = THIS }
+			AUS_648 = { add_core = THIS }
+			AUS_647 = { add_core = THIS }
+			AUS_641 = { add_core = THIS }
+			AUS_635 = { add_core = THIS }
+			AUS_633 = { add_core = THIS }
+			AUS_652 = { add_core = THIS }
+			AUS_623 = { add_core = THIS }
+			AUS_624 = { add_core = THIS }
+			MOL_676 = { add_core = THIS }
+			random_owned = {
+				limit = {
+					owner = {
+						government = absolute_monarchy
+					}
+				}
+				owner = { government = absolute_monarchy2 }
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						government = prussian_constitutionalism
+					}
+				}
+				owner = { government = prussian_constitutionalism2 }
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						government = hms_government
+					}
+				}
+				owner = { government = hms_government2 }
+			}
+			random_owned = {
+				limit = {
+					owner = {
+						government = democracy
+					}
+				}
+				owner = { government = democracy2 }
+			}
+			set_country_flag = formed_balkan_federation
+		}
+	
+		ai_will_do = {
+			factor = 0
+		}
+	}
 }
