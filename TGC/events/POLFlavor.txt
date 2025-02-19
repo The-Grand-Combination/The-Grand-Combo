@@ -42,11 +42,11 @@ country_event = {
 	id = 500001
 	title = "EVTNAME500001"
 	desc = "EVTDESC500001"
-	picture = "january_uprising"
 	news = yes
 	news_desc_long = "EVTDESC95076_NEWS_LONG"
 	news_desc_medium = "EVTDESC95076_NEWS_MEDIUM"
 	news_desc_short = "EVTDESC95076_NEWS_SHORT"
+	picture = "january_uprising"
 	
 	is_triggered_only = yes
 	fire_only_once = yes
@@ -54,6 +54,127 @@ country_event = {
 	option = {
 		name = "EVTOPTA500001"
 		set_country_flag = CPL_january_decision_made
+		set_global_flag = january_uprising_happened
+		set_country_flag = through_january_uprising
+		
+		CPL = {
+				treasury = 50000
+				add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+
+				define_general = {
+					name = "Stanislaw Brzska"
+					personality = spirited
+					background = compassionate_priest
+				}
+
+				define_general = {
+					name = "Aleksander Waszkowski"
+					personality = steadfast
+					background = nationalist
+				}
+				
+				define_general = {
+					name = "Francesco Nullo"
+					personality = unflinching
+					background = uncommonly_young
+				}
+
+				define_general = {
+					name = "Francois Rochebrune"
+					personality = daring
+					background = adventurer
+				}
+
+				define_general = {
+					name = "Marian Langiewicz"
+					personality = implacable
+					background = school_of_the_bayonet
+				}
+
+				define_general = {
+					name = "Romuald Traugutt"
+					personality = defiant
+					background = school_of_defense
+				}
+
+				change_variable = {
+					which = polish_whites_strength 
+					value = 15
+				}
+
+				change_variable = {
+					which = polish_reds_strength
+					value = 10
+				}
+		}
+
+		release_vassal = LIT
+		3399 = { secede_province = LIT }
+		360 = { secede_province = RUS }
+		936 = { secede_province = RUS }
+		938 = { secede_province = RUS }
+		361 = { secede_province = RUS }
+		3510 = { secede_province = RUS }
+		3511 = { secede_province = RUS }
+		
+		LIT = {
+			treasury = 50000
+
+			define_general = {
+				name = "Antanas Mackevicius"
+				personality = daring
+				background = compassionate_priest
+			}
+
+			define_general = {
+				name = "Zigmantas Sierakauskas"
+				personality = daring
+				background = expert_raider
+			}
+				
+			define_general = {
+				name = "Konstantinas Kalinauskas"
+				personality = chivalrous
+				background = young_genius
+			}
+
+			define_general = {
+				name = "Boleslaw Kayeton Cologna"
+				personality = cautious
+				background = school_of_defense
+			}
+
+			add_country_modifier = { name = polish_uprising_mobilization duration = 2920 }
+		}
+
+		any_owned = {
+			limit = {
+				OR = {
+					is_core = POL
+					is_core = LIT
+					is_core = LAT
+					is_core = BYE
+					is_core = UKR
+				}
+			}
+			add_province_modifier = { name = polish_revolt duration = 1080 } # This is so armies are slowed and Poland player has time to organize
+
+			any_pop = { # This represents Polish Intelligentsia and Nobility in Lithuania and Belarus
+				limit = { 
+					OR = {
+						has_pop_culture = lithuanian
+						has_pop_culture = polish
+					}
+					OR = {
+						strata = rich
+						type = clergymen
+					}
+				}
+				ideology = { factor = 0.1 value = liberal }
+				militancy = 7
+				consciousness = 8
+			}
+		}
 		
 		random_country = {
 			limit = {
@@ -69,7 +190,7 @@ country_event = {
 	id = 500002
 	title = "EVTNAME500002"
 	desc = "EVTDESC500002"
-	picture = "placeholder"
+	picture = "january_uprising"
 	
 	is_triggered_only = yes
 	
@@ -79,7 +200,31 @@ country_event = {
 		set_country_flag = CPL_january_decision_made
 		set_country_flag = CPL_january_intervening_power
 		set_global_flag = CPL_january_intervention
-		
+
+		prestige = 15
+		treasury = -100000
+
+		create_alliance = CPL
+		leave_alliance = RUS
+		relation = { who = RUS value = -150 }
+		relation = { who = CPL value = 200 }
+		diplomatic_influence = { who = CPL value = 100 }
+
+		CPL = {
+			treasury = 90000
+			small_arms = 250
+			ammunition = 250
+			canned_food = 250
+			artillery = 100
+			change_variable = { which = french_influence_poland value = 15 }
+		}
+
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 5
+			militancy = -10
+		}
+
 		random_country = {
 			limit = {
 				has_country_flag = austrian_content
@@ -103,6 +248,28 @@ country_event = {
 		set_country_flag = CPL_january_decision_made
 		set_global_flag = january_uprising_chain_ENG_FRA_done
 		set_global_flag = january_uprising_chain_path_to_poland_done
+
+		prestige = 5
+		treasury = -25000
+		
+		relation = { who = RUS value = -100 }
+		relation = { who = CPL value = 100 }
+		diplomatic_influence = { who = CPL value = 50 }
+
+		CPL = {
+			treasury = 20000
+			small_arms = 50
+			ammunition = 50
+			canned_food = 50
+			artillery = 25
+			set_variable = { which = french_influence_poland value = 5 }
+		}
+		
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 4
+			militancy = -6
+		}
 		
 		random_country = {
 			limit = {
@@ -127,7 +294,19 @@ country_event = {
 		set_country_flag = CPL_january_decision_made
 		set_global_flag = january_uprising_chain_ENG_FRA_done
 		set_global_flag = january_uprising_chain_path_to_poland_done
-		
+
+		prestige = -20
+
+		relation = { who = RUS value = 50 }
+		relation = { who = CPL value = -100 }
+		diplomatic_influence = { who = CPL value = -100 }
+
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			consciousness = 5
+			militancy = 5
+		}
+
 		random_country = {
 			limit = {
 				has_country_flag = austrian_content
@@ -152,7 +331,7 @@ country_event = {
 	id = 500003
 	title = "EVTNAME500003"
 	desc = "EVTDESC500003"
-	picture = "placeholder"
+	picture = "january_uprising"
 	
 	is_triggered_only = yes
 	
@@ -216,7 +395,7 @@ country_event = {
 	id = 500004
 	title = "EVTNAME500004"
 	desc = "EVTDESC500004"
-	picture = "placeholder"
+	picture = "january_uprising"
 	
 	is_triggered_only = yes
 	
@@ -280,7 +459,7 @@ country_event = {
 	id = 500005
 	title = "EVTNAME500005"
 	desc = "EVTDESC500005"
-	picture = "placeholder"
+	picture = "january_uprising"
 	
 	is_triggered_only = yes
 	
@@ -618,7 +797,7 @@ country_event = {
 	id = 500017
 	title = "EVTNAME500017"
 	desc = "EVTDESC500017"
-	picture = Picture
+	picture = "january_uprising"
 	
 	is_triggered_only = yes
 	
