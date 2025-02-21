@@ -3341,3 +3341,548 @@
 				any_pop = { militancy = -1 }
 			}
 		}
+## Indus Excavations - Babylon ##
+
+	# Indus Excavations - asking for permissions
+	country_event = {
+
+		id = 201080
+		title = "EVTNAME201080"
+		desc = "EVTDESC201080"
+		picture = "Indus"
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA201080"
+
+			money = 15000
+			set_global_flag = indus_excavations_rights
+			FROM = { country_event = 201081 }
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.1
+					has_global_flag = indus_excavations_rights
+				}
+				modifier = {
+					factor = 3
+					FROM = { prestige = 600 }
+				}
+				modifier = {
+					factor = 1.5
+					FROM = { is_greater_power = yes }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB201080"
+
+			prestige = 10
+			FROM = { country_event = 201082 }
+		}
+	}
+
+	# Permissions Granted
+	country_event = {
+
+		id = 201081
+
+		title = "EVTNAME201081"
+		desc = "EVTDESC201081"
+		picture = "Indus"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA201081"
+
+			prestige = 10
+			money = -15000
+			add_country_modifier = { name = indus_excavations duration = -1 }
+			relation = { who = FROM value = 20 }
+			set_global_flag = indus_excavations_rights
+		}
+	}
+
+	# Permissions Refused
+	country_event = {
+
+		id = 201082
+
+		title = "EVTNAME201082"
+		desc = "EVTDESC201082"
+		picture = "Indus"
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA201082"
+
+			prestige = -10
+			relation = { who = FROM value = -20 }
+			set_country_flag = indus_refused
+		}
+	}
+
+	# Indus tablet archive Found - get prestige and research
+	country_event = {
+		id = 201083
+		title = "EVTNAME201083"
+		desc = "EVTDESC201083"
+		picture = "indus_tablet"
+
+		trigger = {
+			has_country_modifier = indus_excavations
+		}
+
+		mean_time_to_happen = {
+			months = 300
+			modifier = {
+				factor = 0.9
+				has_country_flag = museum_build
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		option = {
+			name = "EVTOPTA201083"
+
+			prestige = 10
+			years_of_research = 0.05
+		}
+	}
+
+	# Canal Found - get prestige and research
+	country_event = {
+		id = 201084
+		title = "EVTNAME201084"
+		desc = "EVTDESC201084"
+		picture = "Indus_canal"
+
+		trigger = {
+			has_country_modifier = indus_excavations
+		}
+
+		mean_time_to_happen = {
+			months = 500
+			modifier = {
+				factor = 0.9
+				has_country_flag = museum_build
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		option = {
+			name = "EVTOPTA201084"
+
+			prestige = 20
+			years_of_research = 0.10
+		}
+	}
+
+	# Excavation failure - lose prestige, research and money
+	country_event = {
+		id = 201085
+		title = "EVTNAME201085"
+		desc = "EVTDESC201085"
+		picture = "Indus_canal"
+
+		trigger = {
+			has_country_modifier = indus_excavations
+		}
+
+		mean_time_to_happen = {
+			months = 400
+			modifier = {
+				factor = 1.3
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 1.3
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		option = {
+			name = "EVTOPTA201085"
+
+			prestige = -10
+			money = -5000
+			years_of_research = -0.05
+		}
+	}
+
+	# Harappa 1/2 - get prestige and research - excavations completed
+	country_event = {
+		id = 201086
+		title = "EVTNAME201086"
+		desc = "EVTDESC201086"
+		picture = "Harappa"
+
+		trigger = {
+			has_country_modifier = indus_excavations
+			NOT = { has_global_flag = harappa_found }
+		}
+
+		mean_time_to_happen = {
+			months = 700
+			modifier = {
+				factor = 0.9
+				has_country_modifier = inca_excavations
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = had_arch_exhibition
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = museum_build
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA201086"
+
+			prestige = 100
+			years_of_research = 0.5
+			set_global_flag = harappa_found
+			country_event = 201089
+			any_country = { remove_country_modifier = indus_excavations}
+			remove_country_modifier = indus_excavations
+			clr_global_flag = indus_excavations_rights
+		}
+	}
+
+	# Harappa 2/2 - other GPs get relations or lose prestige
+	country_event = {
+
+		id = 201089
+		title = "EVTNAME201086"
+		desc = "EVTDESC201037"
+		picture = "Harappa"
+		is_triggered_only = yes
+		major = yes
+
+		option = {
+			name = "EVTOPTA201038"
+
+			any_country = {
+				limit = {
+					is_greater_power = yes
+					NOT = { tag = THIS }
+				}
+				relation = { who = THIS value = 25 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB201038"
+
+			any_country = {
+				limit = {
+					is_greater_power = yes
+					NOT = { tag = THIS }
+				}
+				prestige = -10
+				set_country_flag = blamed_by_other_archaeologists
+			}
+		}
+	}
+
+		## Yinxu Excavations ##
+
+	# Yinxu Excavations - asking for permissions
+	country_event = {
+
+		id = 201090
+		title = "EVTNAME201090"
+		desc = "EVTDESC201090"
+		picture = "Yinxu"
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA201090"
+
+			money = 15000
+			set_global_flag = yinxu_excavations_rights
+			FROM = { country_event = 201091 }
+
+			ai_chance = {
+				factor = 20
+				modifier = {
+					factor = 0.1
+					has_global_flag = yinxu_excavations_rights
+				}
+				modifier = {
+					factor = 3
+					FROM = { prestige = 600 }
+				}
+				modifier = {
+					factor = 1.5
+					FROM = { is_greater_power = yes }
+				}
+			}
+		}
+
+		option = {
+			name = "EVTOPTB201090"
+
+			prestige = 10
+			FROM = { country_event = 201092 }
+		}
+	}
+
+	# Permissions Granted
+	country_event = {
+
+		id = 201091
+
+		title = "EVTNAME201091"
+		desc = "EVTDESC201091"
+		picture = "Yinxu"
+
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA201091"
+
+			prestige = 10
+			money = -15000
+			add_country_modifier = { name = yinxu_excavations duration = -1 }
+			relation = { who = FROM value = 20 }
+			set_global_flag = oraclebones_found
+		}
+	}
+
+	# Permissions Refused
+	country_event = {
+
+		id = 201092
+
+		title = "EVTNAME201092"
+		desc = "EVTDESC201092"
+		picture = "Indus"
+		is_triggered_only = yes
+
+		option = {
+			name = "EVTOPTA201092"
+
+			prestige = -10
+			relation = { who = FROM value = -20 }
+			set_country_flag = yinxu_refused
+		}
+	}
+
+	# Oracle Bones Found - get prestige and research
+	country_event = {
+		id = 201093
+		title = "EVTNAME201093"
+		desc = "EVTDESC201093"
+		picture = "oraclebones"
+
+		trigger = {
+			has_country_modifier = yinxu_excavations
+		}
+
+		mean_time_to_happen = {
+			months = 300
+			modifier = {
+				factor = 0.9
+				has_country_flag = museum_build
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		option = {
+			name = "EVTOPTA201093"
+
+			prestige = 10
+			years_of_research = 0.05
+		}
+	}
+
+	# Palace Found - get prestige and research
+	country_event = {
+		id = 201094
+		title = "EVTNAME201094"
+		desc = "EVTDESC201094"
+		picture = "Yinxu2"
+
+		trigger = {
+			has_country_modifier = yinxu_excavations
+		}
+
+		mean_time_to_happen = {
+			months = 500
+			modifier = {
+				factor = 0.9
+				has_country_flag = museum_build
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		option = {
+			name = "EVTOPTA201094"
+
+			prestige = 20
+			years_of_research = 0.10
+		}
+	}
+
+	# Excavation failure - lose prestige, research and money
+	country_event = {
+		id = 201095
+		title = "EVTNAME201095"
+		desc = "EVTDESC201095"
+		picture = "Yinxu2"
+
+		trigger = {
+			has_country_modifier = yinxu_excavations
+		}
+
+		mean_time_to_happen = {
+			months = 400
+			modifier = {
+				factor = 1.3
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 1.3
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		option = {
+			name = "EVTOPTA201095"
+
+			prestige = -10
+			money = -5000
+			years_of_research = -0.05
+		}
+	}
+
+	# Yinxu Final 1/2 - get prestige and research - excavations completed
+	country_event = {
+		id = 201096
+		title = "EVTNAME201096"
+		desc = "EVTDESC201096"
+		picture = "YinxuFinal"
+
+		trigger = {
+			has_country_modifier = yinxu_excavations
+			NOT = { has_global_flag = oracle_bones}
+		}
+
+		mean_time_to_happen = {
+			months = 700
+			modifier = {
+				factor = 0.9
+				has_country_modifier = inca_excavations
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = had_arch_exhibition
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = museum_build
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = archaeological_society
+			}
+			modifier = {
+				factor = 0.9
+				has_country_flag = famous_archaeologist
+			}
+		}
+
+		fire_only_once = yes
+
+		option = {
+			name = "EVTOPTA201096"
+
+			prestige = 100
+			years_of_research = 0.5
+			set_global_flag = tower_of_babel_found
+			country_event = 201099
+			any_country = { remove_country_modifier = yinxu_excavations }
+			remove_country_modifier = yinxu_excavations
+			clr_global_flag = yinxu_excavations_rights
+		}
+	}
+
+	# Yinxu Final 2/2 - other GPs get relations or lose prestige
+	country_event = {
+
+		id = 201099
+		title = "EVTNAME201096"
+		desc = "EVTDESC201037"
+		picture = "YinxuFinal"
+		is_triggered_only = yes
+		major = yes
+
+		option = {
+			name = "EVTOPTA201038"
+
+			any_country = {
+				limit = {
+					is_greater_power = yes
+					NOT = { tag = THIS }
+				}
+				relation = { who = THIS value = 25 }
+			}
+		}
+
+		option = {
+			name = "EVTOPTB201038"
+
+			any_country = {
+				limit = {
+					is_greater_power = yes
+					NOT = { tag = THIS }
+				}
+				prestige = -10
+				set_country_flag = blamed_by_other_archaeologists
+			}
+		}
+	}
