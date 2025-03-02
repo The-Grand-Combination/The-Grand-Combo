@@ -2684,7 +2684,6 @@ country_event = {
 		diplomatic_influence = { who = CPL value = -200 }
 		relation = { who = CPL value = -400 }
 		leave_alliance = CPL
-		CPL = { all_core = { add_core = THIS } }
 
 		any_owned = {
 			limit = {
@@ -2697,6 +2696,7 @@ country_event = {
 				}
 			}
 			secede_province = CPL
+			add_core = CPL
 		}
 		
 		CPL = {
@@ -2717,6 +2717,8 @@ country_event = {
 			political_reform = mandatory_service
 			political_reform = serfdom # This was peonage. Goes a lil bit against schlahta hard on for the serfs, innit?
 			nationalvalue = nv_order
+
+			any_owned = { add_core = THIS }
 
 			random_owned = {
 				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
@@ -2763,6 +2765,8 @@ country_event = {
 			primary_culture = lithuanian
 			add_accepted_culture = polish
 
+			any_owned = { add_core = THIS }
+
 			random_owned = {
 				limit = { owner = { NOT = { has_country_flag = recognized_country } } }
 				owner = {
@@ -2808,6 +2812,7 @@ country_event = {
 				}
 			}
 			secede_province = CPL
+			add_core = CPL
 		}
 		
 		CPL = {
@@ -2881,6 +2886,254 @@ country_event = {
 				factor = 100
 				is_greater_power = no
 			}
+		}
+	}
+}
+
+#Event for Russia to decide what to do with szlachta after Poland is defeated
+country_event = {
+	id = 500048
+	title = "EVTNAME500048"
+	desc = "EVTDESC500048"
+	picture = "vacation_on_siberia"
+
+	fire_only_once = yes
+
+	trigger = {
+		has_global_flag = january_uprising_happened
+		has_country_flag = through_january_uprising
+		CPL = { exists = no }
+		LIT = { exists = no }
+		owns = 706
+		war = no
+	}
+
+	mean_time_to_happen = { days = 30 }
+
+	option = { # punish them
+		name = "EVTOPTA500048"
+		set_global_flag = polish_uprising_crushed
+
+		any_country = {
+			limit = {
+				is_greater_power = yes
+				capital_scope = { continent = europe }
+				NOT = { alliance_with = THIS }
+			}
+			relation = { who = THIS value = -25 }
+		}
+
+		add_tax_relative_income = 30
+
+		any_owned = {
+			limit = { is_core = POL }
+			any_pop = {
+				limit = {
+					has_pop_culture = polish
+					OR = {
+						pop_type = officers
+						pop_type = capitalists
+						pop_type = aristocrats
+					}
+				}
+				reduce_pop = 0.7
+			}
+			any_pop = {
+				limit = {
+					has_pop_culture = polish
+					pop_type = soldiers
+				}
+				reduce_pop = 0.8
+			}
+			add_province_modifier = { name = russification duration = -1 } 
+			add_province_modifier = { name = national_assimilation_complete duration = 7000 } # This is so U01 gets removed after 20 years
+		}
+
+		any_owned = {
+			limit = { 
+				OR = { is_core = CPL is_core = LIT }
+			}
+			any_pop = {
+				limit = { has_pop_culture = polish }
+				random_list = {
+					25 = { reduce_pop = 0.99 }
+					25 = { reduce_pop = 0.985 }
+					25 = { reduce_pop = 0.98 }
+					25 = { reduce_pop = 0.975 }
+				}
+			}
+		}
+
+		ai_chance = { factor = 95 }
+	}
+
+	option = { # be lenient
+		name = "EVTOPTB500048"
+		set_global_flag = polish_uprising_crushed
+		set_country_flag = lenient_on_poles
+
+		prestige = -60
+		
+		any_pop = {
+			limit = { is_accepted_culture = no }
+			consciousness = 6
+		}
+
+		ai_chance = { factor = 5 }
+	}
+}
+
+#Event to incorporate all other Polish states - NEED TO FIX for PLC proclamation
+country_event = {
+	id = 500049
+	title = "EVTNAME500049" # Polish petitions for annexation
+	desc = "EVTDESC500049"
+	picture = "greatpowers"
+
+	trigger = {
+		primary_culture = polish
+		ai = yes
+		NOT = { has_country_flag = polish_integration_asked }
+		is_greater_power = no
+		war = no
+		OR = {
+			part_of_sphere = no
+			in_sphere = POL
+		}
+		POL = {
+			NOT = { truce_with = THIS }
+			exists = yes
+			neighbour = THIS
+			is_vassal = no
+		}
+	}
+
+	mean_time_to_happen = { days = 28 }
+
+	option = {
+		name = "EVTOPTA500049"
+		set_country_flag = polish_integration_asked
+		all_core = {
+			add_core = POL
+			remove_core = THIS
+		}
+		annex_to = POL
+
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 0
+				OR = {
+					tag = DZG
+					is_secondary_power = yes
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "EVTOPTB500049"
+		set_country_flag = polish_integration_asked
+		all_core = { add_core = POL }
+		ai_chance = {
+			factor = 0
+			modifier = {
+				factor = 100
+				OR = {
+					tag = DZG
+					is_secondary_power = yes
+				}
+			}
+		}
+	}
+}
+
+#Victory in Uprising Event
+country_event = {
+	id = 500050
+	title = "EVTNAME500050"
+	desc = "EVTDESC500050"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = "EVTOPTA500050"
+		set_global_flag = polish_uprising_victorious
+
+		prestige = 25
+		any_pop = { militancy = -5 }
+		war_exhaustion = -25
+
+		any_owned = {
+			limit = {
+				has_province_modifier = polish_revolt
+			}
+			remove_province_modifier = polish_revolt
+		}
+		remove_country_modifier = polish_uprising_mobilization
+		remove_country_modifier = unrecognized_country
+
+		3398 = {
+			secede_province = LIT
+			remove_core = COU
+		}
+
+		RUS = {
+			any_owned = {
+				limit = {
+					has_province_modifier = polish_revolt
+				}
+				remove_province_modifier = polish_revolt
+			}
+		}
+
+		LIT = {
+			any_owned = {
+				limit = {
+					has_province_modifier = polish_revolt
+				}
+				remove_province_modifier = polish_revolt
+			}
+			remove_country_modifier = polish_uprising_mobilization
+			remove_country_modifier = unrecognized_country
+		}
+	}
+}
+
+#Russian Event for Defeat in Poland
+country_event = {
+	id = 500051
+	title = "EVTNAME500051"
+	desc = "EVTDESC500051"
+	picture = "placeholder"
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA500051"
+
+		prestige = -100
+
+		any_pop = {
+			limit = {
+				is_accepted_culture = yes
+			}
+			militancy = 2
+		}
+
+		any_pop = {
+			limit = { has_pop_culture = polish }
+			militancy = 7
+		}
+		
+		any_pop = {
+			limit = {
+				is_accepted_culture = no
+				NOT = { has_pop_culture = polish }
+			}
+			militancy = 5
 		}
 	}
 }
