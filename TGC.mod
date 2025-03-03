@@ -17,4 +17,4 @@ replace_path = "technologies"
 replace_path = "units"
 
 github = "https://github.com/The-Grand-Combination/The-Grand-Combo"
-current_release = "v2.3.4"
+current_release = "v2.5.1"
