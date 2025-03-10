@@ -140,6 +140,7 @@ peace_order = {
 	restore_the_commonwealth
 	reclaim_the_commonwealth
 	liberate_poles
+	take_claim
 }
 
 # Great War CB's
@@ -8596,6 +8597,95 @@ liberate_poles = {
 			from = jingoism
 			to = pro_military
 			value = 0.05
+		}
+	}
+}
+
+# North American CB to take claims
+take_claim = {
+	sprite_index = 21
+	is_triggered_only = yes
+	months = 12
+
+	construction_speed = 0.8
+
+	badboy_factor = 0.05
+	prestige_factor = 2
+	peace_cost_factor = 0.7
+	penalty_factor = 1
+	always = yes
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 1
+	break_truce_militancy_factor = 0.1
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = {
+		neighbour = THIS
+		OR = {
+			AND = {
+				THIS = { tag = USA }
+				any_owned_province = { is_core = US2 }
+			}
+			AND = {
+				THIS = { tag = MEX }
+				any_owned_province = { is_core = ME2 }
+			}
+			AND = {
+				THIS = {
+					OR = {
+						tag = ENG
+						tag = CAN
+					}
+				}
+				any_owned_province = { is_core = CA2 }
+			}
+		}
+	}
+
+	allowed_states = {
+		OR = {
+			AND = {
+				THIS = { tag = USA }
+				any_owned_province = { is_core = US2 }
+			}
+			AND = {
+				THIS = { tag = MEX }
+				any_owned_province = { is_core = ME2 }
+			}
+			AND = {
+				THIS = {
+					OR = {
+						tag = ENG
+						tag = CAN
+					}
+				}
+				any_owned_province = { is_core = CA2 }
+			}
+		}
+		OR = {
+			THIS = { ai = no }
+			AND = {
+				THIS = { any_owned_province = { port = yes } }
+				any_owned_province = { port = yes }
+			}
+			any_owned_province = { any_neighbor_province = { owned_by = THIS } }
+		}
+	}
+
+	po_demand_state = yes
+
+	war_name = WAR_TAKE_CLAIM_NAME
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.01
 		}
 	}
 }
