@@ -1,0 +1,121 @@
+political_decisions = {
+    further_german_investment_in_america = {
+        picture = colonization
+        name = "Further German Investment in America!"
+        desc = "Why would we conform with that portion of Texas? It´s just obvious that the Germans need more land in North America! We can ask Mexico for it, although they might refuse."
+        potential = {
+            ai = no
+            OR = {
+                tag = PRU
+                tag = NGF
+                tag = GER
+            }
+            is_greater_power = yes
+            has_country_flag = germany_has_annexed_texas
+            NOT = { has_country_flag = further_german_investment_in_america }
+        }
+
+        allow = {
+            money = 500000
+            war = no
+        }
+
+        effect = {
+            set_country_flag = further_german_investment_in_america
+            money = -500000
+            prestige = 10
+            138 = { add_core = ADV }
+            136 = { add_core = ADV }
+            3372 = { add_core = ADV }
+            129 = { add_core = ADV }
+            country_event = 50333 # Trigger the event for Mexico
+        }
+
+        ai_will_do = {
+            factor = 0.1
+        }
+    }
+}
+
+country_event = {
+    id = 50333
+    title = "The Germans threaten us"
+    desc = "We´ve just received a letter from the North Germans, they are asking us to give them a portion of our land in North America. They are offering us a lot of money, but we can´t just give them our land!"
+    picture = "colonization"
+
+    trigger = {
+        has_country_flag = further_german_investment_in_america
+        tag = MEX
+    }
+
+    mean_time_to_happen = {
+        days = 1
+    }
+
+    option = {
+        name = "I'm so scared, take the land!"
+        prestige = -10
+        relation = { who = GER value = -100 }
+        relation = { who = PRU value = -100 }
+        relation = { who = NGF value = -100 }
+        138 = { secede_province = ADV }
+        136 = { secede_province = ADV }
+        3372 = { secede_province = ADV }
+        129 = { secede_province = ADV }
+        money = 500000
+        ai_chance = {
+            factor = 40
+        }
+    }
+
+    option = {
+        name = "We are not giving our land away"
+        prestige = +7
+        relation = { who = GER value = -50 }
+        relation = { who = PRU value = -50 }
+        relation = { who = NGF value = -50 }
+        add_casus_belli = {
+            type = status_quo
+            target = ADV
+        }
+        add_casus_belli = {
+            type = status_quo
+            target = GER
+        }
+        add_casus_belli = {
+            type = status_quo
+            target = PRU
+        }
+        add_casus_belli = {
+            type = status_quo
+            target = NGF
+        }
+        ADV = {
+            add_casus_belli = {
+                type = liberate_cores
+                target = MEX
+            }
+        }
+        GER = {
+            add_casus_belli = {
+                type = liberate_cores
+                target = MEX
+            }
+        }
+        PRU = {
+            add_casus_belli = {
+                type = liberate_cores
+                target = MEX
+            }
+        }
+        NGF = {
+            add_casus_belli = {
+                type = liberate_cores
+                target = MEX
+            }
+        }
+        ai_chance = {
+            factor = 60
+        }
+    }
+}
