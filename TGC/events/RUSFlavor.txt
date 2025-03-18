@@ -1416,18 +1416,19 @@ country_event = {
 		exists = HUN
 		NOT = { truce_with = HUN }
 		OR = {
-		AND = {
-			year = 1849
-			month = 1
-			#AUS = { war_exhaustion = 5 }
-		}
-		OR = {
-			#year = 1848
-			AUS = { war_exhaustion = 25 } #this is if revolt starts in 47, austria losing badly
-			AUS = { national_provinces_occupied = .25 }
-		}
+			AND = {
+				year = 1849
+				month = 1
+				#AUS = { war_exhaustion = 5 }
+			}
+			OR = {
+				#year = 1848
+				AUS = { war_exhaustion = 25 } #this is if revolt starts in 47, austria losing badly
+				AUS = { national_provinces_occupied = .25 }
+			}
 		}
 		NOT = { exists = POL } #If the Poles are revolting, Russia won't get this event until that revolt is quashed
+		NOT = { war_with = CPL } # See above
 		NOT = { exists = LIT }
 		AUS = {
 			NOT = { has_country_flag = austria_let_hungary_go }
@@ -4600,16 +4601,19 @@ country_event = {
 			badboy = 5
 			#oh, madon'
 			FROM = {
-					any_owned = {
-						limit = { 
-							OR = {
-						state_id = 87
-						state_id = 2139
+				any_owned = {
+					limit = { 
+						OR = {
+							region = MEX_2139
+							region = MEX_85
+							region = MEX_94
+							region = MEX_97
 						} 
-						}
-						secede_province = THIS
 					}
+					secede_province = LSK
+					add_core = LSK
 				}
+			}
 			# random_owned = {
 			# 	limit = {
 			# 		tag = MEX
@@ -4624,12 +4628,6 @@ country_event = {
 			# 		state_scope = { secede_province = RUS }
 			# 	}
 			# }
-			any_owned = {
-				limit = {
-					continent = north_america
-				}
-				add_core = LSK #Russian America
-			}
 		}
 	}
 	
@@ -4790,46 +4788,49 @@ country_event = {
 			desc = "EVTDESC501122"
 			picture = "countryside"
 			
-			trigger = {
-			has_country_flag = initiated_mordvinov_plan
-			primary_culture = russian
-		    }
-
-			mean_time_to_happen = { months = 1 }
-
+			is_triggered_only = yes
 			fire_only_once = yes
 
 			option = {
 				name = "EVTOPTA501122"
 				prestige = 2
-			any_owned = {
-				limit = {
-				    is_core = LSK
-					has_pop_type = serfs
-					has_pop_type = labourers
-				}
-				any_pop = { limit = { type = serfs } pop_type = labourers }
-			}
-			any_owned = {
-				limit = {
-				     is_core = LSK
-					has_pop_type = serfs
-					has_pop_type = farmers
-				}
-				any_pop = { limit = { type = serfs } pop_type = farmers }
-			}	
-		    any_pop = {
-				limit = {
-					location = { is_core = LSK }
-					OR = {
-					culture = russian
-					culture = byelorussian
-					culture = ukrainian
+
+				LSK = {
+					any_owned = {
+						limit = {
+							is_core = LSK
+							has_pop_type = serfs
+							work_available = labourers
+						}
+						any_pop = {
+							limit = { type = serfs } 
+							pop_type = farmelabourersrs 
+						}
+					}
+					any_owned = {
+						limit = {
+						    is_core = LSK
+							has_pop_type = serfs
+							work_available = farmers
+						}
+						any_pop = {
+							limit = { type = serfs } 
+							pop_type = farmers 
+						}
+					}
+				    any_pop = {
+						limit = {
+							location = { is_core = LSK }
+							OR = {
+								culture = russian
+								culture = byelorussian
+								culture = ukrainian
+							}
+						}
+						militancy = -10
+						consciousness = -10
 					}
 				}
-				militancy = -10
-				consciousness = -10
-			}
 			}
 		}
 		
@@ -5306,33 +5307,36 @@ country_event = {
 			fire_only_once = yes
 			
 			trigger = {
-			tag = RUS
-			has_country_flag = absolute_monarchy_gov
-			debt_law = serfdom
-			has_global_flag = treaty_of_paris_russia
-			has_country_flag = initiated_mordvinov_plan
-			owns = 104
-			year = 1856
-			NOT = { year = 1860 }
+				tag = RUS
+				has_country_flag = absolute_monarchy_gov
+				debt_law = serfdom
+				has_global_flag = treaty_of_paris_russia
+				has_country_flag = initiated_mordvinov_plan
+				owns = 104
+				year = 1856
+				NOT = { year = 1860 }
 		    }
 			option = {
 				name = "EVTOPTA501136" #Allows Alexander reforms after Crimea, when Crimea is won.
 				set_country_flag = mordvinov_was_right
+
 				add_country_modifier = { name = free_economic_society duration = 5010 }
 				prestige = -5
 				any_pop = {
-				limit = {
-					is_culture_group = east_slavic
-					location = { is_core = THIS }
-				}
-				ideology = { factor = 0.05 value = liberal }
-				consciousness = 2
-				militancy = -1
-			   }
+					limit = {
+						is_culture_group = east_slavic
+						location = { is_core = THIS }
+					}
+					ideology = { factor = 0.05 value = liberal }
+					consciousness = 2
+					militancy = -1
+			    }
+
 			    ai_chance = { factor = 0 }
 			}
 			option = {
 				name = "EVTOPTB501136"
+
 				prestige = 5
 			    ai_chance = { factor = 100 }
 			}
@@ -5584,9 +5588,7 @@ country_event = {
 # 			}
 # 		}
 # 	}
-	
-	
-	
+
 	### Bosnian Question - Russia winning Crimea scenario, triggers a crisis with Austria
 		country_event = {
 			id = 501142
@@ -5597,32 +5599,32 @@ country_event = {
 			fire_only_once = yes
 			
 			trigger = {
-			has_global_flag = treaty_of_paris_russia
-			has_country_modifier = bosnian_question
-			tag = BOS
-			neighbour = SER
-			in_sphere = RUS
-			OR = {
-			is_vassal = no #if rebels break ottomans, as ai often does
-			vassal_of = TUR
-			}
-			primary_culture = serb
-			owns = 783 #Sarajevo
-			year = 1857
-			NOT = { year = 1870 }
+				has_global_flag = treaty_of_paris_russia
+				has_country_modifier = bosnian_question
+				tag = BOS
+				neighbour = SER
+				in_sphere = RUS
+				OR = {
+					is_vassal = no #if rebels break ottomans, as ai often does
+					vassal_of = TUR
+				}
+				primary_culture = serb
+				owns = 783 #Sarajevo
+				year = 1857
+				NOT = { year = 1870 }
 		    }
 			
-		mean_time_to_happen = {
-		months = 4
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1859
-		}
-		modifier = {
-			factor = 0.5 #increase likelihood to happen
-			year = 1861
-		}
-	    }
+			mean_time_to_happen = {
+				months = 4
+				modifier = {
+					factor = 0.75 #increase likelihood to happen
+					year = 1859
+				}
+				modifier = {
+					factor = 0.5 #increase likelihood to happen
+					year = 1861
+				}
+		    }
 			
 			option = {
 				name = "EVTOPTA501142"
@@ -5630,44 +5632,47 @@ country_event = {
 				RUS = { country_event = { id = 501143 days = 7 } }
 				prestige = 5
 				any_pop = {
-				limit = {
-					has_pop_culture = serb
-					location = { is_core = THIS }
+					limit = {
+						has_pop_culture = serb
+						location = { is_core = THIS }
+					}
+					consciousness = 2
+					militancy = -6
+			    }
+				any_pop = {
+					limit = {
+						has_pop_culture = turkish
+						location = { is_core = THIS }
+					}
+					consciousness = 2
+					militancy = 6
 				}
-				consciousness = 2
-				militancy = -6
-			   }
-			   any_pop = {
-				limit = {
-					has_pop_culture = turkish
-					location = { is_core = THIS }
-				}
-				consciousness = 2
-				militancy = 6
-			   }
 			   
 			   any_pop = {
-				limit = {
-					has_pop_culture = bosniak
-					location = { is_core = THIS }
-				}
-				consciousness = 2
-				militancy = 2
-			   }
+					limit = {
+						has_pop_culture = bosniak
+						location = { is_core = THIS }
+					}
+					consciousness = 2
+					militancy = 2
+			    }
 			   
 			    any_pop = {
-				limit = {
-					has_pop_culture = croat
-					location = { is_core = THIS }
-				}
-				consciousness = 2
-			   }
+					limit = {
+						has_pop_culture = croat
+						location = { is_core = THIS }
+					}
+					consciousness = 2
+			    }
+
 			    ai_chance = { factor = 100 }
 			}
 			option = {
 				name = "EVTOPTB501142"
+
 				prestige = -15
 				any_owned = { limit = { is_core = BOS } add_province_modifier = { name = nationalist_agitation duration = 1080 } }
+
 			    ai_chance = { factor = 0 }
 			}
 		}
@@ -5679,6 +5684,7 @@ country_event = {
 			picture = "bosnia_issue"
 			
 			is_triggered_only = yes
+
 			option = {
 				name = "EVTOPTA501143"
 				TUR = { country_event = { id = 501144 days = 7 } }
@@ -5751,12 +5757,13 @@ country_event = {
                 
 				ai_chance = { 
 					factor = 50 
-				modifier = {
-				factor = 50
-				has_recently_lost_war = no
-			    }
+					modifier = {
+						factor = 50
+						has_recently_lost_war = no
+				    }
 				}
 			}
+
 			option = {
 				name = "EVTOPTB501145" #warpath
 				RUS = { country_event = { id = 501147 days = 7 } }
@@ -5764,20 +5771,20 @@ country_event = {
 				
 			    ai_chance = { 
 					factor = 50 			
-				modifier = {
-				factor = 0
-				is_greater_power = no
-			    } 
-				modifier = {
-				factor = 0.5
-				has_country_flag = austria_joins_the_allies
-				has_recently_lost_war = yes
-			    } 
-				modifier = {
-				factor = 0
-				has_recently_lost_war = yes
-			    }
-			}
+					modifier = {
+						factor = 0
+						is_greater_power = no
+				    } 
+					modifier = {
+						factor = 0.5
+						has_country_flag = austria_joins_the_allies
+						has_recently_lost_war = yes
+				    } 
+					modifier = {
+						factor = 0
+						has_recently_lost_war = yes
+				    }
+				}
 			}
 		}
 		
@@ -5833,54 +5840,56 @@ country_event = {
 			fire_only_once = yes
 			
 			trigger = {
-			has_global_flag = treaty_of_paris_russia
-			tag = MCD
-			neighbour = BUL
-			in_sphere = RUS
-			OR = {
-			is_vassal = no #if rebels break ottomans, as ai often does
-			vassal_of = TUR
-			}
-			primary_culture = bulgarian
-			owns = 809 #Sofia
-			year = 1860
-			#NOT = { year = 1870 }
+				has_global_flag = treaty_of_paris_russia
+				tag = MCD
+				neighbour = BUL
+				in_sphere = RUS
+				OR = {
+					is_vassal = no #if rebels break ottomans, as ai often does
+					vassal_of = TUR
+				}
+				primary_culture = bulgarian
+				owns = 809 #Sofia
+				year = 1860
+				#NOT = { year = 1870 }
 		    }
 			
-		mean_time_to_happen = {
-		months = 6
-		modifier = {
-			factor = 0.75 #increase likelihood to happen
-			year = 1862
-		}
-		modifier = {
-			factor = 0.55 #increase likelihood to happen
-			year = 1864
-		}
-	    }
+			mean_time_to_happen = {
+				months = 6
+				modifier = {
+					factor = 0.75 #increase likelihood to happen
+					year = 1862
+				}
+				modifier = {
+					factor = 0.55 #increase likelihood to happen
+					year = 1864
+				}
+		    }
 			
 			option = {
 				name = "EVTOPTA501149"
+				
 				#set_country_flag = bosnian_question_deliberated
 				RUS = { country_event = { id = 501150 days = 7 } }
 				prestige = 5
 				any_pop = {
-				limit = {
-					has_pop_culture = bulgarian
-				}
-				consciousness = 2
-				militancy = -6
-			   }
-			   any_pop = {
-				limit = {
-				    OR = {
-					has_pop_culture = turkish
-					has_pop_culture = pomak
+					limit = {
+						has_pop_culture = bulgarian
 					}
-				}
-				consciousness = 2
-				militancy = 6
-			   }
+					consciousness = 2
+					militancy = -6
+			    }
+			    any_pop = {
+					limit = {
+					    OR = {
+							has_pop_culture = turkish
+							has_pop_culture = pomak
+						}
+					}
+					consciousness = 2
+					militancy = 6
+			    }
+
 			    ai_chance = { factor = 100 }
 			}
 			option = {
