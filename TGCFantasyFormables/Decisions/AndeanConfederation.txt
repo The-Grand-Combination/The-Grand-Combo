@@ -1,10 +1,71 @@
 political_decisions = {
-    	
+    
+##Embrace Pan-Andism##
+
+	#Description: Initial step in purusing Andean unification
+		embrace_pan_andism = {
+			picture = embrace_pan_andism
+			potential = { 
+			NOT = { has_country_flag = embraced_pan_andism } 
+			OR = {
+				tag = GCO
+				tag = PBC }
+			}
+		
+			allow = {
+			nationalism_n_imperialism = 1
+			is_secondary_power = yes
+			}
+		
+			effect = {
+			set_country_flag = embraced_pan_andism
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+
+##Diplomatic unification of the Andes##
+
+	#Description: First Andean Convention
+	call_the_first_andean_convention = {
+		picture = call_the_first_andean_convention
+	
+		potential = {
+			has_country_flag = embraced_pan_andism
+			OR = { tag = GCO tag = PBC }
+			NOT = { has_country_flag = we_shall_unite_by_sword_andean }
+		}
+	
+		allow = {
+			war = no
+			plurality = 50
+			has_country_flag = embraced_pan_andism
+			relation = { who = TAG value = NUMBER }
+			relation = { who = TAG value = NUMBER }
+			relation = { who = TAG value = NUMBER }
+		}
+		
+		effect = {
+			set_country_flag = peaceful_andean_unification
+			country_event = XX
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+##Conquest of the Andes##
+
+	#Description: Unite the Andes by force 
 	andean_conf_by_sword = {
 		picture = andean_conf
 		potential = {
+			has_country_flag = embraced_pan_andism
 			OR = { tag = GCO tag = PBC }
-            NOT = { has_country_flag = we_shall_unite_by_sword_andean }
+			NOT = { has_country_flag = we_shall_unite_by_sword_andean }
 		}
 
 		allow = {
@@ -20,16 +81,18 @@ political_decisions = {
 			prestige = 5
 			CLM = { all_core = { add_core = THIS } }
 			ECU = { all_core = { add_core = THIS } }
-            PEU = { all_core = { add_core = THIS } }
+			PEU = { all_core = { add_core = THIS } }
 			BOL = { all_core = { add_core = THIS } }
 		}
 
-		ai_will_do = { factor = 1 }
-	}
+			ai_will_do = { factor = 1 }
+		}
 
+	#Description: Proclaim the Andean Confederation
 	form_andean_conf = {
 		picture = andean_conf
 		potential = {
+			has_country_flag = we_shall_unite_by_sword_andean
 			OR = { tag = GCO tag = PBC }
 			NOT = { exists = ANC }
 		}
@@ -42,7 +105,6 @@ political_decisions = {
 				OR = {
 					in_sphere = THIS
 					vassal_of = THIS
-					tag = THIS
 					all_core = { OR = { owned_by = THIS empty = yes } }
 				}
 			}
@@ -50,15 +112,13 @@ political_decisions = {
 				OR = {
 					in_sphere = THIS
 					vassal_of = THIS
-					tag = THIS
 					all_core = { OR = { owned_by = THIS empty = yes } }
 				}
 			}
-            PEU = {
+			PEU = {
 				OR = {
 					in_sphere = THIS
 					vassal_of = THIS
-					tag = THIS
 					all_core = { OR = { owned_by = THIS empty = yes } }
 				}
 			}
@@ -66,7 +126,6 @@ political_decisions = {
 				OR = {
 					in_sphere = THIS
 					vassal_of = THIS
-					tag = THIS
 					all_core = { OR = { owned_by = THIS empty = yes } }
 				}
 			}
@@ -78,30 +137,269 @@ political_decisions = {
 			add_accepted_culture = colombian
 			add_accepted_culture = venezuelan
 
-			change_tag = ANC
-
-			any_country = {
-				limit = {
-					OR = {
-						in_sphere = THIS
-						vassal_of = THIS
+			## Annexation ##
+				any_country = {
+					limit = {
+						OR = {
+							in_sphere = THIS
+							vassal_of = THIS
+						}
+						ai = yes
 					}
-					OR = {
-						tag = PEU
-						tag = BOL
-						tag = ECU
-						tag = CLM
-						tag = PEU
-						tag = GCO
+					any_owned = {
+						limit = { is_core = ANC }
+						secede_province = THIS
 					}
 				}
-				annex_to = THIS
-			}
-
-			any_owned =  { add_core = THIS }
-			
+				random_country = {
+					limit = {
+						tag = CLM
+					}
+					country_event = 11101
+				}
+				random_country = {
+					limit = {
+						tag = ECU
+					}
+					country_event = 11101
+				}
+				random_country = {
+					limit = {
+						tag = BOL
+					}
+					country_event = 11101
+				}
+				random_country = {
+					limit = {
+						tag = PEU
+					}
+					country_event = 11101
+				}
+			change_tag = ANC
 		}
 
 		ai_will_do = { factor = 1 }
 	}
+
+##Post Unification Flavor##
+
+##In order to reform the military and state you must resolve internal boundary disputes##
+
+	#Description: Resolves the boundaries of each tag within the Confederation
+	boundaries_of_andean_confederation = {
+		picture = boundaries_of_andean_confederation
+	
+		potential = { 
+			tag = ANC
+			NOT = { has_country_flag = andean_boundaries_resolved }
+		}
+	
+		allow = {
+		plurality = 50	
+		}
+	
+		effect = {
+		 country_event = XX
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+##In order to pursue external expansion you must resolve the matters of military and state##
+
+	#Description: Remove state debuffs to the Andean Confederation
+	reform_the_andean_state = {
+			picture = pass_reform
+			potential = {
+				tag = ANC
+				ai = no
+				has_country_modifier = decentralized_andean_union
+				has_country_flag = resolved_boundaries_disputes
+				NOT = { has_country_flag = reform_the_andean_state }
+			}
+
+			allow = {
+				plurality = 50
+				treasury = 200000
+			}
+
+			effect = {
+				set_country_flag = reformed_andean_state
+				treasury = -100000
+				plurality = -20
+				remove_country_modifier = decentralized_andean_union
+				political_reform = federalism
+			}
+			ai_will_do = { factor = 1 }
+		}
+
+	#Description: Remove military debuffs to the Andean Confederation
+		reform_the_andean_army = {
+			picture = the_new_army
+			potential = {
+				tag = ANC
+				ai = no
+				has_country_modifier = disorganized_andean_army
+				NOT = { has_country_flag = reform_the_andean_army }
+			}
+
+			allow = {
+				plurality = 50
+				treasury = 100000
+			}
+
+			effect = {
+				set_country_flag = reform_the_andean_army
+				treasury = -50000
+				plurality = -20
+				remove_country_modifier = disorganized_andean_army
+			}
+			ai_will_do = { factor = 1 }
+		}
+
+	#Description: Standardize education 
+		standardize_andean_education = {
+			picture = standardize_andean_education
+		
+			potential = { 
+				tag = ANC
+				ai = no
+				NOT = { has_country_flag = standardized_andean_education }
+			}
+		
+			allow = {
+				plurality = 50
+				treasury = 50000
+			}
+		
+			effect = {
+				set_country_flag = standardized_andean_education
+				add_country_modifier = { name = andean_education_standardization duration = -1 }
+				plurality = -15
+				treasury = -25000
+			}
+		
+			ai_will_do = {
+				factor = 1
+			}
+		}
+	
+##Andean Expansion##
+
+	#Description: If you formed the Andean Confederation as Peru-Bolivia you can invite Venezuela in return for giving them their claims on Colombia
+	andean_venezuela = {
+		picture = andean_venezuela
+	
+		potential = {
+			tag = ANC
+			NOT = { VNZ = { all_core = { owned_by = THIS } } }
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	#Description: After resolving all internal issues you can invite Chile into the Confederation
+	andean_chile = {
+		picture = andean_chile
+	
+		potential = { 
+			
+		}
+	
+		allow = {
+			
+		}
+	
+		effect = {
+			
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	#Description: The Amazon, you can either resolve your boundaries with Brazil peacefully or pursue expansion into the Amazon
+	#Decide Policy on Amazon
+	amazon_policy = {
+		picture = amazon_policy
+	
+		potential = { 
+			tag = ANC
+			has_country_flag = reformed_andean_state
+			has_country_flag = reform_the_andean_army
+			has_country_flag = standardize_andean_education
+		}
+	
+		allow = {
+			prestige = 100
+			nationalism_n_imperialism = 1
+			rank = 16
+		}
+	
+		effect = {
+			country_event = XX
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
+	#Description: Purchase Guyana
+	guiana_negotiations = {
+			picture = guyanas
+			potential = {
+				tag = ANC
+				VNZ = { all_core = { owned_by = THIS }
+				owns = 2275
+				owns = 2276
+				is_greater_power = yes
+				NOT = { has_country_flag = guiana_purchase }
+			}
+			}
+
+			allow = {
+				war = no
+				money = 1000000
+				is_greater_power = yes
+				nationalism_n_imperialism = 1
+				invention = expansionism
+				invention = manifest_destiny
+				has_country_flag = cisplatina_is_ours
+			}
+			
+			effect = {
+				set_country_flag = guiana_purchase
+				any_country = { 
+					limit = { 
+						NOT = { capital_scope = { continent = south_america } }
+						any_owned_province = { 
+							OR = { 
+								region = ENG_1979 
+								region = NET_2240
+								region = FRA_2241
+							} 
+						} 
+					}
+					country_event = 8231
+				}
+			    brz_guyanas_buy = { }
+			}
+	
+			ai_will_do = { factor = 0 }
+		}
 }
