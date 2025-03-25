@@ -48,6 +48,7 @@ country_event = {
 		remove_country_modifier = military_reform
 		remove_country_modifier = western_influences
 		remove_country_modifier = uncivilized_isolationism
+		remove_country_modifier = china_isolationism
 		remove_country_modifier = trade_restrictions
 		remove_country_modifier = sayings_of_the_dutch
 		remove_country_modifier = isolationist_foreign_naval_officers
@@ -283,6 +284,7 @@ country_event = {
 		remove_country_modifier = military_reform
 		remove_country_modifier = western_influences
 		remove_country_modifier = uncivilized_isolationism
+		remove_country_modifier = china_isolationism
 		remove_country_modifier = trade_restrictions
 		remove_country_modifier = sayings_of_the_dutch
 		remove_country_modifier = isolationist_foreign_naval_officers
@@ -1473,7 +1475,7 @@ country_event = {
 		}
 		remove_country_modifier = western_influences
 		add_country_modifier = {
-			name = uncivilized_isolationism
+			name = china_isolationism
 			duration = -1
 		}
 		set_country_flag = mandate
@@ -1685,6 +1687,7 @@ country_event = {
 		OR = {
 			has_country_modifier = uncivilized_isolationism
 			has_country_modifier = trade_restrictions
+			has_country_modifier = china_isolationism
 		}
 		sphere_owner = {
 			NOT = { truce_with = THIS }
@@ -2013,6 +2016,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA131709"
+		set_global_flag = first_opium_war
 		leave_alliance = FROM
 		end_military_access = FROM
 		war = {
@@ -2047,6 +2051,41 @@ country_event = {
 		}
 	}
 }
+
+# The Qing Treaty Port in Britain - mememememememememe
+#country_event = {
+#	id = 131710
+#	title = "EVTNAME131710"
+#	desc = "EVTDESC131710"
+#	picture = Picture
+#	
+#	trigger = {
+#		tag = QNG
+#		has_global_flag = first_opium_war
+#		ENG = {
+#			truce_with = THIS
+#			has_recently_lost_war = yes
+#		}
+#		NOT = { has_global_flag = extra_flavour_disabled }
+#	}
+#	
+#	mean_time_to_happen = {
+#		days = 5
+#	}
+#
+#	fire_only_once = yes
+#
+#	option = {
+#		name = "EVTOPTA131710"
+#
+#		prestige = 25
+#		
+#		300 = {
+#			secede_province = THIS
+#			change_province_name = "Lundun"
+#		}
+#	}
+#}
 
 #################################################################################################################
 #																												#
@@ -2519,9 +2558,9 @@ country_event = {
 			add_province_modifier = { name = legation_quarter duration = -1 }
 		}
 		random_owned = {
-			limit = { owner = { has_country_modifier = uncivilized_isolationism } }
+			limit = { owner = { has_country_modifier = china_isolationism } }
 			owner = {
-				remove_country_modifier = uncivilized_isolationism
+				remove_country_modifier = china_isolationism
 				add_country_modifier = {
 					name = "western_influences"
 					duration = -1
@@ -6133,16 +6172,24 @@ country_event = {
 			remove_core = FJN
 		}
 		2406 = {
-				remove_core = FJN
-				add_core = TAI
+			remove_core = FJN
+			add_core = TAI
 		}
 		2681 = {
 			remove_core = FJN
 			add_core = TAI
 		}
-		any_pop = {
-			limit = { has_pop_culture = min }
-			militancy = 4
+
+		any_owned_province = {
+			limit = {
+				is_core = TAI
+			}
+			any_pop = {
+				limit = {
+					has_pop_culture = han_chinese
+				}
+				militancy = 4
+			}
 		}
 	}
 }
@@ -6247,7 +6294,6 @@ country_event = {
 		capital = 2681
 		money = 100000
 		leadership = 40
-		add_accepted_culture = min
 		random_country = {
 			limit = {
 				war_with = THIS
@@ -7335,7 +7381,7 @@ country_event = {
 		remove_country_modifier = educational_reform
 		remove_country_modifier = western_influences
 		add_country_modifier = {
-			name = "uncivilized_isolationism"
+			name = "china_isolationism"
 			duration = -1
 		}
 		random_country = {
@@ -7688,7 +7734,7 @@ country_event = {
 			government = absolute_monarchy
 			primary_culture = uighur
 			add_accepted_culture = tajik
-			add_accepted_culture = kazak
+			add_accepted_culture = kazakh
 			add_accepted_culture = kirgiz
 			capital = 1594
 			any_pop = {
@@ -7724,7 +7770,7 @@ country_event = {
 		UYG = {
 			primary_culture = uighur
 			add_accepted_culture = tajik
-			add_accepted_culture = kazak
+			add_accepted_culture = kazakh
 			add_accepted_culture = kirgiz
 			capital = 1594
 			any_pop = {
@@ -7789,7 +7835,7 @@ country_event = {
 			primary_culture = han_chinese
 			add_accepted_culture = uighur
 			remove_accepted_culture = tajik
-			remove_accepted_culture = kazak
+			remove_accepted_culture = kazakh
 			remove_accepted_culture = kirgiz
 			capital = 1600
 		}
@@ -8764,9 +8810,7 @@ country_event = {
 				country_event = 99969
 		}
 		end_war = TPG
-		1608 = { secede_province = THIS change_controller = THIS add_province_modifier = { name = treaty_port duration = -1 } remove_core = TPG }
-		1493 = { secede_province = THIS change_controller = THIS add_province_modifier = { name = treaty_port duration = -1 } remove_core = TPG }
-		1538 = { remove_core = TPG }
+		1608 = { secede_province = THIS change_controller = THIS add_province_modifier = { name = treaty_port duration = -1 } }
 		TPG = { country_event = 99970 }
 
 		ai_chance = {
@@ -8900,7 +8944,7 @@ country_event = {
 		name = "EVTOPTA99970"
 		war = {
 			target = ENG
-			attacker_goal = { casus_belli = unification_casus_belli state_province_id = 1493  }
+			attacker_goal = { casus_belli = unification_casus_belli state_province_id = 1608  }
 			defender_goal = { casus_belli = status_quo }
 			call_ally = no
 		}
@@ -9304,7 +9348,6 @@ country_event = {
 				OR = {
 					has_pop_culture = han_chinese
 					has_pop_culture = zhuang
-					has_pop_culture = yue
 					has_pop_religion = sunni
 					has_pop_religion = protestant
 				}
@@ -9332,7 +9375,6 @@ country_event = {
 					OR = {
 						has_pop_culture = han_chinese
 						has_pop_culture = zhuang
-						has_pop_culture = yue
 						has_pop_religion = sunni
 						has_pop_religion = protestant
 					}
@@ -9534,7 +9576,6 @@ country_event = {
 				OR = {
 					has_pop_culture = han_chinese
 					has_pop_culture = zhuang
-					has_pop_culture = yue
 					has_pop_religion = sunni
 					has_pop_religion = protestant
 				}
@@ -9562,7 +9603,6 @@ country_event = {
 					OR = {
 						has_pop_culture = han_chinese
 						has_pop_culture = zhuang
-						has_pop_culture = yue
 						has_pop_religion = sunni
 						has_pop_religion = protestant
 					}
@@ -11318,7 +11358,6 @@ country_event = {
 			money = 100000
 			leadership = 40
 			primary_culture = THIS
-			add_accepted_culture = min
 		}
 		any_country = {
 			limit = { war_with = TAI }
@@ -11328,7 +11367,7 @@ country_event = {
 	}
 }
 
-#Qing Defeat in the Taiping Rebellion
+#Qing Defeat in the Taiping Rebellion  #DEVNOTE: This makes literally zero sense; there is no way *Taiwan* is a Qing stronghold in like 1860 -pixelaes
 country_event = {
 	id = 160027
 	title = "EVTNAME160026" #Retreat to Formosa
@@ -11413,9 +11452,9 @@ country_event = {
 			capital = 2681
 			money = 100000
 			leadership = 40
-			add_accepted_culture = min
 			add_accepted_culture = han_chinese
 			remove_country_modifier = uncivilized_isolationism
+			remove_country_modifier = china_isolationism
 		}
 
 		random_country = {
