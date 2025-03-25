@@ -19,6 +19,12 @@ country_event = {
 		country_event = { id = 53 days = 0 }
 		#Brazil Slavery Updater
 		country_event = { id = 8300 days = 0 }
+		#Renamer Updater
+		country_event = { id = 16 days = 0 }
+		country_event = { id = 18 days = 0 }
+		country_event = { id = 19 days = 0 }
+		country_event = { id = 20 days = 0 }
+		country_event = { id = 21 days = 0 }
 		prestige = -1
 	}
 }
@@ -142,6 +148,7 @@ country_event = {
 							is_culture_group = southern_african
 							is_culture_group = west_african
 							is_culture_group = oceanic
+							is_culture_group = southeast_asian # Prevents MAD from losing tribals
 						}
 					}
 				}
@@ -316,7 +323,7 @@ country_event = {
 							add_province_modifier = { name = plantation duration = -1 }
 		}
 
-		all_land_provinces = { limit = { OR = { continent = africa				 ## African RGO normalization
+		any_land_province = { limit = { OR = { continent = africa                 ## African RGO normalization
 												continent = south_africa
 												continent = east_africa
 												continent = west_africa
@@ -1778,6 +1785,7 @@ country_event = {
 			}
 			country_event = 6016815
 		}
+
 		#####################
 		#	OPTIMIZATION	#
 		#####################
@@ -2016,19 +2024,6 @@ country_event = {
 				set_country_flag = has_treaty_port
 			}
 
-		#Monarchy Gov
-			any_country = { clr_country_flag = monarchy_gov }
-			any_country = {
-				limit = {
-					OR = {
-						has_country_flag = absolute_monarchy_gov
-						has_country_flag = semi_constitutional_monarchy_gov
-						has_country_flag = constitutional_monarchy_gov
-					}
-				}
-				set_country_flag = monarchy_gov 
-			}
-
 		#Army Tech
 			any_country = { clr_country_flag = army_tech }
 			any_country = {
@@ -2089,6 +2084,31 @@ country_event = {
 				}
 			}
 
+		#Non Agressive AI
+			any_country = { clr_country_flag = non_agressive_ai }
+			any_country = {
+				limit = {
+					OR = {
+						war_policy = anti_military
+						war_policy = pacifism
+					}
+					ai = yes
+				}
+				set_country_flag = non_agressive_ai
+			}
+
+		#Agressive AI
+			any_country = { clr_country_flag = agressive_ai }
+			any_country = {
+				limit = {
+					OR = {
+						war_policy = pro_military
+						war_policy = jingoism
+					}
+					ai = yes
+				}
+				set_country_flag = agressive_ai
+			}
 	}
 }
 #The Daily Updater, handle with care, any change here can lead to severe slow downs.
@@ -2307,13 +2327,22 @@ country_event = {
 		name = "EVTOPTC59"
 		set_country_flag = hidden_tooltip
 		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
-						owner = { country_event = 60 }
+						owner = { country_event = 82 }
 		}
 		clr_country_flag = hidden_tooltip
 	}
 
 	option = {
-		name = "EVTOPTD59"
+        name = "EVTOPTD59"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 60 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
+
+	option = {
+        name = "EVTOPTE59"
 
 	}
 }
@@ -3191,10 +3220,6 @@ country_event = {
 	option = {
 		name = "EVTOPTB66"
 		country_event = 199936
-	}
-
-	option = {
-		name = "EVTOPTC66"
 		country_event = 199937
 	}
 
@@ -3202,6 +3227,15 @@ country_event = {
 		name = "EVTOPTD66"
 		country_event = 74
 	}
+
+	option = {
+        name = "EVTOPTC59"
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+    }
 
 	option = {
 		name = "EVTCLOSE"
@@ -4272,3 +4306,153 @@ country_event = {
 }
 
 #74-80 used in TGO, do not use.
+
+#Railroading menu, 2
+country_event = {
+	id = 82
+	title = "EVTNAME82"
+	desc = "EVTDESC82"
+	picture = cafecolonial
+
+	is_triggered_only = yes
+	allow_multiple_instances = yes
+
+	option = {
+		name = "EVTOPTA82"
+
+		random_owned = {
+			limit = {
+				owner = { 
+					NOT = { has_global_flag = renamings_enabled } 
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renamings_enabled
+				set_country_flag = setting_changed
+				currently_disabled = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renamings_enabled 
+					NOT = { has_country_flag = setting_changed } 
+				}
+			}
+			owner = { 
+				currently_enabled = { } 
+				clr_global_flag = renamings_enabled
+				set_country_flag = setting_changed
+			}
+		}
+		
+		clr_country_flag = setting_changed
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+						owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTOPTB82"
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_half_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_1_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_half_y
+				renaming_half_y = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_1_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_2_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_1_y
+				renaming_1_y = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_2_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_5_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_2_y
+				renaming_2_y = { } 
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = { 
+					has_global_flag = renaming_5_y
+					NOT = { has_country_flag = setting_changed }
+				}
+			}
+
+			owner = { 
+				set_global_flag = renaming_half_y
+				set_country_flag = setting_changed
+				clr_global_flag = renaming_5_y
+				renaming_5_y = { } 
+			}
+		}
+
+		clr_country_flag = setting_changed
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+		
+	}
+
+	option = {
+		name = "EVTOPTC82"
+		set_country_flag = forced_renaming
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			JAN = { country_event = 16 }
+			JAN = { country_event = 18 }
+			JAN = { country_event = 19 }
+			JAN = { country_event = 20 }
+			JAN = { country_event = 21 }
+		}
+
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = { country_event = 82 }
+		}
+		clr_country_flag = hidden_tooltip
+	}
+
+	option = {
+		name = "EVTCLOSE"
+	}
+}
