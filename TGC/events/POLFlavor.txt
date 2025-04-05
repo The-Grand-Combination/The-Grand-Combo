@@ -4247,49 +4247,27 @@ country_event = {
 	
 	is_triggered_only = yes
 	
-	option = { # Wettin
-		name = "EVTOPTA500100" 
-		set_country_flag = wettin_poland
-		change_variable = { which = prussian_influence_poland value = 10 }
-		change_variable = { which = austrian_influence_poland value = 10 }
-		any_country = {
-			limit = {
-				is_culture_group = germanic
-			}
-			relation = { who = THIS value = 50 }
-		}
-		create_vassal = SAX
-
-		ai_chance = {
-			factor = 10
-			modifier = {
-				factor = 0
-				OR = {
-					any_country = {
-						limit = { is_greater_power = yes capital = 549 }
-						alliance_with = THIS
-					}
-					any_country = {
-						limit = { is_greater_power = yes capital = 619 }
-						alliance_with = THIS
-					}
-					any_country = {
-						limit = { is_greater_power = yes has_country_flag = french_content }
-						alliance_with = THIS
-					}
-				}
-			}
-		}
-	}
-	
 	option = { # Poniatowski
-		name = "EVTOPTB500100"
+		name = "EVTOPTA500100" 
 		set_country_flag = poniatowski_poland
 		any_country = {
 			limit = {
 				OR = { is_culture_group = germanic primary_culture = russian }
 			}
 			relation = { who = THIS value = -50 }
+		}
+	}
+	
+	option = { # Hohenzollern
+		name = "EVTOPTB500100"
+		set_country_flag = hohenzollern_poland
+		change_variable = { which = prussian_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { capital = 549 }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
 		}
 	}
 
@@ -4306,20 +4284,31 @@ country_event = {
 		}
 	}
 
-	option = { # Other
+	option = { # Bonaparte
 		name = "EVTOPTD500100"
-		any_owned = {
-			limit = {
-				owner = { NOT = { has_global_flag = fantasy_formables } }
-			}
-			country_event = 500101
+		set_country_flag = bonaparte_poland
+		change_variable = { which = french_influence_poland value = 20 }
+		any_greater_power = { 
+			limit = { has_country_flag = french_content }
+			diplomatic_influence = { 
+				who = THIS
+				value = 100
+			} 
 		}
-		any_owned = {
-			limit = {
-				owner = { has_global_flag = fantasy_formables }
+	}
+
+	option = { # Other
+		name = "EVTOPTE500100"
+
+		part_2_polish_kings = {}
+
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+			owner = {
+				country_event = 500101
 			}
-			country_event = 500102
 		}
+		clr_country_flag = hidden_tooltip
 	}
 	
 }
@@ -4332,41 +4321,76 @@ country_event = {
 	picture = "placeholder"
 	
 	is_triggered_only = yes
-
-	option = { # Bonaparte
+	
+	option = { # Wettin
 		name = "EVTOPTA500101"
-		set_country_flag = bonaparte_poland
-		change_variable = { which = french_influence_poland value = 20 }
-		any_greater_power = { 
-			limit = { has_country_flag = french_content }
-			diplomatic_influence = { 
-				who = THIS
-				value = 100
-			} 
+		
+		set_country_flag = wettin_poland
+		change_variable = { which = prussian_influence_poland value = 10 }
+		change_variable = { which = austrian_influence_poland value = 10 }
+		any_country = {
+			limit = {
+				is_culture_group = germanic
+			}
+			relation = { who = THIS value = 50 }
+		}
+		create_vassal = SAX
+
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				any_greater_power = {
+					alliance_with = THIS
+					OR = {
+						has_country_flag = french_content
+						has_country_flag = austrian_content
+						has_country_flag = prussian_content
+					}
+				}
+			}
 		}
 	}
 	
-	option = { # Hohenzollern
+	option = { # Czartoryski
 		name = "EVTOPTB500101"
-		set_country_flag = hohenzollern_poland
-		change_variable = { which = prussian_influence_poland value = 20 }
-		any_greater_power = { 
-			limit = { capital = 549 }
-			diplomatic_influence = { 
-				who = THIS
-				value = 100
-			} 
-		}
+		set_country_flag = czartoryski_poland
+	}
+	
+	option = { # Potocki
+		name = "EVTOPTC500101"
+		set_country_flag = potocki_poland
+	}
+	
+	option = { # Radziwill
+		name = "EVTOPTD500101"
+		set_country_flag = radziwill_poland
 	}
 
-	option = { # Back
-		name = "EVTOPTC500101"
-		country_event = 500100
+	option = { # Exit
+		name = "EVTOPTE500101"
+
+		random_owned = {
+			limit = { owner = { has_global_flag = fantasy_formables } }
+			part_3_polish_kings = {}
+		}
+
+		random_owned = {
+			limit = { owner = { NOT = { has_global_flag = fantasy_formables } } }
+			exit_polish_kings = {}
+		}
 		
+		set_country_flag = hidden_tooltip
+		random_owned = { limit = { owner = { has_country_flag = hidden_tooltip has_global_flag = fantasy_formables } }
+			owner = {
+				country_event = 500102
+			}
+		}
+		clr_country_flag = hidden_tooltip
 	}
 }
 
-# Choosing a King Part 2 - FF
+# Choosing a King Part 3 - FF
 country_event = {
 	id = 500102
 	title = "EVTNAME500102"
@@ -4375,35 +4399,9 @@ country_event = {
 	
 	is_triggered_only = yes
 
-	option = { # Bonaparte
+	option = { # Vasa-Jagellonian 
 		name = "EVTOPTA500102"
-		set_country_flag = bonaparte_poland
-		change_variable = { which = french_influence_poland value = 20 }
-		any_greater_power = { 
-			limit = { has_country_flag = french_content }
-			diplomatic_influence = { 
-				who = THIS
-				value = 100
-			} 
-		}
-	}
-	
-	option = { # Hohenzollern
-		name = "EVTOPTB500102"
-		set_country_flag = hohenzollern_poland
-		change_variable = { which = prussian_influence_poland value = 20 }
-		any_greater_power = { 
-			limit = { capital = 549 }
-			diplomatic_influence = { 
-				who = THIS
-				value = 100
-			} 
-		}
-	}
-
-	option = { # Vasa 
-		name = "EVTOPTC500102"
-		set_country_flag = vasa_poland
+		set_country_flag = vasa_jagellonian_poland
 		any_country = {
 			limit = { OR = { is_greater_power = yes has_country_flag = monarchy_gov } }
 			relations = {
@@ -4413,9 +4411,25 @@ country_event = {
 		}
 	}
 
-	option = { # Back
+	option = { # Mohyla
+		name = "EVTOPTB500102"
+		set_country_flag = mohyla_poland
+	}
+	
+	option = { # Swiatopelk-Mirski
+		name = "EVTOPTC500102"
+		set_country_flag = swiatopelk_mirski_poland
+	}
+	
+	option = { # Biron 
 		name = "EVTOPTD500102"
-		country_event = 500100
+		set_country_flag = biron_poland
+	}
+
+	option = { # Exit
+		name = "EVTOPTE500102"
+		
+		exit_polish_kings = {}
 	}
 }
 
