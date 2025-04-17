@@ -242,32 +242,214 @@ political_decisions = {
 	}
 
 ##Imperial Federation## NOTE: This could be base mod but I'm just making a real easy one for LARP
+## Unification ##
 
-#Description: Establish the Imperial Customs Union
+	#Description: Hold the Imperial Conference
+	reform_kalmar = {
+		picture = reform_uk
+		potential = {
+			tag = ENG
+			NOT = { has_global_flag = imperial_federation_created }
+			NOT = { has_global_flag = imperial_conference_held }
+		}
 
-#Description: Call for the Imperial Conference on the formation of an Imperial Federation
+		allow = {
+			prestige = 100
+			is_greater_power = yes
+			war = no
+			SAF = {
+				OR = {
+					exists = no
+					relation = { who = THIS value = 100 }
+					in_sphere = THIS
+				}
+			}
+			CAN = {
+				OR = {
+					exists = no
+					relation = { who = THIS value = 100 }
+					in_sphere = THIS
+				}
+			}
+			AUS = {
+				OR = {
+					exists = no
+					relation = { who = THIS value = 100 }
+					in_sphere = THIS
+				}
+			}
+			NZL = {
+				OR = {
+					exists = no
+					relation = { who = THIS value = 100 }
+					in_sphere = THIS
+				}
+			}	
+		}
+
+		effect = {
+		NZL = { set_country_flag = imperial_dominion }
+		AUS = { set_country_flag = imperial_dominion }
+		CAN = { set_country_flag = imperial_dominion }
+		SAF = { set_country_flag = imperial_dominion }
+
+		set_global_flag = imperial_conference_held
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Form the Imperial customs union - all countries with dominion status will join.
+	imperial_customs_union = {
+		picture = SCA_customs_union
+		potential = {
+			has_global_flag = imperial_conference_held
+			NOT = { has_global_flag = imperial_federation_created }
+			NOT = { has_global_flag = imperial_customs_union }
+		}
+
+		allow = {
+			prestige = 200
+			revolution_n_counterrevolution = 1
+			is_greater_power = yes
+			war = no
+		}
+
+		effect = {
+			any_country = {
+				limit = {
+					exists = yes
+					has_country_flag = imperial_dominion
+				}
+			}
+			add_country_modifier = { name = customs_union duration = -1 }
+			set_global_flag = imperial_customs_union
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	#Description: Form Scandinavia, become one country with all the countries in the Kalmar Union.
+	federalize_the_imperial_political_union = {
+		potential = {
+		tag = ENG	
+		has_global_flag = imperial_customs_union
+		NOT = { has_global_flag = imperial_federation_created }
+		}
+
+		allow = {
+			prestige = 300
+			is_greater_power = yes
+			war = no
+			ENG = {
+				all_core = {
+					OR = {
+						owned_by = THIS
+						owner = {
+							in_sphere = THIS
+							OR = {
+								is_vassal = no
+								vassal_of = THIS
+								AND = {
+									is_vassal = yes
+									has_country_flag = imperial_dominion
+								}
+							}
+							war = no
+							is_greater_power = no
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			prestige = 40
+			government = monarchy_2
+			political_reform = federalism
+			remove_country_modifier = customs_union
+			any_country = {
+				limit = {
+					has_country_flag = imperial_dominion
+				}
+				all_core = { add_core = ENG }
+			}
+			any_country = {
+				limit = {
+					exists = yes
+					is_greater_power = no
+					has_country_flag = imperial_dominion
+					OR = {
+						is_vassal = no
+						vassal_of = THIS
+					}
+				}
+				country_event = 11101 # Generic inherit
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 
 ##Miscellaneous##
 
 #Description: Grant autonomy to the British Raj
 
-#Description: The Anglo-Corsican Kingdom
-
 #Description: The Colony of New England aka. Crimea
-
-#Description: After defeating the US after refusing compromise in Oregon you can press further by renewing the War of 1812
 
 ##British re-conquest of the 13 Colonies##
 
+#Description: After defeating the US after refusing compromise in Oregon you can press further by renewing their claims on the USA
+	renew_the_war_of_1812 = {
+		picture = britam
+		potential = {
+			primary_culture = british
+			#Add another check
+			COL = { all_core = { owned_by = ENG } }
+			AND = { truce_with = USA}
+		}
+
+		allow = {
+			#USA = { exists = no }
+			COL = { all_core = { owned_by = ENG } }
+			AND = { truce_with = USA}
+		}
+
+		effect = {
+			set_country_flag = retaken_thirteen_colonies 
+			add_country_modifier = { name = american_dominions duration = -1 }
+			badboy = 3
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
 #Description after defeating the US again you can reinstitute the Dominion of New England. You can also establish the Great Lakes under Canada or hold it directly at the cost of infamy
+	second_treaty_of_ghent = {
+		picture = 
+
+		potential = { 
+			
+		}
+
+		allow = {
+			
+		}
+
+		effect = {
+			
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
 
 ##The Reconquest of the Thirteen colonies can now fully commence, you get the old decisions for the Dominion of the Mid-Atlantic, Commonwealth of Virginia, and the South##
 
 #Description: Reconstitute the Dominion of the Mid-Atlantic
 
 #Description: Reconstitute the Commonwealth of Virginia
-
-#Description: Reconstitute the 
 
 ##The Mississippi Territories##
 #Description: Decide how to handle the territory beyond the Mississippi, will the French see Louisiana returned to them, or will it be returned to Mexico via their claim on New Spain, or will you hold onto it directly.
@@ -283,8 +465,6 @@ political_decisions = {
 
 ##Post-Second war of American Independence##
 #Description: After the 2nd war of American Independence you can begin incorporating the American Dominions 
-
-#Description: Re-incorporate Canada under the crown
 
 #Description: Incorporate the Dominion of New England
 
