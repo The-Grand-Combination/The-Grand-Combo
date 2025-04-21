@@ -8870,3 +8870,64 @@
 				}
 			}
 		}
+
+# Temp Event - for when a non-Great War dismantle is added
+	country_event = {
+
+		id = 96094
+		title = "EVTNAME96000" #War is Upon Us
+		desc = "EVTDESC96000"
+		picture = "greatwar"
+
+		trigger = {
+			war = yes
+			OR = {
+				AND = {
+					any_greater_power = {
+						war_with = THIS
+						has_country_flag = dismantle_declared
+					}
+					NOT = { has_country_flag = in_great_war }
+				}
+				AND = {
+					has_country_flag = dismantle_declared
+					NOT = { has_country_flag = in_great_war }
+				}
+			}
+			
+		}
+
+		mean_time_to_happen = {
+			days = 0
+		}
+
+		option = {
+			name = "EVTOPTA96000" #We shall be victorious!
+			set_country_flag = great_war_has_happened
+			set_country_flag = in_great_war
+			war_exhaustion = -20
+			any_pop = {
+				militancy = -3
+				dominant_issue = {
+					factor = 0.05
+					value = jingoism
+				}
+			}
+			random_country = {
+				limit = {
+					THIS = { is_greater_power = yes }
+					OR = {
+						is_greater_power = yes
+						has_country_flag = dismantle_declared
+					}
+					war_with = THIS
+					NOT = { has_country_flag = enemy_of_my_enemy }
+				}
+				country_event = 96025
+			}
+			add_country_modifier = {
+				name = great_war
+				duration = -1
+			}
+		}
+	}
