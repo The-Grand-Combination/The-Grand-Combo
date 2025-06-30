@@ -802,7 +802,6 @@ unification_casus_belli = {
 			is_cultural_union = no
 		}
 		OR = {
-			NOT = { is_culture_group = THIS }
 			AND = {
 				war_with = THIS
 				is_culture_group = THIS
@@ -815,6 +814,7 @@ unification_casus_belli = {
 				THIS = { NOT = { tag = LIV } }
 				THIS = { NOT = { tag = COU } }
 			}
+			NOT = { is_culture_group = THIS }
 		}
 		any_state = {
 			any_owned_province = {
@@ -1530,85 +1530,95 @@ free_peoples = {
 	allowed_states = {
 		OR = {
 			AND = {
+				THIS = { ai = no }
 				any_owned_province = { is_core = FROM }
-				OR = {
-					THIS = { ai = no }
-					FROM = { exists = yes }
-					FROM = { involved_in_crisis = yes }
+			}
+			AND = {
+				FROM = { exists = yes }
+				any_owned_province = { is_core = FROM }
+			}
+			AND = {
+				FROM = { involved_in_crisis = yes }
+				any_owned_province = { is_core = FROM }
+			}
+			AND = {
+				FROM = { exists = no }
+				THIS = { civilized = no }
+				any_owned_province = {
+					is_core = FROM
+					OR = {
+						any_neighbor_province = { owned_by = THIS }
+						controlled_by = THIS
+					}
 				}
 			}
 			AND = {
 				FROM = { exists = no }
-				OR = {
-					AND = {
-						THIS = { civilized = no }
-						any_owned_province = {
-							is_core = FROM
-							OR = {
-								any_neighbor_province = { owned_by = THIS }
-								controlled_by = THIS
+				THIS = { civilized = yes }
+				FROM = { NOT = { is_culture_group = THIS } }
+				any_owned_province = {
+					is_core = FROM
+					OR = {
+						any_neighbor_province = { owned_by = THIS }
+						any_neighbor_province = {
+							owner = {
+								OR = {
+									in_sphere = THIS
+									alliance_with = THIS
+								}
 							}
 						}
-					}
-					AND = {
-						THIS = { civilized = yes }
-						OR = {
-							AND = {
-								FROM = { NOT = { is_culture_group = THIS } }
-								any_owned_province = {
-									is_core = FROM
-									OR = {
-										any_neighbor_province = { owned_by = THIS }
-										any_neighbor_province = {
-											owner = {
-												OR = {
-													in_sphere = THIS
-													alliance_with = THIS
-												}
-											}
-										}
-										controlled_by = THIS
-									}
-								}
-							}
-							AND = {
-								THIS = { capital_scope = { continent = europe } }
-								any_owned_province = {
-									continent = europe
-									is_core = FROM
-								}
-							}
-							AND = {
-								THIS = { 
-									capital_scope = { 
-										OR = {
-											continent = north_america
-											continent = south_america
-										}
-									} 
-								}
-								any_owned_province = {
-									OR = {
-										continent = north_america
-										continent = south_america
-									}
-									is_core = FROM
-								}
-							}
-							AND = {
-								THIS = { capital_scope = { continent = asia } }
-								any_owned_province = {
-									continent = asia
-									is_core = FROM
-								}
-							}
-							AND = {
-								FROM = { is_culture_group = THIS }
-								any_owned_province = { is_core = FROM }
-							}
-						}
+						controlled_by = THIS
 					}
 				}
+			}
+			AND = {
+				FROM = { exists = no }
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = europe } }
+				any_owned_province = {
+					continent = europe
+					is_core = FROM
+				}
+			}
+			AND = {
+				FROM = { exists = no }
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = north_america } }
+				any_owned_province = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+					is_core = FROM
+				}
+			}
+			AND = {
+				FROM = { exists = no }
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = south_america } }
+				any_owned_province = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+					is_core = FROM
+				}
+			}
+			AND = {
+				FROM = { exists = no }
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = asia } }
+				any_owned_province = {
+					continent = asia
+					is_core = FROM
+				}
+			}
+			AND = {
+				FROM = { exists = no }
+				THIS = { civilized = yes }
+				FROM = { is_culture_group = THIS }
+				any_owned_province = { is_core = FROM }
 			}
 		}
 		OR = {
@@ -1854,11 +1864,12 @@ free_allied_cores = {
 	allowed_countries = {
 		any_owned_province = { is_core = FROM }
 		OR = {
+			NOT = { alliance_with = FROM }
 			war_with = THIS
-			AND = {
-				NOT = { alliance_with = FROM }
-				FROM = { alliance_with = THIS }
-			}
+		}
+		OR = {
+			FROM = { alliance_with = THIS }
+			war_with = THIS
 		}
 		FROM = {
 			exists = yes
@@ -1979,11 +1990,12 @@ free_balkans = {
 				tag = MON
 				tag = BUL
 				AND = {
+					tag = BOS
 					THIS = { has_country_flag = oe_refused_congress }
-					OR = {
-						tag = BOS
-						tag = ALB
-					}
+				}
+				AND = {
+					tag = ALB
+					THIS = { has_country_flag = oe_refused_congress }
 				}
 			}
 			OR = {
@@ -4733,27 +4745,27 @@ gendarme_of_europe = {
 			is_greater_power = yes 
 			has_country_flag = absolute_monarchy_gov
 		}
+		
 	    OR = {
 			THIS = {
 				tag = RUS
 				has_country_modifier = gendarme_of_europe
 			}
 			THIS = { #Player lead Holy Alliance
-				ai = no
 				tag = AUS
 				OR = {
 					ruling_party_ideology = reactionary
 					has_country_modifier = metternich
 				}
+				ai = no
 			}
 		}
 		#Republics and HM's government are valid targets. Could add recent lib revolution reqs
-		OR = {
-			has_country_flag = constitutional_monarchy_gov
-			has_country_flag = democracy_gov
-			government = bourgeois_dictatorship
-			government = proletarian_dictatorship
-		}
+		NOT = { has_country_flag = absolute_monarchy_gov }
+		NOT = { has_country_flag = semi_constitutional_monarchy_gov }
+		NOT = { has_country_flag = theocracy_gov }
+		NOT = { has_country_flag = dominion_gov }
+		NOT = { has_country_flag = colonial_company_gov }
 		NOT = { has_country_flag = dismantle_declared }
 		civilized = yes
 		OR = {
@@ -5771,62 +5783,65 @@ liberate_puppet = {
 			}
 			AND = {
 				THIS = { civilized = yes }
-				OR = {
-					AND = {
-						FROM = { NOT = { is_culture_group = THIS } }
-						any_owned_province = {
-							is_core = FROM
-							OR = {
-								any_neighbor_province = { owned_by = THIS }
-								any_neighbor_province = {
-									owner = {
-										OR = {
-											in_sphere = THIS
-											alliance_with = THIS
-										}
-									}
-								}
-								controlled_by = THIS
-							}
-						}
-					}
-					AND = {
-						THIS = { capital_scope = { continent = europe } }
-						any_owned_province = {
-							continent = europe
-							is_core = FROM
-						}
-					}
-					AND = {
-						THIS = { 
-							capital_scope = { 
+				FROM = { NOT = { is_culture_group = THIS } }
+				any_owned_province = {
+					is_core = FROM
+					OR = {
+						any_neighbor_province = { owned_by = THIS }
+						any_neighbor_province = {
+							owner = {
 								OR = {
-									continent = north_america
-									continent = south_america
+									in_sphere = THIS
+									alliance_with = THIS
 								}
 							}
 						}
-						any_owned_province = {
-							OR = {
-								continent = north_america
-								continent = south_america
-							}
-							is_core = FROM
-						}
-					}
-					AND = {
-						THIS = { capital_scope = { continent = asia } }
-						any_owned_province = {
-							continent = asia
-							is_core = FROM
-						}
-					}
-					AND = {
-						FROM = { is_culture_group = THIS }
-						any_owned_province = { is_core = FROM }
+						controlled_by = THIS
 					}
 				}
-				
+			}
+			AND = {
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = europe } }
+				any_owned_province = {
+					continent = europe
+					is_core = FROM
+				}
+			}
+			AND = {
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = north_america } }
+				any_owned_province = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+					is_core = FROM
+				}
+			}
+			AND = {
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = south_america } }
+				any_owned_province = {
+					OR = {
+						continent = north_america
+						continent = south_america
+					}
+					is_core = FROM
+				}
+			}
+			AND = {
+				THIS = { civilized = yes }
+				THIS = { capital_scope = { continent = asia } }
+				any_owned_province = {
+					continent = asia
+					is_core = FROM
+				}
+			}
+			AND = {
+				THIS = { civilized = yes }
+				FROM = { is_culture_group = THIS }
+				any_owned_province = { is_core = FROM }
 			}
 		}
 		FROM = {
@@ -5834,6 +5849,12 @@ liberate_puppet = {
 				is_cultural_union = no
 				involved_in_crisis = yes
 			}
+		}
+		OR = {
+			FROM = { involved_in_crisis = yes }
+			FROM = { civilized = yes }
+			THIS = { civilized = no }
+			THIS = { ai = no }
 		}
 		OR = {
 			FROM = { involved_in_crisis = yes }
