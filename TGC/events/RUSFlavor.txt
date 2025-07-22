@@ -9346,3 +9346,619 @@ country_event = {
 		}
 	}
 }
+
+## Tsushima Incident ##
+# Inasa Bay - Japan
+country_event = {
+	id = 501300
+	title = "EVTNAME501300"
+	desc = "EVTDESC501300"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Accept
+		name = "EVTOPTA501300"
+		money = 10000
+		FROM = { country_event = 501301 }
+		relation = { who = FROM value = 35 }
+		
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0
+				civilized = yes
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTB501300"
+		FROM = { country_event = 501302 }
+		relation = { who = FROM value = 50 }
+		
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0
+				civilized = no
+			}
+		}
+	}
+	
+}
+
+# RUS - Accepted
+country_event = {
+	id = 501301
+	title = "EVTNAME501301"
+	desc = "EVTDESC501301"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501301"
+		prestige = 5
+		money = -10000
+		FROM = { military_access = THIS }
+	}
+}
+
+# RUS - Declined
+country_event = {
+	id = 501302
+	title = "EVTNAME501302"
+	desc = "EVTDESC501302"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501302"
+		prestige = -3
+	}
+}
+
+# RUS - First Event
+country_event = {
+	id = 501303
+	title = "EVTNAME501303"
+	desc = "EVTDESC501303"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Push Forward
+		name = "EVTOPTA501303"
+		prestige = 5
+		money = -25000
+		
+		random_country = { # For Tsushima-Fuchu-han or other daimyo in case of Shogunate collapse
+			limit = { owns = 2589 NOT = { tag = JAP } }
+			country_event = { id = 501304 days = 32 }
+		}
+		
+		random_country = { # For Japan if they already did Boshin
+			limit = { owns = 2589 tag = JAP }
+			country_event = { id = 501306 days = 32 }
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = { # I'm scawed
+		name = "EVTOPTB501303"
+		badboy = -1
+		prestige = -5
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+}
+
+# Tsushima Response
+country_event = {
+	id = 501304
+	title = "EVTNAME501304"
+	desc = "EVTDESC501304"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Accept the Deal
+		name = "EVTOPTA501304"
+		money = 25000
+		relation = { who = RUS value = 400 }
+		military_access = RUS
+
+		country_event = { id = 501305 days = 10 }
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = { # Refuse + ask central government for help
+		name = "EVTOPTB501304"
+		prestige = 5
+		relation = { who = RUS value = -400 }
+
+		random_owned = {
+			limit = {
+				owner = {
+					is_vassal = yes
+				}
+			}
+			owner = { 
+				overlord = { country_event = { id = 501306 days = 24 } }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					is_vassal = no
+				}
+			}
+			owner = { 
+				random_country = {
+					limit = { has_country_flag = british_content }
+					country_event = { id = 501307 days = 60 }
+				}
+			}
+		}
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+}
+
+# Matsumura Yasugoro Incident
+country_event = {
+	id = 501305
+	title = "EVTNAME501305"
+	desc = "EVTDESC501305"
+	picture = Picture
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA501305"
+		2589 = { 
+			any_pop = {
+				limit = {
+					type = farmers
+				}
+				reduce_pop = 0.99
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					is_vassal = yes
+				}
+			}
+			owner = { 
+				overlord = { country_event = { id = 501306 days = 14 } }
+			}
+		}
+
+		random_owned = {
+			limit = {
+				owner = {
+					is_vassal = no
+				}
+			}
+			owner = { 
+				random_country = {
+					limit = { has_country_flag = russian_content }
+					country_event = { id = 501311 days = 7 }
+				}
+			}
+		}
+	}
+	
+}
+
+# Japan Response
+country_event = {
+	id = 501306
+	title = "EVTNAME501306"
+	desc = "EVTDESC501306"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Accept RUS Demands
+		name = "EVTOPTA501306"
+		set_global_flag = japan_accepted_tsushima_demands_1
+		prestige = -5
+		money = 25000
+		
+		J09 = {
+			any_owned = {
+				limit = { NOT = { province_id = 2589 } }
+				secede_province = THIS
+			}
+		}
+
+		random_country = {
+			limit = { has_country_flag = russian_content }
+			country_event = { id = 501311 days = 7 }
+		}
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+	option = { # Refuse + Request British Aid
+		name = "EVTOPTB501306"
+		prestige = 5
+
+		random_country = {
+			limit = { has_country_flag = british_content }
+			country_event = { id = 501307 days = 61 }
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+}
+
+# British Response
+country_event = {
+	id = 501307
+	title = "EVTNAME501307"
+	desc = "EVTDESC501307"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Support Japan
+		name = "EVTOPTA501307"
+		
+		create_alliance = FROM
+		
+		FROM = { country_event = 501308 days = 31 }
+
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = { # Neutrality
+		name = "EVTOPTB501307"
+
+		FROM = { country_event = 501309 days = 31 }
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+}
+
+# Japan - British Support
+country_event = {
+	id = 501308
+	title = "EVTNAME501308"
+	desc = "EVTDESC501308"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Yes
+		name = "EVTOPTA501308"
+		set_country_flag = tsushima_incident_japanese_country
+		
+		random_country = {
+			limit = { has_country_flag = russian_content }
+			country_event = { id = 501310 days = 31 }
+		}
+	}
+}
+
+# Japan - No British Support
+country_event = {
+	id = 501308
+	title = "EVTNAME501308"
+	desc = "EVTDESC501308"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Reject Again
+		name = "EVTOPTA501308"
+		
+		random_country = {
+			limit = { has_country_flag = russian_content }
+			country_event = { id = 501310 days = 31 }
+		}
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+	option = { # Accept Demands
+		name = "EVTOPTA501308"
+		
+		random_country = {
+			limit = { has_country_flag = russian_content }
+			country_event = { id = 501311 days = 7 }
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# RUS - War?
+country_event = {
+	id = 501310
+	title = "EVTNAME501310"
+	desc = "EVTDESC501310"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # To War!
+		name = "EVTOPTA501310"
+		
+		war = {
+			target = FROM
+			attacker_goal = {
+				casus_belli = tsushima_incident_aggressor
+			}
+			defender_goal = {
+				casus_belli = tsushima_incident_jap
+			}
+			call_ally = yes
+		}
+		
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0
+				FROM = { alliance_with = ENG }
+			}
+		}
+	}
+	
+	option = { # No
+		name = "EVTOPTB501310"
+		prestige = -5
+		
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0
+				FROM = { NOT = { alliance_with = ENG } }
+			}
+		}
+	}
+}
+
+# RUS - Acceptance Event
+country_event = {
+	id = 501311
+	title = "EVTNAME501311"
+	desc = "EVTDESC501311"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501311"
+		prestige = 15
+
+		2589 = { secede_province = THIS }
+		create_vassal = TSU
+		
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = japan_accepted_tsushima_demands_1
+				}
+			}
+			owner = { 
+				money = -25000
+				clr_global_flag = japan_accepted_tsushima_demands_1
+			}
+		}
+
+	}
+}
+
+# RUS - Tsushima Crisis Win
+country_event = {
+	id = 501312
+	title = "EVTNAME501312"
+	desc = "EVTDESC501312"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501312"
+		prestige = 15
+
+		2589 = { secede_province = THIS }
+		create_vassal = TSU
+	}
+}
+
+# ENG - Tsushima Crisis Win
+country_event = {
+	id = 501313
+	title = "EVTNAME501313"
+	desc = "EVTDESC501313"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501313"
+		badboy = 1.5
+		prestige = 5
+		
+		random_country = {
+			limit = { has_country_flag = tsushima_incident_japanese_country }
+			country_event = { id = 501314 days = 30 }
+		}
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+	option = {
+		name = "EVTOPTA501313"
+		prestige = 15
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# Japan - British Demand for Tsushima
+country_event = {
+	id = 501314
+	title = "EVTNAME501314"
+	desc = "EVTDESC501314"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # Accept
+		name = "EVTOPTA501314"
+		money = 25000
+		set_global_flag = japan_accepted_tsushima_demands_2
+		
+		FROM = { country_event = { id = 501316 days = 15 } }
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = { # Reject
+		name = "EVTOPTB501314"
+		
+		FROM = { country_event = { id = 501315 days = 15 } }
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+	
+}
+
+# ENG - To War?
+country_event = {
+	id = 501315
+	title = "EVTNAME501315"
+	desc = "EVTDESC501315"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = { # To War!
+		name = "EVTOPTA501315"
+		
+		war = {
+			target = FROM
+			attacker_goal = {
+				casus_belli = tsushima_incident_aggressor
+			}
+			defender_goal = {
+				casus_belli = tsushima_incident_jap
+			}
+			call_ally = yes
+		}
+		
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = { # No
+		name = "EVTOPTB501315"
+		prestige = -5
+		
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+# ENG - Tsushima Crisis Win
+country_event = {
+	id = 501316
+	title = "EVTNAME501316"
+	desc = "EVTDESC501316"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501316"
+		prestige = 15
+		random_owned = {
+			limit = {
+				owner = {
+					has_global_flag = japan_accepted_tsushima_demands_2
+				}
+			}
+			owner = { 
+				money = -25000
+			}
+		}
+
+		2589 = { secede_province = THIS }
+		create_vassal = TSU
+	}
+}
+
+# Generic Tsushima Loss
+country_event = {
+	id = 501317
+	title = "EVTNAME501317"
+	desc = "EVTDESC501317"
+	picture = Picture
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA501317"
+		prestige = -20
+
+		random_owned = {
+			limit = {
+				owner = {
+					alliance_with = ENG
+				}
+			}
+			owner = { 
+				random_country = {
+					limit = { has_country_flag = british_content }
+					country_event = 501317
+				}
+				leave_alliance = ENG
+			}
+		}
+	}
+}
