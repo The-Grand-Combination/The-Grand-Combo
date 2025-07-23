@@ -234,11 +234,9 @@ dismantle_cb_add = {
 
 	can_use = {
 		THIS = {
-			has_country_flag = in_great_war
 			is_greater_power = yes
 			mass_politics = 1
 		}
-		has_country_flag = in_great_war
 		war_with = THIS
 		OR = {
 			rank = 16
@@ -253,6 +251,16 @@ dismantle_cb_add = {
 			is_disarmed = no
 			is_vassal = no
 		}
+		OR = {
+			AND = {
+				THIS = { has_country_flag = in_great_war }
+				has_country_flag = in_great_war
+			}
+			AND = {
+				THIS = { NOT = { has_country_flag = in_great_war } }
+				is_greater_power = yes
+			}
+		}
 	}
 
 	po_disarmament = yes
@@ -269,68 +277,14 @@ dismantle_cb_add = {
 			to = jingoism
 			value = 0.10
 		}
-	}
-
-	on_po_accepted = {
-		set_country_flag = dismantling_treaty
-	}
-}
-
-dismantle_cb_add_new = {
-	sprite_index = 20
-	is_triggered_only = yes
-	months = 12
-	crisis = no
-
-	construction_speed = 1.5
-
-	badboy_factor = 0
-	prestige_factor = 10
-	peace_cost_factor = 35
-	penalty_factor = 3
-	always = yes
-
-	break_truce_prestige_factor = 5
-	break_truce_infamy_factor = 3
-	break_truce_militancy_factor = 1
-	truce_months = 108
-
-	good_relation_prestige_factor = 0
-	good_relation_infamy_factor = 0
-	good_relation_militancy_factor = 0
-
-	can_use = {
-		THIS = {
-			is_greater_power = yes
-			mass_politics = 1
-			NOT = { has_country_flag = in_great_war }
+		random_owned = {
+			limit = {
+				owner = {
+					NOT = { has_country_flag = in_great_war }
+				}
+			}
+			owner = { country_event = 96000 }
 		}
-		is_greater_power = yes
-		war_with = THIS
-		is_disarmed = no
-		is_vassal = no
-		THIS = {
-			is_disarmed = no
-			is_vassal = no
-		}
-		NOT = { has_country_flag = dismantle_declared }
-	}
-
-	po_disarmament = yes
-	po_reparations = yes
-
-	war_name = WAR_DISMANTLE_NAME
-
-	on_add = {
-		FROM = {
-			set_country_flag = dismantle_declared
-		}
-		move_issue_percentage = {
-			from = pro_military
-			to = jingoism
-			value = 0.10
-		}
-		country_event = 96000
 	}
 
 	on_po_accepted = {
@@ -580,10 +534,7 @@ restore_austrian_empire = {
 		THIS = {
 			tag = AUS
 			rank = 16
-			OR = {
-				war_policy = jingoism
-				war_policy = pro_military
-			}
+			has_country_flag = agressive_tag
 		}
 		neighbour = THIS
 		any_owned_province = { #Opt
@@ -678,10 +629,7 @@ restore_america = {
 		OR = {
 			THIS = { ai = no }
 			THIS = {
-				OR = {
-					war_policy = pro_military
-					war_policy = jingoism
-				}
+				has_country_flag = agressive_tag
 			}
 			war_with = THIS
 		}
@@ -743,26 +691,12 @@ claim_holy_land = {
 		THIS = {
 			ai = no
 			is_greater_power = yes
-			OR = {
-				tag = FRA
-				tag = RHI
-				tag = ENG
-				tag = AUS
-				tag = KUK
-				tag = BYZ
-				is_culture_group = east_slavic
-				is_culture_group = south_slavic
-				is_culture_group = italian
-				is_culture_group = iberian
-			}
+			has_country_flag = can_claim_holy_land
 			has_global_flag = abandoned_holy_land
 		}
 		OR = {
 			THIS = {
-				OR = {
-					war_policy = pro_military
-					war_policy = jingoism
-				}
+				has_country_flag = agressive_tag
 			}
 			war_with = THIS
 		}
@@ -3523,7 +3457,7 @@ conquest = {
 		}
 
 		#Non agressive AI will not use this (pacifism or anti_military)
-		THIS = { NOT = { has_country_flag = non_agressive_ai } }
+		THIS = { has_country_flag = agressive_tag }
 
 		#AI will not use this when fighting for hegemony
 		OR = {
@@ -4809,7 +4743,7 @@ gendarme_of_europe = {
 		#Republics and HM's government are valid targets. Could add recent lib revolution reqs
 		NOT = { has_country_flag = absolute_monarchy_gov }
 		NOT = { has_country_flag = semi_constitutional_monarchy_gov }
-		NOT = { has_country_flag = theocratic_government }
+		NOT = { has_country_flag = theocracy_gov }
 		NOT = { has_country_flag = dominion_gov }
 		NOT = { has_country_flag = colonial_company_gov }
 		NOT = { has_country_flag = dismantle_declared }
@@ -5301,7 +5235,7 @@ treaty_port_casus_belli = {
 
 	can_use = {
 		has_country_flag = has_treaty_port
-		THIS = { NOT = { has_country_flag = non_agressive_ai } }
+		THIS = { has_country_flag = agressive_tag }
 		THIS = {
 			rank = 20
 			any_owned_province = { port = yes }
@@ -5454,10 +5388,7 @@ colonial_conquest = {
 			is_disarmed = no
 			NOT = { badboy = 0.88 }
 			state_n_government = 1
-			OR = {
-				war_policy = jingoism
-				war_policy = pro_military
-			}
+			has_country_flag = agressive_tag
 			NOT = { has_country_modifier = no_more_war }
 		}
 		OR = {
@@ -5927,7 +5858,16 @@ liberate_puppet = {
 				exists = no
 				
 			}
+			set_country_flag = non_existing_country
 			clr_country_flag = existing_country
+		}
+		any_country = {
+			limit = {
+				exists = yes
+				
+			}
+			set_country_flag = existing_country
+			clr_country_flag = non_existing_country
 		}
 		any_country = {
 			limit = {
@@ -5950,8 +5890,11 @@ liberate_puppet = {
 				exists = yes
 				is_vassal = no
 				in_sphere = THIS
+				has_country_flag = non_existing_country
 			}
 			country_event = 19370
+			set_country_flag = existing_country
+			clr_country_flag = non_existing_country
 		}
 	}
 }
@@ -7897,7 +7840,7 @@ golden_circle_dismantling = {
 			release = CRB
 			CRB = { all_core = { remove_core = CSA } }
 		# Extra cores cleanup
-			all_land_provinces = { remove_core = CSA }
+			any_land_province = { remove_core = CSA }
 			any_owned = { add_core = CSA }
 	}
 
