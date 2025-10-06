@@ -1526,4 +1526,169 @@ political_decisions = {
 
 		ai_will_do = { factor = 1 }
 	}
+	# Mid-19th c. ? Sologne Reclamation (c. 1850–1870s)
+	# Napoleon III promoted drainage of marshes and pine planting in the Sologne (south of Orléans).
+	sologne_reclamation = {
+		picture = "reclaim_sologne" # Custom picture name
+		potential = {
+			tag = FRA
+			has_country_flag = french_content
+			owns = 441 # Orléans
+			year = 1850
+			OR = {
+				has_country_modifier = louis_napoleon_iii
+				government = absolute_monarchy
+				government = prussian_constitutionalism
+			}
+			NOT = { has_country_flag = sologne_reclaimed }
+		}
+
+		allow = {
+			war = no
+			money = 30000
+			medicine = 1
+		}
+
+		effect = {
+			money = -30000
+			prestige = 10
+			set_country_flag = sologne_reclaimed
+			441 = { # Orléans
+				trade_goods = timber
+				life_rating = 5
+				add_province_modifier = {
+					name = "sologne_development" # Represents reduced disease and new industry
+					duration = -1
+				}
+			}
+			# Simulate local approval from poverty reduction
+			any_pop = {
+				limit = { location = 441 }
+				militancy = -1
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# 1857 ? Landes de Gascogne Law (Landes Forest Project)
+	# Law required drainage and pine planting, transforming heath into Europe’s largest man-made forest.
+	landes_reforestation = {
+		picture = "landes_forest" # Custom picture name
+		potential = {
+			tag = FRA
+			has_country_flag = french_content
+			owns = 458 # Bordeaux
+			owns = 459 # Mont-de-Marsan
+			year = 1857
+			NOT = { has_country_flag = landes_reforested }
+		}
+
+		allow = {
+			war = no
+			money = 45000
+			state_n_government = 1 # Represents the ability to pass a major state law
+		}
+
+		effect = {
+			money = -45000
+			prestige = 15
+			set_country_flag = landes_reforested
+			# Change the primary resource from sheep/grain to timber
+			458 = { 
+				trade_goods = timber
+				add_province_modifier = {
+					name = "landes_pine_forest"
+					duration = -1
+				}
+			}
+			459 = { 
+				trade_goods = timber
+				add_province_modifier = {
+					name = "landes_pine_forest"
+					duration = -1
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# Late 19th c. ? Camargue Irrigation and Drainage
+	# Systematic attempts to “tame” the Rhône delta for malaria control, rice cultivation, and saltworks.
+	camargue_irrigation = {
+		picture = "rhone_delta" # Custom picture name
+		potential = {
+			tag = FRA
+			has_country_flag = french_content
+			owns = 468 # Marseille
+			year = 1875
+			NOT = { has_country_flag = camargue_tamed }
+		}
+
+		allow = {
+			war = no
+			money = 40000
+			iron_railroad = 1 # Represents the industrial capacity for large-scale engineering
+		}
+
+		effect = {
+			money = -40000
+			prestige = 10
+			set_country_flag = camargue_tamed
+			# Represent malaria control with life rating and new industry with salt RGO
+			468 = { 
+				life_rating = 5
+				trade_goods = grain 
+				add_province_modifier = {
+					name = "camargue_reclamation"
+					duration = -1
+				}
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# 1880s–1930s ? Corsica Reforestation (“Colonisation Forests”)
+	# Large pine plantations introduced by the state to stabilize soil, but often resented by locals.
+	corsica_reforestation = {
+		picture = "corsica_reforest" # Custom picture name
+		potential = {
+			tag = FRA
+			has_country_flag = french_content
+			owns = 471 # Corsica
+			year = 1880
+			NOT = { has_country_flag = corsica_reforested }
+		}
+
+		allow = {
+			war = no
+			money = 25000
+			biologism = 1 # Represents a more "scientific" state approach to land management
+		}
+
+		effect = {
+			money = -25000
+			prestige = 5 # Lower prestige due to local resentment
+			set_country_flag = corsica_reforested
+			471 = { 
+				trade_goods = timber 
+			}
+			# Simulate resentment from local shepherds and farmers
+			any_pop = {
+				limit = { 
+					location = 471
+					OR = {
+						type = farmers
+						type = labourers
+					}
+				}
+				militancy = 2
+				consciousness = 1
+			}
+		}
+
+		ai_will_do = { factor = 1 }
+	}
 }
