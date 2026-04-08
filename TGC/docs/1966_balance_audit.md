@@ -88,7 +88,9 @@ The model uses a **single unified timeline**:
 - `baseline_raw` is always the technical starting point (value read from the unit file)
 - `baseline_raw` is input evidence and is **not** checked against `final_range`
 - all known-year deltas are applied cumulatively up to each milestone year (`year <= milestone`)
+- known-year deltas may come either from unit-specific effect blocks or from applicable global base-scope effect blocks (currently `army_base` for land units and `navy_base` for naval units)
 - unknown-year deltas stay out of milestone sums and are reported separately
+- source provenance is preserved in reporting so globally scoped effects can be distinguished from unit-specific effects
 - milestones remain configurable and reusable, but are no longer tied to a special 1936 logic branch
 - tiered coverage/watchlists are used to keep the final report practical without changing rule strictness
 - the audit expands toward full per-unit stat coverage for all relevant stats detected in unit files
@@ -102,6 +104,8 @@ Per monitored unit stat, rules can define:
 - `max_single_delta`: largest acceptable single effect delta
 - `max_cumulative_positive_delta` / `max_cumulative_negative_delta`
 - `milestone_ranges`: per-year guardrails at configured milestone years
+
+`estimated_final` and milestone estimates are built from `baseline_raw` plus all applicable dated deltas for that unit/stat, including both unit-specific effects and applicable global base-scope effects.
 
 Per monitored unit, rules can also define:
 
@@ -367,6 +371,15 @@ These checks are normative as well. Their function is not to reproduce whatever 
 
 The auditor scans configured tech and invention files and reads unit stat deltas from effect blocks.
 
+Extraction scope includes:
+
+- unit-specific effect blocks (for example `tank = { attack = 1 defence = 1 }`)
+- applicable global base-scope effect blocks that target whole domains rather than named units
+  - `army_base` for land units
+  - `navy_base` for naval units
+
+Global base-scope effects are included only when they are relevant to the monitored unit domain and monitored stat catalog. They are folded into milestone and final-value estimation, but their source remains explicitly distinguishable in the report.
+
 Year placement:
 
 - `direct`: `year = XXXX` found directly in a block
@@ -384,6 +397,10 @@ Coverage metrics:
 - `high_conf_coverage`: share of absolute delta with high-confidence dating (`direct + inferred_strong`)
 - `signal assignments / touched_stats`: per-unit signal-strength summary to distinguish high-value monitored units from baseline-only or low-evidence coverage
 
+Reporting provenance:
+- the report preserves whether a timed delta came from a unit-specific block or from an applicable global base-scope block
+- this exists to improve diagnosis, so the user can distinguish progression driven by direct unit edits from progression driven by shared doctrinal/base effects
+
 Dating confidence should improve the interpretation of a diagnostic. It must not be used as a justification for adapting envelopes to current values.
 
 ## Implemented checks
@@ -398,6 +415,7 @@ Dating confidence should improve the interpretation of a diagnostic. It must not
 - Build/upkeep estimates outside configured economic ranges (`WARN`)
 - Key-good expectation mismatch (`WARN`)
 - Timeline coverage / confidence coverage diagnostics (`INFO` / `WARN`)
+- Source-separated provenance in stat-progression reporting for unit-specific vs applicable global base-scope deltas (`INFO`)
 
 ## Example report lines
 
@@ -417,7 +435,7 @@ From repo root:
 python TGC/tools/audit_1966_balance.py
 ```
 
-The command prints `FAIL/WARN/INFO`, a priority summary, and a playtest focus shortlist.
+The command prints `FAIL/WARN/INFO`, a priority summary, and a playtest focus shortlist. Stat progression summaries also preserve source provenance for applicable global base-scope effects.
 
 ## Reading broad coverage quality
 
