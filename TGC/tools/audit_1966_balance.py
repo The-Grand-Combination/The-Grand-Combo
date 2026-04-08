@@ -186,7 +186,7 @@ def parse_goods_costs(rel_path: str) -> dict[str, float]:
 
 def parse_unit_block(unit_file: str, unit_key: str) -> dict[str, Any]:
     lines = read_text(unit_file).splitlines()
-    data: dict[str, Any] = {"stats": {}, "build_cost": {}, "supply_cost": {}}
+    data: dict[str, Any] = {"stats": {}, "build_cost": {}, "supply_cost": {}, "unit_domain": None}
 
     i = 0
     while i < len(lines):
@@ -220,6 +220,9 @@ def parse_unit_block(unit_file: str, unit_key: str) -> dict[str, Any]:
                         else:
                             data["supply_cost"][m.group(1)] = float(m.group(2))
                 else:
+                    m_type = re.match(r"\s*type\s*=\s*([a-z_]+)\b", cur)
+                    if m_type:
+                        data["unit_domain"] = m_type.group(1)
                     m_stat = re.match(r"\s*([a-z0-9_]+)\s*=\s*([-0-9.]+)\s*(?:#.*)?$", cur)
                     if m_stat:
                         data["stats"][m_stat.group(1)] = float(m_stat.group(2))
@@ -357,9 +360,43 @@ def parse_effect_unit_assignments(
     monitored_stats: set[str],
     inferred_years: dict[str, int],
     year_reason: dict[str, str],
+    global_scope_units: dict[str, set[str]],
 ) -> dict[str, list[dict[str, Any]]]:
     lines = read_text(rel_path).splitlines()
     out: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+    def append_assignment(
+        target_unit: str,
+        scope_key: str,
+        scope_kind: str,
+        stat: str,
+        raw_val: str,
+        line_no: int,
+        invention: str,
+        block_year: int | None,
+        block_year_source: str | None,
+    ) -> None:
+        out[target_unit].append(
+            {
+                "source_file": rel_path,
+                "invention": invention,
+                "line": line_no,
+                "stat": stat,
+                "value": float(raw_val),
+                "year": block_year,
+                "year_source": block_year_source,
+                "scope_key": scope_key,
+                "scope_kind": scope_kind,
+            }
+        )
+
+    def resolve_targets(scope_key: str) -> tuple[list[str], str] | None:
+        if scope_key in monitored_units:
+            return [scope_key], "unit"
+        global_targets = sorted(global_scope_units.get(scope_key, set()))
+        if global_targets:
+            return global_targets, "global"
+        return None
 
     i = 0
     while i < len(lines):
@@ -386,58 +423,69 @@ def parse_effect_unit_assignments(
         while j < len(block):
             ln3, t3 = block[j]
 
-            # Inline unit block, e.g. infantry = { attack = 1 defence = 1 }
             m_inline = re.match(r"\s*([a-z0-9_]+)\s*=\s*\{(.*)\}\s*$", t3)
             if m_inline:
-                unit_key = m_inline.group(1)
+                scope_key = m_inline.group(1)
                 body = m_inline.group(2)
-                if unit_key in monitored_units:
+                resolved = resolve_targets(scope_key)
+                if resolved is not None:
+                    targets, scope_kind = resolved
                     for stat, raw_val in re.findall(r"([a-z0-9_]+)\s*=\s*([-0-9.]+)", body):
                         if stat in monitored_stats:
-                            out[unit_key].append(
-                                {
-                                    "source_file": rel_path,
-                                    "invention": inv_key,
-                                    "line": ln3,
-                                    "stat": stat,
-                                    "value": float(raw_val),
-                                    "year": block_year,
-                                    "year_source": block_year_source,
-                                }
-                            )
+                            for target_unit in targets:
+                                append_assignment(
+                                    target_unit,
+                                    scope_key,
+                                    scope_kind,
+                                    stat,
+                                    raw_val,
+                                    ln3,
+                                    inv_key,
+                                    block_year,
+                                    block_year_source,
+                                )
                 j += 1
                 continue
 
-            # Multiline unit block.
-            m_unit = re.match(r"\s*([a-z0-9_]+)\s*=\s*\{\s*$", t3)
-            if m_unit:
-                unit_key = m_unit.group(1)
-                if unit_key not in monitored_units:
+            m_scope = re.match(r"\s*([a-z0-9_]+)\s*=\s*\{\s*$", t3)
+            if m_scope:
+                scope_key = m_scope.group(1)
+                resolved = resolve_targets(scope_key)
+                if resolved is None:
                     j += 1
                     continue
+                targets, scope_kind = resolved
                 sub_depth = 1
                 j += 1
                 while j < len(block) and sub_depth > 0:
                     ln4, t4 = block[j]
                     m_stat = re.match(r"\s*([a-z0-9_]+)\s*=\s*([-0-9.]+)", t4)
                     if m_stat and m_stat.group(1) in monitored_stats:
-                        out[unit_key].append(
-                            {
-                                "source_file": rel_path,
-                                "invention": inv_key,
-                                "line": ln4,
-                                "stat": m_stat.group(1),
-                                "value": float(m_stat.group(2)),
-                                "year": block_year,
-                                "year_source": block_year_source,
-                            }
-                        )
+                        for target_unit in targets:
+                            append_assignment(
+                                target_unit,
+                                scope_key,
+                                scope_kind,
+                                m_stat.group(1),
+                                m_stat.group(2),
+                                ln4,
+                                inv_key,
+                                block_year,
+                                block_year_source,
+                            )
                     sub_depth += t4.count("{") - t4.count("}")
                     j += 1
                 continue
 
             j += 1
     return out
+
+
+def format_assignment_origin(item: dict[str, Any]) -> str:
+    scope_key = item.get("scope_key") or "unknown_scope"
+    scope_kind = item.get("scope_kind") or "unit"
+    scope_txt = f"{scope_kind}:{scope_key}"
+    return f"{scope_txt} in {item['source_file']}:{item['line']} ({item['invention']})"
 
 
 def check_key_goods_availability(production_types_file: str, key_goods: list[str], rep: Reporter) -> None:
@@ -477,6 +525,7 @@ def main() -> int:
     stat_priority_weights: dict[str, Any] = rules.get("stat_priority_weights", {})
     detected_stats_by_unit: dict[str, set[str]] = {}
     covered_stats_by_unit: dict[str, set[str]] = {}
+    unit_domain_by_unit: dict[str, str | None] = {}
 
     for group_name, members in unit_groups.items():
         unknown_members = [u for u in members if u not in discovered_units]
@@ -498,6 +547,7 @@ def main() -> int:
     for unit, cfg in units_cfg.items():
         unit_data = parse_unit_block(cfg["unit_file"], unit)
         stats = unit_data["stats"]
+        unit_domain_by_unit[unit] = unit_data.get("unit_domain")
         detected_stats = {s for s in stats.keys() if s in monitored_stats_set}
         covered_stats = {s for s in cfg.get("monitored_stats", {}).keys() if s in monitored_stats_set}
         detected_stats_by_unit[unit] = detected_stats
@@ -548,6 +598,17 @@ def main() -> int:
                 f"{unit}: none of expected key goods found in unit costs ({', '.join(sorted(expected_goods))})",
             )
 
+    land_units = {u for u, domain in unit_domain_by_unit.items() if domain == "land"}
+    naval_units = {u for u, domain in unit_domain_by_unit.items() if domain == "naval"}
+    if not land_units:
+        land_units = set(unit_groups.get("all_land_units", [])) & monitored_units
+    if not naval_units:
+        naval_units = set(unit_groups.get("all_naval_units", [])) & monitored_units
+    global_scope_units: dict[str, set[str]] = {
+        "army_base": set(land_units),
+        "navy_base": set(naval_units),
+    }
+
     milestone_years: list[int] = sorted(
         int(y) for y in rules.get("milestone_years", [1836, 1850, 1870, 1900, 1910, 1919, 1929, 1936, 1945, 1955, 1966])
     )
@@ -562,9 +623,23 @@ def main() -> int:
     )
     all_assignments: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for rel in rules["scan_files"]:
-        found = parse_effect_unit_assignments(rel, monitored_units, monitored_stats_set, inferred_years, year_reason)
+        found = parse_effect_unit_assignments(
+            rel,
+            monitored_units,
+            monitored_stats_set,
+            inferred_years,
+            year_reason,
+            global_scope_units,
+        )
         for k, vals in found.items():
             all_assignments[k].extend(vals)
+
+    relevant_assignments_by_unit: dict[str, list[dict[str, Any]]] = {}
+    for u, cfg in units_cfg.items():
+        monitored_stats = set(cfg.get("monitored_stats", {}).keys())
+        relevant_assignments_by_unit[u] = [
+            item for item in all_assignments.get(u, []) if item.get("stat") in monitored_stats
+        ]
 
     stat_assignment_count: dict[str, int] = defaultdict(int)
     stat_assignment_units: dict[str, set[str]] = defaultdict(set)
@@ -572,7 +647,7 @@ def main() -> int:
     for u, cfg in units_cfg.items():
         for s in cfg.get("monitored_stats", {}):
             covered_units_by_stat[s] += 1
-        for item in all_assignments.get(u, []):
+        for item in relevant_assignments_by_unit.get(u, []):
             s = item.get("stat")
             if not s:
                 continue
@@ -585,22 +660,40 @@ def main() -> int:
             len(stat_assignment_units.get(s, set())),
         )
 
-    total_effect_assignments = sum(len(v) for v in all_assignments.values())
-    known_year_assignments = sum(1 for vals in all_assignments.values() for x in vals if x.get("year") is not None)
+    relevant_assignment_items = [x for vals in relevant_assignments_by_unit.values() for x in vals]
+    total_effect_assignments = len(relevant_assignment_items)
+    known_year_assignments = sum(1 for x in relevant_assignment_items if x.get("year") is not None)
     rep.add(
         "INFO",
         f"TIMELINE PLACEMENT (count): known={known_year_assignments}/{total_effect_assignments}, unknown={total_effect_assignments - known_year_assignments}",
     )
-    direct_assignments = sum(1 for vals in all_assignments.values() for x in vals if x.get("year_source") == "direct")
-    strong_assignments = sum(1 for vals in all_assignments.values() for x in vals if x.get("year_source") == "inferred_strong")
-    weak_assignments = sum(1 for vals in all_assignments.values() for x in vals if x.get("year_source") == "inferred_weak")
+    direct_assignments = sum(1 for x in relevant_assignment_items if x.get("year_source") == "direct")
+    strong_assignments = sum(1 for x in relevant_assignment_items if x.get("year_source") == "inferred_strong")
+    weak_assignments = sum(1 for x in relevant_assignment_items if x.get("year_source") == "inferred_weak")
     unknown_assignments = total_effect_assignments - direct_assignments - strong_assignments - weak_assignments
     rep.add(
         "INFO",
         f"TIMELINE CONFIDENCE (count): direct={direct_assignments}, inferred_strong={strong_assignments}, inferred_weak={weak_assignments}, unknown={unknown_assignments}",
     )
-    tech_items = [x for vals in all_assignments.values() for x in vals if "/technologies/" in x.get("source_file", "")]
-    inv_items = [x for vals in all_assignments.values() for x in vals if "/inventions/" in x.get("source_file", "")]
+    tech_items = [x for x in relevant_assignment_items if "/technologies/" in x.get("source_file", "")]
+    inv_items = [x for x in relevant_assignment_items if "/inventions/" in x.get("source_file", "")]
+    unit_scoped_assignments = sum(1 for x in relevant_assignment_items if x.get("scope_kind") == "unit")
+    global_scoped_assignments = sum(1 for x in relevant_assignment_items if x.get("scope_kind") == "global")
+    global_scope_breakdown: dict[str, int] = defaultdict(int)
+    for item in relevant_assignment_items:
+        if item.get("scope_kind") == "global":
+            global_scope_breakdown[item.get("scope_key", "global")] += 1
+    if global_scope_breakdown:
+        detail = ", ".join(f"{k}={v}" for k, v in sorted(global_scope_breakdown.items()))
+        rep.add(
+            "INFO",
+            f"EFFECT SCOPE COUNTS: unit_scoped={unit_scoped_assignments}, global_scoped={global_scoped_assignments} [{detail}]",
+        )
+    else:
+        rep.add(
+            "INFO",
+            f"EFFECT SCOPE COUNTS: unit_scoped={unit_scoped_assignments}, global_scoped={global_scoped_assignments}",
+        )
 
     def _src_counts(items: list[dict[str, Any]]) -> tuple[int, int, int, int]:
         direct = sum(1 for x in items if x.get("year_source") == "direct")
@@ -621,7 +714,7 @@ def main() -> int:
         for ex in direct_tech_examples:
             rep.add(
                 "INFO",
-                f"DIRECT TECH EXAMPLE: {ex['source_file']}:{ex['line']} {ex['invention']} {ex['stat']}={ex['value']} year={ex.get('year')}",
+                f"DIRECT TECH EXAMPLE: {format_assignment_origin(ex)} {ex['stat']}={ex['value']} year={ex.get('year')}",
             )
     else:
         rep.add("INFO", "DIRECT TECH EXAMPLE: none found in current scanned assignments")
@@ -631,7 +724,7 @@ def main() -> int:
         for ex in invention_examples:
             rep.add(
                 "INFO",
-                f"INVENTION EXAMPLE: {ex['source_file']}:{ex['line']} {ex['invention']} {ex['stat']}={ex['value']} "
+                f"INVENTION EXAMPLE: {format_assignment_origin(ex)} {ex['stat']}={ex['value']} "
                 f"year={ex.get('year')} confidence={ex.get('year_source') or 'unknown'}",
             )
     else:
@@ -640,7 +733,7 @@ def main() -> int:
     # v3 signal-quality summary per unit: helps distinguish broad coverage from high-value coverage.
     signal_summary: dict[str, dict[str, int]] = {}
     for unit, cfg in units_cfg.items():
-        unit_items = all_assignments.get(unit, [])
+        unit_items = relevant_assignments_by_unit.get(unit, [])
         monitored_stats = set(cfg.get("monitored_stats", {}).keys())
         touched_stats = {x.get("stat") for x in unit_items if x.get("stat") in monitored_stats}
         signal_summary[unit] = {
@@ -660,7 +753,7 @@ def main() -> int:
     cumulative_negative: dict[str, dict[str, float]] = defaultdict(lambda: defaultdict(float))
 
     for unit, cfg in units_cfg.items():
-        for item in all_assignments.get(unit, []):
+        for item in relevant_assignments_by_unit.get(unit, []):
             stat = item["stat"]
             delta = item["value"]
             s_cfg = cfg["monitored_stats"].get(stat)
@@ -675,7 +768,7 @@ def main() -> int:
             if max_delta is not None and abs(delta) > max_delta:
                 rep.add(
                     "WARN",
-                    f"{unit} {stat} delta too large in {item['source_file']}:{item['line']} ({item['invention']} -> {delta}, max_single_delta {max_delta})",
+                    f"{unit} {stat} delta too large from {format_assignment_origin(item)} ({delta}, max_single_delta {max_delta})",
                 )
 
     for unit, cfg in units_cfg.items():
@@ -689,7 +782,7 @@ def main() -> int:
             total_delta = pos_delta + neg_delta
             estimated_final = baseline + total_delta
 
-            stat_assignments = [a for a in all_assignments.get(unit, []) if a["stat"] == stat]
+            stat_assignments = [a for a in relevant_assignments_by_unit.get(unit, []) if a["stat"] == stat]
             unknown_year_delta = sum(a["value"] for a in stat_assignments if a.get("year") is None)
             unknown_year_count = sum(1 for a in stat_assignments if a.get("year") is None)
             known_year_count = len(stat_assignments) - unknown_year_count
@@ -698,6 +791,8 @@ def main() -> int:
             last_known_year = known_years[-1] if known_years else None
 
             total_abs_delta = sum(abs(a["value"]) for a in stat_assignments)
+            unit_scope_abs_delta = sum(abs(a["value"]) for a in stat_assignments if a.get("scope_kind") == "unit")
+            global_scope_abs_delta = sum(abs(a["value"]) for a in stat_assignments if a.get("scope_kind") == "global")
             known_abs_delta = sum(abs(a["value"]) for a in stat_assignments if a.get("year") is not None)
             unknown_abs_delta = total_abs_delta - known_abs_delta
             coverage_pct = 0.0 if total_abs_delta == 0 else (known_abs_delta / total_abs_delta) * 100.0
@@ -721,6 +816,7 @@ def main() -> int:
                 f"last_known_year {last_known_year if last_known_year is not None else 'n/a'}, "
                 f"cumulative +{pos_delta:.3f}, cumulative -{abs(neg_delta):.3f}, "
                 f"milestones[{', '.join(milestone_estimates)}], estimated_final {estimated_final:.3f}, "
+                f"scope_unit {unit_scope_abs_delta:.3f}, scope_global {global_scope_abs_delta:.3f}, "
                 f"time_direct {direct_abs_delta:.3f}, time_inferred_strong {strong_abs_delta:.3f}, "
                 f"time_inferred_weak {weak_abs_delta:.3f}, time_unknown {unknown_abs_delta:.3f}, "
                 f"time_coverage {coverage_pct:.1f}%, high_conf_coverage {high_conf_pct:.1f}%",
