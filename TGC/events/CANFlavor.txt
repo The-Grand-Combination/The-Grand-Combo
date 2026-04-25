@@ -1,5 +1,32 @@
 ### Pre-Independence Events	###
 
+	# Upper Canada Setup
+	country_event = {
+		id = 44358
+		title = "EVTNAME44358"
+		desc = "EVTDESC44358"
+		picture = Picture
+		
+		trigger = {
+			tag = UCN
+		}
+		
+		mean_time_to_happen = {
+			days = 0
+		}
+	
+		fire_only_once = yes
+	
+		option = {
+			name = "EVTOPTA44358"
+			set_country_flag = pol_reform_blocker
+			set_country_flag = soc_reform_blocker
+
+			add_country_modifier = { name = canadian_liberal_agitation duration = -1 }
+		}
+		
+	}
+
 	#Description: Rebellions of 1837 - Canadian pops get militancy and consciousness, nationalist agitation
 	country_event = {
 		id = 44305
@@ -13,21 +40,17 @@
 		picture = "rebellion"
 
 		trigger = {
-			owns = 57 # Bytown / Ottawa
-			OR = { 
-				tag = ENG
-				tag = ENL
-			}
-			NOT = {
-				exists = CAN
-				has_country_flag = rebellion_1837_begun
-				has_country_flag = lord_durhams_report
-			}
+			57 = { owner = THIS }
+			vassal_of = ENG
 			year = 1837
 		}
 
 		mean_time_to_happen = {
-			months = 6
+			days = 10
+			modifier = {
+				factor = 0
+				year = 1839
+			}
 		}
 
 		option = {
@@ -70,6 +93,222 @@
 					duration = 365
 				}
 			}
+
+			set_country_flag = hidden_tooltip
+			random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+				owner = {
+					country_event = { id = 44359 days = 5 }
+				}
+			}
+			clr_country_flag = hidden_tooltip
+		}
+	}
+
+	# Aftermath of Upper Canadian Rebellion
+	country_event = {
+		id = 44359
+		title = "EVTNAME44359"
+		desc = "EVTDESC44359"
+		picture = Picture
+		
+		is_triggered_only = yes
+		
+		option = {
+			name = "EVTOPTA44359"
+			set_country_flag = patriot_war_raids
+
+			57 = {
+				any_pop = {
+					reduce_pop = 0.98
+				}
+			}
+
+			remove_country_modifier = canadian_liberal_agitation
+			add_country_modifier = { name = canadian_rebellion_exhausted duration = 365 }
+
+			set_country_flag = hidden_tooltip
+			random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
+				owner = {
+					USA = { set_variable = { which = canadian_rebellion_support value = 100 } }
+					USA = { set_variable = { which = canadian_border_raids_count value = 0 } }
+				}
+			}
+			clr_country_flag = hidden_tooltip
+		}
+		
+	}
+
+	# Cross-Border Raids
+	province_event = {
+		id = 44360
+		title = "EVTNAME44360"
+		desc = "EVTDESC44360"
+		picture = Picture
+		
+		trigger = {
+			owner = { has_country_flag = patriot_war_raids }
+			any_neighbor_province = { owned_by = USA }
+		}
+		
+		mean_time_to_happen = {
+			days = 15
+			modifier = {
+				factor = 0.5
+				owner = { NOT = { has_country_modifier = owner_recent_cross_border_raid } }
+			}
+			modifier = {
+				factor = 1000
+				has_province_modifier = recent_cross_border_raid
+			}
+		}
+		
+		option = {
+			name = "EVTOPTA44360"
+
+			owner = { add_country_modifier = { name = owner_recent_cross_border_raid duration = 20 } }
+
+			add_province_modifier = { name = recent_cross_border_raid duration = 5 }
+
+			any_neighbor_province = {
+				limit = { owned_by = USA }
+				owner = { capital = { province_event = { id = 44361 days = 1 } } }
+			}
+
+		}
+	}
+
+	# US response to raids
+	province_event = {
+		id = 44361
+		title = "EVTNAME44361"
+		desc = "EVTDESC44361"
+		picture = Picture
+		
+		is_triggered_only = yes
+		
+		option = {
+			name = "EVTOPTA44361"
+
+			random_owned = {
+				limit = { any_neighbor_province = { has_province_modifier = recent_cross_border_raid } }
+				
+				any_pop = {
+					consciousness = 0.5
+					militancy = -1
+				}
+			}
+
+			owner = {
+				money = -100
+				relation = { who = UCN value = -10 }
+				relation = { who = ENG value = -5 }
+				change_variable = { which = canadian_rebellion_support value = 1 }
+				change_variable = { which = canadian_border_raids_count value = 1 }
+			}
+			
+			ai_chance = {
+				factor = 10
+			}
+		}
+		
+		option = {
+			name = "EVTOPTB44361"
+
+			any_pop = {
+				consciousness = 2
+				militancy = 1.5
+			}
+			
+			owner = {
+				relation = { who = UCN value = 10 }
+				relation = { who = ENG value = 5 }
+				change_variable = { which = canadian_rebellion_support value = -1 }
+				change_variable = { which = canadian_border_raids_count value = 1 }
+			}
+			
+			ai_chance = {
+				factor = 90
+			}
+
+		}
+	}
+
+	# Caroline Affair - US support
+	country_event = {
+		id = 44362
+		title = "EVTNAME44362"
+		desc = "EVTDESC44362"
+		picture = Picture
+		
+		trigger = {
+			tag = USA
+			NOT = { has_global_flag = caroline_affair }
+			check_variable = { which = canadian_border_raids_count value = 4.99 }
+			check_variable = { which = canadian_rebellion_support value = 103.99 }
+		}
+		
+		mean_time_to_happen = {
+			days = 20
+			modifier = {
+				factor = 0
+				check_variable = { which = canadian_border_raids_count value = 9.99 }
+			}
+		}
+	
+		fire_only_once = yes
+	
+		option = {
+			name = "EVTOPTA44362"
+			set_global_flag = caroline_affair
+			set_global_flag = caroline_affair_US_intervention
+			prestige = 15
+			badboy = 5
+			
+			war = {
+				target = ENG
+				attacker_goal = {
+					casus_belli = liberate_canada
+				}
+				defender_goal = {
+					casus_belli = status_quo
+				}
+				call_ally = no
+			}
+			
+		}
+	}
+
+	# Caroline Affair - No US Support
+	country_event = {
+		id = 44363
+		title = "EVTNAME44363"
+		desc = "EVTDESC44363"
+		picture = Picture
+		
+		trigger = {
+			tag = USA
+			NOT = { has_global_flag = caroline_affair }
+			check_variable = { which = canadian_border_raids_count value = 4.99 }
+			NOT = { check_variable = { which = canadian_rebellion_support value = 103.99 } }
+		}
+		
+		mean_time_to_happen = {
+			days = 20
+			modifier = {
+				factor = 0
+				check_variable = { which = canadian_border_raids_count value = 9.99 }
+			}
+		}
+	
+		fire_only_once = yes
+	
+		option = {
+			name = "EVTOPTA44363"
+			set_global_flag = caroline_affair
+			prestige = 5
+			
+			relation = { who = ENG value = 10 }
+			
 		}
 	}
 
