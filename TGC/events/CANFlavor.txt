@@ -5,7 +5,7 @@
 		id = 44358
 		title = "EVTNAME44358"
 		desc = "EVTDESC44358"
-		picture = Picture
+		picture = "family_compact"
 		
 		trigger = {
 			tag = UCN
@@ -37,10 +37,10 @@
 		news_desc_long = "EVTDESC44305_NEWS_LONG"
 		news_desc_medium = "EVTDESC44305_NEWS_MEDIUM"
 		news_desc_short = "EVTDESC44305_NEWS_SHORT"
-		picture = "rebellion"
+		picture = "battle_saint_eustache"
 
 		trigger = {
-			57 = { owner = THIS }
+			owns = 57
 			vassal_of = ENG
 			year = 1837
 		}
@@ -53,26 +53,24 @@
 			}
 		}
 
+		fire_only_once = yes
+
 		option = {
 			name = "EVTOPTA44305"
 
 			set_country_flag = rebellion_1837_begun
 			any_pop = {
 				limit = {
-					has_pop_culture = anglo_canadian
-					location = { is_core = CAN }
-				}
-				consciousness = 6
-				militancy = 8
-				ideology = {
-					value = liberal
-					factor = 0.30
-				}
-			}
-			any_pop = {
-				limit = {
-					has_pop_culture = french_canadian
-					location = { is_core = QUE }
+					OR = {
+						AND = {
+							has_pop_culture = anglo_canadian
+							location = { is_core = CAN }
+						}
+						AND = {
+							has_pop_culture = french_canadian
+							location = { is_core = QUE }
+						}
+					}
 				}
 				consciousness = 6
 				militancy = 8
@@ -82,25 +80,13 @@
 				}
 			}
 			any_owned = {
-				limit = {
-					OR = {
-						is_core = CAN
-						is_core = QUE
-					}
-				}
 				add_province_modifier = {
 					name = nationalist_agitation
 					duration = 365
 				}
 			}
 
-			set_country_flag = hidden_tooltip
-			random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
-				owner = {
-					country_event = { id = 44359 days = 5 }
-				}
-			}
-			clr_country_flag = hidden_tooltip
+			country_event = { id = 44359 days = 5 }
 		}
 	}
 
@@ -109,7 +95,7 @@
 		id = 44359
 		title = "EVTNAME44359"
 		desc = "EVTDESC44359"
-		picture = Picture
+		picture = "battle_montgomerys_tavern"
 		
 		is_triggered_only = yes
 		
@@ -126,14 +112,8 @@
 			remove_country_modifier = canadian_liberal_agitation
 			add_country_modifier = { name = canadian_rebellion_exhausted duration = 365 }
 
-			set_country_flag = hidden_tooltip
-			random_owned = { limit = { owner = { has_country_flag = hidden_tooltip } }
-				owner = {
-					USA = { set_variable = { which = canadian_rebellion_support value = 100 } }
-					USA = { set_variable = { which = canadian_border_raids_count value = 0 } }
-				}
-			}
-			clr_country_flag = hidden_tooltip
+			USA = { set_variable = { which = canadian_rebellion_support value = 100 } }
+			USA = { set_variable = { which = canadian_border_raids_count value = 0 } }
 		}
 		
 	}
@@ -143,18 +123,18 @@
 		id = 44360
 		title = "EVTNAME44360"
 		desc = "EVTDESC44360"
-		picture = Picture
+		picture = "prov_battle_of_the_windmill"
 		
 		trigger = {
-			owner = { has_country_flag = patriot_war_raids }
+			owner = { has_country_flag = patriot_war_raids NOT = { has_global_flag = caroline_affair } }
 			any_neighbor_province = { owned_by = USA }
 		}
 		
 		mean_time_to_happen = {
-			days = 15
+			days = 10 #100 for realsies, the 10 just for testing
 			modifier = {
-				factor = 0.5
-				owner = { NOT = { has_country_modifier = owner_recent_cross_border_raid } }
+				factor = 2
+				owner = { has_country_modifier = owner_recent_cross_border_raid }
 			}
 			modifier = {
 				factor = 1000
@@ -169,9 +149,9 @@
 
 			add_province_modifier = { name = recent_cross_border_raid duration = 5 }
 
-			any_neighbor_province = {
+			random_neighbor_province = {
 				limit = { owned_by = USA }
-				owner = { capital = { province_event = { id = 44361 days = 1 } } }
+				owner = { capital_scope = { province_event = { id = 44361 days = 1 } } }
 			}
 
 		}
@@ -182,7 +162,7 @@
 		id = 44361
 		title = "EVTNAME44361"
 		desc = "EVTDESC44361"
-		picture = Picture
+		picture = "prov_battle_of_the_windmill"
 		
 		is_triggered_only = yes
 		
@@ -238,7 +218,7 @@
 		id = 44362
 		title = "EVTNAME44362"
 		desc = "EVTDESC44362"
-		picture = Picture
+		picture = "caroline_affair"
 		
 		trigger = {
 			tag = USA
@@ -267,10 +247,10 @@
 			war = {
 				target = ENG
 				attacker_goal = {
-					casus_belli = liberate_canada
+					casus_belli = liberate_canada_cb
 				}
 				defender_goal = {
-					casus_belli = status_quo
+					casus_belli = humiliate
 				}
 				call_ally = no
 			}
@@ -283,7 +263,7 @@
 		id = 44363
 		title = "EVTNAME44363"
 		desc = "EVTDESC44363"
-		picture = Picture
+		picture = "caroline_affair"
 		
 		trigger = {
 			tag = USA
@@ -309,6 +289,129 @@
 			
 			relation = { who = ENG value = 10 }
 			
+			country_event = { id = 44365 days = 15 }
+		}
+	}
+
+	# Caroline Affair - US Victory
+	country_event = {
+		id = 44364
+		title = "EVTNAME44364"
+		desc = "EVTDESC44364"
+		picture = "treaty"
+		
+		is_triggered_only = yes
+	
+		#option = {
+		#	name = "EVTOPTA44364"
+		#	prestige = 25
+		#	badboy = 4
+		#	
+		#	any_country = {
+		#		limit = {
+		#			OR = {
+		#				tag = LCN
+		#				tag = UCN
+		#			}
+		#		}
+		#		any_owned = {
+		#			add_core = THIS
+		#		}
+		#		annex_to = THIS
+		#	}
+		#	
+		#}
+	
+		option = {
+			name = "EVTOPTB44364"
+			prestige = 25
+			set_global_flag = USA_seized_canadas
+			
+			create_vassal = UCN
+			create_vassal = LCN
+
+			UCN = { 
+				relation = { who = ENG value = -400 }
+				relation = { who = THIS value = 400 }
+				government = dominion2
+
+				political_reform = universal_weighted_voting
+				political_reform = state_equal_weight
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = non_socialist
+				political_reform = gerrymandering
+				political_reform = no_slavery
+				political_reform = bankruptcy
+				political_reform = culture_voting_only
+			}
+
+			LCN = { 
+				relation = { who = ENG value = -400 }
+				relation = { who = THIS value = 400 }
+				government = dominion2
+				
+				political_reform = universal_weighted_voting
+				political_reform = state_equal_weight
+				political_reform = yes_meeting
+				political_reform = free_press
+				political_reform = non_socialist
+				political_reform = gerrymandering
+				political_reform = no_slavery
+				political_reform = bankruptcy
+				political_reform = culture_voting_only
+			}
+
+			ENG = {
+				diplomatic_influence = { who = UCN value = -400 }
+				diplomatic_influence = { who = LCN value = -400 }
+			}
+
+			diplomatic_influence = { who = UCN value = 400 }
+			diplomatic_influence = { who = LCN value = 400 }
+
+			49 = {
+				remove_core = UCN
+			}
+			158 = {
+				remove_core = UCN
+			}
+			239 = {
+				remove_core = LCN
+				remove_core = QUE
+			}
+		}
+	}
+
+	# Send Lord Durham
+	country_event = {
+		id = 44365
+		title = "EVTNAME44365"
+		desc = "EVTDESC44365"
+		picture = "deliberation"
+		
+		is_triggered_only = yes
+	
+		fire_only_once = yes
+	
+		option = {
+			name = "EVTOPTA44365"
+			
+			country_event = { id = 44306 days = 730 }
+			
+			ai_chance = {
+				factor = 60
+			}
+		}
+	
+		option = {
+			name = "EVTOPTB44365"
+			
+			country_event = { id = 44366 days = 730 }
+
+			ai_chance = {
+				factor = 40
+			}
 		}
 	}
 
@@ -319,56 +422,83 @@
 		desc = "EVTDESC44306"
 		picture = "deliberation"
 
-		trigger = {
-			owns = 57 # Bytown / Ottawa
-			owns = 65 # Quebec City
-			OR = { 
-				tag = ENG
-				tag = ENL
-			}
-			has_country_flag = rebellion_1837_begun
-			OR = {
-				has_country_flag = democracy_gov
-				has_country_flag = constitutional_monarchy_gov
-			}
-			NOT = {
-				has_country_flag = lord_durhams_report
-				any_owned_province = {
-					OR = {
-						is_core = CAN
-						is_core = QUE
-					}
-					NOT = { controlled_by = ENG }
-				}
-			}
-		}
-
-		mean_time_to_happen = {
-			months = 30
-		}
+		is_triggered_only = yes
 
 		# Pass the Act of Union - unite upper and lower Canada
 		option = {
 			name = "EVTOPTA44306"
 
 			set_country_flag = lord_durhams_report
-			prestige = -20
-			CAN_58 = { # Southern Quebec
-				add_core = CAN
-				remove_core = RPL
+			prestige = 5
+			
+			any_country = {
+				limit = {
+					OR = { tag = UCN tag = LCN }
+				}
+				annex_to = CAN
 			}
-			any_pop = {
-				limit = { location = { is_core = CAN } }
-				consciousness = -4
-				militancy = -4
-				ideology = {
-					value = liberal
-					factor = 0.10
+			create_vassal = CAN
+			CAN = {
+				remove_accepted_culture = french_canadian
+				any_owned = {
+					limit = {
+						OR { 
+							is_core = LCN
+							is_core = NBR
+						}
+					}
+					add_province_modifier = { name = canadian_assimilation duration = -1 }
+				}
+				any_pop = {
+					limit = { NOT = { has_pop_culture = french_canadian } NOT = { has_pop_culture = acadian } }
+					consciousness = -4
+					militancy = -4
+					ideology = {
+						value = liberal
+						factor = 0.20
+					}
 				}
 			}
 
 			ai_chance = {
 				factor = 90
+				modifier = {
+					factor = 0.5
+					ruling_party_ideology = liberal
+				}
+				modifier = {
+					factor = 1.5
+					ruling_party_ideology = reactionary
+				}
+			}
+		}
+
+		# Full proposal
+		option = {
+			name = "EVTOPTB44306"
+
+			set_country_flag = lord_durhams_report
+			set_global_flag = canada_unified_early
+			prestige = -5
+
+			any_country = {
+				limit = {
+					OR = { tag = UCN tag = LCN tag = NBR tag = NSC tag = PEI }
+				}
+				annex_to = CAN
+			}
+			create_vassal = CAN
+			CAN = {
+				any_owned = {
+					limit = {
+						is_core = LCN
+					}
+					add_province_modifier = { name = canadian_assimilation duration = -1 }
+				}
+			}
+
+			ai_chance = {
+				factor = 10
 				modifier = {
 					factor = 1.5
 					ruling_party_ideology = liberal
@@ -377,58 +507,57 @@
 					factor = 0.5
 					ruling_party_ideology = reactionary
 				}
-			}
-		}
-
-		# Don't pass the Act of Union - nationalist agitation and USA gets CB to free peoples
-		option = {
-			name = "EVTOPTB44306"
-
-			set_country_flag = lord_durhams_report
-			prestige = 20
-			any_owned = {
-				limit = {
-					OR = {
-						is_core = CAN
-						is_core = QUE
-					}
-				}
-				add_province_modifier = {
-					name = nationalist_agitation
-					duration = 1095
-				}
-			}
-			USA = {
-				relation = { who = ENG value = -50 }
-				leave_alliance = ENG
-				casus_belli = {
-					target = ENG
-					type = free_peoples
-					months = 600
-				}
-			}
-
-			ai_chance = {
-				factor = 10
-				modifier = {
-					factor = 0.5
-					ruling_party_ideology = liberal
-				}
-				modifier = {
-					factor = 2
-					ruling_party_ideology = reactionary
-				}
 				modifier = {
 					factor = 2
 					has_country_modifier = global_liberal_agitation
 				}
 				modifier = {
-					factor = 0
+					factor = 2
 					OR = {
 						num_of_revolts = 1
 						average_militancy = 4
 						war = yes
 					}
+				}
+			}
+		}
+	}
+
+	#Description: Lord Durham's Report
+	country_event = {
+		id = 44366
+		title = "EVTNAME44366"
+		desc = "EVTDESC44366"
+		picture = "deliberation"
+
+		is_triggered_only = yes
+
+		# Intensify assimilation
+		option = {
+			name = "EVTOPTA44366"
+
+			set_country_flag = lord_durhams_report
+			set_global_flag = canadas_merged
+			prestige = 5
+			
+			UCN = { remove_accepted_culture = acadian }
+			LCN = {
+				remove_accepted_culture = acadian
+				remove_accepted_culture = french_canadian
+				any_owned = {
+					add_province_modifier = { name = canadian_assimilation duration = -1 }
+				}
+			}
+			any_country = {
+				limit = {
+					OR = { tag = UCN tag = LCN }
+				}
+				any_pop = {
+					militancy = 3
+					consciousness = 3
+				}
+				any_owned = {
+					add_country_modifier = { name = nationalist_agitation duration = -1 }
 				}
 			}
 		}
