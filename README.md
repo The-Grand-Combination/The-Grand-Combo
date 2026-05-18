@@ -1,3 +1,5 @@
+https://discord.gg/GmeAV9Ern join discord
+
 # The Grand Combination
 
 ![mainbanner](https://user-images.githubusercontent.com/32886642/209586234-44f0d161-fe39-40c7-9ea8-6fc106547fd7.png)
