@@ -6,7 +6,7 @@ This tool is a **normative diagnostic balance auditor** for gameplay progression
 
 - Script: `TGC/tools/audit_1966_balance.py`
 - Rules: `TGC/tools/1966_balance_rules.json`
-- Nature: **non-blocking** diagnostic (`exit 0`), intended to identify implausible or internally inconsistent gameplay progression and to focus balancing work where historical and mechanical pressure is highest.
+- Nature: **WARN/INFO non-blocking** diagnostic. The script exits non-zero only for FAIL-level structural/tooling errors; WARN entries identify implausible or internally inconsistent gameplay progression and focus balancing work where historical and mechanical pressure is highest.
 
 ## Core methodological principle
 
@@ -29,9 +29,28 @@ The audit should therefore be used to distinguish three different cases:
 
 The audit is valuable only if these cases remain distinguishable.
 
+
+## Submod-aware runtime inputs
+
+The default repository architecture is now core + submod:
+
+- Core/base root: `TGC/`
+- 1966 timeline root: `TGC_Timeline_1966/`
+
+`python TGC/tools/audit_1966_balance.py` reads normative rules from
+`TGC/tools/1966_balance_rules.json`, core economic data from `TGC/`, and 1966
+technology/invention/unit runtime from `TGC_Timeline_1966/`. Optional CLI roots
+are available for compatibility:
+
+```bash
+python TGC/tools/audit_1966_balance.py --core-root TGC --timeline-root TGC_Timeline_1966
+```
+
+The audit exits successfully when it can complete without FAIL-level structural/tooling errors. WARN entries remain diagnostic and normative; they should not be silenced by weakening rules merely to reduce the count.
+
 ## Scope
 
-The audit covers the broad monitored unit roster and aims at full relevant-stat coverage in `TGC/units/*.txt`.
+The audit covers the broad monitored unit roster and aims at full relevant-stat coverage across core units in `TGC/units/*.txt` plus timeline-only units in `TGC_Timeline_1966/units/*.txt`.
 
 Current monitored units (from rules):
 

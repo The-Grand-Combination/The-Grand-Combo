@@ -228,14 +228,31 @@ Honorable mentions and ex-Developers:
 * LouisTheFly
 * anzu-3278
 
-## 1966 campaign extension — status snapshot
+## TGC Timeline 1966 submod — status snapshot
 
-Current branch state for the **01/01/1966** extension:
+The **01/01/1966** extended timeline is now packaged as the separate
+`TGC Timeline 1966` submod (`TGC_Timeline_1966/` plus
+`TGC_Timeline_1966.mod`). The base `TGC/` mod no longer carries the 1966
+runtime files by default; to play the extended timeline, enable both:
 
-- End date / end-game decision / backend year label alignment is implemented.
-- Tech tree extension is complete at full-tree scope across **all 25 technology sub-branches**: **5/5 branches**, **25/25 areas**, **12/12 tiers per area**.
-- Late-tier tech and tracked inventions are now enforced by validator-backed localisation coverage checks.
-- Main remaining work is release stabilization: long smoke-test campaigns and post-test tuning.
+1. `TGC - The Grand Combination`
+2. `TGC Timeline 1966`
 
-For canonical, up-to-date status and final validation plan, see:
+Current branch state for the submod:
+
+- End date / end-game decision / backend year label alignment is implemented in
+  `TGC_Timeline_1966/`.
+- Tech tree extension is complete at full-tree scope across **all 25 technology
+  sub-branches**: **5/5 branches**, **25/25 areas**, **12/12 tiers per area**.
+- Late-tier tech and tracked inventions are enforced by submod-aware validator
+  localisation coverage checks.
+- The balance audit reads the timeline runtime from the submod and reports
+  normative diagnostics; WARN entries are playtest/tuning guidance, not automatic
+  blockers.
+- CI runs both 1966 submod drift directions with `--fail-on-warn`, so possible
+  core/submod sync drift after upstream syncs blocks until reviewed and ported,
+  removed, or intentionally accounted for.
+
+For the submod manifest and final validation plan, see:
+`TGC_Timeline_1966/docs/manifest_1966_timeline.md` and
 `TGC/docs/1966_extension_audit.md`.

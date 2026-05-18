@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -8,7 +9,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from lib_1966_parser import parse_top_level_blocks, read_text
+from lib_1966_parser import parse_top_level_blocks, read_text, rebase_path
 
 ROOT = Path(__file__).resolve().parents[2]
 RULES_PATH = ROOT / "TGC/tools/1966_balance_rules.json"
@@ -27,7 +28,7 @@ class Reporter:
         for lvl, _ in self.items:
             counts[lvl] = counts.get(lvl, 0) + 1
 
-        print("1966 BALANCE AUDIT (diagnostic, non-blocking)")
+        print("1966 BALANCE AUDIT (WARN/INFO diagnostic; FAIL blocks)")
         print(f" - FAIL: {counts.get('FAIL', 0)}")
         print(f" - WARN: {counts.get('WARN', 0)}")
         print(f" - INFO: {counts.get('INFO', 0)}")
@@ -144,8 +145,30 @@ def build_priority_summary(
     return buckets, playtest_candidates[:5]
 
 
-def read_rules() -> dict[str, Any]:
-    return json.loads(RULES_PATH.read_text(encoding="utf-8"))
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the TGC 1966 balance audit against the timeline submod layer.")
+    parser.add_argument("--core-root", default="TGC", help="Base/core mod root (default: TGC).")
+    parser.add_argument(
+        "--timeline-root",
+        default="TGC_Timeline_1966",
+        help="1966 timeline runtime root (default: TGC_Timeline_1966).",
+    )
+    return parser.parse_args()
+
+
+def _rebase_obj(obj: Any, *, core_root: str, timeline_root: str) -> Any:
+    if isinstance(obj, str):
+        return rebase_path(obj, core_root=core_root, timeline_root=timeline_root)
+    if isinstance(obj, list):
+        return [_rebase_obj(x, core_root=core_root, timeline_root=timeline_root) for x in obj]
+    if isinstance(obj, dict):
+        return {k: _rebase_obj(v, core_root=core_root, timeline_root=timeline_root) for k, v in obj.items()}
+    return obj
+
+
+def read_rules(core_root: str = "TGC", timeline_root: str = "TGC_Timeline_1966") -> dict[str, Any]:
+    rules = json.loads(RULES_PATH.read_text(encoding="utf-8"))
+    return _rebase_obj(rules, core_root=core_root, timeline_root=timeline_root)
 
 
 def get_final_range(stat_cfg: dict[str, Any]) -> tuple[float | None, float | None]:
@@ -498,8 +521,10 @@ def check_key_goods_availability(production_types_file: str, key_goods: list[str
 
 
 def main() -> int:
-    rules = read_rules()
+    args = parse_args()
+    rules = read_rules(args.core_root, args.timeline_root)
     rep = Reporter()
+    rep.add("INFO", f"AUDIT ROOTS: core={args.core_root}; timeline={args.timeline_root}")
 
     units_cfg: dict[str, Any] = rules["units"]
     coverage_tiers_cfg: dict[str, list[str]] = rules.get("coverage_tiers", {})
@@ -511,7 +536,11 @@ def main() -> int:
         tier_by_unit.setdefault(u, "secondary")
     files_cfg: dict[str, str] = rules["files"]
     monitored_units = set(units_cfg.keys())
-    discovered_units = {p.stem for p in (ROOT / "TGC/units").glob("*.txt")}
+    discovered_units: set[str] = set()
+    for rel_dir in (f"{args.core_root}/units", f"{args.timeline_root}/units"):
+        unit_dir = ROOT / rel_dir
+        if unit_dir.exists():
+            discovered_units.update(p.stem for p in unit_dir.glob("*.txt"))
     unit_groups: dict[str, list[str]] = rules.get("unit_groups", {})
     coverage_cfg: dict[str, Any] = rules.get("timeline_coverage", {})
     coverage_warn_below = float(coverage_cfg.get("warn_below_pct_important", 60))
@@ -1050,8 +1079,8 @@ def main() -> int:
                 f"quality={stat_signal_quality.get(stat, 'limited_signal')} | score={score} | top_issue={msg}"
             )
 
-    # Diagnostic tool: non-blocking by design.
-    return 0
+    # WARN/INFO diagnostics are non-blocking, but FAIL-level structural/tooling errors should fail CI.
+    return 1 if any(level == "FAIL" for level, _ in rep.items) else 0
 
 
 if __name__ == "__main__":

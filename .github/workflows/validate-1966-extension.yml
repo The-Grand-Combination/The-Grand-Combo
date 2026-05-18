@@ -4,39 +4,23 @@ on:
   pull_request:
     paths:
       - ".github/workflows/validate-1966-extension.yml"
-      - "TGC/tools/validate_1966_extension.py"
-      - "TGC/tools/audit_1966_balance.py"
-      - "TGC/tools/1966_extension_scope.json"
-      - "TGC/tools/1966_balance_rules.json"
-      - "TGC/tools/lib_1966_parser.py"
-      - "TGC/technologies/*_tech.txt"
-      - "TGC/inventions/*.txt"
-      - "TGC/localisation/00_SUP_technology.csv"
-      - "TGC/localisation/00_other_tech.csv"
-      - "TGC/common/defines.lua"
-      - "TGC/decisions/00_Setup.txt"
-      - "TGC/interface/backend.gui"
+      - "AGENTS.md"
       - "README.md"
-      - "TGC/docs/1966_extension_audit.md"
-      - "TGC/docs/1966_extension_validator.md"
+      - "TGC/**"
+      - "TGC_Timeline_1966/**"
   push:
     paths:
       - ".github/workflows/validate-1966-extension.yml"
-      - "TGC/tools/validate_1966_extension.py"
-      - "TGC/tools/audit_1966_balance.py"
-      - "TGC/tools/1966_extension_scope.json"
-      - "TGC/tools/1966_balance_rules.json"
-      - "TGC/tools/lib_1966_parser.py"
-      - "TGC/technologies/*_tech.txt"
-      - "TGC/inventions/*.txt"
-      - "TGC/localisation/00_SUP_technology.csv"
-      - "TGC/localisation/00_other_tech.csv"
-      - "TGC/common/defines.lua"
-      - "TGC/decisions/00_Setup.txt"
-      - "TGC/interface/backend.gui"
+      - "AGENTS.md"
       - "README.md"
-      - "TGC/docs/1966_extension_audit.md"
-      - "TGC/docs/1966_extension_validator.md"
+      - "TGC/**"
+      - "TGC_Timeline_1966/**"
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: "Optional git ref/SHA to compare drift checks against; defaults to HEAD~1"
+        required: false
+        type: string
 
 jobs:
   validate-1966-extension:
@@ -44,15 +28,51 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
+      - name: Determine drift base ref
+        shell: bash
+        run: |
+          set -euo pipefail
+          zero_sha="0000000000000000000000000000000000000000"
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            base_ref="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            before_sha="${{ github.event.before }}"
+            if [[ -n "$before_sha" && "$before_sha" != "$zero_sha" ]] && git cat-file -e "${before_sha}^{commit}" 2>/dev/null; then
+              base_ref="$before_sha"
+            else
+              base_ref="$(git rev-parse HEAD~1)"
+            fi
+          else
+            input_base_ref="${{ github.event.inputs.base_ref || '' }}"
+            if [[ -n "$input_base_ref" ]]; then
+              base_ref="$input_base_ref"
+            else
+              base_ref="$(git rev-parse HEAD~1)"
+            fi
+          fi
+
+          base_ref="$(git rev-parse --verify "${base_ref}^{commit}")"
+          echo "BASE_REF=$base_ref" >> "$GITHUB_ENV"
+          echo "Using drift BASE_REF=$base_ref"
+
+      - name: Run 1966 submod drift check (core to submod)
+        run: python TGC/tools/check_1966_submod_drift.py --base-ref "$BASE_REF" --fail-on-warn
+
+      - name: Run 1966 submod drift check (submod to core)
+        run: python TGC/tools/check_1966_submod_drift.py --reverse --base-ref "$BASE_REF" --fail-on-warn
+
       - name: Run 1966 extension validator
         run: python TGC/tools/validate_1966_extension.py
 
-      - name: Run 1966 balance audit (diagnostic)
-        continue-on-error: true
+      - name: Run 1966 balance audit
         run: python TGC/tools/audit_1966_balance.py

@@ -13,9 +13,24 @@ class TopLevelBlockMeta(TypedDict):
 
 ROOT = Path(__file__).resolve().parents[2]
 
+DEFAULT_CORE_ROOT = "TGC"
+DEFAULT_TIMELINE_ROOT = "TGC_Timeline_1966"
+
+
+def resolve_repo_path(rel_path: str) -> Path:
+    return ROOT / rel_path
+
+
+def rebase_path(rel_path: str, *, core_root: str = DEFAULT_CORE_ROOT, timeline_root: str = DEFAULT_TIMELINE_ROOT) -> str:
+    """Map manifest/rule paths to caller-selected roots while keeping defaults submod-aware."""
+    if core_root != DEFAULT_CORE_ROOT and rel_path.startswith(f"{DEFAULT_CORE_ROOT}/"):
+        return f"{core_root}/{rel_path[len(DEFAULT_CORE_ROOT) + 1:]}"
+    if timeline_root != DEFAULT_TIMELINE_ROOT and rel_path.startswith(f"{DEFAULT_TIMELINE_ROOT}/"):
+        return f"{timeline_root}/{rel_path[len(DEFAULT_TIMELINE_ROOT) + 1:]}"
+    return rel_path
 
 def read_text(rel_path: str, encoding: str = "utf-8") -> str:
-    return (ROOT / rel_path).read_text(encoding=encoding, errors="ignore")
+    return resolve_repo_path(rel_path).read_text(encoding=encoding, errors="ignore")
 
 
 def parse_top_level_blocks(rel_path: str) -> dict[str, list[tuple[int, str]]]:

@@ -1,20 +1,43 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
 from collections import defaultdict
 from pathlib import Path
 
-from lib_1966_parser import TopLevelBlockMeta, parse_top_level_block_meta, read_text
+from lib_1966_parser import TopLevelBlockMeta, parse_top_level_block_meta, read_text, rebase_path, resolve_repo_path
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_PATH = "TGC/tools/1966_extension_scope.json"
 
 
-def read_manifest() -> dict:
-    return json.loads(read_text(MANIFEST_PATH, encoding="utf-8"))
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Validate the TGC 1966 timeline submod layer.")
+    parser.add_argument("--core-root", default="TGC", help="Base/core mod root (default: TGC).")
+    parser.add_argument(
+        "--timeline-root",
+        default="TGC_Timeline_1966",
+        help="1966 timeline runtime root (default: TGC_Timeline_1966).",
+    )
+    return parser.parse_args()
+
+
+def _rebase_obj(obj, *, core_root: str, timeline_root: str):
+    if isinstance(obj, str):
+        return rebase_path(obj, core_root=core_root, timeline_root=timeline_root)
+    if isinstance(obj, list):
+        return [_rebase_obj(x, core_root=core_root, timeline_root=timeline_root) for x in obj]
+    if isinstance(obj, dict):
+        return {k: _rebase_obj(v, core_root=core_root, timeline_root=timeline_root) for k, v in obj.items()}
+    return obj
+
+
+def read_manifest(core_root: str = "TGC", timeline_root: str = "TGC_Timeline_1966") -> dict:
+    manifest = json.loads(read_text(MANIFEST_PATH, encoding="utf-8"))
+    return _rebase_obj(manifest, core_root=core_root, timeline_root=timeline_root)
 
 
 def build_localisation_index(localisation_files: list[str]) -> dict[str, list[str]]:
@@ -49,9 +72,13 @@ NON_UNIT_EFFECT_KEYS = {"army_base", "navy_base"}
 LEGACY_UNIT_ALIASES = {"carrier": "aircraftcarrier"}
 
 
-def discover_unit_keys() -> set[str]:
-    unit_dir = ROOT / "TGC/units"
-    return {p.stem for p in unit_dir.glob("*.txt")}
+def discover_unit_keys(core_root: str, timeline_root: str) -> set[str]:
+    keys: set[str] = set()
+    for rel_dir in (f"{core_root}/units", f"{timeline_root}/units"):
+        unit_dir = resolve_repo_path(rel_dir)
+        if unit_dir.exists():
+            keys.update(p.stem for p in unit_dir.glob("*.txt"))
+    return keys
 
 
 def validate_effect_unit_targets(rel_path: str, unit_keys: set[str]) -> list[str]:
@@ -150,14 +177,15 @@ def find_named_block_lines(rel_path: str, block_key: str) -> list[tuple[int, str
 
 
 def main() -> int:
-    m = read_manifest()
+    args = parse_args()
+    m = read_manifest(args.core_root, args.timeline_root)
     branches = m["tech_tree"]["branches"]
     late_min_year = m["tech_tree"].get("late_tech_min_year", 1936)
     invention_files = m["invention_files"]
     loc_files = m["localisation_files"]
     structural = m["structural"]
     stale_rules = m.get("stale_reference_rules", [])
-    unit_keys = discover_unit_keys()
+    unit_keys = discover_unit_keys(args.core_root, args.timeline_root)
 
     failures: list[str] = []
     loc_index = build_localisation_index(loc_files)
@@ -209,7 +237,7 @@ def main() -> int:
         if f"{k}_desc" not in loc_keys:
             failures.append(f"INVENTION missing localisation desc: {k}_desc")
 
-    unit_target_files = sorted({b["file"] for b in branches} | set(invention_files))
+    unit_target_files = sorted({b["file"] for b in branches} | set(invention_files) | set(structural.get("unit_target_files_extra", [])))
     for rel in unit_target_files:
         failures.extend(validate_effect_unit_targets(rel, unit_keys))
 
@@ -233,19 +261,33 @@ def main() -> int:
     for chk in structural["required_patterns"]:
         if not re.search(chk["pattern"], read_text(chk["file"]), re.S):
             failures.append(f"STRUCTURAL {chk['message']}")
+    for chk in structural.get("core_forbidden_patterns", []):
+        if resolve_repo_path(chk["file"]).exists() and re.search(chk["pattern"], read_text(chk["file"]), re.S):
+            failures.append(f"CORE CLEANUP {chk['message']}")
     for req in structural["required_files"]:
-        if not (ROOT / req).exists():
+        if not resolve_repo_path(req).exists():
             failures.append(f"STRUCTURAL missing file: {req}")
+    for forbidden in structural.get("core_forbidden_files", []):
+        if resolve_repo_path(forbidden).exists():
+            failures.append(f"CORE CLEANUP forbidden timeline-only file remains: {forbidden}")
+    for req_bin in structural.get("required_binary_files", []):
+        path = resolve_repo_path(req_bin)
+        if not path.exists():
+            failures.append(f"STRUCTURAL missing binary asset: {req_bin}")
+        elif path.stat().st_size <= 0:
+            failures.append(f"STRUCTURAL empty binary asset: {req_bin}")
 
     print("1966 extension full-tree static validation")
     print(f" - scope manifest: {MANIFEST_PATH}")
+    print(f" - core root: {args.core_root}")
+    print(f" - timeline root: {args.timeline_root}")
     print(f" - expected tech areas: {expected_areas}")
     print(f" - parsed tech definitions: {len(all_tech)}")
     print(f" - late-tech localisation perimeter (year >= {late_min_year}): {len(late_keys)} keys")
     print(f" - tracked invention files: {len(invention_files)}")
     print(f" - parsed inventions in tracked files: {len(all_inv)}")
     print(f" - discovered unit keys: {len(unit_keys)}")
-    print(" - structural checks: defines/decision/backend/readme/audit/docs")
+    print(" - structural checks: submod runtime + core cleanup + docs")
 
     if failures:
         print("\nFAILED checks:")

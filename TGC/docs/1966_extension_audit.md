@@ -1,31 +1,51 @@
-# 1966 Extension Audit (updated: 2026-04-04)
+# 1966 Extension Audit (submod architecture)
 
 ## Current static status
 
-- Campaign endpoint alignment is present and statically checked:
-  - `TGC/common/defines.lua` keeps `end_date = '1966.1.1'`.
-  - `TGC/decisions/00_Setup.txt` keeps `option_end_game` aligned to `year = 1966` in both `potential` and `allow`.
-  - `TGC/interface/backend.gui` keeps `text = "The World in 1966"`.
-- Late-extension tech scope is now closed through 1966 across all five branches in the tracked validator scope (army/commerce/culture/industry/navy).
-- Linked late inventions for the tracked scope are present and localized (`key` + `key_desc`) in the declared extension localisation files.
-- Carrier animation naming has been normalized in interface references for the extension ship actor chain.
-- Theocracy extension event key `800041` now has explicit event localisation entries.
-- Static hardening tooling remains in place:
-  - validator script: `TGC/tools/validate_1966_extension.py`,
-  - canonical manifest-driven scope: `TGC/tools/1966_extension_scope.json`,
-  - CI automation: `.github/workflows/validate-1966-extension.yml`.
+The 1966 campaign extension is now a separate runtime submod:
 
-## What is now automatically enforced
+- Base/core mod: `TGC/` (non-1966 by default).
+- Timeline runtime: `TGC_Timeline_1966/`.
+- Descriptor: `TGC_Timeline_1966.mod`.
+- Required launcher combination: enable `TGC - The Grand Combination` and
+  `TGC Timeline 1966`.
 
-- No missing/duplicate/unexpected-file drift for targeted late tech and invention keys.
-- No missing/duplicate localisation drift for targeted late tech/invention `key` and `_desc` keys.
-- Structural 1966 alignment remains enforced (defines/decision/backend/readme/audit presence).
+Static checks now verify that the 1966 runtime is present in the submod and that
+core cleanup remains intact:
+
+- `TGC_Timeline_1966/common/defines.lua` keeps `end_date = '1966.1.1'`.
+- `TGC_Timeline_1966/decisions/00_Setup.txt` keeps `option_end_game` aligned to
+  `year = 1966` in both `potential` and `allow`.
+- `TGC_Timeline_1966/interface/backend.gui` keeps `text = "The World in 1966"`.
+- `TGC/common/defines.lua` no longer carries the 1966 end date.
+- Timeline-only unit, invention, localisation, interface, and graphics runtime
+  files are absent from core and staged in the submod.
+
+## What is automatically enforced
+
+- Full-tree tech scope remains complete across all five branches: 25 areas at 12
+  tiers per area.
+- Tracked late inventions are present in `TGC_Timeline_1966/inventions/NEW_*` and
+  localized through submod localisation files.
+- Carrier/submarine unit effect targets resolve using the combined core + submod
+  unit set.
+- Core cleanup guards catch accidental reintroduction of the old core-only 1966
+  end date, backend label, or timeline-only files.
 
 ## Known limitations of static validation
 
-Static validation does **not** certify gameplay quality or release balance. It validates structural coherence only for the declared tracked scope.
+Static validation does not certify gameplay quality or release balance. It
+validates structural coherence for the declared tracked scope. The balance audit
+is the normative diagnostic layer for tuning warnings.
+
+Full interface and decision overrides remain necessary because Victoria 2 loads
+these files as whole-file definitions rather than fine-grained patches. These
+overrides can mask future core edits while the submod is active and should be
+reviewed when core files change.
 
 ## Final status judgment
 
-- **Static completion for the declared 1966 extension scope is complete.**
-- Remaining work outside static scope is optional balancing iteration, not missing structural integration.
+- **Static completion for the declared 1966 extension scope is complete in the
+  submod architecture.**
+- Remaining work is optional balancing iteration and maintenance of the full-file
+  override carriers.
