@@ -19,6 +19,7 @@
 # The peace options are:
 #po_annex
 #po_demand_state
+#po_demand_province (Script Extender: as po_demand_state, but the peace takes only the war goal's province)
 #po_add_to_sphere
 #po_disarmament
 #po_reparations
@@ -96,6 +97,7 @@ peace_order = {
 	china_acquire_state
 	sahel_jihad_cb
 	acquire_state
+	acquire_province
 	acquire_any_state
 	acquire_substate_region
 	acquire_substate_colony
@@ -2981,6 +2983,207 @@ acquire_state = {
 	}
 
 	po_demand_state = yes
+
+	war_name = WAR_TAKE_NAME
+
+	on_add = {
+		move_issue_percentage = {
+			from = jingoism
+			to = pro_military
+			value = 0.25
+		}
+	}
+}
+
+# Gain control of one province of a State (needs the Script Extender: po_demand_province)
+acquire_province = {
+	sprite_index = 6
+	is_triggered_only = yes
+	months = 12
+
+	construction_speed = 0.5
+
+	badboy_factor = 1.0
+	prestige_factor = 2
+	peace_cost_factor = 1
+	penalty_factor = 1
+
+	break_truce_prestige_factor = 1
+	break_truce_infamy_factor = 2
+	break_truce_militancy_factor = 2
+	truce_months = 48
+
+	good_relation_prestige_factor = 1
+	good_relation_infamy_factor = 1
+	good_relation_militancy_factor = 1
+
+	can_use = {
+		any_state = {
+			is_colonial = no
+			NOT = { any_owned_province = { is_capital = yes } }
+		}
+		OR = {
+			THIS = { civilized = no }
+			civilized = yes
+		}
+		OR = {
+			AND = {
+				THIS = { any_owned_province = { port = yes } }
+				any_owned_province = { port = yes }
+			}
+			neighbour = THIS
+			AND = { war_with = THIS ai = no }
+		}
+		OR = {
+			THIS = { NOT = { has_country_modifier = no_more_war } }
+			war_with = THIS
+		}
+		OR = {
+			THIS = { government = fascist_dictatorship }
+			THIS = { has_country_flag = communist_gov }
+			THIS = { civilized = no }
+			war_with = THIS
+			NOT = { relation = { who = THIS value = 0 } }
+			THIS = { ai = no }
+		}
+		#AI anti-military will not use this
+		OR = {
+			THIS = { ai = no }
+			THIS = { NOT = { war_policy = anti_military } }
+		}
+		#AI will not use this CB when duking it out over hegemony
+		OR = {
+			THIS = { ai = no }
+			NOT = {
+				AND = {
+					culture_has_union_tag = yes
+					is_culture_group = THIS
+					cultural_union = { exists = no }
+					is_greater_power = yes
+					THIS = { is_greater_power = yes }
+				}
+			}
+		}
+	}
+
+	allowed_states = {
+		#AI treats colonial states with only civilized cores as regular states
+		OR = {
+			is_colonial = no
+			AND = {
+				is_colonial = yes
+				THIS = { ai = yes }
+				any_owned_province = { any_core = { civilized = yes } }
+				NOT = { any_owned_province = { any_core = { civilized = no } } }
+			}
+		}
+
+		NOT = {
+			any_owned_province = { is_core = THIS }
+			any_owned_province = { is_capital = yes }
+		}
+
+		#AI can only grab neighboring states, coastal if it's a coastal GP
+		OR = {
+			THIS = { ai = no }
+			any_owned_province = { any_neighbor_province = { owned_by = THIS } }
+			AND = {
+				any_owned_province = { port = yes }
+				THIS = {
+					rank = 16
+					any_owned_province = { port = yes }
+				}
+			}
+		}
+
+		#AI will not grab cores of allies/spherelings
+		OR = {
+			THIS = { ai = no }
+			NOT = {
+				any_owned_province = {
+					any_core = {
+						exists = yes
+						OR = {
+							alliance_with = THIS
+							in_sphere = THIS
+							vassal_of = THIS
+						}
+					}
+				}
+			}
+		}
+
+		#AI will not try to grab cores of their union if they're sphere to a GP of their culture group
+		OR = {
+			THIS = { ai = no }
+			NOT = {
+				AND = {
+					THIS = {
+						is_greater_power = no
+						part_of_sphere = yes
+						culture_has_union_tag = yes
+						cultural_union = { exists = no }
+						sphere_owner = { is_culture_group = THIS }
+					}
+					any_owned_province = {
+						any_core = {
+							is_cultural_union = yes
+							this_culture_union = this_union
+						}
+					}
+				}
+			}
+		}
+
+		#pro-military AI will not grab cores of non-existing, non-union countries
+		#unless they own some cores or it's part of their culture group and they're pro-military
+		#jingoistic countries will also take states with existing cores that they also own some of
+		#fascist & communist countries are exempt from this
+		OR = {
+			THIS = { ai = no }
+			THIS = { has_country_flag = communist_gov }
+			THIS = { government = fascist_dictatorship }
+			AND = {
+				THIS = { war_policy = pro_military }
+				any_owned_province = {
+					any_core = {
+						is_cultural_union = no
+						exists = no
+						OR = {
+							any_core = { owned_by = THIS }
+							is_culture_group = THIS
+						}
+					}
+				}
+			}
+			AND = {
+				THIS = { war_policy = jingoism }
+				any_owned_province = {
+					any_core = {
+						OR = {
+							any_core = { owned_by = THIS }
+							AND = {
+								exists = no
+								is_cultural_union = no
+								is_culture_group = THIS
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	allowed_states_in_crisis = {
+		NOT = { any_owned_province = { is_capital = yes } }
+		any_owned_province = {
+			any_neighbor_province = {
+				owner = { tag = THIS }
+			}
+		}
+	}
+
+	po_demand_province = yes # Script Extender (demand_province)
 
 	war_name = WAR_TAKE_NAME
 
