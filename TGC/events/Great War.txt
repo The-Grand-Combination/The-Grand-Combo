@@ -433,6 +433,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -2220,6 +2221,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -2909,6 +2911,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -3923,6 +3926,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -4375,6 +4379,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -4795,6 +4800,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -5165,6 +5171,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -5672,6 +5679,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -6163,6 +6171,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -6852,6 +6861,7 @@
 		major = yes
 
 		trigger = {
+			NOT = { has_country_flag = se_treaty_dismantled } # Script Extender: po_dismantle treaties instead
 			war = no
 			OR = {
 				has_country_modifier = great_war
@@ -8869,3 +8879,81 @@
 				}
 			}
 		}
+
+	# Script Extender: a loser dismantled by a po_dismantle treaty (instead of the Treaty of $CAPITAL$
+	# events above): the end of the war only, without their territorial changes.
+	country_event = {
+
+		id = 96094
+		title = "EVTNAME96010" #The Treaty of $CAPITAL$
+		desc = "EVTDESC96010"
+		picture = "greatpowers"
+
+		trigger = {
+			war = no
+			has_country_flag = se_treaty_dismantled
+			has_country_flag = dismantling_treaty
+			OR = {
+				rank = 16
+				colonial_nation = yes
+				tag = GCF
+				tag = GER
+				tag = NGF
+				tag = SGF
+				tag = PRU
+				tag = RUS
+				tag = USA
+				tag = ENG
+				tag = FRA
+				tag = AUS
+				tag = KUK
+				tag = DNB
+				tag = TUR
+				tag = JAP
+				tag = TKG
+				tag = BRZ
+				tag = KPB
+			}
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		option = {
+			name = "EVTOPTA96010" #We welcome peace
+			clr_country_flag = se_treaty_dismantled
+			clr_country_flag = dismantle_declared
+			clr_country_flag = in_great_war
+			clr_country_flag = calling_all_allies
+			clr_country_flag = enemy_of_my_enemy
+			clr_country_flag = total_collapse
+			clr_country_flag = ultimatum_accepted
+			clr_country_flag = will_not_surrender
+			clr_country_flag = dismantling_treaty
+			remove_country_modifier = great_war
+			remove_country_modifier = great_war2
+			remove_country_modifier = great_war3
+			war_exhaustion = 40
+
+			#if over the badboy limit, reduce infamy to 24.99, otherwise reduce infamy by 10
+			random_owned = {
+				limit = {
+					owner = { NOT = { badboy = 1 } }
+				}
+				owner = {
+					badboy = -10
+				}
+			}
+			random_owned = {
+				limit = {
+					owner = { badboy = 1 }
+				}
+				owner = { badboy = -1000 }
+				owner = { badboy = 24.99 }
+			}
+
+			#prestige hit
+			prestige_factor = -0.5
+		}
+	}
