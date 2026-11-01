@@ -18,3 +18,6 @@ replace_path = "units"
 
 github = "https://github.com/The-Grand-Combination/The-Grand-Combo"
 current_release = "v2.5.1"
+
+load = "script_extender/script_extender.dll"
+load = "performance_patch/performance_patch.dll"
