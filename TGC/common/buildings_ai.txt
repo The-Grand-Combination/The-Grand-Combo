@@ -1,0 +1,91 @@
+# AI construction of province buildings (Victoria II Script Extender, buildings_ai = 1).
+#
+# One block per province building of buildings.txt, by name. Each run of an AI country's construction job
+# (every 10-26 days, never at war) rolls `chance` per building; on success the AI starts one level in one
+# of its provinces:
+#   chance = 0.1   per run (0 to 1), like CHANCE_BUILD_FORT in defines.lua
+#   money = 2      the treasury must cover this many times the cost (default 2)
+#   weight = { }   province scope, written like a decision's ai_will_do: `factor` (or `base`), then
+#                  `modifier = { factor = x <triggers> }`; one province is drawn in proportion to it.
+#                  0 excludes a province. `owner = { ... }` reaches the country.
+# Only provinces where the building can be expanded now count: tech level, max level, terrain, one per
+# state, not already building, controlled by the owner. Fort, naval_base and railroad stay with the game's
+# own builders; listing them here adds to those.
+
+university = {
+	chance = 0.1
+	money = 3
+
+	weight = {
+		factor = 1
+
+		modifier = { factor = 0 owner = { civilized = no } }
+		modifier = { factor = 0.3 is_colonial = yes }
+		modifier = { factor = 0.6 is_overseas = yes }
+		modifier = { factor = 5 is_capital = yes }
+
+		# education spending
+		modifier = { factor = 1.5 owner = { education_spending = 0.8 } }
+		modifier = { factor = 1.5 owner = { education_spending = 1 } }
+		modifier = { factor = 0.5 owner = { NOT = { education_spending = 0.4 } } }
+		modifier = { factor = 0.4 owner = { NOT = { education_spending = 0.3 } } }
+		modifier = { factor = 0 owner = { NOT = { education_spending = 0.15 } } }
+
+		# life rating
+		modifier = { factor = 0.3 NOT = { life_rating = 10 } }
+		modifier = { factor = 0.5 NOT = { life_rating = 15 } }
+		modifier = { factor = 0.7 NOT = { life_rating = 20 } }
+
+		# upgrade an existing university rather than found a new one
+		modifier = { factor = 3 has_building = university }
+		modifier = { factor = 1.3 has_building = railroad }
+
+		# research the country cares about
+		modifier = { factor = 1.25 owner = { positivism = 1 } }
+		modifier = { factor = 1.25 owner = { functionalism = 1 } }
+		modifier = { factor = 1.25 owner = { biologism = 1 } }
+		modifier = { factor = 1.4 owner = { social_science = 1 } }
+		modifier = { factor = 1.4 owner = { social_alienation = 1 } }
+	}
+}
+
+bank = {
+	chance = 0.15
+	money = 2
+
+	weight = {
+		factor = 1
+
+		modifier = { factor = 0 owner = { civilized = no } }
+		modifier = { factor = 0 owner = { economic_policy = laissez_faire } }
+		modifier = { factor = 0.3 is_colonial = yes }
+		modifier = { factor = 0.6 is_overseas = yes }
+		modifier = { factor = 8 is_capital = yes }
+
+		# administration spending
+		modifier = { factor = 1.25 owner = { administration_spending = 0.9 } }
+		modifier = { factor = 0.3 owner = { NOT = { administration_spending = 0.5 } } }
+		modifier = { factor = 0.3 owner = { NOT = { administration_spending = 0.3 } } }
+
+		# rich land draws banks
+		modifier = { factor = 4 OR = { produces = precious_goods produces = precious_metal } }
+		modifier = { factor = 1.7 OR = { produces = iron produces = coal produces = oil produces = rubber } }
+		modifier = { factor = 1.25 OR = { produces = sulphur produces = cotton } }
+
+		# life rating
+		modifier = { factor = 0.3 NOT = { life_rating = 10 } }
+		modifier = { factor = 0.5 NOT = { life_rating = 15 } }
+		modifier = { factor = 0.7 NOT = { life_rating = 20 } }
+
+		modifier = { factor = 2 has_building = bank }
+		modifier = { factor = 1.25 has_building = railroad }
+		modifier = { factor = 1.25 has_building = university }
+
+		# banking research
+		modifier = { factor = 1.4 owner = { stock_exchange = 1 } }
+		modifier = { factor = 1.4 owner = { business_banks = 1 } }
+		modifier = { factor = 1.4 owner = { investment_banks = 1 } }
+		modifier = { factor = 1.4 owner = { bank_inspection_board = 1 } }
+		modifier = { factor = 1.4 owner = { mutual_funds = 1 } }
+	}
+}
