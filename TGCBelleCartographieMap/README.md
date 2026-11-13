@@ -7,7 +7,7 @@ Contains: BC's flat political map adjusted for TGC, as TGC has an entirely diffe
 
 Added thicker national borders from PastelThickMod (which you can also find on my git)
 
-Contains partial endonym's localization for country names, use at will, delete it if you prefer basic names 
+Contains partial endonymic localization for country names, use at will, delete it if you prefer basic names
 
 
 
